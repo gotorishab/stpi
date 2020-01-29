@@ -77,6 +77,7 @@
                           <table cellspacing="0" style="width:1000px;">
                                 <thead>
                                     <tr>
+                                        <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>Sr. No</strong></th>
                                         <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>TYPE</strong></th>
                                         <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>TITLE</strong></th>
                                         <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>DATE START</strong></th>
@@ -85,10 +86,11 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                        <t t-set="i" t-value="1"/>
                                         <t t-foreach="o.resume_line_ids" t-as="ol">
                                             <tr colspan="8">
-
+                                                <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;" >
+                                                    <t t-esc="ol_index+1" />
+                                                </td>
                                                 <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;" >
                                                     <span t-esc="ol.line_type_id.name"/>
                                                 </td>
@@ -109,11 +111,12 @@
                                     </tbody>
                             </table>
 
-                    <br/><br/><br/>
+                    <br/><br/>
                     <h6 class="text-center">FAMILY INFORMATION</h6>
                           <table cellspacing="0" style="width:1000px;">
                                 <thead>
                                     <tr>
+                                        <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>Sr. No</strong></th>
                                         <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>Salutation</strong></th>
                                         <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>Name</strong></th>
                                         <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>Relation</strong></th>
@@ -125,10 +128,11 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                        <t t-set="i" t-value="1"/>
                                         <t t-foreach="o.relative_ids" t-as="ol">
                                             <tr colspan="8">
-
+                                                <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;" >
+                                                    <t t-esc="ol_index+1" />
+                                                </td>
                                                 <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;" >
                                                     <span t-esc="ol.salutation.name"/>
                                                 </td>
@@ -158,13 +162,12 @@
                                     </tbody>
                             </table>
 
-
-
-                    <br/><br/><br/>
+                    <br/><br/>
                     <h6 class="text-center">SERVICE INFORMATION</h6>
                           <table cellspacing="0" style="width:1000px;">
                                 <thead>
                                     <tr>
+                                        <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>Sr. No</strong></th>
                                         <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>LAST EMPLOYER</strong></th>
                                         <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>FROM DATE</strong></th>
                                         <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>TO DATE</strong></th>
@@ -176,10 +179,11 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                        <t t-set="i" t-value="1"/>
                                         <t t-foreach="o.prev_occu_ids" t-as="ol">
                                             <tr colspan="8">
-
+                                                <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;" >
+                                                    <t t-esc="ol_index+1" />
+                                                </td>
                                                 <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;" >
                                                     <span t-esc="ol.last_employer"/>
                                                 </td>
@@ -209,41 +213,244 @@
                                 </tbody>
                           </table>
 
-
-                    <!--<br/><br/><br/>-->
-                    <!--<h6 class="text-center">CERTIFICATE ATTESTATION</h6>-->
-                    <!--<h6 class="text-center">(IMMUTABLE)</h6>-->
-                          <!--<table cellspacing="0" style="width:1000px;">-->
-                                <!--<thead>-->
-                                    <!--<tr>-->
-                                        <!--<th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>SUBJECT</strong></th>-->
-                                        <!--<th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>CERTIFICATE DESCRIPTION</strong></th>-->
-                                        <!--&lt;!&ndash;<th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>CERTIFICATE</strong></th>&ndash;&gt;-->
-                                    <!--</tr>-->
-                                <!--</thead>-->
-                                <!--<tbody>-->
-                                        <!--<t t-set="i" t-value="1"/>-->
-                                    <!--<t t-if="o.document_view()">-->
-                                        <!--<t t-foreach="o.prev_occu_ids" t-as="ol">-->
-                                            <!--<tr colspan="8">-->
-
-                                                <!--<td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;" >-->
-                                                    <!--<span t-esc="ol.name"/>-->
-                                                <!--</td>-->
-                                                <!--<td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">-->
-                                                    <!--<span t-esc="ol.description"/>-->
-                                                <!--</td>-->
-                                                <!--&lt;!&ndash;<td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">&ndash;&gt;-->
-                                                    <!--&lt;!&ndash;<span t-esc="ol.doc_attachment_id"/>&ndash;&gt;-->
-                                                <!--&lt;!&ndash;</td>&ndash;&gt;-->
-                                            <!--</tr>-->
-                                        <!--</t>-->
-                                    <!--</t>-->
-                                    <!--</tbody>-->
-                            <!--</table>-->
-
-
-
+                    <br/><br/>
+                    <h6 class="text-center">CERTIFICATE ATTESTATION</h6>
+                    <h6 class="text-center">(IMMUTABLE)</h6>
+                          <table cellspacing="0" style="width:1000px;">
+                                <thead>
+                                    <tr>
+                                        
+                                        <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>Sr. No</strong></th>
+                                        <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>SUBJECT</strong></th>
+                                        <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>CERTIFICATE DESCRIPTION</strong></th>
+                                        <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>CERTIFICATE</strong></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- <t t-if="o.document_view()"> -->
+                                        <t t-foreach="o.get_document_ids()" t-as="doc">
+                                            <tr colspan="8">
+                                                <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;" >
+                                                    <t t-esc="doc_index+1" />
+                                                </td>
+                                                <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;" >
+                                                    <span t-esc="doc.name"/>
+                                                </td>
+                                                <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">
+                                                    <span t-esc="doc.description"/>
+                                                </td>
+                                                <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">
+                                                    <t t-foreach="doc.doc_attachment_id" t-as="att">
+                                                        <span t-esc="att.name"/>
+                                                    </t>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    <!-- </t> -->
+                                    </tbody>
+                            </table>
+                            
+                        <br/><br/>
+                        <h6 class="text-center">LEAVES RECORD</h6>
+                            <table cellspacing="0" style="width:1000px;">
+                                <thead>
+                                    <tr>
+                                        <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>Sr. No</strong></th>
+                                        <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>CREDITED ON DATE</strong></th>
+                                        <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>DEBITED</strong></th>
+                                        <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>BALANCE</strong></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- <t t-foreach="o.get_leave_record()" t-as="leave"> -->
+                                    <t t-set='bal' t-value="o.leave_available_balance()"/>
+                                    <t t-set='leave' t-value="o.get_leave_record()"/>
+                                    <t t-foreach='leave' t-as="h">
+                                        <tr colspan="8">
+                                            <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;" >
+                                                <t t-esc="h_index+1" />
+                                            </td>
+                                            <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;" >
+                                                <span t-esc="h[0]" t-field-options='{"format": "YYYY MM DD hh:mm:ss"}'/>
+                                            </td>
+                                            <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">
+                                                <span t-esc="h[1]"/>
+                                            </td>
+                                            <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">
+                                                    <t t-foreach='bal' t-as="b">
+                                                        <t t-if="h[2] == b[0]">
+                                                            <span t-esc="b[1]"/>
+                                                        </t>    
+                                                    </t>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                    <!-- </t> -->
+                                </tbody>
+                            </table>
+                        <br/><br/>
+                        <h6 class="text-center">DETAILS OF LEAVE TRAVEL CONCESSION AVAILED</h6>
+                            <table cellspacing="0" style="width:1000px;">
+                                <thead>
+                                    <tr>
+                                        <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>Sr. No</strong></th>
+                                        <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>NAME</strong></th>
+                                        <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>RELATIONSHIP</strong></th>
+                                        <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>AGE(YRS)</strong></th>
+                                        <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>Place Of Visit</strong></th>
+                                        <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>WHETHER AVAILED TEN DAYS LEAVE</strong></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- <t t-foreach="o.get_leave_record()" t-as="leave"> -->
+                                    <t t-set='ltc' t-value="o.get_ltc_record()"/>
+                                    <t t-foreach='ltc' t-as="h">
+                                        <tr colspan="8">
+                                            <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;" >
+                                                <t t-esc="h_index+1" />
+                                            </td>
+                                            <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;" >
+                                                <span t-esc="h[0]" />
+                                            </td>
+                                            <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">
+                                                Self
+                                            </td>
+                                            <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">
+                                                <span t-esc="o.find_age()"/>
+                                            </td>
+                                            <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">
+                                                <span t-esc="h[1]"/>
+                                            </td>
+                                            <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">
+                                                <span t-esc="h[2]"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                    <t t-set='relative' t-value="o.reltive_details()"/>
+                                    
+                                    <t t-foreach='relative' t-as="r">
+                                        <tr colspan="8">
+                                            <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;" >
+                                                <t t-esc="r_index+2" />
+                                            </td>
+                                            <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;" >
+                                                <span t-esc="r[0]" />
+                                            </td>
+                                            <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">
+                                                <span t-esc="r[1]"/>
+                                            </td>
+                                            <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">
+                                                <span t-esc="'%.0f'%(r[2])"/>
+                                            </td>
+                                            <t t-set='ltc' t-value="o.get_ltc_record()"/>
+                                            <t t-foreach='ltc' t-as="h">
+                                            <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">
+                                                <span t-esc="h[1]"/>
+                                            </td>
+                                            <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">
+                                                <span t-esc="h[2]"/>
+                                            </td>
+                                            </t>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                            
+                        <br/><br/>
+                        <h6 class="text-center">HOUSE BUILDING ADVANCE</h6>
+                            <table cellspacing="0" style="width:1000px;">
+                                <thead>
+                                    <tr>
+                                        <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>Sr. No</strong></th>
+                                        <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>AMOUNT SANCTIONED</strong></th>
+                                        <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>NO OF INSTALLMENT</strong></th>
+                                        <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>SANCTION ORDER NO/DATE</strong></th>
+                                        <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>SUBSEQUENT HBA</strong></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <!-- <t t-foreach="o.get_leave_record()" t-as="leave"> -->
+                                    <tr colspan="8">
+                                        <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;" >
+                                        </td>
+                                        
+                                        <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;" >
+                                        </td>
+                                        
+                                        <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;" >
+                                        </td>
+                                        
+                                        <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;" >
+                                        </td>
+                                        
+                                        <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;" >
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                           <br/><br/> 
+                            
+                        <h6 class="text-center">HOUSE BUILDING ADVANCE</h6>
+                            <table cellspacing="0" style="width:1000px;">
+                                <thead>
+                                    <tr>
+                                        <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>Sr. No</strong></th>
+                                        <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>DATE OF JOINING GOVT SERVICE</strong></th>
+                                        <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>DATE OF ADMISSION TO THE CGEGIS SCHEME</strong></th>
+                                        <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>GROUP TO WHICH ADMITTED</strong></th>
+                                        <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>RATE OF MONTHLY CONTRIBUTION</strong></th>
+                                        <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>PERIOD FROM</strong></th>
+                                        <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>PERIOD TO</strong></th>
+                                        <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>REMARKS</strong></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;" >
+                                        </td>
+                                    <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;" >
+                                        </td>
+                                    <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;" >
+                                        </td>
+                                    <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;" >
+                                        </td>
+                                    <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;" >
+                                        </td>
+                                    <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;" >
+                                        </td>
+                                    <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;" >
+                                        </td>
+                                    <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;" >
+                                        </td>
+                                
+                                </tbody>
+                            </table>
+                            <br/><br/>
+                            
+                        <h6 class="text-center">HOUSE BUILDING ADVANCE</h6>
+                            <table cellspacing="0" style="width:1000px;">
+                                <thead>
+                                    <tr>
+                                        <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>Sr. No</strong></th>
+                                        <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>DATE OF VERIFICATION</strong></th>
+                                        <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>COMMENTS OF INTERNAL AUDIT</strong></th>
+                                        <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>SIGNATURE OF AUDIT OFFICER</strong></th>
+                                        <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>DETAILS OF COMPLIANCE OF OBSERVATION AUDIT BY HEAD OF OFFICE</strong></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;" >
+                                        </td>
+                                    <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;" >
+                                        </td>
+                                    <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;" >
+                                        </td>
+                                    <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;" >
+                                        </td>
+                                    <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;" >
+                                        </td>
+                                
+                                </tbody>
+                            </table>
                 </div>
             </t>
         </t>

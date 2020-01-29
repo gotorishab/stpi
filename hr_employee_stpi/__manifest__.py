@@ -21,6 +21,7 @@
         'views/hr_employee_transfer_view.xml',
         'views/employee_previous_occupation.xml',
         'views/employee_training_view.xml',
+        'report/employee_service_book.xml',
         'data/previous_occupation_organisation_type_demo.xml',
         'data/relative_type_demo.xml',
     ],

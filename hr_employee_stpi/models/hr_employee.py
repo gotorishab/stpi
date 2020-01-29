@@ -2,6 +2,7 @@
 
 from odoo import models, fields, api,_
 from odoo.exceptions import ValidationError
+from datetime import date, timedelta
 import re
 
 
@@ -104,6 +105,119 @@ class HrEmployee(models.Model):
 
     # category_ids = fields.Many2many('hr.employee.category', 'employee_category_rel', 'emp_id', 'category_id', 'Tags', required=False)
 
+    # added by sangita
+    def get_document_ids(self):
+
+        for document in self:
+            document_ids = self.env['hr.employee.document'].sudo().search([('employee_ref', '=', document.id)])
+            print("?????????????????????????", document_ids)
+        #             for doc in document_ids:
+
+        return document_ids
+
+    def get_leave_record(self):
+        for leave in self:
+            if leave.id:
+                SQL = """
+                           select hla.create_date as date,
+                            hla.number_of_days as days,
+                            hla.holiday_status_id as holiday
+                            from hr_leave_allocation as hla 
+                            inner join hr_leave_type as hly on hly.id = hla.holiday_status_id
+                            where employee_id = %s and state in ('validate') and holiday_type = 'employee'
+                            group by
+                            hla.id,
+                            hla.employee_id,
+                            hla.holiday_status_id
+                        """
+                self.env.cr.execute(SQL, (
+                    leave.id,
+                ))
+                res = self.env.cr.fetchall()
+                #                 r = [i for i in res]
+                print("??????????????????????casual_leavescasual_leaves", res)
+                return res
+
+    def find_age(self):
+        age = (date.today() - self.birthday) // timedelta(days=365.2425)
+        #         print("?????????????????????????age",age)
+        return age
+
+    def relative_types(self):
+        for relative in self:
+            relativ_id = self.env['employee.relative'].search([('employee_id', '=', relative.id)])
+            #             print("????????????fffffffffff???????????????",relativ_id)
+            for rel_type in relativ_id:
+                relative_type = rel_type.relative_type
+        #                 print("relative_typerelative_typerelative_type",relative_type)
+        return relative_type
+
+    def reltive_details(self):
+        for relative in self:
+            if relative:
+                SQL = """
+
+                        select er.name,
+                            rt.name,
+                            ROUND(er.age) as roundage
+                         from employee_relative as er
+                            inner join hr_employee as he on he.id = er.employee_id
+                            inner join relative_type as rt on rt.id = er.relate_type
+                            where er.employee_id = %s
+                    """
+                self.env.cr.execute(SQL, (
+                    relative.id,
+                ))
+
+                res = self.env.cr.fetchall()
+
+                return res
+
+    def get_ltc_record(self):
+        for ltc in self:
+            if ltc.id:
+                SQL = """
+                        select he.name as emp,
+                            ela.hometown_address,
+                            ela.el_encashment
+                            from employee_ltc_advance as ela
+                            inner join hr_employee as he on he.id = ela.employee_id
+                            where ela.employee_id = %s
+
+                            group by 
+                            he.name,
+                            ela.hometown_address,
+                            ela.el_encashment
+
+                    """
+                self.env.cr.execute(SQL, (
+                    ltc.id,
+                ))
+
+                res = self.env.cr.fetchall()
+
+                return res
+
+    def leave_available_balance(self):
+        for leave in self:
+            if leave:
+                SQL = """
+                        select hlr.holiday_status_id as holiday,
+                            sum(hlr.number_of_days) as days 
+                            from hr_leave_report hlr 
+                            inner join hr_leave_type as hly on hly.id = hlr.holiday_status_id
+                            where employee_id = %s and holiday_type = 'employee' and state not in ('refuse')
+                            group by 
+                            hlr.holiday_status_id
+                    """
+
+                self.env.cr.execute(SQL, (
+                    leave.id,
+                ))
+                res = self.env.cr.fetchall()
+                #                 r = [i for i in res]
+                #                 print("??????????????????????casual_leavescasual_leaves",res)
+                return res
 
 
     @api.model
