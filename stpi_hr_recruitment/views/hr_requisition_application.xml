@@ -1,0 +1,91 @@
+<odoo>
+    <record id="requisition_application_tree"  model="ir.ui.view">
+        <field name="name">advertisement.tree</field>
+        <field name="model">hr.requisition.application</field>
+         <field name ="arch" type="xml">
+        <tree string="Advertisement">
+             <field name="name"/>
+             <field name="advertisement_number"/>
+             <field name="advertisement_dated"/>
+             <field name="state"/>
+        </tree>
+        </field>
+
+    </record>
+
+
+    <record id="requisition_application_form" model="ir.ui.view">
+        <field name="name">advertisement.form</field>
+        <field name="model">hr.requisition.application</field>
+        <field name ="arch" type="xml">
+        <form string="Advertisement">
+            <header>
+                <button name="button_to_approve" string="Send for Approval" class="oe_highlight" type="object" states="draft"/>
+                <button name="button_reset_to_draft" string="Reset to draft" type="object" states="to_approve"/>
+                <button name="button_active" string="Activate" class="oe_highlight" type="object" states="to_approve"/>
+                <button name="button_reject" string="Reject" type="object" states="to_approve"/>
+                <button name = "%(hr_update_advertisement_action_view)d" type = "action" string = "Update" context="{'default_advertisement_id': id}" attrs="{'invisible': [('state', '!=', 'active')]}"/>
+                <!--<button name="button_update" string="Update" type="object" states="active"/>-->
+                <field name="state" widget="statusbar" statusbar_visible="draft,to_approve,active" />
+            </header>
+            <sheet>
+                <div class="oe_title">
+                    <!--<label for="name" class="oe_edit_only"/>-->
+                    <h1><field name="name" placeholder="Advertisement number" readonly="1"/></h1>
+                </div>
+                <group>
+                    <group>
+                        <field name="branch_id" attrs="{'readonly': [('state', '!=', 'draft')],'required': [('state', '=', 'draft')]}"/>
+                        <field name="contact" attrs="{'readonly': [('state', '!=', 'draft')],'required': [('state', '=', 'draft')]}"/>
+                        <field name="start_date" attrs="{'readonly': [('state', '!=', 'draft')],'required': [('state', '=', 'draft')]}"/>
+                        <field name="upload_advertisement"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                    </group>
+                    <group>
+                        <field name="advertisement_number" attrs="{'readonly': [('state', '!=', 'draft')],'required': [('state', '=', 'draft')]}"/>
+                        <field name="advertisement_dated" attrs="{'readonly': [('state', '!=', 'draft')],'required': [('state', '=', 'draft')]}"/>
+                        <field name="last_date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                        <field name="remarks" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                    </group>
+                </group>
+                <field name = "job_position_ids" attrs="{'readonly': [('state', '!=', 'draft')],'required': [('state', '=', 'draft')]}"/>
+            </sheet>
+            <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+        </form>
+        </field>
+    </record>
+    <record id="requisition_application_action" model="ir.actions.act_window">
+        <field name="name">Advertisement</field>
+        <field name="res_model">hr.requisition.application</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+     <!--=====Sequence of HR Employee Advertisement=====-->
+     <record id="seq_hr_requisition_application" model="ir.sequence">
+        <field name="name">Advertisement sequence</field>
+        <field name="code">hr.requisition.application</field>
+        <field name="padding">3</field>
+        <field name="company_id" eval="False"/>
+     </record>
+
+
+
+
+    <menuitem
+            id="menu_application_requisition"
+            name="Advertisement "
+            parent="stpi_hr_employee_requisition.menu_hr_requisition_job"
+            sequence="100"
+            />
+
+    <menuitem
+            id="menu_application_requisition_adv"
+            name="Advertisement "
+            parent="menu_application_requisition"
+            action="requisition_application_action"
+            />
+</odoo>

@@ -1,0 +1,68 @@
+<odoo>
+    <record model="ir.ui.view" id="hr_job_view_inherit">
+        <field name="name">hr.job.form</field>
+        <field name="model">hr.job</field>
+        <field name="inherit_id" ref="hr.view_hr_job_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//group[@name = 'offer']" position="after">
+                  <group name="recruitment_type" string="Recruitment Type">
+                    <field name="employee_type" required="1"/>
+                    <field name="recruitment_type" attrs="{'invisible': [('employee_type', '!=', 'regular')], 'required': [('employee_type', '=', 'regular')]}"/>
+                  </group>
+                </xpath>
+
+                <xpath expr="//field[@name = 'no_of_recruitment']" position="before">
+                        <field name="sanctionedpost" attrs="{'invisible': [('employee_type', '!=', 'regular')]}"/>
+                        <field name="vacant_post" attrs="{'invisible': [('employee_type', '!=', 'regular')]}"/>
+                </xpath>
+
+                 <field name="department_id" position="after">
+                     <field name="branch_id" groups="base_branch_company.group_multi_branch" options="{'no_create': True, 'no_create_edit': True}"/>
+                 </field>
+
+                <xpath expr="//field[@name = 'hr_responsible_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <div name="button_box" position="inside">
+                    <button class="oe_stat_button"
+                    icon="fa-bars"
+                    name="see_all_advertisements"
+                    type="object">
+                    <field name="advertisement_count" widget="statinfo" string="Advertisement"/>
+                    </button>
+                </div>
+
+            </field>
+        </record>
+
+    <record id="view_hr_job_tree" model="ir.ui.view">
+        <field name="name">hr.job.tree</field>
+        <field name="model">hr.job</field>
+        <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                <field name="department_id"/>
+                <field name="no_of_recruitment"/>
+                </tree>
+        </field>
+    </record>
+
+
+    <record model="ir.actions.act_window" id="action_hr_job_inherit">
+        <field name="name">Job Positions</field>
+        <field name="res_model">hr.job</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="view_id" ref="view_hr_job_tree"/>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+          <p class="o_view_nocontent_smiling_face">
+              Ready to recruit more efficiently?
+          </p><p>
+              Let's create a job position.
+          </p>
+        </field>
+    </record>
+
+</odoo>
