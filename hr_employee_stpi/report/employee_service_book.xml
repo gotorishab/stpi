@@ -261,32 +261,32 @@
                                         <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>BALANCE</strong></th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <!-- <t t-foreach="o.get_leave_record()" t-as="leave"> -->
-                                    <t t-set='bal' t-value="o.leave_available_balance()"/>
-                                    <t t-set='leave' t-value="o.get_leave_record()"/>
-                                    <t t-foreach='leave' t-as="h">
-                                        <tr colspan="8">
-                                            <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;" >
-                                                <t t-esc="h_index+1" />
-                                            </td>
-                                            <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;" >
-                                                <span t-esc="h[0]" t-field-options='{"format": "YYYY MM DD hh:mm:ss"}'/>
-                                            </td>
-                                            <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">
-                                                <span t-esc="h[1]"/>
-                                            </td>
-                                            <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">
-                                                    <t t-foreach='bal' t-as="b">
-                                                        <t t-if="h[2] == b[0]">
-                                                            <span t-esc="b[1]"/>
-                                                        </t>    
-                                                    </t>
-                                            </td>
-                                        </tr>
-                                    </t>
-                                    <!-- </t> -->
-                                </tbody>
+<!--                                <tbody>-->
+<!--                                    &lt;!&ndash; <t t-foreach="o.get_leave_record()" t-as="leave"> &ndash;&gt;-->
+<!--                                    <t t-set='bal' t-value="o.leave_available_balance()"/>-->
+<!--                                    <t t-set='leave' t-value="o.get_leave_record()"/>-->
+<!--                                    <t t-foreach='leave' t-as="h">-->
+<!--                                        <tr colspan="8">-->
+<!--                                            <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;" >-->
+<!--                                                <t t-esc="h_index+1" />-->
+<!--                                            </td>-->
+<!--                                            <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;" >-->
+<!--                                                <span t-esc="h[0]" t-field-options='{"format": "YYYY MM DD hh:mm:ss"}'/>-->
+<!--                                            </td>-->
+<!--                                            <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">-->
+<!--                                                <span t-esc="h[1]"/>-->
+<!--                                            </td>-->
+<!--                                            <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">-->
+<!--                                                    <t t-foreach='bal' t-as="b">-->
+<!--                                                        <t t-if="h[2] == b[0]">-->
+<!--                                                            <span t-esc="b[1]"/>-->
+<!--                                                        </t>    -->
+<!--                                                    </t>-->
+<!--                                            </td>-->
+<!--                                        </tr>-->
+<!--                                    </t>-->
+<!--                                    &lt;!&ndash; </t> &ndash;&gt;-->
+<!--                                </tbody>-->
                             </table>
                         <br/><br/>
                         <h6 class="text-center">DETAILS OF LEAVE TRAVEL CONCESSION AVAILED</h6>
@@ -301,59 +301,59 @@
                                         <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>WHETHER AVAILED TEN DAYS LEAVE</strong></th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <!-- <t t-foreach="o.get_leave_record()" t-as="leave"> -->
-                                    <t t-set='ltc' t-value="o.get_ltc_record()"/>
-                                    <t t-foreach='ltc' t-as="h">
-                                        <tr colspan="8">
-                                            <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;" >
-                                                <t t-esc="h_index+1" />
-                                            </td>
-                                            <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;" >
-                                                <span t-esc="h[0]" />
-                                            </td>
-                                            <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">
-                                                Self
-                                            </td>
-                                            <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">
-                                                <span t-esc="o.find_age()"/>
-                                            </td>
-                                            <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">
-                                                <span t-esc="h[1]"/>
-                                            </td>
-                                            <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">
-                                                <span t-esc="h[2]"/>
-                                            </td>
-                                        </tr>
-                                    </t>
-                                    <t t-set='relative' t-value="o.reltive_details()"/>
-                                    
-                                    <t t-foreach='relative' t-as="r">
-                                        <tr colspan="8">
-                                            <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;" >
-                                                <t t-esc="r_index+2" />
-                                            </td>
-                                            <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;" >
-                                                <span t-esc="r[0]" />
-                                            </td>
-                                            <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">
-                                                <span t-esc="r[1]"/>
-                                            </td>
-                                            <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">
-                                                <span t-esc="'%.0f'%(r[2])"/>
-                                            </td>
-                                            <t t-set='ltc' t-value="o.get_ltc_record()"/>
-                                            <t t-foreach='ltc' t-as="h">
-                                            <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">
-                                                <span t-esc="h[1]"/>
-                                            </td>
-                                            <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">
-                                                <span t-esc="h[2]"/>
-                                            </td>
-                                            </t>
-                                        </tr>
-                                    </t>
-                                </tbody>
+<!--                                <tbody>-->
+<!--                                    &lt;!&ndash; <t t-foreach="o.get_leave_record()" t-as="leave"> &ndash;&gt;-->
+<!--                                    <t t-set='ltc' t-value="o.get_ltc_record()"/>-->
+<!--                                    <t t-foreach='ltc' t-as="h">-->
+<!--                                        <tr colspan="8">-->
+<!--                                            <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;" >-->
+<!--                                                <t t-esc="h_index+1" />-->
+<!--                                            </td>-->
+<!--                                            <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;" >-->
+<!--                                                <span t-esc="h[0]" />-->
+<!--                                            </td>-->
+<!--                                            <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">-->
+<!--                                                Self-->
+<!--                                            </td>-->
+<!--                                            <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">-->
+<!--                                                <span t-esc="o.find_age()"/>-->
+<!--                                            </td>-->
+<!--                                            <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">-->
+<!--                                                <span t-esc="h[1]"/>-->
+<!--                                            </td>-->
+<!--                                            <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">-->
+<!--                                                <span t-esc="h[2]"/>-->
+<!--                                            </td>-->
+<!--                                        </tr>-->
+<!--                                    </t>-->
+<!--                                    <t t-set='relative' t-value="o.reltive_details()"/>-->
+<!--                                    -->
+<!--                                    <t t-foreach='relative' t-as="r">-->
+<!--                                        <tr colspan="8">-->
+<!--                                            <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;" >-->
+<!--                                                <t t-esc="r_index+2" />-->
+<!--                                            </td>-->
+<!--                                            <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;" >-->
+<!--                                                <span t-esc="r[0]" />-->
+<!--                                            </td>-->
+<!--                                            <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">-->
+<!--                                                <span t-esc="r[1]"/>-->
+<!--                                            </td>-->
+<!--                                            <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">-->
+<!--                                                <span t-esc="'%.0f'%(r[2])"/>-->
+<!--                                            </td>-->
+<!--                                            <t t-set='ltc' t-value="o.get_ltc_record()"/>-->
+<!--                                            <t t-foreach='ltc' t-as="h">-->
+<!--                                            <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">-->
+<!--                                                <span t-esc="h[1]"/>-->
+<!--                                            </td>-->
+<!--                                            <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">-->
+<!--                                                <span t-esc="h[2]"/>-->
+<!--                                            </td>-->
+<!--                                            </t>-->
+<!--                                        </tr>-->
+<!--                                    </t>-->
+<!--                                </tbody>-->
                             </table>
                             
                         <br/><br/>
