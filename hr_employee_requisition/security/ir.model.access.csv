@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_requisition,hr.requisition,model_hr_requisition,base.group_user,1,1,1,1
+access_hr_reason_code,hr.reason.code,model_hr_reason_code,base.group_user,1,1,1,1
+access_revert_requisition_wizard,revert.requisition.wizard,model_revert_requisition_wizard,base.group_user,1,1,1,1

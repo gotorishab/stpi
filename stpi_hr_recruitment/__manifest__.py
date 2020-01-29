@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "l10n_in_hr_fields",
+    'name': "STPI HR Recruitment",
     'summary': """ """,
     'description': """
     """,
@@ -12,12 +12,16 @@
     Last Updated by sangita 21/01/2020""",
     'category': 'hrms',
     'version': '12.0.4',
-    'depends': ['base','stpi_hr_employee_requisition'],
+    'depends': ['base','hr_employee_requisition'],
     'data': [
         'security/ir.model.access.csv',
+        'security/employee_job_position.xml',
+        'data/hr_advertisement_cron.xml',
+        'security/recruitment_advertisement.xml',
         'wizard/update_advertisement.xml',
         'views/hr_requisition_application.xml',
         'views/hr_job_inherit.xml',
+        # 'views/hr_applicant_view.xml',
 
     ],
 

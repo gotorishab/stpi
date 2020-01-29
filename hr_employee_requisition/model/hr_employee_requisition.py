@@ -1,0 +1,94 @@
+from odoo import models, fields, api,_
+from odoo.exceptions import UserError, ValidationError
+from datetime import datetime
+
+class HrRequisition(models.Model):
+    _name = "hr.requisition"
+    _description = "HR Requisition"
+    _inherit = ['mail.thread', 'mail.activity.mixin']
+
+    
+    name = fields.Char(string='Job Requisition Number', required=True, copy=False, readonly=True, index=True,
+                       default=lambda self: _('New'))
+    job_position = fields.Many2one('hr.job',string="Job Position",required=True, domain="[('sanctionedpost', '>', 0)]",
+                                   help='Job Title of the employee')
+    department_id = fields.Many2one('hr.department', string="Department",required=True,related="job_position.department_id",
+                                    help='Department of the employee')
+    requested_by_id = fields.Many2one('res.users',string="Requested By",default=lambda self: self.env.user.id, limit=1,readonly=True)
+    no_of_employee = fields.Integer(string="Number Of Position")
+    reason_code_id = fields.Many2one('hr.reason.code',string="Purpose of Recruitment")
+    
+    state = fields.Selection([('draft', 'Draft'), 
+                              ('approval', 'Approval Pending'),#added by Sangitarename approval to Approval Pending
+                              ('approved','Approved'),
+                              ('cancel','Cancel')],
+                             string='Status', default='draft')
+    description = fields.Text(string="Description",related="job_position.description")
+    #added by sangita
+    branch_id = fields.Many2one('res.branch',string="Branch", store=True)
+    
+    user_id = fields.Many2one('res.users',string='Requesting Employee' ,default=lambda self: self.env.user.id)
+    deadline_date =fields.Date(string='Expected Hiring Date',default=datetime.now().date())
+    date =fields.Date(string='Requisition Date', default=datetime.now().date())
+    # num_of_position = fields.Integer('Num of Position')
+
+    recruitment_team_id = fields.Many2one('recruitment.team', string='Recruitment Team') 
+    member_ids = fields.Many2many('res.users', string='Team Member')
+
+
+    @api.constrains('job_position')
+    @api.onchange('job_position')
+    def get_branch(self):
+        for res in self:
+            res.branch_id = res.job_position.branch_id.id
+
+
+    @api.model
+    def create(self, vals):
+        # assigning the sequence for the record
+        if vals.get('name', _('New')) == _('New'):
+            vals['name'] = self.env['ir.sequence'].next_by_code('hr.requisition') or _('New')
+        res = super(HrRequisition, self).create(vals)
+        return res
+    
+    @api.one
+    def button_send_for_approval(self):
+        for s in self:
+            if s.no_of_employee <= 0:
+                raise UserError(_('No of Employee Should greater then zero'))
+            
+            if s.state != 'draft':
+                raise ValidationError("Requisition must be in Draft State")
+            s.write({'state':'approval'})
+    
+
+    @api.one
+    def button_approved(self):
+        for s in self:
+            s.write({'state':'approved'})
+
+
+    @api.multi
+    def cancel(self):
+        rc = {
+            'name': 'Reason for Revert',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'view_id': self.env.ref('hr_employee_requisition.view_reason_revert_requisition_wizard').id,
+            'res_model': 'revert.requisition.wizard',
+            'type': 'ir.actions.act_window',
+            'target': 'new',
+            'context': {
+                'default_res_model': self._name,
+                'default_res_id': self.id,
+            }
+        }
+        return rc
+
+
+class HrReasonCode(models.Model):
+    _name = "hr.reason.code"
+    _description = "Reason Code"
+    _inherit = ['mail.thread', 'mail.activity.mixin']
+    
+    name = fields.Char(string="Name")

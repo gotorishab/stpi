@@ -10,7 +10,6 @@
              <field name="state"/>
         </tree>
         </field>
-
     </record>
 
 
@@ -22,7 +21,7 @@
             <header>
                 <button name="button_to_approve" string="Send for Approval" class="oe_highlight" type="object" states="draft"/>
                 <button name="button_reset_to_draft" string="Reset to draft" type="object" states="to_approve"/>
-                <button name="button_active" string="Activate" class="oe_highlight" type="object" states="to_approve"/>
+                <button name="button_active" string="Approve" class="oe_highlight" type="object" states="to_approve"/>
                 <button name="button_reject" string="Reject" type="object" states="to_approve"/>
                 <button name = "%(hr_update_advertisement_action_view)d" type = "action" string = "Update" context="{'default_advertisement_id': id}" attrs="{'invisible': [('state', '!=', 'active')]}"/>
                 <!--<button name="button_update" string="Update" type="object" states="active"/>-->
@@ -30,7 +29,6 @@
             </header>
             <sheet>
                 <div class="oe_title">
-                    <!--<label for="name" class="oe_edit_only"/>-->
                     <h1><field name="name" placeholder="Advertisement number" readonly="1"/></h1>
                 </div>
                 <group>
@@ -47,7 +45,27 @@
                         <field name="remarks" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                     </group>
                 </group>
-                <field name = "job_position_ids" attrs="{'readonly': [('state', '!=', 'draft')],'required': [('state', '=', 'draft')]}"/>
+                <notebook>
+                    <page name="job_position" string="Job Position">
+                        <field name = "job_position_ids" attrs="{'readonly': [('state', '!=', 'draft')],'required': [('state', '=', 'draft')]}"/>
+                    </page>
+                    <page name="allowed_categories" string="Allowed Categories">
+                        <group>
+                            <group>
+                                <field name="generalpercent"/>
+                                <field name="scpercent"/>
+                                <field name="stpercent"/>
+                                <field name="obcercent"/>
+                            </group>
+                            <group>
+                                <field name="ebcpercent"/>
+                                <field name="vhpercent"/>
+                                <field name="hhpercent"/>
+                                <field name="phpercent"/>
+                            </group>
+                    </group>
+                    </page>
+                </notebook>
             </sheet>
             <div class="oe_chatter">
                         <field name="message_follower_ids" widget="mail_followers"/>
@@ -78,7 +96,7 @@
     <menuitem
             id="menu_application_requisition"
             name="Advertisement "
-            parent="stpi_hr_employee_requisition.menu_hr_requisition_job"
+            parent="hr_employee_requisition.menu_hr_requisition_job"
             sequence="100"
             />
 

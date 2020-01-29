@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_exception_rule_user,base.exception.rule.user,model_exception_rule,base.group_user,1,1,1,1
+access_exception_rule_manager,base.exception.rule.manager,model_exception_rule,base_exception_and_approval.group_exception_rule_manager,1,1,1,1
+access_base_exception_user,base.exception.rule.user,model_base_exception,base.group_user,1,1,1,1
+access_base_exception_manager,base.exception.rule.manager,model_base_exception,base_exception_and_approval.group_exception_rule_manager,1,1,1,1
+access_approvals_list,approvals.list,model_approvals_list,base.group_user,1,1,1,1
+access_group_and_approval,group.and.approval,model_group_and_approval,base.group_user,1,1,1,1
+access_approval_user_matrix,approval.user.matrix,model_approval_user_matrix,base.group_user,1,1,1,1
+,,,,,,,
