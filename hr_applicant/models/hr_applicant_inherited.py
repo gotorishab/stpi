@@ -42,6 +42,8 @@ class HRApplicant(models.Model):
     cur_no_of_emp = fields.Float('current no of employee',compute="get_santioned_position_emp")
     get_total_match_category = fields.Integer('Get Total Match Category',compute="get_total_match_category_data")
 
+    pay_level = fields.Many2one('payslip.pay.level', string='Pay Band')
+    struct_id = fields.Many2one('hr.payroll.structure', string='Salary Type')
 
     country_id = fields.Many2one(
         'res.country', 'Country', default=default_country)
@@ -172,6 +174,9 @@ class HRApplicant(models.Model):
     def _onchange_job_id(self):
         if self.job_id:
             self.job_title = self.job_id.name
+            self.pay_level = self.job_id.pay_level
+            self.salary_expected = self.job_id.pay_level.entry_pay
+            self.salary_proposed = self.job_id.pay_level.entry_pay
 
 
     @api.onchange('address_id')
@@ -303,6 +308,117 @@ class HRApplicant(models.Model):
                         'mobile_phone': self.partner_mobile,
                         'fax_number': self.fax_number,
                 })
+                if self.employee_type == 'regular' and self.recruitment_type == 'd_recruitment':
+                    emp_id.sudo().start_test_period()
+                    create_contract = self.env['hr.contract'].create(
+                        {
+                            'state': 'open',
+                            'name': emp_id.name,
+                            'employee_id': emp_id.id,
+                            'department_id': emp_id.department_id.id,
+                            'job_id': emp_id.job_id.id,
+                            'pay_level': self.pay_level.id,
+                            'struct_id': self.struct_id.id,
+                            'type_id': employee.type_id.id,
+                            'date_start': datetime.now().date(),
+                            'date_end': datetime.now().date() + relativedelta(years=3),
+                            'employee_type': self.employee_type,
+                            'mode_of_promotion': self.mode_of_promotion,
+                            'wage': self.salary_proposed,
+                        }
+                    )
+                elif self.employee_type == 'regular' and self.recruitment_type == 'transfer':
+                    emp_id.sudo().start_test_period()
+                    create_contract = self.env['hr.contract'].create(
+                        {
+                            'state': 'open',
+                            'name': emp_id.name,
+                            'employee_id': emp_id.id,
+                            'department_id': emp_id.department_id.id,
+                            'job_id': emp_id.job_id.id,
+                            'pay_level': self.pay_level.id,
+                            'struct_id': self.struct_id.id,
+                            'type_id': employee.type_id.id,
+                            'date_start': datetime.now().date(),
+                            'employee_type': self.employee_type,
+                            'mode_of_promotion': self.mode_of_promotion,
+                            'wage': self.salary_proposed,
+                        }
+                    )
+                elif self.employee_type == 'regular' and self.recruitment_type == 'i_absorption':
+                    emp_id.sudo().start_test_period()
+                    create_contract = self.env['hr.contract'].create(
+                        {
+                            'state': 'open',
+                            'name': emp_id.name,
+                            'employee_id': emp_id.id,
+                            'department_id': emp_id.department_id.id,
+                            'job_id': emp_id.job_id.id,
+                            'pay_level': self.pay_level.id,
+                            'struct_id': self.struct_id.id,
+                            'type_id': employee.type_id.id,
+                            'date_start': datetime.now().date(),
+                            'employee_type': self.employee_type,
+                            'mode_of_promotion': self.mode_of_promotion,
+                            'wage': self.salary_proposed,
+                        }
+                    )
+                elif self.employee_type == 'regular' and self.recruitment_type == 'deputation':
+                    emp_id.sudo().set_as_employee()
+                    create_contract = self.env['hr.contract'].create(
+                        {
+                            'state': 'open',
+                            'name': emp_id.name,
+                            'employee_id': emp_id.id,
+                            'department_id': emp_id.department_id.id,
+                            'job_id': emp_id.job_id.id,
+                            'pay_level': self.pay_level.id,
+                            'struct_id': self.struct_id.id,
+                            'type_id': employee.type_id.id,
+                            'date_start': datetime.now().date(),
+                            'employee_type': self.employee_type,
+                            'mode_of_promotion': self.mode_of_promotion,
+                            'wage': self.salary_proposed,
+                        }
+                    )
+                elif self.employee_type == 'regular' and self.recruitment_type == 'c_appointment':
+                    emp_id.sudo().start_test_period()
+                    create_contract = self.env['hr.contract'].create(
+                        {
+                            'state': 'open',
+                            'name': emp_id.name,
+                            'employee_id': emp_id.id,
+                            'department_id': emp_id.department_id.id,
+                            'job_id': emp_id.job_id.id,
+                            'pay_level': self.pay_level.id,
+                            'struct_id': self.struct_id.id,
+                            'type_id': employee.type_id.id,
+                            'date_start': datetime.now().date(),
+                            'employee_type': self.employee_type,
+                            'mode_of_promotion': self.mode_of_promotion,
+                            'wage': self.salary_proposed,
+                        }
+                    )
+                elif self.employee_type == 'regular' and self.recruitment_type == 'promotion':
+                    emp_id.sudo().start_test_period()
+                    create_contract = self.env['hr.contract'].create(
+                        {
+                            'state': 'open',
+                            'name': emp_id.name,
+                            'employee_id': emp_id.id,
+                            'department_id': emp_id.department_id.id,
+                            'job_id': emp_id.job_id.id,
+                            'pay_level': self.pay_level.id,
+                            'struct_id': self.struct_id.id,
+                            'type_id': employee.type_id.id,
+                            'date_start': datetime.now().date(),
+                            'date_end': datetime.now().date() + relativedelta(years=3),
+                            'employee_type': self.employee_type,
+                            'mode_of_promotion': self.mode_of_promotion,
+                            'wage': self.salary_proposed,
+                        }
+                    )
+
         return res
 
 

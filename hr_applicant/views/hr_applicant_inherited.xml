@@ -20,6 +20,12 @@
                 </h2>
             </field>
 
+            <xpath expr="//label[@for='salary_expected']" position="before">
+                <field name="struct_id" required="1"/>
+                <field name="pay_level"/>
+            </xpath>
+
+
             <xpath expr="//div[@name='button_box']" position="inside">
                 <newline />
                 <button name="get_no_of_santioned_position" type="action" 

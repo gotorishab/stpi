@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_payslip_pay_level,payslip.pay.level,model_payslip_pay_level,base.group_user,1,1,1,1
+access_hr_payslip_paylevel,hr.payslip.paylevel,model_hr_payslip_paylevel,base.group_user,1,1,1,1

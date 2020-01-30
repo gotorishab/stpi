@@ -16,9 +16,12 @@
                         <field name="phpercent" attrs="{'invisible': [('sanctionedpost', '=', 0)]}"/>
                     </group>
                     <group name="recruitment_type" string="Recruitment Type">
-                    <field name="employee_type" widget="many2many_tags"/>
-                    <field name="recruitment_type"/>
-                  </group>
+                        <field name="employee_type" widget="many2many_tags"/>
+                        <field name="recruitment_type"/>
+                    </group>
+                    <group name="contract_details" string="Contract Details">
+                        <field name="pay_level" required="1"/>
+                    </group>
                 </xpath>
 
                 <xpath expr="//field[@name = 'no_of_recruitment']" position="before">

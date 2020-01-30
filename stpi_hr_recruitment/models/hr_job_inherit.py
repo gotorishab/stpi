@@ -32,6 +32,10 @@ class HRJobInherit(models.Model):
 
     advertisement_id = fields.Many2one('hr.requisition.application', string='Advertisement')
 
+    pay_level = fields.Many2one('payslip.pay.level', string='Pay Band')
+
+    # struct_id = fields.Many2one('hr.payroll.structure', string='Salary Type')
+
     jp = fields.Boolean(string = 'Center - Specific Breakup')
     scpercent = fields.Float('Scheduled Castes %')
     stpercent = fields.Float('Scheduled Tribes %')
