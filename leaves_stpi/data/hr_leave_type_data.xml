@@ -1,0 +1,83 @@
+<odoo>
+        <record id="regular_employee" model="leave.employee.type">
+          <field name="name">Regular Employee</field>
+        </record>
+
+        <!--1 Casual leave -->
+        <record id="hr_leave_type_cl" model="hr.leave.type">
+            <field name="name">Casual Leave</field>
+            <field name="leave_type">Casual Leave</field>
+            <field name="maximum_allow_leave">5</field>
+            <field name="leave_month">December</field>
+            <field name="allow_service_leave" eval="[(6, 0, [ref('regular_employee')])]"/>
+            <field name="creadit_policy_id" eval="[(5, 0), (0, 0, {'day': 30, 'month': 'January'})]"/>
+        </record>
+
+        <!-- 2half_pay_leave-->
+        <record id="hr_leave_type_hpl" model="hr.leave.type">
+            <field name="name">Half Pay Leave</field>
+            <field name="leave_type">Half Pay Leave</field>
+            <field name="allow_service_leave" eval="[(6, 0, [ref('regular_employee')])]"/>
+            <field name="carried_forward">True</field>
+            <field name="cerificate">True</field>
+            <field name="creadit_policy_id" eval="[(5, 0), (0, 0, {'day': 1, 'month': 'January','no_pf_leaves_credit': 10}),
+                                                            (0, 0, {'day': 1, 'month': 'July', 'no_pf_leaves_credit': 10})]"/>
+        </record>
+        
+        <!-- 3commuted_leave-->
+        <record id="hr_leave_type_cml" model="hr.leave.type">
+            <field name="name">Commuted Leave</field>
+            <field name="leave_type">Commuted Leave</field>
+            <field name="allow_service_leave" eval="[(6, 0, [ref('regular_employee')])]"/>
+            <field name="cerificate">True</field>
+        </record>
+        
+        <!-- 4earned_leave-->
+        <record id="hr_leave_type_el" model="hr.leave.type">
+            <field name="name">Earned Leave</field>
+            <field name="leave_type">Earned Leave</field>
+            <field name="allow_service_leave" eval="[(6, 0, [ref('regular_employee')])]"/>
+            <field name="maximum_allow_leave">10</field>
+            <field name="carried_forward">True</field>
+            <field name="creadit_policy_id" eval="[(5, 0), (0, 0, {'day': 1, 'month': 'January','no_pf_leaves_credit': 15}),
+                                                            (0, 0, {'day': 1, 'month': 'July', 'no_pf_leaves_credit':15})]"/>
+        </record>
+        
+        <!--5 maternity_leave-->
+        <record id="hr_leave_type_ml" model="hr.leave.type">
+            <field name="name">Maternity Leave</field>
+            <field name="leave_type">Maternity Leave</field>
+            <field name="allow_gender">female</field>
+        </record>
+        
+        <!--6 special_cas_leave-->
+        <record id="hr_leave_type_scl" model="hr.leave.type">
+            <field name="name">Special Casual Leave</field>
+            <field name="leave_type">Special Casual Leave</field>
+        </record>
+        
+        <!--7 extra_ordinary_leave-->
+        <record id="hr_leave_type_eol" model="hr.leave.type">
+            <field name="name">Extra Ordinary Leave</field>
+            <field name="leave_type">Extra Ordinary Leave</field>
+            <field name="allow_service_leave" eval="[(6, 0, [ref('regular_employee')])]"/>
+        </record>
+        
+
+        <!--8 paternity_leave-->
+        <record id="hr_leave_type_pl" model="hr.leave.type">
+            <field name="name">Paternity Leave</field>
+            <field name="leave_type">Paternity Leave</field>
+            <field name="allow_gender">male</field>
+            <field name="maximum_allow_leave">15</field>
+            <field name="allow_service_leave" eval="[(6, 0, [ref('regular_employee')])]"/>
+        </record>
+
+        <!--9 child_care_leave-->
+        <record id="hr_leave_type_ccl" model="hr.leave.type">
+            <field name="name">Child Care Leave</field>
+            <field name="leave_type">Child Care Leave</field>
+            <field name="allow_service_leave" eval="[(6, 0, [ref('regular_employee')])]"/>
+        </record>
+
+</odoo>

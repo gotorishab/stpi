@@ -1,0 +1,63 @@
+<odoo>
+
+    <record id="employee_status_type_ro" model="leave.type.employee.stage">
+        <field name="name">Roll On</field>
+        <field name="tech_name">joined</field>
+    </record>
+    
+    <record id="employee_status_type_id" model="leave.type.employee.stage">
+        <field name="name">Induction</field>
+        <field name="tech_name">grounding</field>
+    </record>
+    
+    <record id="employee_status_type_pro" model="leave.type.employee.stage">
+        <field name="name">Probation</field>
+        <field name="tech_name">test_period</field>
+    </record>
+    
+    <record id="employee_status_type_emp" model="leave.type.employee.stage">
+        <field name="name">Employment</field>
+        <field name="tech_name">employment</field>
+    </record>
+    
+    <record id="employee_status_type_np" model="leave.type.employee.stage">
+        <field name="name">Notice Period</field>
+        <field name="tech_name">notice_period</field>
+    </record>
+    
+    <record id="employee_status_type_r" model="leave.type.employee.stage">
+        <field name="name">Resigned</field>
+        <field name="tech_name">relieved</field>
+    </record>
+    
+    <record id="employee_status_type_t" model="leave.type.employee.stage">
+        <field name="name">Terminated</field>
+        <field name="tech_name">terminate</field>
+    </record>
+    
+    <record id="employee_status_type_ret" model="leave.type.employee.stage">
+        <field name="name">Retired</field>
+        <field name="tech_name">retired</field>
+    </record>
+    
+    <record id="employee_status_type_sup" model="leave.type.employee.stage">
+        <field name="name">Suspended</field>
+        <field name="tech_name">suspended</field>
+    </record>
+    
+    <record id="employee_status_type_supr" model="leave.type.employee.stage">
+        <field name="name">Superannuation</field>
+        <field name="tech_name">superannuation</field>
+    </record>
+    
+    <record id="employee_status_type_dec" model="leave.type.employee.stage">
+        <field name="name">Deceased</field>
+        <field name="tech_name">deceased</field>
+    </record>
+    
+    <record id="employee_status_type_abs" model="leave.type.employee.stage">
+        <field name="name">Absconding</field>
+        <field name="tech_name">absconding</field>
+    </record>
+
+</odoo>

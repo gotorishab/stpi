@@ -1,0 +1,18 @@
+<odoo>
+
+    <record id="holiday_status_type_rm" model="leave.employee.type">
+        <field name="name">Regular Employee</field>
+        <field name="tech_name">regular</field>
+    </record>
+
+    <record id="holiday_status_cwa" model="leave.employee.type">
+        <field name="name">Contractual with Agency</field>
+        <field name="tech_name">contractual_with_agency</field>
+    </record>
+    
+    <record id="holiday_status_cws" model="leave.employee.type">
+        <field name="name">Contractual with STPI</field>
+        <field name="tech_name">contractual_with_stpi</field>
+    </record>
+        
+</odoo>
