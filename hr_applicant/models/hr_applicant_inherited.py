@@ -1,5 +1,7 @@
 from odoo import models, fields, api,_
 from odoo.exceptions import ValidationError
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
 import re
 
 class HRApplicant(models.Model):
@@ -36,13 +38,14 @@ class HRApplicant(models.Model):
         [('male', 'Male'), ('female', 'Female'), ('other', 'Other')],
         string='Gender')
     # nationality = fields.Many2one('res.country', string='Nationality')
-    title = fields.Many2one('res.partner.title', string='Title')
+    title = fields.Many2one('res.partner.title', string='Salutation')
     get_total_match_religion = fields.Integer(string="Get Total Match Religion",compute="get_total_match_religion_data")
     santioned_position = fields.Float(string="Santioned Position",compute="get_santioned_position_emp")
     cur_no_of_emp = fields.Float('current no of employee',compute="get_santioned_position_emp")
     get_total_match_category = fields.Integer('Get Total Match Category',compute="get_total_match_category_data")
 
     pay_level = fields.Many2one('payslip.pay.level', string='Pay Band')
+
     struct_id = fields.Many2one('hr.payroll.structure', string='Salary Type')
 
     country_id = fields.Many2one(
@@ -174,7 +177,7 @@ class HRApplicant(models.Model):
     def _onchange_job_id(self):
         if self.job_id:
             self.job_title = self.job_id.name
-            self.pay_level = self.job_id.pay_level
+            self.pay_level = self.job_id.pay_level.id
             self.salary_expected = self.job_id.pay_level.entry_pay
             self.salary_proposed = self.job_id.pay_level.entry_pay
 
@@ -319,11 +322,9 @@ class HRApplicant(models.Model):
                             'job_id': emp_id.job_id.id,
                             'pay_level': self.pay_level.id,
                             'struct_id': self.struct_id.id,
-                            'type_id': employee.type_id.id,
                             'date_start': datetime.now().date(),
                             'date_end': datetime.now().date() + relativedelta(years=3),
                             'employee_type': self.employee_type,
-                            'mode_of_promotion': self.mode_of_promotion,
                             'wage': self.salary_proposed,
                         }
                     )
@@ -338,10 +339,9 @@ class HRApplicant(models.Model):
                             'job_id': emp_id.job_id.id,
                             'pay_level': self.pay_level.id,
                             'struct_id': self.struct_id.id,
-                            'type_id': employee.type_id.id,
                             'date_start': datetime.now().date(),
                             'employee_type': self.employee_type,
-                            'mode_of_promotion': self.mode_of_promotion,
+                            
                             'wage': self.salary_proposed,
                         }
                     )
@@ -356,10 +356,8 @@ class HRApplicant(models.Model):
                             'job_id': emp_id.job_id.id,
                             'pay_level': self.pay_level.id,
                             'struct_id': self.struct_id.id,
-                            'type_id': employee.type_id.id,
                             'date_start': datetime.now().date(),
                             'employee_type': self.employee_type,
-                            'mode_of_promotion': self.mode_of_promotion,
                             'wage': self.salary_proposed,
                         }
                     )
@@ -374,10 +372,8 @@ class HRApplicant(models.Model):
                             'job_id': emp_id.job_id.id,
                             'pay_level': self.pay_level.id,
                             'struct_id': self.struct_id.id,
-                            'type_id': employee.type_id.id,
                             'date_start': datetime.now().date(),
                             'employee_type': self.employee_type,
-                            'mode_of_promotion': self.mode_of_promotion,
                             'wage': self.salary_proposed,
                         }
                     )
@@ -392,10 +388,8 @@ class HRApplicant(models.Model):
                             'job_id': emp_id.job_id.id,
                             'pay_level': self.pay_level.id,
                             'struct_id': self.struct_id.id,
-                            'type_id': employee.type_id.id,
                             'date_start': datetime.now().date(),
                             'employee_type': self.employee_type,
-                            'mode_of_promotion': self.mode_of_promotion,
                             'wage': self.salary_proposed,
                         }
                     )
@@ -410,11 +404,10 @@ class HRApplicant(models.Model):
                             'job_id': emp_id.job_id.id,
                             'pay_level': self.pay_level.id,
                             'struct_id': self.struct_id.id,
-                            'type_id': employee.type_id.id,
                             'date_start': datetime.now().date(),
                             'date_end': datetime.now().date() + relativedelta(years=3),
                             'employee_type': self.employee_type,
-                            'mode_of_promotion': self.mode_of_promotion,
+                            
                             'wage': self.salary_proposed,
                         }
                     )

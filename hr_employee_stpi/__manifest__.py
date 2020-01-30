@@ -12,7 +12,7 @@
     Last Updated by sangita 21/01/2020""",
     'category': 'hrms',
     'version': '12.0.4',
-    'depends': ['base','hr','hr_applicant','hr_skills','hr_recruitment','oh_employee_documents_expiry','hr_holidays','stpi_contract_pr'],
+    'depends': ['base','hr','hr_applicant','hr_skills','hr_recruitment','oh_employee_documents_expiry','hr_holidays','stpi_contract_pr','employee_stages'],
     'data': [
         'security/ir.model.access.csv',
         'views/hr_employee_main.xml',
