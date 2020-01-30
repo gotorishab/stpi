@@ -1,16 +1,14 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "STPI HR Recruitment",
-    'summary': """ """,
-    'description': """
-    """,
-    'author': "Dexciss Technology Pvt Ldt (SMehata, RGupta)",
-    'website': "http://www.dexciss.com",
-    'description': """
-    Updated by Rgupta 27/09/19
-    Updated by SMehata 26/08/19
-    Last Updated by sangita 21/01/2020""",
-    'category': 'hrms',
+    'name': 'Recruitment Customisation',
+    'version': '12.0.1.0.0',
+    'summary': """Changes in Job Position and Requisition""",
+    'description': """Advertisement Created""",
+    'category': 'Module for STPI',
+    'author': 'Dexciss Technology @RGupta',
+    'company': 'Dexciss Technology ',
+    'maintainer': 'Dexciss Technology ',
+    'website': "https://www.dexciss.com",
     'version': '12.0.4',
     'depends': ['base','hr_employee_requisition'],
     'data': [

@@ -21,15 +21,15 @@
 #
 ###################################################################################
 {
-    'name': 'Res Groups',
+    'name': 'Create User, Edit Group',
     'version': '12.0.1.0.0',
-    'summary': """Manages Employee Documents With Expiry Notifications.""",
-    'description': """OH Addon: Manages Employee Related Documents with Expiry Notifications.""",
-    'category': 'Generic Modules/Human Resources',
-    'author': 'Cybrosys Techno Solutions',
-    'company': 'Cybrosys Techno Solutions',
-    'maintainer': 'Cybrosys Techno Solutions',
-    'website': "https://www.openhrms.com",
+    'summary': """Create User from Employee.""",
+    'description': """Create User from Employee""",
+    'category': 'Module for STPI',
+    'author': 'Dexciss Technology @RGupta',
+    'company': 'Dexciss Technology ',
+    'maintainer': 'Dexciss Technology ',
+    'website': "https://www.dexciss.com",
     'depends': ['base', 'hr'],
     'data': [
         # 'security/ir.model.access.csv',

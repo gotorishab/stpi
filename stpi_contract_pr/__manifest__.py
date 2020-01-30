@@ -1,16 +1,14 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "l10n_in_hr_fields",
-    'summary': """ """,
-    'description': """
-    """,
-    'author': "Dexciss Technology Pvt Ldt (SMehata, RGupta)",
-    'website': "http://www.dexciss.com",
-    'description': """
-    Updated by Rgupta 27/09/19
-    Updated by SMehata 26/08/19
-    Last Updated by sangita 21/01/2020""",
-    'category': 'hrms',
+    'name': 'Contract and Paylevel',
+    'version': '12.0.1.0.0',
+    'summary': """Paylevel Master.""",
+    'description': """Paylevel Master""",
+    'category': 'Module for STPI',
+    'author': 'Dexciss Technology @RGupta',
+    'company': 'Dexciss Technology ',
+    'maintainer': 'Dexciss Technology ',
+    'website': "https://www.dexciss.com",
     'version': '12.0.4',
     'depends': ['base','hr','hr_contract','hr_payroll'],
     'data': [
