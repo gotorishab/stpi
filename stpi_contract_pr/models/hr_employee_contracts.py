@@ -18,7 +18,7 @@ class InheritContractss(models.Model):
     employee_type = fields.Selection([('regular', 'Regular Employee'),
                                       ('contractual_with_agency', 'Contractual with Agency'),
                                       ('contractual_with_stpi', 'Contractual with STPI')], string='Employment Type',
-                                     related = 'employee_id.employee_type')
+                                     )
 
 
 
