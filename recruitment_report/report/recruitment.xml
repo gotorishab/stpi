@@ -7,9 +7,6 @@
             <t t-call="web.internal_layout">
                 <div class="page">
                     <h4><center>Recruitment Report</center></h4>
-
-
-
                     <table cellspacing="0" style="width:1000px;">
                         <thead>
                             <tr>
@@ -42,70 +39,70 @@
                             <t t-foreach="o.get_recruitment_report()" t-as="ol">
                                 <tr colspan="22">
                                     <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;" >
-                                        <span t-esc="ol.x_jobposition"/>
+                                        <span t-esc="ol.jobposition"/>
                                     </td>
                                     <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">
-                                        <span t-esc="ol.x_department"/>
+                                        <span t-esc="ol.department"/>
                                     </td>
                                     <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">
-                                        <span t-esc="ol.x_branch"/>
+                                        <span t-esc="ol.branch"/>
                                     </td>
                                     <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">
-                                        <span t-esc="ol.x_sanctionedpositions"/>
+                                        <span t-esc="ol.sanctionedpositions"/>
                                     </td>
                                     <td class="text-right" style="border: 1px solid black;font-size:15px;width=1000px;">
-                                        <span t-esc="ol.x_currentempcount"/>
+                                        <span t-esc="ol.currentempcount"/>
                                     </td>
                                     <td class="text-right" style="border: 1px solid black;font-size:15px;width=1000px;">
-                                        <span t-esc="ol.x_scpercet"/>
+                                        <span t-esc="ol.scpercet"/>
                                     </td>
                                     <td class="text-right" style="border: 1px solid black;font-size:15px;width=1000px;">
-                                        <span t-esc="ol.x_stpercet"/>
+                                        <span t-esc="ol.stpercet"/>
                                     </td>
                                     <td class="text-right" style="border: 1px solid black;font-size:15px;width=1000px;">
-                                        <span t-esc="ol.x_obcpercet"/>
+                                        <span t-esc="ol.obcpercet"/>
                                     </td>
                                     <td class="text-right" style="border: 1px solid black;font-size:15px;width=1000px;">
-                                        <span t-esc="ol.x_ebcpercet"/>
+                                        <span t-esc="ol.ebcpercet"/>
                                     </td>
                                     <td class="text-right" style="border: 1px solid black;font-size:15px;width=1000px;">
-                                        <span t-esc="ol.x_vhpercent"/>
+                                        <span t-esc="ol.vhpercent"/>
                                     </td>
                                     <td class="text-right" style="border: 1px solid black;font-size:15px;width=1000px;">
-                                        <span t-esc="ol.x_phpercent"/>
+                                        <span t-esc="ol.phpercent"/>
                                     </td>
                                     <td class="text-right" style="border: 1px solid black;font-size:15px;width=1000px;">
-                                        <span t-esc="ol.x_hhpercent"/>
+                                        <span t-esc="ol.hhpercent"/>
                                     </td>
                                     <td class="text-right" style="border: 1px solid black;font-size:15px;width=1000px;">
-                                        <span t-esc="ol.x_ruleclass"/>
+                                        <span t-esc="ol.ruleclass"/>
                                     </td>
                                     <td class="text-right" style="border: 1px solid black;font-size:15px;width=1000px;">
-                                        <span t-esc="ol.x_nosc"/>
+                                        <span t-esc="ol.nosc"/>
                                     </td>
                                     <td class="text-right" style="border: 1px solid black;font-size:15px;width=1000px;">
-                                        <span t-esc="ol.x_nost"/>
+                                        <span t-esc="ol.nost"/>
                                     </td>
                                     <td class="text-right" style="border: 1px solid black;font-size:15px;width=1000px;">
-                                        <span t-esc="ol.x_noobc"/>
+                                        <span t-esc="ol.noobc"/>
                                     </td>
                                     <td class="text-right" style="border: 1px solid black;font-size:15px;width=1000px;">
-                                        <span t-esc="ol.x_noebc"/>
+                                        <span t-esc="ol.noebc"/>
                                     </td>
                                     <td class="text-right" style="border: 1px solid black;font-size:15px;width=1000px;">
-                                        <span t-esc="ol.x_currobc"/>
+                                        <span t-esc="ol.currobc"/>
                                     </td>
                                      <td class="text-right" style="border: 1px solid black;font-size:15px;width=1000px;">
-                                         <span t-esc="ol.x_currgen"/>
+                                         <span t-esc="ol.currgen"/>
                                      </td>
                                     <td class="text-right" style="border: 1px solid black;font-size:15px;width=1000px;">
-                                        <span t-esc="ol.x_currsc"/>
+                                        <span t-esc="ol.currsc"/>
                                     </td>
                                    <td class="text-right" style="border: 1px solid black;font-size:15px;width=1000px;">
-                                       <span t-esc="ol.x_currst"/>
+                                       <span t-esc="ol.currst"/>
                                    </td>
                                    <td class="text-right" style="border: 1px solid black;font-size:15px;width=1000px;">
-                                        <span t-esc="ol.x_currewc"/>
+                                        <span t-esc="ol.currewc"/>
                                     </td>
 
                                 </tr>
@@ -118,7 +115,6 @@
         </t>
     </t>
 </template>
-
 
     <report id="recruitment_report_reportview"
             model="recruitment.report"

@@ -13,22 +13,6 @@ class WizardLateComing(models.TransientModel):
     _name = 'wizard.recruitment'
     _description = 'Recruitment'
     
-    
-    def get_tuple(self,tup):
-        tup = tuple(tup)
-        # print "666666666666555555555555555555555555555",tup
-        if tup and len(tup) == 1:
-            return '({0})'.format(tup[0])
-        else:
-            return tup
-    
-    @api.onchange('date_range')
-    def get_dates(self):
-        for s in self:
-            if s.date_range:
-                s.date_from = s.date_range.date_start
-                s.date_to = s.date_range.date_end
-                
 
     
     report_of = fields.Selection([('recruitment','Recruitment'),
@@ -42,67 +26,67 @@ class WizardLateComing(models.TransientModel):
             analysis_id.unlink()
             
             query = """ 
-                insert into recruitment_report (x_jobposition,x_department,x_branch,x_sanctionedpositions,
-                x_currentempcount,x_scpercet,x_stpercet,x_obcpercet,x_ebcpercet,x_vhpercent,x_phpercent,
-                x_hhpercent,x_ruleclass,x_nosc,x_nost,x_noobc,x_noebc,x_currobc,x_currgen,x_currsc,x_currst,x_currewc)
+                insert into recruitment_report (jobposition,department,branch,sanctionedpositions,
+                currentempcount,scpercet,stpercet,obcpercet,ebcpercet,vhpercent,phpercent,
+                hhpercent,ruleclass,nosc,nost,noobc,noebc,currobc,currgen,currsc,currst,currewc)
     
-               select hj.name as x_jobposition,
-               	hd.name as x_department,
-               	rb.name as x_branch,
-                sanctionedpost as x_sanctionedpositions,
-                (select count(*) from hr_employee where hr_employee.job_id = hj.id) as x_currentempcount,
+               select hj.name as jobposition,
+               	hd.name as department,
+               	rb.name as branch,
+                sanctionedpost as sanctionedpositions,
+                (select count(*) from hr_employee where hr_employee.job_id = hj.id) as currentempcount,
                 case
                 when hj.jp = True then hj.scpercent
                 else rc.scpercent
-                end as x_scpercet,
+                end as scpercet,
                 case
                 when hj.jp = True then hj.stpercent
                 else rc.stpercent
-                end as x_stpercet,
+                end as stpercet,
                 case
                 when hj.jp = True then hj.obcercent
                 else rc.obcercent
-                end as x_obcpercet,
+                end as obcpercet,
                 case
                 when hj.jp = True then hj.ebcpercent
                 else rc.ebcpercent
-                end as x_ebcpercet,
+                end as ebcpercet,
                 case
                 when hj.jp = True then hj.vhpercent
                 else rc.vhpercent
-                end as x_vhpercent,
+                end as vhpercent,
                 case
                 when hj.jp = True then hj.phpercent
                 else rc.phpercent
-                end as x_phpercent,
+                end as phpercent,
                 case
                 when hj.jp = True then hj.hhpercent
                 else rc.hhpercent
-                end as x_hhpercent,
+                end as hhpercent,
                 case
                 when hj.jp = True then 'Job Position Specific'
                 else 'Global Rule'
-                end as x_ruleclass,
+                end as ruleclass,
                 case
                 when hj.jp = True then hj.scpercent*sanctionedpost/100
                 else rc.scpercent*sanctionedpost/100
-                end as x_nosc,
+                end as nosc,
                 case
                 when hj.jp = True then hj.stpercent*sanctionedpost/100
                 else rc.scpercent*sanctionedpost/100
-                end as x_nost,
+                end as nost,
                 case
                 when hj.jp = True then hj.obcercent*sanctionedpost/100
                 else rc.obcercent*sanctionedpost/100
-                end as x_noobc,
+                end as noobc,
                 case
                 when hj.jp = True then hj.ebcpercent*sanctionedpost/100
                 else rc.ebcpercent*sanctionedpost/100
-                end as x_noebc,
-                (select count(*) from hr_employee as he,employee_religion as er where er.name = 'OBC' and he.job_id = hj.id) as x_currobc,
-                (select count(*) from hr_employee as he,employee_religion as er where er.name = 'General' and he.job_id = hj.id) as x_currgen,
-                (select count(*) from hr_employee as he,employee_religion as er where er.name = 'SC' and he.job_id = hj.id) as x_currsc,
-                (select count(*) from hr_employee as he,employee_religion as er where er.name = 'ST' and he.job_id = hj.id) as x_currst,
+                end as noebc,
+                (select count(*) from hr_employee as he,employee_religion as er where er.name = 'OBC' and he.job_id = hj.id) as currobc,
+                (select count(*) from hr_employee as he,employee_religion as er where er.name = 'General' and he.job_id = hj.id) as currgen,
+                (select count(*) from hr_employee as he,employee_religion as er where er.name = 'SC' and he.job_id = hj.id) as currsc,
+                (select count(*) from hr_employee as he,employee_religion as er where er.name = 'ST' and he.job_id = hj.id) as currst,
                 (select count(*) from hr_employee as he,employee_religion as er where er.name = 'EWC' and he.job_id = hj.id) as x_currewc
                 from hr_job as hj
                 inner join res_company as rc on rc.id=hj.company_id
