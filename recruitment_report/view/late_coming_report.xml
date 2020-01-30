@@ -1,0 +1,53 @@
+<odoo>
+
+
+    <record id="view_recruitment_report_tree" model="ir.ui.view">
+        <field name="name">late.coming.tree.view</field>
+        <field name="model">late.coming.report</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="emp_code"/>
+                <field name="emp_id"/>
+                <field name="dept_id"/>
+                <field name="check_in"/>
+                <field name="check_out"/>
+                <field name="duty_hr" widget="float_time" sum="Total Duty Hours"/>
+                <field name="actual_duty_hr" widget="float_time" sum="Total Actual Duty Hours"/>
+                <field name="recruitment_min" widget="float_time" sum="Total Late Coming Min."/>
+                <field name="roster_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_recruitment_search" model="ir.ui.view">
+        <field name="name">late.coming.search.view</field>
+        <field name="model">late.coming.report</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="emp_code"/>
+                <field name="emp_id"/>
+                <field name="dept_id"/>
+                <field name="roster_id"/>
+                
+                <filter name="grp_emp" string="Employee" context="{'group_by':'emp_id'}"/>
+                <filter name="grp_dept" string="Department" context="{'group_by':'dept_id'}"/>
+                <filter name="grp_roster_id" string="Shift" context="{'group_by':'roster_id'}"/>
+            </search>
+        </field>
+    </record>
+    
+    <record id="view_recruitment_pivot" model="ir.ui.view">
+         <field name="name">late.coming.pivot.view</field>
+         <field name="model">late.coming.report</field>
+         <field name="arch" type="xml">
+            <pivot>
+                <field name="emp_id" type="row"/>
+                <field name="check_in" interval="month" type="row" />
+            </pivot>
+         </field>
+    </record>
+
+
+
+
+</odoo>

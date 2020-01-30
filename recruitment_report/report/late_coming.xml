@@ -1,0 +1,78 @@
+
+<odoo>
+
+<template id="recruitment_template_id">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="o">
+            <t t-call="web.internal_layout">
+                <div class="page">
+                    <h4><center>Late Coming Report</center></h4>
+
+
+
+                    <table cellspacing="0" style="width:1000px;">
+                        <thead>
+                            <tr>
+                                <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>Employee Code</strong></th>
+                                <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>Employee</strong></th>
+                                <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>Department</strong></th>
+                                <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>ChechIn</strong></th>
+                                <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>CheckOut</strong></th>
+                                <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>Duty Hours</strong></th>
+                                <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>Actual Duty Hours</strong></th>
+                                <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>Late Coming Min</strong></th>
+                                <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>Roster</strong></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-set="i" t-value="1"/>
+                            <t t-foreach="o.get_recruitment_report()" t-as="ol">
+                                <tr colspan="9">
+                                    <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;" >
+                                        <span t-esc="ol.emp_code"/>
+                                    </td>
+                                    <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">
+                                        <span t-esc="ol.emp_id.name"/>
+                                    </td>
+                                    <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">
+                                        <span t-esc="ol.dept_id.name"/>
+                                    </td>
+                                    <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">
+                                        <span t-esc="ol.get_time_without_tz(ol.check_in)"/>
+                                    </td>
+                                    <td class="text-right" style="border: 1px solid black;font-size:15px;width=1000px;">
+                                        <span t-esc="ol.get_time_without_tz(ol.check_out)"/>
+                                    </td>
+                                    <td class="text-right" style="border: 1px solid black;font-size:15px;width=1000px;">
+                                        <span t-esc="ol.value_to_html(ol.duty_hr)"/>
+                                    </td>
+                                    <td class="text-right" style="border: 1px solid black;font-size:15px;width=1000px;">
+                                        <span t-esc="ol.value_to_html(ol.actual_duty_hr) "/>
+                                    </td>
+                                    <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">
+                                        <span t-esc="ol.value_to_html(ol.recruitment_min)"/>
+                                    </td>
+                                    <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">
+                                        <span t-esc="ol.name_get(ol.roster_id)"/>
+                                    </td>
+                                </tr>
+                            </t>
+
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </t>
+</template>
+
+
+    <report id="recruitment_report_reportview"
+            model="recruitment.report"
+            string="Late Coming Report"
+            report_type="qweb-pdf"
+            name="recruitment_report.recruitment_template_id"
+            file="recruitment_report.recruitment_template_id"
+            />
+</odoo>
+
