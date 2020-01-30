@@ -78,20 +78,20 @@ class HrHolidays(models.Model):
             self.date_to = False
             return
 
-        roster_id = self.env['hr.attendance.roster'].search([('employee_id','=',self.employee_id.id),('date','=',self.date_from.date())],limit=1)
-        # print("-------------roster_id", roster_id)
-        if roster_id and roster_id.shift_id:
-            if roster_id.shift_id.night_shift:
-                self.night_shift = True
-            else:
-                self.night_shift = False
-            domain =[('calendar_id', '=',roster_id.shift_id.id)]
-        else:
-            if self.employee_id.resource_calendar_id.night_shift or self.env.user.company_id.resource_calendar_id.night_shift:
-                self.night_shift = True             
-            else:
-                self.night_shift = False
-            domain = [('calendar_id', '=',self.employee_id.resource_calendar_id.id or self.env.user.company_id.resource_calendar_id.id)]
+#         roster_id = self.env['hr.attendance.roster'].search([('employee_id','=',self.employee_id.id),('date','=',self.date_from.date())],limit=1)
+#         # print("-------------roster_id", roster_id)
+#         if roster_id and roster_id.shift_id:
+#             if roster_id.shift_id.night_shift:
+#                 self.night_shift = True
+#             else:
+#                 self.night_shift = False
+#             domain =[('calendar_id', '=',roster_id.shift_id.id)]
+#         else:
+#             if self.employee_id.resource_calendar_id.night_shift or self.env.user.company_id.resource_calendar_id.night_shift:
+#                 self.night_shift = True             
+#             else:
+#                 self.night_shift = False
+        domain = [('calendar_id', '=',self.employee_id.resource_calendar_id.id or self.env.user.company_id.resource_calendar_id.id)]
         attendances = self.env['resource.calendar.attendance'].search(domain, order='dayofweek, day_period DESC')
 
         # find first attendance coming after first_day
@@ -129,21 +129,21 @@ class HrHolidays(models.Model):
         self.date_to = timezone(tz).localize(datetime.combine(self.request_date_to, hour_to)).astimezone(UTC).replace(
             tzinfo=None)
 
-    @api.multi
-    @api.depends('number_of_days')
-    def _compute_number_of_hours_display(self):
-        for holiday in self:
-            roster_id = self.env['hr.attendance.roster'].search([('employee_id', '=', holiday.employee_id.id), ('date', '=', holiday.date_from.date())], limit=1)
-            # print("---------2----roster_id", roster_id)
-            if roster_id and roster_id.shift_id:
-                calendar = roster_id.shift_id
-            else:
-                calendar = holiday.employee_id.resource_calendar_id or self.env.user.company_id.resource_calendar_id
-            if holiday.date_from and holiday.date_to:
-                number_of_hours = calendar.get_work_hours_count(holiday.date_from, holiday.date_to)
-                holiday.number_of_hours_display = number_of_hours or (holiday.number_of_days * HOURS_PER_DAY)
-            else:
-                holiday.number_of_hours_display = 0
+#     @api.multi
+#     @api.depends('number_of_days')
+#     def _compute_number_of_hours_display(self):
+#         for holiday in self:
+#             roster_id = self.env['hr.attendance.roster'].search([('employee_id', '=', holiday.employee_id.id), ('date', '=', holiday.date_from.date())], limit=1)
+#             # print("---------2----roster_id", roster_id)
+#             if roster_id and roster_id.shift_id:
+#                 calendar = roster_id.shift_id
+#             else:
+#                 calendar = holiday.employee_id.resource_calendar_id or self.env.user.company_id.resource_calendar_id
+#             if holiday.date_from and holiday.date_to:
+#                 number_of_hours = calendar.get_work_hours_count(holiday.date_from, holiday.date_to)
+#                 holiday.number_of_hours_display = number_of_hours or (holiday.number_of_days * HOURS_PER_DAY)
+#             else:
+#                 holiday.number_of_hours_display = 0
 
 
 ROUNDING_FACTOR = 16
@@ -162,12 +162,12 @@ class ResourceMixin(models.AbstractModel):
             Returns a dict {'days': n, 'hours': h} containing the
             quantity of working time expressed as days and as hours.
         """
-        roster_id = self.env['hr.attendance.roster'].search([('employee_id', '=', self.id), ('date', '=', from_datetime.date())], limit=1)
-        # print("---------3----roster_id", roster_id)
-        if roster_id and roster_id.shift_id:
-            calendar = roster_id.shift_id
-        else:
-            calendar = calendar or self.resource_calendar_id
+#         roster_id = self.env['hr.attendance.roster'].search([('employee_id', '=', self.id), ('date', '=', from_datetime.date())], limit=1)
+#         # print("---------3----roster_id", roster_id)
+#         if roster_id and roster_id.shift_id:
+#             calendar = roster_id.shift_id
+#         else:
+        calendar = calendar or self.resource_calendar_id
         resource = self.resource_id
 
         # naive datetimes are made explicit in UTC

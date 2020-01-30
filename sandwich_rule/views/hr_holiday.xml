@@ -36,7 +36,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                     <attribute name="attrs">{'invisible':['|','|',('request_unit_half', '=', True), ('request_unit_hours', '=', True),('night_shift','=',True)]}</attribute>
             </xpath>
             <field name="name" position="before">
-                <field name="count_no_of_leave" readonly="1"/>
+                <field name="count_no_of_leave" readonly="1" invisible="1"/>
             </field>
         </field>
 

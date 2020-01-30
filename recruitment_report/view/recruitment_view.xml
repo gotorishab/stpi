@@ -1,0 +1,59 @@
+<odoo>
+
+
+    <record id="view_recruitment_report_tree" model="ir.ui.view">
+        <field name="name">recruitment.tree.view</field>
+        <field name="model">recruitment.report</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="x_jobposition"/>
+                <field name="x_department"/>
+                <field name="x_branch"/>
+                <field name="x_sanctionedpositions"/>
+                <field name="x_currentempcount"/>
+                <field name="x_scpercet"/>
+                <field name="x_stpercet"/>
+                <field name="x_obcpercet"/>
+                <field name="x_ebcpercet"/>
+                <field name="x_vhpercent"/>
+                <field name="x_phpercent"/>
+                <field name="x_hhpercent"/>
+                <field name="x_ruleclass"/>
+                <field name="x_nosc"/>
+                <field name="x_nost"/>
+                <field name="x_noobc"/>
+                <field name="x_noebc"/>
+                <field name="x_currobc"/>
+                <field name="x_currgen"/>
+                <field name="x_currsc"/>
+                <field name="x_currst"/>
+                <field name="x_currewc"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_recruitment_search" model="ir.ui.view">
+        <field name="name">recruitment.search.view</field>
+        <field name="model">recruitment.report</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="x_jobposition"/>
+                <field name="x_department"/>
+                <field name="x_branch"/>
+            </search>
+        </field>
+    </record>
+    
+    <record id="view_recruitment_pivot" model="ir.ui.view">
+         <field name="name">recruitment.pivot.view</field>
+         <field name="model">recruitment.report</field>
+         <field name="arch" type="xml">
+            <pivot>
+                <field name="x_jobposition" type="row"/>
+                <field name="x_department" type="row" />
+            </pivot>
+         </field>
+    </record>
+
+
+</odoo>

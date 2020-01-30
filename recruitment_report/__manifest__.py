@@ -16,9 +16,9 @@
    
     'data': [
         'security/ir.model.access.csv',
-        'wizard/late_coming_wizard_view.xml',
-        'report/late_coming.xml',
-        'view/late_coming_report.xml',
+        'wizard/recruitment_view_wizard.xml',
+        'report/recruitment.xml',
+        'view/recruitment_view.xml',
 
         
     ],

@@ -1,1 +1,1 @@
-from . import late_coming_report_wizard
+from . import recruitment_view_wizard

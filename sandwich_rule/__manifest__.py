@@ -18,7 +18,7 @@
     'website': "http://www.aktivsoftware.com",
     'license': "AGPL-3",
     'category': 'Leave',
-    'version': '12.0.1',
+    'version': '12.0.2',
     'depends': ['hr',
                 'hr_holidays',
                 'resource'

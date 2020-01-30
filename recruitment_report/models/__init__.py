@@ -1,2 +1,2 @@
 
-from . import half_day_deduction
+from . import recruitment_report
