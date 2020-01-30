@@ -10,7 +10,7 @@
     "depends": ["base_branch_company","hr","hr_payroll","hr_holidays","hr_recruitment","hr_expense"],
     "license": "",
     "data": [
-        "security/hr_security.xml",
+        # "security/hr_security.xml",
         "view/hr_employee_view.xml",
         # "view/hr_payslip_view.xml",
         "view/hr_leave_view.xml",
