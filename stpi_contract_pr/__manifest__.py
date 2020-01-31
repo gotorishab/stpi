@@ -15,7 +15,6 @@
         'security/security.xml',
         'security/ir.model.access.csv',
         'views/hr_payroll.xml',
-        'views/hr_employee_contracts.xml',
     ],
 
     # 'demo': [
