@@ -27,6 +27,7 @@ class HrPayLevel(models.Model):
     _name='payslip.pay.level'
     _description ='HR Payroll Py Level'
 
+    name = fields.Char()
     service_level = fields.Integer(string='Service Level')
     entry_pay = fields.Integer(string='Entry Pay')
     entry_pay_id = fields.Many2one('hr.payslip.paylevel', string='Entry Pay Id')

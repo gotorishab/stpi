@@ -21,10 +21,13 @@
           'security/ir.model.access.csv',
           'security/approval_security.xml',
             'wizard/reason_wizard.xml',
-          # 'view/hr_job_view.xml',
+            'view/hr_loan_view.xml',
+            'wizard/hr_loan_wizard_view.xml',
+            'wizard/employee_requisition_wizard_view.xml',
+     # 'view/hr_job_view.xml',
           # 'view/employee_requisition_view.xml',
           # 'wizard/hr_job_exception_wizard_view.xml',
-          'wizard/employee_requisition_wizard_view.xml',
+
 
  ],
  'images': [],

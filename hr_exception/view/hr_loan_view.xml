@@ -38,7 +38,7 @@
                         <field name="ignore_exception" invisible="1"/>
                     </xpath>
                     <xpath expr="//sheet/notebook/page[1]" position="after">
-                        <page string="Other Info">
+                        <page string="Other Info" groups="base.group_no_one">
                             <separator string="Exception" colspan="2"/>
                             <field name="exception_ids" colspan="2" nolabel="1" readonly="1"/>
                         </page>

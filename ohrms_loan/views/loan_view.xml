@@ -1,0 +1,57 @@
+<odoo>
+    <record id="hr_Loan_type_tree_view"  model="ir.ui.view">
+        <field name="name">Loan Type</field>
+        <field name="model">loan.type</field>
+        <field name ="arch" type="xml">
+            <tree>
+                 <field name="type_emp"/>
+                 <field name="interest"/>
+                 <field name="category_ids" widget="many2many_tags"/>
+            </tree>
+        </field>
+    </record>
+    <record id="hr_Loan_type_form_view"  model="ir.ui.view">
+        <field name="name">Loan Type</field>
+        <field name="model">loan.type</field>
+        <!--<field name="inherit_id" ref="ohrms_loan.hr_Loan_type_tree_view"/>-->
+        <field name ="arch" type="xml">
+            <form string="Loan Eligibility Criteria ">
+                <sheet>
+                    <group>
+                    <group>
+                         <field name="type_emp"/>
+                        <field name="interest"/>
+                        <field name="max_emi"/>
+                    </group>
+                    <group>
+                        <field name="category_ids" widget="many2many_tags"/>
+                        <field name="filter_domain" widget="domain" options="{'model': 'hr.employee', 'in_dialog': True}" />
+
+                    </group>
+                </group>
+                </sheet>
+
+            </form>
+        </field>
+    </record>
+    <record id="action_view_loan_type" model="ir.actions.act_window">
+        <field name="name">LoanType</field>
+        <field name="res_model">loan.type</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="loan_menu_configuration"
+        name="Configuration"
+        parent="menu_hr_loans_and_advances"
+        sequence="100"
+        groups="ohrms_loan.group_loan_approver"
+        />
+    <menuitem id="loan_type_configuration"
+        name="Loan Type"
+        parent="loan_menu_configuration"
+        sequence="10"
+        action="action_view_loan_type"
+        />
+
+</odoo>
