@@ -9,7 +9,7 @@
 
 'author': "Dexciss Technology Pvt Ltd(SMehata)",
  'website': 'http://www.Dexciss.com',
- 'depends': ['hr_employee_requisition', 'base_exception_and_approval',
+ 'depends': ['hr_employee_requisition', 'base_exception_and_approval', 'ohrms_loan'
              ],
  'license': 'AGPL-3',
 'description':"""
