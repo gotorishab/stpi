@@ -10,13 +10,13 @@
     'maintainer': 'Dexciss Technology ',
     'website': "https://www.dexciss.com",
     'version': '12.0.4',
-    'depends': ['base','hr','hr_contract','hr_payroll','ohrms_loan'],
+    'depends': ['base','hr','hr_contract','hr_payroll'],
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
         'views/hr_payroll.xml',
         'views/hr_employee_contracts.xml',
-        'views/maximum_allowed_loan.xml',
+        # 'views/maximum_allowed_loan.xml',
     ],
 
     # 'demo': [

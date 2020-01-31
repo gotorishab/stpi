@@ -43,7 +43,7 @@
     'maintainer': 'Cybrosys Techno Solutions',
     'website': "https://www.openhrms.com",
     'depends': [
-        'base', 'hr_payroll', 'hr', 'account'
+        'base', 'hr_payroll', 'hr', 'account','stpi_contract_pr'
     ],
     'data': [
         'security/security.xml',
@@ -54,7 +54,7 @@
         'views/hr_loan.xml',
         'views/hr_payroll.xml',
         'views/loan_view.xml',
-        # 'views/maximum_allowed.xml',
+        'views/maximum_allowed.xml',
 
     ],
     'demo': [],

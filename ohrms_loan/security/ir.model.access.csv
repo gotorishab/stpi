@@ -17,3 +17,4 @@ acces_ account_account_type_manager,account.account.type,account.model_account_a
 access_hr_loan_accountant,hr.loan,model_hr_loan,account.group_account_user,1,1,1,0
 access_hr_loan_line_accountant,hr.loan.line,model_hr_loan_line,account.group_account_user,1,1,1,0
 access_loan_type,loan.type,model_loan_type,base.group_user,1,1,1,1
+access_allowed_loan_amount,allowed.loan.amount,model_allowed_loan_amount,base.group_user,1,1,1,1
