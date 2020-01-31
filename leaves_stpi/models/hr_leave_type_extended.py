@@ -3,6 +3,7 @@ from odoo import models, fields, api,_
 from odoo.exceptions import ValidationError
 from datetime import date
 import datetime
+from odoo.tools.float_utils import float_round
 
 class HrLeaveType(models.Model):
     _inherit = 'hr.leave.type'
@@ -22,7 +23,7 @@ class HrLeaveType(models.Model):
     
     name = fields.Selection([('Casual Leave','Casual Leave'),
                                ('Half Pay Leave','Half Pay Leave'),
-                               ('Commuted Leave','Commuted Leave'),
+#                                 ('Commuted Leave','Commuted Leave'),
                                ('Earned Leave','Earned Leave'),
                                ('Maternity Leave','Maternity Leave'),
                                ('Special Casual Leave','Special Casual Leave'),
@@ -32,7 +33,7 @@ class HrLeaveType(models.Model):
                         ],string='Name',required=True)
     leave_type = fields.Selection([('Casual Leave','Casual Leave'),
                                ('Half Pay Leave','Half Pay Leave'),
-                               ('Commuted Leave','Commuted Leave'),
+#                                 ('Commuted Leave','Commuted Leave'),
                                ('Earned Leave','Earned Leave'),
                                ('Maternity Leave','Maternity Leave'),
                                ('Special Casual Leave','Special Casual Leave'),
@@ -59,7 +60,7 @@ class HrLeaveType(models.Model):
     max_encash_leave = fields.Integer(string="Maximum Encash Leave")
     group_id = fields.Many2one('hr.leave.group',string="Group")
     currency_id = fields.Many2one('res.currency', string='Currency', required=True, default=lambda self: self.env.user.company_id.currency_id)
-    use_balance_from = fields.Many2many('leave.type',string="Use Balance From")
+    use_balance_from_id = fields.Many2one('leave.type',string="Use Balance From")
     maximum_allow_leave = fields.Integer(string="Maximum Allow Leave")
     allow_gender = fields.Selection([('male','Male'),
                                      ('female','Female'),
@@ -70,10 +71,10 @@ class HrLeaveType(models.Model):
     cerificate = fields.Boolean(string="Certificate")
     sandwich_rule = fields.Boolean(string="Sandwich Rule")
     creadit_policy_id = fields.One2many('leave.type.credit.policy','leave_policy','Credit Leave Policy')
-    
+    commuted = fields.Boolean(string="Commuted")
     amount_total = fields.Monetary(string='Total',store=True, readonly=True, compute='_compute_amount')
     
-    
+   
     @api.model
     def create(self, vals):
         res = super(HrLeaveType, self).create(vals)
@@ -114,7 +115,7 @@ class HrLeaveType(models.Model):
                                                                            ('active','=',True)
                                                                            ])
                         elif leave.allow_gender == 'both':
-    #                             print("BBBBBBBBBBBBBBBBBBBBBBBBBB",emp_stage.name)
+                            print("BBBBBBBBBBBBBBBBBBBBBBBBBB",service_leave.tech_name,emp_stages.tech_name)
                             employee_ids = self.env['hr.employee'].search([('employee_type','=',service_leave.tech_name),
                                                                            ('state','=',emp_stages.tech_name),
                                                                            ('active','=',True)
@@ -175,7 +176,7 @@ class HrLeaveType(models.Model):
                                                                                ('active','=',True)
                                                                                ])
                             elif leave.allow_gender == 'both':
-                                print("BBBBBBBBBBBBBBBBBBBBBBBBBB",emp_stage.name)
+                                print("BBBBBBBBBBBBBBBBBBBBBBBBBB",service_leave.name,emp_stages.name)
                                 employee_ids = self.env['hr.employee'].search([('employee_type','=',service_leave.tech_name),
                                                                                ('state','=',emp_stages.tech_name),
                                                                                ('active','=',True)

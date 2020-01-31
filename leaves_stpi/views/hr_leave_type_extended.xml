@@ -33,7 +33,7 @@
                 <field name="leave_type"/>
                 <field name="leave_per_year"/>
                 <field name="allow_service_leave" widget="many2many_tags"/>
-                <field name="use_balance_from" widget="many2many_tags"/>
+                <field name="use_balance_from_id"/>
                 <field name="allow_emp_stage" widget="many2many_tags"/>
                 <field name="allow_gender"/>
             </xpath>
@@ -94,11 +94,12 @@
                         <field name="group_id"/>
                     </group>
                     <group>
-                        <field name="use_balance_from" widget="many2many_tags"/>
+                        <field name="use_balance_from_id" />
                         <field name="maximum_allow_leave"/>
                         <field name="allow_emp_stage" widget="many2many_tags"/>
                         <field name="encash_leave"/>
                         <field name="cerificate"/>
+                        <field name="commuted"/>
                         <field name="sandwich_rule"/>
                         <field name="allow_gender"/>
                     </group>

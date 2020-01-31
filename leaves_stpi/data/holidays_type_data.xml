@@ -12,9 +12,9 @@
         </record>
         
         <!-- commuted_leave-->
-        <record id="holiday_status_cml" model="leave.type">
+        <!-- <record id="holiday_status_cml" model="leave.type">
             <field name="name">Commuted Leave</field>
-        </record>
+        </record> -->
         
         <!-- earned_leave-->
         <record id="holiday_status_el" model="leave.type">
