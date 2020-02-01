@@ -354,23 +354,6 @@ class HrEmployee(models.Model):
 
 
 
-
-class Religion(models.Model):
-    _name = 'employee.religion'
-    _description = 'Employee Religion'
-    _rec_name ='name'
-
-    name = fields.Char('Religion')
-
-
-class Category(models.Model):
-    _name = 'employee.category'
-    _description = 'Employee category'
-    _rec_name = 'name'
-
-    name = fields.Char('Category')
-
-
 class EmployeeAddress(models.Model):
     _name = 'employee.address'
     _description = 'Address'

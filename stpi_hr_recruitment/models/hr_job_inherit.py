@@ -31,7 +31,7 @@ class HRJobInherit(models.Model):
     ], 'Recruitment Type', track_visibility='always')
 
     advertisement_id = fields.Many2one('hr.requisition.application', string='Advertisement')
-
+    allowed_degrees = fields.Many2many('hr.recruitment.degree', string='Allowed Degrees')
     pay_level = fields.Many2one('payslip.pay.level', string='Pay Band')
     struct_id = fields.Many2one('hr.payroll.structure', string='Salary Type')
 
@@ -90,3 +90,18 @@ class EmploymentType(models.Model):
     _description ='Employement Type'
 
     name = fields.Char('Name')
+
+
+class HRApplicant(models.Model):
+    _inherit='hr.applicant'
+    _description ='Applicant'
+
+
+
+    @api.constrains('type_id','job_id')
+    def check_allowed_branch(self):
+        for employee in self:
+            if employee.type_id.id not in employee.job_id.allowed_degrees.ids:
+                raise ValidationError(_('You are not eligible as you dont have valid degree.'))
+
+

@@ -10,7 +10,7 @@
     'maintainer': 'Dexciss Technology ',
     'website': "https://www.dexciss.com",
     'version': '12.0.4',
-    'depends': ['base','hr','hr_applicant','hr_skills','hr_recruitment','oh_employee_documents_expiry','hr_holidays','stpi_contract_pr','employee_stages'],
+    'depends': ['base','hr','hr_applicant','hr_skills','hr_recruitment','oh_employee_documents_expiry','hr_holidays','stpi_contract_pr','employee_stages','category_religion'],
     'data': [
         'security/ir.model.access.csv',
         'views/hr_employee_main.xml',

@@ -30,6 +30,9 @@
                         <field name="sanctionedpost"/>
                         <field name="vacant_post" attrs="{'invisible': [('sanctionedpost', '=', 0)]}"/>
                 </xpath>
+                <xpath expr="//field[@name = 'no_of_recruitment']" position="after">
+                        <field name="allowed_degrees" widget="many2many_tags"/>
+                </xpath>
 
                  <field name="department_id" position="after">
                      <field name="branch_id" groups="base_branch_company.group_multi_branch" options="{'no_create': True, 'no_create_edit': True}"/>
