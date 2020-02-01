@@ -79,6 +79,23 @@
             </form>
         </field>
     </record>
+    
+        <!--loan search view-->
+    <record id="view_tour_request_search_form" model="ir.ui.view">
+        <field name="name">tour.request.search.form</field>
+        <field name="model">tour.request</field>
+        <field name="arch" type="xml">
+           <search string="Tour Request">
+               <filter string="My Tour Requests" name="my_tour" domain="[('employee_id.user_id.id', '=', uid)]" />
+                <field name="employee_id" string="Employee"/>
+                <field name="department" string="Department"/>
+                    <filter string="Employee" name="employee_id" context="{'group_by':'employee_id'}"/>
+                    <filter string="Department" name="department" context="{'group_by':'department'}"/>
+                    <filter string="Status" name="status" context="{'group_by':'state'}"/>
+            </search>
+        </field>
+    </record>
+
 
      <!--=====Sequence of Employee Tour Request=====-->
      <record id="seq_ltc_sequence" model="ir.sequence">
@@ -88,13 +105,71 @@
         <field name="company_id" eval="False"/>
      </record>
 
+
     <!--============Action view of Employee Tour Request============-->
     <record id="tour_request_menu_action" model="ir.actions.act_window">
         <field name="name">Tour Request</field>
         <field name="res_model">tour.request</field>
         <field name="view_type">form</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,form,search</field>
     </record>
+    <!--============Action view of tour.request Draft============-->
+    <record id="tour_request_menu_action_draft" model="ir.actions.act_window">
+        <field name="name">Loan Requests</field>
+        <field name="res_model">tour.request</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_my_tour': 1}</field>
+        <field name="search_view_id" ref="view_tour_request_search_form"/>
+        <!--<field name="search_view_id" ref="tour.request_search_view"/>-->
+        <field name="domain">[('state','=','draft')]</field>
+    </record>
+    <!--============Action view of tour.request Waiting============-->
+    <record id="tour_request_pending_action" model="ir.actions.act_window">
+        <field name="name">Loan Requests</field>
+        <field name="res_model">tour.request</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_tour_request_search_form"/>
+        <!--<field name="search_view_id" ref="tour.request_search_view"/>-->
+        <field name="domain">[('state','=','waiting_for_approval')]</field>
+    </record>
+    <!--============Action view of tour.request approved============-->
+    <record id="tour_request_approved_action" model="ir.actions.act_window">
+        <field name="name">Loan Requests</field>
+        <field name="res_model">tour.request</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_my_tour': 1}</field>
+        <field name="search_view_id" ref="view_tour_request_search_form"/>
+        <!--<field name="search_view_id" ref="tour.request_search_view"/>-->
+        <field name="domain">[('state','=','approved')]</field>
+    </record>
+    <!--============Action view of tour.request rejected============-->
+    <record id="tour_request_rejected_action" model="ir.actions.act_window">
+        <field name="name">Loan Requests</field>
+        <field name="res_model">tour.request</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_my_tour': 1}</field>
+        <field name="search_view_id" ref="view_tour_request_search_form"/>
+        <!--<field name="search_view_id" ref="tour.request_search_view"/>-->
+        <field name="domain">[('state','=','rejected')]</field>
+    </record>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <!--Form view of Employee Tour Request Journey Details-->
     <record id="tour_request_menu_form" model="ir.ui.view">
@@ -217,19 +292,57 @@
                   sequence="5"
                   />
 
-        <menuitem id = "tour_request_menu_id"
+        <menuitem id = "tour_request_menu_id_parent"
                   name = "Tour Request"
-                  action ="tour_request_menu_action"
                   parent="tour_request_menu_hr_id"
+                  sequence="1"
                   />
+
+        <menuitem id = "tour_request_menu_id"
+                  name = "All"
+                  action ="tour_request_menu_action"
+                  parent="tour_request_menu_id_parent"
+                  />
+
+    <menuitem id = "tour_request_new_menu_id"
+                  name = "New"
+                  parent ="tour_request_menu_id_parent"
+                  action ="tour_request_menu_action_draft"
+                  />
+
+        <menuitem id = "tour_request_pending_menu_id"
+                  name = "Pending Approvals"
+                  parent ="tour_request_menu_id_parent"
+                  action ="tour_request_pending_action"
+                  />
+        <menuitem id = "tour_request_approved_menu_id"
+                  name = "Approved"
+                  parent ="tour_request_menu_id_parent"
+                  action ="tour_request_approved_action"
+                  />
+        <menuitem id = "tour_request_rejected_menu_id"
+                  name = "Rejected"
+                  parent ="tour_request_menu_id_parent"
+                  action ="tour_request_rejected_action"
+                  />
+
+    
         <menuitem id = "tour_request_claim_id"
                   name = "Tour Claim"
                   action ="tour_claim_menu_action"
                   parent="tour_request_menu_hr_id"
+                  sequence="2"
                   />
         <menuitem id = "tour_request_configuration_id"
                   name = "Configuration"
                   parent="tour_request_menu_hr_id"
+                   groups="base.group_no_one"
+                  sequence="3"
                   />
+
+    
+    
+
+
 
 </odoo>
