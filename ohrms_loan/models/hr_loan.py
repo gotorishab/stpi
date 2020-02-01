@@ -122,13 +122,13 @@ class HrLoan(models.Model):
             if self.installment > self.type_id.max_emi:
                 raise UserError(_('Please enter valid no. of installments %d') %self.type_id.max_emi)
 
-    #
-    # @api.constrains('loan_amount')
-    # def check_loan_amount(self):
-    #     if self.loan_amount > 0.00:
-    #         max_all = self.env['allowed.loan.amount'].search([('pay_level', '=', self.employee_id.job_id.pay_level.id)], limit=1)
-    #         if max_all.amount and self.loan_amount > max_all.amount:
-    #             raise UserError(_('You are not allowed to take loan more than') %max_all.amount)
+
+    @api.constrains('loan_amount')
+    def check_loan_amount(self):
+        if self.loan_amount > 0.00:
+            max_all = self.env['allowed.loan.amount'].search([('pay_level', '=', self.employee_id.job_id.pay_level.id)], limit=1)
+            if max_all.amount and self.loan_amount > max_all.amount:
+                raise UserError(_('You are not allowed to take loan more than Rs. %s/-') %max_all.amount)
     #
 
     @api.multi
