@@ -40,8 +40,8 @@
                             <field name="branch_id" readonly="1"/>
                         </group>
                         <group>
-                            <field name="department" attrs="{'readonly':[('state','!=','draft')]}"/>
-                            <field name="purpose" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="department" readonly="1"/>
+                            <field name="purpose" attrs="{'readonly':[('state','!=','draft')], 'required':[('state','=','draft')]}"/>
                             <field name="advance_requested" attrs="{'readonly':[('state','!=','draft')]}" widget="monetary"/>
                             <field name="claimed" invisible="1"/>
 
@@ -104,15 +104,15 @@
             <tree string="LTC" editable="bottom">
                  <field name="employee_id" invisible="1"/>
                  <field name="tour_sequence" invisible="1"/>
-                 <field name="travel_mode" required="1" widget="selection"/>
-                 <field name="mode_detail" required="1"/>
-                <field name="travel_entitled"/>
+                <field name="from_l" required="1"/>
                 <field name="departure_date" required="1"/>
                 <field name='departure_time' widget='float_time'/>
+                <field name="to_l" required="1"/>
+                 <field name="travel_mode" required="1" widget="selection"/>
                 <field name="arrival_date" required="1"/>
                 <field name='arrival_time' widget='float_time' />
-                <field name="from_l" required="1"/>
-                <field name="to_l" required="1"/>
+                 <field name="mode_detail" required="1"/>
+                <field name="travel_entitled"/>
                 <field name="boarding"/>
                 <field name="lodging"/>
                 <field name="conveyance"/>

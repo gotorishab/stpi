@@ -26,10 +26,10 @@ class TourRequest(models.Model):
     advance_requested = fields.Float('Advance Requested')
     vehicle_required = fields.Selection([('yes', 'Yes'), ('no', 'No')],string='Vehicle Required?',track_visibility='always')
     vehicle_address = fields.Char('Address')
-    vehicle_phone = fields.Integer("Phone Number")
-    vehicle_date_from = fields.Char('Date')
+    vehicle_phone = fields.Char("Phone Number")
+    vehicle_date_from = fields.Date('Date')
     vehicle_day1 = fields.Selection([('full', 'Full'), ('half', 'Half')],string='Day:')
-    vehicle_date_to = fields.Char('Returning Date')
+    vehicle_date_to = fields.Date('Returning Date')
     vehicle_day2 = fields.Selection([('full', 'Full'), ('half', 'Half')],string='Day:')
     vehicle_remarks = fields.Text('Remarks')
 
