@@ -23,7 +23,6 @@
         'views/hr_leave_inherit.xml',
         'report/employee_service_book.xml',
         'data/previous_occupation_organisation_type_demo.xml',
-        'data/relative_type_demo.xml',
         'data/hr_leave_cron.xml',
     ],
 

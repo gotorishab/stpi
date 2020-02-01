@@ -13,6 +13,7 @@
     'depends': ['base','hr'],
     'data': [
         'security/ir.model.access.csv',
+        'data/relative_type_demo.xml',
         'views/hr_employee_main.xml',
     ],
 

@@ -17,3 +17,10 @@ class Category(models.Model):
     _rec_name = 'name'
 
     name = fields.Char('Category')
+
+class relativ_type(models.Model):
+    _name = 'relative.type'
+    _description = 'Relative Description'
+
+    name = fields.Char('Name')
+

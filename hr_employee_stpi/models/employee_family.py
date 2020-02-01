@@ -97,12 +97,3 @@ class Employeefamily(models.Model):
     def onchange_relative_type(self):
         pass
 
-
-
-
-class relativ_type(models.Model):
-    _name = 'relative.type'
-    _description = 'Relative Description'
-
-    name = fields.Char('Name')
-
