@@ -11,8 +11,8 @@
                         <field name="employee_id" readonly="1"/>
                         <field name="loan_amount"/>
                         <field name="remarks"/>
-                        <field name="credit_account_id" invisible="1"/>
-                        <field name="payment_account_id" invisible="1"/>
+<!--                        <field name="credit_account_id" invisible="1"/>-->
+<!--                        <field name="payment_account_id" invisible="1"/>-->
                     </group>
                 </group>
                 <field name="unpaid_loan_lines">

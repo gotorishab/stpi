@@ -80,9 +80,9 @@ class HrLoan(models.Model):
     paid = fields.Boolean(string="Paid")
     total_interest = fields.Float(string="Total Interest", compute='_compute_loan_amount')
 
-    treasury_account_id = fields.Many2one('account.account', string="Treasury Account")
-    emp_account_id = fields.Many2one('account.account', string="Loan Account")
-    journal_id = fields.Many2one('account.journal', string="Journal")
+    # treasury_account_id = fields.Many2one('account.account', string="Treasury Account")
+    # emp_account_id = fields.Many2one('account.account', string="Loan Account")
+    # journal_id = fields.Many2one('account.journal', string="Journal")
     max_emi = fields.Integer(string="Max No.EMI")
 
 
@@ -244,16 +244,16 @@ class HrLoan(models.Model):
             i.approval_d = payment_date
             i.date = payment_date
             payment_date = payment_date + relativedelta(months=1)
-        loan_approve = self.env['ir.config_parameter'].sudo().get_param('account.loan_approve')
+        # loan_approve = self.env['ir.config_parameter'].sudo().get_param('account.loan_approve')
         contract_obj = self.env['hr.contract'].search([('employee_id', '=', self.employee_id.id)])
         if not contract_obj:
             raise UserError('You must Define a contract for employee')
         if not self.loan_lines:
             raise UserError('You must compute installment before Approved')
-        if loan_approve:
-            self.write({'state': 'waiting_approval_2'})
-        else:
-            self.write({'state': 'approve'})
+        # if loan_approve:
+        #     self.write({'state': 'waiting_approval_2'})
+        # else:
+        self.write({'state': 'approve'})
         return True
 
 

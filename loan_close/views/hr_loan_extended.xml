@@ -9,15 +9,15 @@
             <xpath expr="//header/button[@name='action_approve']" position="after">
                 <button name="loan_close_approve" type="object" attrs="{'invisible':[('state','!=','approve')]}" string="Loan Close Approval" class="oe_highlight"/>
             </xpath>
-            <xpath expr="//div[@name='button_box']" position="inside">
-                <button name="open_loan_moves"
-                    type="object"
-                    class="oe_stat_button"
-                    attrs="{'invisible':[('loan_moves_count','=',0)]}"
-                    icon="fa-book">
-                    <field name="loan_moves_count" widget="statinfo" string="Moves"/>
-                </button>
-            </xpath>
+<!--            <xpath expr="//div[@name='button_box']" position="inside">-->
+<!--                <button name="open_loan_moves"-->
+<!--                    type="object"-->
+<!--                    class="oe_stat_button"-->
+<!--                    attrs="{'invisible':[('loan_moves_count','=',0)]}"-->
+<!--                    icon="fa-book">-->
+<!--                    <field name="loan_moves_count" widget="statinfo" string="Moves"/>-->
+<!--                </button>-->
+<!--            </xpath>-->
         </field>
     </record>
 </odoo>
