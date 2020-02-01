@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_tour_request,tour.request,model_tour_request,base.group_user,1,1,1,1
+access_tour_request_journey,tour.request.journey,model_tour_request_journey,base.group_user,1,1,1,1
+access_employee_tour_claim,employee.tour.claim,model_employee_tour_claim,base.group_user,1,1,1,1
+access_tour_claim_journey,tour.claim.journey,model_tour_claim_journey,base.group_user,1,1,1,1
+access_travel_mode,travel.mode,model_travel_mode,base.group_user,1,1,1,1

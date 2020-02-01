@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <!--=======Tree view of Employee Tour Request=======-->
+    <record id="tour_request_tree_view" model="ir.ui.view">
+        <field name="name">tour.request.tree</field>
+        <field name="model">tour.request</field>
+        <field name="arch" type="xml">
+            <tree string="Tour Request">
+                 <field name="tour_sequence"/>
+                 <field name="employee_id"/>
+                <field name="designation"/>
+                <field name="department"/>
+                <field name="purpose" required="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <!--=======Form view of Employee Tour Request=======-->
+    <record id="tour_request_form_view" model="ir.ui.view">
+        <field name="name">tour.request.form</field>
+        <field name="model">tour.request</field>
+        <field name="arch" type="xml">
+            <form string="Tour Request">
+                <header>
+                    <button name="button_to_approve" string="Send for Approval" class="oe_highlight" type="object" states="draft"/>
+                     <button name="button_reset_to_draft" string="Reset to draft" type="object" states="waiting_for_approval"/>
+                    <button name="button_forwarded" string="Forward" class="oe_highlight" type="object" states="waiting_for_approval" groups="tour_request.group_employee_manager"/>
+                    <button name="button_approved" string="Approve" class="oe_highlight" type="object" states="forwarded" groups="tour_request.group_senior_director"/>
+                    <button name="button_processed" string="Process" class="oe_highlight" type="object" states="approved" groups="tour_request.group_travel_processor"/>
+                    <button name="button_reject" string="Reject" type="object" attrs="{'invisible':[('state','in',('draft', 'rejected'))]}"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,waiting_for_approval,forwarded,approved,processed,rejected" />
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="employee_id" required="1" readonly="1"/>
+                            <field name="date" readonly="1"/>
+                            <field name="designation" readonly="1"/>
+                            <field name="branch_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="department" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="purpose" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="advance_requested" attrs="{'readonly':[('state','!=','draft')]}" widget="monetary"/>
+                            <field name="claimed" invisible="1"/>
+
+                        </group>
+                     </group>
+                    <notebook>
+                        <page name="journey_details" string="Journey Details">
+                            <field name="employee_journey" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        </page>
+                    </notebook>
+                    <group>
+                        <group>
+                            <field name="vehicle_required" widget="radio"/>
+                        <field name="vehicle_address" attrs="{'invisible':[('vehicle_required','!=','yes')], 'required':[('vehicle_required','=','yes')]}"/>
+                        <field name="vehicle_phone" attrs="{'invisible':[('vehicle_required','!=','yes')], 'required':[('vehicle_required','=','yes')]}"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="vehicle_date_from" attrs="{'invisible':[('vehicle_required','!=','yes')], 'required':[('vehicle_required','=','yes')]}"/>
+                            <field name="vehicle_date_to" attrs="{'invisible':[('vehicle_required','!=','yes')], 'required':[('vehicle_required','=','yes')]}"/>
+                        </group>
+                        <group>
+                            <field name="vehicle_day1" attrs="{'invisible':[('vehicle_required','!=','yes')], 'required':[('vehicle_required','=','yes')]}" widget="radio"/>
+                            <field name="vehicle_day2" attrs="{'invisible':[('vehicle_required','!=','yes')], 'required':[('vehicle_required','=','yes')]}" widget="radio"/>
+                        </group>
+                        <field name="vehicle_remarks" attrs="{'invisible':[('vehicle_required','!=','yes')], 'required':[('vehicle_required','=','yes')]}" placeholder="Remarks ..."/>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+            </form>
+        </field>
+    </record>
+
+     <!--=====Sequence of Employee Tour Request=====-->
+     <record id="seq_ltc_sequence" model="ir.sequence">
+        <field name="name">Tour Request sequence</field>
+        <field name="code">tour.request</field>
+        <field name="padding">3</field>
+        <field name="company_id" eval="False"/>
+     </record>
+
+    <!--============Action view of Employee Tour Request============-->
+    <record id="tour_request_menu_action" model="ir.actions.act_window">
+        <field name="name">Tour Request</field>
+        <field name="res_model">tour.request</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!--Form view of Employee Tour Request Journey Details-->
+    <record id="tour_request_menu_form" model="ir.ui.view">
+        <field name="name">tour.request.journey.tree</field>
+        <field name="model">tour.request.journey</field>
+        <field name="arch" type="xml">
+            <tree string="LTC" editable="bottom">
+                 <field name="employee_id" invisible="1"/>
+                 <field name="tour_sequence" invisible="1"/>
+                 <field name="travel_mode" required="1" widget="selection"/>
+                 <field name="mode_detail" required="1"/>
+                <field name="travel_entitled"/>
+                <field name="departure_date" required="1"/>
+                <field name='departure_time' widget='float_time'/>
+                <field name="arrival_date" required="1"/>
+                <field name='arrival_time' widget='float_time' />
+                <field name="from_l" required="1"/>
+                <field name="to_l" required="1"/>
+                <field name="boarding"/>
+                <field name="lodging"/>
+                <field name="conveyance"/>
+            </tree>
+        </field>
+    </record>
+
+    <!--====Action view of Employee Tour Request Journey Details====-->
+    <record id="tour_request_journey_action" model="ir.actions.act_window">
+        <field name="name">Tour Request Journey</field>
+        <field name="res_model">tour.request.journey</field>
+        <field name="view_type">tree</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+
+    <!--===========Form view of Tour Claim===========-->
+    <record id="tour_claim_form_view" model="ir.ui.view">
+        <field name="name">employee.tour.claim.form</field>
+        <field name="model">employee.tour.claim</field>
+        <field name="arch" type="xml">
+            <form string="LTC">
+                <header>
+                    <button name="button_submit" string="Submit" class="oe_highlight" type="object" states="draft"/>
+                    <button name="button_approved" string="Approve" class="oe_highlight" type="object" states="submitted" groups="tour_request.group_senior_director"/>
+                     <button name="button_reset_to_draft" string="Reset to draft" type="object" states="submitted"/>
+                    <button name="button_reject" string="Reject" type="object" states="submitted"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,submitted,approved,rejected" />
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="employee_id" readonly="1"/>
+                            <field name="designation" attrs="{'readonly':[('state','!=','draft')]}"/>
+
+                        </group>
+                        <group>
+                            <field name="department" attrs="{'readonly':[('state','!=','draft')]}"/>
+
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="detailofjourney" string="Detail of journey">
+                            <!--<button name="get_journey_details" string="Get Journey Details" class="oe_highlight" type="object" states="draft"/>-->
+                            <button type="object" name="get_journey_details" string="Get Journey Details"  colspan="2" attrs="{'invisible':[('state','!=','draft')]}"
+                            class="oe_stat_button"
+                            icon="fa-clock-o"/>
+                            <div class="oe_clear"/>
+                            <br/>
+                            <field name="detail_of_journey">
+                                    <tree editable="bottom">
+                                        <field name="tour_sequence" readonly="1"/>
+                                        <field name="employee_journey" invisible="1"/>
+                                        <field name="departure_date" readonly="1"/>
+                                        <field name="arrival_date" readonly="1"/>
+                                        <field name="from_l" readonly="1"/>
+                                        <field name="to_l" readonly="1"/>
+                                        <field name="arranged_by" attrs="{'readonly':[('state','not in',('draft', 'rejected'))]}"/>
+                                        <field name="amount_claimed" sum="Total Amount" attrs="{'readonly':[('state','not in',('draft', 'rejected'))]}"/>
+                                        <field name="distance" sum="Total Distance Covered" attrs="{'readonly':[('state','not in',('draft', 'rejected'))]}"/>
+                                        <field name="approved_approved" sum="Total Amount Approved" attrs="{'invisible':[('state','in',('draft', 'rejected'))]}" groups="tour_request.group_senior_director"/>
+                                        <field name="state" invisible="1"/>
+                                    </tree>
+                            </field>
+                             <group class="oe_subtotal_footer oe_right" colspan="2" >
+                                <field name="total_claimed_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                <field name="total_approved_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                <field name="balance_left" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            </group>
+
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!--===========Tree view of Tour Claim===========-->
+    <record id="tour_claim_tree_view" model="ir.ui.view">
+        <field name="name">employee.tour.claim.tree</field>
+        <field name="model">employee.tour.claim</field>
+        <field name="arch" type="xml">
+            <tree string="LTC">
+                <field name="employee_id"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <!--===============Action view of Tour Claim===============-->
+    <record id="tour_claim_menu_action" model="ir.actions.act_window">
+        <field name="name">Tour Claim</field>
+        <field name="res_model">employee.tour.claim</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id = "tour_request_menu_hr_id"
+                  name = "Travel and Tour"
+                web_icon="tour_request,static/description/icon.png"
+                  sequence="5"
+                  />
+
+        <menuitem id = "tour_request_menu_id"
+                  name = "Tour Request"
+                  action ="tour_request_menu_action"
+                  parent="tour_request_menu_hr_id"
+                  />
+        <menuitem id = "tour_request_claim_id"
+                  name = "Tour Claim"
+                  action ="tour_claim_menu_action"
+                  parent="tour_request_menu_hr_id"
+                  />
+
+</odoo>
