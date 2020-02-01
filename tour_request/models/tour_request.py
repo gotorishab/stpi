@@ -34,28 +34,28 @@ class TourRequest(models.Model):
     vehicle_remarks = fields.Text('Remarks')
 
 
-    state = fields.Selection([('draft', 'Draft'), ('waiting_for_approval', 'Waiting for Approval'), ('forwarded', 'Forwarded'), ('approved', 'Approved'), ('processed', 'Processed'), ('rejected', 'Rejected')
+    state = fields.Selection([('draft', 'Draft'), ('waiting_for_approval', 'Waiting for Approval'), ('approved', 'Approved'), ('rejected', 'Rejected')
                                ], required=True, default='draft',track_visibility='always')
 
     @api.multi
     def button_to_approve(self):
         for rec in self:
             rec.write({'state': 'waiting_for_approval'})
-
-    @api.multi
-    def button_forwarded(self):
-        for rec in self:
-            rec.write({'state': 'forwarded'})
+    #
+    # @api.multi
+    # def button_forwarded(self):
+    #     for rec in self:
+    #         rec.write({'state': 'forwarded'})
 
     @api.multi
     def button_approved(self):
         for rec in self:
             rec.write({'state': 'approved'})
 
-    @api.multi
-    def button_processed(self):
-        for rec in self:
-            rec.write({'state': 'processed'})
+    # @api.multi
+    # def button_processed(self):
+    #     for rec in self:
+    #         rec.write({'state': 'processed'})
 
     @api.multi
     def button_reject(self):
@@ -64,8 +64,27 @@ class TourRequest(models.Model):
 
     @api.multi
     def button_reset_to_draft(self):
-        for rec in self:
-            rec.write({'state': 'draft'})
+        self.ensure_one()
+        compose_form_id = self.env.ref('mail.email_compose_message_wizard_form').id
+        ctx = dict(
+            default_composition_mode='comment',
+            default_res_id=self.id,
+
+            default_model='tour.request',
+            default_is_log='True',
+            custom_layout='mail.mail_notification_light'
+        )
+        mw = {
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'mail.compose.message',
+            'view_id': compose_form_id,
+            'target': 'new',
+            'context': ctx,
+        }
+        self.write({'state': 'draft'})
+        return mw
 
     @api.depends('employee_id')
     def compute_des_dep(self):
@@ -134,7 +153,7 @@ class TourRequestJourney(models.Model):
     to_l = fields.Many2one('res.city', string='To City')
     travel_entitled = fields.Boolean('Is Travel Mode Entitled?')
     boarding = fields.Boolean('Boarding required?')
-    lodging = fields.Boolean('lodging required?')
+    lodging = fields.Boolean('Lodging required?')
     conveyance = fields.Boolean('Local Conveyance required?')
 
 

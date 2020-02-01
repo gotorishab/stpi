@@ -11,16 +11,19 @@
 
         <record id="group_loan_requester" model="res.groups">
             <field name="name">Loan requester </field>
+            <field name="stpi">1</field>
             <field name="category_id" ref="module_loan_employee"/>
         </record>
 
         <record id="group_loan_approver" model="res.groups">
             <field name="name">Loan Approver</field>
+            <field name="stpi">1</field>
             <field name="category_id" ref="module_loan_employee"/>
         </record>
 
         <record id="group_loan_employee_change" model="res.groups">
             <field name="name">Loan Employee Change</field>
+            <field name="stpi">1</field>
             <field name="category_id" ref="module_loan_employee"/>
         </record>
 

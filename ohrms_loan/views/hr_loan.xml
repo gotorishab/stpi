@@ -44,20 +44,20 @@
                         </h1>
                     </div>
                     <group col="6">
-                        <field name="type_id" attrs="{'readonly':[('state','!=','draft')]}" options="{'no_open':True,'no_create':True}"/>
-                        <field name="date"/>
+                        <field name="type_id" attrs="{'readonly':[('state','!=','draft')]}" required="1" options="{'no_open':True,'no_create':True}"/>
+                        <field name="date" required="1"/>
                         <field name="employee_id" attrs="{'readonly':[('state','=','approve')]}" options="{'no_create_edit': True}" groups="ohrms_loan.group_loan_employee_change"/>
                         <field name="employee_id_related"/>
-                        <field name="loan_amount" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="loan_amount" attrs="{'readonly':[('state','!=','draft')]}" required="1"/>
                         <field name="department_id"/>
                         <field name="interest" readonly='1'/>
                         <field name="job_position"/>
 
 
                         <field name="max_emi" readonly="1"/>
-                        <field name="installment" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="installment" attrs="{'readonly':[('state','!=','draft')]}" required="1"/>
                         <field name="approve_date" attrs="{'readonly':[('state','=','approve')],'invisible':[('state', '!=','approve')]}"/>
-                        <field name="payment_date" attrs="{'readonly':[('state','=','approve')],'invisible':[('state', '!=','approve')]}"/>
+                        <field name="payment_date" attrs="{'readonly':[('state','=','approve')],'invisible':[('state', '!=','approve')]}" required="1"/>
 <!--                        <field name="emp_account_id" invisible="1"/>-->
 <!--                        <field name="treasury_account_id" invisible="1"/>-->
 <!--                        <field name="journal_id" invisible="1"/>-->

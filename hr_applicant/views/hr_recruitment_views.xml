@@ -91,9 +91,9 @@
                 <sheet>
                     <field name="applicant_id" invisible="1" />
                     <group col="4" colspan="4">
-                        <field name="from_date" tabindex="1" placeholder="Enter From Date"/>
-                        <field name="to_date" tabindex="2" placeholder="Enter To Date"/>
-                        <field name="position" tabindex="3" placeholder="Enter Position"/>
+                        <field name="from_date" tabindex="1" placeholder="Enter From Date" required="1"/>
+                        <field name="to_date" tabindex="2" placeholder="Enter To Date" required="1"/>
+                        <field name="position" tabindex="3" placeholder="Enter Position" required="1"/>
                         <field name="organization" tabindex="4" placeholder="Enter Organization"/>
                         <field name="ref_name" tabindex="5" placeholder="Enter Reference Name"/>
                         <field name="ref_position" tabindex="6" placeholder="Enter Reference Position"/>

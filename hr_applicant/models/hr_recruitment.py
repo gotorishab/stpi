@@ -328,9 +328,9 @@ class ApplicantPreviousOccupation(models.Model):
     _order = 'to_date desc'
     _rec_name = 'position'
 
-    from_date = fields.Date(string='From Date', required=True)
-    to_date = fields.Date(string='To Date', required=True)
-    position = fields.Char(string='Position', required=True)
+    from_date = fields.Date(string='From Date')
+    to_date = fields.Date(string='To Date')
+    position = fields.Char(string='Position')
     organization = fields.Char(string='Organization')
     ref_name = fields.Char(string='Reference Name')
     ref_position = fields.Char(string='Reference Position')

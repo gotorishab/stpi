@@ -64,7 +64,7 @@ class HrEmployee(models.Model):
     office_file_no = fields.Char('Office Order No.',track_visibility='always')
     mode_of_recruitment = fields.Char('Mode Of Recruitment',track_visibility='always')
     post = fields.Char('Post',track_visibility='always')
-    date_of_join = fields.Date('Date of Join',track_visibility='always')
+    date_of_join = fields.Date('Date of Joining',track_visibility='always')
     office_order_date = fields.Date('Office Order Date',track_visibility='always')
 
     #contact

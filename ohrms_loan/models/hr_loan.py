@@ -55,23 +55,23 @@ class HrLoan(models.Model):
 
     name = fields.Char(string="Loan Name", default="Loan Request", readonly=True)
     date = fields.Date(string="Requested Date", default=fields.Date.today(), readonly=True)
-    employee_id = fields.Many2one('hr.employee', string="Employee", required=True)
-    employee_id_related = fields.Many2one('hr.employee', related="employee_id", string="Employee", required=True)
+    employee_id = fields.Many2one('hr.employee', string="Employee")
+    employee_id_related = fields.Many2one('hr.employee', related="employee_id", string="Employee")
     department_id = fields.Many2one('hr.department', related="employee_id.department_id", readonly=True,
                                     string="Department", store=True)
-    type_id =fields.Many2one('loan.type',string="Type",required=True)
-    installment = fields.Integer(string="No Of Installments", required=True, default= 0)
+    type_id =fields.Many2one('loan.type',string="Type")
+    installment = fields.Integer(string="No Of Installments", default= 0)
     approve_date = fields.Date(string="Approve Date")
-    payment_date = fields.Date(string="Payment Start Date", required=True, default=fields.Date.today())
+    payment_date = fields.Date(string="Payment Start Date", default=fields.Date.today())
     loan_lines = fields.One2many('hr.loan.line', 'loan_id', string="Loan Line", index=True)
 
     company_id = fields.Many2one('res.company', 'Company', readonly=True,
                                  default=lambda self: self.env.user.company_id,
                                  states={'draft': [('readonly', False)]})
-    currency_id = fields.Many2one('res.currency', string='Currency', required=True,
+    currency_id = fields.Many2one('res.currency', string='Currency',
                                   default=lambda self: self.env.user.company_id.currency_id)
     job_position = fields.Many2one('hr.job', related="employee_id.job_id", readonly=True, string="Job Position")
-    loan_amount = fields.Float(string="Loan Amount", required=True)
+    loan_amount = fields.Float(string="Loan Amount")
     interest= fields.Float(related='type_id.interest',string="Interest Rate%")
     total_amount = fields.Float(string="Total Amount", readonly=True, compute='_compute_loan_amount')
     balance_amount = fields.Float(string="Balance Amount", compute='_compute_loan_amount',store=True)
@@ -262,7 +262,7 @@ class InstallmentLine(models.Model):
     _description = "Installment Line"
 
 
-    date = fields.Date(string="Installment Date", required=True)
+    date = fields.Date(string="Installment Date")
 
     # Added this field by RGupta @Dexciss
     approval_d = fields.Date('EMI Date')

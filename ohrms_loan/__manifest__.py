@@ -43,7 +43,7 @@
     'maintainer': 'Cybrosys Techno Solutions',
     'website': "https://www.openhrms.com",
     'depends': [
-        'base', 'hr_payroll', 'hr','stpi_contract_pr'
+        'base', 'hr_payroll', 'hr','stpi_contract_pr','groups_inherit'
     ],
     'data': [
         'security/security.xml',
