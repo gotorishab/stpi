@@ -43,7 +43,7 @@
                     <!--<button name="terminate" string="Terminate" type="object" states="grounding,employment"/>-->
                     <!--<button name="employee_retired" string="Set Retirement" type="object" states="employment" groups="employee_stages.group_retirement_employee"/>-->
 
-                    <field name="state" widget="statusbar" statusbar_visible="joined,grounding,employment"/>
+                    <field name="state" widget="statusbar" statusbar_visible="test_period,employment"/>
                 </header>
             </xpath>
             <!--<xpath expr="//field[@name='resource_calendar_id']" position="after">-->

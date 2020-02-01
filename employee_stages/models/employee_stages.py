@@ -3,8 +3,9 @@ from datetime import date
 from odoo import models, fields, api,_
 from odoo.exceptions import UserError
 
-emp_stages = [('joined', 'Roll On'),
-              ('grounding', 'Induction'),
+emp_stages = [
+                # ('joined', 'Roll On'),
+              # ('grounding', 'Induction'),
               ('test_period', 'Probation'),
               ('employment', 'Employment'),
               ('notice_period', 'Notice Period'),
@@ -26,15 +27,16 @@ class EmployeeFormInherit(models.Model):
         result = super(EmployeeFormInherit, self).create(vals)
         result.stages_history.sudo().create({'start_date': date.today(),
                                              'employee_id': result.id,
-                                             'state': 'joined'})
+                                             'state': 'test_period'})
         return result
 
     @api.multi
     def start_grounding(self):
-        self.state = 'grounding'
-        self.stages_history.sudo().create({'start_date': date.today(),
-                                           'employee_id': self.id,
-                                           'state': 'grounding'})
+        pass
+        # self.state = 'grounding'
+        # self.stages_history.sudo().create({'start_date': date.today(),
+        #                                    'employee_id': self.id,
+        #                                    'state': 'grounding'})
 
     @api.multi
     def set_as_employee(self):
@@ -93,8 +95,8 @@ class EmployeeFormInherit(models.Model):
     @api.multi
     def start_test_period(self):
         self.state = 'test_period'
-        self.stages_history.search([('employee_id', '=', self.id),
-                                    ('state', '=', 'grounding')]).sudo().write({'end_date': date.today()})
+        # self.stages_history.search([('employee_id', '=', self.id),
+        #                             ('state', '=', 'grounding')]).sudo().write({'end_date': date.today()})
         self.stages_history.sudo().create({'start_date': date.today(),
                                            'employee_id': self.id,
                                            'state': 'test_period'})
@@ -119,14 +121,15 @@ class EmployeeFormInherit(models.Model):
         if stage_obj:
             stage_obj.sudo().write({'end_date': date.today()})
         else:
-            self.stages_history.search([('employee_id', '=', self.id),
-                                        ('state', '=', 'grounding')]).sudo().write({'end_date': date.today()})
+            pass
+            # self.stages_history.search([('employee_id', '=', self.id),
+            #                             ('state', '=', 'grounding')]).sudo().write({'end_date': date.today()})
         self.stages_history.sudo().create({'end_date': date.today(),
                                            'employee_id': self.id,
                                            'state': 'terminate'})
 
-    state = fields.Selection(emp_stages, string='Status', default='joined', track_visibility='always', copy=False,
-                             help="Employee Stages.\nSlap On: Joined\nGrounding: Training\nTest period : Probation")
+    state = fields.Selection(emp_stages, string='Status', default='test_period', track_visibility='always', copy=False,
+                             help="Employee Stages.\nTest period : Probation")
     stages_history = fields.One2many('hr.employee.status.history', 'employee_id', string='Stage History',
                                      help='It shows the duration and history of each stages')
     gratuity_check_no = fields.Char(string='Gratuity check no:')
@@ -191,7 +194,7 @@ class ChangeEmployeeStage(models.TransientModel):
     _name ='change.employee.stage'
     _description = 'Change Employee Stage'
 
-    state = fields.Selection(emp_stages, string='Status',help="Employee Stages.\nSlap On: Joined\nGrounding: Training\nTest period : Probation")
+    state = fields.Selection(emp_stages, string='Status',help="Employee Stages.\nTest period : Probation")
     reason = fields.Text('Reason')
     employee_id =fields.Many2one('hr.employee',string='Employee')
 
@@ -230,8 +233,8 @@ class EmployeeStageConfig(models.Model):
                                         ('promotion', 'Promotion'),
                                     ], 'Recruitment Type', required=True)
 
-    existing_state = fields.Selection(emp_stages, string='Existing State',help="Employee Stages.\nSlap On: Joined\nGrounding: Training\nTest period : Probation")
-    new_state = fields.Selection(emp_stages, string='New State',help="Employee Stages.\nSlap On: Joined\nGrounding: Training\nTest period : Probation")
+    existing_state = fields.Selection(emp_stages, string='Existing State',help="Employee Stages.\nTest period : Probation")
+    new_state = fields.Selection(emp_stages, string='New State',help="Employee Stages.\nTest period : Probation")
     days =fields.Integer('Days')
 
 
