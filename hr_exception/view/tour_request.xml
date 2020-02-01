@@ -28,14 +28,8 @@
         <field name="model">tour.request</field>
         <field name="inherit_id" ref="tour_request.tour_request_form_view"/>
         <field name="arch" type="xml">
-           <xpath expr="//field[@name='employee_id']" position="before">
-                <group>
-                <field name="main_exception_id" options='{"no_open": True}'
-                       class="oe_inline" string="Error:"
-                       attrs="{'invisible':[('main_exception_id','=', False)]}"/>
-                </group>
-           </xpath>
             <xpath expr="//field[@name='advance_requested']" position="after">
+                <field name="main_exception_id" options='{"no_open": True}' string="Error:" attrs="{'invisible':[('main_exception_id','=', False)]}"/>
                 <field name="ignore_exception" invisible="1"/>
             </xpath>
             
