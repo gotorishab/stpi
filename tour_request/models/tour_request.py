@@ -35,7 +35,7 @@ class TourRequest(models.Model):
 
 
     state = fields.Selection([('draft', 'Draft'), ('waiting_for_approval', 'Waiting for Approval'), ('approved', 'Approved'), ('rejected', 'Rejected')
-                               ], required=True, default='draft',track_visibility='always')
+                               ], required=True, string='Status', default='draft',track_visibility='always')
 
     @api.multi
     def button_to_approve(self):
@@ -196,7 +196,7 @@ class EmployeeTourClaim(models.Model):
 
     state = fields.Selection(
         [('draft', 'Draft'), ('submitted', 'Waiting for Approval'), ('approved', 'Approved'), ('rejected', 'Rejected')
-         ], required=True, default='draft')
+         ], required=True, default='draft', string='Status')
 
     @api.depends('employee_id')
     def compute_des_dep(self):
