@@ -241,20 +241,38 @@
                                     <tree editable="bottom">
                                         <field name="tour_sequence" readonly="1"/>
                                         <field name="employee_journey" invisible="1"/>
+                                         <field name="from_l" readonly="1"/>
                                         <field name="departure_date" readonly="1"/>
-                                        <field name="arrival_date" readonly="1"/>
-                                        <field name="from_l" readonly="1"/>
+                                        <field name='departure_time' readonly="1"/>
                                         <field name="to_l" readonly="1"/>
+                                         <field name="travel_mode" readonly="1"/>
+                                        <field name="arrival_date" readonly="1"/>
+                                        <field name='arrival_time' readonly='1' />
+                                         <field name="mode_detail" readonly="1"/>
+                                        <field name="travel_entitled" readonly="1"/>
+                                        <field name="boarding" readonly="1"/>
+                                        <field name="lodging" readonly="1"/>
+                                        <field name="conveyance" readonly="1"/>
+                                        <field name="leave_taken" attrs="{'readonly':[('state','not in',('draft', 'rejected'))]}"/>
                                         <field name="arranged_by" attrs="{'readonly':[('state','not in',('draft', 'rejected'))]}"/>
-                                        <field name="amount_claimed" sum="Total Amount" attrs="{'readonly':[('state','not in',('draft', 'rejected'))]}"/>
+                                        <field name="from_date" attrs="{'readonly':[('state','not in',('draft', 'rejected'))]}"/>
+                                        <field name="to_date" attrs="{'readonly':[('state','not in',('draft', 'rejected'))]}"/>
+                                        <field name="no_of_days" attrs="{'readonly':[('state','not in',('draft', 'rejected'))]}"/>
+                                        <field name="name_of_hotel" attrs="{'readonly':[('state','not in',('draft', 'rejected'))]}"/>
+                                        <field name="daily_lodging_charge" attrs="{'readonly':[('state','not in',('draft', 'rejected')),('arranged_by','=','company')]}"/>
+                                        <field name="daily_boarding_charge" attrs="{'readonly':[('state','not in',('draft', 'rejected'))]}"/>
+                                        <field name="daily_boarding_lodginf_charge" attrs="{'readonly':[('state','not in',('draft', 'rejected'))]}"/>
+                                        <field name="total_amount_paid" readonly="1"/>
+                                        <field name="other_details" attrs="{'readonly':[('state','not in',('draft', 'rejected'))]}"/>
+<!--                                        <field name="amount_claimed" sum="Total Amount" attrs="{'readonly':[('state','not in',('draft', 'rejected'))]}"/>-->
                                         <field name="distance" sum="Total Distance Covered" attrs="{'readonly':[('state','not in',('draft', 'rejected'))]}"/>
-                                        <field name="approved_approved" sum="Total Amount Approved" attrs="{'invisible':[('state','in',('draft', 'rejected'))]}" groups="tour_request.group_tour_request_approvere"/>
+<!--                                        <field name="approved_approved" sum="Total Amount Approved" attrs="{'invisible':[('state','in',('draft', 'rejected'))]}" groups="tour_request.group_tour_request_approvere"/>-->
                                         <field name="state" invisible="1"/>
                                     </tree>
                             </field>
                              <group class="oe_subtotal_footer oe_right" colspan="2" >
                                 <field name="total_claimed_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
-                                <field name="total_approved_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                <field name="advance_requested" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                                 <field name="balance_left" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                             </group>
 

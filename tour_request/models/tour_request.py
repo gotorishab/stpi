@@ -1,6 +1,7 @@
 from odoo import api, fields, models, tools, _
 from odoo.exceptions import ValidationError
 from datetime import datetime, date
+from dateutil.relativedelta import relativedelta
 import re
 
 class TourRequest(models.Model):
@@ -170,27 +171,29 @@ class EmployeeTourClaim(models.Model):
         return self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
 
     @api.multi
-    @api.depends('detail_of_journey')
+    @api.depends('detail_of_journey','employee_id')
     def _compute_approved_amount(self):
-        pass
         total_claimed = 0.0
-        total_approved = 0.0
+        advance_requested = 0.0
         for record in self:
+            tour_req = self.env['tour.request'].search([('employee_id', '=', record.employee_id.id),('state', '=', 'approved')])
+            for i in tour_req:
+                if i:
+                    advance_requested += i.advance_requested
             for line in record.detail_of_journey:
                 if line:
-                    total_claimed += line.amount_claimed
-                    total_approved += line.approved_approved
-                record.total_claimed_amount = total_claimed
-                record.total_approved_amount = total_approved
-                record.balance_left = (record.total_claimed_amount) - record.total_approved_amount
+                    total_claimed += ((line.daily_lodging_charge + line.daily_boarding_charge + line.daily_boarding_lodginf_charge)*line.no_of_days + line.other_details)
+            record.total_claimed_amount = total_claimed
+            record.advance_requested = advance_requested
+            record.balance_left = record.total_claimed_amount - record.advance_requested
 
 
     employee_id = fields.Many2one('hr.employee', string='Employee', default=_default_employee)
     designation = fields.Many2one('hr.job', string="Designation", compute='compute_des_dep')
     department = fields.Many2one('hr.department', string="Department", compute='compute_des_dep')
     detail_of_journey = fields.One2many('tour.claim.journey','employee_journey')
+    advance_requested = fields.Float(string="Advance Requested", readonly=True, compute='_compute_approved_amount')
     balance_left = fields.Float(string="Balance left", readonly=True, compute='_compute_approved_amount')
-    total_approved_amount = fields.Float(string="Total Approved Amount", compute='_compute_approved_amount',store=True)
     tour_sequence = fields.Char(string="tour sequence")
     total_claimed_amount = fields.Float(string="Total Claimed Amount", compute='_compute_approved_amount')
 
@@ -230,18 +233,69 @@ class EmployeeTourClaim(models.Model):
         for rec in self:
             rec.detail_of_journey.unlink()
             if rec.employee_id:
-                tour_req = self.env['tour.request.journey'].search([('employee_id', '=', rec.employee_id.id)], order='tour_sequence desc')
+                tour_req = self.env['tour.request.journey'].search([('employee_id', '=', rec.employee_id.id),('employee_journey.state', '=', 'approved'),('claimed', '=', False)], order='tour_sequence desc')
                 for i in tour_req:
                     detail_of_journey.append((0, 0, {
                         'tour_sequence': i.tour_sequence,
                         'departure_date': i.departure_date,
+                        'departure_time': i.departure_time,
                         'arrival_date': i.arrival_date,
+                        'arrival_time': i.arrival_time,
                         'from_l': i.from_l,
                         'to_l': i.to_l,
+                        'travel_mode': i.travel_mode,
+                        'mode_detail': i.mode_detail,
+                        'travel_entitled': i.travel_entitled,
+                        'boarding': i.boarding,
+                        'lodging': i.lodging,
+                        'conveyance': i.conveyance,
                         'employee_journey': self.id
                     }))
                 self.detail_of_journey = detail_of_journey
 
+    @api.multi
+    def get_journey_details(self):
+        ctx = self._context.copy()
+        view = self.env.ref('tour_request.form_view_tour_claim_wizard')
+        # tour_req = self.detail_of_journey.search([('paid', '=', False), ('claim_id', '=', self.id)])
+        tour_req = self.env['tour.request.journey'].search(
+            [('employee_id', '=', self.employee_id.id), ('employee_journey.state', '=', 'approved'),
+             ('employee_journey.claimed', '=', False)], order='tour_sequence desc')
+
+        wiz = self.env['tour.claim.wizard'].create({
+            'employee_id': self.employee_id.id,
+            'claim_id': self.id,
+        })
+        for i in tour_req:
+            self.env['tour.wizard.line'].create({
+                        'tour_sequence': i.tour_sequence,
+                        'departure_date': i.departure_date,
+                        'departure_time': i.departure_time,
+                        'arrival_date': i.arrival_date,
+                        'arrival_time': i.arrival_time,
+                        # 'from_l': i.from_l,
+                        # 'to_l': i.to_l,
+                        # 'travel_mode': i.travel_mode,
+                        'mode_detail': i.mode_detail,
+                        'travel_entitled': i.travel_entitled,
+                        'boarding': i.boarding,
+                        'lodging': i.lodging,
+                        'conveyance': i.conveyance,
+                        'employee_journey': self.id,
+                        'un_claim_id': wiz.id
+
+            })
+        return {
+            'name': 'Tour Claim',
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'tour.claim.wizard',
+            'views': [(view.id, 'form')],
+            'view_id': view.id,
+            'res_id': wiz.id,
+            'target': 'new',
+        }
 
     @api.multi
     @api.depends('employee_id')
@@ -262,29 +316,65 @@ class TourClaimJourney(models.Model):
     _name = "tour.claim.journey"
     _description = "Tour Claim Journey Details"
 
+
+
+    @api.multi
+    @api.depends('daily_lodging_charge','daily_boarding_charge','daily_boarding_lodginf_charge','no_of_days')
+    def _Compute_total_amount_paid(self):
+        for rec in self:
+            rec.total_amount_paid = (rec.daily_lodging_charge + rec.daily_boarding_charge + rec.daily_boarding_lodginf_charge)*rec.no_of_days
+
+
     tour_sequence = fields.Char('Tour number')
     employee_journey = fields.Many2one('employee.tour.claim', invisible=1)
     departure_date = fields.Date('Departure Date')
     arrival_date = fields.Date('Arrival Date')
     from_l = fields.Many2one('res.city', string='From City')
     to_l = fields.Many2one('res.city', string='To City')
-    arranged_by = fields.Selection([('self', 'Self'), ('company', 'Company')], string='Arranged By')
+    departure_time = fields.Float('Departure Time')
+    arrival_time = fields.Float('Arrival Time')
+    leave_taken = fields.Many2many('hr.leave', string='Date of absence from place of halt  ')
     amount_claimed = fields.Float('Amount Claimed')
     distance = fields.Float('Distance')
     approved_approved = fields.Float('Approved Amount')
+    travel_mode = fields.Many2one('travel.mode', string='Mode of Travel')
+    mode_detail = fields.Char('Flight/Train No.')
+    travel_entitled = fields.Boolean('Is Travel Mode Entitled?')
+    boarding = fields.Boolean('Boarding required?')
+    lodging = fields.Boolean('Lodging required?')
+    conveyance = fields.Boolean('Local Conveyance required?')
+    arranged_by = fields.Selection([('self', 'Self'), ('company', 'Company')], string='Arranged By')
+    from_date = fields.Date('From Date')
+    to_date = fields.Date('To Date')
+    no_of_days = fields.Float('No. of days', compute='compute_no_of_days', store=True)
+    name_of_hotel = fields.Char('Name of Hotel/Guest House')
+    daily_lodging_charge = fields.Float('Daily Lodging Charges')
+    daily_boarding_charge = fields.Float('Daily Boarding Charges')
+    daily_boarding_lodginf_charge = fields.Float('Daily Lodging and Boarding Charges')
+    total_amount_paid = fields.Float('Total Amount Paid', compute='_Compute_total_amount_paid')
+    other_details = fields.Float('Details of other reimbursable expenses ')
 
     state = fields.Selection(
         [('draft', 'Draft'), ('submitted', 'Waiting for Approval'), ('approved', 'Approved'), ('rejected', 'Rejected')
          ], related='employee_journey.state')
 
-    @api.constrains('approved_approved')
-    @api.onchange('approved_approved')
-    def onchange_approved_amount(self):
+
+
+    @api.constrains('from_date','to_date')
+    def compute_no_of_days(self):
         for rec in self:
-            if rec.amount_claimed and rec.approved_approved and rec.amount_claimed < rec.approved_approved:
-                raise ValidationError(
-                    _("Approved Amount must be less than or equal to Claimed amount")
-                )
+            pass
+            # rec.no_of_days = (rec.to_date - rec.from_date)
+
+
+    # @api.constrains('approved_approved')
+    # @api.onchange('approved_approved')
+    # def onchange_approved_amount(self):
+    #     for rec in self:
+    #         if rec.amount_claimed and rec.approved_approved and rec.amount_claimed < rec.approved_approved:
+    #             raise ValidationError(
+    #                 _("Approved Amount must be less than or equal to Claimed amount")
+    #             )
 
 
 class TravelMode(models.Model):
