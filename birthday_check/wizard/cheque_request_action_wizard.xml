@@ -26,7 +26,7 @@
 
     <act_window id="action_cheque_requests_action_confirm"
             multi="True"
-            key2="client_action_multi" name="Take Action"
+            key2="client_action_multi" name="Approve/Reject"
                 res_model="hr.employee.action.confirm" src_model="cheque.requests"
             view_mode="form" target="new" view_type="form" groups="birthday_check.group_approvar_birthday"/>
     </data>

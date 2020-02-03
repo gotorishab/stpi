@@ -220,7 +220,7 @@
                     <notebook>
                         <page name="detailofjourney" string="Detail of journey">
                             <!--<button name="get_journey_details" string="Get Journey Details" class="oe_highlight" type="object" states="draft"/>-->
-                            <button type="object" name="get_journey_details" string="Get Journey Details"  colspan="2" attrs="{'invisible':[('state','!=','draft')]}"
+                            <button type="object" name="get_journey_details" string="Get Tour Requests"  colspan="2" attrs="{'invisible':[('state','!=','draft')]}"
                             class="oe_stat_button"
                             icon="fa-clock-o"/>
                             <div class="oe_clear"/>
