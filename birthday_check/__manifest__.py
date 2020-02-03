@@ -12,6 +12,7 @@
 	'data': [
         'security/ir.model.access.csv',
         'security/security.xml',
+		'data/birthday_check_cron.xml',
         'views/birthday_check.xml',
         'views/cheque_requests.xml',
         'views/menuitems.xml',

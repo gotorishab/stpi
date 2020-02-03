@@ -10,7 +10,7 @@ class BirthdayCheck(models.Model):
     is_previous_month = fields.Boolean(compute="_check_previous_month", store=True)
     is_current_month = fields.Boolean(compute="_check_current_month", store=True)
     is_next_month = fields.Boolean(compute="_check_next_month", store=True)
-
+    cheque_requested = fields.Selection([('yes', 'Yes'), ('no', 'No')], default='no', string='Cheque Requested')
 
     @api.depends('birthday')
     def _check_previous_month(self):
@@ -47,3 +47,9 @@ class BirthdayCheck(models.Model):
                     rec.is_next_month = False
 
 
+    def birthday_check_cron(self):
+        for rec in self:
+            today = datetime.date.today()
+            if rec.birthday:
+                if (today - rec.birthday).days >30:
+                    rec.cheque_requested = 'no'

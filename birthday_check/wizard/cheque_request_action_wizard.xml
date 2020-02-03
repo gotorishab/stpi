@@ -2,11 +2,11 @@
     <data>
 
 
-      <record id="cheque_request_confirm_view" model="ir.ui.view">
+      <record id="cheque_request_action_confirm_view" model="ir.ui.view">
             <field name="name">hr.employee.action.confirm.form</field>
             <field name="model">hr.employee.action.confirm</field>
             <field name="arch" type="xml">
-                <form string="Confirm Cheques?">
+                <form string="Approve/Reject?">
                     <p class="oe_grey">
                         <ul>
                             <li>Approve Button will approve all requests</li>

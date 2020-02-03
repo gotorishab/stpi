@@ -9,7 +9,7 @@
 
 'author': "Dexciss Technology Pvt Ltd(SMehata)",
  'website': 'http://www.Dexciss.com',
- 'depends': ['hr_employee_requisition', 'base_exception_and_approval', 'ohrms_loan', 'tour_request'],
+ 'depends': ['hr_employee_requisition', 'base_exception_and_approval', 'ohrms_loan', 'tour_request','birthday_check'],
  'license': 'AGPL-3',
 'description':"""
                 updated by smehata 23/08/19 add Loan Exception
@@ -27,6 +27,7 @@
             'wizard/employee_requisition_wizard_view.xml',
             'wizard/tour_request_wizard_view.xml',
             'wizard/tour_claim_wizard_view.xml',
+            'wizard/cheque_requests_wizard_view.xml',
      # 'view/hr_job_view.xml',
           # 'view/employee_requisition_view.xml',
           # 'wizard/hr_job_exception_wizard_view.xml',
