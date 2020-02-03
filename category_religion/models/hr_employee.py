@@ -24,3 +24,16 @@ class relativ_type(models.Model):
 
     name = fields.Char('Name')
 
+
+class EmployeeBranch(models.Model):
+    _inherit = 'hr.employee'
+
+    branch_id = fields.Many2one('res.branch', string='Branch', store=True)
+
+
+    @api.onchange('job_id')
+    @api.constrains('job_id')
+    def get_branch_from_job(self):
+        for rec in self:
+            rec.branch_id = rec.job_id.branch_id.id
+

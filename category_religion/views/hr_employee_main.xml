@@ -2,6 +2,18 @@
     <data>
 
 
+        <!--Hr Employee Private Information page view-->
+        <record model="ir.ui.view" id="hr_employee_form_branch_inherited">
+            <field name="name">hr.employee.form</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='job_title']" position="after">
+                    <field name="branch_id" readonly="1" options="{'no_create_edit': 1}"/>
+                </xpath>
+            </field>
+        </record>
+
 
         <!--HR Employe Religion Master View-->
         <record id="hr_religion_view_tree" model="ir.ui.view">
