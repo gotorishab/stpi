@@ -365,7 +365,6 @@
         <field name="view_mode">tree,form</field>
         <field name="context">{'search_default_my_claim': 1}</field>
         <field name="search_view_id" ref="view_tour_claim_search_form"/>
-        <!--<field name="search_view_id" ref="employee.tour.claim_search_view"/>-->
         <field name="domain">[('state','=','rejected')]</field>
     </record>
 

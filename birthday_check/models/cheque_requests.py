@@ -2,6 +2,7 @@ from odoo import api, fields, models, tools, _
 import calendar
 import datetime
 from dateutil.relativedelta import relativedelta
+from odoo.exceptions import ValidationError,UserError
 
 
 class ChequeRequests(models.Model):
@@ -24,6 +25,14 @@ class ChequeRequests(models.Model):
     state = fields.Selection(
         [('draft', 'Draft'), ('to_approve', 'To Approve'), ('approved', 'Approved'), ('rejected', 'Rejected')
          ], required=True, default='draft')
+
+    @api.multi
+    def unlink(self):
+        for tour in self:
+            if tour.state != 'draft':
+                raise UserError(
+                    'You cannot delete a Cheque Request which is not in draft state')
+        return super(ChequeRequests, self).unlink()
 
 
     @api.multi

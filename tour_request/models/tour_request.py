@@ -1,5 +1,5 @@
 from odoo import api, fields, models, tools, _
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError,UserError
 from datetime import datetime, date
 from dateutil.relativedelta import relativedelta
 import re
@@ -62,6 +62,15 @@ class TourRequest(models.Model):
     def button_reject(self):
         for rec in self:
             rec.write({'state': 'rejected'})
+
+
+    @api.multi
+    def unlink(self):
+        for tour in self:
+            if tour.state != 'draft':
+                raise UserError(
+                    'You cannot delete a Tour Request which is not in draft state')
+        return super(TourRequest, self).unlink()
 
     @api.multi
     def button_reset_to_draft(self):
@@ -217,6 +226,17 @@ class EmployeeTourClaim(models.Model):
     def button_reject(self):
         for rec in self:
             rec.write({'state': 'rejected'})
+
+
+    @api.multi
+    def unlink(self):
+        for tour in self:
+            if tour.state != 'draft':
+                raise UserError(
+                    'You cannot delete a Tour Claim which is not in draft state')
+        return super(EmployeeTourClaim, self).unlink()
+
+
 
     @api.multi
     def button_reset_to_draft(self):

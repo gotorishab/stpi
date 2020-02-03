@@ -47,6 +47,7 @@ class BirthdayCheck(models.Model):
                     rec.is_next_month = False
 
 
+
     def birthday_check_cron(self):
         for rec in self:
             today = datetime.date.today()
