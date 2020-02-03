@@ -1,0 +1,19 @@
+
+<odoo>
+    <!--=Menu Item of LTC menu snd their submenu=-->
+        <menuitem name="Birthday Cheque"
+              id="menu_birthday_cheque" parent="hr.menu_hr_root"
+              sequence="25"/>
+
+        <menuitem name="Employee Birthdays"
+              id="hr_employee_birthdays" parent="menu_birthday_cheque"
+              action="birthday_check.hr_birthday_cheque_action"
+                  sequence="1"
+              />
+
+        <menuitem name="Cheque Request"
+              id="cheque_requests_id" parent="menu_birthday_cheque"
+                  action="birthday_check.cheque_requests_action_view"
+                  sequence="2"
+              />
+</odoo>

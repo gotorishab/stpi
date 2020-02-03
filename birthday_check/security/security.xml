@@ -1,0 +1,21 @@
+<odoo>
+    <record model="ir.module.category" id="module_birthday_check">
+        <field name="name">Birthday Cheque</field>
+        <field name="description">Help You For Birthday Cheque</field>
+        <field name="sequence">21</field>
+    </record>
+
+
+    <record id="group_user_birthday" model="res.groups">
+        <field name="name">Birthday Cheque Request</field>
+        <field name="stpi">1</field>
+        <field name="category_id" ref="module_birthday_check"/>
+    </record>
+
+    <record id="group_approvar_birthday" model="res.groups">
+        <field name="name">Birthday Cheque Approver</field>
+        <field name="stpi">1</field>
+        <field name="category_id" ref="module_birthday_check"/>
+    </record>
+
+</odoo>
