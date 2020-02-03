@@ -9,19 +9,12 @@ class HrEmployeeTransferApprove(models.TransientModel):
 
     assign_task = fields.Boolean(string = 'Assign tasks to another employee?', defaut = 'False')
     name = fields.Many2one('res.users', string = 'Slect another user')
-    employee_id = fields.Many2one('hr.employee.transfer', invisible=1)
+    employee_id = fields.Many2one('hr.employee.transfer', readonly=1)
 
 
     def transfer_assigned_to(self):
         if self.name:
-            self.employee_id.employee_id.address_id = self.employee_id.to_location
-            serch_id = self.env['ir.model'].search([('model', '=','hr.employee')])
-            cre = self.env['mail.activity'].create(
-                {
-                    'res_id':self.employee_id.id,
-                    'res_model_id':serch_id.id,
-                    'user_id': self.name.id,
-                    'date_deadline':datetime.now().date(),
-                    'activity_type_id': 4,
-                }
-            )
+            self.employee_id.employee_id.address_id = self.employee_id.transfer_to.partner_id
+            serch_id = self.env['mail.activity'].search([('user_id', '=', self.employee_id.employee_id.user_id.id)])
+            for mail_act in serch_id:
+                mail_act.user_id = self.employee_id.id

@@ -13,6 +13,7 @@
     'depends': ['base','hr','employee_stages'],
     'data': [
         'security/ir.model.access.csv',
+        'wizard/hr_employee_transfer_approve.xml',
         'views/hr_employee_transfer_view.xml',
     ],
 

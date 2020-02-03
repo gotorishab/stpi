@@ -68,6 +68,21 @@ class  HrEmployeeTransfer(models.Model):
             rec.write({'state': 'rejected'})
 
 
+    def button_assign_to(self):
+        if self:
+            return {
+                'name': 'Employee Transfer',
+                'view_type': 'form',
+                'view_mode': 'form',
+                'res_model': 'hr.employee.transfer.approve',
+                'type': 'ir.actions.act_window',
+                'target': 'new',
+                'view_id': self.env.ref('hr_employee_transfer.hr_employee_transfer_approve_form_view').id,
+                'context': {
+                    'default_employee_id': self.id}
+            }
+
+
 
     @api.onchange('employee_id')
     def location_change(self):

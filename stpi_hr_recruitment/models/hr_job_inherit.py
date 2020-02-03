@@ -30,6 +30,11 @@ class HRJobInherit(models.Model):
         ('promotion', 'Promotion'),
     ], 'Recruitment Type', track_visibility='always')
 
+    technical = fields.Selection([
+        ('tech', 'Technical'),
+        ('nontech', 'Non Technical'),
+    ], 'Technical', track_visibility='always')
+
     advertisement_id = fields.Many2one('hr.requisition.application', string='Advertisement')
     allowed_degrees = fields.Many2many('hr.recruitment.degree', string='Allowed Degrees')
     pay_level = fields.Many2one('payslip.pay.level', string='Pay Band')

@@ -5,17 +5,18 @@
         <field name="inherit_id" ref="hr.view_hr_job_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//group[@name = 'recruitment']" position="after">
-                    <group string="Percentage">
-                        <field name="jp"/>
-                        <field name="scpercent" attrs="{'invisible': [('sanctionedpost', '=', 0)]}"/>
-                        <field name="stpercent" attrs="{'invisible': [('sanctionedpost', '=', 0)]}"/>
-                        <field name="obcercent" attrs="{'invisible': [('sanctionedpost', '=', 0)]}"/>
-                        <field name="ebcpercent" attrs="{'invisible': [('sanctionedpost', '=', 0)]}"/>
-                        <field name="vhpercent" attrs="{'invisible': [('sanctionedpost', '=', 0)]}"/>
-                        <field name="hhpercent" attrs="{'invisible': [('sanctionedpost', '=', 0)]}"/>
-                        <field name="phpercent" attrs="{'invisible': [('sanctionedpost', '=', 0)]}"/>
+                    <group string="Percentage" name="percentage" attrs="{'invisible': [('sanctionedpost', '=', 0)]}">
+                        <field name="jp" attrs="{'invisible': [('sanctionedpost', '=', 0)]}"/>
+                        <field name="scpercent" attrs="{'invisible': [('jp', '!=', True)]}"/>
+                        <field name="stpercent" attrs="{'invisible': [('jp', '!=', True)]}"/>
+                        <field name="obcercent" attrs="{'invisible': [('jp', '!=', True)]}"/>
+                        <field name="ebcpercent" attrs="{'invisible': [('jp', '!=', True)]}"/>
+                        <field name="vhpercent" attrs="{'invisible': [('jp', '!=', True)]}"/>
+                        <field name="hhpercent" attrs="{'invisible': [('jp', '!=', True)]}"/>
+                        <field name="phpercent" attrs="{'invisible': [('jp', '!=', True)]}"/>
                     </group>
                     <group name="recruitment_type" string="Recruitment Type">
+                        <field name="technical" required="1"/>
                         <field name="employee_type" widget="many2many_tags"/>
                         <field name="recruitment_type"/>
                     </group>

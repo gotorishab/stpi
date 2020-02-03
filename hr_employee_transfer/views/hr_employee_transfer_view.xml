@@ -25,7 +25,7 @@
                         <button name="button_draft" string="Submit for Approval" states="draft" class="oe_highlight" type="object"/>
                         <button name="button_approved" string="Approve" states="approval" class="oe_highlight" type="object"/>
                         <button name="button_rejected" string="Reject" states="approval" type="object"/>
-<!--                        <button name="button_rejected" string="Reject" states="approved" type="object"/>-->
+                        <button name="button_assign_to" string="Assign To" states="approved" class="oe_highlight" type="object"/>
                         <field name="state" widget="statusbar" statusbar_visible="draft,approval,approved" />
                     </header>
                     <sheet>
