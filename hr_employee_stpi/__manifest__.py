@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Employee Customisation - STPI',
-    'version': '12.0.1.0.0',
+    'version': '12.0.1.0.1',
     'summary': """Employee Customisation - STPI""",
-    'description': """Employee Customisation - STPI""",
+    'description': """Employee Customisation - STPI
+                    Last Updated by Sangita changes in Employee Service Report
+                    """,
     'category': 'Module for STPI',
     'author': 'Dexciss Technology @RGupta',
     'company': 'Dexciss Technology ',
