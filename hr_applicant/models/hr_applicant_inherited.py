@@ -23,7 +23,7 @@ class HRApplicant(models.Model):
                                       ('contractual_with_agency', 'Contractual with Agency'),
                                       ('contractual_with_stpi', 'Contractual with STPI')], string='Employment Type',
                                      )
-
+    branch_id = fields.Many2one('res.branch', string='Branch', store=True)
     recruitment_type = fields.Selection([
         ('d_recruitment', 'Direct Recruitment(DR)'),
         ('transfer', 'Transfer(Absorption)'),
@@ -274,6 +274,7 @@ class HRApplicant(models.Model):
                         'date_of_join': self.date_of_join,
                         'office_order_date': self.office_order_date,
                         'job_id': self.job_id,
+                        'branch_id': self.branch_id,
                         'department_id': self.department_id,
                         'parent_id': self.parent_id,
                         'personal_email': self.personal_email,

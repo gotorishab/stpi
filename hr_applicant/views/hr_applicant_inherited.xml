@@ -116,6 +116,7 @@
                                     <!--</group>-->
                                     <group string="Position">
                                         <field name="job_title" options="{'no_create_edit': True}"/>
+                                        <field name="branch_id" required="1"/>
                                         <field name="parent_id" options="{'no_create_edit': True}"/>
                                         <field name="coach_id" invisible="1"/>
                                         <field name="fax_number"/>
