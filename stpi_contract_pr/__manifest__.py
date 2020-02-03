@@ -10,10 +10,11 @@
     'maintainer': 'Dexciss Technology ',
     'website': "https://www.dexciss.com",
     'version': '12.0.4',
-    'depends': ['base','hr','hr_contract','hr_payroll'],
+    'depends': ['base','hr','hr_contract','hr_payroll','base_address_city'],
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
+        'views/res_city_inherit.xml',
         'views/hr_payroll.xml',
         'views/hr_employee_contracts.xml',
     ],

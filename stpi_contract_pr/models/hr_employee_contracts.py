@@ -40,35 +40,35 @@ class InheritContractss(models.Model):
     trial_date_end = fields.Date('End of Probation Period',
         help="End date of the trial period (if there is one).")
 
-    city_id = fields.Many2one('res.city', string='City', store=True)
-    # city_id = fields.Many2one('res.city', string='City', related='employee_id.address_home_id.city_id', store=True)
-    employee_hra_cat = fields.Selection([('x', 'X'),
-                                     ('y', 'Y'),
-                                     ('z', 'Z'),
-                                    ],string='HRA Category', store=True)
-
+    # city_id = fields.Many2one('res.city', string='City', store=True)
+    city_id = fields.Many2one('res.city', string='City', related='employee_id.address_home_id.city_id', store=True)
     # employee_hra_cat = fields.Selection([('x', 'X'),
     #                                  ('y', 'Y'),
     #                                  ('z', 'Z'),
-    #                                 ],string='HRA Category', related='employee_id.address_home_id.city_id.employee_hra_cat', store=True)
+    #                                 ],string='HRA Category', store=True)
+
+    employee_hra_cat = fields.Selection([('x', 'X'),
+                                     ('y', 'Y'),
+                                     ('z', 'Z'),
+                                    ],string='HRA Category', related='employee_id.address_home_id.city_id.employee_hra_cat', store=True)
     city_tier = fields.Selection([('a', 'A'),
                                      ('a1', 'A1'),
                                      ('other', 'Other'),
                                     ],string='City Tier')
-    #
-    # @api.constrains('employee_id')
-    # @api.onchange('employee_id')
-    # def _get_add_city(self):
-    #     for rec in self:
-    #         if rec.city_id.name:
-    #             if rec.city_id.name == 'Hyderabad' or rec.city_id.name == 'Delhi' or rec.city_id.name == 'Banglore' or rec.city_id.name == 'Mumbai' or rec.city_id.name == 'Chennai' or rec.city_id.name == 'Kolkata':
-    #                 rec.city_tier = 'a1'
-    #             elif rec.city_id.name == 'Ahmedabad' or rec.city_id.name == 'Surat' or rec.city_id.name == 'Kanpur' or rec.city_id.name == 'Patna' or rec.city_id.name == 'Kochi' or rec.city_id.name == 'Indore' or rec.city_id.name == 'Nagpur' or rec.city_id.name == 'Pune' or rec.city_id.name == 'Lucknow':
-    #                 rec.city_tier = 'a'
-    #             else:
-    #                 rec.city_tier = 'other'
-    #
-    #
+
+    @api.constrains('employee_id')
+    @api.onchange('employee_id')
+    def _get_add_city(self):
+        for rec in self:
+            if rec.city_id.name:
+                if rec.city_id.name == 'Hyderabad' or rec.city_id.name == 'Delhi' or rec.city_id.name == 'Banglore' or rec.city_id.name == 'Mumbai' or rec.city_id.name == 'Chennai' or rec.city_id.name == 'Kolkata':
+                    rec.city_tier = 'a1'
+                elif rec.city_id.name == 'Ahmedabad' or rec.city_id.name == 'Surat' or rec.city_id.name == 'Kanpur' or rec.city_id.name == 'Patna' or rec.city_id.name == 'Kochi' or rec.city_id.name == 'Indore' or rec.city_id.name == 'Nagpur' or rec.city_id.name == 'Pune' or rec.city_id.name == 'Lucknow':
+                    rec.city_tier = 'a'
+                else:
+                    rec.city_tier = 'other'
+
+
     # @api.constrains('pay_level')
     # @api.onchange('pay_level')
     # def _get_pay_wage(self):
