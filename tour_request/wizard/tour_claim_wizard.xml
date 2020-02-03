@@ -10,15 +10,27 @@
                     <group>
                         <field name="employee_id" readonly="1"/>
                         <field name="claim_id" readonly="1"/>
-                        <field name="remarks"/>
+                        <field name="remarks" required="1"/>
                     </group>
                 </group>
                 <field name="unpaid_detail_of_journey">
                     <tree editable="1" create="0">
                         <field name="done"/>
-                        <field name="un_claim_id" readonly="1"/>
+                        <field name="un_claim_id" invisible="1"/>
+                        <field name="employee_journey" invisible="1"/>
                         <field name="tour_sequence" readonly="1"/>
-                        <field name="employee_journey" readonly="1"/>
+                         <field name="from_l" readonly="1"/>
+                        <field name="departure_date" readonly="1"/>
+                        <field name='departure_time' readonly="1"/>
+                        <field name="to_l" readonly="1"/>
+                         <field name="travel_mode" readonly="1"/>
+                        <field name="arrival_date" readonly="1"/>
+                        <field name='arrival_time' readonly='1' />
+                         <field name="mode_detail" readonly="1"/>
+                        <field name="travel_entitled" readonly="1"/>
+                        <field name="boarding" readonly="1"/>
+                        <field name="lodging" readonly="1"/>
+                        <field name="conveyance" readonly="1"/>
                     </tree>
                 </field>
                 <footer>

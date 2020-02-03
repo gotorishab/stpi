@@ -14,14 +14,15 @@ class TourClaimWizard(models.TransientModel):
     #                 # print("amount===============>>>>",temp,line.amount)
     #         self.loan_amount = temp
 
-    claim_id = fields.Many2one('employee.tour.claim', string="Loan Ref.")
+    claim_id = fields.Many2one('employee.tour.claim', string="Claim Ref.")
     employee_id = fields.Many2one('hr.employee', string="Employee")
-    unpaid_detail_of_journey = fields.One2many('tour.wizard.line','un_claim_id', string="Loan Line", index=True)
+    unpaid_detail_of_journey = fields.One2many('tour.wizard.line','un_claim_id', string="Details of Journey", index=True)
     remarks = fields.Char(string='Remarks')
 
 
     @api.multi
     def confirm_loan_payment(self):
+        self.claim_id.detail_of_journey.unlink()
         for i in self.unpaid_detail_of_journey:
             if i.done:
                 self.env['tour.claim.journey'].create({
@@ -30,17 +31,15 @@ class TourClaimWizard(models.TransientModel):
                     'departure_time': i.departure_time,
                     'arrival_date': i.arrival_date,
                     'arrival_time': i.arrival_time,
-                    # 'from_l': i.from_l,
-                    # 'to_l': i.to_l,
-                    # 'travel_mode': i.travel_mode,
+                    'from_l': i.from_l.id,
+                    'to_l': i.to_l.id,
+                    'travel_mode': i.travel_mode.id,
                     'mode_detail': i.mode_detail,
                     'travel_entitled': i.travel_entitled,
                     'boarding': i.boarding,
                     'lodging': i.lodging,
                     'conveyance': i.conveyance,
                     'employee_journey': self.claim_id.id,
-                    # 'un_claim_id': wiz.id
-
                     })
 
 

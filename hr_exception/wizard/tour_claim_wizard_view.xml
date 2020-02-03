@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <record id="view_tour_request_confirm" model="ir.ui.view">
+        <record id="view_tour_claim_confirm" model="ir.ui.view">
             <field name="name">Hr Exceptions</field>
-            <field name="model">tour.request.confirm</field>
+            <field name="model">employee.tour.claim.confirm</field>
             <field name="arch" type="xml">
                 <form string="Your request will be processed through below mentioned approval steps" version="7.0">
                     <group>
                         <field name="exception_ids" nolabel="1" colspan="4">
-                            <tree string="Leave Exceptions">
+                            <tree string="Tour Claim Exceptions">
                                 <field name="name"/>
                                 <field name="description"/>
                             </tree>
@@ -26,13 +26,13 @@
             </field>
         </record>
 
-        <record id="action_employee_tour_request_confirm" model="ir.actions.act_window">
+        <record id="action_tour_claim_confirm" model="ir.actions.act_window">
             <field name="name">Your request will be processed through below mentioned approval steps</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="res_model">tour.request.confirm</field>
+            <field name="res_model">employee.tour.claim.confirm</field>
             <field name="view_type">form</field>
             <field name="view_mode">form</field>
-            <field name="view_id" ref="view_tour_request_confirm"/>
+            <field name="view_id" ref="view_tour_claim_confirm"/>
             <field name="target">new</field>
         </record>
     </data>

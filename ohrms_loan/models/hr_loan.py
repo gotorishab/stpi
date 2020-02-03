@@ -84,6 +84,8 @@ class HrLoan(models.Model):
     # emp_account_id = fields.Many2one('account.account', string="Loan Account")
     # journal_id = fields.Many2one('account.journal', string="Journal")
     max_emi = fields.Integer(string="Max No.EMI")
+    action_app = fields.Boolean('Action Approve bool', invisible=1)
+    action_clos = fields.Boolean('Action Loan Close bool', invisible=1)
 
 
     state = fields.Selection([

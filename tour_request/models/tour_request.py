@@ -185,22 +185,23 @@ class EmployeeTourClaim(models.Model):
                     total_claimed += ((line.daily_lodging_charge + line.daily_boarding_charge + line.daily_boarding_lodginf_charge)*line.no_of_days + line.other_details)
             record.total_claimed_amount = total_claimed
             record.advance_requested = advance_requested
-            record.balance_left = record.total_claimed_amount - record.advance_requested
+            record.balance_left = record.total_claimed_amount - record.advance_requested - record.amount_paid
 
 
     employee_id = fields.Many2one('hr.employee', string='Employee', default=_default_employee)
     designation = fields.Many2one('hr.job', string="Designation", compute='compute_des_dep')
-    department = fields.Many2one('hr.department', string="Department", compute='compute_des_dep')
+    department = fields.Many2one('hr.department', string="Department", compute='compute_des_dep', store=True)
     detail_of_journey = fields.One2many('tour.claim.journey','employee_journey')
     advance_requested = fields.Float(string="Advance Requested", readonly=True, compute='_compute_approved_amount')
     balance_left = fields.Float(string="Balance left", readonly=True, compute='_compute_approved_amount')
     tour_sequence = fields.Char(string="tour sequence")
     total_claimed_amount = fields.Float(string="Total Claimed Amount", compute='_compute_approved_amount')
-
+    amount_paid = fields.Float(string="Amount Paid")
     state = fields.Selection(
-        [('draft', 'Draft'), ('submitted', 'Waiting for Approval'), ('approved', 'Approved'), ('rejected', 'Rejected')
+        [('draft', 'Draft'), ('submitted', 'Waiting for Approval'), ('approved', 'Approved'), ('rejected', 'Rejected'), ('paid', 'Paid')
          ], required=True, default='draft', string='Status')
-
+    action_app = fields.Boolean('Action Approve bool', invisible=1)
+    action_clos = fields.Boolean('Action Paid Close bool', invisible=1)
     @api.depends('employee_id')
     def compute_des_dep(self):
         for rec in self:
@@ -219,39 +220,70 @@ class EmployeeTourClaim(models.Model):
 
     @api.multi
     def button_reset_to_draft(self):
-        for rec in self:
-            rec.write({'state': 'draft'})
+        self.ensure_one()
+        compose_form_id = self.env.ref('mail.email_compose_message_wizard_form').id
+        ctx = dict(
+            default_composition_mode='comment',
+            default_res_id=self.id,
+
+            default_model='employee.tour.claim',
+            default_is_log='True',
+            custom_layout='mail.mail_notification_light'
+        )
+        mw = {
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'mail.compose.message',
+            'view_id': compose_form_id,
+            'target': 'new',
+            'context': ctx,
+        }
+        self.write({'state': 'draft'})
+        return mw
 
     @api.multi
     def button_approved(self):
         for rec in self:
             rec.write({'state': 'approved'})
 
+
     @api.multi
-    def get_journey_details(self):
-        detail_of_journey = []
+    def button_pay(self):
         for rec in self:
-            rec.detail_of_journey.unlink()
-            if rec.employee_id:
-                tour_req = self.env['tour.request.journey'].search([('employee_id', '=', rec.employee_id.id),('employee_journey.state', '=', 'approved'),('claimed', '=', False)], order='tour_sequence desc')
-                for i in tour_req:
-                    detail_of_journey.append((0, 0, {
-                        'tour_sequence': i.tour_sequence,
-                        'departure_date': i.departure_date,
-                        'departure_time': i.departure_time,
-                        'arrival_date': i.arrival_date,
-                        'arrival_time': i.arrival_time,
-                        'from_l': i.from_l,
-                        'to_l': i.to_l,
-                        'travel_mode': i.travel_mode,
-                        'mode_detail': i.mode_detail,
-                        'travel_entitled': i.travel_entitled,
-                        'boarding': i.boarding,
-                        'lodging': i.lodging,
-                        'conveyance': i.conveyance,
-                        'employee_journey': self.id
-                    }))
-                self.detail_of_journey = detail_of_journey
+            rec.amount_paid = rec.total_claimed_amount - rec.advance_requested
+            tour_req = self.env['tour.request.journey'].search(
+                [('employee_id', '=', rec.employee_id.id), ('employee_journey.state', '=', 'approved'),
+                 ('employee_journey.claimed', '=', False)], order='tour_sequence desc')
+            for tour in tour_req:
+                tour.employee_journey.claimed = True
+            rec.write({'state': 'paid'})
+    #
+    # @api.multi
+    # def get_journey_details(self):
+    #     detail_of_journey = []
+    #     for rec in self:
+    #         rec.detail_of_journey.unlink()
+    #         if rec.employee_id:
+    #             tour_req = self.env['tour.request.journey'].search([('employee_id', '=', rec.employee_id.id),('employee_journey.state', '=', 'approved'),('claimed', '=', False)], order='tour_sequence desc')
+    #             for i in tour_req:
+    #                 detail_of_journey.append((0, 0, {
+    #                     'tour_sequence': i.tour_sequence,
+    #                     'departure_date': i.departure_date,
+    #                     'departure_time': i.departure_time,
+    #                     'arrival_date': i.arrival_date,
+    #                     'arrival_time': i.arrival_time,
+    #                     'from_l': i.from_l,
+    #                     'to_l': i.to_l,
+    #                     'travel_mode': i.travel_mode,
+    #                     'mode_detail': i.mode_detail,
+    #                     'travel_entitled': i.travel_entitled,
+    #                     'boarding': i.boarding,
+    #                     'lodging': i.lodging,
+    #                     'conveyance': i.conveyance,
+    #                     'employee_journey': self.id
+    #                 }))
+    #             self.detail_of_journey = detail_of_journey
 
     @api.multi
     def get_journey_details(self):
@@ -273,9 +305,9 @@ class EmployeeTourClaim(models.Model):
                         'departure_time': i.departure_time,
                         'arrival_date': i.arrival_date,
                         'arrival_time': i.arrival_time,
-                        # 'from_l': i.from_l,
-                        # 'to_l': i.to_l,
-                        # 'travel_mode': i.travel_mode,
+                        'from_l': i.from_l.id,
+                        'to_l': i.to_l.id,
+                        'travel_mode': i.travel_mode.id,
                         'mode_detail': i.mode_detail,
                         'travel_entitled': i.travel_entitled,
                         'boarding': i.boarding,
@@ -333,7 +365,7 @@ class TourClaimJourney(models.Model):
     to_l = fields.Many2one('res.city', string='To City')
     departure_time = fields.Float('Departure Time')
     arrival_time = fields.Float('Arrival Time')
-    leave_taken = fields.Many2many('hr.leave', string='Date of absence from place of halt  ')
+    leave_taken = fields.Many2many('hr.leave', string='Date of absence from place of halt ', domain="[('state','=','approved'),('employee_id', '=', self.employee_id),('date_from', '>', self.departure_date),('date_to', '<', self.arrival_date)]")
     amount_claimed = fields.Float('Amount Claimed')
     distance = fields.Float('Distance')
     approved_approved = fields.Float('Approved Amount')
@@ -355,7 +387,7 @@ class TourClaimJourney(models.Model):
     other_details = fields.Float('Details of other reimbursable expenses ')
 
     state = fields.Selection(
-        [('draft', 'Draft'), ('submitted', 'Waiting for Approval'), ('approved', 'Approved'), ('rejected', 'Rejected')
+        [('draft', 'Draft'), ('submitted', 'Waiting for Approval'), ('approved', 'Approved'), ('rejected', 'Rejected'), ('paid', 'Paid')
          ], related='employee_journey.state')
 
 
@@ -363,18 +395,7 @@ class TourClaimJourney(models.Model):
     @api.constrains('from_date','to_date')
     def compute_no_of_days(self):
         for rec in self:
-            pass
-            # rec.no_of_days = (rec.to_date - rec.from_date)
-
-
-    # @api.constrains('approved_approved')
-    # @api.onchange('approved_approved')
-    # def onchange_approved_amount(self):
-    #     for rec in self:
-    #         if rec.amount_claimed and rec.approved_approved and rec.amount_claimed < rec.approved_approved:
-    #             raise ValidationError(
-    #                 _("Approved Amount must be less than or equal to Claimed amount")
-    #             )
+            rec.no_of_days = (rec.to_date - rec.from_date).days
 
 
 class TravelMode(models.Model):
