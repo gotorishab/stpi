@@ -21,8 +21,8 @@ class InheritContractss(models.Model):
                                      )
 
 
-
-    pay_level = fields.Many2one('payslip.pay.level', string='Pay Band')
+    pay_level_id = fields.Many2one('hr.payslip.paylevel', string='Pay Level')
+    pay_level = fields.Many2one('payslip.pay.level', string='Pay Band', domain="[('entry_pay_id', '=', pay_level_id)]")
     
     #added by Sangita to rename the core field name
     struct_id = fields.Many2one('hr.payroll.structure', string='Salary Type')
@@ -90,6 +90,7 @@ class InheritContractss(models.Model):
                         'employee_id': employee.employee_id.id,
                         'department_id': employee.department_id.id,
                         'job_id': employee.job_id.id,
+                        'pay_level_id': employee.pay_level_id.id,
                         'pay_level': employee.pay_level.id,
                         'struct_id': employee.struct_id.id,
                         'type_id': employee.type_id.id,

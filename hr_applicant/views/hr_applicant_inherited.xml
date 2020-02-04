@@ -22,6 +22,7 @@
 
             <xpath expr="//label[@for='salary_expected']" position="before">
                 <field name="struct_id" required="1"/>
+                <field name="pay_level_id" required="1"/>
                 <field name="pay_level"/>
             </xpath>
 

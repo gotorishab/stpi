@@ -44,7 +44,8 @@ class HRApplicant(models.Model):
     cur_no_of_emp = fields.Float('current no of employee',compute="get_santioned_position_emp")
     get_total_match_category = fields.Integer('Get Total Match Category',compute="get_total_match_category_data")
 
-    pay_level = fields.Many2one('payslip.pay.level', string='Pay Band')
+    pay_level_id = fields.Many2one('hr.payslip.paylevel', string='Pay Level')
+    pay_level = fields.Many2one('payslip.pay.level', string='Pay Band', domain="[('entry_pay_id', '=', pay_level_id)]")
 
     struct_id = fields.Many2one('hr.payroll.structure', string='Salary Type')
 
@@ -177,9 +178,14 @@ class HRApplicant(models.Model):
     def _onchange_job_id(self):
         if self.job_id:
             self.job_title = self.job_id.name
-            self.pay_level = self.job_id.pay_level.id
-            self.salary_expected = self.job_id.pay_level.entry_pay
-            self.salary_proposed = self.job_id.pay_level.entry_pay
+            self.pay_level_id = self.job_id.pay_level_id.id
+
+
+    @api.onchange('pay_level')
+    def _onchange_pay_level(self):
+        if self.pay_level:
+            self.salary_expected = self.pay_level.entry_pay
+            self.salary_proposed = self.pay_level.entry_pay
 
 
     @api.onchange('address_id')
@@ -321,6 +327,7 @@ class HRApplicant(models.Model):
                             'employee_id': emp_id.id,
                             'department_id': emp_id.department_id.id,
                             'job_id': emp_id.job_id.id,
+                            'pay_level_id': self.pay_level_id.id,
                             'pay_level': self.pay_level.id,
                             'struct_id': self.struct_id.id,
                             'date_start': datetime.now().date(),
@@ -338,6 +345,7 @@ class HRApplicant(models.Model):
                             'employee_id': emp_id.id,
                             'department_id': emp_id.department_id.id,
                             'job_id': emp_id.job_id.id,
+                            'pay_level_id': self.pay_level_id.id,
                             'pay_level': self.pay_level.id,
                             'struct_id': self.struct_id.id,
                             'date_start': datetime.now().date(),
@@ -355,6 +363,7 @@ class HRApplicant(models.Model):
                             'employee_id': emp_id.id,
                             'department_id': emp_id.department_id.id,
                             'job_id': emp_id.job_id.id,
+                            'pay_level_id': self.pay_level_id.id,
                             'pay_level': self.pay_level.id,
                             'struct_id': self.struct_id.id,
                             'date_start': datetime.now().date(),
@@ -371,6 +380,7 @@ class HRApplicant(models.Model):
                             'employee_id': emp_id.id,
                             'department_id': emp_id.department_id.id,
                             'job_id': emp_id.job_id.id,
+                            'pay_level_id': self.pay_level_id.id,
                             'pay_level': self.pay_level.id,
                             'struct_id': self.struct_id.id,
                             'date_start': datetime.now().date(),
@@ -387,6 +397,7 @@ class HRApplicant(models.Model):
                             'employee_id': emp_id.id,
                             'department_id': emp_id.department_id.id,
                             'job_id': emp_id.job_id.id,
+                            'pay_level_id': self.pay_level_id.id,
                             'pay_level': self.pay_level.id,
                             'struct_id': self.struct_id.id,
                             'date_start': datetime.now().date(),
@@ -403,12 +414,12 @@ class HRApplicant(models.Model):
                             'employee_id': emp_id.id,
                             'department_id': emp_id.department_id.id,
                             'job_id': emp_id.job_id.id,
+                            'pay_level_id': self.pay_level_id.id,
                             'pay_level': self.pay_level.id,
                             'struct_id': self.struct_id.id,
                             'date_start': datetime.now().date(),
                             'date_end': datetime.now().date() + relativedelta(years=3),
                             'employee_type': self.employee_type,
-                            
                             'wage': self.salary_proposed,
                         }
                     )
