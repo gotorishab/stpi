@@ -37,7 +37,14 @@ class HRJobInherit(models.Model):
 
     advertisement_id = fields.Many2one('hr.requisition.application', string='Advertisement')
     allowed_degrees = fields.Many2many('hr.recruitment.degree', string='Allowed Degrees')
+
+
+
+    pay_level_id = fields.Many2one('hr.payslip.paylevel', string='Pay Level')
     pay_level = fields.Many2one('payslip.pay.level', string='Pay Band')
+
+
+
     struct_id = fields.Many2one('hr.payroll.structure', string='Salary Type')
 
     jp = fields.Boolean(string = 'Center - Specific Breakup')
