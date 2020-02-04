@@ -319,21 +319,21 @@ class HrEmployee(models.Model):
     #                     'default_employee_id': self.id}
     #         }
 
-    def set_employee_transfer(self):
-        if self:
-            return {
-                'name': 'Hr Employee Transfer',
-                'view_type': 'form',
-                'view_mode': 'tree,form',
-                'res_model': 'hr.employee.transfer',
-                'type': 'ir.actions.act_window',
-                'target': 'current',
-                # 'view_id': self.env.ref('l10n_in_hr_fields.employeetransfer_form_view').id,
-                'domain': [('employee_id', '=', self.id)],
-                'context':{
-                        'default_employee_id': self.id}
-            }
-
+    # def set_employee_transfer(self):
+    #     if self:
+    #         return {
+    #             'name': 'Hr Employee Transfer',
+    #             'view_type': 'form',
+    #             'view_mode': 'tree,form',
+    #             'res_model': 'hr.employee.transfer',
+    #             'type': 'ir.actions.act_window',
+    #             'target': 'current',
+    #             # 'view_id': self.env.ref('l10n_in_hr_fields.employeetransfer_form_view').id,
+    #             'domain': [('employee_id', '=', self.id)],
+    #             'context':{
+    #                     'default_employee_id': self.id}
+    #         }
+    #
 
 
 
