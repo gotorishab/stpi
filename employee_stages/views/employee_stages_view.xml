@@ -91,7 +91,7 @@
                 <filter name="employee" string="Employees"  domain="[('state','=','employment')]"/>
             </field>
             <xpath expr="//group" position="inside">
-                <filter name="state" string="State" domain="[]" context="{'group_by':'state'}"/>
+                <filter name="state" string="Status" domain="[]" context="{'group_by':'state'}"/>
             </xpath>
         </field>
     </record>

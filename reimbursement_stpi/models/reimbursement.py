@@ -269,8 +269,15 @@ class Reimbursement(models.Model):
                         else:
                             rec.write({'state': 'waiting_for_approval'})
                 else:
-                    raise ValidationError(
-                        "You are not allowed to take the future reimbursement")
+                    if rec.name != 'briefcase':
+                        raise ValidationError(
+                            "You are not allowed to take the future reimbursement")
+                    else:
+                        if int(rec.brief_amount) <= 0:
+                            raise ValidationError(
+                                "Amount must be greater than zero")
+                        else:
+                            rec.write({'state': 'waiting_for_approval'})
 
 
     @api.model
