@@ -5,3 +5,4 @@ from . import tour_request
 from . import tour_claim
 from . import birthday_request
 from . import hr_employee_transfer
+from . import hr_employee_vehicle_req
