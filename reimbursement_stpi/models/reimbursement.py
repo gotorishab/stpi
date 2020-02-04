@@ -27,47 +27,47 @@ class Reimbursement(models.Model):
         ('tuition_fee', 'Tuition Fee claim'),
         ('briefcase', 'Briefcase Reimbursement'),
         ('quarterly', 'Newspaper Reimbursements'),
-    ], string='Reimbursement Type')
-    employee_id = fields.Many2one('hr.employee')
-    job_id = fields.Many2one('hr.job', string='Functional Designation')
-    branch_id = fields.Many2one('res.branch', string='Branch')
-    department_id = fields.Many2one('hr.department', string='Department')
-    lunch_daily = fields.Char('Lunch Daily: ')
-    net_amount = fields.Char('Amount you get : ')
-    claimed_amount = fields.Float('Claimed Amount')
-    Approved_amount = fields.Char('Approved Amount')
-    from_date = fields.Date('From Date')
-    to_date = fields.Date('To Date')
-    working_days = fields.Char(string='Number of days: ')
-    remarks = fields.Text(string='Remarks: ')
-    service_provider = fields.Char(string='Service Provider')
-    phone = fields.Binary(string='Phone Attachment')
-    bill_no = fields.Char(string='Bill number')
-    no_of_months = fields.Char(string='No of months')
-    bill_due_date = fields.Date(string='Bill Due Date')
-    amount_phone = fields.Char(string='Amount')
-    total_amount = fields.Char(string='Total Amount')
-    name_of_child = fields.Char(string='Name of Child')
-    dob = fields.Date(string='Date of birth')
-    name_of_school = fields.Char(string='Name of School')
-    class_current = fields.Char(string='Class in which Studying')
-    academic_year = fields.Char(string='Academic Year')
-    brief_amount = fields.Float('Amount')
+    ], string='Reimbursement Type', store=True, track_visibility='always')
+    employee_id = fields.Many2one('hr.employee', store=True, track_visibility='always')
+    job_id = fields.Many2one('hr.job', string='Functional Designation', store=True, track_visibility='always')
+    branch_id = fields.Many2one('res.branch', string='Branch', store=True, track_visibility='always')
+    department_id = fields.Many2one('hr.department', string='Department', store=True, track_visibility='always')
+    lunch_daily = fields.Char('Lunch Daily: ', track_visibility='always')
+    net_amount = fields.Char('Amount you get : ', track_visibility='always')
+    claimed_amount = fields.Float('Claimed Amount', track_visibility='always')
+    Approved_amount = fields.Char('Approved Amount', track_visibility='always')
+    from_date = fields.Date('From Date', track_visibility='always')
+    to_date = fields.Date('To Date', track_visibility='always')
+    working_days = fields.Char(string='Number of days: ', track_visibility='always')
+    remarks = fields.Text(string='Remarks: ', track_visibility='always')
+    service_provider = fields.Char(string='Service Provider', track_visibility='always')
+    phone = fields.Binary(string='Phone Attachment', track_visibility='always')
+    bill_no = fields.Char(string='Bill number', track_visibility='always')
+    no_of_months = fields.Char(string='No of months', track_visibility='always')
+    bill_due_date = fields.Date(string='Bill Due Date', track_visibility='always')
+    amount_phone = fields.Char(string='Amount', track_visibility='always')
+    total_amount = fields.Char(string='Total Amount', track_visibility='always')
+    name_of_child = fields.Char(string='Name of Child', track_visibility='always')
+    dob = fields.Date(string='Date of birth', track_visibility='always')
+    name_of_school = fields.Char(string='Name of School', track_visibility='always')
+    class_current = fields.Char(string='Class in which Studying', track_visibility='always')
+    academic_year = fields.Char(string='Academic Year', track_visibility='always')
+    brief_amount = fields.Float('Amount', track_visibility='always')
     dis_child = fields.Boolean(
-        string='Whether the child for whom Children Education Allowance is applied is a disabled child?')
-    bc_school = fields.Boolean(string='Whether Bonafide Certificate from School is enclosed')
+        string='Whether the child for whom Children Education Allowance is applied is a disabled child?', track_visibility='always')
+    bc_school = fields.Boolean(string='Whether Bonafide Certificate from School is enclosed', track_visibility='always')
     bc_amount = fields.Boolean(
-        string='Whether Bonafide Certificate mentioning the amount of expenditure wrt Hostel is enclosed ')
-    fee_enclose = fields.Boolean(string='Whether Original Fee Receipts is enclosed')
-    claim_date_from = fields.Date('Claim Date: From')
-    claim_date_to = fields.Date('Claim Date: To')
-    claim_date = fields.Date('Claim Date')
-    approved_date = fields.Date('Approved On')
-    rejected_date = fields.Date('Rejected On')
-    relative_ids = fields.One2many('reimbursement.relatives','reimbursement', string='Details')
-    reimbursement_sequence = fields.Char('Reimbursement number')
+        string='Whether Bonafide Certificate mentioning the amount of expenditure wrt Hostel is enclosed ', track_visibility='always')
+    fee_enclose = fields.Boolean(string='Whether Original Fee Receipts is enclosed', track_visibility='always')
+    claim_date_from = fields.Date('Claim Date: From', track_visibility='always')
+    claim_date_to = fields.Date('Claim Date: To', track_visibility='always')
+    claim_date = fields.Date('Claim Date', track_visibility='always')
+    approved_date = fields.Date('Approved On', track_visibility='always')
+    rejected_date = fields.Date('Rejected On', track_visibility='always')
+    relative_ids = fields.One2many('reimbursement.relatives','reimbursement', string='Details', track_visibility='always')
+    reimbursement_sequence = fields.Char('Reimbursement number', track_visibility='always')
     state = fields.Selection([('draft', 'Draft'), ('waiting_for_approval', 'Submitted'), ('forwarded', 'Forwarded'), ('approved', 'Approved'), ('rejected', 'Rejected')
-                               ], required=True, default='draft')
+                               ], required=True, default='draft', track_visibility='always')
 
 
     @api.onchange('employee_id')
@@ -294,53 +294,43 @@ class Reimbursement(models.Model):
             res.append((record.id, name))
         return res
 
-
-    # @api.multi
-    # def button_forwarded(self):
-    #     for rec in self:
-    #         rec.write({'state': 'forwarded'})
-
     @api.multi
     def button_approved(self):
         for rec in self:
             rec.approved_date = datetime.now().date()
             rec.write({'state': 'approved'})
 
-    # @api.multi
-    # def button_processed(self):
-    #     for rec in self:
-    #         rec.write({'state': 'processed'})
-
     @api.multi
     def button_reject(self):
-        self.ensure_one()
-        compose_form_id = self.env.ref('mail.email_compose_message_wizard_form').id
-        ctx = dict(
-            default_composition_mode='comment',
-            default_res_id=self.id,
-
-            default_model='reimbursement',
-            default_is_log='True',
-            custom_layout='mail.mail_notification_light'
-        )
-        mw = {
-            'type': 'ir.actions.act_window',
-            'view_type': 'form',
-            'view_mode': 'form',
-            'res_model': 'mail.compose.message',
-            'view_id': compose_form_id,
-            'target': 'new',
-            'context': ctx,
-        }
-        self.rejected_date = datetime.now().date()
-        self.write({'state': 'rejected'})
-        return mw
+        for rec in self:
+            rec.write({'state': 'rejected'})
 
 
     @api.multi
     def button_reset_to_draft(self):
         for rec in self:
-            rec.write({'state': 'draft'})
+            self.ensure_one()
+            compose_form_id = self.env.ref('mail.email_compose_message_wizard_form').id
+            ctx = dict(
+                default_composition_mode='comment',
+                default_res_id=self.id,
+
+                default_model='reimbursement',
+                default_is_log='True',
+                custom_layout='mail.mail_notification_light'
+            )
+            mw = {
+                'type': 'ir.actions.act_window',
+                'view_type': 'form',
+                'view_mode': 'form',
+                'res_model': 'mail.compose.message',
+                'view_id': compose_form_id,
+                'target': 'new',
+                'context': ctx,
+            }
+            self.rejected_date = datetime.now().date()
+            self.write({'state': 'draft'})
+            return mw
 
 
 

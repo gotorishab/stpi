@@ -24,8 +24,7 @@
             <form string="Reimbursement">
                 <header>
                     <button name="button_submit" string="Submit" class="oe_highlight" type="object" states="draft"/>
-                     <button name="button_reset_to_draft" string="Reset to draft" type="object" states="waiting_for_approval"/>
-<!--                    <button name="button_forwarded" string="Forward" class="oe_highlight" type="object" states="waiting_for_approval" groups="reimbursement_stpi.group_processor"/>-->
+                     <button name="button_reset_to_draft" string="Revert" type="object" states="waiting_for_approval"/>
                     <button name="button_approved" string="Approve" class="oe_highlight" type="object" states="waiting_for_approval" groups="reimbursement_stpi.group_approving_authority"/>
                     <button name="button_reject" string="Reject" type="object" attrs="{'invisible':[('state','not in',('waiting_for_approval'))]}"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,waiting_for_approval ,approved,rejected" />
