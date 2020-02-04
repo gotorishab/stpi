@@ -29,6 +29,9 @@ class Reimbursement(models.Model):
         ('quarterly', 'Newspaper Reimbursements'),
     ], string='Reimbursement Type')
     employee_id = fields.Many2one('hr.employee')
+    job_id = fields.Many2one('hr.job', string='Functional Designation')
+    branch_id = fields.Many2one('res.branch', string='Branch')
+    department_id = fields.Many2one('hr.department', string='Department')
     lunch_daily = fields.Char('Lunch Daily: ')
     net_amount = fields.Char('Amount you get : ')
     claimed_amount = fields.Float('Claimed Amount')
@@ -66,6 +69,14 @@ class Reimbursement(models.Model):
     state = fields.Selection([('draft', 'Draft'), ('waiting_for_approval', 'Submitted'), ('forwarded', 'Forwarded'), ('approved', 'Approved'), ('rejected', 'Rejected')
                                ], required=True, default='draft')
 
+
+    @api.onchange('employee_id')
+    @api.constrains('employee_id')
+    def onchange_emp_get_base(self):
+        for rec in self:
+            rec.job_id = rec.employee_id.job_id.id
+            rec.department_id = rec.employee_id.department_id.id
+            rec.branch_id = rec.employee_id.branch_id.id
 
     # @api.constrains('name')
     @api.onchange('name')
