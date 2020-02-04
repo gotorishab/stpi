@@ -49,7 +49,11 @@
                              <field name="transfer_attach" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
                          </group>
                      </group>
-                        <field name="emp_activity"/>
+                        <notebook>
+                            <page name="pending_activities" string="Pending Activities">
+                                <field name="emp_activity"/>
+                            </page>
+                        </notebook>
                     </sheet>
                     <div class="oe_chatter">
                         <field name="message_follower_ids" widget="mail_followers"/>
@@ -203,5 +207,12 @@
                   name = "Transfer by Department"
                   action ="hremployee_action_department"
                   parent="employee_transfer_reports_menu_id_parent"
+                  />
+
+        <menuitem id = "employee_transfer_configuration_menu_id_parent"
+                  name = "Configuration"
+                  parent="hr_employee_transfer_menu_hr_id"
+                  sequence="100"
+                  groups="base.group_no_one"
                   />
 </odoo>

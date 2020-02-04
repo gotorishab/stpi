@@ -48,7 +48,7 @@ class ChequeRequest(models.Model):
              ('state', '=', 'to_approve')])
         # print("------------------exception",exception)
         if exception:
-            raise UserError(_('Do not allow Pending Approval Loan for Refuse.'))
+            raise UserError(_('Do not allow Pending Approval Cheque for Refuse.'))
         return super(ChequeRequest, self).button_reject()
 
     def _cheque_requests_get_lines(self):
