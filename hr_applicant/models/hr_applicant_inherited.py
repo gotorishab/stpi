@@ -45,7 +45,7 @@ class HRApplicant(models.Model):
     get_total_match_category = fields.Integer('Get Total Match Category',compute="get_total_match_category_data")
 
     pay_level_id = fields.Many2one('hr.payslip.paylevel', string='Pay Level')
-    pay_level = fields.Many2one('payslip.pay.level', string='Pay Band', domain="[('entry_pay_id', '=', pay_level_id)]")
+    pay_level = fields.Many2one('payslip.pay.level', string='Pay Band')
 
     struct_id = fields.Many2one('hr.payroll.structure', string='Salary Type')
 

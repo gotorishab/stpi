@@ -21,7 +21,7 @@
                         <field name="recruitment_type"/>
                     </group>
                     <group name="contract_details" string="Contract Details">
-                        <field name="pay_level" required="1"/>
+                        <field name="pay_level_id" required="1"/>
                         <field name="struct_id" required="1"/>
                     </group>
                 </xpath>

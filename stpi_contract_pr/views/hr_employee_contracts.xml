@@ -12,7 +12,7 @@
 
                 <xpath expr="//field[@name='struct_id']" position="after">
                     <field name = 'pay_level_id' required = 'True'/>
-                    <field name = 'pay_level'/>
+                    <field name = 'pay_level' domain="[('entry_pay_id', '=', pay_level_id)]"/>
                     <field name = 'city_id' readonly="1"/>
                     <field name = 'employee_hra_cat' readonly="1"/>
                     <field name = 'city_tier' readonly="1"/>
