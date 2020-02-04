@@ -1,4 +1,5 @@
-from odoo import models, fields, api, exceptions
+from odoo import models, fields, api, exceptions, _
+from odoo.exceptions import ValidationError, UserError
 from datetime import  datetime
 
 class  HrEmployeeTransfer(models.Model):
@@ -7,10 +8,10 @@ class  HrEmployeeTransfer(models.Model):
     _description = 'HR Employee Transfer'
     _rec_name='employee_id'
 
-    employee_id =  fields.Many2one('hr.employee',string='Employee', store=True)
-    job_id = fields.Many2one('hr.job', string="Functional Designation", store=True)
-    branch_id = fields.Many2one('res.branch', string="Branch", store=True)
-    department_id = fields.Many2one('hr.department', string="Department", store=True)
+    employee_id =  fields.Many2one('hr.employee',string='Employee', store=True,track_visibility='always')
+    job_id = fields.Many2one('hr.job', string="Functional Designation", store=True,track_visibility='always')
+    branch_id = fields.Many2one('res.branch', string="Branch", store=True,track_visibility='always')
+    department_id = fields.Many2one('hr.department', string="Department", store=True,track_visibility='always')
     date_of_join = fields.Date('Date of Joining',track_visibility='always')
     emp_stages = fields.Selection([
         ('test_period', 'Probation'),
@@ -23,15 +24,15 @@ class  HrEmployeeTransfer(models.Model):
         ('superannuation', 'Superannuation'),
         ('deceased', 'Deceased'),
         ('absconding', 'Absconding'),
-    ], string='Emplyement Status')
+    ], string='Emplyement Status',track_visibility='always')
 
-    transfer_to = fields.Many2one('res.branch', string='Transfer To')
-    order_number = fields.Char(string='Order Number')
-    order_date =  fields.Date(string='Order Date')
-    file_number=  fields.Char(string='File Number')
-    date   =  fields.Date(string='Date', default=datetime.now().date())
-    transfer_attach = fields.Binary('Document')
-    emp_activity = fields.Many2many('mail.activity', string = 'Activity')
+    transfer_to = fields.Many2one('res.branch', string='Transfer To',track_visibility='always')
+    order_number = fields.Char(string='Order Number',track_visibility='always')
+    order_date =  fields.Date(string='Order Date',track_visibility='always')
+    file_number=  fields.Char(string='File Number',track_visibility='always')
+    date   =  fields.Date(string='Date', default=datetime.now().date(),track_visibility='always')
+    transfer_attach = fields.Binary('Document',track_visibility='always')
+    emp_activity = fields.Many2many('mail.activity', string = 'Activity',track_visibility='always')
 
     state = fields.Selection([
                                 ('draft', 'Draft'),
@@ -39,7 +40,7 @@ class  HrEmployeeTransfer(models.Model):
                                 ('approved', 'Approved'),
                                 ('rejected','Rejected')
 
-                            ], default='draft')
+                            ], default='draft',track_visibility='always')
 
 
     @api.onchange('employee_id')
@@ -55,7 +56,29 @@ class  HrEmployeeTransfer(models.Model):
             record.emp_activity = serch_id.ids
 
 
+    @api.multi
+    def button_reset_to_draft(self):
+        self.ensure_one()
+        compose_form_id = self.env.ref('mail.email_compose_message_wizard_form').id
+        ctx = dict(
+            default_composition_mode='comment',
+            default_res_id=self.id,
 
+            default_model='hr.employee.transfer',
+            default_is_log='True',
+            custom_layout='mail.mail_notification_light'
+        )
+        mw = {
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'mail.compose.message',
+            'view_id': compose_form_id,
+            'target': 'new',
+            'context': ctx,
+        }
+        self.write({'state': 'draft'})
+        return mw
     @api.multi
     def button_draft(self):
         for rec in self:
@@ -66,7 +89,21 @@ class  HrEmployeeTransfer(models.Model):
         for rec in self:
             rec.employee_id.branch_id = rec.transfer_to.id
             rec.employee_id.address_id = rec.transfer_to.partner_id.id
+            _body = (_(
+                (
+                    "Transfer has been approved by <b>{0}</b> ").format(self.write_uid.name)))
+            rec.employee_id.message_post(body=_body)
             rec.write({'state': 'approved'})
+
+
+    @api.multi
+    def unlink(self):
+        for transfer in self:
+            if transfer.state != 'draft':
+                raise UserError(
+                    'You cannot delete a Transfer Order which is not in draft state')
+        return super(HrEmployeeTransfer, self).unlink()
+
 
     @api.multi
     def button_rejected(self):

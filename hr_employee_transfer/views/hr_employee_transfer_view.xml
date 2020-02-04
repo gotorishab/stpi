@@ -24,6 +24,7 @@
                     <header>
                         <button name="button_draft" string="Submit for Approval" states="draft" class="oe_highlight" type="object"/>
                         <button name="button_approved" string="Approve" states="approval" class="oe_highlight" type="object"/>
+                         <button name="button_reset_to_draft" string="Revert" type="object" states="approval"/>
                         <button name="button_rejected" string="Reject" states="approval" type="object"/>
                         <button name="button_assign_to" string="Assign Pending Activities" states="approved" class="oe_highlight" type="object"/>
                         <field name="state" widget="statusbar" statusbar_visible="draft,approval,approved" />
