@@ -129,6 +129,15 @@ class EmployeeFleet(models.Model):
     #     for rec in self:
     #         rec.write({'state': 'processed'})
 
+
+    @api.multi
+    def unlink(self):
+        for fleets in self:
+            if fleets.state != 'draft':
+                raise UserError(
+                    'You cannot delete a Request which is not in draft state')
+        return super(EmployeeFleet, self).unlink()
+
     @api.multi
     def reject(self):
         self.reserved_fleet_id.unlink()
@@ -158,6 +167,28 @@ class EmployeeFleet(models.Model):
         if self.reserved_fleet_id:
             self.reserved_fleet_id.unlink()
         self.state = 'cancel'
+        self.ensure_one()
+        compose_form_id = self.env.ref('mail.email_compose_message_wizard_form').id
+        ctx = dict(
+            default_composition_mode='comment',
+            default_res_id=self.id,
+
+            default_model='employee.fleet',
+            default_is_log='True',
+            custom_layout='mail.mail_notification_light'
+        )
+        mw = {
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'mail.compose.message',
+            'view_id': compose_form_id,
+            'target': 'new',
+            'context': ctx,
+        }
+        self.write({'state': 'draft'})
+        return mw
+
 
     @api.multi
     def returned(self):

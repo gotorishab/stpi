@@ -24,7 +24,7 @@
                         <button name='approve' string="Approve" type="object" states="waiting" class="oe_highlight" groups="employee_vehicle_request.group_employee_manager_v"/>
                         <!--<button name="button_processed" string="Process" class="oe_highlight" type="object" states="confirm" groups="employee_vehicle_request.group_travel_processor_v"/>-->
                         <button name='reject' string="Reject" type="object" states="waiting," groups="employee_vehicle_request.group_employee_manager_v"/>
-                        <button name='cancel' string="Cancel" type="object" states="draft"/>
+                        <button name='cancel' string="Revert" type="object" states="waiting"/>
                         <button name='returned' string="Return" type="object" states="confirm" groups="hr.group_hr_manager,hr.group_hr_user"/>
                         <field name="state" widget="statusbar" statusbar_visible="draft,waiting,confirm,return"/>
                     </header>

@@ -30,11 +30,11 @@ class HREmployeeVehicle(models.Model):
         return True
 
     @api.multi
-    def button_approved(self):
+    def approve(self):
         if self.detect_exceptions():
             return self._popup_exceptions()
         else:
-            return super(HREmployeeVehicle, self).button_approved()
+            return super(HREmployeeVehicle, self).approve()
 
     @api.model
     def _get_popup_action(self):
@@ -43,13 +43,13 @@ class HREmployeeVehicle(models.Model):
 
 
     @api.multi
-    def button_rejected(self):
+    def reject(self):
         exception = self.env['approvals.list'].search([('resource_ref', '=', 'hr.employee.transfer' + ',' + str(self.id)),
                                                        ('state', '=', 'approval')])
         # print("------------------exception",exception)
         if exception:
             raise UserError(_('Do not allow Pending Approval Transfer orders for Cancel.'))
-        return super(HREmployeeVehicle, self).button_rejected()
+        return super(HREmployeeVehicle, self).reject()
 
 
 class Approvalslist(models.Model):
@@ -61,7 +61,7 @@ class Approvalslist(models.Model):
         if res:
             # print("----------------------self.model_id.model", self.model_id.model)
             if self.model_id.model == 'employee.fleet':
-                self.resource_ref.button_approved()
+                self.resource_ref.approve()
         return res
 
     @api.multi
@@ -69,5 +69,5 @@ class Approvalslist(models.Model):
         res = super(Approvalslist, self).reject()
         if res:
             if self.model_id.model == 'employee.fleet':
-                self.resource_ref.button_rejected()
+                self.resource_ref.reject()
         return res
