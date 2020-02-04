@@ -9,6 +9,8 @@
 
                         <group>
                             <field name = "assign_task"/>
+                            <field name = "branch_id" invisible="1"/>
+                            <field name = "employee_transfer_id" invisible="1"/>
                             <field name="name" attrs="{'invisible': [('assign_task', '=', False)], 'required': [('assign_task', '=', True)]}"/>
                         </group>
                     <footer>
