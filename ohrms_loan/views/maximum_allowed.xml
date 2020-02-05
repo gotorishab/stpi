@@ -4,7 +4,7 @@
         <field name="model">allowed.loan.amount</field>
         <field name ="arch" type="xml">
             <tree editable="bottom">
-                 <field name="pay_level" required="1"/>
+                 <field name="pay_level_id" required="1"/>
                  <field name="amount" required="1"/>
             </tree>
         </field>
