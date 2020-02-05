@@ -173,7 +173,7 @@ class HRApplicant(models.Model):
     def _check_dob_app(self):
         for employee in self:
             today = datetime.now().date()
-            if employee.dob > today:
+            if employee.dob and employee.dob > today:
                 raise ValidationError(_('Please enter correct date of birth'))
 
 
@@ -182,7 +182,7 @@ class HRApplicant(models.Model):
     def _check_office_order_date_app(self):
         for employee in self:
             today = datetime.now().date()
-            if employee.office_order_date > today:
+            if employee.office_order_date and employee.office_order_date > today:
                 raise ValidationError(_('Please enter correct office order date'))
 
 
