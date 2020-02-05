@@ -835,8 +835,8 @@
             string="Service Book"
             model="hr.employee"
             report_type="qweb-pdf"
-            file="l10n_in_hr_fields.emp_service_book_print_action"
-            name="l10n_in_hr_fields.emp_service_book_print_action"/>
+            file="hr_employee_stpi.emp_service_book_print_action"
+            name="hr_employee_stpi.emp_service_book_print_action"/>
 
 
 </odoo>
