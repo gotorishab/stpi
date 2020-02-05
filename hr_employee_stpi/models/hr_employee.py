@@ -19,7 +19,7 @@ class HrEmployee(models.Model):
     #header
     employee_type = fields.Selection([('regular','Regular Employee'),
                                      ('contractual_with_agency','Contractual with Agency'),
-                                     ('contractual_with_stpi','Contractual with STPI')],string='Employment Type',track_visibility='always')
+                                     ('contractual_with_stpi','Contractual with STPI')],string='Employment Type',track_visibility='always', store=True)
 
     recruitment_type = fields.Selection([
                                     ('d_recruitment','Direct Recruitment(DR)'),
@@ -28,7 +28,7 @@ class HrEmployee(models.Model):
                                     ('deputation','Deputation'),
                                     ('c_appointment','Compassionate Appointment'),
                                     ('promotion','Promotion'),
-                                         ],'Recruitment Type',track_visibility='always')
+                                         ],'Recruitment Type',track_visibility='always', store=True)
 
     salutation = fields.Many2one('res.partner.title',track_visibility='always')
 
@@ -96,7 +96,7 @@ class HrEmployee(models.Model):
 
 
     #Identification
-    identify_id = fields.Char(string='Identification No.',copy=False,track_visibility='always')
+    identify_id = fields.Char(string='Identification No.',copy=False, store=True, track_visibility='always', compute='_compute_identify_no')
     pan_no = fields.Char('PAN Card No.',track_visibility='always')
     pan_upload = fields.Binary('Upload(PAN)',track_visibility='always')
     aadhar_no = fields.Char('Aadhar Card No.',track_visibility='always')
@@ -222,16 +222,29 @@ class HrEmployee(models.Model):
                 return res
 
 
-    @api.model
-    def create(self, vals):
-        res =super(HrEmployee, self).create(vals)
-        if res.employee_type == 'regular':
-            seq = self.env['ir.sequence'].next_by_code('hr.employee')
-            res.identify_id = 'STPI' + str(seq)
-        else :
-            seq = self.env['ir.sequence'].next_by_code('identify.seqid')
-            res.identify_id = 'STPITEMP' + str(seq)
-        return res
+
+    @api.depends('employee_type')
+    def _compute_identify_no(self):
+        for res in self:
+            if res.employee_type == 'regular':
+                seq = self.env['ir.sequence'].next_by_code('hr.employee')
+                res.identify_id = 'STPI' + str(seq)
+            else:
+                seq = self.env['ir.sequence'].next_by_code('identify.seqid')
+                res.identify_id = 'STPITEMP' + str(seq)
+
+
+    # @api.model
+    # def create(self, vals):
+    #     res =super(HrEmployee, self).create(vals)
+    #     print('==========================',vals)
+    #     if res.employee_type == 'regular':
+    #         seq = self.env['ir.sequence'].next_by_code('hr.employee')
+    #         res.identify_id = 'STPI' + str(seq)
+    #     else :
+    #         seq = self.env['ir.sequence'].next_by_code('identify.seqid')
+    #         res.identify_id = 'STPITEMP' + str(seq)
+    #     return res
 
     @api.constrains('date_of_join', 'office_order_date')
     @api.onchange('date_of_join','office_order_date')

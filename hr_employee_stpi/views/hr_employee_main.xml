@@ -13,8 +13,8 @@
                 <xpath expr="//notebook" position="before">
                     <group>
                     <group>
-                        <field name="employee_type" readonly="1"/>
-                        <field name="identify_id" readonly="1"/>
+                        <field name="employee_type" readonly="1" required="1"/>
+                        <field name="identify_id"/>
                     </group>
                     <group>
                         <field name="recruitment_type" attrs="{'invisible': [('employee_type', '!=', 'regular')],'readonly': [('employee_type', '=', 'regular')]}"/>
