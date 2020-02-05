@@ -2,6 +2,8 @@ from odoo import models, fields, api,_
 from odoo.exceptions import ValidationError
 from odoo.tools import float_compare
 import datetime 
+from reportlab.lib.randomtext import leadins
+from twilio.twiml.voice_response import Leave
 
 class HrLeave(models.Model):
     _inherit = 'hr.leave'
@@ -14,20 +16,24 @@ class HrLeave(models.Model):
     employee_type = fields.Selection([('regular', 'Regular Employee'),
                                       ('contractual_with_agency', 'Contractual with Agency'),
                                       ('contractual_with_stpi', 'Contractual with STPI')], string='Employment Type',
-                                      invisible=True)
-#     state = fields.Selection([('joined', 'Roll On'),
-#                           ('grounding', 'Induction'),
-#                           ('test_period', 'Probation'),
-#                           ('employment', 'Employment'),
-#                           ('notice_period', 'Notice Period'),
-#                           ('relieved', 'Resigned'),
-#                           ('terminate', 'Terminated'),
-#                           ('retired','Retired'),
-#                           ('suspended','Suspended'),
-#                           ('superannuation','Superannuation'),
-#                           ('deceased','Deceased'),
-#                           ('absconding','Absconding'),
-#                         ],string="Stage")
+                                      )
+    gender = fields.Selection([('male','Male'),
+                                     ('female','Female'),
+                                     ('both','Both')   
+                                    ],string="Allow Gender")
+    employee_state = fields.Selection([('joined', 'Roll On'),
+                          ('grounding', 'Induction'),
+                          ('test_period', 'Probation'),
+                          ('employment', 'Employment'),
+                          ('notice_period', 'Notice Period'),
+                          ('relieved', 'Resigned'),
+                          ('terminate', 'Terminated'),
+                          ('retired','Retired'),
+                          ('suspended','Suspended'),
+                          ('superannuation','Superannuation'),
+                          ('deceased','Deceased'),
+                          ('absconding','Absconding'),
+                        ],string="Stage")
     branch_id = fields.Many2one('res.branch',string="Branch")
     leave_type_id = fields.Many2one('hr.leave.type',readonly=True)
     from_date = fields.Date(string="From Date",readonly=True)
@@ -47,18 +53,21 @@ class HrLeave(models.Model):
     @api.model
     def create(self, vals):
         res = super(HrLeave, self).create(vals)
-#         if res.holiday_status_id and res.employee_id:
-#             print("11111111111111111111111111111111",res.employee_id.employee_type, 
-#                   res.holiday_status_id.allow_service_leave.name,self.employee_type,res.employee_type)
-#             type = dict(res.fields_get(["employee_type"],['selection'])['employee_type']["selection"]).get(res.employee_type)
-#             state = dict(res.fields_get(["state"],['selection'])['state']["selection"]).get(res.state)
+        if res.holiday_status_id and res.employee_id:
+            
+            type = dict(res.fields_get(["employee_type"],['selection'])['employee_type']["selection"]).get(res.employee_type)
+            state = dict(res.fields_get(["employee_state"],['selection'])['employee_state']["selection"]).get(res.employee_state)
 #             print("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLL",type)
-#             if type == res.holiday_status_id.allow_service_leave.name:
-#                 print("22222222222222222222222")
-#                 if state == res.holiday_status_id.allow_employee_stages.name:
-#                     print("#333333333333333333333")
-#                     raise ValidationError(_("Your re not allow to take this leave"))
-        
+            if  res.holiday_status_id.allow_gender == 'both' or res.gender == res.holiday_status_id.allow_gender:
+#                 print("gendergendergendergendergendergender")
+                for leave_type_emp in res.holiday_status_id.allow_service_leave:
+                    if type not in leave_type_emp.name:
+#                         print("22222222222222222222222",type,leave_type_emp.name)
+                        for leave_type_state in res.holiday_status_id.allow_emp_stage: 
+                            if state not in leave_type_state.name:
+#                                 print("#333333333333333333333",state,leave_type_state.name)
+                                raise ValidationError(_("Your re not allow to take this leave"))
+            
         if res.holiday_status_id:
             if res.days_between_last_leave == 0:
                 if res.leave_type_id:
@@ -70,21 +79,19 @@ class HrLeave(models.Model):
             
         return res
     
-    @api.constrains('employee_id')                
-    @api.onchange('employee_id')
-    def onchange_employee(self):
-        for leave in self:
-            leave.branch_id = leave.employee_id.branch_id.id
-            leave.employee_type = leave.employee_id.employee_type
-    
-    
+ 
     @api.constrains('date_from','date_to','employee_id')                
     @api.onchange('date_from','date_to','employee_id')
     def onchange_employee(self):
         for leave in self:
+            leave.branch_id = leave.employee_id.branch_id.id
+            leave.employee_type = leave.employee_id.employee_type
+            leave.employee_state = leave.employee_id.state
+            leave.gender = leave.employee_id.gender
+#             print("{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{",leave.employee_state,leave.employee_type,leave.branch_id)
             leave_ids = self.env['hr.leave'].search([('employee_id','=',leave.employee_id.id),
                                                      ('state','=','validate')],limit=1, order="request_date_to desc")
-            print("<<<<<<<<<<<<<<<<<<<<",leave_ids)
+#             print("<<<<<<<<<<<<<<<<<<<<",leave_ids)
             if leave_ids:
                 leave.leave_type_id = leave_ids.holiday_status_id.id
                 leave.from_date = leave_ids.request_date_from
