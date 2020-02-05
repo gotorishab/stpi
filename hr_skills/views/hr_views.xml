@@ -62,7 +62,6 @@
                                     <field name="sequence" widget="handle"/>
                                     <field name="line_type_id"/>
                                     <field name="name"/>
-                                    <field name="description"/>
                                     <field name="date_start"/>
                                     <field name="date_end"/>
                                 </tree>

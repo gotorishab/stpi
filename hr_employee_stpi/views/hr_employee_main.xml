@@ -13,11 +13,11 @@
                 <xpath expr="//notebook" position="before">
                     <group>
                     <group>
-                        <field name="employee_type" readonly="1"/>
-                        <field name="identify_id" readonly="1"/>
+                        <field name="employee_type" readonly="1" required="1"/>
+                        <field name="identify_id"/>
                     </group>
                     <group>
-                        <field name="recruitment_type" readony="1" attrs="{'invisible': [('employee_type', '!=', 'regular')]}"/>
+                        <field name="recruitment_type" attrs="{'invisible': [('employee_type', '!=', 'regular')],'readonly': [('employee_type', '=', 'regular')]}"/>
                     </group>
                     </group>
                 </xpath>
@@ -121,12 +121,6 @@
                 <xpath expr="//field[@name='tz']" position="attributes">
                     <attribute name="invisible">1</attribute>
                 </xpath>
-
-                <button name="toggle_active" position="before">
-                    <button name="set_employee_training" string='Employee Training' type="object" class="oe_stat_button" icon="fa-id-card-o" groups="base.group_user" help="Employee Training"/>
-                    <button name="set_employee_transfer" string="Employee Transfer" type="object" class="oe_stat_button" icon="fa-arrow-right" attrs="{'invisible': [('employee_type', '!=', 'regular')]}"/>
-                  </button>
-
             </field>
         </record>
         <record model="ir.ui.view" id="hr_employee_private_inherited">
@@ -147,7 +141,9 @@
                                 <field name="date_of_eligibility" attrs="{'invisible':[('show_citizen_field','=',False)],'required':[('show_citizen_field','=',True)]}"/>
                                 <field name="citizen_file_name" invisible="1"/>
                                 <field name="show_citizen_field" invisible="1"/>
-                                <field name="bank_account_id" context="{'default_partner_id': address_home_id}" options="{'no_create_edit': True}"/>
+                                <field name="bank_account_id" invisible="1"/>
+                                <field name="bank_account_number"/>
+                                <field name="ifsc_code"/>
                             </group>
                             <group string="Status">
                                 <field name="gender"/>

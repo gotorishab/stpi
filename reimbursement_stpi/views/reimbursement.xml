@@ -24,8 +24,7 @@
             <form string="Reimbursement">
                 <header>
                     <button name="button_submit" string="Submit" class="oe_highlight" type="object" states="draft"/>
-                     <button name="button_reset_to_draft" string="Reset to draft" type="object" states="waiting_for_approval"/>
-<!--                    <button name="button_forwarded" string="Forward" class="oe_highlight" type="object" states="waiting_for_approval" groups="reimbursement_stpi.group_processor"/>-->
+                     <button name="button_reset_to_draft" string="Revert" type="object" states="waiting_for_approval"/>
                     <button name="button_approved" string="Approve" class="oe_highlight" type="object" states="waiting_for_approval" groups="reimbursement_stpi.group_approving_authority"/>
                     <button name="button_reject" string="Reject" type="object" attrs="{'invisible':[('state','not in',('waiting_for_approval'))]}"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,waiting_for_approval ,approved,rejected" />
@@ -35,6 +34,9 @@
                         <group>
                             <field name="reimbursement_sequence" attrs="{'invisible':[('reimbursement_sequence','=', False)], 'readonly':[('reimbursement_sequence','!=', False)]}"/>
                             <field name="employee_id" readonly="1"/>
+                            <field name="job_id" readonly="1"/>
+                            <field name="branch_id" readonly="1"/>
+                            <field name="department_id" readonly="1"/>
                             <field name="name" attrs="{'readonly':[('state','not in',('draft'))], 'required':[('state','in',('draft'))]}"/>
                             <field name="claimed_amount" attrs="{'invisible':[('name','not in',('telephone','mobile'))]}"/>
                             <field name="Approved_amount" readonly="1" attrs="{'invisible':[('name','not in',('telephone','mobile'))]}"/>
@@ -126,23 +128,28 @@
         </record>
 
     <!--=======Search view of Reimbursement=======-->
-    <!--<record model='ir.ui.view' id='reimbursement_search_view'>-->
-            <!--<field name="name">reimbursement.search</field>-->
-            <!--<field name="model">reimbursement</field>-->
-            <!--<field name="arch" type="xml">-->
-                <!--<search string="Reimbursement">-->
-                    <!--<field name="employee_id"/>-->
-                    <!--<field name="name"/>-->
-                    <!--<field name="from_date"/>-->
-                    <!--<field name="to_date"/>-->
-                    <!--<separator/>-->
-                    <!--<group expand="0" string="Group By">-->
-                        <!--<filter string="Status" name="status" domain="[]" context="{'group_by':'state'}"/>-->
-                        <!--<filter string="Employee" name="employee_id" domain="[]" context="{'group_by':'employee_id'}"/>-->
-                    <!--</group>-->
-                <!--</search>-->
-            <!--</field>-->
-        <!--</record>-->
+    <record model='ir.ui.view' id='reimbursement_search_view'>
+            <field name="name">reimbursement.search</field>
+            <field name="model">reimbursement</field>
+            <field name="arch" type="xml">
+                <search string="Reimbursement">
+                    <filter string="My Claims" name="my_claims" domain="[('employee_id.user_id.id', '=', uid)]" />
+                    <field name="employee_id"/>
+                    <field name="name"/>
+                    <field name="from_date"/>
+                    <field name="to_date"/>
+                    <separator/>
+                    <group expand="0" string="Group By">
+                        <filter string="Status" name="status" domain="[]" context="{'group_by':'state'}"/>
+                        <filter string="Employee" name="employee" domain="[]" context="{'group_by':'employee_id'}"/>
+                        <filter string="Branch" name="branch" domain="[]" context="{'group_by':'branch_id'}"/>
+                        <filter string="Department" name="department" domain="[]" context="{'group_by':'department_id'}"/>
+                        <filter string="Job Position" name="job" domain="[]" context="{'group_by':'job_id'}"/>
+                        <filter string="Reimbursement Type" name="reim_type" domain="[]" context="{'group_by':'name'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
 
     <!--============Action view of Reimbursement Draft============-->
     <record id="reimbursement_menu_action" model="ir.actions.act_window">
@@ -150,7 +157,8 @@
         <field name="res_model">reimbursement</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
-        <!--<field name="search_view_id" ref="reimbursement_search_view"/>-->
+        <field name="context">{'search_default_my_claims': 1}</field>
+        <field name="search_view_id" ref="reimbursement_search_view"/>
         <field name="domain">[('state','=','draft')]</field>
     </record>
     <!--============Action view of Reimbursement Waiting============-->
@@ -159,7 +167,8 @@
         <field name="res_model">reimbursement</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
-        <!--<field name="search_view_id" ref="reimbursement_search_view"/>-->
+        <field name="context">{'search_default_my_claims': 1}</field>
+        <field name="search_view_id" ref="reimbursement_search_view"/>
         <field name="domain">[('state','in',('waiting_for_approval','forwarded'))]</field>
     </record>
     <!--============Action view of Reimbursement approved============-->
@@ -168,7 +177,8 @@
         <field name="res_model">reimbursement</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
-        <!--<field name="search_view_id" ref="reimbursement_search_view"/>-->
+        <field name="context">{'search_default_my_claims': 1}</field>
+        <field name="search_view_id" ref="reimbursement_search_view"/>
         <field name="domain">[('state','=','approved')]</field>
     </record>
     <!--============Action view of Reimbursement rejected============-->
@@ -177,8 +187,83 @@
         <field name="res_model">reimbursement</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
-        <!--<field name="search_view_id" ref="reimbursement_search_view"/>-->
+        <field name="context">{'search_default_my_claims': 1}</field>
+        <field name="search_view_id" ref="reimbursement_search_view"/>
         <field name="domain">[('state','=','rejected')]</field>
+    </record>
+
+    <!--============Action view of Reimbursement rejected============-->
+    <record id="reimbursement_all_menu_action" model="ir.actions.act_window">
+        <field name="name">Reimbursement</field>
+        <field name="res_model">reimbursement</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_my_claims': 1}</field>
+        <field name="search_view_id" ref="reimbursement_search_view"/>
+    </record>
+
+
+    <!--============Action view of Reimbursement rejected============-->
+    <record id="reimbursement_department_menu_action" model="ir.actions.act_window">
+        <field name="name">Reimbursement</field>
+        <field name="res_model">reimbursement</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_department': 1}</field>
+        <field name="search_view_id" ref="reimbursement_search_view"/>
+    </record>
+
+
+    <!--============Action view of Reimbursement rejected============-->
+    <record id="reimbursement_branch_menu_action" model="ir.actions.act_window">
+        <field name="name">Reimbursement</field>
+        <field name="res_model">reimbursement</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_branch': 1}</field>
+        <field name="search_view_id" ref="reimbursement_search_view"/>
+    </record>
+
+
+    <!--============Action view of Reimbursement rejected============-->
+    <record id="reimbursement_job_menu_action" model="ir.actions.act_window">
+        <field name="name">Reimbursement</field>
+        <field name="res_model">reimbursement</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_job': 1}</field>
+        <field name="search_view_id" ref="reimbursement_search_view"/>
+    </record>
+
+    <!--============Action view of Reimbursement rejected============-->
+    <record id="reimbursement_employee_menu_action" model="ir.actions.act_window">
+        <field name="name">Reimbursement</field>
+        <field name="res_model">reimbursement</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_employee': 1}</field>
+        <field name="search_view_id" ref="reimbursement_search_view"/>
+    </record>
+
+    <!--============Action view of Reimbursement rejected============-->
+    <record id="reimbursement_status_menu_action" model="ir.actions.act_window">
+        <field name="name">Reimbursement</field>
+        <field name="res_model">reimbursement</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_status': 1}</field>
+        <field name="search_view_id" ref="reimbursement_search_view"/>
+    </record>
+
+
+    <!--============Action view of Reimbursement rejected============-->
+    <record id="reimbursement_type_menu_action" model="ir.actions.act_window">
+        <field name="name">Reimbursement</field>
+        <field name="res_model">reimbursement</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_reim_type': 1}</field>
+        <field name="search_view_id" ref="reimbursement_search_view"/>
     </record>
 
 
@@ -266,6 +351,7 @@
                   name = "Configuration"
                   parent ="reimbursement_menu_id"
                   groups="reimbursement_stpi.group_approving_authority"
+                  sequence="100"
                   />
         <menuitem id = "reimbursement_configuration_master_id"
                   name = "Master"
@@ -277,13 +363,50 @@
                   name = "Reporting"
                   parent ="reimbursement_menu_id"
                   groups="reimbursement_stpi.group_approving_authority"
+                  sequence="50"
                   />
         <menuitem id = "reimbursement_reimbursement_analysis_id"
                   name = "Reimbursement Analysis"
                   parent ="reimbursement_reporting_menu_id"
                   action="reimbursement_reimbursement_analysis_action"
-
                   />
+        <menuitem id = "reimbursement_all_menu_id"
+                  name = "All Reimbursements"
+                  parent ="reimbursement_reporting_menu_id"
+                  action="reimbursement_all_menu_action"
+                  />
+        <menuitem id = "reimbursement_department_menu_id"
+                  name = "Reimbursement by Department"
+                  parent ="reimbursement_reporting_menu_id"
+                  action="reimbursement_department_menu_action"
+                  />
+        <menuitem id = "reimbursement_branch_menu_id"
+                  name = "Reimbursements by Branch"
+                  parent ="reimbursement_reporting_menu_id"
+                  action="reimbursement_branch_menu_action"
+                  />
+        <menuitem id = "reimbursement_job_menu_id"
+                  name = "Reimbursement by Job Position"
+                  parent ="reimbursement_reporting_menu_id"
+                  action="reimbursement_job_menu_action"
+                  />
+        <menuitem id = "reimbursement_employee_menu_id"
+                  name = "Reimbursement by Employee"
+                  parent ="reimbursement_reporting_menu_id"
+                  action="reimbursement_employee_menu_action"
+                  />
+        <menuitem id = "reimbursement_status_menu_id"
+                  name = "Reimbursements by Status"
+                  parent ="reimbursement_reporting_menu_id"
+                  action="reimbursement_status_menu_action"
+                  />
+        <menuitem id = "reimbursement_type_menu_id"
+                  name = "Reimbursement by Type"
+                  parent ="reimbursement_reporting_menu_id"
+                  action="reimbursement_type_menu_action"
+                  />
+
+
 
 
 

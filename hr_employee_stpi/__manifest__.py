@@ -15,6 +15,7 @@
     'depends': ['base','hr','hr_applicant','hr_skills','hr_recruitment','oh_employee_documents_expiry','hr_holidays','stpi_contract_pr','employee_stages','category_religion'],
     'data': [
         'security/ir.model.access.csv',
+        'security/hr_employee_security.xml',
         'views/hr_employee_main.xml',
         'views/employee_family_view.xml',
         # 'wizard/hr_employee_transfer_approve.xml',

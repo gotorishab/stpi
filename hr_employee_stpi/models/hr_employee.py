@@ -2,7 +2,7 @@
 
 from odoo import models, fields, api,_
 from odoo.exceptions import ValidationError
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 import re
 
 
@@ -19,7 +19,7 @@ class HrEmployee(models.Model):
     #header
     employee_type = fields.Selection([('regular','Regular Employee'),
                                      ('contractual_with_agency','Contractual with Agency'),
-                                     ('contractual_with_stpi','Contractual with STPI')],string='Employment Type',track_visibility='always')
+                                     ('contractual_with_stpi','Contractual with STPI')],string='Employment Type',track_visibility='always', store=True)
 
     recruitment_type = fields.Selection([
                                     ('d_recruitment','Direct Recruitment(DR)'),
@@ -28,7 +28,7 @@ class HrEmployee(models.Model):
                                     ('deputation','Deputation'),
                                     ('c_appointment','Compassionate Appointment'),
                                     ('promotion','Promotion'),
-                                         ],'Recruitment Type',track_visibility='always')
+                                         ],'Recruitment Type',track_visibility='always', store=True)
 
     salutation = fields.Many2one('res.partner.title',track_visibility='always')
 
@@ -96,12 +96,14 @@ class HrEmployee(models.Model):
 
 
     #Identification
-    identify_id = fields.Char(string='Identification No.',copy=False,track_visibility='always')
+    identify_id = fields.Char(string='Identification No.',copy=False, store=True, track_visibility='always', compute='_compute_identify_no')
     pan_no = fields.Char('PAN Card No.',track_visibility='always')
     pan_upload = fields.Binary('Upload(PAN)',track_visibility='always')
     aadhar_no = fields.Char('Aadhar Card No.',track_visibility='always')
     aadhar_upload = fields.Binary('Upload(Aadhar)',track_visibility='always')
     passport_upload = fields.Binary('Upload(Passport)',track_visibility='always')
+    bank_account_number = fields.Char(string='Bank Account number')
+    ifsc_code = fields.Char(string='IFSC Code')
 
     # category_ids = fields.Many2many('hr.employee.category', 'employee_category_rel', 'emp_id', 'category_id', 'Tags', required=False)
 
@@ -220,16 +222,29 @@ class HrEmployee(models.Model):
                 return res
 
 
-    @api.model
-    def create(self, vals):
-        res =super(HrEmployee, self).create(vals)
-        if res.employee_type == 'regular':
-            seq = self.env['ir.sequence'].next_by_code('hr.employee')
-            res.identify_id = 'STPI' + str(seq)
-        else :
-            seq = self.env['ir.sequence'].next_by_code('identify.seqid')
-            res.identify_id = 'STPITEMP' + str(seq)
-        return res
+
+    @api.depends('employee_type')
+    def _compute_identify_no(self):
+        for res in self:
+            if res.employee_type == 'regular':
+                seq = self.env['ir.sequence'].next_by_code('hr.employee')
+                res.identify_id = 'STPI' + str(seq)
+            else:
+                seq = self.env['ir.sequence'].next_by_code('identify.seqid')
+                res.identify_id = 'STPITEMP' + str(seq)
+
+
+    # @api.model
+    # def create(self, vals):
+    #     res =super(HrEmployee, self).create(vals)
+    #     print('==========================',vals)
+    #     if res.employee_type == 'regular':
+    #         seq = self.env['ir.sequence'].next_by_code('hr.employee')
+    #         res.identify_id = 'STPI' + str(seq)
+    #     else :
+    #         seq = self.env['ir.sequence'].next_by_code('identify.seqid')
+    #         res.identify_id = 'STPITEMP' + str(seq)
+    #     return res
 
     @api.constrains('date_of_join', 'office_order_date')
     @api.onchange('date_of_join','office_order_date')
@@ -257,6 +272,22 @@ class HrEmployee(models.Model):
         for rec in self:
             if rec.pan_no and not re.match(r'^[A-Za-z]{5}[0-9]{4}[A-Za-z]$', str(rec.pan_no)):
                 raise ValidationError(_("Please enter correct PAN number..."))
+
+    @api.constrains('birthday')
+    def _check_birthday_app(self):
+        for employee in self:
+            today = datetime.now().date()
+            if employee.birthday  and employee.birthday > today:
+                raise ValidationError(_('Please enter correct date of birth'))
+
+
+
+    @api.constrains('office_order_date')
+    def _check_office_order_date_app(self):
+        for employee in self:
+            today = datetime.now().date()
+            if employee.office_order_date and employee.office_order_date > today:
+                raise ValidationError(_('Please enter correct office order date'))
 
 
 
@@ -319,21 +350,21 @@ class HrEmployee(models.Model):
     #                     'default_employee_id': self.id}
     #         }
 
-    def set_employee_transfer(self):
-        if self:
-            return {
-                'name': 'Hr Employee Transfer',
-                'view_type': 'form',
-                'view_mode': 'tree,form',
-                'res_model': 'hr.employee.transfer',
-                'type': 'ir.actions.act_window',
-                'target': 'current',
-                # 'view_id': self.env.ref('l10n_in_hr_fields.employeetransfer_form_view').id,
-                'domain': [('employee_id', '=', self.id)],
-                'context':{
-                        'default_employee_id': self.id}
-            }
-
+    # def set_employee_transfer(self):
+    #     if self:
+    #         return {
+    #             'name': 'Hr Employee Transfer',
+    #             'view_type': 'form',
+    #             'view_mode': 'tree,form',
+    #             'res_model': 'hr.employee.transfer',
+    #             'type': 'ir.actions.act_window',
+    #             'target': 'current',
+    #             # 'view_id': self.env.ref('l10n_in_hr_fields.employeetransfer_form_view').id,
+    #             'domain': [('employee_id', '=', self.id)],
+    #             'context':{
+    #                     'default_employee_id': self.id}
+    #         }
+    #
 
 
 
@@ -385,7 +416,12 @@ class EmployeeAddress(models.Model):
             if rec.count >2:
                 raise ValidationError("You cannot change Homettown address more than 2 times")
 
-    _sql_constraints = [
-        ('unique_address_type', 'unique(address_type, employee_id)', ' The address type must be unique'),
-    ]
-
+    @api.constrains('address_type','employee_id')
+    def check_unique_add(self):
+        for rec in self:
+            count = 0
+            emp_id = self.env['employee.address'].search([('address_type', '=', rec.address_type),('employee_id', '=', rec.employee_id.id)])
+            for e in emp_id:
+                count+=1
+            if count >1:
+                raise ValidationError("The Address Type must be unique")

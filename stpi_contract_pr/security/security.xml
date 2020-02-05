@@ -5,7 +5,7 @@
 
     <record id="ir_rule_contract_security" model="ir.rule">
         <field name="model_id" ref="hr_contract.model_hr_contract"/>
-        <field name="domain_force">['|',  ('job_id.branch_id.id','=',user.default_branch_id.id), ('job_id.branch_id.id','in',[g.id for g in user.branch_ids])] </field>
+        <field name="domain_force">['|',  ('job_id.branch_id','=',False), ('job_id.branch_id.id','in',[g.id for g in user.branch_ids])] </field>
         <field name="name">Allowed contract User</field>
         <field name="groups" eval="[(4, ref('base.group_user'))]"/>
     </record>
