@@ -9,7 +9,31 @@
                 <field name="attachement" invisible="1"/>
                 <field name="commuted"/>
                 <field name="attachement_proof" attrs="{'invisible': [('attachement','!=',True),('commuted','!=',True)],'required': [('attachement','=',True)]}"/>
+                <field name="employee_type"/>
+                <field name="branch_id"/>
+                <!-- <field name="state"/> -->
             </field>
+            
+            <xpath expr="//form/sheet" position="inside">
+                <notebook>
+                    <page string="Last Applied Leave">
+                        <group>
+                            <group>
+                                <field name="leave_type_id"/>
+                                <field name="from_date"/>
+                                <field name="to_date"/>
+                                <field name="no_of_days_leave"/>
+                            </group>
+                            <group>
+                                <field name="status"/>
+                                <field name="applied_on"/>
+                                <field name="days_between_last_leave"/>
+                                <field name="are_days_weekend"/>
+                            </group>
+                        </group>
+                    </page>
+                </notebook>
+            </xpath>
         </field>
     </record>
 

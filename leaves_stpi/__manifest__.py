@@ -1,6 +1,6 @@
 {
     'name': 'STPI Leave Management',
-    'version': '12.0.0.1',
+    'version': '12.0.0.2',
     'summary': 'Manage Leave Requests',
     'description': """
         Helps you to manage Leave Requests of your company's staff.
@@ -17,6 +17,7 @@
         'data/hr_leave_type_data.xml',
         'data/holidays_type_data.xml',
         'security/ir.model.access.csv',
+        'security/security.xml',
         'views/hr_leave_type_extended.xml',
         'views/leave_type_view.xml',
         'views/employee_stages.xml',

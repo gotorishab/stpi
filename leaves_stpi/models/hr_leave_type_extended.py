@@ -74,7 +74,8 @@ class HrLeaveType(models.Model):
     commuted = fields.Boolean(string="Commuted")
     amount_total = fields.Monetary(string='Total',store=True, readonly=True, compute='_compute_amount')
     
-   
+    allowed_prefix_leave = fields.Many2many('leave.type',string="Allowed Prefix Leave")
+    
     @api.model
     def create(self, vals):
         res = super(HrLeaveType, self).create(vals)

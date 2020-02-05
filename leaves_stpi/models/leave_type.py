@@ -6,3 +6,5 @@ class LeaveType(models.Model):
     _rec_name = 'name'
     
     name = fields.Char(string="Name")
+    
+    

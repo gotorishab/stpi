@@ -1,6 +1,7 @@
 from odoo import models, fields, api,_
 from odoo.exceptions import ValidationError
 from odoo.tools import float_compare
+import datetime 
 
 class HrLeave(models.Model):
     _inherit = 'hr.leave'
@@ -10,11 +11,104 @@ class HrLeave(models.Model):
     attachement = fields.Boolean(string="attachment")
     attachement_proof = fields.Binary(string="Attachment Proof")
     commuted = fields.Boolean(string="Commuted")
+    employee_type = fields.Selection([('regular', 'Regular Employee'),
+                                      ('contractual_with_agency', 'Contractual with Agency'),
+                                      ('contractual_with_stpi', 'Contractual with STPI')], string='Employment Type',
+                                      invisible=True)
+#     state = fields.Selection([('joined', 'Roll On'),
+#                           ('grounding', 'Induction'),
+#                           ('test_period', 'Probation'),
+#                           ('employment', 'Employment'),
+#                           ('notice_period', 'Notice Period'),
+#                           ('relieved', 'Resigned'),
+#                           ('terminate', 'Terminated'),
+#                           ('retired','Retired'),
+#                           ('suspended','Suspended'),
+#                           ('superannuation','Superannuation'),
+#                           ('deceased','Deceased'),
+#                           ('absconding','Absconding'),
+#                         ],string="Stage")
+    branch_id = fields.Many2one('res.branch',string="Branch")
+    leave_type_id = fields.Many2one('hr.leave.type',readonly=True)
+    from_date = fields.Date(string="From Date",readonly=True)
+    to_date = fields.Date(string="To Date",readonly=True)
+    no_of_days_leave = fields.Float(string="No of Days Leave",readonly=True)
+    status = fields.Selection([ ('draft', 'To Submit'),
+                            ('cancel', 'Cancelled'),
+                            ('confirm', 'To Approve'),
+                            ('refuse', 'Refused'),
+                            ('validate1', 'Second Approval'),
+                            ('validate', 'Approved')
+                            ],string="Status",readonly=True)
+    applied_on = fields.Datetime(string="Applied On",readonly=True)
+    days_between_last_leave = fields.Float(string="Days Between Last Leave")
+    are_days_weekend = fields.Boolean(string="Are Days Weekend",readonly=True)
     
-#     @api.onchange('employee_id')
-#     def get_employee_detail(self):
-#         for hr in self:
-#             print("???//////////////////////////",hr.employee_id.state,hr.employee_id.employee_type,hr.employee_id.gender)
+    @api.model
+    def create(self, vals):
+        res = super(HrLeave, self).create(vals)
+#         if res.holiday_status_id and res.employee_id:
+#             print("11111111111111111111111111111111",res.employee_id.employee_type, 
+#                   res.holiday_status_id.allow_service_leave.name,self.employee_type,res.employee_type)
+#             type = dict(res.fields_get(["employee_type"],['selection'])['employee_type']["selection"]).get(res.employee_type)
+#             state = dict(res.fields_get(["state"],['selection'])['state']["selection"]).get(res.state)
+#             print("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLL",type)
+#             if type == res.holiday_status_id.allow_service_leave.name:
+#                 print("22222222222222222222222")
+#                 if state == res.holiday_status_id.allow_employee_stages.name:
+#                     print("#333333333333333333333")
+#                     raise ValidationError(_("Your re not allow to take this leave"))
+        
+        if res.holiday_status_id:
+            if res.days_between_last_leave == 0:
+                if res.leave_type_id:
+                    for allowed_prefix in res.holiday_status_id.allowed_prefix_leave:
+#                         print("<<<<<<<<<<<<<<<<<<<<<<<<<<",res.holiday_status_id.allowed_prefix_leave,res.leave_type_id.leave_type,allowed_prefix)
+                        if res.leave_type_id.leave_type not in allowed_prefix.name:
+#                             print("-----------------------------=============")
+                            raise ValidationError(_('You Are not allowed to club %s with %s type')% (res.holiday_status_id.name,res.leave_type_id.name))
+            
+        return res
+    
+    @api.constrains('employee_id')                
+    @api.onchange('employee_id')
+    def onchange_employee(self):
+        for leave in self:
+            leave.branch_id = leave.employee_id.branch_id.id
+            leave.employee_type = leave.employee_id.employee_type
+    
+    
+    @api.constrains('date_from','date_to','employee_id')                
+    @api.onchange('date_from','date_to','employee_id')
+    def onchange_employee(self):
+        for leave in self:
+            leave_ids = self.env['hr.leave'].search([('employee_id','=',leave.employee_id.id),
+                                                     ('state','=','validate')],limit=1, order="request_date_to desc")
+            print("<<<<<<<<<<<<<<<<<<<<",leave_ids)
+            if leave_ids:
+                leave.leave_type_id = leave_ids.holiday_status_id.id
+                leave.from_date = leave_ids.request_date_from
+                leave.to_date = leave_ids.request_date_to
+                leave.no_of_days_leave = leave_ids.number_of_days_display
+                leave.status = leave_ids.state
+                leave.applied_on = leave_ids.create_date
+                days_between_last_leave = leave.request_date_from - leave_ids.request_date_to
+                leave.days_between_last_leave = days_between_last_leave.days
+                
+                d1 = leave_ids.request_date_to   # start date
+                d2 = leave.request_date_from  # end date
+                
+                days = [d1 + datetime.timedelta(days=x) for x in range((d2-d1).days + 1)]
+#                 print("????????????????????????????????",days)
+                for day in days:
+                    week = day.strftime('%Y-%m-%d')
+                    
+                    year, month, day = (int(x) for x in week.split('-'))    
+                    answer = datetime.date(year, month, day).strftime('%A')
+#                     print(":<<<<<<<<<<<<<<<<<<<<<<<<<<",answer)
+                    if answer == 'Saturday' or answer == 'Sunday':
+                        leave.are_days_weekend = True
+#             print("???//////////////////////////",leave_ids)
     
     @api.constrains('date_from','date_to','holiday_status_id')
     @api.onchange('date_from','date_to','holiday_status_id')
