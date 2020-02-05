@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 {
-    'name': 'Employee Customisation - STPI',
+    'name': 'Employee Transfer - STPI',
     'version': '12.0.1.0.0',
-    'summary': """Employee Customisation - STPI""",
+    'summary': """Employee Transfer - STPI""",
     'description': """Employee Customisation - STPI""",
     'category': 'Module for STPI',
     'author': 'Dexciss Technology @RGupta',
