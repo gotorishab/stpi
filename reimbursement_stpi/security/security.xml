@@ -8,6 +8,7 @@
 
     <record id="group_approving_authority" model="res.groups">
         <field name="name">Approving Authority</field>
+        <field name="stpi">1</field>
         <field name="category_id" ref="module_reimbursement"/>
     </record>
 

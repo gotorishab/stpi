@@ -1,0 +1,262 @@
+<odoo>
+    <!--==========Form view of Employee LTC Advance==========-->
+    <record id="employeeltc_advance_form_view" model="ir.ui.view">
+        <field name="name">employee.ltc.advance.form</field>
+        <field name="model">employee.ltc.advance</field>
+        <field name="arch" type="xml">
+            <form string="LTC">
+                <header>
+                    <button name="button_to_approve" string="Send for Approval" class="oe_highlight" type="object" states="draft"/>
+                     <button name="button_reset_to_draft" string="Reset to draft" type="object" states="to_approve"/>
+                    <button name="button_approved" string="Approve" class="oe_highlight" type="object" states="to_approve" groups="l10n_in_hr_fields.group_manager_ltc"/>
+                    <button name="button_reject" string="Reject" type="object" states="to_approve" groups="l10n_in_hr_fields.group_manager_ltc"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,to_approve,approved,rejected" />
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="ltc_sequence" invisible="True"/>
+                            <field name="employee_id" required="True" readonly="1"/>
+                            <field name="place_of_trvel" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="hometown_address" attrs="{'readonly':[('place_of_trvel','=','hometown')]}"/>
+                            <field name="block_year" attrs="{'readonly': [('state', '!=', 'draft')],'required': [('state', '=', 'draft')]}"/>
+                            <field name="slect_leave" options="{'color_field': 'color', 'no_create_edit': True}" attrs="{'readonly': [('state', '!=', 'draft')],'required': [('state', '=', 'draft')]}"/>
+                            <field name="leave_period" readonly="1"/>
+                            <field name="total_leaves" invisible="1"/>
+                            <field name="left_leaves" invisible="1"/>
+                            <field name="depart_date" readonly="1"/>
+                            <field name="arrival_date" readonly="1"/>
+                            <field name="advance_ammount" attrs="{'readonly': [('state', '!=', 'draft')],'required': [('state', '=', 'draft')]}"/>
+                            <field name="single_fare" attrs="{'readonly': [('state', '!=', 'draft')],'required': [('state', '=', 'draft')]}"/>
+                            <field name="attach_file" attrs="{'invisible': [('single_fare', '=', False)],'readonly': [('state', '!=', 'draft')]}"/>
+                        </group>
+                        <group>
+                            <field name="single_fare_approved" attrs="{'invisible': [('state', '=', 'draft')], 'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="family_details" widget="many2many_tags" placeholder="Family Details..." options="{'color_field': 'color', 'no_create_edit': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="partner_working" attrs="{'readonly': [('state', '!=', 'draft')],'required': [('state', '=', 'draft')]}"/>
+                            <field name="mode_of_travel" attrs="{'readonly': [('state', '!=', 'draft')],'required': [('state', '=', 'draft')]}"/>
+                            <field name="el_encashment" attrs="{'readonly': [('state', '!=', 'draft')],'required': [('state', '=', 'draft')]}"/>
+                            <field name="no_of_days" attrs="{'invisible': [('el_encashment', '=', 'no')], 'required': [('el_encashment', '=', 'yes')],'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="amount" attrs="{'invisible': [('el_encashment', '=', 'no')],}"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!--==========Tree view of Employee LTC Advance==========-->
+    <record id="employeeltc_advance_tree_view" model="ir.ui.view">
+        <field name="name">employee.ltc.advance.tree</field>
+        <field name="model">employee.ltc.advance</field>
+        <field name="arch" type="xml">
+            <tree string="LTC">
+                <field name="ltc_sequence"/>
+                <field name="employee_id" required="True"/>
+                <field name="place_of_trvel"/>
+                <field name="block_year"/>
+                <field name="leave_period"/>
+                <field name="depart_date"/>
+                <field name="arrival_date"/>
+                <field name="advance_ammount"/>
+                <field name="family_details" widget="many2many_tags" placeholder="Family Details..." options="{'color_field': 'color', 'no_create_edit': True}"/>
+                <field name="mode_of_travel"/>
+                <field name="el_encashment"/>
+                <field name="no_of_days" attrs="{'invisible': [('el_encashment', '=', 'no')], 'required': [('el_encashment', '=', 'yes')]}"/>
+                <field name="amount" attrs="{'invisible': [('el_encashment', '=', 'no')]}"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <!--==========Search view of Employee LTC Advance Status==========-->
+     <record id="view_ltc_advance_status_filter_report" model="ir.ui.view">
+        <field name="name">employee.ltc.advance.search</field>
+        <field name="model">employee.ltc.advance</field>
+        <field name="arch" type="xml">
+            <search string="Search for LTC Advance">
+                <field name="ltc_sequence"/>
+                <group expand="0" string="Group By">
+                   <filter name="group_category" string="State" context="{'group_by':'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+     <!--=====Sequence of Employee LTC Advance=====-->
+     <record id="seq_ltc_sequence" model="ir.sequence">
+        <field name="name">LTC sequence</field>
+        <field name="code">employee.ltc.advance</field>
+        <field name="padding">3</field>
+        <field name="company_id" eval="False"/>
+     </record>
+
+    <!--===============Action view of Employee LTC Advance===============-->
+    <record id="hremployeeltc_advance_action" model="ir.actions.act_window">
+        <field name="name">Advance Request</field>
+        <field name="res_model">employee.ltc.advance</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form,search</field>
+    </record>
+
+<!--===============Action view of Employee LTC Advance Status=================-->
+    <record id="hremployeeltc_advance_status_action" model="ir.actions.act_window">
+        <field name="name">Advance Request Status</field>
+        <field name="res_model">employee.ltc.advance</field>
+        <!--<field name="view_type">form</field>-->
+        <field name="view_mode">tree,form,search</field>
+        <field name="context">{'group_by': 'state'}</field>
+    </record>
+
+
+
+
+    <!--===========Form view of Employee LTC Claim===========-->
+    <record id="employeeltc_claim_form_view" model="ir.ui.view">
+        <field name="name">employee.ltc.claim.form</field>
+        <field name="model">employee.ltc.claim</field>
+        <field name="arch" type="xml">
+            <form string="LTC">
+                <header>
+                    <button name="button_to_approve" string="Send for Approval" class="oe_highlight" type="object" states="draft"/>
+                     <button name="button_reset_to_draft" string="Reset to draft" type="object" states="to_approve"/>
+                    <button name="button_approved" string="Approve" class="oe_highlight" type="object" states="to_approve" groups="l10n_in_hr_fields.group_manager_ltc"/>
+                    <button name="button_reject" string="Reject" type="object" states="to_approve" groups="l10n_in_hr_fields.group_manager_ltc"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,to_approve,approved,rejected" />
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="employee_id" readonly="1"/>
+                            <field name="amount_claimed" readonly="1"/>
+                            <field name="ltc_availed_for" readonly="1"/>
+                            <field name="leave_period" readonly="1"/>
+                            <field name="place_of_visit" required="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="detailofjourney" string="Detail of journey(s) performed">
+                            <field name="detail_of_journey"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!--===========Tree view of Employee LTC Claim===========-->
+    <record id="employeeltc_claim_tree_view" model="ir.ui.view">
+        <field name="name">employee.ltc.claim.tree</field>
+        <field name="model">employee.ltc.claim</field>
+        <field name="arch" type="xml">
+            <tree string="LTC">
+                <field name="amount_claimed"/>
+                <field name="ltc_availed_for"/>
+                <field name="leave_period"/>
+                <field name="place_of_visit"/>
+            </tree>
+        </field>
+    </record>
+
+    <!--==========Search view of Employee LTC Advance Status==========-->
+     <record id="view_ltc_claim_status_filter_report" model="ir.ui.view">
+        <field name="name">employee.ltc.claim.filter</field>
+        <field name="model">employee.ltc.claim</field>
+        <field name="arch" type="xml">
+            <search string="Search for LTC Advance">
+                <field name="ltc_availed_for"/>
+                <group expand="0" string="Group By">
+                   <filter name="group_category" string="State" context="{'group_by':'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!--===============Action view of Employee LTC Claim===============-->
+    <record id="hremployeeltc_claim_action" model="ir.actions.act_window">
+        <field name="name">Claim Submission</field>
+        <field name="res_model">employee.ltc.claim</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form,search</field>
+    </record>
+
+    <!--===============Action view of Employee LTC Claim Status=================-->
+    <record id="hremployeeltc_claim_status_action" model="ir.actions.act_window">
+        <field name="name">Advance Claim Status</field>
+        <field name="res_model">employee.ltc.claim</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,search</field>
+        <field name="context">{'group_by': 'state'}</field>
+    </record>
+
+
+
+
+    <!--==========Form view of Employee LTC Journey Details==========-->
+    <record id="employeeltc_claim_tree_journey_view" model="ir.ui.view">
+        <field name="name">employee.ltc.journey.tree</field>
+        <field name="model">employee.ltc.journey</field>
+        <field name="arch" type="xml">
+            <tree string="LTC" editable="bottom">
+                <field name="departure_timings" required="1"/>
+                <field name="arrival_timings" required="1"/>
+                <field name="from_l" required="1"/>
+                <field name="to_l" required="1"/>
+                <field name="distance"/>
+                <field name="mode_of_travlel" required="1"/>
+                <field name="coc_air" attrs="{'invisible':[('mode_of_travlel','!=','air')],'required':[('mode_of_travlel','=','air')]}"/>
+                <field name="coc_train" attrs="{'invisible':[('mode_of_travlel','!=','train')],'required':[('mode_of_travlel','=','train')]}"/>
+                <field name="coc_bus" attrs="{'invisible':[('mode_of_travlel','!=','bus')],'required':[('mode_of_travlel','=','bus')]}"/>
+                <field name="no_of_persons"/>
+                <field name="ticket_attach"/>
+                <field name="fair_paid"/>
+                <field name="not_connected_by_train"/>
+
+            </tree>
+        </field>
+    </record>
+
+    <!--==============Action view of Employee LTC Journey Details==============-->
+    <record id="hremployeeltc_claim_journey_action" model="ir.actions.act_window">
+        <field name="name">hr employee ltc claim Journey</field>
+        <field name="res_model">employee.ltc.journey</field>
+        <field name="view_type">tree</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+
+
+
+
+    <!--=Menu Item of LTC menu snd their submenu=-->
+    <menuitem name="LTC"
+              id="menu_ltc" parent="hr.menu_hr_root"
+              sequence="21"/>
+    <menuitem name="Advance"
+                id="menu_ltc_advance" parent="menu_ltc"
+                />
+    <menuitem name="Apply for advance"
+                id="menu_ltc_advance_apply" parent="menu_ltc_advance"
+                 action="hremployeeltc_advance_action"
+                 />
+    <menuitem name="Advance Status"
+                  id="menu_ltc_advance_status" parent="menu_ltc_advance"
+                  action="hremployeeltc_advance_status_action"
+                  />
+    <menuitem name="Claim"
+                  id="menu_ltc_claim" parent="menu_ltc"
+                  />
+    <menuitem name="Apply for Claim"
+                  id="menu_ltc_claim_apply" parent="menu_ltc_claim"
+                  action="hremployeeltc_claim_action"
+                  />
+    <menuitem name="Claim Status"
+                  id="menu_ltc_claim_status" parent="menu_ltc_claim"
+                  action="hremployeeltc_claim_status_action"
+                    />
+
+
+
+
+</odoo>
+
