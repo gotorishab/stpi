@@ -36,7 +36,7 @@
             'wizard/cheque_requests_wizard_view.xml',
             'wizard/hr_employee_transfer_wizard_view.xml',
             'wizard/employee_vehicle_wizard_view.xml',
-            'wizard/reimbursement_wizard_view.xml'
+            'wizard/reimbursement_wizard_view.xml',
             'wizard/hr_leave_wizard_view.xml'
 
  ],
