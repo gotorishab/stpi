@@ -102,6 +102,8 @@ class HrEmployee(models.Model):
     aadhar_no = fields.Char('Aadhar Card No.',track_visibility='always')
     aadhar_upload = fields.Binary('Upload(Aadhar)',track_visibility='always')
     passport_upload = fields.Binary('Upload(Passport)',track_visibility='always')
+    bank_account_number = fields.Char(string='Bank Account number')
+    ifsc_code = fields.Char(string='IFSC Code')
 
     # category_ids = fields.Many2many('hr.employee.category', 'employee_category_rel', 'emp_id', 'category_id', 'Tags', required=False)
 
@@ -258,6 +260,22 @@ class HrEmployee(models.Model):
             if rec.pan_no and not re.match(r'^[A-Za-z]{5}[0-9]{4}[A-Za-z]$', str(rec.pan_no)):
                 raise ValidationError(_("Please enter correct PAN number..."))
 
+    @api.constrains('birthday')
+    def _check_birthday_app(self):
+        for employee in self:
+            today = datetime.now().date()
+            if employee.birthday > today:
+                raise ValidationError(_('Please enter correct date of birth'))
+
+
+
+    @api.constrains('office_order_date')
+    def _check_office_order_date_app(self):
+        for employee in self:
+            today = datetime.now().date()
+            if employee.office_order_date > today:
+                raise ValidationError(_('Please enter correct office order date'))
+
 
 
     @api.onchange('pan_no')
@@ -385,7 +403,12 @@ class EmployeeAddress(models.Model):
             if rec.count >2:
                 raise ValidationError("You cannot change Homettown address more than 2 times")
 
-    _sql_constraints = [
-        ('unique_address_type', 'unique(address_type, employee_id)', ' The address type must be unique'),
-    ]
-
+    @api.constrains('address_type','employee_id')
+    def check_unique_add(self):
+        for rec in self:
+            count = 0
+            emp_id = self.env['employee.address'].search([('address_type', '=', rec.address_type),('employee_id', '=', rec.employee_id.id)])
+            for e in emp_id:
+                count+=1
+            if count >1:
+                raise ValidationError("The Address Type must be unique")

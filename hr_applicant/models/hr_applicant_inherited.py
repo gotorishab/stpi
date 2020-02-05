@@ -81,6 +81,10 @@ class HRApplicant(models.Model):
     aadhar_upload = fields.Binary('Upload(Aadhar)', track_visibility='always')
     passport_upload = fields.Binary('Upload(Passport)', track_visibility='always')
 
+    bank_account_number = fields.Char(string='Bank Account number')
+    ifsc_code = fields.Char(string='IFSC Code')
+
+
     bank_account_id = fields.Many2one(
         'res.partner.bank', 'Bank Account Number',
         domain="[('partner_id', '=', address_home_id)]",
@@ -155,6 +159,31 @@ class HRApplicant(models.Model):
         for employee in self:
             if not employee._check_recursion():
                 raise ValidationError(_('You cannot create a recursive hierarchy.'))
+
+
+    @api.constrains('personal_email')
+    def _check_personal_mail_val(self):
+        for employee in self:
+            regex = '^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'
+            if not (re.search(regex, employee.personal_email)):
+                raise ValidationError(_('Please enter correct Personal Mail Address.'))
+
+
+    @api.constrains('dob')
+    def _check_dob_app(self):
+        for employee in self:
+            today = datetime.now().date()
+            if employee.dob > today:
+                raise ValidationError(_('Please enter correct date of birth'))
+
+
+
+    @api.constrains('office_order_date')
+    def _check_office_order_date_app(self):
+        for employee in self:
+            today = datetime.now().date()
+            if employee.office_order_date > today:
+                raise ValidationError(_('Please enter correct office order date'))
 
 
 
@@ -303,6 +332,8 @@ class HRApplicant(models.Model):
                         'aadhar_upload': self.aadhar_upload,
                         'passport_upload': self.passport_upload,
                         'bank_account_id': self.bank_account_id,
+                        'bank_account_number': self.bank_account_number,
+                        'ifsc_code': self.ifsc_code,
                         'emergency_contact': self.emergency_contact,
                         'emergency_phone': self.emergency_phone,
                         'km_home_work': self.km_home_work,
@@ -562,6 +593,18 @@ class ApplicantAddress(models.Model):
                 rec.count += 1
             if rec.count > 2:
                 raise ValidationError("You cannot change Homettown address more than 2 times")
+
+    @api.constrains('address_type','employee_id')
+    def check_unique_add(self):
+        for rec in self:
+            count = 0
+            emp_id = self.env['applicant.address'].search([('address_type', '=', rec.address_type),('applicant_id', '=', rec.applicant_id.id)])
+            for e in emp_id:
+                count+=1
+            if count >1:
+                raise ValidationError("The Address Type must be unique")
+
+
 
 class ApplicantResume(models.Model):
     _inherit = 'hr.resume.line'
