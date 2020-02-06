@@ -19,9 +19,6 @@
                 <group>
                     <field name="line_type_id" required="True" options="{'no_create_edit': True}"/>
                 </group>
-
-
-
                 <group>
                     <group>
                     <field name="name" placeholder="Title" attrs="{'required':[('type_name','=','Experience')], 'invisible':[('type_name', '=', 'Education')]}"/>

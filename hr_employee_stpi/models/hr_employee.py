@@ -105,7 +105,7 @@ class HrEmployee(models.Model):
     aadhar_no = fields.Char('Aadhar Card No.',track_visibility='always')
     aadhar_upload = fields.Binary('Upload(Aadhar)',track_visibility='always')
     passport_upload = fields.Binary('Upload(Passport)',track_visibility='always')
-    bank_account_number = fields.Char(string='Bank Account number')
+    bank_account_number = fields.Integer(string='Bank Account number')
     ifsc_code = fields.Char(string='IFSC Code')
 
     # category_ids = fields.Many2many('hr.employee.category', 'employee_category_rel', 'emp_id', 'category_id', 'Tags', required=False)
@@ -400,7 +400,7 @@ class EmployeeAddress(models.Model):
                                      ('office_add', 'Office Add'),
                                      ('hometown_add', 'HomeTown Add'),
                                     ],string='Address Type',required=True)
-    employee_id = fields.Many2one('hr.employee','employee Id')
+    employee_id = fields.Many2one('hr.employee','Employee Id')
     street = fields.Char('Street')
     street2 = fields.Char('Street2')
     zip = fields.Char('Zip', change_default=True)

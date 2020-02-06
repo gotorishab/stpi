@@ -67,7 +67,7 @@ class Reimbursement(models.Model):
     relative_ids = fields.One2many('reimbursement.relatives','reimbursement', string='Details', track_visibility='always')
     reimbursement_sequence = fields.Char('Reimbursement number', track_visibility='always')
     state = fields.Selection([('draft', 'Draft'), ('waiting_for_approval', 'Submitted'), ('forwarded', 'Forwarded'), ('approved', 'Approved'), ('rejected', 'Rejected')
-                               ], required=True, default='draft', track_visibility='always')
+                               ], required=True, default='draft', track_visibility='always', string='Status')
 
 
     @api.onchange('employee_id')

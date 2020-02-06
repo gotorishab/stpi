@@ -40,7 +40,7 @@ class HRApplicant(models.Model):
     # nationality = fields.Many2one('res.country', string='Nationality')
     title = fields.Many2one('res.partner.title', string='Salutation')
     get_total_match_religion = fields.Integer(string="Get Total Match Religion",compute="get_total_match_religion_data")
-    santioned_position = fields.Float(string="Santioned Position",compute="get_santioned_position_emp")
+    santioned_position = fields.Float(string="Sanctioned Position",compute="get_santioned_position_emp")
     cur_no_of_emp = fields.Float('current no of employee',compute="get_santioned_position_emp")
     get_total_match_category = fields.Integer('Get Total Match Category',compute="get_total_match_category_data")
 
@@ -85,7 +85,7 @@ class HRApplicant(models.Model):
     aadhar_upload = fields.Binary('Upload(Aadhar)', track_visibility='always')
     passport_upload = fields.Binary('Upload(Passport)', track_visibility='always')
 
-    bank_account_number = fields.Char(string='Bank Account number')
+    bank_account_number = fields.Integer(string='Bank Account number')
     ifsc_code = fields.Char(string='IFSC Code')
 
 
@@ -153,10 +153,6 @@ class HRApplicant(models.Model):
     phone = fields.Char('Phone (Home)', track_visibility='always')
 
     address_ids = fields.One2many('applicant.address', 'applicant_id', string='Address', track_visibility='always')
-
-    resume_line_applicant_ids = fields.One2many('hr.resume.line', 'resume_applicant_id', string="Resumé lines")
-    applicant_skill_ids = fields.One2many('hr.employee.skill', 'applicant_id', string="Skills")
-
 
     @api.constrains('parent_id')
     def _check_parent_id(self):
@@ -261,7 +257,7 @@ class HRApplicant(models.Model):
     def _check_pan_number(self):
         for rec in self:
             if rec.pan_no and not re.match(r'^[A-Za-z]{5}[0-9]{4}[A-Za-z]$', str(rec.pan_no)):
-                raise ValidationError(_("Please enter correct PAN number..."))
+                raise ValidationError(_("Please enter correct PAN number."))
 
 
 
@@ -299,7 +295,46 @@ class HRApplicant(models.Model):
         res = super(HRApplicant, self).create_employee_from_applicant()
         if res.get('res_id', False):
             emp_id = self.env['hr.employee'].search([('id','=',res.get('res_id'))])
+            resume_line_ids = []
+            employee_skill_ids = []
+            address_ids = []
             if emp_id:
+                for emp in self.resume_line_applicant_ids:
+                    resume_line_ids.append((0, 0, {
+                    'resume_employee_id': emp_id.id,
+                    'name': emp.name,
+                    'date_start': emp.date_start,
+                    'date_end': emp.date_end,
+                    'description': emp.description,
+                    'upload_qualification_proof': emp.upload_qualification_proof,
+                    'line_type_id': emp.line_type_id.id,
+                    'type_name': emp.type_name,
+                    'title': emp.title.id,
+                    'specialization': emp.specialization,
+                    'sequence': emp.sequence,
+                    'acquired': emp.acquired
+                }))
+                for emp in self.applicant_skill_ids:
+                    employee_skill_ids.append((0, 0, {
+                        'employee_id': emp_id.id,
+                        'skill_id': emp.skill_id,
+                        'skill_level_id': emp.skill_level_id.id,
+                        'skill_type_id': emp.skill_type_id.id,
+                        'level_progress': emp.level_progress
+                    }))
+                for emp in self.address_ids:
+                    address_ids.append((0, 0, {
+                        'employee_id': emp_id.id,
+                        'address_type': emp.address_type,
+                        'state_id': emp.state_id.id,
+                        'country_id': emp.country_id.id,
+                        'street': emp.street,
+                        'street2': emp.street2,
+                        'zip': emp.zip,
+                        'is_correspondence_address': emp.is_correspondence_address,
+                        'city': emp.city,
+                        'count': emp.count,
+                    }))
                 emp_id.update({'employee_type': self.employee_type,
                         'recruitment_type': self.recruitment_type,
                         'salutation': self.title,
@@ -308,6 +343,9 @@ class HRApplicant(models.Model):
                         'birthday': self.dob,
                         'differently_abled': self.differently_abled,
                         'category': self.category_id,
+                        'resume_line_ids': resume_line_ids,
+                        'employee_skill_ids': employee_skill_ids,
+                        'address_ids': address_ids,
                         'religion': self.religion_id,
                         'post': self.post,
                         'date_of_join': self.date_of_join,
@@ -608,70 +646,3 @@ class ApplicantAddress(models.Model):
             if count >1:
                 raise ValidationError("The Address Type must be unique")
 
-
-
-class ApplicantResume(models.Model):
-    _inherit = 'hr.resume.line'
-
-    resume_applicant_id = fields.Many2one('hr.applicant', ondelete='cascade')
-
-
-    @api.onchange('title','specialization')
-    def set_data(self):
-        if not self.name and self.title:
-            self.name = self.title.name
-        if self.title and self.specialization:
-            self.name = self.title.name + ' - ' + self.specialization
-
-
-class ApplicantSkill(models.Model):
-    _inherit = 'hr.employee.skill'
-    _description = "Skill level for an employee"
-
-    applicant_id = fields.Many2one('hr.applicant', ondelete='cascade')
-
-#
-# class SlctTrng_inhe(models.Model):
-#     _inherit = 'select.training'
-#
-#
-#     @api.multi
-#     def action_done(self):
-#         applicant = self.env['hr.applicant'].search(
-#             [('id', '=', self._context.get('active_id'))])
-#         employee_dict = applicant.create_employee_from_applicant()
-#         course_obj = self.env['training.courses']
-#         class_obj = self.env['training.class']
-#         attendee_obj = self.env['list.of.attendees']
-#         for rec in self:
-#             if rec.is_triaing_needed:
-#                 course = course_obj.search(
-#                     [('job_id', '=', applicant.job_id.id)])
-#                 if not course:
-#                     course = course_obj.create({
-#                         'name': 'Training Course for ' + str(
-#                             applicant.job_id.name),
-#                         'job_id': applicant.job_id.id,
-#                         'duration': 1,
-#                         'duration_type': 'month'})
-#                 training_class = class_obj.search(
-#                     [('course_id', '=', course.id)])
-#                 if not training_class:
-#                     training_class = class_obj.create({
-#                         'course_id': course.id,
-#                         'training_attendees': 1,
-#                         'training_start_date': datetime.date.today() +
-#                         datetime.timedelta(days=1),
-#                         'training_end_date': datetime.date.today() +
-#                         datetime.timedelta(days=1) + relativedelta(
-#                             months=1, days=-1),
-#                         'state': 'approved'})
-#                 attendee_obj.create({
-#                     'class_id': training_class.id,
-#                     'employee_id': employee_dict.get('res_id', False),
-#                     'training_start_date': training_class.training_start_date,
-#                     'training_end_date': training_class.training_end_date,
-#                     'date_of_arrival': training_class.training_start_date,
-#                     'state': 'in_training'})
-#         return True
-#
