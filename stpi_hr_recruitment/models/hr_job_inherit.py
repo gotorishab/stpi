@@ -121,11 +121,10 @@ class HRApplicant(models.Model):
             employee.advertisement_id = employee.job_id.advertisement_id
 
 
-    @api.onchange('job_id','category_id','kind_of_disability')
+    @api.onchange('category_id','kind_of_disability')
     def check_adv_eligibility(self):
         for rec in self:
             comp_model = self.env['allowed.categories'].search([('allowed_category_id', '=', rec.advertisement_id.id),('job_id', '=', rec.job_id.id)], limit=1)
-            print('=========================================', comp_model)
             if rec.category_id.name == 'General' and comp_model.generalpercent <= 0:
                 raise ValidationError(_('You are not eligible as this job as this is not for General category'))
             elif rec.category_id.name == 'SC' and comp_model.scpercent <= 0:
