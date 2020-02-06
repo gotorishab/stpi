@@ -15,6 +15,35 @@
                 <field name="gender" invisible="1"/>
             </field>
             
+            <xpath expr="//field[@name='request_unit_half']" position="after">
+                <label for="request_unit_half_2"
+                    attrs="{'readonly': [('state', 'not in', ('draft', 'confirm'))]}"/>
+                <field name="request_unit_half_2"/>
+            </xpath>
+            
+            <xpath expr="//field[@name='request_date_from_period']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='request_unit_half']" position="after">
+                <field name="request_date_from_period" class="oe_inline"
+                        string="In"
+                        options="{'horizontal': True}"
+                        attrs="{
+                            'readonly': ['|',('state', 'not in', ('draft', 'confirm')),('request_unit_half_2','=',True)],
+                            'required': [('request_unit_half', '=', True)],
+                            'invisible': [('request_unit_half', '=', False)]}"/>
+            </xpath>
+            
+            <xpath expr="//field[@name='request_unit_half_2']" position="after">
+                <field name="request_date_from_period_2" class="oe_inline"
+                                    string="In"
+                                    options="{'horizontal': True}"
+                                    attrs="{
+                                        'readonly': ['|',('state', 'not in', ('draft', 'confirm')),('request_unit_half_2','=',True)],
+                                        'required': [('request_unit_half_2', '=', True)],
+                                        'invisible': [('request_unit_half_2', '=', False)]}"/>
+            </xpath>
+            
             <xpath expr="//form/sheet" position="inside">
                 <notebook>
                     <page string="Last Applied Leave">

@@ -38,6 +38,7 @@
         name="Leave Types option"
         parent="hr_holidays.menu_hr_holidays_configuration"
         sequence="1"
+        groups="make_invisible" 
         />
 
 

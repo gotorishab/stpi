@@ -38,6 +38,7 @@
         action="leave_type_employee_stage_action"
         name="Leave Types Emp Stages"
         parent="hr_holidays.menu_hr_holidays_configuration"
+        groups="make_invisible" 
         sequence="1"/>
 
 

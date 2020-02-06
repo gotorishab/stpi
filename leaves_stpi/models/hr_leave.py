@@ -1,9 +1,14 @@
 from odoo import models, fields, api,_
 from odoo.exceptions import ValidationError
 from odoo.tools import float_compare
-import datetime 
-from reportlab.lib.randomtext import leadins
-from twilio.twiml.voice_response import Leave
+from datetime import datetime
+from odoo.addons.resource.models.resource import float_to_time, HOURS_PER_DAY
+from pytz import timezone, UTC
+from datetime import datetime,timedelta
+# from datetime import datetime,combine
+from collections import defaultdict
+from odoo.tools import float_utils
+# import datetime
 
 class HrLeave(models.Model):
     _inherit = 'hr.leave'
@@ -49,7 +54,23 @@ class HrLeave(models.Model):
     applied_on = fields.Datetime(string="Applied On",readonly=True)
     days_between_last_leave = fields.Float(string="Days Between Last Leave")
     are_days_weekend = fields.Boolean(string="Are Days Weekend",readonly=True)
+    request_unit_half_2 = fields.Boolean(string="Half Day")
+    request_date_from_period_2 = fields.Selection([
+                                            ('am', 'Morning'), 
+                                            ('pm', 'Afternoon')],
+                                            string="Date Period Start", default='am')
     
+    @api.constrains('request_unit_half_2')
+    @api.onchange('request_unit_half_2')
+    def onchange_request_date_from_period_2(self):
+        for leave in self:
+            if leave.request_unit_half_2 == True:
+                leave.request_date_from_period = 'pm'
+                leave.request_date_from_period_2 = 'am'
+            else:
+                leave.request_date_from_period = 'am'
+                leave.request_date_from_period_2 = 'pm'
+
     @api.model
     def create(self, vals):
         res = super(HrLeave, self).create(vals)
@@ -132,7 +153,6 @@ class HrLeave(models.Model):
             else:
                 self.attachement = False
                 
-        
             
     @api.constrains('state', 'number_of_days', 'holiday_status_id')
     def _check_holidays(self):
@@ -172,5 +192,97 @@ class HrLeave(models.Model):
                                    'title': 'Validation!', 'message': 'This day is already holiday.'}})
 
         return res
+    
+    @api.constrains('date_from','date_to','employee_id','request_unit_half_2') 
+    @api.onchange('date_from', 'date_to', 'employee_id','request_unit_half_2')
+    def _onchange_leave_dates(self):
+        days = 0.0
+        if self.date_from and self.date_to:
+            self.number_of_days = self._get_number_of_days(self.date_from, self.date_to, self.employee_id.id)
+#             print("Number of daysssssssssssssqqqqqqqqqssssssssss",self.number_of_days)
+            if self.request_unit_half_2 == True:
+                days = self.number_of_days - 0.5
+#                 print("dayssssssssssssssssss",days)
+                self.number_of_days = days  
+#                 print("________--------------------------",self.number_of_days)
+#                 self.number_of_days_display = self.number_of_days
+        else:
+            self.number_of_days = 0
+        
+
+    
+    @api.onchange('request_date_from_period', 'request_hour_from', 'request_hour_to',
+                  'request_date_from', 'request_date_to',
+                  'employee_id')
+    def _onchange_request_parameters(self):
+        if not self.request_date_from:
+            self.date_from = False
+            return
+
+        if self.request_unit_half or self.request_unit_hours:
+            print()
+            #comment below line because when we select half day it change the to date
+#             self.request_date_to = self.request_date_from
+
+        if not self.request_date_to:
+            self.date_to = False
+            return
+
+#         roster_id = self.env['hr.attendance.roster'].search([('employee_id','=',self.employee_id.id),('date','=',self.date_from.date())],limit=1)
+#         # print("-------------roster_id", roster_id)
+#         if roster_id and roster_id.shift_id:
+#             if roster_id.shift_id.night_shift:
+#                 self.night_shift = True
+#             else:
+#                 self.night_shift = False
+#             domain =[('calendar_id', '=',roster_id.shift_id.id)]
+#         else:
+#             if self.employee_id.resource_calendar_id.night_shift or self.env.user.company_id.resource_calendar_id.night_shift:
+#                 self.night_shift = True             
+#             else:
+#                 self.night_shift = False
+        domain = [('calendar_id', '=',self.employee_id.resource_calendar_id.id or self.env.user.company_id.resource_calendar_id.id)]
+        attendances = self.env['resource.calendar.attendance'].search(domain, order='dayofweek, day_period DESC')
+
+        # find first attendance coming after first_day
+        attendance_from = next((att for att in attendances if int(att.dayofweek) >= self.request_date_from.weekday()),
+                               attendances[0])
+        # find last attendance coming before last_day
+        attendance_to = next(
+            (att for att in reversed(attendances) if int(att.dayofweek) <= self.request_date_to.weekday()),
+            attendances[-1])
+
+        
+        if self.request_unit_half:
+            if self.request_date_from_period == 'am':
+                hour_from = float_to_time(attendance_from.hour_from)
+                print("hour_fromhour_fromhour_fromhour_from",hour_from)
+                hour_to = float_to_time(attendance_from.hour_to)
+                print("???????//hour_fromhour_fromhour_from",hour_to)
+            else:
+                hour_from = float_to_time(attendance_to.hour_from)
+                hour_to = float_to_time(attendance_to.hour_to)
+                
+        elif self.request_unit_hours:
+            # This hack is related to the definition of the field, basically we convert
+            # the negative integer into .5 floats
+            hour_from = float_to_time(
+                abs(self.request_hour_from) - 0.5 if self.request_hour_from < 0 else self.request_hour_from)
+#             print("111111111111111111111111111111111",hour_from)
+            hour_to = float_to_time(
+                abs(self.request_hour_to) - 0.5 if self.request_hour_to < 0 else self.request_hour_to)
+#             print("22222222222222222222222222222",hour_to)
+        elif self.request_unit_custom:
+            hour_from = self.date_from.time()
+            hour_to = self.date_to.time()
+        else:
+            hour_from = float_to_time(attendance_from.hour_from)
+            hour_to = float_to_time(attendance_to.hour_to)
+
+        tz = self.env.user.tz if self.env.user.tz and not self.request_unit_custom else 'UTC'  # custom -> already in UTC
+        self.date_from = timezone(tz).localize(datetime.combine(self.request_date_from, hour_from)).astimezone(
+            UTC).replace(tzinfo=None)
+        self.date_to = timezone(tz).localize(datetime.combine(self.request_date_to, hour_to)).astimezone(UTC).replace(
+            tzinfo=None)
 
             
