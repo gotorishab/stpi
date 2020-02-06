@@ -88,7 +88,10 @@ class HrEmployee(models.Model):
                                      ('ab-','AB-')],string='Blood Group',track_visibility='always')
     differently_abled = fields.Selection([('no','No'),
                                           ('yes','Yes')], default = 'no', string='Differently Abled?',track_visibility='always')
-    kind_of_disability = fields.Char('Kind of Disability',track_visibility='always')
+    kind_of_disability = fields.Selection([('vh', 'No'),
+                                           ('hh', 'Yes'),
+                                           ('ph', 'Yes')], string='Kind of Disability',
+                                          track_visibility='always')
     perc_disability = fields.Char('% of Disability',track_visibility='always')
     certificate_upload = fields.Binary('Upload certificate',track_visibility='always')
     personal_remark =fields.Char('Personal mark of Identification',track_visibility='always')

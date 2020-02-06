@@ -191,8 +191,8 @@
                                         <field name="country_of_birth" groups="hr.group_hr_user"/>
                                     </group>
                                     <group string="Religion">
-                                        <field name="category_id" required="True" options="{'no_create_edit': True}"/>
                                         <field name="religion_id" required="True" options="{'no_create_edit': True}"/>
+                                        <field name="category_id" required="True" options="{'no_create_edit': True}"/>
                                         <field name="minority"/>
                                     </group>
                                     <group string="Physical">

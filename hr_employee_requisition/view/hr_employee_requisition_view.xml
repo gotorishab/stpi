@@ -44,7 +44,7 @@
                             <field name="department_id" readonly="1"/>
                             <field name="reason_code_id" attrs="{'readonly':[('state','!=','draft')],'required':[('state','=','draft')]}"/>
                             <field name="recruitment_team_id" invisible="1"/>
-                            <field name="branch_id" readonly="1"/>
+                            <field name="branch_id"/>
                         </group>
                         <group>
                             <field name="date" readonly="1"/>

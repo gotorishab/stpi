@@ -7,7 +7,9 @@ class HrRequisition(models.Model):
     _description = "HR Requisition"
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
-    
+
+
+
     name = fields.Char(string='Job Requisition Number', required=True, copy=False, readonly=True, index=True,
                        default=lambda self: _('New'))
     job_position = fields.Many2one('hr.job',string="Job Position",required=True, domain="[('sanctionedpost', '>', 0)]",
@@ -25,7 +27,7 @@ class HrRequisition(models.Model):
                              string='Status', default='draft')
     description = fields.Text(string="Description",related="job_position.description")
     #added by sangita
-    branch_id = fields.Many2one('res.branch',string="Branch", store=True)
+    branch_id = fields.Many2one('res.branch',string="Branch", store=True, default=lambda self: self.env.user.default_branch_id,)
     
     user_id = fields.Many2one('res.users',string='Requesting Employee' ,default=lambda self: self.env.user.id)
     deadline_date =fields.Date(string='Expected Hiring Date',default=datetime.now().date())
@@ -34,13 +36,6 @@ class HrRequisition(models.Model):
 
     recruitment_team_id = fields.Many2one('recruitment.team', string='Recruitment Team') 
     member_ids = fields.Many2many('res.users', string='Team Member')
-
-
-    @api.constrains('job_position')
-    @api.onchange('job_position')
-    def get_branch(self):
-        for res in self:
-            res.branch_id = res.job_position.branch_id.id
 
 
     @api.model

@@ -182,8 +182,8 @@
                                 <field name="country_of_birth" groups="hr.group_hr_user"/>
                             </group>
                             <group string="Religion">
-                                <field name="category" required="True" options="{'no_create_edit': True}"/>
                                 <field name="religion" required="True" options="{'no_create_edit': True}"/>
+                                <field name="category" required="True" options="{'no_create_edit': True}"/>
                                 <field name="minority"/>
                             </group>
                             <group string="Physical">
@@ -226,13 +226,13 @@
         <record id="seq_identify_id" model="ir.sequence">
             <field name="name">Identification ID</field>
             <field name="code">hr.employee</field>
-            <field name="padding">3</field>
+            <field name="padding">4</field>
             <field name="company_id" eval="False"/>
         </record>
         <record id="seq_identify_id_contractual" model="ir.sequence">
             <field name="name">Identification ID</field>
             <field name="code">identify.seqid</field>
-            <field name="padding">3</field>
+            <field name="padding">4</field>
             <field name="company_id" eval="False"/>
         </record>
 

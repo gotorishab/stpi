@@ -33,7 +33,7 @@ class HRApplicant(models.Model):
         ('promotion', 'Promotion'),
     ], 'Recruitment Type', track_visibility='always')
 
-    dob = fields.Date(string='Birth Date')
+    dob = fields.Date(string='Date of Birth')
     gender = fields.Selection(
         [('male', 'Male'), ('female', 'Female'), ('other', 'Other')],
         string='Gender')
@@ -70,7 +70,11 @@ class HRApplicant(models.Model):
     differently_abled = fields.Selection([('no', 'No'),
                                           ('yes', 'Yes')], default='no', string='Differently Abled?',
                                          track_visibility='always')
-    kind_of_disability = fields.Char('Kind of Disability', track_visibility='always')
+    kind_of_disability = fields.Selection([('vh', 'Visually Handicapped'),
+                                          ('hh', 'Hearing Handicapped'),
+                                           ('ph', 'Physically Handicapped')],
+                                          string='Kind of Disability',
+                                         track_visibility='always')
     perc_disability = fields.Char('% of Disability', track_visibility='always')
     certificate_upload = fields.Binary('Upload certificate', track_visibility='always')
     personal_remark = fields.Char('Personal mark of Identification', track_visibility='always')

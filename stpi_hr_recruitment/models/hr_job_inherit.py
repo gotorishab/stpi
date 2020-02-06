@@ -102,6 +102,8 @@ class HRApplicant(models.Model):
     _inherit='hr.applicant'
     _description ='Applicant'
 
+    advertisement_id = fields.Many2one('hr.requisition.application', string='Advertisement')
+    advertisement_id_related = fields.Many2one('hr.requisition.application', string='Advertisement', related='advertisement_id')
 
 
     @api.constrains('type_id','job_id')
@@ -109,5 +111,36 @@ class HRApplicant(models.Model):
         for employee in self:
             if employee.type_id.id not in employee.job_id.allowed_degrees.ids:
                 raise ValidationError(_('You are not eligible as you dont have valid degree.'))
+
+
+
+    @api.onchange('job_id')
+    @api.constrains('job_id')
+    def check_onch_get_advertisement(self):
+        for employee in self:
+            employee.advertisement_id = employee.job_id.advertisement_id
+
+
+    @api.onchange('job_id','category_id','kind_of_disability')
+    def check_adv_eligibility(self):
+        for rec in self:
+            comp_model = self.env['allowed.categories'].search([('allowed_category_id', '=', rec.advertisement_id.id),('job_id', '=', rec.job_id.id)], limit=1)
+            print('=========================================', comp_model)
+            if rec.category_id.name == 'General' and comp_model.generalpercent <= 0:
+                raise ValidationError(_('You are not eligible as this job as this is not for General category'))
+            elif rec.category_id.name == 'SC' and comp_model.scpercent <= 0:
+                raise ValidationError(_('You are not eligible as this job as this is not for SC category'))
+            elif rec.category_id.name == 'ST' and comp_model.stpercent <= 0:
+                raise ValidationError(_('You are not eligible as this job as this is not for ST category'))
+            elif rec.category_id.name == 'OBC' and comp_model.obcercent <= 0:
+                raise ValidationError(_('You are not eligible as this job as this is not for OBC category'))
+            elif rec.category_id.name == 'EBC' and comp_model.ebcpercent <= 0:
+                raise ValidationError(_('You are not eligible as this job as this is not for EBC category'))
+            elif rec.differently_abled == 'yes' and rec.kind_of_disability == 'vh' and comp_model.vhpercent <= 0:
+                raise ValidationError(_('You are not eligible as this job as this is not for Visually Handicapped'))
+            elif rec.differently_abled == 'yes' and rec.kind_of_disability == 'hh' and comp_model.hhpercent <= 0:
+                raise ValidationError(_('You are not eligible as this job as this is not for Hearing Handicapped'))
+            elif rec.differently_abled == 'yes' and rec.kind_of_disability == 'ph' and comp_model.phpercent <= 0:
+                raise ValidationError(_('You are not eligible as this job as this is not for Physically Handicapped'))
 
 
