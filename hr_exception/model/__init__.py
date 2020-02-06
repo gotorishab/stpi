@@ -7,3 +7,4 @@ from . import birthday_request
 from . import hr_employee_transfer
 from . import hr_employee_vehicle_req
 from . import reimbursement
+from . import hr_leaves
