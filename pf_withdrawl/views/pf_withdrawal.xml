@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+       <!-- HR employee pf widthdrawl tree view-->
+    <record id="hr_pf_widthdrawl_tree_view" model="ir.ui.view">
+        <field name="name">pf.widthdrawl.tree</field>
+        <field name="model">pf.widthdrawl</field>
+        <field name="arch" type="xml">
+            <tree string="PF Widthdrawl">
+                <field name="employee_id"/>
+                <field name="advance_amount" />
+                <field name="designation"/>
+                <field name="branch_id"/>
+                <field name="center"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- HR employee pf widthdrawl form view-->
+    <record id="hr_pf_widthdrawl_view" model="ir.ui.view">
+        <field name="name">pf.widthdrawl.form</field>
+        <field name="model">pf.widthdrawl</field>
+        <field name="arch" type="xml">
+            <form string="PF Widthdrawl">
+                <header>
+                    <button name="button_to_approve" string="Send for Approval" class="oe_highlight" type="object" states="draft" groups="pf_withdrawl.group_pf_withdraw_user"/>
+                     <button name="button_reset_to_draft" string="Reset to draft" type="object" states="to_approve" groups="pf_withdrawl.group_pf_withdraw_user"/>
+                    <button name="button_approved" string="Approve" class="oe_highlight" type="object" states="to_approve" groups="pf_withdrawl.group_pf_withdraw_approver"/>
+                    <button name="button_reject" string="Reject" type="object" states="to_approve" groups="pf_withdrawl.group_pf_withdraw_approver"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,to_approve,approved,rejected" />
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="employee_id" options="{'no_create_edit': True}" readonly="1"/>
+                            <field name="advance_amount" />
+                            <field name="designation" readonly="1"/>
+                            <field name="center" readonly="1"/>
+                            <field name="present_pay" invisible="1"/>
+                            <field name="bank_account_number" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="rule"/>
+                            <field name="branch_id"/>
+                            <field name="purpose" readonly="True"/>
+                            <field name="attachment_document" readonly="True"/>
+                            <field name="attachment_ids" widget="many2many_binary" string="Attachment" colspan="2"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    
+    <!-- HR employee pf widthdrawl search view-->
+    <record id="pf_withdrawl_search_view" model="ir.ui.view">
+        <field name="name">pf.widthdrawl.search</field>
+        <field name="model">pf.widthdrawl</field>
+        <field name="arch" type="xml">
+           <search string="PF Withdrawl">
+                <filter string="PF Withdrwal" name="pf_withdrawl" domain="[('employee_id.user_id.id', '=', uid)]" />
+                <field name="employee_id" string="Employee"/>
+                <field name="branch_id" string="Branch"/>
+                <field name="department_id" string="Department"/>
+                    <filter string="Employee" name="employee_id" context="{'group_by':'employee_id'}"/>
+                    <filter string="Branch" name="branch_id" context="{'group_by':'branch_id'}"/>
+                    <filter string="Status" name="status" context="{'group_by':'state'}"/>
+                    <filter string="Department" name="department" context="{'group_by':'department_id'}"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- HR employee pf widthdrawl action New view-->
+     <record id="action_hr_pf_widthdrawl" model="ir.actions.act_window">
+        <field name="name">PF Widthdrawl New</field>
+        <field name="res_model">pf.widthdrawl</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="pf_withdrawl_search_view"/>
+        <field name="domain">[('state','=','draft')]</field>
+     </record>
+
+    <!-- HR employee pf widthdrawl action To Approve view-->
+    <record id="action_pf_widthdrawl_waiting_approval" model="ir.actions.act_window">
+        <field name="name">PF Widthdrawl To Approve</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">pf.widthdrawl</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="pf_withdrawl_search_view"/>
+        <field name="domain">[('state','=','to_approve')]</field>
+    </record>
+    
+    <!-- HR employee pf widthdrawl action Approved view-->
+    <record id="action_pf_widthdrawl_waiting_approved" model="ir.actions.act_window">
+        <field name="name">PF Widthdrawl Approved</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">pf.widthdrawl</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="pf_withdrawl_search_view"/>
+        <field name="domain">[('state','=','approved')]</field>
+    </record>
+    
+    <!-- HR employee pf widthdrawl action Rejected view-->
+    <record id="action_pf_widthdrawl_waiting_rejected" model="ir.actions.act_window">
+        <field name="name">PF Widthdrawl Rejected</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">pf.widthdrawl</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="pf_withdrawl_search_view"/>
+        <field name="domain">[('state','=','rejected')]</field>
+    </record>
+    
+    <!--PF Withdrwal by employee-->
+    <record id="groupby_employee_action_employee" model="ir.actions.act_window">
+        <field name="name">PF Widthdrawl By Employee</field>
+        <field name="res_model">pf.widthdrawl</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_employee_id': 1}</field>
+        <field name="domain">[('state','=','approved')]</field>
+        <field name="search_view_id" ref="pf_withdrawl_search_view"/>
+    </record>
+    
+    <!--pf.widthdrawl request by department-->
+    <record id="groupby_department_action_employee" model="ir.actions.act_window">
+        <field name="name">PF Withdrawl By Department</field>
+        <field name="res_model">pf.widthdrawl</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_department': 1}</field>
+        <field name="domain">[('state','=','approved')]</field>
+        <field name="search_view_id" ref="pf_withdrawl_search_view"/>
+    </record>
+    
+    <!--pf.widthdrawl request by branch-->
+    <record id="groupby_branch_action_employee" model="ir.actions.act_window">
+        <field name="name">Pf Widthdrawl By Branch</field>
+        <field name="res_model">pf.widthdrawl</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('state','=','approved')]</field>
+        <field name="context">{'search_default_branch_id': 1}</field>
+        <field name="search_view_id" ref="pf_withdrawl_search_view"/>
+    </record>
+    
+    <!--pf.widthdrawl request by status-->
+    <record id="groupby_status_action_employee" model="ir.actions.act_window">
+        <field name="name">PF Widthdrawl By Status</field>
+        <field name="res_model">pf.widthdrawl</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_status': 1}</field>
+        <field name="search_view_id" ref="pf_withdrawl_search_view"/>
+    </record>
+    
+    <!--pf.widthdrawl request by all-->
+    <record id="groupby_all_action_employee" model="ir.actions.act_window">
+        <field name="name">PF Widthdrawl By All</field>
+        <field name="res_model">pf.widthdrawl</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('state','=','approved')]</field>
+        <field name="context">{'search_default_pf_withdrawl': 1}</field>
+        <field name="search_view_id" ref="pf_withdrawl_search_view"/>
+    </record>
+
+
+       <!-- HR employee pf widthdrawl Employee -->
+    <record id="hr_pf_employee_tree_view" model="ir.ui.view">
+        <field name="name">pf.employee.tree</field>
+        <field name="model">pf.employee</field>
+        <field name="arch" type="xml">
+            <tree string="PF Widthdrawl">
+                <field name="employee_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- HR employee pf widthdrawl Employee -->
+    <record id="hr_pf_employee_form_view" model="ir.ui.view">
+        <field name="name">pf.employee.form</field>
+        <field name="model">pf.employee</field>
+        <field name="arch" type="xml">
+            <form string="PF Employee">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="employee_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="amount"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="pf_details" string="PF Details">
+                            <field name="pf_details_ids" readonly="1">
+                                <tree editable="bottom">
+                                    <field name="date" required="1"/>
+                                    <field name="amount" required="1" sum="Total"/>
+                                    <field name="reference" required="1"/>
+                                </tree>
+                            </field>
+                            <button type="object" name="get_pf_details" string="Get PF Details"  colspan="2"
+                                class="oe_stat_button"
+                                icon="fa-clock-o"/>
+                                <div class="oe_clear"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+     <record id="action_hr_pf_employee" model="ir.actions.act_window">
+        <field name="name">PF Employee</field>
+        <field name="res_model">pf.employee</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+     </record>
+     
+     
+    <menuitem id = "pf_withdrawl_menu"
+                  name = "PF Withdrawl"
+                  web_icon="pf_withdrawl,static/description/icon.png"
+                  sequence="5"
+                  />
+                  
+        <menuitem id ="pf_withdrawl_menu_id" 
+                    name="PF Withdrawl"  
+                    parent="pf_withdrawl_menu" 
+                    sequence="1"
+                  />
+        
+        <menuitem id ="pf_withdrawl_menu_new" name="New"  parent="pf_withdrawl_menu_id" sequence="1"
+                  action="action_hr_pf_widthdrawl"/>
+                  
+        <menuitem id ="pf_withdrawl_menu_approval" name="To Approve"  parent="pf_withdrawl_menu_id" sequence="2"
+                  action="action_pf_widthdrawl_waiting_approval"/>
+                  
+        <menuitem id="pf_withdrawl_menu_sub_approved" name="Approved" parent="pf_withdrawl_menu_id" sequence="3"
+                  action="action_pf_widthdrawl_waiting_approved"/>
+
+        <menuitem id="pf_withdrawl_menu_sub_rejected" name="Rejected" parent="pf_withdrawl_menu_id" sequence="3"
+                  action="action_pf_widthdrawl_waiting_rejected"/>
+                  
+       <menuitem id ="pf_withdrawl_menu_report_menu_id"
+                  name = "Reporting"
+                  parent="pf_withdrawl_menu"
+                  sequence="2"
+                  />
+                  
+        <menuitem id="hr_pf_employee_id"
+                    name="Employee PF Balance"
+                    parent="pf_withdrawl_menu_report_menu_id"
+                    action="action_hr_pf_employee"
+                    sequence="1"
+                    />
+                  
+        <menuitem id ="pf_withdrawl_employee_id" 
+                name="PF Withdrawl by Employee"  
+                parent="pf_withdrawl_menu_report_menu_id" 
+                sequence="2"
+                action="groupby_employee_action_employee"/>
+        
+        <menuitem id ="pf_withdrawl_by_department" 
+                    action="groupby_department_action_employee"
+                    name="PF Withdrawl By Department"  
+                    sequence="3"
+                    parent="pf_withdrawl_menu_report_menu_id" 
+                  />
+        
+        <menuitem id ="pf_withdrawl_by_branch" 
+                    action="groupby_branch_action_employee"
+                    name="PF Withdrawl By Branch"
+                    sequence="4"  
+                    parent="pf_withdrawl_menu_report_menu_id" 
+                  />
+        
+        <menuitem id ="pf_withdrawl_by_status" 
+                    action="groupby_status_action_employee"
+                    name="Pf Withdrawl By Status"
+                    sequence="5"  
+                    parent="pf_withdrawl_menu_report_menu_id" 
+                  />
+                  
+        <menuitem id ="pf_withdrawl_by_all" 
+                    action="groupby_all_action_employee"
+                    name="PF Withdrawl By All"
+                    sequence="6"  
+                    parent="pf_withdrawl_menu_report_menu_id" 
+                  />
+                  
+</odoo>
