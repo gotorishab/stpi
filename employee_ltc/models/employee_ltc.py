@@ -17,6 +17,9 @@ class EmployeeLtcAdvance(models.Model):
 
     ltc_sequence = fields.Char('LTC number',track_visibility='always')
     employee_id = fields.Many2one('hr.employee', string='Employee', default=_default_employee,track_visibility='always')
+    branch_id = fields.Many2one('res.branch', string='Branch', store=True)
+    job_id = fields.Many2one('hr.job', string='Functional Designation', store=True)
+    department_id = fields.Many2one('hr.department', string='Department', store=True)
     date = fields.Date(string="Requested Date", default=datetime.now().date(),track_visibility='always')
     place_of_trvel=fields.Selection([('hometown', 'Hometown'), ('india', 'Anywhere in India'), ('conversion', 'Conversion of Hometown')], default='hometown', string='Place of Travel',track_visibility='always')
     hometown_address = fields.Char(string='Address',track_visibility='always')
@@ -39,9 +42,16 @@ class EmployeeLtcAdvance(models.Model):
     amount = fields.Char(string='Amount', compute='_compute_amount',track_visibility='always')
     total_basic_salary = fields.Char(string='Total Basic',track_visibility='always')
     state = fields.Selection([('draft', 'Draft'), ('to_approve', 'To Approve'), ('approved', 'Approved'), ('rejected', 'Rejected')
-                               ], required=True, default='draft',track_visibility='always')
+                               ], required=True, default='draft',track_visibility='always', string='Status')
 
 
+    @api.onchange('employee_id')
+    @api.constrains('employee_id')
+    def onchange_emp_get_base(self):
+        for rec in self:
+            rec.job_id = rec.employee_id.job_id.id
+            rec.department_id = rec.employee_id.department_id.id
+            rec.branch_id = rec.employee_id.branch_id.id
 
     @api.onchange('employee_id','place_of_trvel')
     def get_home_address(self):
@@ -162,6 +172,9 @@ class EmployeeLtcClaim(models.Model):
 
 
     employee_id = fields.Many2one('hr.employee', string='Employee', default=_default_employee,track_visibility='always')
+    branch_id = fields.Many2one('res.branch', string='Branch', store=True)
+    job_id = fields.Many2one('hr.job', string='Functional Designation', store=True)
+    department_id = fields.Many2one('hr.department', string='Department', store=True)
     amount_claimed = fields.Char('Advance Amount Claimed', compute='_compute_fetch_ltc_details',track_visibility='always')
     ltc_availed_for = fields.Char('LTC availed for', compute='_compute_fetch_ltc_details',track_visibility='always')
     leave_period = fields.Char('Leave period', compute='_compute_fetch_ltc_details',track_visibility='always')
@@ -169,7 +182,19 @@ class EmployeeLtcClaim(models.Model):
     detail_of_journey = fields.One2many('employee.ltc.journey','relate_to_ltc', string='Details of Journey',track_visibility='always')
     state = fields.Selection(
         [('draft', 'Draft'), ('to_approve', 'To Approve'), ('approved', 'Approved'), ('rejected', 'Rejected')
-         ], required=True, default='draft',track_visibility='always')
+         ], required=True, default='draft',track_visibility='always', string='Status')
+
+
+
+
+    @api.onchange('employee_id')
+    @api.constrains('employee_id')
+    def onchange_emp_get_base(self):
+        for rec in self:
+            rec.job_id = rec.employee_id.job_id.id
+            rec.department_id = rec.employee_id.department_id.id
+            rec.branch_id = rec.employee_id.branch_id.id
+
 
 
     @api.multi

@@ -14,6 +14,7 @@
 		'security/security.xml',
 		'security/reimbursement.xml',
         'views/reimbursement.xml',
+        'views/reimbursement_attendence.xml',
 	],
 	'images': [],
 	'license': 'AGPL-3',

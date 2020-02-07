@@ -137,10 +137,12 @@ class Reimbursement(models.Model):
         for rec in self:
             if rec.employee_id and rec.name == 'lunch':
                 count = 0
-                serch_id = self.env['hr.attendance'].search([('employee_id', '=', rec.employee_id.id)])
-                for i in serch_id:
-                    if rec.from_date < i.check_in.date() < rec.to_date:
-                        count += 1
+                # serch_id = self.env['hr.attendance'].search([('employee_id', '=', rec.employee_id.id)])
+                # for i in serch_id:
+                #     if rec.from_date < i.check_in.date() < rec.to_date:
+                #         count += 1
+                #
+                serch_id = self.env['reimbursement.attendence'].search([('employee_id', '=', rec.employee_id.id)])
                 rec.lunch_daily = '75'
                 rec.working_days = count
                 rec.net_amount = str(count * 75)

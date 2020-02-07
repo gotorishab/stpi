@@ -14,6 +14,7 @@
     'depends': ['base','hr','hr_holidays','hr_applicant'],
     'data': [
         'security/ir.model.access.csv',
+        'security/ltc_security.xml',
         'views/employee_ltc.xml',
         'report/ltc_report.xml',
 
