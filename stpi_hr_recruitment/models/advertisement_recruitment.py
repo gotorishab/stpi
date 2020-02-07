@@ -17,16 +17,8 @@ class HrApplicationSd(models.Model):
     last_date = fields.Date('Last Date',track_visibility='always')
     upload_advertisement = fields.Binary('Upload Advertisement')
     remarks = fields.Text('Remarks (if any)')
-    job_position_ids = fields.Many2many('hr.job', string = 'Job Position', domain="[('branch_id', '=', branch_id),('state', '=', 'open')]")
-    scpercent = fields.Boolean('Scheduled Castes')
-    generalpercent = fields.Boolean('General')
-    stpercent = fields.Boolean('Scheduled Tribes')
-    obcercent = fields.Boolean('Other Backward Castes')
-    ebcpercent = fields.Boolean('Economically Backward Section')
-    vhpercent = fields.Boolean('Visually Handicappped')
-    hhpercent = fields.Boolean('Hearing Handicapped')
-    phpercent = fields.Boolean('Physically Handicapped')
-
+    job_position_ids = fields.Many2many('hr.job', string = 'Job Position')
+    allowed_categories_ids = fields.One2many('allowed.categories','allowed_category_id', string='Allowed Categories')
 
     state = fields.Selection([
         ('draft', 'Draft'),
@@ -47,37 +39,49 @@ class HrApplicationSd(models.Model):
     @api.multi
     def button_to_approve(self):
         for rec in self:
+            allowed_categories_ids = []
+            for jobs in rec.job_position_ids:
+                allowed_categories_ids.append((0, 0, {
+                        'job_id': jobs.id,
+                        'vacant_post': jobs.vacant_post,
+                        'allowed_category_id': rec.id,
+                    }))
+            rec.allowed_categories_ids = allowed_categories_ids
             rec.write({'state': 'to_approve'})
 
     @api.multi
     def button_active(self):
         for rec in self:
+            sum=0
+            sum_vac = 0
             lst = []
-            if rec.scpercent == True:
-                lst.append('Scheduled Castes')
-            if rec.generalpercent == True:
-                lst.append('General')
-            if rec.stpercent == True:
-                lst.append('Scheduled Tribes')
-            if rec.obcercent == True:
-                lst.append('Other Backward Castes')
-            if rec.ebcpercent == True:
-                lst.append('Economically Backward Section')
-            if rec.vhpercent == True:
-                lst.append('Visually Handicappped')
-            if rec.hhpercent == True:
-                lst.append('Hearing Handicapped')
-            if rec.phpercent == True:
-                lst.append('Physically Handicapped')
-            _body = (_(
-                (
-                    "<ul>Advertisement Created</ul>"
-                    "<ul>Allowed Branches: {0} </ul>").format(lst)
-            ))
-            for jobs in rec.job_position_ids:
-                jobs.advertisement_id = rec.id
-                jobs.message_post(body=_body)
-                jobs.set_recruit()
+            for allowed in rec.allowed_categories_ids:
+                sum_vac += (allowed.vacant_post)
+                sum += (allowed.scpercent + allowed.generalpercent + allowed.stpercent + allowed.obcercent + allowed.ebcpercent + allowed.vhpercent + allowed.hhpercent + allowed.phpercent)
+                _body = (_(
+                    (
+                        "<ul>Advertisement Created</ul>"
+                        "<ul>Allowed Categories: </ul>"
+                        "<ul>Scheduled Castes: {0} </ul>"
+                        "<ul>Allowed Categories: {1} </ul>"
+                        "<ul>Scheduled Tribes: {2} </ul>"
+                        "<ul>Other Backward Castes: {3} </ul>"
+                        "<ul>Economically Backward Section: {4} </ul>"
+                        "<ul>Visually Handicappped: {5} </ul>"
+                        "<ul>Hearing Handicapped: {6} </ul>"
+                        "<ul>Physically Handicapped: {7} </ul>"
+                    ).format(allowed.scpercent, allowed.generalpercent, allowed.stpercent, allowed.obcercent,
+                             allowed.ebcpercent, allowed.vhpercent, allowed.hhpercent, allowed.phpercent)
+                ))
+            if sum_vac > 0 and sum <= 0:
+                raise ValidationError(
+                        _(
+                            'Allowed Categories must be greater than 0'))
+            else:
+                for jobs in rec.job_position_ids:
+                    jobs.advertisement_id = rec.id
+                    jobs.message_post(body=_body)
+                    jobs.set_recruit()
             rec.write({'state': 'active'})
 
     @api.multi
@@ -89,8 +93,6 @@ class HrApplicationSd(models.Model):
     def button_update(self):
         for rec in self:
             pass
-
-
 
     @api.multi
     def button_complete(self):
@@ -155,3 +157,72 @@ class HrApplicationSd(models.Model):
                 raise ValidationError(
                     _(
                         'Advertisement start date must be less than last date'))
+
+
+
+class AllowedCategories(models.Model):
+    _name = 'allowed.categories'
+    _description = 'Allowed Categories'
+
+    allowed_category_id = fields.Many2one('hr.requisition.application', string='Allowed Cat')
+    job_id = fields.Many2one('hr.job', string='Job Position')
+    vacant_post = fields.Integer('Vacant Post')
+    scpercent = fields.Integer('Scheduled Castes')
+    generalpercent = fields.Integer('General')
+    stpercent = fields.Integer('Scheduled Tribes')
+    obcercent = fields.Integer('Other Backward Castes')
+    ebcpercent = fields.Integer('Economically Backward Section')
+    vhpercent = fields.Integer('Visually Handicapped')
+    hhpercent = fields.Integer('Hearing Handicapped')
+    phpercent = fields.Integer('Physically Handicapped')
+    state = fields.Selection([
+        ('draft', 'Draft'),
+        ('to_approve', 'Waiting for approval'),
+        ('active', 'Approved'),
+        ('rejected', 'Rejected'),
+        ('completed', 'Completed'),
+    ], default='draft', string='Status', related='allowed_category_id.state')
+
+
+
+
+    @api.constrains('scpercent','generalpercent','stpercent','obcercent','ebcpercent','vhpercent','hhpercent','phpercent',)
+    def validate_cat_from_vacancy(self):
+        for rec in self:
+            if rec.vacant_post and rec.vacant_post > 0:
+                if rec.scpercent + rec.generalpercent + rec.stpercent + rec.obcercent + rec.ebcpercent + rec.vhpercent + rec.hhpercent + rec.phpercent <=0:
+                    raise ValidationError(
+                        _(
+                            'Allowed Categories must be greater than 0'))
+                if rec.scpercent > rec.vacant_post:
+                    raise ValidationError(
+                        _(
+                            'Allowed Category(Scheduled Castes) must be less than Vacant Post'))
+                if rec.generalpercent > rec.vacant_post:
+                    raise ValidationError(
+                        _(
+                            'Allowed Category(General) must be less than Vacant Post'))
+                if rec.stpercent > rec.vacant_post:
+                    raise ValidationError(
+                        _(
+                            'Allowed Category(Scheduled Tribes) must be less than Vacant Post'))
+                if rec.obcercent > rec.vacant_post:
+                    raise ValidationError(
+                        _(
+                            'Allowed Category(Other Backward Castes) must be less than Vacant Post'))
+                if rec.ebcpercent > rec.vacant_post:
+                    raise ValidationError(
+                        _(
+                            'Allowed Category(Economically Backward Section) must be less than Vacant Post'))
+                if rec.vhpercent > rec.vacant_post:
+                    raise ValidationError(
+                        _(
+                            'Allowed Category(Visually Handicappped) must be less than Vacant Post'))
+                if rec.hhpercent > rec.vacant_post:
+                    raise ValidationError(
+                        _(
+                            'Allowed Category(Hearing Handicapped) must be less than Vacant Post'))
+                if rec.phpercent > rec.vacant_post:
+                    raise ValidationError(
+                        _(
+                            'Allowed Category(Physically Handicapped) must be less than Vacant Post'))

@@ -88,7 +88,10 @@ class HrEmployee(models.Model):
                                      ('ab-','AB-')],string='Blood Group',track_visibility='always')
     differently_abled = fields.Selection([('no','No'),
                                           ('yes','Yes')], default = 'no', string='Differently Abled?',track_visibility='always')
-    kind_of_disability = fields.Char('Kind of Disability',track_visibility='always')
+    kind_of_disability = fields.Selection([('vh', 'No'),
+                                           ('hh', 'Yes'),
+                                           ('ph', 'Yes')], string='Kind of Disability',
+                                          track_visibility='always')
     perc_disability = fields.Char('% of Disability',track_visibility='always')
     certificate_upload = fields.Binary('Upload certificate',track_visibility='always')
     personal_remark =fields.Char('Personal mark of Identification',track_visibility='always')
@@ -102,7 +105,7 @@ class HrEmployee(models.Model):
     aadhar_no = fields.Char('Aadhar Card No.',track_visibility='always')
     aadhar_upload = fields.Binary('Upload(Aadhar)',track_visibility='always')
     passport_upload = fields.Binary('Upload(Passport)',track_visibility='always')
-    bank_account_number = fields.Char(string='Bank Account number')
+    bank_account_number = fields.Integer(string='Bank Account number')
     ifsc_code = fields.Char(string='IFSC Code')
 
     # category_ids = fields.Many2many('hr.employee.category', 'employee_category_rel', 'emp_id', 'category_id', 'Tags', required=False)
@@ -397,7 +400,7 @@ class EmployeeAddress(models.Model):
                                      ('office_add', 'Office Add'),
                                      ('hometown_add', 'HomeTown Add'),
                                     ],string='Address Type',required=True)
-    employee_id = fields.Many2one('hr.employee','employee Id')
+    employee_id = fields.Many2one('hr.employee','Employee Id')
     street = fields.Char('Street')
     street2 = fields.Char('Street2')
     zip = fields.Char('Zip', change_default=True)
