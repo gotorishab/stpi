@@ -232,7 +232,6 @@
         <field name="view_mode">tree,form</field>
      </record>
      
-     
     <menuitem id = "pf_withdrawl_menu"
                   name = "PF Withdrawl"
                   web_icon="pf_withdrawl,static/description/icon.png"

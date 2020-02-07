@@ -132,7 +132,7 @@ class PfEmployee(models.Model):
         return self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
 
 
-    employee_id=fields.Many2one('hr.employee', string="Employee", default=_default_employee)
+    employee_id=fields.Many2one('hr.employee', string="Request By", default=_default_employee)
     amount = fields.Float('Amount', compute='_compute_amount')
     pf_details_ids=fields.One2many('pf.employee.details', 'pf_details_id', string="Employee")
 
