@@ -1,45 +1,45 @@
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
 from dateutil.relativedelta import relativedelta
-from datetime import datetime
+from datetime import datetime, date
 
 
 
 
 class EmployeeLtcAdvance(models.Model):
     _name = 'employee.ltc.advance'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _description='Advance Request'
 
 
     def _default_employee(self):
         return self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
 
-    ltc_sequence = fields.Char('LTC number')
-    employee_id = fields.Many2one('hr.employee', string='Employee', default=_default_employee)
-
-
-    place_of_trvel=fields.Selection([('hometown', 'Hometown'), ('india', 'Anywhere in India'), ('conversion', 'Conversion of Hometown')], default='hometown', string='Place of Travel')
-    hometown_address = fields.Char(string='Address')
-    block_year=fields.Char('Block year')
-    slect_leave = fields.Many2one('hr.leave',string = 'Leave', domain="[('employee_id', '=', employee_id)]")
-    leave_period = fields.Char(string = 'Leave period', compute='compute_get_leave_details')
-    total_leaves = fields.Char(string = 'Total Leaves')
-    left_leaves = fields.Char(string = 'Left Leaves')
-    depart_date=fields.Date('Departue Date', compute='compute_get_leave_details')
-    arrival_date=fields.Date('Arrival Date', compute='compute_get_leave_details')
-    advance_ammount=fields.Char('Advance Amount Required')
-    single_fare=fields.Float('Single Train Fare/ Bus fare from the office to Place of Visit by Shortest Route')
-    single_fare_approved=fields.Float('Approved Amount')
-    attach_file = fields.Binary('Attach a File')
-    family_details = fields.Many2many('employee.relative', string='Family Details', domain="[('employee_id', '=', employee_id),('ltc', '=', True)]")
-    partner_working=fields.Selection([('yes', 'Yes'), ('no', 'No')], default='no', string='Whether Wife/ Husband is employed and if so whether entitled to LTC')
-    mode_of_travel=fields.Selection([('road', 'By Road'),('train', 'By Train'),('air', 'By Air')], default='road', string='Mode of Travel')
-    el_encashment=fields.Selection([('yes', 'Yes'), ('no', 'No')], default='no', string='Require EL Encashment')
-    no_of_days = fields.Float('No. of days', default='10')
-    amount = fields.Char(string='Amount', compute='_compute_amount')
-    total_basic_salary = fields.Char(string='Total Basic')
+    ltc_sequence = fields.Char('LTC number',track_visibility='always')
+    employee_id = fields.Many2one('hr.employee', string='Employee', default=_default_employee,track_visibility='always')
+    date = fields.Date(string="Requested Date", default=datetime.now().date(),track_visibility='always')
+    place_of_trvel=fields.Selection([('hometown', 'Hometown'), ('india', 'Anywhere in India'), ('conversion', 'Conversion of Hometown')], default='hometown', string='Place of Travel',track_visibility='always')
+    hometown_address = fields.Char(string='Address',track_visibility='always')
+    block_year=fields.Char('Block year',track_visibility='always')
+    slect_leave = fields.Many2one('hr.leave',string = 'Leave', domain="[('employee_id', '=', employee_id)]",track_visibility='always')
+    leave_period = fields.Char(string = 'Leave period', compute='compute_get_leave_details',track_visibility='always')
+    total_leaves = fields.Char(string = 'Total Leaves',track_visibility='always')
+    left_leaves = fields.Char(string = 'Left Leaves',track_visibility='always')
+    depart_date=fields.Date('Departue Date', compute='compute_get_leave_details',track_visibility='always')
+    arrival_date=fields.Date('Arrival Date', compute='compute_get_leave_details',track_visibility='always')
+    advance_ammount=fields.Char('Advance Amount Required',track_visibility='always')
+    single_fare=fields.Float('Single Train Fare/ Bus fare from the office to Place of Visit by Shortest Route',track_visibility='always')
+    single_fare_approved=fields.Float('Approved Amount',track_visibility='always')
+    attach_file = fields.Binary('Attach a File',track_visibility='always')
+    family_details = fields.Many2many('employee.relative', string='Family Details', domain="[('employee_id', '=', employee_id),('ltc', '=', True)]",track_visibility='always')
+    partner_working=fields.Selection([('yes', 'Yes'), ('no', 'No')], default='no', string='Whether Wife/ Husband is employed and if so whether entitled to LTC',track_visibility='always')
+    mode_of_travel=fields.Selection([('road', 'By Road'),('train', 'By Train'),('air', 'By Air')], default='road', string='Mode of Travel',track_visibility='always')
+    el_encashment=fields.Selection([('yes', 'Yes'), ('no', 'No')], default='no', string='Require EL Encashment',track_visibility='always')
+    no_of_days = fields.Float('No. of days', default='10',track_visibility='always')
+    amount = fields.Char(string='Amount', compute='_compute_amount',track_visibility='always')
+    total_basic_salary = fields.Char(string='Total Basic',track_visibility='always')
     state = fields.Selection([('draft', 'Draft'), ('to_approve', 'To Approve'), ('approved', 'Approved'), ('rejected', 'Rejected')
-                               ], required=True, default='draft')
+                               ], required=True, default='draft',track_visibility='always')
 
 
 
@@ -76,10 +76,12 @@ class EmployeeLtcAdvance(models.Model):
             if line.no_of_days:
                 sum = 0
                 leave_my = self.env['hr.leave.report'].search([('employee_id', '=', line.employee_id.id)])
-                total_basic = self.env['monthly.salary.structure'].search([('employee_id','=',line.employee_id.id),('name', '=', 'Basic Salary')],order='employee_id desc', limit=1)
-                line.total_basic_salary = total_basic.total
-                total_basic_ltc = total_basic.total
-                line.amount = (((float(total_basic_ltc))*float(line.no_of_days))/30)
+                # total_basic = self.env['monthly.salary.structure'].search([('employee_id','=',line.employee_id.id),('name', '=', 'Basic Salary')],order='employee_id desc', limit=1)
+                total_wage = self.env['hr.contract'].search([('employee_id','=',line.employee_id.id),('state','=','open'),('date_start', '<=', line.date),('date_end', '>=', line.date)], limit=1)
+                if total_wage:
+                    line.total_basic_salary = total_wage.wage
+                    total_basic_ltc = total_wage.wage
+                    line.amount = (((float(total_basic_ltc))*float(line.no_of_days))/30)
                 for i in leave_my:
                     sum += i.number_of_days
                 line.total_leaves = str(sum)
@@ -151,6 +153,7 @@ class EmployeeLtcAdvance(models.Model):
 
 class EmployeeLtcClaim(models.Model):
     _name = 'employee.ltc.claim'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _description='Claim Submission'
 
 
@@ -158,15 +161,15 @@ class EmployeeLtcClaim(models.Model):
         return self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
 
 
-    employee_id = fields.Many2one('hr.employee', string='Employee', default=_default_employee)
-    amount_claimed = fields.Char('Advance Amount Claimed', compute='_compute_fetch_ltc_details')
-    ltc_availed_for = fields.Char('LTC availed for', compute='_compute_fetch_ltc_details')
-    leave_period = fields.Char('Leave period', compute='_compute_fetch_ltc_details')
-    place_of_visit = fields.Char('Place of visit')
-    detail_of_journey = fields.One2many('employee.ltc.journey','relate_to_ltc')
+    employee_id = fields.Many2one('hr.employee', string='Employee', default=_default_employee,track_visibility='always')
+    amount_claimed = fields.Char('Advance Amount Claimed', compute='_compute_fetch_ltc_details',track_visibility='always')
+    ltc_availed_for = fields.Char('LTC availed for', compute='_compute_fetch_ltc_details',track_visibility='always')
+    leave_period = fields.Char('Leave period', compute='_compute_fetch_ltc_details',track_visibility='always')
+    place_of_visit = fields.Char('Place of visit',track_visibility='always')
+    detail_of_journey = fields.One2many('employee.ltc.journey','relate_to_ltc', string='Details of Journey',track_visibility='always')
     state = fields.Selection(
         [('draft', 'Draft'), ('to_approve', 'To Approve'), ('approved', 'Approved'), ('rejected', 'Rejected')
-         ], required=True, default='draft')
+         ], required=True, default='draft',track_visibility='always')
 
 
     @api.multi
@@ -218,7 +221,7 @@ class JourneyDetails(models.Model):
     _description = "Employee LTC Journey"
 
     employee_id = fields.Many2one('hr.employee', string='Employee')
-    relate_to_ltc=fields.Many2one('employee.ltc.claim')
+    relate_to_ltc = fields.Many2one('employee.ltc.claim')
     departure_timings = fields.Datetime('Date & Time of Departure')
     arrival_timings = fields.Datetime('Date & Time of Arrival')
     from_l = fields.Char('From')

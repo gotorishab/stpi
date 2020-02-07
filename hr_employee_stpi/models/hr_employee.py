@@ -110,6 +110,19 @@ class HrEmployee(models.Model):
 
     # category_ids = fields.Many2many('hr.employee.category', 'employee_category_rel', 'emp_id', 'category_id', 'Tags', required=False)
 
+
+
+    @api.constrains('name')
+    @api.onchange('name')
+    def _check_name_validation(self):
+        for rec in self:
+            if rec.name:
+                for e in rec.name:
+                    if not(e.isalpha() or e == ' '):
+                        raise ValidationError(_("Please enter correct Name."))
+
+
+
     # added by sangita
     def get_document_ids(self):
 

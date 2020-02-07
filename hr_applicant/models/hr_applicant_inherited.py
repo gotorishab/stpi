@@ -203,6 +203,14 @@ class HRApplicant(models.Model):
                                         "It must be of 10 digits"))
 
 
+    @api.onchange('name')
+    @api.constrains('name')
+    def onchange_name_get_pname(self):
+        for rec in self:
+            if rec.name:
+                rec.partner_name = rec.name
+
+
     @api.onchange('job_id')
     def _onchange_job_id(self):
         if self.job_id:
@@ -233,6 +241,16 @@ class HRApplicant(models.Model):
 
 
 
+    @api.constrains('name')
+    @api.onchange('name')
+    def _check_name_validation(self):
+        for rec in self:
+            if rec.name:
+                for e in rec.name:
+                    if not(e.isalpha() or e == ' '):
+                        raise ValidationError(_("Please enter correct Name."))
+
+
     @api.constrains('aadhar_no')
     @api.onchange('aadhar_no')
     def _check_aadhar_number(self):
@@ -240,9 +258,9 @@ class HRApplicant(models.Model):
             if rec.aadhar_no:
                 for e in rec.aadhar_no:
                     if not e.isdigit():
-                        raise ValidationError(_("Please enter correct Aadhar number, it must be numeric..."))
+                        raise ValidationError(_("Please enter correct Aadhar number, it must be numeric."))
                 if len(rec.aadhar_no) != 12:
-                    raise ValidationError(_("Please enter correct Aadhar number, it must be of 12 digits..."))
+                    raise ValidationError(_("Please enter correct Aadhar number, it must be of 12 digits."))
 
     @api.constrains('date_of_join', 'office_order_date')
     @api.onchange('date_of_join','office_order_date')
@@ -386,9 +404,9 @@ class HRApplicant(models.Model):
                         'recruitment_file_no': self.recruitment_file_no,
                         'office_file_no': self.office_file_no,
                         'address_id': self.partner_id,
-                        'work_email': self.email_from,
-                        'work_phone': self.partner_phone,
-                        'mobile_phone': self.partner_mobile,
+                        # 'work_email': self.email_from,
+                        # 'work_phone': self.partner_phone,
+                        # 'mobile_phone': self.partner_mobile,
                         'fax_number': self.fax_number,
                 })
                 if self.employee_type == 'regular' and self.recruitment_type == 'd_recruitment':
@@ -579,14 +597,7 @@ class ApplicantTraining(models.Model):
     _name='applicant.training'
     _description ='Applicant Training'
 
-    # def default_employee(self):
-    #     print("------------------context", self._context.get('active_id'))
-    #     if 'params' in self._context.keys():
-    #         return self._context.get('params')['id']
-    #     else:
-    #         return False
 
-    # employee_id = fields.Many2one('hr.employee', string='employee', default=lambda self: self.default_employee())
     employee_id = fields.Many2one('hr.employee', string='employee')
     course = fields.Char('Course Title')
     start_date = fields.Date('Start Date')

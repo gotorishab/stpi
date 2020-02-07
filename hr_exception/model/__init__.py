@@ -8,3 +8,5 @@ from . import hr_employee_transfer
 from . import hr_employee_vehicle_req
 from . import reimbursement
 from . import hr_leaves
+from . import ltc_advance
+from . import ltc_claim

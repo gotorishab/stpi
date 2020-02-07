@@ -10,16 +10,15 @@
                 <field name="employee_type" required="1"/>
                 <field name="recruitment_type" attrs="{'invisible': [('employee_type', '!=', 'regular')], 'required': [('employee_type', '=', 'regular')]}"/>
             </field>
-            
-            <field name="name" position="after">
-                <h2 class="o_row">
-                    <div>
-                        <label for="title" string="Title"/>
-                        <field name="title"  placeholder="Title" style="width: 30%%"/>
-                    </div>
-                </h2>
-            </field>
 
+
+            <xpath expr="//label[@for='name']" position="after">
+                    <h2><field name="title" required="1" placeholder="Title" options="{'no_create_edit': 1}"/></h2>
+                </xpath>
+
+            <xpath expr="//field[@name='name']" position="attributes">
+                <attribute name="placeholder">Applicant's Name</attribute>
+            </xpath>
             <xpath expr="//label[@for='salary_expected']" position="before">
                 <field name="struct_id" required="1"/>
                 <field name="pay_level_id" required="1"/>
@@ -32,6 +31,27 @@
 
             <xpath expr="//label[@for='categ_ids']" position="attributes">
                 <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//label[@for='partner_name']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='partner_name']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='partner_phone']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='email_from']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='partner_mobile']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='partner_id']" position="attributes">
+                <attribute name="string">Work Address</attribute>
             </xpath>
 
             <xpath expr="//field[@name='type_id']" position="attributes">

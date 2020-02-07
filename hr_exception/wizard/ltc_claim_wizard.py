@@ -6,15 +6,15 @@
 from odoo import api, fields, models
 
 
-class TourRequestConfirm(models.TransientModel):
-    _name = 'tour.request.confirm'
+class LtcClaimConfirm(models.TransientModel):
+    _name = 'employee.ltc.claim.confirm'
     _inherit = ['exception.rule.confirm']
 
-    related_model_id = fields.Many2one('tour.request', 'Tour Request')
+    related_model_id = fields.Many2one('employee.ltc.claim', 'Ltc Claim')
 
     @api.multi
     def action_confirm(self):
         self.ensure_one()
         if self.ignore:
             self.related_model_id.ignore_exception = True
-        return super(TourRequestConfirm, self).action_confirm()
+        return super(LtcClaimConfirm, self).action_confirm()

@@ -17,3 +17,5 @@ class Reimbursement(models.Model):
                               ('10', 'October'), ('11', 'November'), ('12', 'December')])
     present_days = fields.Float('Present Days')
     no_of_days = fields.Float('Maximum number of Days')
+
+    

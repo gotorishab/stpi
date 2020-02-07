@@ -11,7 +11,7 @@
     """,
     'category': 'hrms',
     'version': '12.0.1',
-    'depends': ['base','hr'],
+    'depends': ['base','hr','hr_holidays','hr_applicant'],
     'data': [
         'security/ir.model.access.csv',
         'views/employee_ltc.xml',

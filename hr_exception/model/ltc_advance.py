@@ -6,47 +6,36 @@ class ExceptionRule(models.Model):
     _inherit = 'exception.rule'
 
     rule_group = fields.Selection(
-        selection_add=[('tour_request', 'Tour Request'),
+        selection_add=[('employee_ltc_advance', 'Employee LTC Advance'),
                        ],
     )
     model = fields.Selection(
         selection_add=[
-            ('tour.request', 'Tour Request'),
-            ('tour.request.journey', 'Tour Request Line'),
+            ('employee.ltc.advance', 'Employee LTC Advance')
         ])
 
 
-class EmployeeTourRequest(models.Model):
-    _inherit = ['tour.request', 'base.exception']
-    _name = 'tour.request'
+class EmployeeLtcAdvance(models.Model):
+    _inherit = ['employee.ltc.advance', 'base.exception']
+    _name = 'employee.ltc.advance'
     _order = 'main_exception_id asc'
 
     rule_group = fields.Selection(
-        selection_add=[('tour_request', 'Tour Request')],
-        default='tour_request',
+        selection_add=[('employee_ltc_advance', 'Employee LTC Advance')],
+        default='employee_ltc_advance',
     )
 
     @api.model
     def test_all_draft_orders(self):
-        order_set = self.search([('state', '=', 'waiting_for_approval')])
+        order_set = self.search([('state', '=', 'to_approve')])
         order_set.test_exceptions()
         return True
-
-    @api.constrains('ignore_exception', 'employee_journey', 'state')
-    def sale_check_exception(self):
-        if self.state == 'approved':
-            self._check_exception()
-
-    @api.onchange('employee_journey')
-    def onchange_ignore_exception(self):
-        if self.state == 'approved':
-            self.ignore_exception = False
 
 
     @api.multi
     def action_cancel(self):
         # print("-----------------reset_expense_sheets-")
-        res = super(EmployeeTourRequest, self).action_cancel()
+        res = super(EmployeeLtcAdvance, self).action_cancel()
         orders = self.filtered(lambda s: s.ignore_exception)
         orders.write({
             'ignore_exception': False,
@@ -56,16 +45,13 @@ class EmployeeTourRequest(models.Model):
     @api.multi
     def button_reject(self):
         exception = self.env['approvals.list'].search(
-            [('resource_ref', '=', 'tour.request' + ',' + str(self.id)),
-             ('state', '=', 'waiting_for_approval')])
+            [('resource_ref', '=', 'employee.ltc.advance' + ',' + str(self.id)),
+             ('state', '=', 'to_approve')])
         # print("------------------exception",exception)
         if exception:
             raise UserError(_('Do not allow Pending Approval Loan for Refuse.'))
-        return super(EmployeeTourRequest, self).button_reject()
+        return super(EmployeeLtcAdvance, self).button_reject()
 
-    def _employee_tour_request_get_lines(self):
-        self.ensure_one()
-        return self.employee_journey
 
     @api.multi
     def button_approved(self):
@@ -76,23 +62,12 @@ class EmployeeTourRequest(models.Model):
             return self._popup_exceptions()
 
         else:
-            return super(EmployeeTourRequest, self).button_approved()
+            return super(EmployeeLtcAdvance, self).button_approved()
 
     @api.model
     def _get_popup_action(self):
-        action = self.env.ref('hr_exception.action_employee_tour_request_confirm')
+        action = self.env.ref('hr_exception.action_employee_ltc_advance_confirm')
         return action
-
-
-class EmployeeTourRequestLine(models.Model):
-    _inherit = ['tour.request.journey', 'base.exception']
-    _name = 'tour.request.journey'
-    _order = 'main_exception_id asc'
-
-    rule_group = fields.Selection(
-        selection_add=[('tour_request_journey', 'Tour Request Line')],
-        default='tour_request_journey',
-    )
 
 
 class Approvalslist(models.Model):
@@ -103,7 +78,7 @@ class Approvalslist(models.Model):
         res = super(Approvalslist, self).approve()
         if res:
             # print("----------------------self.model_id.model", self.model_id.model)
-            if self.model_id.model == 'tour.request':
+            if self.model_id.model == 'employee.ltc.advance':
                 self.resource_ref.button_approved()
         return res
 
@@ -111,6 +86,6 @@ class Approvalslist(models.Model):
     def reject(self):
         res = super(Approvalslist, self).reject()
         if res:
-            if self.model_id.model == 'tour.request':
+            if self.model_id.model == 'employee.ltc.advance':
                 self.resource_ref.button_reject()
         return res

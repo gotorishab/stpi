@@ -8,3 +8,5 @@ from . import hr_employee_transfer_wizard
 from . import employee_vehicle_wizard
 from . import reimbursement_wizard
 from . import hr_leave_wizard
+from . import ltc_advance_wizard
+from . import ltc_claim_wizard

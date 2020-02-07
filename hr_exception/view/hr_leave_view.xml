@@ -41,7 +41,7 @@
                     </xpath>
                     <xpath expr="//sheet" position="inside">
                         <newline />
-                        <group name="exception" colspan="2" col="2">
+                        <group name="exception" colspan="2" col="2" groups="base.group_no_one">
                             <separator string="Exception" colspan="2"/>
                             <field name="exception_ids" colspan="2" nolabel="1" readonly="1"/>
                         </group>
