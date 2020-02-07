@@ -2,3 +2,5 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_hr_requisition_confirm,Access.hr.requisition.confirm,hr_exception.model_hr_requisition_confirm,base.group_user,1,1,1,1
 access_hr_loan_confirm,Access.hr.loan.confirm,hr_exception.model_hr_loan_confirm,base.group_user,1,1,1,1
 access_tour_request_confirm,Access.tour.request.confirm,hr_exception.model_tour_request_confirm,base.group_user,1,1,1,1
+access_employee_pf_widthdrawl_confirm,employee.pf.widthdrawl.confirm,hr_exception.model_employee_pf_widthdrawl_confirm,base.group_user,1,1,1,1
+access_pf_employee_confirm,pf.employee.confirm,hr_exception.model_pf_employee_confirm,base.group_user,1,1,1,1

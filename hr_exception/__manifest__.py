@@ -4,19 +4,20 @@
 
 {'name': 'Hr Exception',
  'summary': 'Custom exceptions on Hr',
- 'version': '12.0.4',
+ 'version': '12.0.5',
  'category': 'Generic Modules/Purchase',
 
 'author': "Dexciss Technology Pvt Ltd(SMehata)",
  'website': 'http://www.Dexciss.com',
  'depends': ['hr_employee_requisition', 'base_exception_and_approval', 'ohrms_loan', 'tour_request','birthday_check',
-             'hr_employee_transfer','employee_vehicle_request','reimbursement_stpi','hr_holidays','employee_ltc'],
+             'hr_employee_transfer','employee_vehicle_request','reimbursement_stpi','hr_holidays','employee_ltc','pf_withdrawl'],
  'license': 'AGPL-3',
 'description':"""
                 updated by smehata 23/08/19 add Loan Exception
                 updated by smehata 20/08/19 
                 Last Updated by sangita 21/01/2020
                 Last Updated by sangita 04/02/2020 added vehicle request exception
+                Last Updated by Sangita 07/02/2020 added pf withdrawl and pf employee exception
                  """,
  'data': [
           'security/ir.model.access.csv',
@@ -30,7 +31,9 @@
             'view/reimbursement.xml',
             'view/hr_leave_view.xml',
             'view/ltc_advance.xml',
+            'view/pf_withdrawl_view.xml',
             'view/ltc_claim.xml',
+            'view/pf_employee_view.xml',
             'wizard/hr_loan_wizard_view.xml',
             'wizard/employee_requisition_wizard_view.xml',
             'wizard/tour_request_wizard_view.xml',
@@ -42,7 +45,8 @@
             'wizard/hr_leave_wizard_view.xml',
             'wizard/ltc_advance_wizard_view.xml',
             'wizard/ltc_claim_wizard_view.xml',
-
+            'wizard/pf_wothdrawl_wizard_view.xml',
+            'wizard/pf_employee_wizard_view.xml'
  ],
  'images': [],
  'installable': True,

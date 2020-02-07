@@ -48,7 +48,7 @@
         <field name="model">employee.ltc.claim</field>
         <field name="inherit_id" ref="employee_ltc.employeeltc_claim_tree_view"/>
         <field name="arch" type="xml">
-             <field name="state" position="after">
+             <field name="place_of_visit" position="after">
                    <field name="main_exception_id"/>
              </field>
         </field>
