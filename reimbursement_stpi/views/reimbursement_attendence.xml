@@ -11,7 +11,8 @@
                   <field name="month" required="1"/>
                 <field name="year" required="1"/>
                 <field name="present_days" required="1"/>
-                 <field name="no_of_days" required="1"/>
+                 <field name="no_of_days" invisible="1"/>
+                 <field name="no_of_days_related" readonly="1"/>
             </tree>
         </field>
     </record>
