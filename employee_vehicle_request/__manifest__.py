@@ -22,7 +22,7 @@
 ##############################################################################
 {
     'name': 'Employee Vehicle Request',
-    'version': '12.0.1',
+    'version': '12.0.2',
     'summary': """Manage Vehicle Requests From Employee""",
     'description': """
                     12 Tansition by SMehata
