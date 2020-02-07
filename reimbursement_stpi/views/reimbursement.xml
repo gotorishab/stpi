@@ -33,7 +33,7 @@
                     <group>
                         <group>
                             <field name="reimbursement_sequence" attrs="{'invisible':[('reimbursement_sequence','=', False)], 'readonly':[('reimbursement_sequence','!=', False)]}"/>
-                            <field name="employee_id" readonly="1"/>
+                            <field name="employee_id" readonly="1" required="1"/>
                             <field name="job_id" readonly="1"/>
                             <field name="branch_id" readonly="1"/>
                             <field name="department_id" readonly="1"/>

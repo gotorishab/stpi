@@ -131,18 +131,15 @@ class Reimbursement(models.Model):
                     rec.claim_date_to = False
                     rec.claim_date = False
 
-    @api.constrains('name','employee_id','claimed_amount')
-    @api.onchange('name','employee_id','claimed_amount')
+    @api.constrains('name','employee_id','claimed_amount','from_date','to_date')
+    @api.onchange('name','employee_id','claimed_amount','from_date','to_date')
     def _onchange_name_employee(self):
         for rec in self:
             if rec.employee_id and rec.name == 'lunch':
                 count = 0
-                # serch_id = self.env['hr.attendance'].search([('employee_id', '=', rec.employee_id.id)])
-                # for i in serch_id:
-                #     if rec.from_date < i.check_in.date() < rec.to_date:
-                #         count += 1
-                #
-                serch_id = self.env['reimbursement.attendence'].search([('employee_id', '=', rec.employee_id.id)])
+                serch_id = self.env['reimbursement.attendence'].search([('employee_id', '=', rec.employee_id.id),('date_related_month', '>=', rec.from_date),('date_related_month', '<', rec.to_date)])
+                for i in serch_id:
+                    count += i.present_days
                 rec.lunch_daily = '75'
                 rec.working_days = count
                 rec.net_amount = str(count * 75)

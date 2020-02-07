@@ -9,6 +9,7 @@
             <tree string="Reimbursement Attendence" editable="bottom">
                   <field name="employee_id" required="1"/>
                   <field name="month" required="1"/>
+                  <field name="date_related_month" invisible="1"/>
                 <field name="year" required="1"/>
                 <field name="present_days" required="1"/>
                  <field name="no_of_days" invisible="1"/>

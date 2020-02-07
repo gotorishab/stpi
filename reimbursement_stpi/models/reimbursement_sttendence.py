@@ -14,7 +14,8 @@ class Reimbursement(models.Model):
     year = fields.Char(string='Year', size=4)
     month = fields.Selection([('01', 'January'), ('02', 'February'), ('03', 'March'), ('04', 'April'),
                               ('05', 'May'), ('06', 'June'), ('07', 'July'), ('08', 'August'), ('09', 'September'),
-                              ('10', 'October'), ('11', 'November'), ('12', 'December')])
+                              ('10', 'October'), ('11', 'November'), ('12', 'December')], string='Month')
+    date_related_month = fields.Date(string='Date related month')
     present_days = fields.Float('Present Days')
     no_of_days = fields.Float('Number of Days')
     no_of_days_related = fields.Float('Number of Days', related='no_of_days')
@@ -32,6 +33,7 @@ class Reimbursement(models.Model):
                 rec.no_of_days = 28
 
 
+
     @api.onchange('present_days')
     @api.constrains('present_days')
     def validate_present_days(self):
@@ -46,12 +48,21 @@ class Reimbursement(models.Model):
     def validate_year_isdigit(self):
         for rec in self:
             today = datetime.now().date()
-            for e in rec.year:
-                if not e.isdigit():
+            if rec.year:
+                for e in rec.year:
+                    if not e.isdigit():
+                        raise ValidationError(
+                            _(
+                                'Please enter correct year, it must be of 4 digits'))
+                if int(rec.year) > today.year:
                     raise ValidationError(
                         _(
-                            'Please enter correct year, it must be of 4 digits'))
-            if int(rec.year) > today.year:
-                raise ValidationError(
-                    _(
-                        'You are not allowed to enter the future year'))
+                            'You are not allowed to enter the future year'))
+
+
+    @api.onchange('month','year')
+    @api.constrains('month','year')
+    def calculate_year_month_date(self):
+        for rec in self:
+            if rec.month and rec.year:
+                rec.date_related_month = date(int(rec.year), int(rec.month), 15)
