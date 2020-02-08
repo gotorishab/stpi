@@ -1,0 +1,471 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    
+    <!--=======Tree view of HR Declaration=======-->
+    <record id="hr_declaration_tree_view" model="ir.ui.view">
+        <field name="name">hr.declaration.tree</field>
+        <field name="model">hr.declaration</field>
+        <field name="arch" type="xml">
+            <tree string="HR Declarations">
+                  <field name="employee_id"/>
+                  <field name="date_range"/>
+                  <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <!--=======Form view of HR Declaration=======-->
+    <record id="hr_declaration_form_view" model="ir.ui.view">
+        <field name="name">hr.declaration.form</field>
+        <field name="model">hr.declaration</field>
+        <field name="arch" type="xml">
+            <form string="HR Declarations">
+                <header>
+                    <button name="button_to_approve" string="Send for Approval" class="oe_highlight" type="object" states="draft"/>
+                     <button name="button_reset_to_draft" string="Reset to draft" type="object" states="to_approve"/>
+                    <button name="button_approved" string="Approve" class="oe_highlight" type="object" states="to_approve" groups="tds.group_manager_hr_declaration"/>
+                    <button name="button_reject" string="Reject" type="object" states="to_approve" groups="tds.group_manager_hr_declaration"/>
+                    <button name="button_compute_tax" string="Compute Tax" class="oe_highlight" type="object" states="approved" groups="tds.group_manager_hr_declaration"/>
+                    <button name="button_verify" string="Verify" type="object" class="oe_highlight" states="approved" groups="tds.group_manager_hr_declaration"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,to_approve,approved,rejected" />
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="employee_id" required="1" readonly="1"/>
+                            <field name="job_id" readonly="1"/>
+                             <field name="branch_id" readonly="1"/>
+                             <field name="department_id" readonly="1"/>
+                            <field name="date_range" attrs="{'readonly':[('state','!=','draft')], 'required':[('state','=','draft')]}"/>
+                            <field name="tax_payable_zero" invisible="1"/>
+                            <field name="tax_computed_bool" invisible="1"/>
+
+                        </group>
+                        <group>
+                            <field name="tax_salary_final" readonly="1"/>
+                            <field name="net_allowed_rebate" readonly="1"/>
+                            <field name="income_after_rebate" readonly="1"/>
+                            <field name="tax_payable" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+
+                    <page string="Exemption">
+                        <separator string="Exemption"/>
+                        <field name="exemption_ids" readonly="1">
+                            <tree string="Exemption" editable="bottom">
+                                <field name="exemption_id" invisible="1"/>
+                                <field name="it_rule" required="1"/>
+                                <field name="saving_master"/>
+ 
+ 
+                                <field name="investment" sum="Total"/>
+ 
+                                <field name="allowed_rebate" sum="Total"/>
+                            </tree>
+                        </field>
+                    </page>
+
+                    <page string="Rebate">
+                        <separator string="Rebate"/>
+                        <field name="rebate_ids" readonly="1">
+                            <tree string="Rebate Ids" editable="bottom">
+                                <field name="rebate_id" invisible="1"/>
+                                <field name="it_rule" required="1"/>
+                                <field name="saving_master"/>
+ 
+ 
+                                <field name="investment" sum="Total"/>
+ 
+                                <field name="allowed_rebate" sum="Total"/>
+                            </tree>
+                        </field>
+                    </page>
+
+                    <page string="Deducations">
+                        <separator string="Slab - 80 Declaration "/>
+                        <field name="slab_ids" attrs="{'readonly':[('state','!=','draft')]}">
+                            <tree string="Slab - 80 Declaration" editable="bottom">
+                                <field name="slab_id" invisible="1"/>
+                                <field name="it_rule" required="1"/>
+                                <field name="saving_master"/>
+                                <field name="investment" sum="Total"/>
+                                <field name="document"/>
+                            </tree>
+                        </field>
+                        <group class="oe_subtotal_footer oe_right" colspan="2" >
+                                <field name="allowed_rebate_under_80c" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                <field name="allowed_rebate_under_80b" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            </group>
+<!--                        <separator string="HRA - House Rent Allowances "/>-->
+<!--                        <field name="hra_ids">-->
+<!--                            <tree string="HRA - House Rent Allowances " editable="bottom">-->
+<!--                                <field name="hra_id" invisible="1"/>-->
+<!--                                <field name="it_rule" required="1"/>-->
+<!--                                <field name="saving_master"/>-->
+<!-- -->
+<!-- -->
+<!--                                <field name="investment" sum="Total"/>-->
+<!-- -->
+<!--                                <field name="allowed_rebate" sum="Total"/>-->
+<!--                            </tree>-->
+<!--                        </field>-->
+                         <separator string="Medical Insurance Premium paid"/>
+                        <field name="med_ins_ids" attrs="{'readonly':[('state','!=','draft')]}">
+                            <tree string="Medical Insurance Premium paid" editable="bottom">
+                                <field name="med_ins_id" invisible="1"/>
+                                <field name="it_rule" required="1"/>
+                                <field name="saving_master"/>
+ 
+ 
+                                <field name="investment" sum="Total"/>
+ 
+                                <field name="document"/>
+                            </tree>
+                        </field>
+                        <group class="oe_subtotal_footer oe_right" colspan="2" >
+                                <field name="allowed_rebate_under_80d" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            </group>
+                         <separator string="Deductions on Interest on Savings Account"/>
+                        <field name="deduction_saving_ids" attrs="{'readonly':[('state','!=','draft')]}">
+                            <tree string="Deductions on Interest on Savings Account" editable="bottom">
+                                <field name="deduction_saving_id" invisible="1"/>
+                                <field name="it_rule" required="1"/>
+                                <field name="saving_master"/>
+<!--                                <field name="saving_type" required="1" readonly="1"/>-->
+ 
+                                <field name="investment" sum="Total"/>
+ 
+                                <field name="document"/>
+                            </tree>
+                        </field>
+                        <group class="oe_subtotal_footer oe_right" colspan="2" >
+                                <field name="allowed_rebate_under_80dsa" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            </group>
+                        <separator string="Tax Benefits on Home Loan"/>
+                        <field name="tax_home_ids" attrs="{'readonly':[('state','!=','draft')]}">
+                            <tree string="Tax Benefits on Home Loan" editable="bottom">
+                                <field name="tax_home_id" invisible="1"/>
+                                <field name="it_rule" required="1"/>
+                                <field name="saving_master"/>
+<!--                                <field name="saving_type" required="1" readonly="1"/>-->
+ 
+                                <field name="investment" sum="Total"/>
+ 
+                                <field name="document"/>
+                            </tree>
+                        </field>
+                        <group class="oe_subtotal_footer oe_right" colspan="2" >
+                                <field name="allowed_rebate_under_tbhl" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                <field name="allowed_rebate_under_80ee" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                <field name="allowed_rebate_under_24" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            </group>
+                        <separator string="Tax benefit on Education Loan (80E) "/>
+                        <field name="tax_education_ids" attrs="{'readonly':[('state','!=','draft')]}">
+                            <tree string="Tax benefit on Education Loan (80E) " editable="bottom">
+                                <field name="tax_education_id" invisible="1"/>
+                                <field name="it_rule" required="1"/>
+                                <field name="saving_master"/>
+ 
+ 
+                                <field name="investment" sum="Total"/>
+ 
+                                <field name="document"/>
+                            </tree>
+                        </field>
+                        <group class="oe_subtotal_footer oe_right" colspan="2" >
+                                <field name="allowed_rebate_under_80e" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            </group>
+                         <separator string="RGESS"/>
+                        <field name="rgess_ids" attrs="{'readonly':[('state','!=','draft')]}">
+                            <tree string="RGESS" editable="bottom">
+                                <field name="rgess_id" invisible="1"/>
+                                <field name="it_rule" required="1"/>
+                                <field name="saving_master"/>
+ 
+ 
+                                <field name="investment" sum="Total"/>
+ 
+                                <field name="document"/>
+                            </tree>
+                        </field>
+                        <group class="oe_subtotal_footer oe_right" colspan="2" >
+                                <field name="allowed_rebate_under_80ccg" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            </group>
+                         <separator string="Deductions on Medical Expenditure for a Handicapped Relative"/>
+                        <field name="dedmedical_ids" attrs="{'readonly':[('state','!=','draft')]}">
+                            <tree string="Deductions on Medical Expenditure for a Handicapped Relative" editable="bottom">
+                                <field name="dedmedical_id" invisible="1"/>
+                                <field name="it_rule" required="1"/>
+                                <field name="saving_master"/>
+ 
+ 
+                                <field name="investment" sum="Total"/>
+ 
+                                <field name="document"/>
+                            </tree>
+                        </field>
+                        <group class="oe_subtotal_footer oe_right" colspan="2" >
+                                <field name="allowed_rebate_under_80cdd" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            </group>
+                        <separator string="Deductions on Medical Expenditure on Self or Dependent Relative"/>
+                        <field name="dedmedical_self_ids" attrs="{'readonly':[('state','!=','draft')]}">
+                            <tree string="Deductions on Medical Expenditure on Self or Dependent Relative" editable="bottom">
+                                <field name="dedmedical_self_id" invisible="1"/>
+                                <field name="it_rule" required="1"/>
+                                <field name="saving_master"/>
+                                <field name="investment" sum="Total"/>
+ 
+                                <field name="document"/>
+                            </tree>
+                        </field>
+                        <group class="oe_subtotal_footer oe_right" colspan="2" >
+                                <field name="allowed_rebate_under_80mesdr" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            </group>
+                    </page>
+                        <page string="Tax Payment" name="tax_payment_g">
+                            <field name="tax_payment_ids" attrs="{'invisible':[('tax_payable_zero','=',False)], 'readonly':[('state','=','verified')]}">
+                                <tree string="Tax Payment" editable="bottom">
+                                    <field name="tax_payment_id" invisible="1"/>
+                                    <field name="date" required="1"/>
+                                    <field name="amount" required="1"/>
+                                </tree>
+                            </field>
+                        </page>
+
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+            </form>
+        </field>
+    </record>
+
+        <!--=======Tree view of HR Declaration=======-->
+    <record id="hr_savings_type_tree_view" model="ir.ui.view">
+        <field name="name">saving.master.tree</field>
+        <field name="model">saving.master</field>
+        <field name="arch" type="xml">
+            <tree string="Savings Type" editable="bottom">
+                  <field name="it_rule" required="1"/>
+                  <field name="saving_type" required="1"/>
+                  <field name="description"/>
+                  <field name="rebate"/>
+            </tree>
+        </field>
+    </record>
+
+
+        <!--HR Declaration search view-->
+    <record id="view_hr_declaration_request_search_form" model="ir.ui.view">
+        <field name="name">hr.declaration.search.form</field>
+        <field name="model">hr.declaration</field>
+        <field name="arch" type="xml">
+           <search string="HR Declaration">
+               <filter string="My Declarations" name="mydeclaration" domain="[('employee_id.user_id.id', '=', uid)]" />
+                <field name="employee_id" string="Employee"/>
+                    <filter string="Employee" name="employee_id" context="{'group_by':'employee_id'}"/>
+                    <filter string="Status" name="status" context="{'group_by':'state'}"/>
+            </search>
+        </field>
+    </record>
+
+
+    
+        <!--============Action view of hr.declaration Draft============-->
+    <record id="hr_declaration_menu_action_all" model="ir.actions.act_window">
+        <field name="name">HR Declaration</field>
+        <field name="res_model">hr.declaration</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_mydeclaration': 1, 'search_default_status': 1}</field>
+        <field name="search_view_id" ref="view_hr_declaration_request_search_form"/>
+    </record>
+
+
+        <!--============Action view of hr.declaration Draft============-->
+    <record id="hr_declaration_menu_action" model="ir.actions.act_window">
+        <field name="name">HR Declaration</field>
+        <field name="res_model">hr.declaration</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_mydeclaration': 1}</field>
+        <field name="search_view_id" ref="view_hr_declaration_request_search_form"/>
+        <field name="domain">[('state','=','draft')]</field>
+    </record>
+    <!--============Action view of hr.declaration Waiting============-->
+    <record id="hr_declaration_pending_action" model="ir.actions.act_window">
+        <field name="name">HR Declaration</field>
+        <field name="res_model">hr.declaration</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_hr_declaration_request_search_form"/>
+        <field name="domain">[('state','=','to_approve')]</field>
+    </record>
+    <!--============Action view of hr.declaration approved============-->
+    <record id="hr_declaration_approved_action" model="ir.actions.act_window">
+        <field name="name">HR Declaration</field>
+        <field name="res_model">hr.declaration</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_mydeclaration': 1}</field>
+        <field name="search_view_id" ref="view_hr_declaration_request_search_form"/>
+        <field name="domain">[('state','=','approved')]</field>
+    </record>
+    <!--============Action view of hr.declaration verified============-->
+    <record id="hr_declaration_verified_action" model="ir.actions.act_window">
+        <field name="name">HR Declaration</field>
+        <field name="res_model">hr.declaration</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_mydeclaration': 1}</field>
+        <field name="search_view_id" ref="view_hr_declaration_request_search_form"/>
+        <field name="domain">[('state','=','verified')]</field>
+    </record>
+    <!--============Action view of hr.declaration rejected============-->
+    <record id="hr_declaration_rejected_action" model="ir.actions.act_window">
+        <field name="name">HR Declaration</field>
+        <field name="res_model">hr.declaration</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_mydeclaration': 1}</field>
+        <field name="search_view_id" ref="view_hr_declaration_request_search_form"/>
+        <field name="domain">[('state','=','rejected')]</field>
+    </record>
+    
+    
+    <!--===============Action view of Employee HR Declaration claim Status=================-->
+    <record id="menu_hr_declaration_status_action" model="ir.actions.act_window">
+        <field name="name">HR Declaration</field>
+        <field name="res_model">hr.declaration</field>
+        <!--<field name="view_type">form</field>-->
+        <field name="view_mode">tree,form,search</field>
+        <field name="context">{'group_by': 'state'}</field>
+    </record>
+
+
+<!--===============Action view of Employee HR Declaration claim Department=================-->
+    <record id="menu_hr_declaration_department_action" model="ir.actions.act_window">
+        <field name="name">HR Declaration</field>
+        <field name="res_model">hr.declaration</field>
+        <!--<field name="view_type">form</field>-->
+        <field name="view_mode">tree,form,search</field>
+        <field name="context">{'group_by': 'department_id'}</field>
+    </record>
+
+
+<!--===============Action view of Employee HR Declaration claim Job=================-->
+    <record id="menu_hr_declaration_job_action" model="ir.actions.act_window">
+        <field name="name">HR Declaration</field>
+        <field name="res_model">hr.declaration</field>
+        <!--<field name="view_type">form</field>-->
+        <field name="view_mode">tree,form,search</field>
+        <field name="context">{'group_by': 'job_id'}</field>
+    </record>
+
+
+<!--===============Action view of Employee HR Declaration claim Branch=================-->
+    <record id="menu_hr_declaration_branch_action" model="ir.actions.act_window">
+        <field name="name">HR Declaration</field>
+        <field name="res_model">hr.declaration</field>
+        <!--<field name="view_type">form</field>-->
+        <field name="view_mode">tree,form,search</field>
+        <field name="context">{'group_by': 'branch_id'}</field>
+    </record>
+
+
+
+    <!--============Action view of hr.saving.type rejected============-->
+    <record id="hr_declaration_saving_master_action" model="ir.actions.act_window">
+        <field name="name">HR Saving Type</field>
+        <field name="res_model">saving.master</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+
+      <menuitem id="menu_hr_declaration_main"
+                name="HR Declaration"
+      />
+
+      <menuitem id="menu_hr_declaration_id"
+                name="HR Declaration"
+                parent="menu_hr_declaration_main"
+      />
+
+
+    <menuitem id = "hr_declaration_new_menu_id"
+                  name = "New"
+                  parent ="menu_hr_declaration_id"
+                  action ="hr_declaration_menu_action"
+                  sequence="2"
+                  />
+
+        <menuitem id = "hr_declaration_pending_menu_id"
+                  name = "Pending Approvals"
+                  parent ="menu_hr_declaration_id"
+                  action ="hr_declaration_pending_action"
+                  sequence="3"
+                  />
+        <menuitem id = "hr_declaration_approved_menu_id"
+                  name = "Approved"
+                  parent ="menu_hr_declaration_id"
+                  action ="hr_declaration_approved_action"
+                  sequence="4"
+                  />
+    <menuitem id = "hr_declaration_verified_menu_id"
+                  name = "Verified"
+                  parent ="menu_hr_declaration_id"
+                  action ="hr_declaration_verified_action"
+                  sequence="5"
+                  />
+        <menuitem id = "hr_declaration_rejected_menu_id"
+                  name = "Rejected"
+                  parent ="menu_hr_declaration_id"
+                  action ="hr_declaration_rejected_action"
+                  sequence="6"
+                  />
+    
+    
+        <menuitem name="Reporting"
+            id="menu_hr_declaration" parent="menu_hr_declaration_main"
+            />
+
+    <menuitem id = "hr_declaration_all_menu_id"
+                  name = "All"
+                  parent ="menu_hr_declaration"
+                  action ="hr_declaration_menu_action_all"
+                  sequence="1"
+                  />
+    <menuitem name="HR Declaration by status"
+                id="menu_hr_declaration_status" parent="menu_hr_declaration"
+                 action="menu_hr_declaration_status_action"
+                 />
+    <menuitem name="HR Declaration by Department"
+                id="menu_hr_declaration_department" parent="menu_hr_declaration"
+                 action="menu_hr_declaration_department_action"
+                 />
+    <menuitem name="HR Declaration by Functional Designation"
+                id="menu_hr_declaration_job" parent="menu_hr_declaration"
+                 action="menu_hr_declaration_job_action"
+                 />
+    <menuitem name="HR Declaration by Branch"
+                id="menu_hr_declaration_branch" parent="menu_hr_declaration"
+                 action="menu_hr_declaration_branch_action"
+                 />
+        <menuitem id = "hr_declaration_saving_master_menu_id"
+                  name = "Savings Master"
+                  parent ="hr_payroll.menu_hr_payroll_configuration"
+                  action ="hr_declaration_saving_master_action"
+                  />
+
+
+</odoo>
+
+
+
