@@ -22,13 +22,14 @@
         <field name="model">hr.employee</field>
         <field name="type">tree</field>
         <field name="arch" type="xml">
-            <tree string="Employee">
+            <tree string="Employee" create="0" delete="0">
                 <field name="name"/>
                 <field name="department_id"/>
                 <field name="job_id"/>
                 <field name="birthday"/>
-                 <field name="state" />
-                <field name="cheque_requested" />
+                 <field name="work_email"/>
+                 <field name="mobile_phone"/>
+                <field name="cheque_requested" groups="birthday_check.group_user_birthday"/>
 
             </tree>
         </field>

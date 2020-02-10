@@ -176,6 +176,11 @@ class HRApplicant(models.Model):
             if employee.dob and employee.dob > today:
                 raise ValidationError(_('Please enter correct date of birth'))
 
+    @api.onchange('branch_id')
+    @api.constrains('branch_id')
+    def get_partner_from_branch(self):
+        for rec in self:
+            rec.partner_id = rec.branch_id.partner_id.id
 
 
     @api.constrains('office_order_date')
@@ -303,9 +308,6 @@ class HRApplicant(models.Model):
                 self.show_citizen_field =True
             else:
                 self.show_citizen_field =False
-
-
-
 
 
     @api.multi

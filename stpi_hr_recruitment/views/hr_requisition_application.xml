@@ -99,6 +99,7 @@
             id="menu_application_requisition"
             name="Advertisement "
             parent="hr_employee_requisition.menu_hr_requisition_job"
+            groups="hr.group_hr_user,hr.group_hr_manager"
             sequence="100"
             />
 

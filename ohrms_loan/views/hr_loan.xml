@@ -124,7 +124,7 @@
 
 
     <!--loan menu-->
-    <menuitem name="Loans And Salary Advance"
+    <menuitem name="Loans"
                 id="menu_hr_loans_and_advances"
                 web_icon="ohrms_loan,static/description/icon.png"
         />

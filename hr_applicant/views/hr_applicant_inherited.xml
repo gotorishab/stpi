@@ -15,6 +15,9 @@
             <xpath expr="//label[@for='name']" position="after">
                     <h2><field name="title" required="1" placeholder="Title" options="{'no_create_edit': 1}"/></h2>
                 </xpath>
+            <xpath expr="//label[@for='name']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
 
             <xpath expr="//field[@name='name']" position="attributes">
                 <attribute name="placeholder">Applicant's Name</attribute>
@@ -51,7 +54,7 @@
             </xpath>
 
             <xpath expr="//field[@name='partner_id']" position="attributes">
-                <attribute name="string">Work Address</attribute>
+                <attribute name="invisible">1</attribute>
             </xpath>
 
             <xpath expr="//field[@name='type_id']" position="attributes">

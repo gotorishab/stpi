@@ -105,12 +105,57 @@ class HrEmployee(models.Model):
     aadhar_no = fields.Char('Aadhar Card No.',track_visibility='always')
     aadhar_upload = fields.Binary('Upload(Aadhar)',track_visibility='always')
     passport_upload = fields.Binary('Upload(Passport)',track_visibility='always')
-    bank_account_number = fields.Integer(string='Bank Account number')
+    bank_name = fields.Char(string='Bank Name')
+    bank_account_number = fields.Char(string='Bank Account number')
     ifsc_code = fields.Char(string='IFSC Code')
 
     # category_ids = fields.Many2many('hr.employee.category', 'employee_category_rel', 'emp_id', 'category_id', 'Tags', required=False)
 
 
+
+
+    @api.constrains('mobile_phone','work_phone','phone')
+    @api.onchange('mobile_phone','work_phone','phone')
+    def _check_mobile_phone_num(self):
+        for rec in self:
+            if rec.mobile_phone and not rec.mobile_phone.isnumeric():
+                raise ValidationError(_("Phone number must be a number"))
+            if rec.mobile_phone and len(rec.mobile_phone) != 10:
+                raise ValidationError(_("Please enter correct Mobile number."
+                                        "It must be of 10 digits"))
+            if rec.work_phone and not rec.work_phone.isnumeric():
+                raise ValidationError(_("Phone number must be a number"))
+            if rec.work_phone and len(rec.work_phone) != 10:
+                raise ValidationError(_("Please enter correct work phone number."
+                                        "It must be of 10 digits"))
+            if rec.phone and not rec.phone.isnumeric():
+                raise ValidationError(_("Phone number must be a number"))
+            if rec.phone and len(rec.phone) != 10:
+                raise ValidationError(_("Please enter correct phone number."
+                                                "It must be of 10 digits"))
+
+    @api.constrains('personal_email')
+    def _check_personal_mail_val(self):
+        for employee in self:
+            regex = '^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'
+            if not (re.search(regex, employee.personal_email)):
+                raise ValidationError(_('Please enter correct Personal Mail Address.'))
+
+
+
+    @api.constrains('work_email')
+    def _check_work_mail_val(self):
+        for employee in self:
+            regex = '^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'
+            if not (re.search(regex, employee.work_email)):
+                raise ValidationError(_('Please enter correct Work Mail Address.'))
+
+
+    @api.onchange('branch_id')
+    @api.constrains('branch_id')
+    def get_partner_from_branch(self):
+        for rec in self:
+            rec.address_id = rec.branch_id.partner_id.id
 
     @api.constrains('name')
     @api.onchange('name')
@@ -249,25 +294,22 @@ class HrEmployee(models.Model):
                 seq = self.env['ir.sequence'].next_by_code('identify.seqid')
                 res.identify_id = 'STPITEMP' + str(seq)
 
-
-    # @api.model
-    # def create(self, vals):
-    #     res =super(HrEmployee, self).create(vals)
-    #     print('==========================',vals)
-    #     if res.employee_type == 'regular':
-    #         seq = self.env['ir.sequence'].next_by_code('hr.employee')
-    #         res.identify_id = 'STPI' + str(seq)
-    #     else :
-    #         seq = self.env['ir.sequence'].next_by_code('identify.seqid')
-    #         res.identify_id = 'STPITEMP' + str(seq)
-    #     return res
-
     @api.constrains('date_of_join', 'office_order_date')
     @api.onchange('date_of_join','office_order_date')
     def _check_office_order_date(self):
         for record in self:
             if record.office_order_date and record.date_of_join and (record.office_order_date > record.date_of_join):
                 raise ValidationError("Date of Joining should always be greater then equals to Office Order Date")
+
+
+    @api.constrains('bank_account_number')
+    @api.onchange('bank_account_number')
+    def _check_bank_acc_number(self):
+        for rec in self:
+            if rec.bank_account_number:
+                for e in rec.bank_account_number:
+                    if not e.isdigit():
+                        raise ValidationError(_("Please enter correct Account number, it must be numeric..."))
 
 
     @api.constrains('aadhar_no')

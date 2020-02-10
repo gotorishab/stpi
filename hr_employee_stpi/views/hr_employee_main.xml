@@ -31,12 +31,13 @@
                 <xpath expr="//field[@name='parent_id']" position="attributes">
                   <attribute name="options">{'no_create_edit': True}</attribute>
                 </xpath>
-                <xpath expr="//field[@name='address_id']" position="attributes">
-                  <attribute name="options">{'no_create_edit': True}</attribute>
-                </xpath>
+
 
                 <xpath expr="//field[@name='user_id']" position="attributes">
                     <attribute name="options">{'no_create_edit': True}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='address_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
                 </xpath>
 
                 <xpath expr="//field[@name='work_phone']" position="after">
@@ -142,12 +143,13 @@
                                 <field name="citizen_file_name" invisible="1"/>
                                 <field name="show_citizen_field" invisible="1"/>
                                 <field name="bank_account_id" invisible="1"/>
+                                <field name="bank_name"/>
                                 <field name="bank_account_number"/>
                                 <field name="ifsc_code"/>
                             </group>
                             <group string="Status">
                                 <field name="gender"/>
-                                <field name="marital"/>
+                                <field name="marital" invisible="1"/>
                                 <field name="spouse_complete_name" invisible = "True"/>
                                 <field name="spouse_birthdate" invisible = "True"/>
                                 <field name="children"/>
@@ -162,7 +164,7 @@
                                 </div>
                                 <field name="emergency_contact"/>
                                 <field name="emergency_phone"/>
-                                <field name="km_home_work" string='KM Home-Work' groups="hr.group_hr_user"/>
+                                <field name="km_home_work" string='KM Home-Work' groups="hr.group_hr_user" invisible="1"/>
                                 <field name="personal_email" required="True"/>
                                 <field name="phone"/>
                             </group>

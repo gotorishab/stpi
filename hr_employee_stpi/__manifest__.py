@@ -18,8 +18,6 @@
         'security/hr_employee_security.xml',
         'views/hr_employee_main.xml',
         'views/employee_family_view.xml',
-        # 'wizard/hr_employee_transfer_approve.xml',
-        # 'views/hr_employee_transfer_view.xml',
         'views/employee_previous_occupation.xml',
         'views/employee_training_view.xml',
         'views/employee_stages_inherit.xml',
