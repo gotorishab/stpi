@@ -10,7 +10,7 @@
 'author': "Dexciss Technology Pvt Ltd(SMehata)",
  'website': 'http://www.Dexciss.com',
  'depends': ['hr_employee_requisition', 'base_exception_and_approval', 'ohrms_loan', 'tour_request','birthday_check',
-             'hr_employee_transfer','employee_vehicle_request','reimbursement_stpi','hr_holidays','employee_ltc','pf_withdrawl'],
+             'hr_employee_transfer','employee_vehicle_request','reimbursement_stpi','hr_holidays','employee_ltc','pf_withdrawl','tds'],
  'license': 'AGPL-3',
 'description':"""
                 updated by smehata 23/08/19 add Loan Exception
