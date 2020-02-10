@@ -3,7 +3,7 @@ from . import employee_requisition
 from . import hr_loan
 from . import tour_request
 from . import tour_claim
-from . import birthday_request
+from . import birthday_check
 from . import hr_employee_transfer
 from . import hr_employee_vehicle_req
 from . import reimbursement
@@ -12,3 +12,4 @@ from . import ltc_advance
 from . import ltc_claim
 from . import pf_withdrawl
 from . import pf_employee
+from . import hr_declaration

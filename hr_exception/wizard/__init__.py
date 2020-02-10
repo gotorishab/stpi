@@ -12,3 +12,4 @@ from . import ltc_advance_wizard
 from . import ltc_claim_wizard
 from . import pf_withdrawl_wizard
 from . import pf_employee_wizard
+from . import hr_declaration_wizard

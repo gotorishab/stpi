@@ -23,7 +23,7 @@
             <form string="HR Declarations">
                 <header>
                     <button name="button_to_approve" string="Send for Approval" class="oe_highlight" type="object" states="draft"/>
-                     <button name="button_reset_to_draft" string="Reset to draft" type="object" states="to_approve"/>
+                     <button name="button_reset_to_draft" string="Revert" type="object" states="to_approve"/>
                     <button name="button_approved" string="Approve" class="oe_highlight" type="object" states="to_approve" groups="tds.group_manager_hr_declaration"/>
                     <button name="button_reject" string="Reject" type="object" states="to_approve" groups="tds.group_manager_hr_declaration"/>
                     <button name="button_compute_tax" string="Compute Tax" class="oe_highlight" type="object" states="approved" groups="tds.group_manager_hr_declaration"/>
@@ -458,9 +458,18 @@
                 id="menu_hr_declaration_branch" parent="menu_hr_declaration"
                  action="menu_hr_declaration_branch_action"
                  />
+
+
+        <menuitem name="Configuration"
+            id="menu_hr_declaration_configuration"
+                  parent="menu_hr_declaration_main"
+                  groups="base.group_no_one"
+                  sequence="100"
+            />
+
         <menuitem id = "hr_declaration_saving_master_menu_id"
                   name = "Savings Master"
-                  parent ="hr_payroll.menu_hr_payroll_configuration"
+                  parent ="menu_hr_declaration_configuration"
                   action ="hr_declaration_saving_master_action"
                   />
 

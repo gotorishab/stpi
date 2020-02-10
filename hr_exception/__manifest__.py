@@ -34,6 +34,7 @@
             'view/pf_withdrawl_view.xml',
             'view/ltc_claim.xml',
             'view/pf_employee_view.xml',
+            'view/hr_declaration_view.xml',
             'wizard/hr_loan_wizard_view.xml',
             'wizard/employee_requisition_wizard_view.xml',
             'wizard/tour_request_wizard_view.xml',
@@ -46,7 +47,8 @@
             'wizard/ltc_advance_wizard_view.xml',
             'wizard/ltc_claim_wizard_view.xml',
             'wizard/pf_wothdrawl_wizard_view.xml',
-            'wizard/pf_employee_wizard_view.xml'
+            'wizard/pf_employee_wizard_view.xml',
+            'wizard/hr_declaration_wizard_view.xml',
  ],
  'images': [],
  'installable': True,

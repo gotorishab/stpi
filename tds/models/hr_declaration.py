@@ -205,25 +205,62 @@ class HrDeclaration(models.Model):
 
     @api.multi
     def button_reset_to_draft(self):
-        for rec in self:
-            rec.write({'state': 'draft'})
+        self.ensure_one()
+        compose_form_id = self.env.ref('mail.email_compose_message_wizard_form').id
+        ctx = dict(
+            default_composition_mode='comment',
+            default_res_id=self.id,
+
+            default_model='hr.declaration',
+            default_is_log='True',
+            custom_layout='mail.mail_notification_light'
+        )
+        mw = {
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'mail.compose.message',
+            'view_id': compose_form_id,
+            'target': 'new',
+            'context': ctx,
+        }
+        self.write({'state': 'draft'})
+        return mw
 
     @api.multi
     def button_compute_tax(self):
         for rec in self:
             sum = 0
-            proll =  self.env['hr.payslip.line'].search([('slip_id.employee_id', '=', rec.employee_id.id),('slip_id.state', '=', 'done'),('salary_rule_id.taxable_percentage', '>', 0),('slip_id.date_from', '>', rec.date_range.date_start),('slip_id.date_to', '<', rec.date_range.date_end)])
+            proll =  self.env['hr.payslip.line'].search([('slip_id.employee_id', '=', rec.employee_id.id),
+                                                         ('slip_id.state', '=', 'done'),
+                                                         ('salary_rule_id.taxable_percentage', '>', 0),
+                                                         ('slip_id.date_from', '>', rec.date_range.date_start),
+                                                         ('slip_id.date_to', '<', rec.date_range.date_end)])
             for i in proll:
                 sum += i.taxable_amount
             rec.tax_salary_final = sum
             rec.income_after_rebate = rec.tax_salary_final - rec.net_allowed_rebate
-            inc_tax_slab =  self.env['income.tax.slab'].search([('salary_from', '<', rec.tax_salary_final),('salary_to', '>', rec.tax_salary_final),('gender', '=', rec.employee_id.gender)], limit=1)
-            if inc_tax_slab:
-                rec.tax_payable = (rec.income_after_rebate * inc_tax_slab.tax_rate) / 100
-                if rec.tax_payable <= 0.00:
-                    rec.tax_payable_zero = False
-                else:
-                    rec.tax_payable_zero = True
+            age = 0
+            if rec.employee_id.birthday:
+                age = ((datetime.now().date() - rec.employee_id.birthday).days) / 365
+
+            inc_tax_slab =  self.env['income.tax.slab'].search([('salary_from', '<', rec.tax_salary_final),
+                                                                ('salary_to', '>', rec.tax_salary_final),
+                                                                ('age_from', '<', age),
+                                                                ('age_to', '>', age)],order ="create_date desc",
+                                                               limit=1)
+            for tax_slab in inc_tax_slab:
+                t1 = ((tax_slab.tax_rate * rec.tax_salary_final)/100)
+                t2 = (t1 * tax_slab.surcharge)/100
+                t3 = (t2 * tax_slab.surcharge_extra)/100
+                t4 = t2 + t3
+                rec.tax_payable = t4
+            else:
+                rec.tax_payable = 0.00
+            if rec.tax_payable <= 0.00:
+                rec.tax_payable_zero = False
+            else:
+                rec.tax_payable_zero = True
             rec.exemption_ids.unlink()
             rec.rebate_ids.unlink()
             ex_std_id = self.env['saving.master'].search(

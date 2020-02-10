@@ -8,7 +8,7 @@ class HrApplicationSd(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = 'Hr Requisition Application'
 
-    name = fields.Char('Advertisement Number')
+    name = fields.Char('Sequence')
     branch_id = fields.Many2one('res.branch', string='Branch')
     contact = fields.Char('Contact')
     advertisement_number = fields.Char('Advertisement No.')

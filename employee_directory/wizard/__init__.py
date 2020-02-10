@@ -1,1 +1,0 @@
-from . import recruitment_view_wizard
