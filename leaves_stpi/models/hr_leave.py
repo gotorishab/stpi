@@ -59,6 +59,9 @@ class HrLeave(models.Model):
                                             ('am', 'Morning'), 
                                             ('pm', 'Afternoon')],
                                             string="Date Period Start", default='am')
+    no_of_days_display_half = fields.Float(string="Duartion Half")
+    holiday_half_pay = fields.Boolean(string="Half Pay Holiday")
+    
     
     @api.constrains('request_unit_half_2')
     @api.onchange('request_unit_half_2')
@@ -152,6 +155,14 @@ class HrLeave(models.Model):
                 self.attachement = True
             else:
                 self.attachement = False
+                
+        if self.holiday_status_id and self.no_of_days_display:
+            if self.holiday_status_id.leave_type == 'Half Pay Leave':
+                self.holiday_half_pay = True
+                self.number_of_days = self.number_of_days * 2
+            else:
+                self.holiday_half_pay = False
+            
                 
             
     @api.constrains('state', 'number_of_days', 'holiday_status_id')
