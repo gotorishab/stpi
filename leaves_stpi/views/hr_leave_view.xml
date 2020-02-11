@@ -13,7 +13,7 @@
                 <field name="branch_id"/>
                 <field name="employee_state" invisible="1"/>
                 <field name="gender" invisible="1"/>
-                <field name="holiday_half_pay"/>
+                <field name="holiday_half_pay" invisible="1"/>
                 
             </field>
             
