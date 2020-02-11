@@ -13,6 +13,7 @@
 		'security/ir.model.access.csv',
 		'security/security.xml',
 		'data/Income_tax_rule.xml',
+		'data/income_tax_slab.xml',
         'views/hr_payslip.xml',
         'views/tds.xml',
         'views/hr_declaration.xml',

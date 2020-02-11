@@ -66,9 +66,8 @@
                   <field name="gender" required="1"/>
                   <field name="age_from" required="1"/>
                   <field name="age_to" required="1"/>
-                  <field name="surcharge_ids" widget="many2many_tags" invisible="1"/>
                   <field name="surcharge" required="1"/>
-                  <field name="surcharge_extra" required="1"/>
+                  <field name="cess" required="1"/>
             </tree>
         </field>
     </record>
@@ -84,7 +83,7 @@
 
       <menuitem id="menu_income_tax_slab_configuration_id"
                 name="Income Tax Slab"
-                parent="hr_payroll.menu_hr_payroll_configuration"
+                parent="tds.menu_hr_declaration_configuration"
                 action="income_tax_slab_action_view"
       />
 

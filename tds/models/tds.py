@@ -23,16 +23,9 @@ class IncomeTaxSlab(models.Model):
     ], string='Gender')
     age_from = fields.Integer(string='Age From')
     age_to = fields.Integer(string='Age To')
-    surcharge_ids = fields.Many2many('tax.surcharge', string='Surcharge')
-    surcharge = fields.Float(string='Surcharge')
-    surcharge_extra = fields.Float(string='Surcharge Extra')
+    surcharge = fields.Float(string='Surcharge (%)')
+    cess = fields.Float(string='Cess (%)')
 
-
-class ReimbursementTution(models.Model):
-    _name = "tax.surcharge"
-    _description = "Income Tax Surcharge"
-
-    name = fields.Char(string='Name')
 
 
 class SalaryRules_inh(models.Model):

@@ -252,7 +252,7 @@ class HrDeclaration(models.Model):
             for tax_slab in inc_tax_slab:
                 t1 = ((tax_slab.tax_rate * rec.tax_salary_final)/100)
                 t2 = (t1 * tax_slab.surcharge)/100
-                t3 = (t2 * tax_slab.surcharge_extra)/100
+                t3 = (t2 * tax_slab.cess)/100
                 t4 = t2 + t3
                 rec.tax_payable = t4
             else:

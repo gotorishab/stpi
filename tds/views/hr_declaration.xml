@@ -391,6 +391,7 @@
 
       <menuitem id="menu_hr_declaration_main"
                 name="HR Declaration"
+                web_icon="tds,static/description/icon.png"
       />
 
       <menuitem id="menu_hr_declaration_id"
