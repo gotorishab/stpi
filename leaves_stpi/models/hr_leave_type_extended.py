@@ -75,6 +75,7 @@ class HrLeaveType(models.Model):
     amount_total = fields.Monetary(string='Total',store=True, readonly=True, compute='_compute_amount')
     
     allowed_prefix_leave = fields.Many2many('leave.type',string="Allowed Prefix Leave")
+    mid_year_factor = fields.Float(string="Mid Year Factor",compute="compute_mid_year_factor")
     
     @api.model
     def create(self, vals):
@@ -84,6 +85,11 @@ class HrLeaveType(models.Model):
         if leave_type_rec:
             raise ValidationError(_('Exists ! Already a Leave Type exists in this name'))
         return res
+    
+    @api.depends('leave_per_year')
+    def compute_mid_year_factor(self):
+        for leave in self:
+            leave.mid_year_factor = leave.leave_per_year / 12
     
     @api.constrains('amount_total')
     @api.onchange('amount_total')
@@ -97,6 +103,8 @@ class HrLeaveType(models.Model):
         for leave in self:
             leave.name = leave.leave_type
 #             print("leave^^^^^^^^^^^^^^^^^^^^^^^^^^^^^6",leave.name)
+
+    
 
     def cron_expire_leave(self):
         confg = self.env['hr.leave.type'].search([])
@@ -323,7 +331,29 @@ class HrLeaveType(models.Model):
                                                                                                                     'leave_info':'debit',
                                                                                                                     'no_of_days':total_leave
                                                                                                                 })
-                                                
+    @api.multi                                                
+    def button_mid_year_leave_allocate(self):
+        for leave in self:
+            mydate = datetime.datetime.now()
+            month = mydate.strftime("%B")
+            today = date.today()
+            for line in leave.creadit_policy_id:
+                for service_leave in leave.allow_service_leave:
+                    for emp_stages in leave.allow_emp_stage:
+                        if line.day == today.day and line.month == month:
+                            if leave.allow_gender == 'male' or leave.allow_gender =='female':
+                                employee_ids = self.env['hr.employee'].search([('gender','=',leave.allow_gender),
+                                                                               ('employee_type','=',service_leave.tech_name),
+                                                                               ('state','=',emp_stages.tech_name),
+                                                                               ('active','=',True),
+                                                                               ])
+                            elif leave.allow_gender == 'both':
+                                employee_ids = self.env['hr.employee'].search([('employee_type','=',service_leave.tech_name),
+                                                                               ('state','=',emp_stages.tech_name),
+                                                                               ('active','=',True)
+                                                                               ('mid_year_factor','=',True)
+                                                                               ])
+                                print("employeeeeeeeeeee",employee_ids)
 
     @api.multi
     def button_allocate_leaves(self):

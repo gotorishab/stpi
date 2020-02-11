@@ -157,7 +157,8 @@
         <!--9 child_care_leave-->
         <record id="hr_leave_type_ccl" model="hr.leave.type">
             <field name="name">Child Care Leave</field>
-            <field name="allow_gender">both</field>
+            <field name="allow_gender">female</field>
+            <field name="maximum_allow_leave">730</field>
             <field name="leave_type">Child Care Leave</field>
             <field name="allow_service_leave" eval="[(6, 0, [ref('regular_employee')])]"/>
         </record>

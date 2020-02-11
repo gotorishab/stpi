@@ -10,7 +10,7 @@
                 <field name="commuted"/>
                 <field name="attachement_proof" attrs="{'invisible': [('attachement','!=',True),('commuted','!=',True)],'required': [('attachement','=',True)]}"/>
                 <field name="employee_type" invisible="1"/>
-                <field name="branch_id"/>
+                <!-- <field name="branch_id"/> -->
                 <field name="employee_state" invisible="1"/>
                 <field name="gender" invisible="1"/>
             </field>

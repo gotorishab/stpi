@@ -1,6 +1,6 @@
 {
     'name': 'STPI Leave Management',
-    'version': '12.0.0.5',
+    'version': '12.0.0.6',
     'summary': 'Manage Leave Requests',
     'description': """
         Helps you to manage Leave Requests of your company's staff.

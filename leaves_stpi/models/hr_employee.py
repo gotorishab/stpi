@@ -6,7 +6,7 @@ class HrEmployee(models.Model):
     
     
     leave_balance_id = fields.One2many('hr.employee.leave.info','hr_employee_id','Leave Info')
-    
+    mid_year_factor = fields.Boolean(string="Mid Year Factor")
     
 class HREmployeeLeaveInfo(models.Model):
     

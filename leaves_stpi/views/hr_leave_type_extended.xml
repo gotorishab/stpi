@@ -52,6 +52,7 @@
                 <header>
                     <button name="button_allocate_leaves" string="Allocate Leaves" type="object"/>
                     <button name="button_expried_leaves" string="Expire Leaves" type="object"/>
+                    <!-- <button name="button_mid_year_leave_allocate" string="Mid Year Allocate Leaves" type="object"/> -->
                 </header>
             </xpath>
         
@@ -94,6 +95,7 @@
                         <field name="max_encash_leave"/>
                         <field name="group_id"/>
                         <field name="allowed_prefix_leave" widget="many2many_tags"/>
+                        <field name="mid_year_factor"/>
                     </group>
                     <group>
                         <field name="use_balance_from_id" />
