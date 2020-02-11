@@ -1,7 +1,9 @@
 from odoo import models, fields, api,_
 from odoo.exceptions import ValidationError
 from odoo.tools import float_compare
-from datetime import date, datetime, timedelta
+import datetime
+from datetime import datetime, timedelta,date
+from dateutil.relativedelta import relativedelta
 from odoo.addons.resource.models.resource import float_to_time, HOURS_PER_DAY
 from pytz import timezone, UTC
 from collections import defaultdict
@@ -112,7 +114,7 @@ class HrLeave(models.Model):
 #             print("{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{",leave.employee_state,leave.employee_type,leave.branch_id)
             leave_ids = self.env['hr.leave'].search([('employee_id','=',leave.employee_id.id),
                                                      ('state','=','validate')],limit=1, order="request_date_to desc")
-#             print("<<<<<<<<<<<<<<<<<<<<",leave_ids)
+            print("<<<<<<<<<<<<<<<<<<<<",leave_ids)
             if leave_ids:
                 leave.leave_type_id = leave_ids.holiday_status_id.id
                 leave.from_date = leave_ids.request_date_from
@@ -125,14 +127,14 @@ class HrLeave(models.Model):
                 
                 d1 = leave_ids.request_date_to   # start date
                 d2 = leave.request_date_from  # end date
-#                 print("////////////////////////////////////",((d2-d1).days + 1))
-                days = [d1 + datetime.timedelta(days=x) for x in range((d2-d1).days + 1)]
-#                 print("????????????????????????????????",days)
+                print("////////////////////////////////////",((d2-d1).days + 1),leave_ids.request_date_to )
+                days = [d1 + timedelta(days=x) for x in range((d2-d1).days + 1)]
+                print("????????????????????????????????",days)
                 for day in days:
                     week = day.strftime('%Y-%m-%d')
                      
                     year, month, day = (int(x) for x in week.split('-'))    
-                    answer = datetime.date(year, month, day).strftime('%A')
+                    answer = date(year, month, day).strftime('%A')
 #                     print(":<<<<<<<<<<<<<<<<<<<<<<<<<<",answer)
                     if answer == 'Saturday' or answer == 'Sunday' or answer == 'Saturday' and answer == 'Sunday':
                         leave.are_days_weekend = True
