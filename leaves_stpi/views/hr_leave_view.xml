@@ -46,7 +46,7 @@
             
             <xpath expr="//form/sheet" position="inside">
                 <notebook>
-                    <page string="Last Applied Leave">
+                    <page string="Last Applied Leave" name="last_applied">
                         <group>
                             <group>
                                 <field name="leave_type_id"/>

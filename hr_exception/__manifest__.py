@@ -4,7 +4,7 @@
 
 {'name': 'Hr Exception',
  'summary': 'Custom exceptions on Hr',
- 'version': '12.0.5',
+ 'version': '12.0.6',
  'category': 'Generic Modules/Purchase',
 
 'author': "Dexciss Technology Pvt Ltd(SMehata)",
