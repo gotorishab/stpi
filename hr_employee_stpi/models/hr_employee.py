@@ -59,7 +59,12 @@ class HrEmployee(models.Model):
     minority = fields.Boolean('Minority',default=False,track_visibility='always')
 
      #office work
-    gender = fields.Selection(selection_add=[('transgender', 'Transgender')])
+    # gender = fields.Selection(selection_add=[('transgender', 'Transgender')])
+    gende = fields.Selection([
+        ('male', 'female'),
+        ('female', 'Female'),
+        ('transgender', 'Transgender')
+                              ], string='Gender')
     recruitment_file_no = fields.Char('Recruitment File No.',track_visibility='always')
     office_file_no = fields.Char('Office Order No.',track_visibility='always')
     mode_of_recruitment = fields.Char('Mode Of Recruitment',track_visibility='always')

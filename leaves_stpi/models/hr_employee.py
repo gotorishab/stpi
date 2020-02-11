@@ -2,7 +2,6 @@ from odoo import models, fields, api,_
 
 class HrEmployee(models.Model):
     _inherit = 'hr.employee'
-    _description = 'HR Employee Changes For STPI'
     
     
     leave_balance_id = fields.One2many('hr.employee.leave.info','hr_employee_id','Leave Info')

@@ -132,7 +132,6 @@
             <field name="model">hr.employee</field>
             <field name="inherit_id" ref="hr.view_employee_form"/>
             <field name="priority">1</field>
-
             <field name="arch" type="xml">
                   <xpath expr="//page[@name='personal_information']" position="replace">
                       <page name="personal_information" string="Private Information" groups="hr.group_hr_user">
@@ -151,7 +150,8 @@
                                 <field name="ifsc_code"/>
                             </group>
                             <group string="Status">
-                                <field name="gender"/>
+                                <field name="gender" invisible="1"/>
+                                <field name="gende"/>
                                 <field name="marital" invisible="1"/>
                                 <field name="spouse_complete_name" invisible = "True"/>
                                 <field name="spouse_birthdate" invisible = "True"/>

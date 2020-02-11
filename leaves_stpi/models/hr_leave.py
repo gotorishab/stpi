@@ -111,7 +111,7 @@ class HrLeave(models.Model):
             leave.branch_id = leave.employee_id.branch_id.id
             leave.employee_type = leave.employee_id.employee_type
             leave.employee_state = leave.employee_id.state
-            leave.gender = leave.employee_id.gender
+            leave.gender = leave.employee_id.gende
 #             print("{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{",leave.employee_state,leave.employee_type,leave.branch_id)
             leave_ids = self.env['hr.leave'].search([('employee_id','=',leave.employee_id.id),
                                                      ('state','=','validate')],limit=1, order="request_date_to desc")
