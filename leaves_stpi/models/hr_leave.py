@@ -160,7 +160,6 @@ class HrLeave(models.Model):
             if self.holiday_status_id.leave_type == 'Half Pay Leave':
                 self.holiday_half_pay = True
                 self.no_of_days_display_half = self.number_of_days_display * 2
-#                 print("????????????????????????????????",number_of_days_display)
             else:
                 self.holiday_half_pay = False
             

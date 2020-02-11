@@ -10,15 +10,24 @@
                 <field name="commuted"/>
                 <field name="attachement_proof" attrs="{'invisible': [('attachement','!=',True),('commuted','!=',True)],'required': [('attachement','=',True)]}"/>
                 <field name="employee_type" invisible="1"/>
-                <field name="branch_id"/>
+                <!-- <field name="branch_id"/> -->
                 <field name="employee_state" invisible="1"/>
                 <field name="gender" invisible="1"/>
                 <field name="holiday_half_pay" invisible="1"/>
                 
             </field>
             
+            <xpath expr="//field[@name='number_of_days_display']" position="attributes">
+                <attribute name="attrs">{'invisible':[('holiday_half_pay','=',True)]}</attribute>
+            </xpath>
+            
+            <xpath expr="//label[@for='number_of_days_display']" position="attributes">
+                <attribute name="attrs">{'invisible':[('holiday_half_pay','=',True)]}</attribute>
+            </xpath>
+            
             <xpath expr="//field[@name='number_of_days_display']" position="after">
-                <field name="no_of_days_display_half" attre="{'invisible':[('holiday_half_pay','!=',True)]}"/>
+                <label for="no_of_days_display_half" string="Duration" attrs="{'invisible':[('holiday_half_pay','=',False)]}"/>
+                <field name="no_of_days_display_half" attrs="{'invisible':[('holiday_half_pay','=',False)]}" readonly="1"/>
             </xpath>
             
             <xpath expr="//field[@name='request_unit_half']" position="after">
