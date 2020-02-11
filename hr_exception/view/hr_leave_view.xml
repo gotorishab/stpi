@@ -36,15 +36,15 @@
                         </group>
 
                    </xpath>
-                   
                     <xpath expr="//field[@name='number_of_days_display']" position="after">
                         <field name="ignore_exception" invisible="1"/>
                     </xpath>
-                    
-                    <xpath expr="//notebook/page[@name='last_applied']" position="after">
-                        <page string='Exception' name="exception" groups="base.group_no_one">
-                            <field name="exception_ids" colspan="2" nolabel="1" readonly="1" groups="base.group_no_one"/>
-                        </page>
+                    <xpath expr="//sheet" position="inside">
+                        <newline />
+                        <group name="exception" colspan="2" col="2" groups="base.group_no_one">
+                            <separator string="Exception" colspan="2"/>
+                            <field name="exception_ids" colspan="2" nolabel="1" readonly="1"/>
+                        </group>
                     </xpath>
                 </field>
         </record>
