@@ -1,6 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_employee_religion,employee.religion,model_employee_religion,base.group_user,1,1,1,1
-access_employee_category,employee.category,model_employee_category,base.group_user,1,1,1,1
 access_employee_address,employee.address,model_employee_address,base.group_user,1,1,1,1
 access_employee_training,employee.training,model_employee_training,base.group_user,1,1,1,1
 access_organization_type,organization.type,model_organization_type,base.group_user,1,1,1,1
