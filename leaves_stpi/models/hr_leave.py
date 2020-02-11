@@ -1,14 +1,11 @@
 from odoo import models, fields, api,_
 from odoo.exceptions import ValidationError
 from odoo.tools import float_compare
-from datetime import datetime
+from datetime import date, datetime, timedelta
 from odoo.addons.resource.models.resource import float_to_time, HOURS_PER_DAY
 from pytz import timezone, UTC
-from datetime import datetime,timedelta
-# from datetime import datetime,combine
 from collections import defaultdict
 from odoo.tools import float_utils
-# import datetime
 
 class HrLeave(models.Model):
     _inherit = 'hr.leave'
@@ -52,7 +49,7 @@ class HrLeave(models.Model):
                             ('validate', 'Approved')
                             ],string="Status",readonly=True)
     applied_on = fields.Datetime(string="Applied On",readonly=True)
-    days_between_last_leave = fields.Float(string="Days Between Last Leave")
+    days_between_last_leave = fields.Float(string="Days Between Last Leave",readonly=True)
     are_days_weekend = fields.Boolean(string="Are Days Weekend",readonly=True)
     request_unit_half_2 = fields.Boolean(string="Half Day")
     request_date_from_period_2 = fields.Selection([
@@ -124,21 +121,22 @@ class HrLeave(models.Model):
                 leave.status = leave_ids.state
                 leave.applied_on = leave_ids.create_date
                 days_between_last_leave = leave.request_date_from - leave_ids.request_date_to
-                leave.days_between_last_leave = days_between_last_leave.days
+                leave.days_between_last_leave = days_between_last_leave.days - 1
                 
                 d1 = leave_ids.request_date_to   # start date
                 d2 = leave.request_date_from  # end date
-                
-#                 days = [d1 + datetime.timedelta(days=x) for x in range((d2-d1).days + 1)]
-# #                 print("????????????????????????????????",days)
-#                 for day in days:
-#                     week = day.strftime('%Y-%m-%d')
-#                     
-#                     year, month, day = (int(x) for x in week.split('-'))    
-#                     answer = datetime.date(year, month, day).strftime('%A')
-# #                     print(":<<<<<<<<<<<<<<<<<<<<<<<<<<",answer)
-#                     if answer == 'Saturday' or answer == 'Sunday':
-#                         leave.are_days_weekend = True
+#                 print("////////////////////////////////////",((d2-d1).days + 1))
+                days = [d1 + datetime.timedelta(days=x) for x in range((d2-d1).days + 1)]
+#                 print("????????????????????????????????",days)
+                for day in days:
+                    week = day.strftime('%Y-%m-%d')
+                     
+                    year, month, day = (int(x) for x in week.split('-'))    
+                    answer = datetime.date(year, month, day).strftime('%A')
+#                     print(":<<<<<<<<<<<<<<<<<<<<<<<<<<",answer)
+                    if answer == 'Saturday' or answer == 'Sunday' or answer == 'Saturday' and answer == 'Sunday':
+                        leave.are_days_weekend = True
+                        raise ValidationError(_('You are not allowed to apply for leave during this date range because of handwitch rule applicability on this leave type'))
 #             print("???//////////////////////////",leave_ids)
     
     @api.constrains('date_from','date_to','holiday_status_id')
