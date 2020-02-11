@@ -170,7 +170,8 @@
 
 
                                     <group string="Status">
-                                        <field name="gender"/>
+                                        <field name="gender" invisible="1"/>
+                                        <field name="gende"/>
                                         <field name="marital"/>
                                         <field name="spouse_complete_name" invisible = "True"/>
                                         <field name="spouse_birthdate" invisible = "True"/>

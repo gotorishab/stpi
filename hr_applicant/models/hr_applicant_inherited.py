@@ -37,6 +37,11 @@ class HRApplicant(models.Model):
     gender = fields.Selection(
         [('male', 'Male'), ('female', 'Female'), ('other', 'Other')],
         string='Gender')
+    gende = fields.Selection([
+        ('male', 'Male'),
+        ('female', 'Female'),
+        ('transgender', 'Transgender')
+    ], string='Gender', track_visibility='always')
     # nationality = fields.Many2one('res.country', string='Nationality')
     title = fields.Many2one('res.partner.title', string='Salutation')
     get_total_match_religion = fields.Integer(string="Get Total Match Religion",compute="get_total_match_religion_data")
@@ -85,7 +90,8 @@ class HRApplicant(models.Model):
     aadhar_upload = fields.Binary('Upload(Aadhar)', track_visibility='always')
     passport_upload = fields.Binary('Upload(Passport)', track_visibility='always')
 
-    bank_account_number = fields.Integer(string='Bank Account number')
+    bank_name = fields.Char(string='Bank Name')
+    bank_account_number = fields.Char(string='Bank Account number')
     ifsc_code = fields.Char(string='IFSC Code')
 
 
@@ -192,18 +198,18 @@ class HRApplicant(models.Model):
 
 
 
-    @api.constrains('partner_mobile','partner_phone')
-    @api.onchange('partner_mobile','partner_phone')
+    @api.constrains('emergency_phone','phone')
+    @api.onchange('emergency_phone','phone')
     def _check_mobile_phone(self):
         for rec in self:
-            if rec.partner_mobile and not rec.partner_mobile.isnumeric():
+            if rec.emergency_phone and not rec.emergency_phone.isnumeric():
                 raise ValidationError(_("Phone number must be a number"))
-            if rec.partner_mobile and len(rec.partner_mobile) != 10:
+            if rec.emergency_phone and len(rec.emergency_phone) != 10:
                 raise ValidationError(_("Please enter correct Mobile number."
                                         "It must be of 10 digits"))
-            if rec.partner_phone and not rec.partner_phone.isnumeric():
+            if rec.phone and not rec.phone.isnumeric():
                 raise ValidationError(_("Phone number must be a number"))
-            if rec.partner_phone and len(rec.partner_phone) != 10:
+            if rec.phone and len(rec.phone) != 10:
                 raise ValidationError(_("Please enter correct phone number."
                                         "It must be of 10 digits"))
 
@@ -254,6 +260,17 @@ class HRApplicant(models.Model):
                 for e in rec.name:
                     if not(e.isalpha() or e == ' '):
                         raise ValidationError(_("Please enter correct Name."))
+
+
+
+    @api.constrains('bank_account_number')
+    @api.onchange('bank_account_number')
+    def _check_bank_acc_number(self):
+        for rec in self:
+            if rec.bank_account_number:
+                for e in rec.bank_account_number:
+                    if not e.isdigit():
+                        raise ValidationError(_("Please enter correct Account number, it must be numeric..."))
 
 
     @api.constrains('aadhar_no')
@@ -360,6 +377,7 @@ class HRApplicant(models.Model):
                         'salutation': self.title,
                         'country_id': self.country_id,
                         'gender': self.gender,
+                        'gende': self.gende,
                         'birthday': self.dob,
                         'differently_abled': self.differently_abled,
                         'category': self.category_id,

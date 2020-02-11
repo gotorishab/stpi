@@ -61,10 +61,10 @@ class HrEmployee(models.Model):
      #office work
     # gender = fields.Selection(selection_add=[('transgender', 'Transgender')])
     gende = fields.Selection([
-        ('male', 'female'),
+        ('male', 'Male'),
         ('female', 'Female'),
         ('transgender', 'Transgender')
-                              ], string='Gender')
+                              ], string='Gender',track_visibility='always')
     recruitment_file_no = fields.Char('Recruitment File No.',track_visibility='always')
     office_file_no = fields.Char('Office Order No.',track_visibility='always')
     mode_of_recruitment = fields.Char('Mode Of Recruitment',track_visibility='always')
