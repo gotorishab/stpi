@@ -129,16 +129,16 @@ class HrLeave(models.Model):
                 d1 = leave_ids.request_date_to   # start date
                 d2 = leave.request_date_from  # end date
                 
-                days = [d1 + datetime.timedelta(days=x) for x in range((d2-d1).days + 1)]
-#                 print("????????????????????????????????",days)
-                for day in days:
-                    week = day.strftime('%Y-%m-%d')
-                    
-                    year, month, day = (int(x) for x in week.split('-'))    
-                    answer = datetime.date(year, month, day).strftime('%A')
-#                     print(":<<<<<<<<<<<<<<<<<<<<<<<<<<",answer)
-                    if answer == 'Saturday' or answer == 'Sunday':
-                        leave.are_days_weekend = True
+#                 days = [d1 + datetime.timedelta(days=x) for x in range((d2-d1).days + 1)]
+# #                 print("????????????????????????????????",days)
+#                 for day in days:
+#                     week = day.strftime('%Y-%m-%d')
+#                     
+#                     year, month, day = (int(x) for x in week.split('-'))    
+#                     answer = datetime.date(year, month, day).strftime('%A')
+# #                     print(":<<<<<<<<<<<<<<<<<<<<<<<<<<",answer)
+#                     if answer == 'Saturday' or answer == 'Sunday':
+#                         leave.are_days_weekend = True
 #             print("???//////////////////////////",leave_ids)
     
     @api.constrains('date_from','date_to','holiday_status_id')
@@ -156,10 +156,11 @@ class HrLeave(models.Model):
             else:
                 self.attachement = False
                 
-        if self.holiday_status_id and self.no_of_days_display:
+        if self.holiday_status_id and self.number_of_days_display:
             if self.holiday_status_id.leave_type == 'Half Pay Leave':
                 self.holiday_half_pay = True
-                self.number_of_days = self.number_of_days * 2
+                self.no_of_days_display_half = self.number_of_days_display * 2
+                print("????????????????????????????????",number_of_days_display)
             else:
                 self.holiday_half_pay = False
             

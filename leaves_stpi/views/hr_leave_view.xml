@@ -13,7 +13,13 @@
                 <field name="branch_id"/>
                 <field name="employee_state" invisible="1"/>
                 <field name="gender" invisible="1"/>
+                <field name="holiday_half_pay"/>
+                
             </field>
+            
+            <xpath expr="//field[@name='number_of_days_display']" position="after">
+                <field name="no_of_days_display_half" attre="{'invisible':[('holiday_half_pay','!=',True)]}"/>
+            </xpath>
             
             <xpath expr="//field[@name='request_unit_half']" position="after">
                 <label for="request_unit_half_2"
