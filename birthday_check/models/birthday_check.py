@@ -5,7 +5,6 @@ from dateutil.relativedelta import relativedelta
 
 class BirthdayCheck(models.Model):
     _inherit = "hr.employee"
-    _description = "Birthday Cheque"
 
     is_previous_month = fields.Boolean(compute="_check_previous_month", store=True)
     is_current_month = fields.Boolean(compute="_check_current_month", store=True)
