@@ -62,9 +62,9 @@ class HrLeaveType(models.Model):
     currency_id = fields.Many2one('res.currency', string='Currency', required=True, default=lambda self: self.env.user.company_id.currency_id)
     use_balance_from_id = fields.Many2one('leave.type',string="Use Balance From")
     maximum_allow_leave = fields.Integer(string="Maximum Allow Leave")
-    allow_gender = fields.Selection([('male','Male'),
+    gende = fields.Selection([('male','Male'),
                                      ('female','Female'),
-                                     ('both','Both')   
+                                     ('transgender','Transgender')   
                                     ],string="Allow Gender")
     allow_emp_stage = fields.Many2many('leave.type.employee.stage',string="Allow Employee Stage")
     encash_leave = fields.Boolean(string="Encashed Leave")
@@ -115,14 +115,14 @@ class HrLeaveType(models.Model):
             for service_leave in leave.allow_service_leave:
                 for emp_stages in leave.allow_emp_stage:
                     if leave.leave_month == month:
-                        if leave.allow_gender == 'male' or leave.allow_gender =='female':
+                        if leave.gende == 'male' or leave.gende =='female':
     #                                 print("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ")
-                            employee_ids = self.env['hr.employee'].search([('gender','=',leave.allow_gender),
+                            employee_ids = self.env['hr.employee'].search([('gende','=',leave.gende),
                                                                            ('employee_type','=',service_leave.tech_name),
                                                                            ('state','=',emp_stages.tech_name),
                                                                            ('active','=',True)
                                                                            ])
-                        elif leave.allow_gender == 'both':
+                        elif leave.gende == 'transgender':
 #                             print("BBBBBBBBBBBBBBBBBBBBBBBBBB",service_leave.tech_name,emp_stages.tech_name)
                             employee_ids = self.env['hr.employee'].search([('employee_type','=',service_leave.tech_name),
                                                                            ('state','=',emp_stages.tech_name),
@@ -219,9 +219,6 @@ class HrLeaveType(models.Model):
                                                                                                                 })
                                                 
             
-            
-            
-            
     @api.multi
     def button_expried_leaves(self):
         today = date.today()
@@ -231,14 +228,14 @@ class HrLeaveType(models.Model):
             for service_leave in leave.allow_service_leave:
                 for emp_stages in leave.allow_emp_stage:
                     if leave.leave_month == month:
-                        if leave.allow_gender == 'male' or leave.allow_gender =='female':
+                        if leave.gende == 'male' or leave.gende =='female':
     #                                 print("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ")
-                            employee_ids = self.env['hr.employee'].search([('gender','=',leave.allow_gender),
+                            employee_ids = self.env['hr.employee'].search([('gende','=',leave.gende),
                                                                            ('employee_type','=',service_leave.tech_name),
                                                                            ('state','=',emp_stages.tech_name),
                                                                            ('active','=',True)
                                                                            ])
-                        elif leave.allow_gender == 'both':
+                        elif leave.gende == 'transgender':
 #                             print("BBBBBBBBBBBBBBBBBBBBBBBBBB",service_leave.tech_name,emp_stages.tech_name)
                             employee_ids = self.env['hr.employee'].search([('employee_type','=',service_leave.tech_name),
                                                                            ('state','=',emp_stages.tech_name),
@@ -341,13 +338,13 @@ class HrLeaveType(models.Model):
                 for service_leave in leave.allow_service_leave:
                     for emp_stages in leave.allow_emp_stage:
                         if line.day == today.day and line.month == month:
-                            if leave.allow_gender == 'male' or leave.allow_gender =='female':
-                                employee_ids = self.env['hr.employee'].search([('gender','=',leave.allow_gender),
+                            if leave.gende == 'male' or leave.gende =='female':
+                                employee_ids = self.env['hr.employee'].search([('gende','=',leave.gende),
                                                                                ('employee_type','=',service_leave.tech_name),
                                                                                ('state','=',emp_stages.tech_name),
                                                                                ('active','=',True),
                                                                                ])
-                            elif leave.allow_gender == 'both':
+                            elif leave.gende == 'transgender':
                                 employee_ids = self.env['hr.employee'].search([('employee_type','=',service_leave.tech_name),
                                                                                ('state','=',emp_stages.tech_name),
                                                                                ('active','=',True)
@@ -365,21 +362,23 @@ class HrLeaveType(models.Model):
                 for service_leave in leave.allow_service_leave:
                     for emp_stages in leave.allow_emp_stage:
                         if line.day == today.day and line.month == month:
-                            if leave.allow_gender == 'male' or leave.allow_gender =='female':
-                                employee_ids = self.env['hr.employee'].search([('gender','=',leave.allow_gender),
+#                             print("333333333333333333333",leave.gende,service_leave.tech_name,emp_stages.tech_name)
+                            if leave.gende == 'male' or leave.gende =='female':
+                                employee_ids = self.env['hr.employee'].search([('gende','=',leave.gende),
                                                                                ('employee_type','=',service_leave.tech_name),
                                                                                ('state','=',emp_stages.tech_name),
-                                                                               ('active','=',True),
+#                                                                                ('active','=',True),
                                                                                ])
-                            elif leave.allow_gender == 'both':
+#                                 print("444444447----------------",employee_ids)
+                            elif leave.gende == 'transgender':
                                 employee_ids = self.env['hr.employee'].search([('employee_type','=',service_leave.tech_name),
                                                                                ('state','=',emp_stages.tech_name),
                                                                                ('active','=',True)
                                                                                ])
+#                                 print("44444444444444444444444444444444",employee_ids)
                             for employee in employee_ids:
 #                                 print("@@@@@@@@@@@@@@@@@@@@@@@@",employee)
                                 if employee and not employee.leave_balance_id:
-#                                     print("ifffffffffffffffffffffffffff")
                                     allocate_leave = self.env['hr.leave.allocation'].create({'holiday_status_id': leave.id,
                                                                                    'holiday_type': 'employee',
                                                                                    'employee_id': employee.id,
@@ -388,7 +387,7 @@ class HrLeaveType(models.Model):
                                                                                    'name':'System Leave Allocation',
                                                                                    'notes':'As Per Leave Policy'
                                                                                    })
-#                                     print("allocationnnnnnnnnnnnn",allocate_leave)
+                                    print("allocationnnnnnnnnnnnn",allocate_leave)
                                     allocate_leave.sudo().action_approve()
                                     
                                     if allocate_leave:
@@ -419,10 +418,10 @@ class HrLeaveType(models.Model):
                                             credit_policy.day
                                         ))
                                         res = self.env.cr.fetchall()
-#                                         print("??????????????RESSSSSSSSSSSSSSSSSSSSS",res,today.day,today.strftime("%B"),credit_policy.day,credit_policy.month)
+                                        print("??????????????RESSSSSSSSSSSSSSSSSSSSS",res,today.day,today.strftime("%B"),credit_policy.day,credit_policy.month)
                                         if not res:
                                             if today.day == credit_policy.day and today.strftime("%B") == credit_policy.month:
-#                                                 print("#############################################")
+                                                print("#############################################")
                                                 allocate_leave = self.env['hr.leave.allocation'].create({'holiday_status_id': leave.id,
                                                                                                'holiday_type': 'employee',
                                                                                                'employee_id': employee.id,
@@ -431,7 +430,7 @@ class HrLeaveType(models.Model):
                                                                                                'name':'System Leave Allocation',
                                                                                                'notes':'As Per Leave Policy'
                                                                                                })
-#                                                 print("allocationnnnnnnnnnnnn",allocate_leave)
+                                                print("allocationnnnnnnnnnnnn",allocate_leave)
                                                 allocate_leave.sudo().action_approve()
                                                 
                                                 if allocate_leave:
@@ -453,15 +452,18 @@ class HrLeaveType(models.Model):
             today = date.today()
             for line in leave.creadit_policy_id:
                 for service_leave in leave.allow_service_leave:
+                    print("111111111111111111111111111111111")
                     for emp_stages in leave.allow_emp_stage:
+                        print("222222222222222222222222222222222222222222")
                         if line.day == today.day and line.month == month:
-                            if leave.allow_gender == 'male' or leave.allow_gender =='female':
-                                employee_ids = self.env['hr.employee'].search([('gender','=',leave.allow_gender),
+                            print("33333333333333333333333333333333333333")
+                            if leave.gende == 'male' or leave.gende =='female':
+                                employee_ids = self.env['hr.employee'].search([('gende','=',leave.gende),
                                                                                ('employee_type','=',service_leave.tech_name),
                                                                                ('state','=',emp_stages.tech_name),
                                                                                ('active','=',True),
                                                                                ])
-                            elif leave.allow_gender == 'both':
+                            elif leave.gende == 'transgender':
                                 employee_ids = self.env['hr.employee'].search([('employee_type','=',service_leave.tech_name),
                                                                                ('state','=',emp_stages.tech_name),
                                                                                ('active','=',True)

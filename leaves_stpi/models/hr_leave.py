@@ -3,7 +3,6 @@ from odoo.exceptions import ValidationError
 from odoo.tools import float_compare
 import datetime
 from datetime import datetime, timedelta,date
-from dateutil.relativedelta import relativedelta
 from odoo.addons.resource.models.resource import float_to_time, HOURS_PER_DAY
 from pytz import timezone, UTC
 from collections import defaultdict
@@ -23,7 +22,7 @@ class HrLeave(models.Model):
                                       )
     gender = fields.Selection([('male','Male'),
                                      ('female','Female'),
-                                     ('both','Both')   
+                                     ('transgender','Transgender')   
                                     ],string="Allow Gender")
     employee_state = fields.Selection([('joined', 'Roll On'),
                           ('grounding', 'Induction'),
@@ -81,7 +80,7 @@ class HrLeave(models.Model):
             type = dict(res.fields_get(["employee_type"],['selection'])['employee_type']["selection"]).get(res.employee_type)
             state = dict(res.fields_get(["employee_state"],['selection'])['employee_state']["selection"]).get(res.employee_state)
 #             print("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLL",type)
-            if  res.holiday_status_id.allow_gender == 'both' or res.gender == res.holiday_status_id.allow_gender:
+            if  res.holiday_status_id.gende == 'transgender' or res.gender == res.holiday_status_id.gende:
 #                 print("gendergendergendergendergendergender")
                 for leave_type_emp in res.holiday_status_id.allow_service_leave:
                     if type not in leave_type_emp.name:
@@ -192,6 +191,7 @@ class HrLeave(models.Model):
     
                     start_date=self.date_from
                     date_number=start_date.weekday()
+                    print("==================",date_number,days)
                     if date_number not in days:
                         res.update({'value': {'date_to': '','date_from': '','number_of_days_display':0.00,'sandwich_rule':False}, 'warning': {
                                    'title': 'Validation!', 'message': 'This day is already holiday.'}})
