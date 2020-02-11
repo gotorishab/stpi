@@ -132,13 +132,13 @@ class HrLeave(models.Model):
                 print("????????????????????????????????",days)
                 for day in days:
                     week = day.strftime('%Y-%m-%d')
-                     
+                    print("weekkkkkkk",week)
                     year, month, day = (int(x) for x in week.split('-'))    
                     answer = date(year, month, day).strftime('%A')
-#                     print(":<<<<<<<<<<<<<<<<<<<<<<<<<<",answer)
+                    print(":<<<<<<<<<<<<<<<<<<<<<<<<<<",answer)
                     if answer == 'Saturday' or answer == 'Sunday' or answer == 'Saturday' and answer == 'Sunday':
                         leave.are_days_weekend = True
-                        raise ValidationError(_('You are not allowed to apply for leave during this date range because of handwitch rule applicability on this leave type'))
+                        raise ValidationError(_('You are not allowed to apply for leave during this date range because of Sandwich rule applicability on this leave type'))
 #             print("???//////////////////////////",leave_ids)
     
     @api.constrains('date_from','date_to','holiday_status_id')
