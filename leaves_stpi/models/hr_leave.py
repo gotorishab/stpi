@@ -45,20 +45,39 @@ class HrLeave(models.Model):
     status = fields.Selection([ ('draft', 'To Submit'),
                             ('cancel', 'Cancelled'),
                             ('confirm', 'To Approve'),
-                            ('refuse', 'Refused'),
+                            ('refuse', 'Reject'),
                             ('validate1', 'Second Approval'),
                             ('validate', 'Approved')
                             ],string="Status",readonly=True)
     applied_on = fields.Datetime(string="Applied On",readonly=True)
     days_between_last_leave = fields.Float(string="Days Between Last Leave",readonly=True)
     are_days_weekend = fields.Boolean(string="Are Days Weekend",readonly=True)
+    allow_request_unit_half_2 = fields.Boolean(string='Allow Half Day')
     request_unit_half_2 = fields.Boolean(string="Half Day")
     request_date_from_period_2 = fields.Selection([
                                             ('am', 'Morning'), 
                                             ('pm', 'Afternoon')],
                                             string="Date Period Start", default='am')
+    
     no_of_days_display_half = fields.Float(string="Duartion Half")
     holiday_half_pay = fields.Boolean(string="Half Pay Holiday")
+    pre_post_leaves_ids = fields.One2many('hr.leave.pre.post','pre_post_leave',string='Leaves')
+    commuted_leave = fields.Text(string="Leave Type")
+    manager_designation_id = fields.Many2one('hr.job',string="Pending With")
+    pending_since = fields.Date(string="Pending Since",readonly=True)
+    duration_display = fields.Char('Requested(Days)', compute='_compute_duration_display',
+        help="Field allowing to see the leave request duration in days or hours depending on the leave_type_request_unit")    # details
+    
+    holiday_type = fields.Selection([
+        ('employee', 'By Employee'),
+        ('company', 'By All Department'),
+        ('branch','By Branch'),
+        ('department', 'By Department'),
+        ('category', 'By Employee Tag')],
+        string='Allocation Mode', readonly=True, required=True, default='employee',
+        states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]},
+        help='By Employee: Allocation/Request for individual Employee, By Employee Tag: Allocation/Request for group of employees in category')
+    by_branch_id = fields.Many2one("res.branch",string="By Branch")
     
     
     @api.constrains('request_unit_half_2')
@@ -110,10 +129,11 @@ class HrLeave(models.Model):
             leave.employee_type = leave.employee_id.employee_type
             leave.employee_state = leave.employee_id.state
             leave.gender = leave.employee_id.gende
+            leave.manager_designation_id = leave.employee_id.parent_id.job_id
 #             print("{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{",leave.employee_state,leave.employee_type,leave.branch_id)
             leave_ids = self.env['hr.leave'].search([('employee_id','=',leave.employee_id.id),
                                                      ('state','=','validate')],limit=1, order="request_date_to desc")
-            print("<<<<<<<<<<<<<<<<<<<<",leave_ids)
+#             print("<<<<<<<<<<<<<<<<<<<<",leave_ids)
             if leave_ids:
                 leave.leave_type_id = leave_ids.holiday_status_id.id
                 leave.from_date = leave_ids.request_date_from
@@ -126,18 +146,19 @@ class HrLeave(models.Model):
                 
                 d1 = leave_ids.request_date_to   # start date
                 d2 = leave.request_date_from  # end date
-                print("////////////////////////////////////",((d2-d1).days + 1),leave_ids.request_date_to )
+#                 print("////////////////////////////////////",((d2-d1).days + 1),leave_ids.request_date_to )
                 days = [d1 + timedelta(days=x) for x in range((d2-d1).days + 1)]
-                print("????????????????????????????????",days)
+#                 print("????????????????????????????????",days)
                 for day in days:
                     week = day.strftime('%Y-%m-%d')
                     print("weekkkkkkk",week)
                     year, month, day = (int(x) for x in week.split('-'))    
                     answer = date(year, month, day).strftime('%A')
-                    print(":<<<<<<<<<<<<<<<<<<<<<<<<<<",answer)
+#                     print(":<<<<<<<<<<<<<<<<<<<<<<<<<<",answer)
                     if answer == 'Saturday' or answer == 'Sunday' or answer == 'Saturday' and answer == 'Sunday':
                         leave.are_days_weekend = True
                         raise ValidationError(_('You are not allowed to apply for leave during this date range because of Sandwich rule applicability on this leave type'))
+                    
 #             print("???//////////////////////////",leave_ids)
     
     @api.constrains('date_from','date_to','holiday_status_id')
@@ -154,7 +175,14 @@ class HrLeave(models.Model):
                 self.attachement = True
             else:
                 self.attachement = False
-                
+        
+        if self.holiday_status_id:
+            if self.holiday_status_id.commuted == True:
+                self.commuted = True
+                self.commuted_leave = 'Commuted Leaves'
+            else:
+                self.commuted = False         
+        
         if self.holiday_status_id and self.number_of_days_display:
             if self.holiday_status_id.leave_type == 'Half Pay Leave':
                 self.holiday_half_pay = True
@@ -191,18 +219,58 @@ class HrLeave(models.Model):
     
                     start_date=self.date_from
                     date_number=start_date.weekday()
-                    print("==================",date_number,days)
+#                     print("==================",date_number,days)
                     if date_number not in days:
                         res.update({'value': {'date_to': '','date_from': '','number_of_days_display':0.00,'sandwich_rule':False}, 'warning': {
-                                   'title': 'Validation!', 'message': 'This day is already holiday.'}})
+                                   'title': 'Validation!', 'message': 'Since the leave you are applying has got weekends/holidays in between.You are requested to edit the last leave and apply covering the weekends/Holidays..'}})
                 if self.date_to:
                     end_date=self.date_to
                     date_number=end_date.weekday()
                     if date_number not in days:
                         res.update({'value': {'date_to': '','number_of_days_display':0.00,'sandwich_rule':False}, 'warning': {
-                                   'title': 'Validation!', 'message': 'This day is already holiday.'}})
+                                   'title': 'Validation!', 'message': 'Since the leave you are applying has got weekends/holidays in between. You are requested to edit the last leave and apply covering the weekends/Holidays..'}})
 
         return res
+    
+    @api.constrains('request_date_from','request_date_to','employee_id')
+    @api.onchange('request_date_from','request_date_to','employee_id')
+    def get_half_pay_leave_2(self):
+        if self.request_date_from and self.request_date_to:
+            if self.request_date_from == self.request_date_to:
+                self.allow_request_unit_half_2 = True
+            else:
+                self.allow_request_unit_half_2 = False
+        leave_ids = self.env['hr.leave'].search([('employee_id','=',self.employee_id.id),('state','=','validate')])
+        print("?????????????????leave_idsleave_ids?????????",leave_ids)
+        if leave_ids:
+            for leaves in leave_ids:
+                if date.today() > self.request_date_from :
+                    print("greterthennnnnnnnnnnnnnnn")
+                    days_between_last = self.request_date_from - self.request_date_to
+                    pre_post_le = self.env['hr.leave.pre.post'].create({'pre_post_leave':self.id,
+                                                                     'pre_post':'pre',
+                                                                     'leave_type_id':leaves.holiday_status_id.id,
+                                                                     'from_date':leaves.request_date_from,
+                                                                     'to_date':leaves.request_date_to,
+                                                                     'no_of_days_leave':leaves.number_of_days_display,
+                                                                     'status':leaves.state,
+                                                                     'applied_on':leaves.create_date,
+                                                                     'days_between_last_leave':0.0
+                                                                    })
+                elif date.today() < self.request_date_from:
+                    print("lessthennnnnnnnnnnnnnsss")
+                    days_between_last = self.request_date_from - self.request_date_to
+                    pre_post_le = self.env['hr.leave.pre.post'].create({'pre_post_leave':self.id,
+                                                                     'pre_post':'post',
+                                                                     'leave_type_id':leaves.holiday_status_id.id,
+                                                                     'from_date':leaves.request_date_from,
+                                                                     'to_date':leaves.request_date_to,
+                                                                     'no_of_days_leave':leaves.number_of_days_display,
+                                                                     'status':leaves.state,
+                                                                     'applied_on':leaves.create_date,
+                                                                     'days_between_last_leave':0.0
+                                                                    })
+                    print("createpre_post_lepre_post_le",pre_post_le)
     
     @api.constrains('date_from','date_to','employee_id','request_unit_half_2') 
     @api.onchange('date_from', 'date_to', 'employee_id','request_unit_half_2')
@@ -220,6 +288,15 @@ class HrLeave(models.Model):
         else:
             self.number_of_days = 0
         
+    @api.multi
+    def action_approve(self):
+        for leave in self:
+            leave.pending_since = date.today()
+            if not leave.name:
+                leave.name = '-'
+                return super(HrLeave, self).action_approve()
+            else:
+                return super(HrLeave, self).action_approve()
 
     
     @api.onchange('request_date_from_period', 'request_hour_from', 'request_hour_to',
@@ -295,5 +372,30 @@ class HrLeave(models.Model):
             UTC).replace(tzinfo=None)
         self.date_to = timezone(tz).localize(datetime.combine(self.request_date_to, hour_to)).astimezone(UTC).replace(
             tzinfo=None)
+        
+class HRLeavePrePost(models.Model):
+    _name = 'hr.leave.pre.post'
+    _description = 'HR Leave Pre Post'
+    
+    pre_post_leave = fields.Many2one('hr.leave',string="Leaves")
+    pre_post = fields.Selection([('pre','Pre'),
+                                 ('post','Post')
+                                ],string="Pre/Post")
+    leave_type_id = fields.Many2one('hr.leave.type',readonly=True)
+    from_date = fields.Date(string="From Date",readonly=True)
+    to_date = fields.Date(string="To Date",readonly=True)
+    no_of_days_leave = fields.Float(string="No of Days Leave",readonly=True)
+    status = fields.Selection([ ('draft', 'To Submit'),
+                            ('cancel', 'Cancelled'),
+                            ('confirm', 'To Approve'),
+                            ('refuse', 'Refused'),
+                            ('validate1', 'Second Approval'),
+                            ('validate', 'Approved')
+                            ],string="Status",readonly=True)
+    applied_on = fields.Datetime(string="Applied On",readonly=True)
+    days_between_last_leave = fields.Float(string="Days Between Last Leave",readonly=True)
+    are_days_weekend = fields.Boolean(string="Are Days Weekend",readonly=True)
+
+    
 
             

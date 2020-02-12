@@ -26,7 +26,8 @@
         'views/leave_employee_type_view.xml',
         'views/hr_employee_view.xml',
         'views/hr_leave_view.xml',
-        'views/hr_payslip_view.xml'
+        'views/hr_payslip_view.xml',
+        'views/hr_leave_allocation_view.xml'
     ],
     'demo': [],
     'images': ['static/description/banner.jpg'],

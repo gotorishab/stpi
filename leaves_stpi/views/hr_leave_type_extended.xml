@@ -5,6 +5,7 @@
         <field name="model">hr.leave.type</field>
         <field name="inherit_id" ref="hr_holidays.view_holiday_status_normal_tree"/>
         <field name="arch" type="xml">
+    
             <xpath expr="//tree/field[@name='display_name']" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
@@ -47,6 +48,14 @@
         <field name="model">hr.leave.type</field>
         <field name="inherit_id" ref="hr_holidays.edit_holiday_status_form"/>
         <field name="arch" type="xml">
+        
+            <xpath expr="//form/sheet/div/button[@name='toggle_active']" position="replace">
+                <button class="oe_stat_button" type="object" name="toggle_active" 
+                    confirm="Do you want to Archive" icon="fa-archive">
+                        <field name="active" widget="boolean_button"
+                        options='{"terminology": "archive"}'/>
+                    </button>
+            </xpath>
         
             <xpath expr="//form//sheet" position="before">
                 <header>

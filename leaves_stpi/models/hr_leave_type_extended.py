@@ -4,6 +4,7 @@ from odoo.exceptions import ValidationError
 from datetime import date
 import datetime
 from odoo.tools.float_utils import float_round
+import calendar
 
 class HrLeaveType(models.Model):
     _inherit = 'hr.leave.type'
@@ -109,115 +110,121 @@ class HrLeaveType(models.Model):
     def cron_expire_leave(self):
         confg = self.env['hr.leave.type'].search([])
         today = date.today()
+        year, month = today.year, today.month
+        current_month_date = calendar.monthrange(year, month)[1]
+#         print("0000000000000000000000000",current_month_date)
         for leave in confg:
             mydate = datetime.datetime.now()
             month = mydate.strftime("%B")
             for service_leave in leave.allow_service_leave:
                 for emp_stages in leave.allow_emp_stage:
-                    if leave.leave_month == month:
-                        if leave.gende == 'male' or leave.gende =='female':
-    #                                 print("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ")
-                            employee_ids = self.env['hr.employee'].search([('gende','=',leave.gende),
-                                                                           ('employee_type','=',service_leave.tech_name),
-                                                                           ('state','=',emp_stages.tech_name),
-                                                                           ('active','=',True)
-                                                                           ])
-                        elif leave.gende == 'transgender':
-#                             print("BBBBBBBBBBBBBBBBBBBBBBBBBB",service_leave.tech_name,emp_stages.tech_name)
-                            employee_ids = self.env['hr.employee'].search([('employee_type','=',service_leave.tech_name),
-                                                                           ('state','=',emp_stages.tech_name),
-                                                                           ('active','=',True)
-                                                                           ])
-                            
-                        for employee in employee_ids:
-#                                 print("@@@@@@@@@@@@@@@@@@@@@@@@",employee)
-                            if employee and not employee.leave_balance_id:
-                                total_leave = 0.0
-                                hr_leave_report = self.env['hr.leave.report'].search([('employee_id','=',employee.id),
-                                                                                      ('holiday_type','=','employee'),
-                                                                                      ('holiday_status_id','=',leave.id),
-                                                                                      ('state','=','validate')
-                                                                                      ])
-#                                 print("?availabeleaveeeeeeeeee",hr_leave_report)
-                                for leave_report in hr_leave_report:
-                                    total_leave += leave_report.number_of_days
-#                                     print("<<<<<<<<<<}}}}}}}}}}}}}}}}}}",total_leave)
-                                if hr_leave_report:
-#                                     print("1111111111111111111111111111111111",leave.id,employee.ids,date.today(),total_leave)
-                                    hr_leave = self.env['hr.leave'].create({'holiday_status_id': leave.id,
-                                                                                   'holiday_type': 'employee',
-                                                                                   'employee_id': employee.id,
-                                                                                   'request_date_from':date.today(),
-                                                                                   'request_date_to':date.today(),
-                                                                                   'number_of_days_display':total_leave,
-                                                                                   'number_of_days':total_leave
-                                                                                   })
-#                                     print("allocationnnnnnnnnnn2222222222222222222222nn",hr_leave)
-                                    hr_leave.sudo().action_approve()
-                                    if hr_leave:
-                                        leave_bal_id = self.env['hr.employee.leave.info'].create({
-                                                                                                    'hr_employee_id':employee.id,
-                                                                                                    'holiday_status_id':leave.id,
-                                                                                                    'date':date.today(),
-                                                                                                    'leave_info':'debit',
-                                                                                                    'no_of_days':total_leave
-                                                                                                })
-                            elif employee and employee.leave_balance_id:
-                                    for credit_policy in leave.creadit_policy_id:
-                                        SQL = """
-                                                   
-                                            select he.id from 
-                                            hr_employee as he
-                                            left outer join hr_employee_leave_info as heli on heli.hr_employee_id = he.id
-                                            left outer join hr_leave_type as hlt on hlt.id = heli.holiday_status_id
-                                            where 
-                                            he.id in (%s)
-                                            and hlt.leave_type in (%s)
-                                            and heli.leave_info = 'debit'
-                                            and EXTRACT(DAY FROM heli.date) = '%s'
-                                                """
-                                        self.env.cr.execute(SQL, (
-                                            employee.id,
-                                            leave.leave_type,
-                                            credit_policy.day
-                                        ))
-                                        res = self.env.cr.fetchall()
-#                                         print("??????????????RESSSSSSSSSSSSSSSSSSSSS",res,today.day,today.strftime("%B"),credit_policy.day,credit_policy.month)
-                                        if not res:
-    #                                     print("???????<<<<<<<<<<<<<<<<<<<<<???????????????",leave_bal_id)
-                                            if today.day == credit_policy.day and today.strftime("%B") == credit_policy.month:
-                                                total_leave = 0.0
-                                                hr_leave_report = self.env['hr.leave.report'].search([('employee_id','=',employee.id),
-                                                                                                      ('holiday_type','=','employee'),
-                                                                                                      ('holiday_status_id','=',leave.id),
-                                                                                                      ('state','=','validate')
-                                                                                                      ])
-#                                                 print("?availabeleaveeeeeeeeee",hr_leave_report)
-                                                for leave_report in hr_leave_report:
-                                                    total_leave += leave_report.number_of_days
-#                                                     print("<<<<<<<<<<}}}}}}}}}}}}}}}}}}",total_leave)
-                                                if hr_leave_report:
-#                                                     print("1111111111111111111111111111111111",leave.id,employee.ids,date.today(),total_leave)
-                                                    hr_leave = self.env['hr.leave'].create({'holiday_status_id': leave.id,
-                                                                                                   'holiday_type': 'employee',
-                                                                                                   'employee_id': employee.id,
-                                                                                                   'request_date_from':date.today(),
-                                                                                                   'request_date_to':date.today(),
-                                                                                                   'number_of_days_display':total_leave,
-                                                                                                   'number_of_days':total_leave
-                                                                                                   })
-#                                                     print("allocationnnnnnnnnnn2222222222222222222222nn",hr_leave)
-                                                    hr_leave.sudo().action_approve()
-                                                    print("4444444444444444")
-                                                    if hr_leave:
-                                                        leave_bal_id = self.env['hr.employee.leave.info'].create({
-                                                                                                                    'hr_employee_id':employee.id,
-                                                                                                                    'holiday_status_id':leave.id,
-                                                                                                                    'date':date.today(),
-                                                                                                                    'leave_info':'debit',
-                                                                                                                    'no_of_days':total_leave
-                                                                                                                })
-                                                
+#                     print("22222222222222222222222222222",month,leave.leave_month)
+#                     print("333333333333333333333",today.day,current_month_date)
+                    if today.day == current_month_date:
+                        if leave.leave_month == month:
+                            if leave.gende == 'male' or leave.gende =='female':
+        #                                 print("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ")
+                                employee_ids = self.env['hr.employee'].search([('gende','=',leave.gende),
+                                                                               ('employee_type','=',service_leave.tech_name),
+                                                                               ('state','=',emp_stages.tech_name),
+                                                                               ('active','=',True)
+                                                                               ])
+                            elif leave.gende == 'transgender':
+    #                             print("BBBBBBBBBBBBBBBBBBBBBBBBBB",service_leave.tech_name,emp_stages.tech_name)
+                                employee_ids = self.env['hr.employee'].search([('employee_type','=',service_leave.tech_name),
+                                                                               ('state','=',emp_stages.tech_name),
+                                                                               ('active','=',True)
+                                                                               ])
+                                
+                            for employee in employee_ids:
+    #                                 print("@@@@@@@@@@@@@@@@@@@@@@@@",employee)
+                                if employee and not employee.leave_balance_id:
+                                    total_leave = 0.0
+                                    hr_leave_report = self.env['hr.leave.report'].search([('employee_id','=',employee.id),
+                                                                                          ('holiday_type','=','employee'),
+                                                                                          ('holiday_status_id','=',leave.id),
+                                                                                          ('state','=','validate')
+                                                                                          ])
+    #                                 print("?availabeleaveeeeeeeeee",hr_leave_report)
+                                    for leave_report in hr_leave_report:
+                                        total_leave += leave_report.number_of_days
+    #                                     print("<<<<<<<<<<}}}}}}}}}}}}}}}}}}",total_leave)
+                                    if hr_leave_report:
+    #                                     print("1111111111111111111111111111111111",leave.id,employee.ids,date.today(),total_leave)
+                                        hr_leave = self.env['hr.leave'].create({'holiday_status_id': leave.id,
+                                                                                       'holiday_type': 'employee',
+                                                                                       'employee_id': employee.id,
+                                                                                       'request_date_from':date.today(),
+                                                                                       'request_date_to':date.today(),
+                                                                                       'number_of_days_display':total_leave,
+                                                                                       'number_of_days':total_leave
+                                                                                       })
+    #                                     print("allocationnnnnnnnnnn2222222222222222222222nn",hr_leave)
+                                        hr_leave.sudo().action_approve()
+                                        if hr_leave:
+                                            leave_bal_id = self.env['hr.employee.leave.info'].create({
+                                                                                                        'hr_employee_id':employee.id,
+                                                                                                        'holiday_status_id':leave.id,
+                                                                                                        'date':date.today(),
+                                                                                                        'leave_info':'debit',
+                                                                                                        'no_of_days':total_leave
+                                                                                                    })
+                                elif employee and employee.leave_balance_id:
+                                        for credit_policy in leave.creadit_policy_id:
+                                            SQL = """
+                                                       
+                                                select he.id from 
+                                                hr_employee as he
+                                                left outer join hr_employee_leave_info as heli on heli.hr_employee_id = he.id
+                                                left outer join hr_leave_type as hlt on hlt.id = heli.holiday_status_id
+                                                where 
+                                                he.id in (%s)
+                                                and hlt.leave_type in (%s)
+                                                and heli.leave_info = 'debit'
+                                                and EXTRACT(DAY FROM heli.date) = '%s'
+                                                    """
+                                            self.env.cr.execute(SQL, (
+                                                employee.id,
+                                                leave.leave_type,
+                                                credit_policy.day
+                                            ))
+                                            res = self.env.cr.fetchall()
+    #                                         print("??????????????RESSSSSSSSSSSSSSSSSSSSS",res,today.day,today.strftime("%B"),credit_policy.day,credit_policy.month)
+                                            if not res:
+        #                                     print("???????<<<<<<<<<<<<<<<<<<<<<???????????????",leave_bal_id)
+                                                if today.day == credit_policy.day and today.strftime("%B") == credit_policy.month:
+                                                    total_leave = 0.0
+                                                    hr_leave_report = self.env['hr.leave.report'].search([('employee_id','=',employee.id),
+                                                                                                          ('holiday_type','=','employee'),
+                                                                                                          ('holiday_status_id','=',leave.id),
+                                                                                                          ('state','=','validate')
+                                                                                                          ])
+    #                                                 print("?availabeleaveeeeeeeeee",hr_leave_report)
+                                                    for leave_report in hr_leave_report:
+                                                        total_leave += leave_report.number_of_days
+    #                                                     print("<<<<<<<<<<}}}}}}}}}}}}}}}}}}",total_leave)
+                                                    if hr_leave_report:
+    #                                                     print("1111111111111111111111111111111111",leave.id,employee.ids,date.today(),total_leave)
+                                                        hr_leave = self.env['hr.leave'].create({'holiday_status_id': leave.id,
+                                                                                                       'holiday_type': 'employee',
+                                                                                                       'employee_id': employee.id,
+                                                                                                       'request_date_from':date.today(),
+                                                                                                       'request_date_to':date.today(),
+                                                                                                       'number_of_days_display':total_leave,
+                                                                                                       'number_of_days':total_leave
+                                                                                                       })
+    #                                                     print("allocationnnnnnnnnnn2222222222222222222222nn",hr_leave)
+                                                        hr_leave.sudo().action_approve()
+                                                        print("4444444444444444")
+                                                        if hr_leave:
+                                                            leave_bal_id = self.env['hr.employee.leave.info'].create({
+                                                                                                                        'hr_employee_id':employee.id,
+                                                                                                                        'holiday_status_id':leave.id,
+                                                                                                                        'date':date.today(),
+                                                                                                                        'leave_info':'debit',
+                                                                                                                        'no_of_days':total_leave
+                                                                                                                    })
+                                                    
             
     @api.multi
     def button_expried_leaves(self):
@@ -450,90 +457,92 @@ class HrLeaveType(models.Model):
             mydate = datetime.datetime.now()
             month = mydate.strftime("%B")
             today = date.today()
+            year, month = today.year, today.month
+            current_month_date = calendar.monthrange(year, month)[1]
+#             print("0000000000000000000000000",current_month_date)
             for line in leave.creadit_policy_id:
                 for service_leave in leave.allow_service_leave:
-                    print("111111111111111111111111111111111")
                     for emp_stages in leave.allow_emp_stage:
-                        print("222222222222222222222222222222222222222222")
-                        if line.day == today.day and line.month == month:
-                            print("33333333333333333333333333333333333333")
-                            if leave.gende == 'male' or leave.gende =='female':
-                                employee_ids = self.env['hr.employee'].search([('gende','=',leave.gende),
-                                                                               ('employee_type','=',service_leave.tech_name),
-                                                                               ('state','=',emp_stages.tech_name),
-                                                                               ('active','=',True),
-                                                                               ])
-                            elif leave.gende == 'transgender':
-                                employee_ids = self.env['hr.employee'].search([('employee_type','=',service_leave.tech_name),
-                                                                               ('state','=',emp_stages.tech_name),
-                                                                               ('active','=',True)
-                                                                               ])
-                            for employee in employee_ids:
-#                                 print("@@@@@@@@@@@@@@@@@@@@@@@@",employee)
-                                if employee and not employee.leave_balance_id:
-#                                     print("ifffffffffffffffffffffffffff")
-                                    allocate_leave = self.env['hr.leave.allocation'].create({'holiday_status_id': leave.id,
-                                                                                   'holiday_type': 'employee',
-                                                                                   'employee_id': employee.id,
-                                                                                   'number_of_days_display':line.no_pf_leaves_credit,
-                                                                                   'number_of_days':line.no_pf_leaves_credit,
-                                                                                   'name':'System Leave Allocation',
-                                                                                   'notes':'As Per Leave Policy'
-                                                                                   })
-#                                     print("allocationnnnnnnnnnnnn",allocate_leave)
-                                    allocate_leave.sudo().action_approve()
-                                    
-                                    if allocate_leave:
-                                        leave_bal_id = self.env['hr.employee.leave.info'].create({
-                                                                                                'hr_employee_id':employee.id,
-                                                                                                'holiday_status_id':leave.id,
-                                                                                                'date':date.today(),
-                                                                                                'leave_info':'credit',
-                                                                                                'no_of_days':line.no_pf_leaves_credit
-                                                                                            })
-                                elif employee and employee.leave_balance_id:
-                                    for credit_policy in leave.creadit_policy_id:
-                                        SQL = """
-                                                   
-                                            select he.id from 
-                                            hr_employee as he
-                                            left outer join hr_employee_leave_info as heli on heli.hr_employee_id = he.id
-                                            left outer join hr_leave_type as hlt on hlt.id = heli.holiday_status_id
-                                            where 
-                                            he.id in (%s)
-                                            and hlt.leave_type in (%s)
-                                            and heli.leave_info = 'credit'
-                                            and EXTRACT(DAY FROM heli.date) = '%s'
-                                                """
-                                        self.env.cr.execute(SQL, (
-                                            employee.id,
-                                            leave.leave_type,
-                                            credit_policy.day
-                                        ))
-                                        res = self.env.cr.fetchall()
-#                                         print("??????????????RESSSSSSSSSSSSSSSSSSSSS",res,today.day,today.strftime("%B"),credit_policy.day,credit_policy.month)
-                                        if not res:
-                                            if today.day == credit_policy.day and today.strftime("%B") == credit_policy.month:
-#                                                 print("#############################################")
-                                                allocate_leave = self.env['hr.leave.allocation'].create({'holiday_status_id': leave.id,
-                                                                                               'holiday_type': 'employee',
-                                                                                               'employee_id': employee.id,
-                                                                                               'number_of_days_display':line.no_pf_leaves_credit,
-                                                                                               'number_of_days':line.no_pf_leaves_credit,
-                                                                                               'name':'System Leave Allocation',
-                                                                                               'notes':'As Per Leave Policy'
-                                                                                               })
-#                                                 print("allocationnnnnnnnnnnnn",allocate_leave)
-                                                allocate_leave.sudo().action_approve()
-                                                
-                                                if allocate_leave:
-                                                    leave_bal_id = self.env['hr.employee.leave.info'].create({
-                                                                                                            'hr_employee_id':employee.id,
-                                                                                                            'holiday_status_id':leave.id,
-                                                                                                            'date':date.today(),
-                                                                                                            'leave_info':'credit',
-                                                                                                            'no_of_days':line.no_pf_leaves_credit
-                                                                                                        })
+#                         print("333333333333333333333",today.day,current_month_date)
+                        if today.day == current_month_date:
+                            if line.day == today.day and line.month == month:
+                                if leave.gende == 'male' or leave.gende =='female':
+                                    employee_ids = self.env['hr.employee'].search([('gende','=',leave.gende),
+                                                                                   ('employee_type','=',service_leave.tech_name),
+                                                                                   ('state','=',emp_stages.tech_name),
+                                                                                   ('active','=',True),
+                                                                                   ])
+                                elif leave.gende == 'transgender':
+                                    employee_ids = self.env['hr.employee'].search([('employee_type','=',service_leave.tech_name),
+                                                                                   ('state','=',emp_stages.tech_name),
+                                                                                   ('active','=',True)
+                                                                                   ])
+                                for employee in employee_ids:
+    #                                 print("@@@@@@@@@@@@@@@@@@@@@@@@",employee)
+                                    if employee and not employee.leave_balance_id:
+    #                                     print("ifffffffffffffffffffffffffff")
+                                        allocate_leave = self.env['hr.leave.allocation'].create({'holiday_status_id': leave.id,
+                                                                                       'holiday_type': 'employee',
+                                                                                       'employee_id': employee.id,
+                                                                                       'number_of_days_display':line.no_pf_leaves_credit,
+                                                                                       'number_of_days':line.no_pf_leaves_credit,
+                                                                                       'name':'System Leave Allocation',
+                                                                                       'notes':'As Per Leave Policy'
+                                                                                       })
+    #                                     print("allocationnnnnnnnnnnnn",allocate_leave)
+                                        allocate_leave.sudo().action_approve()
+                                        
+                                        if allocate_leave:
+                                            leave_bal_id = self.env['hr.employee.leave.info'].create({
+                                                                                                    'hr_employee_id':employee.id,
+                                                                                                    'holiday_status_id':leave.id,
+                                                                                                    'date':date.today(),
+                                                                                                    'leave_info':'credit',
+                                                                                                    'no_of_days':line.no_pf_leaves_credit
+                                                                                                })
+                                    elif employee and employee.leave_balance_id:
+                                        for credit_policy in leave.creadit_policy_id:
+                                            SQL = """
+                                                       
+                                                select he.id from 
+                                                hr_employee as he
+                                                left outer join hr_employee_leave_info as heli on heli.hr_employee_id = he.id
+                                                left outer join hr_leave_type as hlt on hlt.id = heli.holiday_status_id
+                                                where 
+                                                he.id in (%s)
+                                                and hlt.leave_type in (%s)
+                                                and heli.leave_info = 'credit'
+                                                and EXTRACT(DAY FROM heli.date) = '%s'
+                                                    """
+                                            self.env.cr.execute(SQL, (
+                                                employee.id,
+                                                leave.leave_type,
+                                                credit_policy.day
+                                            ))
+                                            res = self.env.cr.fetchall()
+    #                                         print("??????????????RESSSSSSSSSSSSSSSSSSSSS",res,today.day,today.strftime("%B"),credit_policy.day,credit_policy.month)
+                                            if not res:
+                                                if today.day == credit_policy.day and today.strftime("%B") == credit_policy.month:
+    #                                                 print("#############################################")
+                                                    allocate_leave = self.env['hr.leave.allocation'].create({'holiday_status_id': leave.id,
+                                                                                                   'holiday_type': 'employee',
+                                                                                                   'employee_id': employee.id,
+                                                                                                   'number_of_days_display':line.no_pf_leaves_credit,
+                                                                                                   'number_of_days':line.no_pf_leaves_credit,
+                                                                                                   'name':'System Leave Allocation',
+                                                                                                   'notes':'As Per Leave Policy'
+                                                                                                   })
+    #                                                 print("allocationnnnnnnnnnnnn",allocate_leave)
+                                                    allocate_leave.sudo().action_approve()
+                                                    
+                                                    if allocate_leave:
+                                                        leave_bal_id = self.env['hr.employee.leave.info'].create({
+                                                                                                                'hr_employee_id':employee.id,
+                                                                                                                'holiday_status_id':leave.id,
+                                                                                                                'date':date.today(),
+                                                                                                                'leave_info':'credit',
+                                                                                                                'no_of_days':line.no_pf_leaves_credit
+                                                                                                            })
                             
                 
 class LeaveTypeCreditPolicy(models.Model):
