@@ -16,14 +16,26 @@
                     <field name = 'city_id' readonly="1"/>
                     <field name = 'employee_hra_cat' readonly="1"/>
                     <field name = 'city_tier' readonly="1"/>
-
                 </xpath>
-                
+
+                <xpath expr="//group[@name='salary_and_advantages']" position="after">
+                    <group name = 'Basic Details'>
+                        <field name = 'basicinc'/>
+                        <field name = 'da'/>
+                        <field name = 'supplementary_allowance'/>
+                        <field name = 'voluntary_provident_fund'/>
+                        <field name = 'xnohra'/>
+                    </group>
+                </xpath>
+
                 <!--#Added by Sangita -->
+                <label for="wage" position="attributes">
+                    <attribute name="string">Basic</attribute>
+                </label>
                 <field name="type_id" position="attributes">
                     <attribute name="invisible">1</attribute>
                 </field>
-                
+
                 <field name="schedule_pay" position="attributes">
                     <attribute name="invisible">1</attribute>
                 </field>
