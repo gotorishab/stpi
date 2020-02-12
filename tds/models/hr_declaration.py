@@ -1,6 +1,7 @@
 from odoo import models, fields, api, _
 from dateutil.relativedelta import relativedelta
 from odoo.exceptions import ValidationError, UserError
+from datetime import datetime, date
 
 class HrDeclaration(models.Model):
     _name = 'hr.declaration'
@@ -103,7 +104,7 @@ class HrDeclaration(models.Model):
                 rec.allowed_rebate_under_80mesdr = 150000
 
 
-    employee_id = fields.Many2one('hr.employee', string='Employee', default=_default_employee, track_visibility='always')
+    employee_id = fields.Many2one('hr.employee', string='Requeested By', default=_default_employee, track_visibility='always')
 
 
     job_id = fields.Many2one('hr.job', string="Functional Designation", store=True, track_visibility='always')
@@ -111,7 +112,7 @@ class HrDeclaration(models.Model):
     department_id = fields.Many2one('hr.department', string="Department", store=True, track_visibility='always')
 
 
-    date_range = fields.Many2one('date.range','Date Range', track_visibility='always')
+    date_range = fields.Many2one('date.range','Financial Year', track_visibility='always')
     date = fields.Date(string="Date", default=fields.Date.today(), readonly=True, track_visibility='always')
     tax_salary_final = fields.Float(string='Taxable Salary', store=True, track_visibility='always')
     exemption_ids = fields.One2many('declaration.exemption', 'exemption_id', string='Exemption Ids')
