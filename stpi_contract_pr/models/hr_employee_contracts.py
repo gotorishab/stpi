@@ -20,6 +20,11 @@ class InheritContractss(models.Model):
                                       ('contractual_with_stpi', 'Contractual with STPI')], string='Employment Type',
                                      )
 
+    basicinc = fields.Float(string='Basic Increment %')
+    da = fields.Float(string='DA %')
+    supplementary_allowance = fields.Float(string='Supplementary Allowance')
+    voluntary_provident_fund = fields.Float(string='Voluntary Provident Fund (%)')
+    xnohra = fields.Boolean(string='Rent Recovery?')
 
     pay_level_id = fields.Many2one('hr.payslip.paylevel', string='Pay Level')
     pay_level = fields.Many2one('payslip.pay.level', string='Pay Band')

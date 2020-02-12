@@ -1,65 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
 <odoo>
-    
-      <record id="hr_employee_profile_form_internal" model="ir.ui.view">
-        <field name="name">hr.employee.form.view</field>
-        <field name="model">hr.employee</field>
-        <field name="type">form</field>
+    <!--=======Tree view of Employee Profile=======-->
+    <record id="employee_profile_tree_view" model="ir.ui.view">
+        <field name="name">employee.profile.tree</field>
+        <field name="model">employee.profile</field>
         <field name="arch" type="xml">
-            <form string="Employee">
+            <tree string="Employee Profile">
+                 <field name="employee_id"/>
+                <field name="designation"/>
+                <field name="department"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <!--=======Form view of Employee Profile=======-->
+    <record id="employee_profile_form_view" model="ir.ui.view">
+        <field name="name">employee.profile.form</field>
+        <field name="model">employee.profile</field>
+        <field name="arch" type="xml">
+            <form string="Employee Profile">
+                <header>
+                    <button name="button_approved" string="Approve" class="oe_highlight" type="object"/>
+                   <field name="state" widget="statusbar" statusbar_visible="draft,waiting_for_approval,approved" />
+                </header>
                 <sheet>
                     <group>
-                        <group>
-                            <field name="salutation"/>
-                            <field name="name"/>
-                            <field name="employee_type"/>
-                            <field name="identify_id"/>
-                            <field name="work_location"/>
-                            <field name="work_email"/>
-                             <field name="mobile_phone"/>
-                             <field name="work_phone"/>
-                             <field name="fax_number"/>
+                        <group string="Employee Current Details">
+                            <field name="employee_id" required="1"/>
+                            <field name="date" readonly="1"/>
+                            <field name="designation" readonly="1"/>
+                            <field name="branch_id" readonly="1"/>
+                            <field name="category" readonly="1"/>
+                            <field name="religion" readonly="1"/>
+                            <field name="minority" readonly="1"/>
+                            <field name="height" readonly="1"/>
+                            <field name="weight" readonly="1"/>
+                            <field name="blood_group" readonly="1"/>
+                            <field name="differently_abled" readonly="1"/>
+                            <field name="kind_of_disability" readonly="1"/>
+                            <field name="personal_remark" readonly="1"/>
+                            <field name="identify_id" readonly="1"/>
+                            <field name="pan_no" readonly="1"/>
+                            <field name="pan_upload" readonly="1"/>
+                            <field name="aadhar_no" readonly="1"/>
+                            <field name="aadhar_upload" readonly="1"/>
+                            <field name="passport_upload" readonly="1"/>
+                            <field name="bank_name" readonly="1"/>
+                            <field name="bank_account_number" readonly="1"/>
+                            <field name="ifsc_code" readonly="1"/>
+                            <field name="employee_type" readonly="1"/>
+                            <field name="recruitment_type" readonly="1"/>
+                            <field name="salutation" readonly="1"/>
+                            <field name="fax_number" readonly="1"/>
                         </group>
-                        <group>
-                             <field name="date_of_join"/>
-                             <field name="department_id"/>
-                             <field name="job_id" string="Functional Designation"/>
-                             <field name="job_title" string="Post"/>
-                             <field name="branch_id"/>
-                             <field name="parent_id"/>
-                             <field name="gender"/>
-                             <field name="state"/>
+                        <group string="Employee Updated Details">
+                            <field name="employee_id" readonly="1" placeholder="New"/>
+                            <field name="date" readonly="1" placeholder="New"/>
+                            <field name="designation" readonly="1" placeholder="New"/>
+                            <field name="branch_id" readonly="1" placeholder="New"/>
+                            <field name="new_category" placeholder="New"/>
+                            <field name="new_religion" placeholder="New"/>
+                            <field name="new_minority" placeholder="New"/>
+                            <field name="new_height" placeholder="New"/>
+                            <field name="new_weight" placeholder="New"/>
+                            <field name="new_blood_group" placeholder="New"/>
+                            <field name="new_differently_abled" placeholder="New"/>
+                            <field name="new_kind_of_disability" placeholder="New"/>
+                            <field name="new_personal_remark" placeholder="New"/>
+                            <field name="new_identify_id" placeholder="New"/>
+                            <field name="new_pan_no" placeholder="New"/>
+                            <field name="new_pan_upload" placeholder="New"/>
+                            <field name="new_aadhar_no" placeholder="New"/>
+                            <field name="new_aadhar_upload" placeholder="New"/>
+                            <field name="new_passport_upload" placeholder="New"/>
+                            <field name="new_bank_name" placeholder="New"/>
+                            <field name="new_bank_account_number" placeholder="New"/>
+                            <field name="new_ifsc_code" placeholder="New"/>
+                            <field name="new_employee_type" placeholder="New"/>
+                            <field name="new_recruitment_type" placeholder="New"/>
+                            <field name="new_salutation" placeholder="New"/>
+                            <field name="new_fax_number" placeholder="New"/>
                         </group>
-                    </group>
+                     </group>
                 </sheet>
-
+                <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
             </form>
         </field>
     </record>
 
 
-      <record id="hr_employee_profile_tree_internal" model="ir.ui.view">
-        <field name="name">hr.employee.tree.view</field>
-        <field name="model">hr.employee</field>
-        <field name="type">tree</field>
-        <field name="arch" type="xml">
-            <tree string="Employee" create="0" delete="0">
-                <field name="salutation"/>
-                <field name="name"/>
-                <field name="employee_type"/>
-                <field name="identify_id"/>
-            </tree>
-        </field>
+    <!--============Action view of Employee Profile============-->
+    <record id="employee_profile_menu_action" model="ir.actions.act_window">
+        <field name="name">Employee Profile</field>
+        <field name="res_model">employee.profile</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form,search</field>
     </record>
 
 
-        <record model="ir.actions.act_window" id="action_employee_profile">
-           <field name="name">Employee Profile</field>
-           <field name="res_model">hr.employee</field>
-           <field name="view_type">form</field>
-           <field name="view_mode">tree,form,search</field>
-           <field name="view_id" ref="hr_employee_profile_form_internal"/>
-       </record>
+    <menuitem id = "employee_profile_hr_id"
+                  name = "Employee Profile"
+                web_icon="employee_profile_stpi,static/description/icon.png"
+                  />
 
+        <menuitem id = "employee_profile_menu_id_parent"
+                  name = "Employee Profile"
+                  parent="employee_profile_hr_id"
+                  action ="employee_profile_menu_action"
+                  sequence="1"
+                  />
 
 </odoo>
-
