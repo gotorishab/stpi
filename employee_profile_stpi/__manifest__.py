@@ -13,6 +13,7 @@
 		'security/ir.model.access.csv',
 		# 'security/security.xml',
         'views/employee_profile.xml',
+        'views/profile_report.xml',
 	],
 	'images': [],
 	'license': 'AGPL-3',

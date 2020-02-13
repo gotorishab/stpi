@@ -1,4 +1,5 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_employee_profile_report,employee.profile.report,model_employee_profile_report,base.group_user,1,1,1,1
 access_employee_profile,employee.profile,model_employee_profile,base.group_user,1,1,1,1
 access_employee_update_address,employee.update.address,model_employee_update_address,base.group_user,1,1,1,1
 access_employee_current_address,employee.current.address,model_employee_current_address,base.group_user,1,1,1,1

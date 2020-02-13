@@ -12,7 +12,7 @@ class EmployeeProfile(models.Model):
 
     employee_id = fields.Many2one('hr.employee', string="Employee", store = True, track_visibility='onchange')
     date = fields.Date(string='Requested Date', default=fields.Date.today())
-    designation = fields.Many2one('hr.job', string="Designation")
+    designation = fields.Many2one('hr.job', string="Functional Designation")
     branch_id= fields.Many2one('res.branch', string="Branch")
     department = fields.Many2one('hr.department', string="Department")
     address_ids = fields.One2many('employee.update.address', 'employee_update_profile', string='Address', track_visibility='always')
@@ -342,8 +342,30 @@ class EmployeeProfile(models.Model):
         for rec in self:
             if rec.new_category:
                 rec.employee_id.category = rec.new_category.id
+                self.env['employee.profile.report'].create({
+                    'employee_id': str(rec.employee_id.name),
+                    'designation': str(rec.designation.name),
+                    'department': str(rec.department.name),
+                    'branch_id': str(rec.branch_id.name),
+                    'date': rec.date,
+                    'approved_date': datetime.now().date(),
+                    'field_n': 'Category',
+                    'old_value': str(rec.category.name),
+                    'new_value': str(rec.new_category.name),
+                })
             if rec.new_religion:
                 rec.employee_id.religion = rec.new_religion.id
+                self.env['employee.profile.report'].create({
+                    'employee_id': str(rec.employee_id.name),
+                    'designation': str(rec.designation.name),
+                    'department': str(rec.department.name),
+                    'branch_id': str(rec.branch_id.name),
+                    'date': rec.date,
+                    'approved_date': datetime.now().date(),
+                    'field_n': 'Religion',
+                    'old_value': str(rec.religion.name),
+                    'new_value': str(rec.new_religion.name),
+                })
             if rec.new_minority:
                 rec.employee_id.minority = rec.new_minority
             if rec.new_height:

@@ -15,3 +15,4 @@ from . import pf_employee
 from . import hr_declaration
 from . import employee_profile
 from . import hr_payslip
+from . import hr_payslip_batch
