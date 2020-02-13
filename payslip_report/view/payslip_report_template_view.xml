@@ -1,0 +1,392 @@
+<odoo>
+
+    <template id="report_make_payslips_report_template_view">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                
+                <div class="page">
+                    <div class="oe_structure"/>
+                        <div class="row" style="font-size:11px">
+                            <div class="col-xs-12">
+                            <br/>
+                            <br/>
+                                  <table class="table table-condensed" style="width:1020px;">
+                                    <tr  style="background-color:E3EEF7;">
+                                        <td style="font-size:20px;" colspan="4">
+                                            <b>
+                                               <center>
+                                                <h4><span t-field="o.name"/></h4>
+                                                </center>
+                                            </b>
+                                        </td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <td style="font-size:14px;width:510px;" colspan="2">
+                                           <t t-if="o.employee_id">
+                                                <strong>Name</strong> :- <span t-field="o.employee_id"/><br/>
+                                            </t>
+                                            <t t-if="o.employee_id.bank_name">
+                                                <strong>Bank Name</strong> :- <span t-field="o.employee_id.bank_name"/><br/>
+                                            </t>
+                                            <t t-if="o.employee_id.bank_account_number">
+                                                <strong>Bank A/C No</strong> :- <span t-field="o.employee_id.bank_account_number"/><br/>
+                                            </t>
+                                            <t t-if="o.employee_id.pan_no">
+                                                <strong>PAN</strong> :- <span t-field="o.employee_id.pan_no"/><br/>
+                                            </t>
+                                            <t t-if="o.employee_id.aadhar_no">
+                                                <strong>Aadhar No</strong> :- <span t-field="o.employee_id.aadhar_no"/><br/>
+                                            </t>
+                                            <!-- <t t-if="o.employee_id.pf_no">
+                                                <strong>P.F.No</strong> :- <span t-field="o.employee_id.pf_no"/><br/>
+                                            </t>
+                                            <t t-if="o.employee_id.esi_no">
+                                                <strong>ESI No</strong>:- <span t-field="o.employee_id.esi_no"/><br/>
+                                            </t> -->
+                                        </td>
+                                        <td style="font-size:14px;width:510px;" colspan="2">
+                                            <t t-if="o.employee_id.address_home_id">
+                                                <strong> Residential Address :-  </strong><br/>
+                                                <span t-field="o.employee_id.address_home_id.street"/>
+                                                <span t-field="o.employee_id.address_home_id.street2"/><br/>
+                                                <span t-field="o.employee_id.address_home_id.city"/><br/>
+                                                <span t-field="o.employee_id.address_home_id.state_id.name"/><br/>
+                                                <span t-field="o.employee_id.address_home_id.zip"/><br/>
+                                                <span t-field="o.employee_id.address_home_id.country_id.name"/><br/>
+                                            </t>
+                                            <t t-if="o.employee_id.address_home_id.phone">
+                                                Phone No:<span t-field="o.employee_id.address_home_id.phone"/><br/>
+                                            </t>
+                                            <!-- <span t-field="o.employee_id.adhar_card"/><br/> -->
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="font-size:14px;" align="left">
+                                            <t t-if="o.employee_id.identify_id">
+                                                <strong>EmpNo</strong><br/>
+                                            </t>
+                                            <t t-if="o.employee_id.job_id">
+                                                <strong>Designation</strong><br/>
+                                            </t>
+                                            <t t-if="o.employee_id.work_location">
+                                                <strong>Location</strong><br/>
+                                            </t>
+                                            <t t-if="o.employee_id.branch_id">
+                                                <strong>Branch</strong><br/>
+                                            </t>
+                                            <t t-if="o.number">
+                                                <strong>Reference</strong><br/>
+                                            </t>
+                                            
+                                             <t t-if="o.employee_id.department_id">
+                                                <strong>Department</strong><br/>
+                                            </t>
+                                            <!-- <t t-if="o.employee_id.grade_id">
+                                                <strong>Grade</strong><br/>
+                                            </t> -->
+                                            <t t-if="o.employee_id.birthday">
+                                                <strong>DOB</strong><br/>  
+                                            </t>
+                                            <t t-if="o.employee_id.date_of_join">
+                                                <strong>DOJ</strong><br/> 
+                                            </t>
+                                        </td>
+                                        <td style="font-size:14px;" align="left">
+                                            <t t-if="o.employee_id.identify_id">
+                                                <span t-field="o.employee_id.identify_id"/><br/>
+                                            </t>
+                                            <t t-if="o.employee_id.job_id">
+                                                <span t-field="o.employee_id.job_id"/><br/>
+                                            </t>
+                                            <t t-if="o.employee_id.work_location">
+                                                <span t-field="o.employee_id.work_location"/><br/>
+                                            </t>
+                                            <t t-if="o.employee_id.branch_id">
+                                                <span t-field="o.employee_id.branch_id"/><br/>
+                                            </t>
+                                            <t t-if="o.number">
+                                                <span t-field="o.number"/><br/>
+                                            </t>
+                                            
+                                             <t t-if="o.employee_id.department_id">
+                                                <span t-field="o.employee_id.department_id"/><br/>
+                                            </t>
+                                            <!-- <t t-if="o.employee_id.grade_id">
+                                                <span t-field="o.employee_id.grade_id"/><br/>
+                                            </t> -->
+                                            <t t-if="o.employee_id.birthday">  
+                                                <span t-field="o.employee_id.birthday"/><br/>
+                                            </t>
+                                            <t t-if="o.employee_id.date_of_join">  
+                                                <span t-field="o.employee_id.date_of_join"/><br/>
+                                            </t>
+                                        </td>
+                                        <td style="font-size:14px;" align="left">
+                                            <t t-if="o.compute_difference_two_date()">
+                                                <strong>Payable Dates</strong><br/>
+                                            </t>
+                                            <t t-foreach="o.line_ids" t-as="ld">
+                                                <t t-if="ld.category_id.name == 'Gross'">
+                                                    <strong>Gross</strong><br/>
+                                                </t>
+                                            </t>
+                                            <t t-if="o.leaves_type_cal_earned()">
+                                                <strong>Remaining Earned Leaves</strong><br/>
+                                            </t>
+                                            <t t-if="o.leaves_type_cal_half_pay_leave()">
+                                                <strong>Remaining Half Pay Leaves</strong><br/>
+                                            </t>
+                                            <t t-if="o.leaves_type_cal_casual()">
+                                                <strong>Remaining Casual Leaves</strong><br/>
+                                            </t>
+                                            <!-- <t t-if="o.leaves_type_cal_maternity()">
+                                                <strong>Remaining Maternity Leave</strong><br/>
+                                            </t>
+                                            
+                                            <t t-if="o.leaves_type_cal_special_casual()">
+                                                <strong>Remaining Special Casual Leave</strong><br/>
+                                            </t>
+                                            
+                                             <t t-if="o.leaves_type_cal_extra_ordinary_leave()">
+                                                <strong>Remaining Extra Ordinary Leave</strong><br/>
+                                            </t>
+                                            
+                                            <t t-if="o.leaves_type_cal_extra_ordinary_leave()">
+                                                <strong>Remaining Paternity Leave</strong><br/>
+                                            </t>
+                                            
+                                            <t t-if="o.leaves_type_cal_chlid_care_leave()">
+                                                <strong>Remaining Child Care Leave</strong><br/>
+                                            </t> -->
+                                            <!-- <strong>Casual Leaves</strong><br/>
+                                            <strong>Unused Leaves</strong><br/>
+                                            <strong>Used Leaves</strong><br/> -->
+                                            <!-- <t t-if="o.lwp_count">
+                                                <strong>LWP</strong><br/>
+                                            </t> -->
+                                            <!-- <t t-if="o.lwp_att">
+                                                <strong>Standard Days</strong><br/>
+                                            </t>
+                                            <t t-if="o.lwp_attend">
+                                                <strong>Days Worked</strong><br/>
+                                            </t>
+                                            <t t-if="o.get_l_coming()">
+                                                <strong> L/Comming H </strong><br/>
+                                            </t>
+                                            <t t-if="o.half_h_deducation()">
+                                                <strong> Half Hour Deduction </strong><br/>
+                                            </t>
+                                            <t t-if="o.half_day_deducation()">
+                                                <strong> Half Day Deduction </strong><br/>
+                                            </t>
+                                            <t t-if="o.early_going_days()">
+                                                <strong> Early Going </strong><br/>
+                                            </t> -->
+                                        </td>
+                                        <td style="font-size:14px;" align="left">
+                                            <t t-if="o.compute_difference_two_date()">
+                                                <span t-esc="o.compute_difference_two_date()" /><br/>
+                                            </t>
+                                            <t t-foreach="o.line_ids" t-as="ld">
+                                                <t t-if="ld.category_id.name == 'Gross'">
+                                                    <span t-field="ld.total"/><br/>
+                                                </t>
+                                            </t>
+                                            <t t-if="o.leaves_type_cal_earned()">
+                                                <t t-set='dataear' t-value="o.leaves_type_cal_earned()"/>
+                                                    <span t-esc="dataear[0]"/><br/>
+                                            </t>
+                                            
+                                            <t t-if="o.leaves_type_cal_half_pay_leave()">
+                                                <t t-set='datasick' t-value="o.leaves_type_cal_half_pay_leave()"/>
+                                                    <span t-esc="datasick[0]"/><br/>
+                                            </t>
+
+                                            <t t-if="o.leaves_type_cal_casual()">
+                                                <t t-set='datacas' t-value="o.leaves_type_cal_casual()"/>
+                                                    <span t-esc="datacas[0]"/><br/>
+                                            </t>
+                                            
+                                            <!-- <t t-if="o.leaves_type_cal_maternity()">
+                                                <t t-set='datacas' t-value="o.leaves_type_cal_maternity()"/>
+                                                    <span t-esc="datacas[0]"/><br/>
+                                            </t>
+                                            
+                                            <t t-if="o.leaves_type_cal_special_casual()">
+                                                <t t-set='datacas' t-value="o.leaves_type_cal_special_casual()"/>
+                                                    <span t-esc="datacas[0]"/><br/>
+                                            </t>
+
+                                            <t t-if="o.leaves_type_cal_extra_ordinary_leave()">
+                                                <t t-set='datacas' t-value="o.leaves_type_cal_extra_ordinary_leave()"/>
+                                                    <span t-esc="datacas[0]"/><br/>
+                                            </t>
+                                            
+                                            <t t-if="o.leaves_type_cal_paternity_leave()">
+                                                <t t-set='datacas' t-value="o.leaves_type_cal_paternity_leave()"/>
+                                                    <span t-esc="datacas[0]"/><br/>
+                                            </t>
+                                            
+                                            <t t-if="o.leaves_type_cal_chlid_care_leave()">
+                                                <t t-set='datacas' t-value="o.leaves_type_cal_chlid_care_leave()"/>
+                                                    <span t-esc="datacas[0]"/><br/>
+                                            </t> -->
+
+                                            <!-- <t t-if="o.lwp_count">
+                                                <span t-field="o.lwp_count"/><br/>
+                                            </t>
+                                             <t t-if="o.lwp_attend">
+                                                <span t-field="o.lwp_attend"/><br/>
+                                            </t>
+                                             <t t-if="o.lwp_att">
+                                                <span t-field="o.lwp_att"/><br/>
+                                            </t>
+                                             <t t-if="o.get_l_coming()">
+                                                <span t-esc="o.get_l_coming()"/><br/>
+                                            </t>
+                                            <t t-if="o.half_h_deducation()">
+                                                <span t-esc="o.half_h_deducation()"/><br/>
+                                            </t>
+                                            <t t-if="o.half_day_deducation()">
+                                                <span t-esc="o.half_day_deducation()"/><br/>
+                                            </t>
+                                            <t t-if="o.early_going_days()">
+                                                <span t-esc="o.early_going_days()"/><br/>
+                                            </t> -->
+                                        </td>
+                                    </tr>
+                                </table>
+                                <table class="table table-condensed" style="width:900px;">
+                                    <tr  style="background-color:E3EEF7;">
+                                        <td style="font-size:15px;" align="center">
+                                            <strong>Earnings</strong>
+                                            <table class="table table-condensed" style="width:500px;">
+                                                
+                                                <tr style="background-color:E3EEF7;">
+                                                    <td style="font-size:15px;" align="left"><strong>Name</strong></td>
+                                                    <td style="font-size:15px;" align="right"><strong>Current Period</strong></td>
+                                                    <!-- <td style="font-size:15px;" align="right"><strong>Year To Date</strong></td> -->
+                                                </tr>
+                                                <tbody>
+                                                    <t t-foreach="o.line_ids" t-as="h">
+                                                    
+                                                    <!-- <t t-foreach='data' t-as="hy"> -->
+                                                    <t t-if="h.salary_rule_id.appears_on_payslip == True and h.salary_rule_id.appear_in_allowance == True">
+                                                        <!-- <t t-set='data' t-value="o.tod_calculate()"/> -->
+                                                        <tr>
+                                                            <t t-if="h.total > 0">
+                                                                <td style="font-size:15px;" align="left">
+                                                                    <span t-esc="h.salary_rule_id.name"/>
+                                                                </td>
+                                                                <td style="font-size:15px;" align="right">
+                                                                    <span t-esc="h.total"/>
+                                                                </td>
+                                                            </t>
+                                                            <!-- <td style="font-size:15px;" align="right">
+                                                                <span t-esc="data[2]"/>
+                                                            </td> -->
+                                                        </tr>
+                                                    <!-- </t> -->
+                                                    </t>
+                                                    </t>
+                                                </tbody>
+                                                
+                                            </table>
+                                        </td>
+                                            
+                                        <td style="font-size:15px;" align="center"><strong>Deductions</strong>
+                                            <table class="table table-condensed" style="width:500px;">
+                                                <tr  style="background-color:E3EEF7;">
+                                                    <td style="font-size:15px;" align="left"><strong>Name</strong></td>
+                                                    <td style="font-size:15px;" align="right"><strong>Current Period</strong></td>
+                                                    <!-- <td style="font-size:15px;" align="right"><strong>Year To Date</strong></td> -->
+                                                </tr>
+                                                <tbody>
+                                                    <t t-foreach="o.line_ids" t-as="h">
+                                                    
+                                                    <!-- <t t-foreach='data' t-as="hy"> -->
+                                                    <t t-if="h.salary_rule_id.appears_on_payslip == True and h.salary_rule_id.appear_in_allowance == false">
+                                                        <!-- <t t-set='data' t-value="o.tod_calculate()"/> -->
+                                                        <tr>
+                                                            <t t-if="h.total > 0">
+                                                                <td style="font-size:15px;" align="left">
+                                                                    <span t-esc="h.salary_rule_id.name"/>
+                                                                </td>
+                                                                <td style="font-size:15px;" align="right">
+                                                                    
+                                                                    <span t-esc="h.total"/>
+                                                                </td>
+                                                            </t>
+                                                            <!-- <td style="font-size:15px;" align="right">
+                                                                <span t-esc="data[2]"/>
+                                                            </td> -->
+                                                        </tr>
+                                                    <!-- </t> -->
+                                                    </t>
+                                                    </t>
+                                                </tbody>
+                                            </table>
+                                        
+                                        </td>
+                                        </tr>
+                                    
+                                    <!-- <tr  style="background-color:E3EEF7;">
+                                        <td style="font-size:14px;" align="center" colspan="2">
+                                            <b>Year To Date : </b>
+                                            <table class="table table-condensed" style="width:1000px;">
+                                                <tr  style="background-color:E3EEF7;">
+                                                    <td style="font-size:15px;" align="center"><strong>Name</strong></td>
+                                                    <td style="font-size:15px;" align="center"><strong>Amount</strong></td>
+                                                </tr>
+                                                <tbody>
+                                                    <t t-set='data' t-value="o.tod_calculate()"/>
+                                                    <t t-foreach='data' t-as="h">
+                                                        <tr>
+                                                        
+                                                            <td style="font-size:15px;" align="left">
+                                                                <span t-esc="h[2]"/>
+                                                            </td>
+                                                        
+                                                            <td style="font-size:15px;" align="right">
+                                                                <span t-esc="h[3]"/>
+                                                            </td>
+                                                        </tr>
+                                                    </t>
+                                                    </t>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                        
+                                    </tr> -->
+                                    <tr  style="background-color:E3EEF7;">
+                                        <td style="font-size:14px;" colspan="3"
+                                            align="left">
+                                            <b>Total Net Pay: Rs.</b>
+                                            <b><span t-esc="o.compute_net_pay()"/> 
+                                            <span t-esc="o.amount_total_words" />
+                                                
+                                            </b>
+                                            
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-size:14px;" colspan="3"
+                                            align="left">
+                                            This is a computer generated record and doesn't need signature
+                                        </td>
+                                    </tr>
+                                </table>
+                            
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+        
+    </template>
+
+</odoo>

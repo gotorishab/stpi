@@ -1,0 +1,13 @@
+<odoo>
+
+    <report 
+            string="Payslip Report" 
+            id="action_payslip_report_payslips" 
+            model="hr.payslip" 
+            report_type="qweb-pdf" 
+            attachment_use="True" 
+            name="payslip_report.report_make_payslips_report_template_view"
+            file="payslip_report.report_make_payslips_report_template_view" 
+        />
+
+</odoo>
