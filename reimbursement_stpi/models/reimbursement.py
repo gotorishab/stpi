@@ -33,9 +33,9 @@ class Reimbursement(models.Model):
     branch_id = fields.Many2one('res.branch', string='Branch', store=True, track_visibility='always')
     department_id = fields.Many2one('hr.department', string='Department', store=True, track_visibility='always')
     lunch_daily = fields.Char('Lunch Daily: ', track_visibility='always')
-    net_amount = fields.Char('Amount you get : ', track_visibility='always')
+    net_amount = fields.Float('Amount you get : ', track_visibility='always')
     claimed_amount = fields.Float('Claimed Amount', track_visibility='always')
-    Approved_amount = fields.Char('Approved Amount', track_visibility='always')
+    Approved_amount = fields.Float('Approved Amount', track_visibility='always')
     from_date = fields.Date('From Date', track_visibility='always')
     to_date = fields.Date('To Date', track_visibility='always')
     working_days = fields.Char(string='Number of days: ', track_visibility='always')
@@ -45,8 +45,8 @@ class Reimbursement(models.Model):
     bill_no = fields.Char(string='Bill number', track_visibility='always')
     no_of_months = fields.Char(string='No of months', track_visibility='always')
     bill_due_date = fields.Date(string='Bill Due Date', track_visibility='always')
-    amount_phone = fields.Char(string='Amount', track_visibility='always')
-    total_amount = fields.Char(string='Total Amount', track_visibility='always')
+    amount_phone = fields.Float(string='Amount', track_visibility='always')
+    total_amount = fields.Float(string='Total Amount', track_visibility='always')
     name_of_child = fields.Char(string='Name of Child', track_visibility='always')
     dob = fields.Date(string='Date of birth', track_visibility='always')
     name_of_school = fields.Char(string='Name of School', track_visibility='always')
@@ -142,7 +142,7 @@ class Reimbursement(models.Model):
                     count += i.present_days
                 rec.lunch_daily = '75'
                 rec.working_days = count
-                rec.net_amount = str(count * 75)
+                rec.net_amount = float(count * 75)
             elif rec.employee_id and rec.name:
                 if rec.name == 'telephone' or rec.name == 'mobile':
                     gr_id = self.env['reimbursement.configuration'].search([('name', '=', rec.name),('group_ids.users','=',self.env.user.id)],order='name desc', limit=1)
@@ -247,9 +247,21 @@ class Reimbursement(models.Model):
                 rec.claim_date = datetime.now().date()
                 if rec.claim_date_from < rec.claim_date:
                     if rec.name != 'briefcase':
-                        if int(rec.Approved_amount) <= 0 and int(rec.net_amount) <= 0 and int(rec.total_amount) <= 0 and int(rec.amount_phone) <= 0:
+                        if rec.name == 'lunch' and int(rec.net_amount) <= 0:
                             raise ValidationError(
                                 "Approved Amount must be greater than zero")
+                        elif rec.name == 'telephone' and int(rec.Approved_amount) <= 0:
+                            raise ValidationError(
+                                "Approved Amount must be greater than zero")
+                        elif rec.name == 'mobile' and int(rec.Approved_amount) <= 0:
+                            raise ValidationError(
+                                "Approved Amount must be greater than zero")
+                        elif rec.name == 'medical' and int(rec.total_amount) <= 0:
+                            raise ValidationError(
+                                "Total Amount must be greater than zero")
+                        elif rec.name == 'quarterly' and int(rec.amount_phone) <= 0:
+                            raise ValidationError(
+                                "Total Amount must be greater than zero")
                         else:
                             if rec.claim_date_from > rec.claim_date or rec.claim_date > rec.claim_date_to:
                                 gr_id = self.env['reimbursement.configuration'].search(

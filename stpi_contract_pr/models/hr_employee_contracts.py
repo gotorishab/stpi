@@ -45,12 +45,9 @@ class InheritContractss(models.Model):
     trial_date_end = fields.Date('End of Probation Period',
         help="End date of the trial period (if there is one).")
 
-    # city_id = fields.Many2one('res.city', string='City', store=True)
+
     city_id = fields.Many2one('res.city', string='City', related='employee_id.address_home_id.city_id', store=True)
-    # employee_hra_cat = fields.Selection([('x', 'X'),
-    #                                  ('y', 'Y'),
-    #                                  ('z', 'Z'),
-    #                                 ],string='HRA Category', store=True)
+
 
     employee_hra_cat = fields.Selection([('x', 'X'),
                                      ('y', 'Y'),

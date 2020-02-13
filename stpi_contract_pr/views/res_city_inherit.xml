@@ -6,6 +6,7 @@
             <field name="inherit_id" ref="base_address_city.view_city_tree"/>
             <field name="arch" type="xml">
                 <xpath expr = "//field[@name='state_id']" position="after">
+                    <field name = "metro"/>
                     <field name = "employee_hra_cat"/>
                 </xpath>
             </field>
