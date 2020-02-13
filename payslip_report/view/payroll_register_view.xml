@@ -1,0 +1,50 @@
+<odoo>
+
+    <record id="view_hr_payslip_line_tree" model="ir.ui.view">
+        <field name="name">hr.payslip.line.tree</field>
+        <field name="model">hr.payslip.line</field>
+        <field name="arch" type="xml">
+            <tree string="Salary Structure" editable="bottom" decoration-info="total == 0">
+                <field name="category_id"/>
+                <field name="employee_id" invisible="1"/>
+                <field name="sequence"/>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="quantity"/>
+                <field name="rate"/>
+                <field name="amount"/>
+                <field name="total"/>
+                <field name="amount_select" invisible="1"/>
+                <field name="register_id" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="hr_payslip_line_pivot_view" model="ir.ui.view">
+        <field name="name">hr.payslip.line.report.pivot</field>
+        <field name="model">hr.payslip.line</field>
+        <field name="arch" type="xml">
+            <pivot string="Payroll Register" >
+                <field name="employee_id" type="row"/>
+                <field name="salary_rule_id" type="col"/>
+                <field name="total" type="measure"/>
+            </pivot>
+        </field>
+     </record>
+
+    
+    <record id="action_view_hr_payslip_form_line" model="ir.actions.act_window">
+        <field name="name">Employee Payslips</field>
+        <field name="res_model">hr.payslip.line</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,pivot</field>
+        <field name="search_view_id" ref="view_hr_payslip_line_tree"/>
+    </record>
+
+
+    <menuitem id="menu_hr_payroll_register_report_menu" name="Payroll Register"
+                  parent="l10n_in_hr_payroll.menu_l10n_in_hr_payroll_report" 
+                  action="action_view_hr_payslip_form_line"
+                  />
+
+</odoo>
