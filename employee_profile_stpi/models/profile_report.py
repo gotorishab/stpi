@@ -9,6 +9,8 @@ class EmployeeProfileReport(models.Model):
     _description = "Employee Profile Report"
 
     employee_id  = fields.Char(string='Name')
+    requested_by = fields.Char(string='Requested By')
+    approved_by = fields.Char(string='Approved By')
     designation  = fields.Char(string='Designation')
     department  = fields.Char(string='Department')
     branch_id  = fields.Char(string='Branch')

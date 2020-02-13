@@ -58,12 +58,14 @@
                             <field name="birthday" readonly="1"/>
                             <field name="place_of_birth" readonly="1"/>
                             <field name="country_of_birth" readonly="1"/>
-                            <field name="height" readonly="1"/>
-                            <field name="weight" readonly="1"/>
+                            <field name="height" attrs="{'invisible': [('employee_type', '!=', 'regular')], 'readonly': [('employee_type', '=', 'regular')]}"/>
+                            <field name="weight" attrs="{'invisible': [('employee_type', '!=', 'regular')], 'readonly': [('employee_type', '=', 'regular')]}"/>
                             <field name="blood_group" readonly="1"/>
                             <field name="differently_abled" readonly="1"/>
-                            <field name="kind_of_disability" readonly="1"/>
-                            <field name="personal_remark" readonly="1"/>
+                            <field name="kind_of_disability" attrs="{'readonly':[('differently_abled','=','yes')], 'invisible':[('differently_abled', '=', 'no')]}"/>
+                            <field name="perc_disability" attrs="{'readonly':[('differently_abled','=','yes')], 'invisible':[('differently_abled', '=', 'no')]}"/>
+                            <field name="certificate_upload" attrs="{'readonly':[('differently_abled','=','yes')], 'invisible':[('differently_abled', '=', 'no')]}"/>
+                            <field name="personal_remark" attrs="{'invisible': [('employee_type', '!=', 'regular')], 'readonly': [('employee_type', '=', 'regular')]}"/>
                             <field name="category" readonly="1"/>
                             <field name="religion" readonly="1"/>
                             <field name="minority" readonly="1"/>
@@ -86,12 +88,14 @@
                             <field name="new_birthday" attrs="{'readonly':[('state', '!=', 'draft')]}"/>
                             <field name="new_place_of_birth" attrs="{'readonly':[('state', '!=', 'draft')]}"/>
                             <field name="new_country_of_birth" attrs="{'readonly':[('state', '!=', 'draft')]}"/>
-                            <field name="new_height" attrs="{'readonly':[('state', '!=', 'draft')]}"/>
-                            <field name="new_weight" attrs="{'readonly':[('state', '!=', 'draft')]}"/>
+                            <field name="new_height" attrs="{'readonly':[('state', '!=', 'draft')],'invisible': [('employee_type', '!=', 'regular')]}"/>
+                            <field name="new_weight" attrs="{'readonly':[('state', '!=', 'draft')],'invisible': [('employee_type', '!=', 'regular')]}"/>
                             <field name="new_blood_group" attrs="{'readonly':[('state', '!=', 'draft')]}"/>
                             <field name="new_differently_abled" attrs="{'readonly':[('state', '!=', 'draft')]}"/>
-                            <field name="new_kind_of_disability" attrs="{'readonly':[('state', '!=', 'draft')]}"/>
-                            <field name="new_personal_remark" attrs="{'readonly':[('state', '!=', 'draft')]}"/>
+                            <field name="new_kind_of_disability" attrs="{'readonly':[('state', '!=', 'draft')],'invisible':[('new_differently_abled', '=', 'no')]}"/>
+                            <field name="new_perc_disability" attrs="{'readonly':[('state', '!=', 'draft')], 'invisible':[('new_differently_abled', '=', 'no')]}"/>
+                            <field name="new_certificate_upload" attrs="{'readonly':[('state', '!=', 'draft')],'invisible':[('new_differently_abled', '=', 'no')]}"/>
+                            <field name="new_personal_remark" attrs="{'readonly':[('state', '!=', 'draft')],'invisible': [('employee_type', '!=', 'regular')]}"/>
                             <field name="new_category" attrs="{'readonly':[('state', '!=', 'draft')]}"/>
                             <field name="new_religion" attrs="{'readonly':[('state', '!=', 'draft')]}"/>
                             <field name="new_minority" attrs="{'readonly':[('state', '!=', 'draft')]}"/>
@@ -199,6 +203,22 @@
         </field>
     </record>
 
+            <!--Employee Profile search view-->
+    <record id="view_employee_profilet_search_form" model="ir.ui.view">
+        <field name="name">employee.profile.search.form</field>
+        <field name="model">employee.profile</field>
+        <field name="arch" type="xml">
+           <search string="Employee Profile">
+               <filter string="My Profile" name="my_profile" domain="[('employee_id.user_id.id', '=', uid)]" />
+                <field name="employee_id" string="Employee"/>
+                <field name="department" string="Department"/>
+                    <filter string="Employee" name="employee_id" context="{'group_by':'employee_id'}"/>
+                    <filter string="Department" name="department" context="{'group_by':'department'}"/>
+                    <filter string="Status" name="status" context="{'group_by':'state'}"/>
+            </search>
+        </field>
+    </record>
+
 
     <!--============Action view of Employee Profile draft============-->
     <record id="employee_profile_menu_action_draft" model="ir.actions.act_window">
@@ -206,6 +226,8 @@
         <field name="res_model">employee.profile</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form,search</field>
+        <field name="context">{'search_default_my_profile': 1}</field>
+        <field name="search_view_id" ref="view_employee_profilet_search_form"/>
         <field name="domain">[('state','=','draft')]</field>
     </record>
     <!--============Action view of Employee Profile draft============-->
@@ -214,6 +236,8 @@
         <field name="res_model">employee.profile</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form,search</field>
+        <field name="context">{'search_default_my_profile': 1}</field>
+        <field name="search_view_id" ref="view_employee_profilet_search_form"/>
         <field name="domain">[('state','=','waiting_for_approval')]</field>
     </record>
     <!--============Action view of Employee Profile draft============-->
@@ -222,6 +246,8 @@
         <field name="res_model">employee.profile</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form,search</field>
+        <field name="context">{'search_default_my_profile': 1}</field>
+        <field name="search_view_id" ref="view_employee_profilet_search_form"/>
         <field name="domain">[('state','=','approved')]</field>
     </record>
     <!--============Action view of Employee Profile draft============-->
@@ -230,6 +256,8 @@
         <field name="res_model">employee.profile</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form,search</field>
+        <field name="context">{'search_default_my_profile': 1}</field>
+        <field name="search_view_id" ref="view_employee_profilet_search_form"/>
         <field name="domain">[('state','=','rejected')]</field>
     </record>
 

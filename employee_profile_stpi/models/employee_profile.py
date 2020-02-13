@@ -11,6 +11,7 @@ class EmployeeProfile(models.Model):
 
 
     employee_id = fields.Many2one('hr.employee', string="Employee", store = True, track_visibility='onchange')
+    requested_by = fields.Char(string='Requested By', invisible=1)
     date = fields.Date(string='Requested Date', default=fields.Date.today())
     designation = fields.Many2one('hr.job', string="Functional Designation")
     branch_id= fields.Many2one('res.branch', string="Branch")
@@ -49,9 +50,9 @@ class EmployeeProfile(models.Model):
     differently_abled = fields.Selection([('no', 'No'),
                                           ('yes', 'Yes')], default='no', string='Differently Abled?',
                                          track_visibility='always')
-    kind_of_disability = fields.Selection([('vh', 'No'),
-                                           ('hh', 'Yes'),
-                                           ('ph', 'Yes')], string='Kind of Disability',
+    kind_of_disability = fields.Selection([('vh', 'Visually Handicappped'),
+                                           ('hh', 'Hearing Handicapped'),
+                                           ('ph', 'Physically Handicapped ')], string='Kind of Disability',
                                           track_visibility='always')
     perc_disability = fields.Char('% of Disability', track_visibility='always')
     certificate_upload = fields.Binary('Upload certificate', track_visibility='always')
@@ -108,11 +109,11 @@ class EmployeeProfile(models.Model):
                                     ('ab+', 'AB+'),
                                     ('ab-', 'AB-')], string='Blood Group', track_visibility='always')
     new_differently_abled = fields.Selection([('no', 'No'),
-                                          ('yes', 'Yes')], default='no', string='Differently Abled?',
+                                          ('yes', 'Yes')], string='Differently Abled?',
                                          track_visibility='always')
-    new_kind_of_disability = fields.Selection([('vh', 'No'),
-                                           ('hh', 'Yes'),
-                                           ('ph', 'Yes')], string='Kind of Disability',
+    new_kind_of_disability = fields.Selection([('vh', 'Visually Handicappped'),
+                                           ('hh', 'Hearing Handicapped'),
+                                           ('ph', 'Physically Handicapped ')], string='Kind of Disability',
                                           track_visibility='always')
     new_perc_disability = fields.Char('% of Disability', track_visibility='always')
     new_certificate_upload = fields.Binary('Upload certificate', track_visibility='always')
@@ -137,6 +138,56 @@ class EmployeeProfile(models.Model):
     new_salutation = fields.Many2one('res.partner.title', string='Salutation', track_visibility='always')
 
     new_fax_number = fields.Char('FAX number', track_visibility='always')
+
+
+
+
+
+    @api.constrains('new_bank_account_number')
+    def _check_bank_acc_number(self):
+        for rec in self:
+            if rec.new_bank_account_number:
+                for e in rec.new_bank_account_number:
+                    if not e.isdigit():
+                        raise ValidationError(_("Please enter correct Account number, it must be numeric..."))
+
+
+    @api.constrains('new_aadhar_no')
+    def _check_aadhar_number(self):
+        for rec in self:
+            if rec.new_aadhar_no:
+                for e in rec.new_aadhar_no:
+                    if not e.isdigit():
+                        raise ValidationError(_("Please enter correct Aadhar number, it must be numeric..."))
+                if len(rec.new_aadhar_no) != 12:
+                    raise ValidationError(_("Please enter correct Aadhar number, it must be of 12 digits..."))
+
+
+    @api.constrains('new_pan_no')
+    def _check_pan_number(self):
+        for rec in self:
+            if rec.new_pan_no and not re.match(r'^[A-Za-z]{5}[0-9]{4}[A-Za-z]$', str(rec.new_pan_no)):
+                raise ValidationError(_("Please enter correct PAN number..."))
+
+
+    @api.constrains('new_emergency_contact','new_emergency_phone','new_phone')
+    def _check_new_emergency_contact_num(self):
+        for rec in self:
+            if rec.new_emergency_contact and not rec.new_emergency_contact.isnumeric():
+                raise ValidationError(_("Phone number must be a number"))
+            if rec.new_emergency_contact and len(rec.new_emergency_contact) != 10:
+                raise ValidationError(_("Please enter correct Emergency Contact number."
+                                        "It must be of 10 digits"))
+            if rec.new_emergency_phone and not rec.new_emergency_phone.isnumeric():
+                raise ValidationError(_("Phone number must be a number"))
+            if rec.new_emergency_phone and len(rec.new_emergency_phone) != 10:
+                raise ValidationError(_("Please enter correct Emergency Phone number."
+                                        "It must be of 10 digits"))
+            if rec.new_phone and not rec.new_phone.isnumeric():
+                raise ValidationError(_("Phone number must be a number"))
+            if rec.new_phone and len(rec.new_phone) != 10:
+                raise ValidationError(_("Please enter correct phone number."
+                                                "It must be of 10 digits"))
 
     @api.multi
     @api.depends('employee_id')
@@ -297,6 +348,7 @@ class EmployeeProfile(models.Model):
     @api.multi
     def button_to_approve(self):
         for rec in self:
+            rec.requested_by = rec.create_uid.name
             rec.write({'state': 'waiting_for_approval'})
 
     @api.multi
@@ -344,6 +396,8 @@ class EmployeeProfile(models.Model):
                 rec.employee_id.category = rec.new_category.id
                 self.env['employee.profile.report'].create({
                     'employee_id': str(rec.employee_id.name),
+                    'requested_by': str(rec.requested_by),
+                    'approved_by': str(rec.env.user.name),
                     'designation': str(rec.designation.name),
                     'department': str(rec.department.name),
                     'branch_id': str(rec.branch_id.name),
@@ -357,6 +411,8 @@ class EmployeeProfile(models.Model):
                 rec.employee_id.religion = rec.new_religion.id
                 self.env['employee.profile.report'].create({
                     'employee_id': str(rec.employee_id.name),
+                    'requested_by': str(rec.requested_by),
+                    'approved_by': str(rec.env.user.name),
                     'designation': str(rec.designation.name),
                     'department': str(rec.department.name),
                     'branch_id': str(rec.branch_id.name),
@@ -368,57 +424,344 @@ class EmployeeProfile(models.Model):
                 })
             if rec.new_minority:
                 rec.employee_id.minority = rec.new_minority
+                self.env['employee.profile.report'].create({
+                    'employee_id': str(rec.employee_id.name),
+                    'requested_by': str(rec.requested_by),
+                    'approved_by': str(rec.env.user.name),
+                    'designation': str(rec.designation.name),
+                    'department': str(rec.department.name),
+                    'branch_id': str(rec.branch_id.name),
+                    'date': rec.date,
+                    'approved_date': datetime.now().date(),
+                    'field_n': 'Minority',
+                    'old_value': str(rec.minority),
+                    'new_value': str(rec.new_minority),
+                })
             if rec.new_height:
                 rec.employee_id.height = rec.new_height
+                self.env['employee.profile.report'].create({
+                    'employee_id': str(rec.employee_id.name),
+                    'requested_by': str(rec.requested_by),
+                    'approved_by': str(rec.env.user.name),
+                    'designation': str(rec.designation.name),
+                    'department': str(rec.department.name),
+                    'branch_id': str(rec.branch_id.name),
+                    'date': rec.date,
+                    'approved_date': datetime.now().date(),
+                    'field_n': 'Height',
+                    'old_value': str(rec.height),
+                    'new_value': str(rec.new_height),
+                })
             if rec.new_weight:
                 rec.employee_id.weight = rec.new_weight
+                self.env['employee.profile.report'].create({
+                    'employee_id': str(rec.employee_id.name),
+                    'requested_by': str(rec.requested_by),
+                    'approved_by': str(rec.env.user.name),
+                    'designation': str(rec.designation.name),
+                    'department': str(rec.department.name),
+                    'branch_id': str(rec.branch_id.name),
+                    'date': rec.date,
+                    'approved_date': datetime.now().date(),
+                    'field_n': 'Weight',
+                    'old_value': str(rec.weight),
+                    'new_value': str(rec.new_weight),
+                })
             if rec.new_blood_group:
                 rec.employee_id.blood_group = rec.new_blood_group
+                self.env['employee.profile.report'].create({
+                    'employee_id': str(rec.employee_id.name),
+                    'requested_by': str(rec.requested_by),
+                    'approved_by': str(rec.env.user.name),
+                    'designation': str(rec.designation.name),
+                    'department': str(rec.department.name),
+                    'branch_id': str(rec.branch_id.name),
+                    'date': rec.date,
+                    'approved_date': datetime.now().date(),
+                    'field_n': 'Blood Group',
+                    'old_value': str(rec.blood_group),
+                    'new_value': str(rec.new_blood_group),
+                })
             if rec.new_differently_abled:
                 rec.employee_id.differently_abled = rec.new_differently_abled
+                self.env['employee.profile.report'].create({
+                    'employee_id': str(rec.employee_id.name),
+                    'requested_by': str(rec.requested_by),
+                    'approved_by': str(rec.env.user.name),
+                    'designation': str(rec.designation.name),
+                    'department': str(rec.department.name),
+                    'branch_id': str(rec.branch_id.name),
+                    'date': rec.date,
+                    'approved_date': datetime.now().date(),
+                    'field_n': 'Differently Abled',
+                    'old_value': str(rec.differently_abled),
+                    'new_value': str(rec.new_differently_abled),
+                })
             if rec.new_kind_of_disability:
                 rec.employee_id.kind_of_disability = rec.new_kind_of_disability
+                self.env['employee.profile.report'].create({
+                    'employee_id': str(rec.employee_id.name),
+                    'requested_by': str(rec.requested_by),
+                    'approved_by': str(rec.env.user.name),
+                    'designation': str(rec.designation.name),
+                    'department': str(rec.department.name),
+                    'branch_id': str(rec.branch_id.name),
+                    'date': rec.date,
+                    'approved_date': datetime.now().date(),
+                    'field_n': 'Kind of Disability',
+                    'old_value': str(rec.kind_of_disability),
+                    'new_value': str(rec.new_kind_of_disability),
+                })
             if rec.new_perc_disability:
                 rec.employee_id.perc_disability = rec.new_perc_disability
+                self.env['employee.profile.report'].create({
+                    'employee_id': str(rec.employee_id.name),
+                    'requested_by': str(rec.requested_by),
+                    'approved_by': str(rec.env.user.name),
+                    'designation': str(rec.designation.name),
+                    'department': str(rec.department.name),
+                    'branch_id': str(rec.branch_id.name),
+                    'date': rec.date,
+                    'approved_date': datetime.now().date(),
+                    'field_n': '% of disability',
+                    'old_value': str(rec.perc_disability),
+                    'new_value': str(rec.new_perc_disability),
+                })
             if rec.new_certificate_upload:
                 rec.employee_id.certificate_upload = rec.new_certificate_upload
             if rec.new_personal_remark:
                 rec.employee_id.personal_remark = rec.new_personal_remark
+                self.env['employee.profile.report'].create({
+                    'employee_id': str(rec.employee_id.name),
+                    'requested_by': str(rec.requested_by),
+                    'approved_by': str(rec.env.user.name),
+                    'designation': str(rec.designation.name),
+                    'department': str(rec.department.name),
+                    'branch_id': str(rec.branch_id.name),
+                    'date': rec.date,
+                    'approved_date': datetime.now().date(),
+                    'field_n': 'Personal Remark',
+                    'old_value': str(rec.personal_remark),
+                    'new_value': str(rec.new_personal_remark),
+                })
             if rec.new_emergency_contact:
                 rec.employee_id.emergency_contact = rec.new_emergency_contact
+                self.env['employee.profile.report'].create({
+                    'employee_id': str(rec.employee_id.name),
+                    'requested_by': str(rec.requested_by),
+                    'approved_by': str(rec.env.user.name),
+                    'designation': str(rec.designation.name),
+                    'department': str(rec.department.name),
+                    'branch_id': str(rec.branch_id.name),
+                    'date': rec.date,
+                    'approved_date': datetime.now().date(),
+                    'field_n': 'Emergency Contact',
+                    'old_value': str(rec.emergency_contact),
+                    'new_value': str(rec.new_emergency_contact),
+                })
             if rec.new_emergency_phone:
                 rec.employee_id.emergency_phone = rec.new_emergency_phone
+                self.env['employee.profile.report'].create({
+                    'employee_id': str(rec.employee_id.name),
+                    'requested_by': str(rec.requested_by),
+                    'approved_by': str(rec.env.user.name),
+                    'designation': str(rec.designation.name),
+                    'department': str(rec.department.name),
+                    'branch_id': str(rec.branch_id.name),
+                    'date': rec.date,
+                    'approved_date': datetime.now().date(),
+                    'field_n': 'Emergency Phone',
+                    'old_value': str(rec.emergency_phone),
+                    'new_value': str(rec.new_emergency_phone),
+                })
+
             if rec.new_phone:
                 rec.employee_id.phone = rec.new_phone
+                self.env['employee.profile.report'].create({
+                    'employee_id': str(rec.employee_id.name),
+                    'requested_by': str(rec.requested_by),
+                    'approved_by': str(rec.env.user.name),
+                    'designation': str(rec.designation.name),
+                    'department': str(rec.department.name),
+                    'branch_id': str(rec.branch_id.name),
+                    'date': rec.date,
+                    'approved_date': datetime.now().date(),
+                    'field_n': 'Phone(Home)',
+                    'old_value': str(rec.phone),
+                    'new_value': str(rec.new_phone),
+                })
             if rec.new_birthday:
                 rec.employee_id.birthday = rec.new_birthday
+                self.env['employee.profile.report'].create({
+                    'employee_id': str(rec.employee_id.name),
+                    'requested_by': str(rec.requested_by),
+                    'approved_by': str(rec.env.user.name),
+                    'designation': str(rec.designation.name),
+                    'department': str(rec.department.name),
+                    'branch_id': str(rec.branch_id.name),
+                    'date': rec.date,
+                    'approved_date': datetime.now().date(),
+                    'field_n': 'Birthday',
+                    'old_value': str(rec.birthday),
+                    'new_value': str(rec.new_birthday),
+                })
             if rec.new_place_of_birth:
                 rec.employee_id.place_of_birth = rec.new_place_of_birth
+                self.env['employee.profile.report'].create({
+                    'employee_id': str(rec.employee_id.name),
+                    'requested_by': str(rec.requested_by),
+                    'approved_by': str(rec.env.user.name),
+                    'designation': str(rec.designation.name),
+                    'department': str(rec.department.name),
+                    'branch_id': str(rec.branch_id.name),
+                    'date': rec.date,
+                    'approved_date': datetime.now().date(),
+                    'field_n': 'Place of Birth',
+                    'old_value': str(rec.place_of_birth),
+                    'new_value': str(rec.new_place_of_birth),
+                })
             if rec.new_country_of_birth:
                 rec.employee_id.country_of_birth = rec.new_country_of_birth
+                self.env['employee.profile.report'].create({
+                    'employee_id': str(rec.employee_id.name),
+                    'requested_by': str(rec.requested_by),
+                    'approved_by': str(rec.env.user.name),
+                    'designation': str(rec.designation.name),
+                    'department': str(rec.department.name),
+                    'branch_id': str(rec.branch_id.name),
+                    'date': rec.date,
+                    'approved_date': datetime.now().date(),
+                    'field_n': 'Country of Birth',
+                    'old_value': str(rec.country_of_birth.name),
+                    'new_value': str(rec.new_country_of_birth.name),
+                })
             if rec.new_pan_no:
                 rec.employee_id.pan_no = rec.new_pan_no
+                self.env['employee.profile.report'].create({
+                    'employee_id': str(rec.employee_id.name),
+                    'requested_by': str(rec.requested_by),
+                    'approved_by': str(rec.env.user.name),
+                    'designation': str(rec.designation.name),
+                    'department': str(rec.department.name),
+                    'branch_id': str(rec.branch_id.name),
+                    'date': rec.date,
+                    'approved_date': datetime.now().date(),
+                    'field_n': 'PAN No.',
+                    'old_value': str(rec.pan_no),
+                    'new_value': str(rec.new_pan_no),
+                })
             if rec.new_pan_upload:
                 rec.employee_id.pan_upload = rec.new_pan_upload
             if rec.new_aadhar_no:
                 rec.employee_id.aadhar_no = rec.new_aadhar_no
+                self.env['employee.profile.report'].create({
+                    'employee_id': str(rec.employee_id.name),
+                    'requested_by': str(rec.requested_by),
+                    'approved_by': str(rec.env.user.name),
+                    'designation': str(rec.designation.name),
+                    'department': str(rec.department.name),
+                    'branch_id': str(rec.branch_id.name),
+                    'date': rec.date,
+                    'approved_date': datetime.now().date(),
+                    'field_n': 'Aadhar No.',
+                    'old_value': str(rec.aadhar_no),
+                    'new_value': str(rec.new_aadhar_no),
+                })
             if rec.new_aadhar_upload:
                 rec.employee_id.aadhar_upload = rec.new_aadhar_upload
             if rec.new_passport_upload:
                 rec.employee_id.passport_upload = rec.new_passport_upload
             if rec.new_passport_id:
                 rec.employee_id.passport_id = rec.new_passport_id
+                rec.employee_id.height = rec.new_height
+                self.env['employee.profile.report'].create({
+                    'employee_id': str(rec.employee_id.name),
+                    'requested_by': str(rec.requested_by),
+                    'approved_by': str(rec.env.user.name),
+                    'designation': str(rec.designation.name),
+                    'department': str(rec.department.name),
+                    'branch_id': str(rec.branch_id.name),
+                    'date': rec.date,
+                    'approved_date': datetime.now().date(),
+                    'field_n': 'Passport No.',
+                    'old_value': str(rec.passport_id),
+                    'new_value': str(rec.new_passport_id),
+                })
             if rec.new_bank_name:
                 rec.employee_id.bank_name = rec.new_bank_name
+                self.env['employee.profile.report'].create({
+                    'employee_id': str(rec.employee_id.name),
+                    'requested_by': str(rec.requested_by),
+                    'approved_by': str(rec.env.user.name),
+                    'designation': str(rec.designation.name),
+                    'department': str(rec.department.name),
+                    'branch_id': str(rec.branch_id.name),
+                    'date': rec.date,
+                    'approved_date': datetime.now().date(),
+                    'field_n': 'Bank Name',
+                    'old_value': str(rec.bank_name),
+                    'new_value': str(rec.new_bank_name),
+                })
             if rec.new_bank_account_number:
                 rec.employee_id.bank_account_number = rec.new_bank_account_number
+                self.env['employee.profile.report'].create({
+                    'employee_id': str(rec.employee_id.name),
+                    'requested_by': str(rec.requested_by),
+                    'approved_by': str(rec.env.user.name),
+                    'designation': str(rec.designation.name),
+                    'department': str(rec.department.name),
+                    'branch_id': str(rec.branch_id.name),
+                    'date': rec.date,
+                    'approved_date': datetime.now().date(),
+                    'field_n': 'Bank Account Number',
+                    'old_value': str(rec.bank_account_number),
+                    'new_value': str(rec.new_bank_account_number),
+                })
             if rec.new_ifsc_code:
                 rec.employee_id.ifsc_code = rec.new_ifsc_code
+                self.env['employee.profile.report'].create({
+                    'employee_id': str(rec.employee_id.name),
+                    'requested_by': str(rec.requested_by),
+                    'approved_by': str(rec.env.user.name),
+                    'designation': str(rec.designation.name),
+                    'department': str(rec.department.name),
+                    'branch_id': str(rec.branch_id.name),
+                    'date': rec.date,
+                    'approved_date': datetime.now().date(),
+                    'field_n': 'IFSC Code',
+                    'old_value': str(rec.ifsc_code),
+                    'new_value': str(rec.new_ifsc_code),
+                })
             if rec.new_salutation:
                 rec.employee_id.salutation = rec.new_salutation.id
+                self.env['employee.profile.report'].create({
+                    'employee_id': str(rec.employee_id.name),
+                    'requested_by': str(rec.requested_by),
+                    'approved_by': str(rec.env.user.name),
+                    'designation': str(rec.designation.name),
+                    'department': str(rec.department.name),
+                    'branch_id': str(rec.branch_id.name),
+                    'date': rec.date,
+                    'approved_date': datetime.now().date(),
+                    'field_n': 'Salutation',
+                    'old_value': str(rec.salutation.name),
+                    'new_value': str(rec.new_salutation.name),
+                })
             if rec.new_fax_number:
                 rec.employee_id.fax_number = rec.new_fax_number
-            rec.write({'state': 'approved'})
+                self.env['employee.profile.report'].create({
+                    'employee_id': str(rec.employee_id.name),
+                    'requested_by': str(rec.requested_by),
+                    'approved_by': str(rec.env.user.name),
+                    'designation': str(rec.designation.name),
+                    'department': str(rec.department.name),
+                    'branch_id': str(rec.branch_id.name),
+                    'date': rec.date,
+                    'approved_date': datetime.now().date(),
+                    'field_n': 'FAX No.',
+                    'old_value': str(rec.fax_number),
+                    'new_value': str(rec.new_fax_number),
+                })
             if rec.address_ids:
                 address_ids = []
                 for address in rec.address_ids:
@@ -466,7 +809,7 @@ class EmployeeProfile(models.Model):
                     }))
                 rec.employee_id.employee_skill_ids.unlink()
                 rec.employee_id.employee_skill_ids = employee_skill_ids
-
+            rec.write({'state': 'approved'})
 
 
 

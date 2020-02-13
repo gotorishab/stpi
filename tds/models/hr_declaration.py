@@ -512,7 +512,7 @@ class StandardDeclarations(models.Model):
     _description = 'Declaration Standard'
 
 
-    std_ded_id = fields.Many2one('hr.declaration', string='Exemption')
+    std_ded_id = fields.Many2one('hr.declaration', string='Std Deduction')
 
     it_rule = fields.Selection([
         ('mus10ale', 'U/S 10 '),
