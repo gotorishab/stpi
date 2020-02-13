@@ -142,7 +142,7 @@
                                             <t t-if="o.leaves_type_cal_casual()">
                                                 <strong>Remaining Casual Leaves</strong><br/>
                                             </t>
-                                            <!-- <t t-if="o.leaves_type_cal_maternity()">
+                                            <t t-if="o.leaves_type_cal_maternity()">
                                                 <strong>Remaining Maternity Leave</strong><br/>
                                             </t>
                                             
@@ -160,7 +160,7 @@
                                             
                                             <t t-if="o.leaves_type_cal_chlid_care_leave()">
                                                 <strong>Remaining Child Care Leave</strong><br/>
-                                            </t> -->
+                                            </t>
                                             <!-- <strong>Casual Leaves</strong><br/>
                                             <strong>Unused Leaves</strong><br/>
                                             <strong>Used Leaves</strong><br/> -->
@@ -210,7 +210,7 @@
                                                     <span t-esc="datacas[0]"/><br/>
                                             </t>
                                             
-                                            <!-- <t t-if="o.leaves_type_cal_maternity()">
+                                            <t t-if="o.leaves_type_cal_maternity()">
                                                 <t t-set='datacas' t-value="o.leaves_type_cal_maternity()"/>
                                                     <span t-esc="datacas[0]"/><br/>
                                             </t>
@@ -233,7 +233,7 @@
                                             <t t-if="o.leaves_type_cal_chlid_care_leave()">
                                                 <t t-set='datacas' t-value="o.leaves_type_cal_chlid_care_leave()"/>
                                                     <span t-esc="datacas[0]"/><br/>
-                                            </t> -->
+                                            </t>
 
                                             <!-- <t t-if="o.lwp_count">
                                                 <span t-field="o.lwp_count"/><br/>

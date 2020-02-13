@@ -1,6 +1,6 @@
 {
     "name": "PaySlip Report",
-    "version": "12.0.0.0",
+    "version": "12.0.0.1",
     "category": "PaySlip",
     'summary': 'PaySlip Report',
     'description': """
