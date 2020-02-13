@@ -13,3 +13,5 @@ from . import ltc_claim
 from . import pf_withdrawl
 from . import pf_employee
 from . import hr_declaration
+from . import employee_profile
+from . import hr_payslip

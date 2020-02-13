@@ -104,18 +104,37 @@ class HrDeclaration(models.Model):
                 rec.allowed_rebate_under_80mesdr = 150000
 
 
+    @api.multi
+    @api.depends('rent_paid_ids')
+    def compute_rent_lines(self):
+        for rec in self:
+            sum = 0
+            for lines in rec.rent_paid_ids:
+                sum += lines.amount
+            rec.rent_paid = sum
+
+
     employee_id = fields.Many2one('hr.employee', string='Requeested By', default=_default_employee, track_visibility='always')
 
 
     job_id = fields.Many2one('hr.job', string="Functional Designation", store=True, track_visibility='always')
     branch_id = fields.Many2one('res.branch', string="Branch", store=True, track_visibility='always')
     department_id = fields.Many2one('hr.department', string="Department", store=True, track_visibility='always')
-
-
     date_range = fields.Many2one('date.range','Financial Year', track_visibility='always')
     date = fields.Date(string="Date", default=fields.Date.today(), readonly=True, track_visibility='always')
-    tax_salary_final = fields.Float(string='Taxable Salary', store=True, track_visibility='always')
+    rent_paid_ids = fields.One2many('rent.paid', 'rent_paid_id', string='Rent Paid')
+    rent_paid = fields.Float(string='Rent Paid', compute='compute_rent_lines')
+    tax_salary_final = fields.Float(string='Gross Salary', store=True, track_visibility='always')
+    forecast_gross = fields.Float(string='Forecast Gross')
+    total_tds_paid = fields.Float(string='Total TDS Paid')
+    previous_employer_income = fields.Float(string='Previous Employer Income')
+    income_after_exemption = fields.Float(string='Income after Exemption')
+    income_after_std_ded = fields.Float(string='Income after Std. Deduction')
+    income_after_pro_tax = fields.Float(string='Income after Professional Tax')
+    taxable_income = fields.Float(string='Taxable Income')
+
     exemption_ids = fields.One2many('declaration.exemption', 'exemption_id', string='Exemption Ids')
+    std_ded_ids = fields.One2many('declaration.standard', 'std_ded_id', string='Exemption Ids')
     rebate_ids = fields.One2many('declaration.rebate', 'rebate_id', string='Rebate Ids')
     slab_ids = fields.One2many('declaration.slab', 'slab_id', string='Slab 80 Ids')
     hra_ids = fields.One2many('declaration.hra', 'hra_id', string='HRA - House Rent Allowances ')
@@ -126,8 +145,8 @@ class HrDeclaration(models.Model):
     rgess_ids = fields.One2many('declaration.rgess', 'rgess_id', string='Deductions on Rajiv Gandhi Equity Saving Scheme')
     dedmedical_ids = fields.One2many('declaration.dedmedical', 'dedmedical_id', string='Deductions on Medical Expenditure for a Handicapped Relative')
     dedmedical_self_ids = fields.One2many('declaration.dedmedicalself', 'dedmedical_self_id', string='Deductions on Medical Expenditure on Self or Dependent Relative')
-    net_allowed_rebate = fields.Float('Net Allowed Rebate', compute='compute_net_allowed_rebate')
-    income_after_rebate = fields.Float('Income after Rebate')
+    # net_allowed_rebate = fields.Float('Net Allowed Rebate', compute='compute_net_allowed_rebate')
+    # income_after_rebate = fields.Float('Income after Rebate')
     tax_payable = fields.Float('Tax Payable(%)')
     tax_payable_zero = fields.Boolean('Tax Payable(%) greater than equal to zero')
     tax_computed_bool = fields.Boolean('Tax computed bool', default = False)
@@ -161,18 +180,20 @@ class HrDeclaration(models.Model):
             record.branch_id = record.employee_id.branch_id
             record.department_id = record.employee_id.department_id
 
+    #
+    # @api.depends('exemption_ids','rebate_ids','allowed_rebate_under_80c','allowed_rebate_under_80b','allowed_rebate_under_80d','allowed_rebate_under_80dsa','allowed_rebate_under_80e','allowed_rebate_under_80ccg','allowed_rebate_under_tbhl','allowed_rebate_under_80ee','allowed_rebate_under_24','allowed_rebate_under_80cdd', 'allowed_rebate_under_80mesdr')
+    # def compute_net_allowed_rebate(self):
+    #     for rec in self:
+    #         sum=0.00
+    #         sum1 = 0.00
+    #         for de in rec.exemption_ids:
+    #             sum+=de.allowed_rebate
+    #         for de in rec.rebate_ids:
+    #             sum+=de.allowed_rebate
+    #         sum1 = rec.allowed_rebate_under_80c + rec.allowed_rebate_under_80b + rec.allowed_rebate_under_80d + rec.allowed_rebate_under_80dsa + rec.allowed_rebate_under_80e + rec.allowed_rebate_under_80ccg + rec.allowed_rebate_under_tbhl + rec.allowed_rebate_under_80ee + rec.allowed_rebate_under_24 + rec.allowed_rebate_under_80cdd + rec.allowed_rebate_under_80mesdr
+    #         rec.net_allowed_rebate = sum + sum1
 
-    @api.depends('exemption_ids','rebate_ids','allowed_rebate_under_80c','allowed_rebate_under_80b','allowed_rebate_under_80d','allowed_rebate_under_80dsa','allowed_rebate_under_80e','allowed_rebate_under_80ccg','allowed_rebate_under_tbhl','allowed_rebate_under_80ee','allowed_rebate_under_24','allowed_rebate_under_80cdd', 'allowed_rebate_under_80mesdr')
-    def compute_net_allowed_rebate(self):
-        for rec in self:
-            sum=0.00
-            sum1 = 0.00
-            for de in rec.exemption_ids:
-                sum+=de.allowed_rebate
-            for de in rec.rebate_ids:
-                sum+=de.allowed_rebate
-            sum1 = rec.allowed_rebate_under_80c + rec.allowed_rebate_under_80b + rec.allowed_rebate_under_80d + rec.allowed_rebate_under_80dsa + rec.allowed_rebate_under_80e + rec.allowed_rebate_under_80ccg + rec.allowed_rebate_under_tbhl + rec.allowed_rebate_under_80ee + rec.allowed_rebate_under_24 + rec.allowed_rebate_under_80cdd + rec.allowed_rebate_under_80mesdr
-            rec.net_allowed_rebate = sum + sum1
+
 
 
     @api.multi
@@ -192,7 +213,37 @@ class HrDeclaration(models.Model):
     @api.multi
     def button_to_approve(self):
         for rec in self:
-            rec.write({'state': 'to_approve'})
+            search_id = self.env['hr.declaration'].search(
+                [('employee_id', '=', rec.employee_id.id),
+                 ('state', 'not in', ['draft', 'rejected'])])
+            for emp in search_id:
+                if rec.date_range.date_start <= emp.date_range.date_start or rec.date_range.date_start >= emp.date_range.date_end:
+                    if rec.date_range.date_end <= emp.date_range.date_start or rec.date_range.date_end >= emp.date_range.date_end:
+                        if not (rec.date_range.date_start <= emp.date_range.date_start and rec.date_range.date_end >= emp.date_range.date_end):
+                            index = True
+                        else:
+                            raise ValidationError(
+                                "This declaration is already applied for this duration, please correct the dates")
+                    else:
+                        raise ValidationError(
+                            "This declaration is already applied for this duration, please correct the dates")
+                else:
+                    raise ValidationError(
+                        "This declaration is already applied for this duration, please correct the dates")
+            else:
+                rec.write({'state': 'to_approve'})
+
+    @api.multi
+    def button_forecast_gross(self):
+        for rec in self:
+            sum = 0
+            proll = self.env['hr.payslip.line'].search([('slip_id.employee_id', '=', rec.employee_id.id),
+                                                        ('slip_id.state', '=', 'done'),
+                                                       ('code', '=', 'NET'),
+                                                        ('slip_id.date_to', '>', rec.date_range.date_start),
+                                                    ], limit=1)
+            for pr in proll:
+                rec.forecast_gross = pr.amount
 
     @api.multi
     def button_approved(self):
@@ -232,15 +283,17 @@ class HrDeclaration(models.Model):
     def button_compute_tax(self):
         for rec in self:
             sum = 0
+            dstart = rec.date_range.date_start - relativedelta(months=1)
+            dend = rec.date_range.date_end + relativedelta(months=1)
             proll =  self.env['hr.payslip.line'].search([('slip_id.employee_id', '=', rec.employee_id.id),
                                                          ('slip_id.state', '=', 'done'),
                                                          ('salary_rule_id.taxable_percentage', '>', 0),
-                                                         ('slip_id.date_from', '>', rec.date_range.date_start),
-                                                         ('slip_id.date_to', '<', rec.date_range.date_end)])
+                                                         ('slip_id.date_from', '>', dstart),
+                                                         ('slip_id.date_to', '<', dend)])
             for i in proll:
                 sum += i.taxable_amount
             rec.tax_salary_final = sum
-            rec.income_after_rebate = rec.tax_salary_final - rec.net_allowed_rebate
+            # rec.income_after_rebate = rec.tax_salary_final - rec.net_allowed_rebate
             age = 0
             if rec.employee_id.birthday:
                 age = ((datetime.now().date() - rec.employee_id.birthday).days) / 365
@@ -262,6 +315,7 @@ class HrDeclaration(models.Model):
                 rec.tax_payable_zero = False
             else:
                 rec.tax_payable_zero = True
+            rec.std_ded_ids.unlink()
             rec.exemption_ids.unlink()
             rec.rebate_ids.unlink()
             ex_std_id = self.env['saving.master'].search(
@@ -279,8 +333,8 @@ class HrDeclaration(models.Model):
                     my_allowed_rebate = my_investment
                 else:
                     my_allowed_rebate = ex_std_id.rebate
-                self.env['declaration.exemption'].create({
-                    'exemption_id': rec.id,
+                self.env['declaration.standard'].create({
+                    'std_ded_id': rec.id,
                     'it_rule': 'mus10ale',
                     'saving_master': ex_std_id.id,
                     'investment': my_investment,
@@ -297,7 +351,11 @@ class HrDeclaration(models.Model):
                 if cc.relate_type_name == 'Son' or cc.relate_type_name == 'Daughter':
                     count+=1
             if ex_child_id:
-                my_investment = count * 100 * 12
+                if rec.employee_id.date_of_join and rec.date_range.date_start < rec.employee_id.date_of_join <= rec.date_range.date_end:
+                    nm = (rec.date_range.date_end - rec.employee_id.date_of_join).months
+                    my_investment = count * 100 * mn
+                else:
+                    my_investment = count * 100 * 12
                 if my_investment <= ex_child_id.rebate:
                     my_allowed_rebate = my_investment
                 else:
@@ -312,11 +370,29 @@ class HrDeclaration(models.Model):
                 })
             ex_hra_id = self.env['saving.master'].search([('saving_type', '=', 'HRA Exemption'), ('it_rule', '=', 'mus10ale')], limit=1)
             prl_id =  self.env['hr.payslip.line'].search([('slip_id.employee_id', '=', rec.employee_id.id),('slip_id.state', '=', 'done'),('code', '=', 'HRA'),('slip_id.date_from', '>', rec.date_range.date_start),('slip_id.date_to', '<', rec.date_range.date_end)])
+            total_wage = self.env['hr.contract'].search(
+                [('employee_id', '=', rec.employee_id.id), ('state', '=', 'open'), ('date_start', '<=', rec.date_range.date_start),
+                 ('date_end', '>=', rec.date_range.date_end)], limit=1)
+            sum_bs = 0.00
+            sum_rent = 0.00
+            sum_prl = 0.00
             sum=0.00
             my_investment = 0.00
             my_allowed_rebate = 0.00
             for cc in prl_id:
-                sum+=cc.taxable_amount
+                sum_prl+=cc.taxable_amount
+            for tw in total_wage:
+                if rec.employee_id.address_home_id.city_id.metro == True:
+                    sum_bs = ((tw.wage)*50)/100
+                else:
+                    sum_bs = ((tw.wage)*40)/100
+                sum_rent = rec.rent_paid - ((tw.wage)*10)/100
+            if sum_prl <= sum_bs and sum_prl <= sum_rent:
+                sum = sum_prl
+            elif sum_bs <= sum_prl and sum_bs <= sum_rent:
+                sum = sum_bs
+            else:
+                sum = sum_rent
             if ex_hra_id:
                 my_investment = sum
                 if my_investment <= ex_hra_id.rebate:
@@ -332,7 +408,7 @@ class HrDeclaration(models.Model):
                     'allowed_rebate': my_allowed_rebate,
                 })
             ex_lunch_id = self.env['saving.master'].search([('saving_type', '=', 'Lunch Subsidy Allowance'), ('it_rule', '=', 'mus10ale')], limit=1)
-            reimbursement_id =  self.env['reimbursement'].search([('employee_id', '=', rec.employee_id.id),('name', '=', 'lunch'),('from_date', '>', rec.date_range.date_start),('to_date', '<', rec.date_range.date_end)])
+            reimbursement_id =  self.env['reimbursement'].search([('employee_id', '=', rec.employee_id.id),('name', '=', 'lunch'),('from_date', '>', rec.date_range.date_start),('to_date', '<', rec.date_range.date_end),('state', '=', 'approved')])
             sum=0.00
             my_investment = 0.00
             my_allowed_rebate = 0.00
@@ -373,6 +449,35 @@ class HrDeclaration(models.Model):
                     'allowed_rebate': my_allowed_rebate,
                 })
             rec.tax_computed_bool = True
+            exempt_am = 0.00
+            std_am = 0.00
+            sum_pt = 0.00
+            for std in rec.std_ded_ids:
+                std_am += std.allowed_rebate
+            for ex in rec.exemption_ids:
+                std_am += ex.allowed_rebate
+            pr_pt_id = self.env['hr.payslip.line'].search(
+                [('slip_id.employee_id', '=', rec.employee_id.id), ('slip_id.state', '=', 'done'), ('code', '=', 'PTD'),
+                 ('slip_id.date_from', '>', rec.date_range.date_start),
+                 ('slip_id.date_to', '<', rec.date_range.date_end)])
+            for pt in pr_pt_id:
+                sum_pt += pt.amount
+            if (rec.tax_salary_final + rec.previous_employer_income - exempt_am) > 0.00:
+                rec.income_after_exemption = rec.tax_salary_final + rec.previous_employer_income - exempt_am
+            else:
+                rec.income_after_exemption = 0.00
+            if rec.income_after_exemption - std_am > 0.00:
+                rec.income_after_std_ded = rec.income_after_exemption - std_am
+            else:
+                rec.income_after_std_ded = 0.00
+            if rec.income_after_std_ded - sum_pt > 0.00:
+                rec.income_after_pro_tax = rec.income_after_std_ded - sum_pt
+            else:
+                rec.income_after_pro_tax = 0.00
+            if (rec.income_after_pro_tax - rec.total_tds_paid - (rec.allowed_rebate_under_80c + rec.allowed_rebate_under_80b + rec.allowed_rebate_under_80d + rec.allowed_rebate_under_80dsa + rec.allowed_rebate_under_80e + rec.allowed_rebate_under_80ccg + rec.allowed_rebate_under_tbhl + rec.allowed_rebate_under_80ee + rec.allowed_rebate_under_24 + rec.allowed_rebate_under_80cdd + rec.allowed_rebate_under_80mesdr)) > 0.00:
+                rec.taxable_income = rec.income_after_pro_tax - rec.total_tds_paid - (rec.allowed_rebate_under_80c + rec.allowed_rebate_under_80b + rec.allowed_rebate_under_80d + rec.allowed_rebate_under_80dsa + rec.allowed_rebate_under_80e + rec.allowed_rebate_under_80ccg + rec.allowed_rebate_under_tbhl + rec.allowed_rebate_under_80ee + rec.allowed_rebate_under_24 + rec.allowed_rebate_under_80cdd + rec.allowed_rebate_under_80mesdr)
+            else:
+                rec.taxable_income = 0.00
         return True
 
 
@@ -400,6 +505,25 @@ class HrDeclaration(models.Model):
                 raise UserError(
                     'You cannot delete a Tax which is not in draft or Rejected state')
         return super(HrDeclaration, self).unlink()
+
+
+class StandardDeclarations(models.Model):
+    _name = 'declaration.standard'
+    _description = 'Declaration Standard'
+
+
+    std_ded_id = fields.Many2one('hr.declaration', string='Exemption')
+
+    it_rule = fields.Selection([
+        ('mus10ale', 'U/S 10 '),
+    ], string='IT Rule -Section ')
+
+    saving_master = fields.Many2one('saving.master', string='Saving Type', domain=[('it_rule', '=', 'mus10ale')])
+
+    investment = fields.Float(string='investment')
+    allowed_rebate = fields.Float(string='Allowed Rebate')
+
+
 
 class ExemptionsDeclarations(models.Model):
     _name = 'declaration.exemption'
@@ -672,7 +796,7 @@ class SavingsMaster(models.Model):
     ], string='IT Rule -Section ')
     saving_type = fields.Char('Saving Type')
     description = fields.Text('Description')
-    rebate = fields.Float('Rebate', store=True)
+    rebate = fields.Float('Max. Allowed Limit', store=True)
 
 
     @api.multi
@@ -689,6 +813,16 @@ class SavingsMaster(models.Model):
         return res
 
 
+
+class RentPaid(models.Model):
+    _name = 'rent.paid'
+    _description = 'Rent Paid'
+
+
+    rent_paid_id = fields.Many2one('hr.declaration', string='Rent Paid')
+    date_from = fields.Date(string='Date from')
+    date_to = fields.Date(string='Date to')
+    amount = fields.Float(string='Amount')
 
 class TaxPayment(models.Model):
     _name = 'tax.payment'

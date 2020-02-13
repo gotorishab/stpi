@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 {
-	'name': 'Birthday Check',
+	'name': 'Employee Directory',
 	'version': '12.0.1.0.0',
-	'summary': 'Birthday Check',
+	'summary': 'Employee Directory',
 	'category': 'Tools',
 	'author': 'Dexciss Technologies Pvt Ltd(@ RGupta)',
 	'maintainer': 'dexciss Techno Solutions',

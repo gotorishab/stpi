@@ -13,11 +13,11 @@
                 <xpath expr="//notebook" position="before">
                     <group>
                     <group>
-                        <field name="employee_type" readonly="1" required="1"/>
+                        <field name="employee_type" required="1"/>
                         <field name="identify_id"/>
                     </group>
                     <group>
-                        <field name="recruitment_type" attrs="{'invisible': [('employee_type', '!=', 'regular')],'readonly': [('employee_type', '=', 'regular')]}"/>
+                        <field name="recruitment_type" attrs="{'invisible': [('employee_type', '!=', 'regular')],'required': [('employee_type', '=', 'regular')]}"/>
                     </group>
                     </group>
                 </xpath>
@@ -155,7 +155,7 @@
                                 <field name="marital" invisible="1"/>
                                 <field name="spouse_complete_name" invisible = "True"/>
                                 <field name="spouse_birthdate" invisible = "True"/>
-                                <field name="children"/>
+                                <field name="children" invisible="True"/>
                             </group>
                             <group string="Contact Information">
                                 <field name="address_home_id" context="{'show_address': 1,'default_type': 'private','form_view_ref': 'base.res_partner_view_form_private'}" options="{&quot;always_reload&quot;: True, &quot;highlight_first_line&quot;: True}"/>

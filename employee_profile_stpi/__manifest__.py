@@ -8,7 +8,7 @@
 	'maintainer': 'dexciss Techno Solutions',
 	'company': 'dexciss Techno Solutions',
 	'website': 'https://www.dexciss.com',
-	'depends': ['base','hr','base_address_city','category_religion'],
+	'depends': ['base','hr','base_address_city','category_religion','hr_skills'],
 	'data': [
 		'security/ir.model.access.csv',
 		# 'security/security.xml',

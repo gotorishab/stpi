@@ -3,6 +3,7 @@ access_tds,tds,model_tds,base.group_user,1,1,1,1
 access_income_tax_slab,income.tax.slab,model_income_tax_slab,base.group_user,1,1,1,1
 access_hr_declaration,hr.declaration,model_hr_declaration,base.group_user,1,1,1,1
 access_declaration_exemption,declaration.exemption,model_declaration_exemption,base.group_user,1,1,1,1
+access_declaration_standard,declaration.standard,model_declaration_standard,base.group_user,1,1,1,1
 access_declaration_rebate,declaration.rebate,model_declaration_rebate,base.group_user,1,1,1,1
 access_declaration_slab,declaration.slab,model_declaration_slab,base.group_user,1,1,1,1
 access_declaration_hra,declaration.hra,model_declaration_hra,base.group_user,1,1,1,1
@@ -15,3 +16,4 @@ access_declaration_dedmedicalself,declaration.dedmedicalself,model_declaration_d
 access_declaration_deduction,declaration.deduction,model_declaration_deduction,base.group_user,1,1,1,1
 access_saving_master,saving.master,model_saving_master,base.group_user,1,1,1,1
 access_tax_payment,tax.payment,model_tax_payment,base.group_user,1,1,1,1
+access_rent_paid,rent.paid,model_rent_paid,base.group_user,1,1,1,1

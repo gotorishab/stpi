@@ -23,6 +23,7 @@
             <form string="HR Declarations">
                 <header>
                     <button name="button_to_approve" string="Send for Approval" class="oe_highlight" type="object" states="draft"/>
+                    <button name="button_forecast_gross" string="Forecast Gross" class="oe_highlight" type="object" states="draft"/>
                      <button name="button_reset_to_draft" string="Revert" type="object" states="to_approve"/>
                     <button name="button_approved" string="Approve" class="oe_highlight" type="object" states="to_approve" groups="tds.group_manager_hr_declaration"/>
                     <button name="button_reject" string="Reject" type="object" states="to_approve" groups="tds.group_manager_hr_declaration"/>
@@ -38,14 +39,22 @@
                              <field name="branch_id" readonly="1"/>
                              <field name="department_id" readonly="1"/>
                             <field name="date_range" attrs="{'readonly':[('state','!=','draft')], 'required':[('state','=','draft')]}"/>
+                            <field name="rent_paid"/>
+                            <field name="total_tds_paid" attrs="{'readonly':[('state','!=','draft')], 'required':[('state','=','draft')]}"/>
+                            <field name="previous_employer_income" attrs="{'readonly':[('state','!=','draft')], 'required':[('state','=','draft')]}"/>
+                            <field name="forecast_gross" readonly="1"/>
                             <field name="tax_payable_zero" invisible="1"/>
                             <field name="tax_computed_bool" invisible="1"/>
 
                         </group>
                         <group>
                             <field name="tax_salary_final" readonly="1"/>
-                            <field name="net_allowed_rebate" readonly="1"/>
-                            <field name="income_after_rebate" readonly="1"/>
+                            <field name="income_after_exemption" readonly="1"/>
+                            <field name="income_after_std_ded" readonly="1"/>
+                            <field name="income_after_pro_tax" readonly="1"/>
+                            <field name="taxable_income" readonly="1"/>
+<!--                            <field name="net_allowed_rebate" readonly="1"/>-->
+<!--                            <field name="income_after_rebate" readonly="1"/>-->
                             <field name="tax_payable" readonly="1"/>
                         </group>
                     </group>
@@ -62,6 +71,19 @@
  
                                 <field name="investment" sum="Total"/>
  
+                                <field name="allowed_rebate" sum="Total"/>
+                            </tree>
+                        </field>
+                    </page>
+
+                    <page string="Std. Deduction">
+                        <separator string="Std. Deduction"/>
+                        <field name="std_ded_ids" readonly="1">
+                            <tree string="Exemption" editable="bottom">
+                                <field name="std_ded_id" invisible="1"/>
+                                <field name="it_rule" invisible="1"/>
+                                <field name="saving_master" widget="selection"/>
+                                <field name="investment" sum="Total"/>
                                 <field name="allowed_rebate" sum="Total"/>
                             </tree>
                         </field>
@@ -150,7 +172,6 @@
                                 <field name="it_rule" required="1"/>
                                 <field name="saving_master" widget="selection"/>
 <!--                                <field name="saving_type" required="1" readonly="1"/>-->
- 
                                 <field name="investment" sum="Total"/>
  
                                 <field name="document"/>
@@ -167,10 +188,7 @@
                                 <field name="tax_education_id" invisible="1"/>
                                 <field name="it_rule" required="1"/>
                                 <field name="saving_master" widget="selection"/>
- 
- 
                                 <field name="investment" sum="Total"/>
- 
                                 <field name="document"/>
                             </tree>
                         </field>
@@ -186,8 +204,7 @@
  
  
                                 <field name="investment" sum="Total"/>
- 
-                                <field name="document"/>
+                                 <field name="document"/>
                             </tree>
                         </field>
                         <group class="oe_subtotal_footer oe_right" colspan="2" >
@@ -199,10 +216,7 @@
                                 <field name="dedmedical_id" invisible="1"/>
                                 <field name="it_rule" required="1"/>
                                 <field name="saving_master" widget="selection"/>
- 
- 
                                 <field name="investment" sum="Total"/>
- 
                                 <field name="document"/>
                             </tree>
                         </field>
@@ -216,7 +230,6 @@
                                 <field name="it_rule" required="1"/>
                                 <field name="saving_master" widget="selection"/>
                                 <field name="investment" sum="Total"/>
- 
                                 <field name="document"/>
                             </tree>
                         </field>
@@ -230,6 +243,16 @@
                                     <field name="tax_payment_id" invisible="1"/>
                                     <field name="date" required="1"/>
                                     <field name="amount" required="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Rent Paid" name="rent_paid_g">
+                            <field name="rent_paid_ids" attrs="{'readonly':[('state','!=','draft')]}">
+                                <tree string="Rent Paid" editable="bottom">
+                                    <field name="rent_paid_id" invisible="1"/>
+                                    <field name="date_from" required="1"/>
+                                    <field name="date_to" required="1"/>
+                                    <field name="amount" required="1" sum="Amount"/>
                                 </tree>
                             </field>
                         </page>
