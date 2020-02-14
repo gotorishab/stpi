@@ -215,7 +215,7 @@ class HrDeclaration(models.Model):
         for rec in self:
             search_id = self.env['hr.declaration'].search(
                 [('employee_id', '=', rec.employee_id.id),
-                 ('state', 'not in', ['draft', 'rejected'])])
+                 ('state', 'not in', ['rejected'])])
             for emp in search_id:
                 if rec.date_range.date_start <= emp.date_range.date_start or rec.date_range.date_start >= emp.date_range.date_end:
                     if rec.date_range.date_end <= emp.date_range.date_start or rec.date_range.date_end >= emp.date_range.date_end:
@@ -243,7 +243,7 @@ class HrDeclaration(models.Model):
                                                         ('slip_id.date_to', '>', rec.date_range.date_start),
                                                     ], limit=1)
             for pr in proll:
-                rec.forecast_gross = pr.amount
+                rec.forecast_gross = pr.amount*12
 
     @api.multi
     def button_approved(self):
@@ -448,7 +448,34 @@ class HrDeclaration(models.Model):
                     'investment': my_investment,
                     'allowed_rebate': my_allowed_rebate,
                 })
-            rec.tax_computed_bool = True
+            ex_80_c_id = self.env['saving.master'].sudo().search(
+                [('saving_type', '=', 'Investment in PPF &  Employee’s share of PF contribution'), ('it_rule', '=', '80_c')], limit=1)
+            prl_80c_id = self.env['hr.payslip.line'].sudo().search(
+                [('slip_id.employee_id', '=', rec.employee_id.id),
+                 ('slip_id.state', '=', 'done'),
+                 ('salary_rule_id.pf_register', '=', True),
+                 ('slip_id.date_from', '>', rec.date_range.date_start),
+                 ('slip_id.date_to', '<', rec.date_range.date_end)])
+            sum = 0
+            for sr in prl_80c_id:
+                if sr.code == 'CPF' or sr.code == 'VCPF':
+                    sum += sr.amount
+            my_investment = 0.00
+            my_allowed_rebate = 0.00
+            if ex_80_c_id:
+                my_investment = sum
+                if my_investment <= ex_80_c_id.rebate:
+                    my_allowed_rebate = my_investment
+                else:
+                    my_allowed_rebate = ex_80_c_id.rebate
+
+                self.env['declaration.slab'].create({
+                    'slab_id': rec.id,
+                    'it_rule': '80_c',
+                    'saving_master': ex_80_c_id.id,
+                    'investment': my_investment,
+                    'allowed_rebate': my_allowed_rebate,
+                })
             exempt_am = 0.00
             std_am = 0.00
             sum_pt = 0.00
@@ -478,6 +505,7 @@ class HrDeclaration(models.Model):
                 rec.taxable_income = rec.income_after_pro_tax - rec.total_tds_paid - (rec.allowed_rebate_under_80c + rec.allowed_rebate_under_80b + rec.allowed_rebate_under_80d + rec.allowed_rebate_under_80dsa + rec.allowed_rebate_under_80e + rec.allowed_rebate_under_80ccg + rec.allowed_rebate_under_tbhl + rec.allowed_rebate_under_80ee + rec.allowed_rebate_under_24 + rec.allowed_rebate_under_80cdd + rec.allowed_rebate_under_80mesdr)
             else:
                 rec.taxable_income = 0.00
+            rec.tax_computed_bool = True
         return True
 
 
@@ -823,6 +851,25 @@ class RentPaid(models.Model):
     date_from = fields.Date(string='Date from')
     date_to = fields.Date(string='Date to')
     amount = fields.Float(string='Amount')
+
+    @api.constrains('date_from','date_to')
+    def validate_date_f_t(self):
+        for rec in self:
+            if rec.date_from and rec.rent_paid_id.date_range.date_start and rec.rent_paid_id.date_range.date_end:
+                if rec.date_from < rec.rent_paid_id.date_range.date_start or rec.date_from > rec.rent_paid_id.date_range.date_end:
+                    raise ValidationError(
+                                "From Date must be within Financial year selected")
+            if rec.date_to and rec.rent_paid_id.date_range.date_start and rec.rent_paid_id.date_range.date_end:
+                if rec.date_to < rec.rent_paid_id.date_range.date_start or rec.date_to > rec.rent_paid_id.date_range.date_end:
+                    raise ValidationError(
+                                "To Date must be within Financial year selected")
+            if rec.date_from and rec.date_to:
+                if rec.date_from > rec.date_to:
+                    raise ValidationError(
+                        "From Date must be less than To Date - Rent Paid")
+
+
+
 
 class TaxPayment(models.Model):
     _name = 'tax.payment'
