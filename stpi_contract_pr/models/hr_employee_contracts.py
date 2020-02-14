@@ -57,6 +57,8 @@ class InheritContractss(models.Model):
                                      ('a1', 'A1'),
                                      ('other', 'Other'),
                                     ],string='City Tier')
+    misc_deduction = fields.Monetary(string="Misc. Deducation")
+    license_dee = fields.Monetary(string=" License Fee")
 
     @api.constrains('employee_id')
     @api.onchange('employee_id')

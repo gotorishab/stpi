@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Contract and Paylevel',
-    'version': '12.0.1.0.0',
+    'version': '12.0.1.0.1',
     'summary': """Paylevel Master.""",
     'description': """Paylevel Master""",
     'category': 'Module for STPI',

@@ -114,6 +114,13 @@ class HrEmployee(models.Model):
     bank_account_number = fields.Char(string='Bank Account number')
     ifsc_code = fields.Char(string='IFSC Code')
 
+    _sql_constraints = [
+        ('pan_uniq', 'unique (pan_no)', 'Pan No must be unique!'),
+        ('aadhar_uniq', 'unique (aadhar_no)', 'Aadhar no must be unique!'),
+        ('passport_uniq', 'unique (passport_id)', 'Passport no must be unique!'),
+    ]
+
+
     # category_ids = fields.Many2many('hr.employee.category', 'employee_category_rel', 'emp_id', 'category_id', 'Tags', required=False)
 
 

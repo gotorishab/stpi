@@ -25,6 +25,8 @@
                         <field name = 'supplementary_allowance'/>
                         <field name = 'voluntary_provident_fund'/>
                         <field name = 'xnohra'/>
+                        <field name="misc_deduction"/>
+                        <field name="license_dee"/>
                     </group>
                 </xpath>
 
