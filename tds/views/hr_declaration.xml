@@ -111,7 +111,7 @@
                             <tree string="Slab - 80 Declaration" editable="bottom">
                                 <field name="slab_id" invisible="1"/>
                                 <field name="it_rule" required="1"/>
-                                <field name="saving_master" widget="selection"/>
+                                <field name="saving_master" widget="selection" domain="[('it_rule', '=', it_rule)]"/>
                                 <field name="investment" sum="Total"/>
                                 <field name="document"/>
                             </tree>
@@ -138,7 +138,7 @@
                             <tree string="Medical Insurance Premium paid" editable="bottom">
                                 <field name="med_ins_id" invisible="1"/>
                                 <field name="it_rule" required="1"/>
-                                <field name="saving_master" widget="selection"/>
+                                <field name="saving_master" widget="selection" domain="[('it_rule', '=', it_rule)]"/>
  
  
                                 <field name="investment" sum="Total"/>
@@ -154,7 +154,7 @@
                             <tree string="Deductions on Interest on Savings Account" editable="bottom">
                                 <field name="deduction_saving_id" invisible="1"/>
                                 <field name="it_rule" required="1"/>
-                                <field name="saving_master" widget="selection"/>
+                                <field name="saving_master" widget="selection" domain="[('it_rule', '=', it_rule)]"/>
 <!--                                <field name="saving_type" required="1" readonly="1"/>-->
  
                                 <field name="investment" sum="Total"/>
@@ -170,7 +170,7 @@
                             <tree string="Tax Benefits on Home Loan" editable="bottom">
                                 <field name="tax_home_id" invisible="1"/>
                                 <field name="it_rule" required="1"/>
-                                <field name="saving_master" widget="selection"/>
+                                <field name="saving_master" widget="selection" domain="[('it_rule', '=', it_rule)]"/>
 <!--                                <field name="saving_type" required="1" readonly="1"/>-->
                                 <field name="investment" sum="Total"/>
  
@@ -187,7 +187,7 @@
                             <tree string="Tax benefit on Education Loan (80E) " editable="bottom">
                                 <field name="tax_education_id" invisible="1"/>
                                 <field name="it_rule" required="1"/>
-                                <field name="saving_master" widget="selection"/>
+                                <field name="saving_master" widget="selection" domain="[('it_rule', '=', it_rule)]"/>
                                 <field name="investment" sum="Total"/>
                                 <field name="document"/>
                             </tree>
@@ -200,7 +200,7 @@
                             <tree string="RGESS" editable="bottom">
                                 <field name="rgess_id" invisible="1"/>
                                 <field name="it_rule" required="1"/>
-                                <field name="saving_master" widget="selection"/>
+                                <field name="saving_master" widget="selection" domain="[('it_rule', '=', it_rule)]"/>
  
  
                                 <field name="investment" sum="Total"/>
@@ -215,7 +215,7 @@
                             <tree string="Deductions on Medical Expenditure for a Handicapped Relative" editable="bottom">
                                 <field name="dedmedical_id" invisible="1"/>
                                 <field name="it_rule" required="1"/>
-                                <field name="saving_master" widget="selection"/>
+                                <field name="saving_master" widget="selection" domain="[('it_rule', '=', it_rule)]"/>
                                 <field name="investment" sum="Total"/>
                                 <field name="document"/>
                             </tree>
@@ -228,7 +228,7 @@
                             <tree string="Deductions on Medical Expenditure on Self or Dependent Relative" editable="bottom">
                                 <field name="dedmedical_self_id" invisible="1"/>
                                 <field name="it_rule" required="1"/>
-                                <field name="saving_master" widget="selection"/>
+                                <field name="saving_master" widget="selection" domain="[('it_rule', '=', it_rule)]"/>
                                 <field name="investment" sum="Total"/>
                                 <field name="document"/>
                             </tree>
@@ -253,6 +253,7 @@
                                     <field name="date_from" required="1"/>
                                     <field name="date_to" required="1"/>
                                     <field name="amount" required="1" sum="Amount"/>
+                                    <field name="attchment" required="1"/>
                                 </tree>
                             </field>
                         </page>
