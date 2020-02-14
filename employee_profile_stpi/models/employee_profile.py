@@ -16,8 +16,13 @@ class EmployeeProfile(models.Model):
     designation = fields.Many2one('hr.job', string="Functional Designation")
     branch_id= fields.Many2one('res.branch', string="Branch")
     department = fields.Many2one('hr.department', string="Department")
+
+
     address_ids = fields.One2many('employee.update.address', 'employee_update_profile', string='Address', track_visibility='always')
     address_current_ids = fields.One2many('employee.current.address', 'employee_current_profile', string='Current Address', track_visibility='always')
+
+    relative_current_ids = fields.One2many('employee.relative.current', 'employee_current_profile', string='Current Relatives', track_visibility='always')
+    relative_ids = fields.One2many('employee.relative.update', 'employee_update_profile', string='Relatives', track_visibility='always')
 
     resume_line_current_ids = fields.One2many('hr.resume.line.current', 'employee_current_profile', string="Resumé lines")
     employee_skill_current_ids = fields.One2many('hr.employee.skill.current', 'employee_current_profile', string="Skills")
@@ -173,11 +178,6 @@ class EmployeeProfile(models.Model):
     @api.constrains('new_emergency_contact','new_emergency_phone','new_phone')
     def _check_new_emergency_contact_num(self):
         for rec in self:
-            if rec.new_emergency_contact and not rec.new_emergency_contact.isnumeric():
-                raise ValidationError(_("Phone number must be a number"))
-            if rec.new_emergency_contact and len(rec.new_emergency_contact) != 10:
-                raise ValidationError(_("Please enter correct Emergency Contact number."
-                                        "It must be of 10 digits"))
             if rec.new_emergency_phone and not rec.new_emergency_phone.isnumeric():
                 raise ValidationError(_("Phone number must be a number"))
             if rec.new_emergency_phone and len(rec.new_emergency_phone) != 10:
@@ -291,6 +291,27 @@ class EmployeeProfile(models.Model):
                 }))
             rec.employee_skill_current_ids.unlink()
             rec.employee_skill_current_ids = employee_skill_current_ids
+            relative_current_ids = []
+            for address in rec.employee_id.relative_ids:
+                relative_current_ids.append((0, 0, {
+                    'employee_current_profile': rec.id,
+                    'salutation': address.salutation.id,
+                    'name': address.name,
+                    'relate_type': address.relate_type.id,
+                    'birthday': address.birthday,
+                    'place_of_birth': address.place_of_birth,
+                    'occupation': address.occupation,
+                    'gender': address.gender,
+                    'medical': address.medical,
+                    'tuition': address.tuition,
+                    'ltc': address.ltc,
+                    'status': address.status,
+                    'prec_pf': address.prec_pf,
+                    'prec_gratuity': address.prec_gratuity,
+                    'prec_pension': address.prec_pension,
+                }))
+            rec.relative_current_ids.unlink()
+            rec.relative_current_ids = relative_current_ids
 
 
     @api.onchange('employee_id')
@@ -343,6 +364,28 @@ class EmployeeProfile(models.Model):
                 }))
             rec.employee_skill_ids.unlink()
             rec.employee_skill_ids = employee_skill_ids
+            relative_ids = []
+            for address in rec.employee_id.relative_ids:
+                relative_ids.append((0, 0, {
+                    'employee_current_profile': rec.id,
+                    'salutation': address.salutation.id,
+                    'name': address.name,
+                    'relate_type': address.relate_type.id,
+                    'birthday': address.birthday,
+                    'place_of_birth': address.place_of_birth,
+                    'occupation': address.occupation,
+                    'gender': address.gender,
+                    'medical': address.medical,
+                    'tuition': address.tuition,
+                    'ltc': address.ltc,
+                    'status': address.status,
+                    'prec_pf': address.prec_pf,
+                    'prec_gratuity': address.prec_gratuity,
+                    'prec_pension': address.prec_pension,
+                }))
+            rec.relative_ids.unlink()
+            rec.relative_ids = relative_ids
+
 
 
     @api.multi
@@ -810,6 +853,29 @@ class EmployeeProfile(models.Model):
                 rec.employee_id.employee_skill_ids.unlink()
                 rec.employee_id.employee_skill_ids = employee_skill_ids
             rec.write({'state': 'approved'})
+            if rec.relative_ids:
+                relative_ids = []
+                for address in rec.relative_ids:
+                    relative_ids.append((0, 0, {
+                        'employee_id': address.employee_id.id,
+                        'salutation': address.salutation.id,
+                        'name': address.name,
+                        'relate_type': address.relate_type.id,
+                        'birthday': address.birthday,
+                        'place_of_birth': address.place_of_birth,
+                        'occupation': address.occupation,
+                        'gender': address.gender,
+                        'medical': address.medical,
+                        'tuition': address.tuition,
+                        'ltc': address.ltc,
+                        'status': address.status,
+                        'prec_pf': address.prec_pf,
+                        'prec_gratuity': address.prec_gratuity,
+                        'prec_pension': address.prec_pension,
+                    }))
+                rec.employee_id.relative_ids.unlink()
+                rec.employee_id.relative_ids = relative_ids
+            rec.write({'state': 'approved'})
 
 
 
@@ -942,3 +1008,68 @@ class EmployeeSkillUpdtae(models.Model):
     def get_emp_id(self):
         for rec in self:
             rec.employee_id = rec.employee_update_profile.employee_id.id
+
+
+
+class EmployeeRelativeCurrent(models.Model):
+    _name = 'employee.relative.current'
+    _description = "Employee Relative Current"
+
+    employee_current_profile = fields.Many2one('employee.profile', 'Employee Current Profile')
+    salutation = fields.Many2one('res.partner.title', string='Salutation')
+    relate_type = fields.Many2one('relative.type', string="Relative Type")
+    relate_type_name = fields.Char(related='relate_type.name')
+
+    name = fields.Char(string='Name', )
+
+    medical = fields.Boolean('Medical', default=False)
+    tuition = fields.Boolean('Tuition', default=False)
+    ltc = fields.Boolean('LTC', default=False)
+    status = fields.Selection([('dependant', 'Dependant'),
+                               ('non_dependant', 'Non-Dependant')
+                               ], string='Status')
+    prec_pf = fields.Float('PF%')
+    prec_gratuity = fields.Float('Gratuity%')
+    prec_pension = fields.Float('Pension%')
+
+    age = fields.Float('Age')
+    birthday = fields.Date(string='Date of Birth')
+    place_of_birth = fields.Char(string='Place of Birth', size=128)
+    occupation = fields.Char(string='Occupation', size=128)
+    gender = fields.Selection(
+        [('Male', 'Male'), ('Female', 'Female')], string='Gender',
+        required=False)
+    employee_id = fields.Many2one(
+        'hr.employee', 'Employee Ref')
+
+
+class EmployeeRelativeUpdtae(models.Model):
+    _name = 'employee.relative.update'
+    _description = "Employee Relative Update"
+
+    employee_update_profile = fields.Many2one('employee.profile', 'Employee Update Profile')
+    salutation = fields.Many2one('res.partner.title', string='Salutation')
+    relate_type = fields.Many2one('relative.type', string="Relative Type")
+    relate_type_name = fields.Char(related='relate_type.name')
+
+    name = fields.Char(string='Name', )
+
+    medical = fields.Boolean('Medical', default=False)
+    tuition = fields.Boolean('Tuition', default=False)
+    ltc = fields.Boolean('LTC', default=False)
+    status = fields.Selection([('dependant', 'Dependant'),
+                               ('non_dependant', 'Non-Dependant')
+                               ], string='Status')
+    prec_pf = fields.Float('PF%')
+    prec_gratuity = fields.Float('Gratuity%')
+    prec_pension = fields.Float('Pension%')
+
+    age = fields.Float('Age')
+    birthday = fields.Date(string='Date of Birth')
+    place_of_birth = fields.Char(string='Place of Birth', size=128)
+    occupation = fields.Char(string='Occupation', size=128)
+    gender = fields.Selection(
+        [('Male', 'Male'), ('Female', 'Female')], string='Gender',
+        required=False)
+    employee_id = fields.Many2one(
+        'hr.employee', 'Employee Ref')

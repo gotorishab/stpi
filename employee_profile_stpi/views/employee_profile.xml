@@ -192,6 +192,51 @@
                                 </tree>
                         </field>
                     </page>
+
+                        <page string="Relatives">
+                            <separator string="Relatives"/>
+                            <field name="relative_current_ids" readonly="1">
+                                <tree editable="bottom" string="Relatives">
+                                    <field name="employee_current_profile" invisible="1"/>
+                                    <field name="employee_id" invisible="1"/>
+                                    <field name="salutation" required="True" options="{'no_create_edit': True}"/>
+                                    <field name="name" required="1"/>
+                                    <field name="relate_type" options="{'no_create_edit': True}"/>
+                                    <field name ="birthday"/>
+                                    <field name="place_of_birth"/>
+                                    <field name="occupation"/>
+                                    <field name="gender"/>
+                                    <field name ="medical"/>
+                                    <field name="tuition"/>
+                                    <field name = "ltc"/>
+                                    <field name="status"/>
+                                    <field name="prec_pf"/>
+                                    <field name="prec_gratuity"/>
+                                    <field name="prec_pension"/>
+                                </tree>
+                        </field>
+                            <separator string="Update Relative list"/>
+                            <field name="relative_ids" attrs="{'readonly':[('state', '!=', 'draft')]}">
+                                <tree editable="bottom" string="Update Resume">
+                                    <field name="employee_update_profile" invisible="1"/>
+                                    <field name="employee_id" invisible="1"/>
+                                    <field name="salutation" required="True" options="{'no_create_edit': True}"/>
+                                    <field name="name" required="1"/>
+                                    <field name="relate_type" options="{'no_create_edit': True}"/>
+                                    <field name ="birthday"/>
+                                    <field name="place_of_birth"/>
+                                    <field name="occupation"/>
+                                    <field name="gender"/>
+                                    <field name ="medical"/>
+                                    <field name="tuition"/>
+                                    <field name = "ltc"/>
+                                    <field name="status"/>
+                                    <field name="prec_pf"/>
+                                    <field name="prec_gratuity"/>
+                                    <field name="prec_pension"/>
+                                </tree>
+                        </field>
+                    </page>
                     </notebook>
                 </sheet>
                 <div class="oe_chatter">

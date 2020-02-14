@@ -1,7 +1,7 @@
 from odoo import models, fields, api, _
 from dateutil.relativedelta import relativedelta
 from odoo.exceptions import ValidationError, UserError
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 
 class HrDeclaration(models.Model):
     _name = 'hr.declaration'
@@ -213,25 +213,7 @@ class HrDeclaration(models.Model):
     @api.multi
     def button_to_approve(self):
         for rec in self:
-            search_id = self.env['hr.declaration'].search(
-                [('employee_id', '=', rec.employee_id.id),
-                 ('state', 'not in', ['rejected'])])
-            for emp in search_id:
-                if rec.date_range.date_start <= emp.date_range.date_start or rec.date_range.date_start >= emp.date_range.date_end:
-                    if rec.date_range.date_end <= emp.date_range.date_start or rec.date_range.date_end >= emp.date_range.date_end:
-                        if not (rec.date_range.date_start <= emp.date_range.date_start and rec.date_range.date_end >= emp.date_range.date_end):
-                            index = True
-                        else:
-                            raise ValidationError(
-                                "This declaration is already applied for this duration, please correct the dates")
-                    else:
-                        raise ValidationError(
-                            "This declaration is already applied for this duration, please correct the dates")
-                else:
-                    raise ValidationError(
-                        "This declaration is already applied for this duration, please correct the dates")
-            else:
-                rec.write({'state': 'to_approve'})
+            rec.write({'state': 'to_approve'})
 
     @api.multi
     def button_forecast_gross(self):
@@ -318,6 +300,7 @@ class HrDeclaration(models.Model):
             rec.std_ded_ids.unlink()
             rec.exemption_ids.unlink()
             rec.rebate_ids.unlink()
+            rec.slab_ids.unlink()
             ex_std_id = self.env['saving.master'].sudo().search(
                 [('saving_type', '=', 'Std. Deduction'), ('it_rule', '=', 'mus10ale')], limit=1)
             my_investment = 0.00
@@ -352,8 +335,8 @@ class HrDeclaration(models.Model):
                     count+=1
             if ex_child_id:
                 if rec.employee_id.date_of_join and rec.date_range.date_start < rec.employee_id.date_of_join <= rec.date_range.date_end:
-                    nm = (rec.date_range.date_end - rec.employee_id.date_of_join).months
-                    my_investment = count * 100 * mn
+                    nm = ((rec.date_range.date_end - rec.employee_id.date_of_join).days)/30
+                    my_investment = count * 100 * nm
                 else:
                     my_investment = count * 100 * 12
                 if my_investment <= ex_child_id.rebate:
@@ -369,7 +352,7 @@ class HrDeclaration(models.Model):
                     'allowed_rebate': my_allowed_rebate,
                 })
             ex_hra_id = self.env['saving.master'].sudo().search([('saving_type', '=', 'HRA Exemption'), ('it_rule', '=', 'mus10ale')], limit=1)
-            prl_id =  self.env['hr.payslip.line'].sudo().search([('slip_id.employee_id', '=', rec.employee_id.id),('slip_id.state', '=', 'done'),('code', '=', 'HRA'),('slip_id.date_from', '>', rec.date_range.date_start),('slip_id.date_to', '<', rec.date_range.date_end)])
+            prl_id = self.env['hr.payslip.line'].sudo().search([('slip_id.employee_id', '=', rec.employee_id.id),('slip_id.state', '=', 'done'),('code', '=', 'HRA'),('slip_id.date_from', '>', rec.date_range.date_start),('slip_id.date_to', '<', rec.date_range.date_end)])
             total_wage = self.env['hr.contract'].sudo().search(
                 [('employee_id', '=', rec.employee_id.id), ('state', '=', 'open'), ('date_start', '<=', rec.date_range.date_start),
                  ('date_end', '>=', rec.date_range.date_end)], limit=1)
@@ -377,16 +360,21 @@ class HrDeclaration(models.Model):
             sum_rent = 0.00
             sum_prl = 0.00
             sum=0.00
+            print('=======================paylinesssssssssssssssss====================', prl_id)
+            print('=======================wageeeeee====================', sum_rent)
             my_investment = 0.00
             my_allowed_rebate = 0.00
             for cc in prl_id:
                 sum_prl+=cc.taxable_amount
+            print('=======================payline====================',sum_prl)
             for tw in total_wage:
                 if rec.employee_id.address_home_id.city_id.metro == True:
                     sum_bs = ((tw.wage)*50)/100
                 else:
                     sum_bs = ((tw.wage)*40)/100
                 sum_rent = rec.rent_paid - ((tw.wage)*10)/100
+            print('=======================contract====================', sum_bs)
+            print('=======================rent====================', sum_rent)
             if sum_prl <= sum_bs and sum_prl <= sum_rent:
                 sum = sum_prl
             elif sum_bs <= sum_prl and sum_bs <= sum_rent:
@@ -399,7 +387,6 @@ class HrDeclaration(models.Model):
                     my_allowed_rebate = my_investment
                 else:
                     my_allowed_rebate = ex_hra_id.rebate
-
                 self.env['declaration.exemption'].create({
                     'exemption_id': rec.id,
                     'it_rule': 'mus10ale',
@@ -425,7 +412,7 @@ class HrDeclaration(models.Model):
                     'it_rule': 'mus10ale',
                     'saving_master': ex_lunch_id.id,
                     'investment': my_investment,
-                    'allowed_ rebate': my_allowed_rebate,
+                    'allowed_rebate': my_allowed_rebate,
                 })
             ex_rebate_id = self.env['saving.master'].sudo().search([('saving_type', '=', 'Revised Rebate under Section 87A (2019-20)'), ('it_rule', '=', 'section87a')], limit=1)
             my_investment = 0.00
@@ -458,7 +445,7 @@ class HrDeclaration(models.Model):
                  ('slip_id.date_to', '<', rec.date_range.date_end)])
             sum = 0
             for sr in prl_80c_id:
-                if sr.code == 'CPF' or sr.code == 'VCPF':
+                if sr.code == 'CEPF' or sr.code == 'VCPF':
                     sum += sr.amount
             my_investment = 0.00
             my_allowed_rebate = 0.00
@@ -468,7 +455,6 @@ class HrDeclaration(models.Model):
                     my_allowed_rebate = my_investment
                 else:
                     my_allowed_rebate = ex_80_c_id.rebate
-
                 self.env['declaration.slab'].create({
                     'slab_id': rec.id,
                     'it_rule': '80_c',
@@ -482,7 +468,7 @@ class HrDeclaration(models.Model):
             for std in rec.std_ded_ids:
                 std_am += std.allowed_rebate
             for ex in rec.exemption_ids:
-                std_am += ex.allowed_rebate
+                exempt_am += ex.allowed_rebate
             pr_pt_id = self.env['hr.payslip.line'].sudo().search(
                 [('slip_id.employee_id', '=', rec.employee_id.id), ('slip_id.state', '=', 'done'), ('code', '=', 'PTD'),
                  ('slip_id.date_from', '>', rec.date_range.date_start),
@@ -524,6 +510,31 @@ class HrDeclaration(models.Model):
                     raise ValidationError(_("Sum of Tax Payment Amount should be equal to Tax Payable Amount"))
                 else:
                     rec.write({'state': 'verified'})
+
+
+    @api.model
+    def create(self, values):
+        res = super(HrDeclaration, self).create(values)
+        search_id = self.env['hr.declaration'].search(
+            [('employee_id', '=', res.employee_id.id),
+             ('state', '!=', 'rejected')])
+        for emp in search_id:
+            if res.date_range.date_start <= emp.date_range.date_start or res.date_range.date_start >= emp.date_range.date_end:
+                if res.date_range.date_end <= emp.date_range.date_start or res.date_range.date_end >= emp.date_range.date_end:
+                    if not (
+                            res.date_range.date_start <= emp.date_range.date_start and res.date_range.date_end >= emp.date_range.date_end):
+                        index = True
+                    else:
+                        raise ValidationError(
+                            "This declaration is already applied for this duration, please correst the dates")
+                else:
+                    raise ValidationError(
+                        "This declaration is already applied for this duration, please correct the dates")
+            else:
+                raise ValidationError(
+                    "This declaration is already applied for this duration, please correct the dates")
+        return res
+
 
 
     @api.multi
@@ -592,14 +603,13 @@ class SlabDeclarations(models.Model):
 
 
     slab_id = fields.Many2one('hr.declaration', string='Slab')
-    saving_master = fields.Many2one('saving.master', string='Saving Type',
-                                    domain=[('it_rule', 'in', ('80_c', '80ccd1', '80ccd1b'))])
+
     it_rule = fields.Selection([
         ('80_c', '80 C'),
         ('80ccd1', '80CCD (1)'),
         ('80ccd1b', '80CCD (1B)'),
     ], string='IT Rule -Section ')
-
+    saving_master = fields.Many2one('saving.master', string='Saving Type')
     investment = fields.Float(string='Investment')
     allowed_rebate = fields.Float('Allowed Rebate')
     document = fields.Binary(string='Document')
@@ -614,7 +624,7 @@ class HraDeclarations(models.Model):
     it_rule = fields.Selection([
         ('1013a', '10 (13A)'),
     ], string='IT Rule -Section ')
-    saving_master = fields.Many2one('saving.master', string='Saving Type', domain=[('it_rule', '=', '1013a')])
+    saving_master = fields.Many2one('saving.master', string='Saving Type')
 
     investment = fields.Float(string='Investment')
     allowed_rebate = fields.Float(string='Allowed Rebate', compute='compute_allowed_rebate')
@@ -633,7 +643,7 @@ class MedicalDeclarations(models.Model):
     _description = 'declaration.medical'
 
     med_ins_id = fields.Many2one('hr.declaration', string='Medical')
-    saving_master = fields.Many2one('saving.master', string='Saving Type', domain=[('it_rule', '=', '80d')])
+    saving_master = fields.Many2one('saving.master', string='Saving Type')
     it_rule = fields.Selection([
         ('80d', '80D'),
     ], string='IT Rule -Section ')
@@ -662,7 +672,7 @@ class DeductionDeclarations(models.Model):
         ('80gg', '80 GG'),
         ('80e', '80E'),
     ], string='IT Rule -Section ')
-    saving_master = fields.Many2one('saving.master', string='Saving Type', domain=[('it_rule', 'in', ('80tta', '80ttb', '80gg', '80e'))])
+    saving_master = fields.Many2one('saving.master', string='Saving Type')
 
     investment = fields.Float(string='Investment')
     allowed_rebate = fields.Float(string='Allowed Rebate', compute='compute_allowed_rebate')
@@ -688,7 +698,7 @@ class taxhomeDeclarations(models.Model):
         ('80ee', 'Section 80EE'),
         ('80c', '80c'),
     ], string='IT Rule -Section ')
-    saving_master = fields.Many2one('saving.master', string='Saving Type', domain=[('it_rule', 'in', ('80C', '24', '80ee', '80c'))])
+    saving_master = fields.Many2one('saving.master', string='Saving Type')
 
     investment = fields.Float(string='Investment')
     allowed_rebate = fields.Float(string='Allowed Rebate', compute='compute_allowed_rebate')
@@ -711,7 +721,7 @@ class taxeducationDeclarations(models.Model):
     it_rule = fields.Selection([
         ('80E', '80 E'),
     ], string='IT Rule -Section ')
-    saving_master = fields.Many2one('saving.master', string='Saving Type', domain=[('it_rule', '=', '80E')])
+    saving_master = fields.Many2one('saving.master', string='Saving Type')
 
     investment = fields.Float(string='Investment')
     allowed_rebate = fields.Float(string='Allowed Rebate', compute='compute_allowed_rebate')
@@ -734,7 +744,7 @@ class rgessDeclarations(models.Model):
     it_rule = fields.Selection([
         ('80ccg', '80 CCG'),
     ], string='IT Rule -Section ')
-    saving_master = fields.Many2one('saving.master', string='Saving Type', domain=[('it_rule', '=', '80ccg')])
+    saving_master = fields.Many2one('saving.master', string='Saving Type')
 
     investment = fields.Float(string='Investment')
     allowed_rebate = fields.Float(string='Allowed Rebate', compute='compute_allowed_rebate')
@@ -755,7 +765,7 @@ class dedmedicalDeclarations(models.Model):
     it_rule = fields.Selection([
         ('80dd', '80 DD'),
     ], string='IT Rule -Section ')
-    saving_master = fields.Many2one('saving.master', string='Saving Type', domain=[('it_rule', '=', '80dd')])
+    saving_master = fields.Many2one('saving.master', string='Saving Type')
 
     investment = fields.Float(string='Investment')
     allowed_rebate = fields.Float(string='Allowed Rebate', compute='compute_allowed_rebate')
@@ -781,7 +791,7 @@ class dedmedicalselfDeclarations(models.Model):
         ('80gg', '80 GG'),
         ('us_194_aa', 'u/s 194A'),
     ], string='IT Rule -Section', default='80ddb')
-    saving_master = fields.Many2one('saving.master', string='Saving Type', domain=[('it_rule', 'in', ('80ddb', 'section80g', '80gg','us_194_aa'))])
+    saving_master = fields.Many2one('saving.master', string='Saving Type')
 
     investment = fields.Float(string='Investment')
     allowed_rebate = fields.Float(string='Allowed Rebate', compute='compute_allowed_rebate')
@@ -851,6 +861,7 @@ class RentPaid(models.Model):
     date_from = fields.Date(string='Date from')
     date_to = fields.Date(string='Date to')
     amount = fields.Float(string='Amount')
+    attchment = fields.Binary(string='Attachment')
 
     @api.constrains('date_from','date_to')
     def validate_date_f_t(self):

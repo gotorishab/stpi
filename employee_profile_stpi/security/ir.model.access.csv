@@ -7,3 +7,5 @@ access_hr_resume_line_current,hr.resume.line.current,model_hr_resume_line_curren
 access_hr_resume_line_update,hr.resume.line.update,model_hr_resume_line_update,base.group_user,1,1,1,1
 access_hr_employee_skill_current,hr.employee.skill.current,model_hr_employee_skill_current,base.group_user,1,1,1,1
 access_hr_employee_skill_update,hr.employee.skill.update,model_hr_employee_skill_update,base.group_user,1,1,1,1
+access_employee_relative_current,employee.relative.current.update,model_employee_relative_current,base.group_user,1,1,1,1
+access_employee_relative_update,employee.relative.update.update,model_employee_relative_update,base.group_user,1,1,1,1
