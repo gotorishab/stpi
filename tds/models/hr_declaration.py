@@ -318,6 +318,7 @@ class HrDeclaration(models.Model):
             rec.std_ded_ids.unlink()
             rec.exemption_ids.unlink()
             rec.rebate_ids.unlink()
+            rec.slab_ids.unlink()
             ex_std_id = self.env['saving.master'].sudo().search(
                 [('saving_type', '=', 'Std. Deduction'), ('it_rule', '=', 'mus10ale')], limit=1)
             my_investment = 0.00
@@ -399,7 +400,6 @@ class HrDeclaration(models.Model):
                     my_allowed_rebate = my_investment
                 else:
                     my_allowed_rebate = ex_hra_id.rebate
-
                 self.env['declaration.exemption'].create({
                     'exemption_id': rec.id,
                     'it_rule': 'mus10ale',
@@ -420,13 +420,15 @@ class HrDeclaration(models.Model):
                     my_allowed_rebate = my_investment
                 else:
                     my_allowed_rebate = ex_lunch_id.rebate
+                print('==============================Allowed Rebate=================',my_allowed_rebate)
                 self.env['declaration.exemption'].create({
                     'exemption_id': rec.id,
                     'it_rule': 'mus10ale',
                     'saving_master': ex_lunch_id.id,
                     'investment': my_investment,
-                    'allowed_ rebate': my_allowed_rebate,
+                    'allowed_rebate': my_allowed_rebate,
                 })
+                print('==============================Allowed Rebatessssssssss=================', my_allowed_rebate)
             ex_rebate_id = self.env['saving.master'].sudo().search([('saving_type', '=', 'Revised Rebate under Section 87A (2019-20)'), ('it_rule', '=', 'section87a')], limit=1)
             my_investment = 0.00
             my_allowed_rebate = 0.00
