@@ -10,6 +10,7 @@ class HrPayslipRun(models.Model):
     def compute_payslips(self):
         for slip in self.slip_ids:
             if slip.state == 'draft':
+#                 print("??????????????????????????????",slip.state)
                 slip.compute_sheet()
                 
     @api.multi
@@ -24,4 +25,20 @@ class HrPayslipRun(models.Model):
                 return self.write({'state': 'close'})
             else:
                 self.close_payslip_run()
-            
+                
+    @api.multi
+    def show_payroll_register_report(self):
+        for payslip in self:
+            val = {
+                'name': 'Payroll Register',
+                'view_type': 'pivot',
+                'view_mode': 'pivot',
+                'res_model': 'hr.payslip.line',
+                'view_id':self.env.ref('payslip_report.hr_payslip_line_pivot_view').id,
+                'domain': [
+                            ('slip_id', 'in', payslip.slip_ids.ids),
+                            ],
+                'type': 'ir.actions.act_window',
+                'target':'new',
+                }
+            return val

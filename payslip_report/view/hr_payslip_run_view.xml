@@ -8,6 +8,8 @@
             <xpath expr="//form/header/button[@name='close_payslip_run']" position="after">
                 <button name="compute_payslips" type="object" states="draft" string="Compute Payslips" class="oe_highlight"/>
                 <button name="cancel_payslip_run" type="object" states="draft" string="Close" class="oe_highlight"/>
+                <button name="show_payroll_register_report" type="object" states="draft" string="Show Register Report " class="oe_highlight"/>
+                
             </xpath>
             
             <xpath expr="//form/header/button[@name='close_payslip_run']" position="attributes">
@@ -16,7 +18,7 @@
             
             <xpath expr="//form/sheet/group/field[@name='credit_note']" position="after">
                 <field name="branch_id"/>
-                <field name="allow_download"/>
+                <field name="allow_download" attrs="{'readonly':[('state','=','draft')]}"/>
             </xpath>
         </field>
     </record>

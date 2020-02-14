@@ -5,6 +5,21 @@ class HrPayslip(models.Model):
 
     currency_id = fields.Many2one('res.currency', string='Currency', required=True, default=lambda self: self.env.user.company_id.currency_id)
 
+    @api.model
+    def create(self, vals):
+        res = super(HrPayslip, self).create(vals)
+        payslip_ids = self.env['hr.payslip'].search([('employee_id','=',res.employee_id.id),
+                                                     ('date_from','=',res.date_from),
+                                                     ('date_to','=',res.date_to),
+                                                     ('state','=','done')
+                                                     ])
+#         print("????????????????????????????",payslip_ids)
+        if payslip_ids:
+            raise ValidationError(_('You are Not Create Same Employee Payslip from Current Month'))
+        else:
+            return res
+
+
     def compute_difference_two_date(self):
         s=self.date_from
         e=self.date_to
@@ -299,3 +314,16 @@ class HrPayslip(models.Model):
                 late_com_h = attendance.late_coming_min
                 print("[[[[[[[[[[[[[[[[[[[[",late_com_h)
         return  late_com_h
+    
+class HrPayslipLine(models.Model):
+    _inherit = 'hr.payslip.line'
+    
+    
+    date_from = fields.Date(string='Date From', readonly=True)
+    date_to = fields.Date(string='Date To', readonly=True) 
+    state = fields.Selection([('draft', 'Draft'),
+                        ('verify', 'Waiting'),
+                        ('done', 'Done'),
+                        ('cancel', 'Rejected')
+                    ],string="state",related="slip_id.state")  
+

@@ -1,22 +1,14 @@
 <odoo>
 
-    <record id="hr_payroll.view_hr_payslip_line_tree" model="ir.ui.view">
-        <field name="name">hr.payslip.line.tree</field>
+    <record id="hr_payslip_line_search_inh" model="ir.ui.view">
+        <field name="name">hr.payslip.line.search.inherit</field>
         <field name="model">hr.payslip.line</field>
+        <field name="inherit_id" ref="hr_payroll.view_hr_payslip_line_filter"/>
         <field name="arch" type="xml">
-            <tree string="Payroll Register" editable="bottom" decoration-info="total == 0" create='false' edit='false'>
-                <field name="category_id"/>
-                <field name="employee_id" invisible="1"/>
-                <field name="sequence"/>
-                <field name="name"/>
-                <field name="code"/>
-                <field name="quantity"/>
-                <field name="rate"/>
-                <field name="amount"/>
-                <field name="total"/>
-                <field name="amount_select" invisible="1"/>
-                <field name="register_id" invisible="1"/>
-            </tree>
+            <xpath expr="//search/group/filter[@name='employee_id']" position="after">
+                <filter string="Draft" name="draft" domain="[('state','=','draft')]" help="Payslips which are in draft state"/>
+                <filter string="Done" name="done" domain="[('state','=','done')]" help="Payslips which are in done state"/>
+            </xpath>
         </field>
     </record>
 
@@ -36,8 +28,9 @@
         <field name="name">Payroll Register</field>
         <field name="res_model">hr.payslip.line</field>
         <field name="view_type">tree</field>
-        <field name="view_mode">pivot,tree</field>
-        <field name="search_view_id" ref="hr_payroll.view_hr_payslip_line_tree"/>
+        <field name="view_mode">pivot,tree,form</field>
+        <field name="search_view_id" ref="hr_payroll.view_hr_payslip_line_form"/>
+        <!-- <field name="context">{'search_default_employee_id': 1}</field> -->
     </record>
 
     <menuitem id="menu_hr_payroll_register_report_menu" name="Payroll Register"
