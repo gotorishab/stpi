@@ -1,6 +1,6 @@
 {
     "name": "PaySlip Report",
-    "version": "12.0.0.2",
+    "version": "12.0.0.3",
     "category": "PaySlip",
     'summary': 'PaySlip Report',
     'description': """
@@ -15,7 +15,8 @@
                 ],
     
     "data": [
-#             "security/security.xml",
+            "security/security_payslip_batch_view.xml",
+            "security/security.xml",
             "report/payslip_report_view.xml",
             "report/payslip_report.xml",
             "view/payslip_report_template_view.xml",

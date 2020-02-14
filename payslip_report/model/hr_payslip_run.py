@@ -4,6 +4,7 @@ class HrPayslipRun(models.Model):
     _inherit = 'hr.payslip.run'  
     
     allow_download = fields.Boolean(string='Allow Download') 
+    branch_id = fields.Many2one('res.branch',string="Branch",default=lambda self: self.env['res.users']._get_default_branch())
     
     @api.multi
     def compute_payslips(self):
