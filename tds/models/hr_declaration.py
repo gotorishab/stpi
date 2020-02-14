@@ -1,7 +1,7 @@
 from odoo import models, fields, api, _
 from dateutil.relativedelta import relativedelta
 from odoo.exceptions import ValidationError, UserError
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 
 class HrDeclaration(models.Model):
     _name = 'hr.declaration'
@@ -213,25 +213,7 @@ class HrDeclaration(models.Model):
     @api.multi
     def button_to_approve(self):
         for rec in self:
-            search_id = self.env['hr.declaration'].search(
-                [('employee_id', '=', rec.employee_id.id),
-                 ('state', 'not in', ['rejected'])])
-            for emp in search_id:
-                if rec.date_range.date_start <= emp.date_range.date_start or rec.date_range.date_start >= emp.date_range.date_end:
-                    if rec.date_range.date_end <= emp.date_range.date_start or rec.date_range.date_end >= emp.date_range.date_end:
-                        if not (rec.date_range.date_start <= emp.date_range.date_start and rec.date_range.date_end >= emp.date_range.date_end):
-                            index = True
-                        else:
-                            raise ValidationError(
-                                "This declaration is already applied for this duration, please correct the dates")
-                    else:
-                        raise ValidationError(
-                            "This declaration is already applied for this duration, please correct the dates")
-                else:
-                    raise ValidationError(
-                        "This declaration is already applied for this duration, please correct the dates")
-            else:
-                rec.write({'state': 'to_approve'})
+            rec.write({'state': 'to_approve'})
 
     @api.multi
     def button_forecast_gross(self):
@@ -353,8 +335,8 @@ class HrDeclaration(models.Model):
                     count+=1
             if ex_child_id:
                 if rec.employee_id.date_of_join and rec.date_range.date_start < rec.employee_id.date_of_join <= rec.date_range.date_end:
-                    nm = (rec.date_range.date_end - rec.employee_id.date_of_join).months
-                    my_investment = count * 100 * mn
+                    nm = ((rec.date_range.date_end - rec.employee_id.date_of_join).days)/30
+                    my_investment = count * 100 * nm
                 else:
                     my_investment = count * 100 * 12
                 if my_investment <= ex_child_id.rebate:
@@ -420,7 +402,6 @@ class HrDeclaration(models.Model):
                     my_allowed_rebate = my_investment
                 else:
                     my_allowed_rebate = ex_lunch_id.rebate
-                print('==============================Allowed Rebate=================',my_allowed_rebate)
                 self.env['declaration.exemption'].create({
                     'exemption_id': rec.id,
                     'it_rule': 'mus10ale',
@@ -428,7 +409,6 @@ class HrDeclaration(models.Model):
                     'investment': my_investment,
                     'allowed_rebate': my_allowed_rebate,
                 })
-                print('==============================Allowed Rebatessssssssss=================', my_allowed_rebate)
             ex_rebate_id = self.env['saving.master'].sudo().search([('saving_type', '=', 'Revised Rebate under Section 87A (2019-20)'), ('it_rule', '=', 'section87a')], limit=1)
             my_investment = 0.00
             my_allowed_rebate = 0.00
@@ -526,6 +506,31 @@ class HrDeclaration(models.Model):
                     raise ValidationError(_("Sum of Tax Payment Amount should be equal to Tax Payable Amount"))
                 else:
                     rec.write({'state': 'verified'})
+
+
+    @api.model
+    def create(self, values):
+        res = super(HrDeclaration, self).create(values)
+        search_id = self.env['hr.declaration'].search(
+            [('employee_id', '=', res.employee_id.id),
+             ('state', '!=', 'rejected')])
+        for emp in search_id:
+            if res.date_range.date_start <= emp.date_range.date_start or res.date_range.date_start >= emp.date_range.date_end:
+                if res.date_range.date_end <= emp.date_range.date_start or res.date_range.date_end >= emp.date_range.date_end:
+                    if not (
+                            res.date_range.date_start <= emp.date_range.date_start and res.date_range.date_end >= emp.date_range.date_end):
+                        index = True
+                    else:
+                        raise ValidationError(
+                            "This declaration is already applied for this duration, please correst the dates")
+                else:
+                    raise ValidationError(
+                        "This declaration is already applied for this duration, please correct the dates")
+            else:
+                raise ValidationError(
+                    "This declaration is already applied for this duration, please correct the dates")
+        return res
+
 
 
     @api.multi
