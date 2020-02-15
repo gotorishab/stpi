@@ -531,8 +531,8 @@ class HrDeclaration(models.Model):
             [('state', 'not in', ['approved', 'rejected', 'verified'])])
         for rec in self:
             sum = 0
-            dstart = rec.date_range.date_start - relativedelta(months=1)
-            dend = rec.date_range.date_end + relativedelta(months=1)
+            dstart = rec.date_range.date_start
+            dend = rec.date_range.date_end
             proll = self.env['hr.payslip.line'].sudo().search([('slip_id.employee_id', '=', rec.employee_id.id),
                                                                ('slip_id.state', '=', 'done'),
                                                                ('salary_rule_id.taxable_percentage', '>', 0),
@@ -762,6 +762,7 @@ class HrDeclaration(models.Model):
                 rec.taxable_income = 0.00
             rec.tax_computed_bool = True
         return True
+
 
     @api.multi
     def button_payment_tax(self):
