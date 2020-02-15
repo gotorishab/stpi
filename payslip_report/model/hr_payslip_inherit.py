@@ -326,4 +326,8 @@ class HrPayslipLine(models.Model):
                         ('done', 'Done'),
                         ('cancel', 'Rejected')
                     ],string="state",related="slip_id.state")  
+    paid = fields.Boolean(string="Made Payment Order",related="slip_id.paid")
+    date_from = fields.Date(string="Date From", related="slip_id.date_from")
+    date_to = fields.Date(string="Date To", related="slip_id.date_to")
+    payslip_batch = fields.Many2one(string="Payslip Batch",related="slip_id.payslip_run_id")
 

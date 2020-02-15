@@ -22,9 +22,7 @@ class HrPayslipRun(models.Model):
                 slip.compute_sheet()
                 slip.action_payslip_done()
 #                 print("/////////////////////////")
-                return self.write({'state': 'close'})
-            else:
-                self.close_payslip_run()
+        return self.write({'state': 'close'})
                 
     @api.multi
     def show_payroll_register_report(self):

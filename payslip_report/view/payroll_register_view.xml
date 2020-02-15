@@ -8,6 +8,10 @@
             <xpath expr="//search/group/filter[@name='employee_id']" position="after">
                 <filter string="Draft" name="draft" domain="[('state','=','draft')]" help="Payslips which are in draft state"/>
                 <filter string="Done" name="done" domain="[('state','=','done')]" help="Payslips which are in done state"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="paid"/>
+                <field name="payslip_batch"/>
             </xpath>
         </field>
     </record>
