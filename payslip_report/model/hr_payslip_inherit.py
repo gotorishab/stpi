@@ -1,4 +1,7 @@
 from odoo import api, fields, models, tools , _
+from odoo.exceptions import UserError, ValidationError
+import datetime
+from dateutil.relativedelta import relativedelta
 
 class HrPayslip(models.Model):
     _inherit = 'hr.payslip'   
@@ -330,7 +333,17 @@ class HrPayslipLine(models.Model):
     date_from = fields.Date(string="Date From", related="slip_id.date_from")
     date_to = fields.Date(string="Date To", related="slip_id.date_to")
     payslip_batch = fields.Many2one(string="Payslip Batch",related="slip_id.payslip_run_id")
-    current_month = fields.Selection([('01', 'January'), ('02', 'February'), ('03', 'March'), ('04', 'April'),
-        ('05', 'May'), ('06', 'June'), ('07', 'July'), ('08', 'August'), ('09', 'September'),
-        ('10', 'October'), ('11', 'November'), ('12', 'December')], readonly=True)
-
+    is_current_month = fields.Boolean(compute="_check_current_month", store=True)
+    
+    @api.depends('date_from')
+    def _check_current_month(self):
+        for rec in self:
+            if rec.date_from:
+                first_day = datetime.date.today().replace(day=1)
+                last_day = datetime.date.today().replace(day=1)+ relativedelta(months=1) - relativedelta(days=1)
+                if rec.date_from:
+                    if first_day <= rec.date_from <= last_day:
+                        rec.is_current_month = True
+                    else:
+                        rec.is_current_month = False
+            
