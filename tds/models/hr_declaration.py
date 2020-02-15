@@ -306,8 +306,8 @@ class HrDeclaration(models.Model):
     def button_compute_tax(self):
         for rec in self:
             sum = 0
-            dstart = rec.date_range.date_start - relativedelta(months=1)
-            dend = rec.date_range.date_end + relativedelta(months=1)
+            dstart = rec.date_range.date_start
+            dend = rec.date_range.date_end
             proll =  self.env['hr.payslip.line'].sudo().search([('slip_id.employee_id', '=', rec.employee_id.id),
                                                          ('slip_id.state', '=', 'done'),
                                                          ('salary_rule_id.taxable_percentage', '>', 0),
