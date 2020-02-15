@@ -5,14 +5,17 @@
         <field name="model">hr.payslip.line</field>
         <field name="inherit_id" ref="hr_payroll.view_hr_payslip_line_filter"/>
         <field name="arch" type="xml">
-            <xpath expr="//search/group/filter[@name='employee_id']" position="after">
-                <filter string="Draft" name="draft" domain="[('state','=','draft')]" help="Payslips which are in draft state"/>
-                <filter string="Done" name="done" domain="[('state','=','done')]" help="Payslips which are in done state"/>
+            <xpath expr="//search/field[@name='name']" position="after">
+                <!-- <field name="current_month" domain = "[ ( 'current_month', '=' , context_today().strftime('%%m') ) ]" ></field> -->
+                <filter string="Draft" name="draft" domain="[('state','=','draft')]" help="Draft Slip"/>
+                <filter string="Done" name="done" domain="[('state','=','done')]" help="Done Slip"/>
+                <filter string="Mode Payment Order" name="paid"/>
                 <field name="date_from"/>
                 <field name="date_to"/>
                 <field name="paid"/>
                 <field name="payslip_batch"/>
             </xpath>
+            
         </field>
     </record>
 
@@ -33,7 +36,7 @@
         <field name="res_model">hr.payslip.line</field>
         <field name="view_type">tree</field>
         <field name="view_mode">pivot,tree,form</field>
-        <field name="search_view_id" ref="hr_payroll.view_hr_payslip_line_form"/>
+        <field name="search_view_id" ref="hr_payslip_line_search_inh"/>
         <!-- <field name="context">{'search_default_employee_id': 1}</field> -->
     </record>
 

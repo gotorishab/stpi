@@ -325,9 +325,12 @@ class HrPayslipLine(models.Model):
                         ('verify', 'Waiting'),
                         ('done', 'Done'),
                         ('cancel', 'Rejected')
-                    ],string="state",related="slip_id.state")  
+                    ],string="Status",related="slip_id.state")  
     paid = fields.Boolean(string="Made Payment Order",related="slip_id.paid")
     date_from = fields.Date(string="Date From", related="slip_id.date_from")
     date_to = fields.Date(string="Date To", related="slip_id.date_to")
     payslip_batch = fields.Many2one(string="Payslip Batch",related="slip_id.payslip_run_id")
+    current_month = fields.Selection([('01', 'January'), ('02', 'February'), ('03', 'March'), ('04', 'April'),
+        ('05', 'May'), ('06', 'June'), ('07', 'July'), ('08', 'August'), ('09', 'September'),
+        ('10', 'October'), ('11', 'November'), ('12', 'December')], readonly=True)
 
