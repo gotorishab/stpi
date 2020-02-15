@@ -546,7 +546,7 @@ class HrDeclaration(models.Model):
     def hr_declaration_cron(self):
         search_id = self.env['hr.declaration'].search(
             [('state', 'not in', ['approved', 'rejected', 'verified'])])
-        for rec in self:
+        for rec in search_id:
             sum = 0
             dstart = rec.date_range.date_start
             dend = rec.date_range.date_end

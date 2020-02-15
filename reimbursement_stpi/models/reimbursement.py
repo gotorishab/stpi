@@ -1,5 +1,5 @@
 from odoo import api, fields, models, tools, _
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError,UserError
 import re
 from datetime import datetime, date
 from dateutil.relativedelta import relativedelta
@@ -183,6 +183,16 @@ class Reimbursement(models.Model):
                     else:
                         rec.amount_phone = 0
 
+
+
+
+    @api.multi
+    def unlink(self):
+        for data in self:
+            if data.state not in ('draft', 'rejected'):
+                raise UserError(
+                    'You cannot delete a Reimbursement which is not in draft or Rejected state')
+        return super(Reimbursement, self).unlink()
 
 
     @api.constrains('from_date','to_date')
