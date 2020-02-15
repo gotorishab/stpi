@@ -143,7 +143,12 @@ class HrDeclaration(models.Model):
         for rec in self:
             bs = 0.00
             da = 0.00
-            prl_id = self.env['hr.payslip.line'].sudo().search([('slip_id.employee_id', '=', rec.employee_id.id),('slip_id.state', '=', 'done'),('slip_id.date_from', '>', rec.date_range.date_start),('slip_id.date_to', '<', rec.date_range.date_end)])
+            dstart = rec.date_range.date_start
+            dend = rec.date_range.date_end
+            prl_id = self.env['hr.payslip.line'].sudo().search([('slip_id.employee_id', '=', rec.employee_id.id),
+                                                               ('slip_id.state', '=', 'done'),
+                                                               ('slip_id.date_from', '>=', dstart),
+                                                               ('slip_id.date_to', '<=', dend)])
             for pr in prl_id:
                 if pr.code == 'BASIC':
                     bs += pr.amount
@@ -355,13 +360,15 @@ class HrDeclaration(models.Model):
                     my_allowed_rebate = my_investment
                 else:
                     my_allowed_rebate = ex_std_id.rebate
-                self.env['declaration.standard'].create({
-                    'std_ded_id': rec.id,
+                std_ded_ids = []
+                std_ded_ids.append((0, 0, {
+                     'std_ded_id': rec.id,
                     'it_rule': 'mus10ale',
                     'saving_master': ex_std_id.id,
                     'investment': my_investment,
                     'allowed_rebate': my_allowed_rebate,
-                })
+                }))
+                rec.std_ded_ids = std_ded_ids
             ex_child_id = self.env['saving.master'].sudo().search(
                 [('saving_type', '=', 'Child Education Allowance & Hostel Expenditure Allowance'), ('it_rule', '=', 'mus10ale')], limit=1)
             child_id = self.env['employee.relative'].sudo().search(
@@ -382,14 +389,15 @@ class HrDeclaration(models.Model):
                     my_allowed_rebate = my_investment
                 else:
                     my_allowed_rebate = ex_child_id.rebate
-
-                self.env['declaration.exemption'].create({
+                exemption_ids = []
+                exemption_ids.append((0, 0, {
                     'exemption_id': rec.id,
                     'it_rule': 'mus10ale',
                     'saving_master': ex_child_id.id,
                     'investment': my_investment,
                     'allowed_rebate': my_allowed_rebate,
-                })
+                }))
+                rec.exemption_ids = exemption_ids
             ex_hra_id = self.env['saving.master'].sudo().search([('saving_type', '=', 'HRA Exemption'), ('it_rule', '=', 'mus10ale')], limit=1)
             prl_id = self.env['hr.payslip.line'].sudo().search([('slip_id.employee_id', '=', rec.employee_id.id),('slip_id.state', '=', 'done'),('code', '=', 'HRA'),('slip_id.date_from', '>', rec.date_range.date_start),('slip_id.date_to', '<', rec.date_range.date_end)])
             sum_bs = 0.00
@@ -417,13 +425,16 @@ class HrDeclaration(models.Model):
                     my_allowed_rebate = my_investment
                 else:
                     my_allowed_rebate = ex_hra_id.rebate
-                self.env['declaration.exemption'].create({
+
+                exemption_ids = []
+                exemption_ids.append((0, 0, {
                     'exemption_id': rec.id,
                     'it_rule': 'mus10ale',
                     'saving_master': ex_hra_id.id,
                     'investment': my_investment,
                     'allowed_rebate': my_allowed_rebate,
-                })
+                }))
+                rec.exemption_ids = exemption_ids
             ex_lunch_id = self.env['saving.master'].sudo().search([('saving_type', '=', 'Lunch Subsidy Allowance'), ('it_rule', '=', 'mus10ale')], limit=1)
             reimbursement_id =  self.env['reimbursement'].sudo().search([('employee_id', '=', rec.employee_id.id),('name', '=', 'lunch'),('from_date', '>', rec.date_range.date_start),('to_date', '<', rec.date_range.date_end),('state', '=', 'approved')])
             sum=0.00
@@ -437,13 +448,15 @@ class HrDeclaration(models.Model):
                     my_allowed_rebate = my_investment
                 else:
                     my_allowed_rebate = ex_lunch_id.rebate
-                self.env['declaration.exemption'].create({
+                exemption_ids = []
+                exemption_ids.append((0, 0, {
                     'exemption_id': rec.id,
                     'it_rule': 'mus10ale',
                     'saving_master': ex_lunch_id.id,
                     'investment': my_investment,
                     'allowed_rebate': my_allowed_rebate,
-                })
+                }))
+                rec.exemption_ids = exemption_ids
             ex_rebate_id = self.env['saving.master'].sudo().search([('saving_type', '=', 'Revised Rebate under Section 87A (2019-20)'), ('it_rule', '=', 'section87a')], limit=1)
             my_investment = 0.00
             my_allowed_rebate = 0.00
@@ -458,13 +471,15 @@ class HrDeclaration(models.Model):
                     my_allowed_rebate = my_investment
                 else:
                     my_allowed_rebate = ex_rebate_id.rebate
-                self.env['declaration.rebate'].create({
+                rebate_ids = []
+                rebate_ids.append((0, 0, {
                     'rebate_id': rec.id,
                     'it_rule': ex_rebate_id.it_rule,
                     'saving_master': ex_rebate_id.id,
                     'investment': my_investment,
                     'allowed_rebate': my_allowed_rebate,
-                })
+                }))
+                rec.rebate_ids = rebate_ids
             ex_80_c_id = self.env['saving.master'].sudo().search(
                 [('saving_type', '=', 'Investment in PPF &  Employee’s share of PF contribution'), ('it_rule', '=', '80_c')], limit=1)
             prl_80c_id = self.env['hr.payslip.line'].sudo().search(
@@ -485,13 +500,15 @@ class HrDeclaration(models.Model):
                     my_allowed_rebate = my_investment
                 else:
                     my_allowed_rebate = ex_80_c_id.rebate
-                self.env['declaration.slab'].create({
+                slab_ids = []
+                slab_ids.append((0, 0, {
                     'slab_id': rec.id,
                     'it_rule': '80_c',
                     'saving_master': ex_80_c_id.id,
                     'investment': my_investment,
                     'allowed_rebate': my_allowed_rebate,
-                })
+                }))
+                rec.slab_ids = slab_ids
             exempt_am = 0.00
             std_am = 0.00
             sum_pt = 0.00
@@ -580,13 +597,15 @@ class HrDeclaration(models.Model):
                     my_allowed_rebate = my_investment
                 else:
                     my_allowed_rebate = ex_std_id.rebate
-                self.env['declaration.standard'].create({
+                std_ded_ids = []
+                std_ded_ids.append((0, 0, {
                     'std_ded_id': rec.id,
                     'it_rule': 'mus10ale',
                     'saving_master': ex_std_id.id,
                     'investment': my_investment,
                     'allowed_rebate': my_allowed_rebate,
-                })
+                }))
+                rec.std_ded_ids = std_ded_ids
             ex_child_id = self.env['saving.master'].sudo().search(
                 [('saving_type', '=', 'Child Education Allowance & Hostel Expenditure Allowance'),
                  ('it_rule', '=', 'mus10ale')], limit=1)
@@ -608,14 +627,15 @@ class HrDeclaration(models.Model):
                     my_allowed_rebate = my_investment
                 else:
                     my_allowed_rebate = ex_child_id.rebate
-
-                self.env['declaration.exemption'].create({
+                exemption_ids = []
+                exemption_ids.append((0, 0, {
                     'exemption_id': rec.id,
                     'it_rule': 'mus10ale',
                     'saving_master': ex_child_id.id,
                     'investment': my_investment,
                     'allowed_rebate': my_allowed_rebate,
-                })
+                }))
+                rec.exemption_ids = exemption_ids
             ex_hra_id = self.env['saving.master'].sudo().search(
                 [('saving_type', '=', 'HRA Exemption'), ('it_rule', '=', 'mus10ale')], limit=1)
             prl_id = self.env['hr.payslip.line'].sudo().search(
@@ -647,13 +667,16 @@ class HrDeclaration(models.Model):
                     my_allowed_rebate = my_investment
                 else:
                     my_allowed_rebate = ex_hra_id.rebate
-                self.env['declaration.exemption'].create({
+
+                exemption_ids = []
+                exemption_ids.append((0, 0, {
                     'exemption_id': rec.id,
                     'it_rule': 'mus10ale',
                     'saving_master': ex_hra_id.id,
                     'investment': my_investment,
                     'allowed_rebate': my_allowed_rebate,
-                })
+                }))
+                rec.exemption_ids = exemption_ids
             ex_lunch_id = self.env['saving.master'].sudo().search(
                 [('saving_type', '=', 'Lunch Subsidy Allowance'), ('it_rule', '=', 'mus10ale')], limit=1)
             reimbursement_id = self.env['reimbursement'].sudo().search(
@@ -671,13 +694,15 @@ class HrDeclaration(models.Model):
                     my_allowed_rebate = my_investment
                 else:
                     my_allowed_rebate = ex_lunch_id.rebate
-                self.env['declaration.exemption'].create({
+                exemption_ids = []
+                exemption_ids.append((0, 0, {
                     'exemption_id': rec.id,
                     'it_rule': 'mus10ale',
                     'saving_master': ex_lunch_id.id,
                     'investment': my_investment,
                     'allowed_rebate': my_allowed_rebate,
-                })
+                }))
+                rec.exemption_ids = exemption_ids
             ex_rebate_id = self.env['saving.master'].sudo().search(
                 [('saving_type', '=', 'Revised Rebate under Section 87A (2019-20)'), ('it_rule', '=', 'section87a')],
                 limit=1)
@@ -694,13 +719,15 @@ class HrDeclaration(models.Model):
                     my_allowed_rebate = my_investment
                 else:
                     my_allowed_rebate = ex_rebate_id.rebate
-                self.env['declaration.rebate'].create({
+                rebate_ids = []
+                rebate_ids.append((0, 0, {
                     'rebate_id': rec.id,
                     'it_rule': ex_rebate_id.it_rule,
                     'saving_master': ex_rebate_id.id,
                     'investment': my_investment,
                     'allowed_rebate': my_allowed_rebate,
-                })
+                }))
+                rec.rebate_ids = rebate_ids
             ex_80_c_id = self.env['saving.master'].sudo().search(
                 [('saving_type', '=', 'Investment in PPF &  Employee’s share of PF contribution'),
                  ('it_rule', '=', '80_c')], limit=1)
@@ -722,13 +749,15 @@ class HrDeclaration(models.Model):
                     my_allowed_rebate = my_investment
                 else:
                     my_allowed_rebate = ex_80_c_id.rebate
-                self.env['declaration.slab'].create({
+                slab_ids = []
+                slab_ids.append((0, 0, {
                     'slab_id': rec.id,
                     'it_rule': '80_c',
                     'saving_master': ex_80_c_id.id,
                     'investment': my_investment,
                     'allowed_rebate': my_allowed_rebate,
-                })
+                }))
+                rec.slab_ids = slab_ids
             exempt_am = 0.00
             std_am = 0.00
             sum_pt = 0.00
@@ -762,7 +791,6 @@ class HrDeclaration(models.Model):
                 rec.taxable_income = 0.00
             rec.tax_computed_bool = True
         return True
-
 
     @api.multi
     def button_payment_tax(self):
