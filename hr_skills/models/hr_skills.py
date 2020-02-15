@@ -16,10 +16,10 @@ class EmployeeSkill(models.Model):
     _name = 'hr.employee.skill'
     _description = "Skill level for an employee"
 
-    employee_id = fields.Many2one('hr.employee', required=True, ondelete='cascade')
-    skill_id = fields.Many2one('hr.skill', required=True)
-    skill_level_id = fields.Many2one('hr.skill.level', required=True)
-    skill_type_id = fields.Many2one('hr.skill.type', required=True)
+    employee_id = fields.Many2one('hr.employee', ondelete='cascade')
+    skill_id = fields.Many2one('hr.skill', string='Skill')
+    skill_level_id = fields.Many2one('hr.skill.level', string='Skill Level')
+    skill_type_id = fields.Many2one('hr.skill.type', string='Skill Type')
     level_progress = fields.Integer(related='skill_level_id.level_progress')
 
     _sql_constraints = [

@@ -35,8 +35,8 @@ class ResumeLine(models.Model):
     _description = "Resumé line of an employee"
 
     resume_employee_id = fields.Many2one('hr.employee', ondelete='cascade')
-    name = fields.Char(required=True)
-    date_start = fields.Date(required=True)
+    name = fields.Char(string='Title')
+    date_start = fields.Date(string='Date Start')
     date_end = fields.Date()
     description = fields.Text(string="Description")
     upload_qualification_proof = fields.Binary(string="Upload")
