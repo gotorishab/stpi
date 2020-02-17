@@ -136,6 +136,16 @@ class HrDeclaration(models.Model):
                 sum += lines.amount
             rec.rent_paid = sum
 
+    @api.multi
+    @api.depends('tax_payment_ids','tax_payable')
+    def compute_tax_paid_pending(self):
+        total_paid = 0.0
+        for rec in self:
+            for lines in rec.tax_payment_ids:
+                if lines.paid:
+                    total_paid += lines.amount
+            rec.tax_paid = total_paid
+            rec.pending_tax = rec.tax_payable - rec.tax_paid
 
     @api.multi
     @api.depends('employee_id','date_range')
@@ -211,9 +221,14 @@ class HrDeclaration(models.Model):
     allowed_rebate_under_80cdd = fields.Float(string='Allowed Rebate under Section 80 DD', compute='_compute_allowed_rebate')
     allowed_rebate_under_80mesdr = fields.Float(string='Allowed Rebate under Medical Expenditure on Self or Dependent Relative', compute='_compute_allowed_rebate')
 
+    currency_id = fields.Many2one('res.currency', string='Currency',
+                                  default=lambda self: self.env.user.company_id.currency_id)
+
+    tax_paid = fields.Float(string='Tax Paid', compute='compute_tax_paid_pending', store=True)
+    pending_tax = fields.Float(string='Pending Tax', compute='compute_tax_paid_pending', store=True)
 
     state = fields.Selection(
-        [('draft', 'Draft'), ('to_approve', 'To Approve'), ('approved', 'Approved'), ('rejected', 'Rejected'), ('verified', 'Verified')
+        [('draft', 'Draft'), ('to_approve', 'To Approve'), ('approved', 'Approved'), ('rejected', 'Rejected')
          ], required=True, default='draft', string='Status', track_visibility='always')
 
 
@@ -539,13 +554,14 @@ class HrDeclaration(models.Model):
             else:
                 rec.taxable_income = 0.00
             rec.tax_computed_bool = True
+            rec.sudo().button_payment_tax()
         return True
 
 
 
     def hr_declaration_cron(self):
         search_id = self.env['hr.declaration'].search(
-            [('state', 'not in', ['approved', 'rejected', 'verified'])])
+            [('state', 'not in', ['approved', 'rejected'])])
         for rec in search_id:
             sum = 0
             dstart = rec.date_range.date_start
@@ -790,17 +806,20 @@ class HrDeclaration(models.Model):
             else:
                 rec.taxable_income = 0.00
             rec.tax_computed_bool = True
+            rec.sudo().button_payment_tax()
         return True
 
     @api.multi
     def button_payment_tax(self):
         for rec in self:
-            rec.tax_payment_ids.unlink()
+            for lines in rec.tax_payment_ids:
+                if lines.paid == False:
+                    lines.unlink()
             edate = rec.date_range.date_end
             date = datetime.now().date().replace(day=1)+ relativedelta(months=1)
             month_cal = ((edate - date).days)/30
             if month_cal > 0:
-                amount = (rec.tax_payable)/month_cal
+                amount = (rec.pending_tax)/month_cal
                 for i in range(int(month_cal)):
                     self.env['tax.payment'].create({
                         'tax_payment_id': rec.id,
@@ -809,22 +828,6 @@ class HrDeclaration(models.Model):
                     })
                     date = date + relativedelta(months=1)
 
-
-    @api.multi
-    def button_verify(self):
-        for rec in self:
-            if rec.tax_computed_bool == False:
-                raise ValidationError(_("Please Compute the tax first"))
-            elif not rec.tax_payment_ids:
-                raise ValidationError(_("Please fill Tax Payment details"))
-            else:
-                sum_tax_pay = 0.00
-                for data in rec.tax_payment_ids:
-                    sum_tax_pay += data.amount
-                if not sum_tax_pay == rec.tax_payable:
-                    raise ValidationError(_("Sum of Tax Payment Amount should be equal to Tax Payable Amount"))
-                else:
-                    rec.write({'state': 'verified'})
 
 
     @api.model
@@ -1146,6 +1149,11 @@ class TaxPayment(models.Model):
     tax_payment_id = fields.Many2one('hr.declaration', string='Tax Payment')
     date = fields.Date(string='Date')
     amount = fields.Float(string='Amount')
+    paid = fields.Boolean(string="Paid")
     payslip_id = fields.Many2one('hr.payslip', string="Payslip Ref.")
-    employee_id = fields.Many2one('hr.employee', string='Employee')
-
+    # employee_id = fields.Many2one('hr.employee', string="Employee Ref.")
+    #
+    # @api.constrains('tax_payment_id')
+    # def _select_emp_from_m2o(self):
+    #     for rec in self:
+    #         rec.employee_id = rec.tax_payment_id.employee_id.id

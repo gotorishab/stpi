@@ -17,7 +17,7 @@
                     <group>
                        <button name="get_loan" string="Update Loans" type="object" groups="hr_payroll.group_hr_payroll_manager"/>
                     </group>
-                    <field name="loan_ids" nolabel="1">
+                    <field name="loan_ids" nolabel="1" readonly="1">
                         <tree string="Loans" editable="bottom">
                             <field name="loan_id"/>
                             <field name="date"/>

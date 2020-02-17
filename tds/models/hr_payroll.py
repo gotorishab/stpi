@@ -13,7 +13,7 @@ class HrPayslipInput(models.Model):
 
 class HrPayslip(models.Model):
     _inherit = 'hr.payslip'
-    
+
     @api.one
     def compute_total_paid_tax(self):
         """This compute the total paid amount of Loan.
@@ -24,7 +24,7 @@ class HrPayslip(models.Model):
                 total += line.amount
         self.total_paid_tax = total
 
-    tax_payment_ids = fields.One2many('tax.payment', 'payslip_id', string="Loans")
+    tax_payment_ids = fields.One2many('tax.payment', 'payslip_id', string="Tax")
     total_paid_tax = fields.Float(string="Total Income Tax Amount", compute='compute_total_paid_tax')
     #added by sangita
     refund_id_tax = fields.Many2one('hr.payslip',string="Refund ID")
@@ -76,27 +76,27 @@ class HrPayslip(models.Model):
         res = super(HrPayslip, self).get_inputs(contract_ids, date_from, date_to)
         contract_obj = self.env['hr.contract']
         emp_id = contract_obj.browse(contract_ids[0].id).employee_id
-        lon_obj = self.env['hr.declaration'].search([('employee_id', '=', emp_id.id), ('state', '=', 'verified')])
-        for loan in lon_obj:
-            for loan_line in loan.loan_lines:
-                if date_from <= loan_line.date <= date_to:
+        tax_obj = self.env['hr.declaration'].search([('employee_id', '=', emp_id.id), ('state', '!=', 'rejected')])
+        for tax in tax_obj:
+            for tax_line in tax.tax_payment_ids:
+                if date_from <= tax_line.date <= date_to and not tax_line.paid:
                     for result in res:
                         if result.get('code') == 'IT':
-                            result['amount'] = loan_line.amount
-                            result['it_tax_payment_id'] = loan_line.id
+                            result['amount'] = tax_line.amount
+                            result['it_tax_payment_id'] = tax_line.id
         return res
 
     @api.multi
     def get_income_tax(self):
         """This gives the installment lines of an employee where the state is not in paid.
             """
-        loan_list = []
-        tax_payment_ids = self.env['tax.payment'].search([('employee_id', '=', self.employee_id.id)])
+        tax_list = []
+        tax_payment_ids = self.env['tax.payment'].search([('tax_payment_id.employee_id', '=', self.employee_id.id), ('paid', '=', False)])
         for loan in tax_payment_ids:
-            if loan.tax_payment_id.state == 'verified':
-                loan_list.append(loan.id)
-        self.tax_payment_ids = loan_list
-        return loan_list
+            if loan.tax_payment_id.state != 'rejected':
+                tax_list.append(loan.id)
+        self.tax_payment_ids = tax_list
+        return tax_list
 
     #added by sangita
     @api.multi
@@ -111,7 +111,7 @@ class HrPayslip(models.Model):
                     loan.paid = True
             s.get_income_tax()
             return super(HrPayslip,s).compute_sheet()
-       
+
     @api.multi
     def refund_sheet(self):
         res =  super(HrPayslip,self).refund_sheet()
@@ -122,7 +122,7 @@ class HrPayslip(models.Model):
                     tax.paid = False
         self.refund_id_tax = self.copy({'credit_note': True, 'name': _('Refund: ') + self.name})
         return True
-         
+
 #     @api.multi
 #     def refund_sheet(self):
 #         for payslip in self:
@@ -161,15 +161,15 @@ class HrPayslip(models.Model):
 
     @api.multi
     def action_payslip_done(self):
-        loan_list = []
+        tax_list = []
         for line in self.tax_payment_ids:
 #             print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<",line)
             if line.paid:
 #                 print(">>>>>>>>>>>>>>>>>>>>>>>>>>>",line.paid)
-                loan_list.append(line.id)
+                tax_list.append(line.id)
             else:
                 line.payslip_id = False
 #                 print("..................................",line.payslip_id)
-        self.tax_payment_ids = loan_list
+        self.tax_payment_ids = tax_list
 #         print("????????????????????????????????????",self.tax_payment_ids)
         return super(HrPayslip, self).action_payslip_done()

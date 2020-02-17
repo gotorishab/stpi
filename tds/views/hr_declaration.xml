@@ -27,10 +27,10 @@
                      <button name="button_reset_to_draft" string="Revert" type="object" states="to_approve"/>
                     <button name="button_approved" string="Approve" class="oe_highlight" type="object" states="to_approve" groups="tds.group_manager_hr_declaration"/>
                     <button name="button_reject" string="Reject" type="object" states="to_approve" groups="tds.group_manager_hr_declaration"/>
-                    <button name="button_compute_tax" string="Compute Tax" class="oe_highlight" type="object" states="draft,to_approve"/>
-                    <button name="button_payment_tax" string="Tax Payment" class="oe_highlight" type="object" states="draft,to_approve,approved"/>
-                    <button name="button_verify" string="Verify" type="object" class="oe_highlight" states="approved" groups="tds.group_manager_hr_declaration"/>
-                    <field name="state" widget="statusbar" statusbar_visible="draft,to_approve,approved,rejected" />
+                    <button name="button_compute_tax" string="Compute Tax" class="oe_highlight" type="object"/>
+                    <button name="button_payment_tax" string="Tax Payment" class="oe_highlight" type="object" invisible="1"/>
+<!--                    <button name="button_verify" string="Verify" type="object" class="oe_highlight" states="approved" groups="tds.group_manager_hr_declaration"/>-->
+                    <field name="state" widget="statusbar" statusbar_visible="draft,to_approve,approved" />
                 </header>
                 <sheet>
                     <group>
@@ -240,8 +240,15 @@
                                     <field name="tax_payment_id" invisible="1"/>
                                     <field name="date" required="1"/>
                                     <field name="amount" required="1"/>
+                                    <field name="paid"/>
+                                    <field name="payslip_id" readonly="1"/>
                                 </tree>
                             </field>
+                            <group class="oe_subtotal_footer oe_right" colspan="2" >
+                                <field name="currency_id" options="{'no_create': True}" invisible="1 "/>
+                                <field name="tax_paid" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                <field name="pending_tax" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            </group>
                         </page>
                         <page string="Rent Paid" name="rent_paid_g">
                             <field name="rent_paid_ids" attrs="{'readonly':[('state','!=','draft')]}">

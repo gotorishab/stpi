@@ -17,12 +17,12 @@
                     <group>
                        <button name="get_income_tax" string="Update Tax" type="object" groups="hr_payroll.group_hr_payroll_manager"/>
                     </group>
-                    <field name="tax_payment_ids" nolabel="1">
+                    <field name="tax_payment_ids" nolabel="1" readonly="1">
                         <tree string="Loans" editable="bottom">
                             <field name="tax_payment_id"/>
                             <field name="date"/>
                             <field name="amount"/>
-<!--                            <field name="paid" groups="hr_payroll.group_hr_payroll_manager"/>-->
+                            <field name="paid"/>
                         </tree>
                     </field>
                     <group class="oe_subtotal_footer oe_right">
