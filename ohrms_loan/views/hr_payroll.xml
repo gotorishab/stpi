@@ -19,7 +19,7 @@
                     </group>
                     <field name="loan_ids" nolabel="1" readonly="1">
                         <tree string="Loans" editable="bottom">
-                            <field name="loan_id"/>
+                            <field name="loan_payslip_id"/>
                             <field name="date"/>
                             <field name="amount"/>
                             <field name="paid" groups="hr_payroll.group_hr_payroll_manager"/>

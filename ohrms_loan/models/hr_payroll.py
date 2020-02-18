@@ -90,25 +90,30 @@ class HrPayslip(models.Model):
     def get_loan(self):
         """This gives the installment lines of an employee where the state is not in paid.
             """
+        self.loan_ids.unlink()
         loan_list = []
         loan_ids = self.env['hr.loan.line'].search([('employee_id', '=', self.employee_id.id), ('paid', '=', False)])
         for loan in loan_ids:
+            print("--------------------------loan",loan.id)
             if loan.loan_id.state == 'approve':
-                loan_list.append(loan.id)
+                # loan_list.append(loan.id)
+                loan_list.append((0, 0, {
+                    "loan_payslip_id": loan.loan_id.id,
+                    "date":loan.date,
+                    "amount":loan.amount,
+                    "paid":loan.paid
+                }))
         self.loan_ids = loan_list
-        return loan_list
-
-    #added by sangita
-    @api.multi
-    def compute_sheet(self):
-#         print"@@@@@@@@@@@@@@@@@@@@@@@@@@WWWWWWWWWWWWW"
-#         for contract in self.contract_id:
-#             self.account_id = contract.account_id.id
-#             print"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",s.account_id
         for s in self:
             for loan in s.loan_ids:
                 if loan.date <= s.date_to:
                     loan.paid = True
+        return True
+
+    #added by sangita
+    @api.multi
+    def compute_sheet(self):
+        for s in self:
             s.get_loan()
             return super(HrPayslip,s).compute_sheet()
        
@@ -163,13 +168,14 @@ class HrPayslip(models.Model):
     def action_payslip_done(self):
         loan_list = []
         for line in self.loan_ids:
-#             print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<",line)
             if line.paid:
-#                 print(">>>>>>>>>>>>>>>>>>>>>>>>>>>",line.paid)
-                loan_list.append(line.id)
+                loan_ids = self.env['hr.loan.line'].search(
+                    [('employee_id', '=', self.employee_id.id),('loan_id','=',line.loan_payslip_id.id), ('paid', '=', False), ('date', '=', line.date)])
+                for loans in loan_ids:
+                    loans.paid = True
+                    loans.loan_payslip_ref_id = self.id
+                # loan_list.append(line.id)
             else:
                 line.payslip_id = False
-#                 print("..................................",line.payslip_id)
-        self.loan_ids = loan_list
-#         print("????????????????????????????????????",self.loan_ids)
+        # self.loan_ids = loan_list
         return super(HrPayslip, self).action_payslip_done()
