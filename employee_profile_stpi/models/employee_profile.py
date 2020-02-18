@@ -17,6 +17,8 @@ class EmployeeProfile(models.Model):
     branch_id= fields.Many2one('res.branch', string="Branch")
     department = fields.Many2one('hr.department', string="Department")
 
+    prev_occu_ids = fields.One2many('employee.previous.occupation.update', 'employee_update_profile', 'Prev. Occupation Ref.')
+    prev_occu_current_ids = fields.One2many('employee.previous.occupation.current', 'employee_current_profile', 'Prev. Occupation Current Ref.')
 
     address_ids = fields.One2many('employee.update.address', 'employee_update_profile', string='Address', track_visibility='always')
     address_current_ids = fields.One2many('employee.current.address', 'employee_current_profile', string='Current Address', track_visibility='always')
@@ -296,6 +298,7 @@ class EmployeeProfile(models.Model):
                 relative_current_ids.append((0, 0, {
                     'employee_current_profile': rec.id,
                     'salutation': address.salutation.id,
+                    'employee_id': address.employee_id.id,
                     'name': address.name,
                     'relate_type': address.relate_type.id,
                     'birthday': address.birthday,
@@ -312,6 +315,28 @@ class EmployeeProfile(models.Model):
                 }))
             rec.relative_current_ids.unlink()
             rec.relative_current_ids = relative_current_ids
+            prev_occu_current_ids = []
+            for address in rec.employee_id.prev_occu_ids:
+                prev_occu_current_ids.append((0, 0, {
+                    'employee_current_profile': rec.id,
+                    'employee_id': address.employee_id.id,
+                    'last_employer': address.last_employer,
+                    'organization_type': address.organization_type.id,
+                    'from_date': address.from_date,
+                    'to_date': address.to_date,
+                    'service_period': address.service_period,
+                    'position': address.position,
+                    'reason_for_leaving': address.reason_for_leaving,
+                    'currency_id': address.currency_id.id,
+                    'last_drawn_salary': address.last_drawn_salary,
+                    'ref_name': address.ref_name,
+                    'ref_position': address.ref_position,
+                    'ref_phone': address.ref_phone,
+                    'attachment': address.attachment,
+                    'remarks': address.remarks,
+                }))
+            rec.prev_occu_current_ids.unlink()
+            rec.prev_occu_current_ids = prev_occu_current_ids
 
 
     @api.onchange('employee_id')
@@ -368,6 +393,7 @@ class EmployeeProfile(models.Model):
             for address in rec.employee_id.relative_ids:
                 relative_ids.append((0, 0, {
                     'employee_current_profile': rec.id,
+                    'employee_id': rec.employee_id.id,
                     'salutation': address.salutation.id,
                     'name': address.name,
                     'relate_type': address.relate_type.id,
@@ -385,7 +411,28 @@ class EmployeeProfile(models.Model):
                 }))
             rec.relative_ids.unlink()
             rec.relative_ids = relative_ids
-
+            prev_occu_ids = []
+            for address in rec.employee_id.prev_occu_ids:
+                prev_occu_ids.append((0, 0, {
+                    'employee_current_profile': rec.id,
+                    'employee_id': address.employee_id.id,
+                    'last_employer': address.last_employer,
+                    'organization_type': address.organization_type.id,
+                    'from_date': address.from_date,
+                    'to_date': address.to_date,
+                    'service_period': address.service_period,
+                    'position': address.position,
+                    'reason_for_leaving': address.reason_for_leaving,
+                    'currency_id': address.currency_id.id,
+                    'last_drawn_salary': address.last_drawn_salary,
+                    'ref_name': address.ref_name,
+                    'ref_position': address.ref_position,
+                    'ref_phone': address.ref_phone,
+                    'attachment': address.attachment,
+                    'remarks': address.remarks,
+                }))
+            rec.prev_occu_ids.unlink()
+            rec.prev_occu_ids = prev_occu_ids
 
 
     @api.multi
@@ -852,7 +899,6 @@ class EmployeeProfile(models.Model):
                     }))
                 rec.employee_id.employee_skill_ids.unlink()
                 rec.employee_id.employee_skill_ids = employee_skill_ids
-            rec.write({'state': 'approved'})
             if rec.relative_ids:
                 relative_ids = []
                 for address in rec.relative_ids:
@@ -875,6 +921,30 @@ class EmployeeProfile(models.Model):
                     }))
                 rec.employee_id.relative_ids.unlink()
                 rec.employee_id.relative_ids = relative_ids
+
+            if rec.relative_ids:
+                prev_occu_ids = []
+                for address in rec.prev_occu_ids:
+                    prev_occu_ids.append((0, 0, {
+                        'employee_current_profile': rec.id,
+                    'employee_id': address.employee_id.id,
+                    'last_employer': address.last_employer,
+                    'organization_type': address.organization_type.id,
+                    'from_date': address.from_date,
+                    'to_date': address.to_date,
+                    'service_period': address.service_period,
+                    'position': address.position,
+                    'reason_for_leaving': address.reason_for_leaving,
+                    'currency_id': address.currency_id.id,
+                    'last_drawn_salary': address.last_drawn_salary,
+                    'ref_name': address.ref_name,
+                    'ref_position': address.ref_position,
+                    'ref_phone': address.ref_phone,
+                    'attachment': address.attachment,
+                    'remarks': address.remarks,
+                    }))
+                rec.employee_id.prev_occu_ids.unlink()
+                rec.employee_id.prev_occu_ids = prev_occu_ids
             rec.write({'state': 'approved'})
 
 
@@ -1073,3 +1143,109 @@ class EmployeeRelativeUpdtae(models.Model):
         required=False)
     employee_id = fields.Many2one(
         'hr.employee', 'Employee Ref')
+
+
+class EmployeePreviousOccupationCurrent(models.Model):
+
+    _name = "employee.previous.occupation.current"
+    _description = "Recruite Previous Occupation Current"
+    _order = 'to_date desc'
+    _rec_name = 'position'
+
+    employee_current_profile = fields.Many2one('employee.profile', 'Employee Current Profile')
+    employee_id = fields.Many2one('hr.employee', 'Employee Ref', ondelete='cascade')
+    last_employer = fields.Char(string = 'Last Employer')
+    organization_type = fields.Many2one('organization.type', string = "Organisation Type")
+    from_date = fields.Date(string='From Date')
+    to_date = fields.Date(string='To Date')
+    service_period = fields.Char(string='Service period', compute='service_period_count')
+    position = fields.Char(string='Position')
+    reason_for_leaving = fields.Char(string = 'Reason for Leaving')
+    currency_id = fields.Many2one('res.currency')
+    last_drawn_salary = fields.Monetary(string = 'Last Drawn Salary')
+    ref_name = fields.Char(string='Reference Name')
+    ref_position = fields.Char(string='Reference Position')
+    ref_phone = fields.Char(string='Reference Phone')
+    attachment = fields.Binary(string="Attachment")
+    remarks = fields.Text(string='Remarks')
+
+
+
+    @api.constrains('from_date','to_date')
+    @api.onchange('from_date','to_date')
+    def onchange_date(self):
+        for record in self:
+            if record.from_date and record.to_date and record.from_date > record.to_date:
+                raise ValidationError(
+                    _('Start date should be less than or equal to end date, but should not be greater than end date'))
+
+    @api.depends('from_date', 'to_date')
+    def service_period_count(self):
+        if self.from_date and self.to_date:
+            r = relativedelta(self.to_date, self.from_date)
+            self.service_period = ("{0} years, {1} months, {2} days".format(r.years, r.months, r.days))
+
+
+    @api.constrains('ref_phone')
+    @api.onchange('ref_phone')
+    def _check_ref_phone(self):
+        for rec in self:
+            if rec.ref_phone and not rec.ref_phone.isnumeric():
+                raise ValidationError(_("Phone number must be a number"))
+            if rec.ref_phone and len(rec.ref_phone) != 10:
+                raise ValidationError(_("Please enter correct phone number."
+                                        "It must be of 10 digits"))
+
+
+
+class EmployeePreviousOccupation(models.Model):
+
+    _name = "employee.previous.occupation.update"
+    _description = "Recruite Previous Occupation Update"
+    _order = 'to_date desc'
+    _rec_name = 'position'
+
+
+    employee_update_profile = fields.Many2one('employee.profile', 'Employee Update Profile')
+    employee_id = fields.Many2one('hr.employee', 'Employee Ref', ondelete='cascade')
+    last_employer = fields.Char(string = 'Last Employer')
+    organization_type = fields.Many2one('organization.type', string = "Organisation Type")
+    from_date = fields.Date(string='From Date', required=True)
+    to_date = fields.Date(string='To Date', required=True)
+    service_period = fields.Char(string='Service period', compute='service_period_count')
+    position = fields.Char(string='Position', required=True)
+    reason_for_leaving = fields.Char(string = 'Reason for Leaving')
+    currency_id = fields.Many2one('res.currency')
+    last_drawn_salary = fields.Monetary(string = 'Last Drawn Salary')
+    ref_name = fields.Char(string='Reference Name')
+    ref_position = fields.Char(string='Reference Position')
+    ref_phone = fields.Char(string='Reference Phone')
+    attachment = fields.Binary(string="Attachment")
+    remarks = fields.Text(string='Remarks')
+
+
+
+    @api.constrains('from_date','to_date')
+    @api.onchange('from_date','to_date')
+    def onchange_date(self):
+        for record in self:
+            if record.from_date and record.to_date and record.from_date > record.to_date:
+                raise ValidationError(
+                    _('Start date should be less than or equal to end date, but should not be greater than end date'))
+
+    @api.depends('from_date', 'to_date')
+    def service_period_count(self):
+        if self.from_date and self.to_date:
+            r = relativedelta(self.to_date, self.from_date)
+            self.service_period = ("{0} years, {1} months, {2} days".format(r.years, r.months, r.days))
+
+
+    @api.constrains('ref_phone')
+    @api.onchange('ref_phone')
+    def _check_ref_phone(self):
+        for rec in self:
+            if rec.ref_phone and not rec.ref_phone.isnumeric():
+                raise ValidationError(_("Phone number must be a number"))
+            if rec.ref_phone and len(rec.ref_phone) != 10:
+                raise ValidationError(_("Please enter correct phone number."
+                                        "It must be of 10 digits"))

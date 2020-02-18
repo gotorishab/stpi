@@ -1,5 +1,5 @@
 from odoo import api, fields, models, tools, _
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError,UserError
 import re
 from datetime import datetime, date
 from dateutil.relativedelta import relativedelta
@@ -34,6 +34,7 @@ class Reimbursement(models.Model):
     department_id = fields.Many2one('hr.department', string='Department', store=True, track_visibility='always')
     lunch_daily = fields.Char('Lunch Daily: ', track_visibility='always')
     net_amount = fields.Float('Amount you get : ', track_visibility='always')
+    lunch_tds_amt = fields.Float('Amount for TDS')
     claimed_amount = fields.Float('Claimed Amount', track_visibility='always')
     Approved_amount = fields.Float('Approved Amount', track_visibility='always')
     from_date = fields.Date('From Date', track_visibility='always')
@@ -143,6 +144,7 @@ class Reimbursement(models.Model):
                 rec.lunch_daily = '75'
                 rec.working_days = count
                 rec.net_amount = float(count * 75)
+                rec.lunch_tds_amt = float(count * 50)
             elif rec.employee_id and rec.name:
                 if rec.name == 'telephone' or rec.name == 'mobile':
                     gr_id = self.env['reimbursement.configuration'].search([('name', '=', rec.name),('group_ids.users','=',self.env.user.id)],order='name desc', limit=1)
@@ -181,6 +183,16 @@ class Reimbursement(models.Model):
                     else:
                         rec.amount_phone = 0
 
+
+
+
+    @api.multi
+    def unlink(self):
+        for data in self:
+            if data.state not in ('draft', 'rejected'):
+                raise UserError(
+                    'You cannot delete a Reimbursement which is not in draft or Rejected state')
+        return super(Reimbursement, self).unlink()
 
 
     @api.constrains('from_date','to_date')

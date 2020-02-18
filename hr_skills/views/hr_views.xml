@@ -190,11 +190,11 @@
                 <sheet>
                     <group>
                         <group>
-                            <field name="skill_type_id"/>
-                            <field name="skill_id" domain="[('skill_type_id', '=', skill_type_id)]"/>
+                            <field name="skill_type_id" required="1"/>
+                            <field name="skill_id" domain="[('skill_type_id', '=', skill_type_id)]" required="1"/>
                         </group>
                         <group>
-                            <field name="skill_level_id" domain="[('skill_type_id', '=', skill_type_id)]"/>
+                            <field name="skill_level_id" domain="[('skill_type_id', '=', skill_type_id)]" required="1"/>
                             <field name="level_progress" widget="progressbar"/>
                         </group>
                     </group>

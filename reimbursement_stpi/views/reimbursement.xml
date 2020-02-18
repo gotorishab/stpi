@@ -43,6 +43,7 @@
                             <field name="from_date" attrs="{'readonly':[('state','not in',('draft'))], 'required':[('state','in',('draft'))]}"/>
                             <field name="to_date" attrs="{'readonly':[('state','not in',('draft'))], 'required':[('state','in',('draft'))]}"/>
                             <field name="dob" invisible="1"/>
+                            <field name="lunch_tds_amt" invisible="1"/>
                             <field name="brief_amount" attrs="{'invisible': [('name', '!=', 'briefcase')], 'required': [('name', '=', 'briefcase')], 'readonly':[('state','not in',('draft'))]}"/>
                         </group>
                         <group>

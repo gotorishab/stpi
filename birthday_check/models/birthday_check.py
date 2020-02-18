@@ -14,10 +14,10 @@ class BirthdayCheck(models.Model):
     @api.depends('birthday')
     def _check_previous_month(self):
         for rec in self:
-            first_day = datetime.date.today().replace(day=1) - relativedelta(months=1)
-            last_day = datetime.date.today().replace(day=1) - relativedelta(days=1)
+            month = (datetime.datetime.now().replace(day=1) - relativedelta(months=1)).strftime("%m")
             if rec.birthday:
-                if first_day <= rec.birthday <= last_day:
+                bday_month = rec.birthday.strftime("%m")
+                if month == bday_month:
                     rec.is_previous_month = True
                 else:
                     rec.is_previous_month = False
@@ -25,10 +25,10 @@ class BirthdayCheck(models.Model):
     @api.depends('birthday')
     def _check_current_month(self):
         for rec in self:
-            first_day = datetime.date.today().replace(day=1)
-            last_day = datetime.date.today().replace(day=1)+ relativedelta(months=1) - relativedelta(days=1)
+            month = datetime.datetime.now().strftime("%m")
             if rec.birthday:
-                if first_day <= rec.birthday <= last_day:
+                bday_month = rec.birthday.strftime("%m")
+                if month == bday_month:
                     rec.is_current_month = True
                 else:
                     rec.is_current_month = False
@@ -37,10 +37,10 @@ class BirthdayCheck(models.Model):
     @api.depends('birthday')
     def _check_next_month(self):
         for rec in self:
-            first_day = datetime.date.today().replace(day=1)+ relativedelta(months=1)
-            last_day = datetime.date.today().replace(day=1)+ relativedelta(months=2) - relativedelta(days=1)
+            month = (datetime.datetime.now().replace(day=1)+ relativedelta(months=1)).strftime("%m")
             if rec.birthday:
-                if first_day <= rec.birthday <= last_day:
+                bday_month = rec.birthday.strftime("%m")
+                if month == bday_month:
                     rec.is_next_month = True
                 else:
                     rec.is_next_month = False
