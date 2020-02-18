@@ -1,13 +1,13 @@
 {
     "name": "Register Report Branch",
-    "version": "12.0.1.1",
+    "version": "12.0.0.2",
     "description": """
-                    Last updated by sangita 24/07/2019 issue
+                    Last updated by sangita 18/02/2020 issue
     """,
     "author": "Sangita(Dexciss)",
     'website': "http://www.dexciss.com",
     "depends": ['hr','hr_payroll','base','l10n_in_hr_payroll','employee_dynamic_fields_dex',
-                'base_branch_company','hr_contract','report_xlsx'],
+                'hr_branch_company','hr_contract','report_xlsx'],
     "category": "",
     "demo": [],
     "data": [

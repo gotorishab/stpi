@@ -277,7 +277,7 @@ class ContributionReportWizard(models.Model):
             left outer join hr_employee as manager on emp.parent_id = manager.id
             left outer join hr_job as job on emp.job_id = job.id
             where
-                hp.state in ('draft','verify','done','cancel') and
+                hp.state in ('done') and
                 hp.date_from BETWEEN '{}'""".format(from_date)+""" AND '{}'""".format(to_date)+""" and
                 hp.date_to BETWEEN '{}'""".format(from_date)+""" AND '{}'""".format(to_date)+"""
 
