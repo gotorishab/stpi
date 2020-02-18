@@ -7,7 +7,7 @@
     "author": "Eficent, ",
     "website": "http://www.dexciss.com",
     "category": "HR Management",
-    "depends": ["base_branch_company","hr","hr_holidays"],
+    "depends": ["base_branch_company","hr","hr_holidays","hr_payroll"],
     "license": "",
     "data": [
         # "security/hr_security.xml",
