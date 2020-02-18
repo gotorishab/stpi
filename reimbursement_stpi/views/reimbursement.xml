@@ -12,6 +12,8 @@
                 <field name="from_date"/>
                 <field name="to_date"/>
                  <field name="state"/>
+                <field name="__last_update"/>
+                <field name="write_uid"/>
             </tree>
         </field>
     </record>
@@ -27,7 +29,7 @@
                      <button name="button_reset_to_draft" string="Revert" type="object" states="waiting_for_approval"/>
                     <button name="button_approved" string="Approve" class="oe_highlight" type="object" states="waiting_for_approval" groups="reimbursement_stpi.group_approving_authority"/>
                     <button name="button_reject" string="Reject" type="object" attrs="{'invisible':[('state','not in',('waiting_for_approval'))]}"/>
-                    <field name="state" widget="statusbar" statusbar_visible="draft,waiting_for_approval ,approved,rejected" />
+                    <field name="state" widget="statusbar" statusbar_visible="draft,waiting_for_approval ,approved" />
                 </header>
                 <sheet>
                     <group>
@@ -47,6 +49,8 @@
                             <field name="brief_amount" attrs="{'invisible': [('name', '!=', 'briefcase')], 'required': [('name', '=', 'briefcase')], 'readonly':[('state','not in',('draft'))]}"/>
                         </group>
                         <group>
+                            <field name="__last_update"/>
+                            <field name="write_uid"/>
                             <field name="claim_date_from" attrs="{'invisible': [('name', '=', 'briefcase')], 'readonly': [('name', '!=', 'briefcase')]}"/>
                             <field name="claim_date_to" attrs="{'invisible': [('name', '=', 'briefcase')], 'readonly': [('name', '!=', 'briefcase')]}"/>
                             <field name="claim_date" attrs="{'invisible': [('name', '=', 'briefcase')], 'readonly': [('name', '!=', 'briefcase')]}"/>
