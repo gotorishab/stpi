@@ -80,7 +80,7 @@
                                     <field name="pending_amount"/>
                                     <field name="amount" sum="Total EMI"/>
                                     <field name="paid" readonly="1"/>
-                                    <field name="payslip_id"/>
+                                    <field name="loan_payslip_ref_id"/>
                                     <!--<field name="paid" readonly="1" invisible="1"/>-->
                                 </tree>
                             </field>

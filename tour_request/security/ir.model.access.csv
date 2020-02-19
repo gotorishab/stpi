@@ -4,3 +4,5 @@ access_tour_request_journey,tour.request.journey,model_tour_request_journey,base
 access_employee_tour_claim,employee.tour.claim,model_employee_tour_claim,base.group_user,1,1,1,1
 access_tour_claim_journey,tour.claim.journey,model_tour_claim_journey,base.group_user,1,1,1,1
 access_travel_mode,travel.mode,model_travel_mode,base.group_user,1,1,1,1
+access_tour_claim_journey_lodging,tour.claim.journey.lodging,model_tour_claim_journey_lodging,base.group_user,1,1,1,1
+access_employee_leave_taken,employee.leave.taken,model_employee_leave_taken,base.group_user,1,1,1,1

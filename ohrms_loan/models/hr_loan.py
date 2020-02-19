@@ -281,7 +281,9 @@ class InstallmentLine(models.Model):
     amount = fields.Float(string="EMI")
     paid = fields.Boolean(string="Paid")
     loan_id = fields.Many2one('hr.loan', string="Loan Ref.")
+    loan_payslip_id = fields.Many2one('hr.loan', string="Loan Ref.")
     payslip_id = fields.Many2one('hr.payslip', string="Payslip Ref.")
+    loan_payslip_ref_id = fields.Many2one('hr.payslip', string="Payslip Ref.")
     state = fields.Selection([
         ('draft', 'Draft'),
         ('waiting_approval_1', 'Submitted'),

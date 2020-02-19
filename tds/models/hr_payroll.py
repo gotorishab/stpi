@@ -90,25 +90,29 @@ class HrPayslip(models.Model):
     def get_income_tax(self):
         """This gives the installment lines of an employee where the state is not in paid.
             """
-        tax_list = []
+        tax_payment_ids = []
+        self.tax_payment_ids.unlink()
         tax_payment_ids = self.env['tax.payment'].search([('tax_payment_id.employee_id', '=', self.employee_id.id), ('paid', '=', False)])
         for loan in tax_payment_ids:
             if loan.tax_payment_id.state != 'rejected':
-                tax_list.append(loan.id)
-        self.tax_payment_ids = tax_list
-        return tax_list
-
-    #added by sangita
-    @api.multi
-    def compute_sheet(self):
-#         print"@@@@@@@@@@@@@@@@@@@@@@@@@@WWWWWWWWWWWWW"
-#         for contract in self.contract_id:
-#             self.account_id = contract.account_id.id
-#             print"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",s.account_id
+                tax_payment_ids.append((0, 0, {
+                    "tax_payslip_id": loan.loan_id.id,
+                    "date": loan.date,
+                    "amount": loan.amount,
+                    "paid": loan.paid
+                }))
+                # tax_payment_ids.append(loan.id)
+        self.tax_payment_ids = tax_payment_ids
         for s in self:
             for loan in s.tax_payment_ids:
                 if loan.date <= s.date_to:
                     loan.paid = True
+        return tax_payment_ids
+
+    #added by sangita
+    @api.multi
+    def compute_sheet(self):
+        for s in self:
             s.get_income_tax()
             return super(HrPayslip,s).compute_sheet()
 
@@ -161,15 +165,37 @@ class HrPayslip(models.Model):
 
     @api.multi
     def action_payslip_done(self):
-        tax_list = []
+        # tax_list = []
         for line in self.tax_payment_ids:
-#             print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<",line)
             if line.paid:
+                loan_ids = self.env['hr.loan.line'].search(
+                    [('employee_id', '=', self.employee_id.id),('loan_id','=',line.tax_payslip_id.id), ('paid', '=', False), ('date', '=', line.date)])
+                for loans in loan_ids:
+                    loans.paid = True
+                    loans.tax_payslip_ref_id = self.id
 #                 print(">>>>>>>>>>>>>>>>>>>>>>>>>>>",line.paid)
-                tax_list.append(line.id)
+#                 tax_list.append(line.id)
             else:
                 line.payslip_id = False
 #                 print("..................................",line.payslip_id)
-        self.tax_payment_ids = tax_list
+#         self.tax_payment_ids = tax_list
 #         print("????????????????????????????????????",self.tax_payment_ids)
         return super(HrPayslip, self).action_payslip_done()
+
+
+    #
+    # @api.multi
+    # def action_payslip_done(self):
+    #     loan_list = []
+    #     for line in self.loan_ids:
+    #         if line.paid:
+    #             loan_ids = self.env['tax.payment'].search(
+    #                 [('tax_payment_id.employee_id', '=', self.employee_id.id),('loan_id','=',line.tax_payslip_id.id), ('paid', '=', False), ('date', '=', line.date)])
+    #             for loans in loan_ids:
+    #                 loans.paid = True
+    #                 loans.tax_payslip_ref_id = self.id
+    #             # loan_list.append(line.id)
+    #         else:
+    #             line.payslip_id = False
+    #     # self.loan_ids = loan_list
+    #     return super(HrPayslip, self).action_payslip_done()
