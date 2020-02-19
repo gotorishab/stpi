@@ -248,12 +248,23 @@
                                     </tree>
                             </field>
                             <separator string="Date of absence from place to halt"/>
-                            <group>
-                                <group>
-                                    <field name="leave_taken" domain="[('state','=','approved'),('employee_id', '=', employee_id)]" attrs="{'readonly':[('state','not in',('draft', 'rejected'))],'required':[('state','=','draft')]}"/>
-<!--                                    <field name="to_date_camp"/>-->
-                                </group>
-                            </group>
+                            <field name="detail_of_journey_leave">
+                                    <tree editable="bottom" create="0">
+                                        <field name="tour_sequence" readonly="1"/>
+                                        <field name="employee_journey" invisible="1"/>
+                                        <field name="leave_taken" domain="[('state','=','approved'),('employee_id','=','employee_journey.employee_id')]"/>
+                                        <field name="from_date_camp"/>
+                                        <field name="to_date_camp"/>
+                                        <field name="state" invisible="1"/>
+                                    </tree>
+                            </field>
+<!--                            <separator string="Date of absence from place to halt"/>-->
+<!--                            <group>-->
+<!--                                <group>-->
+<!--                                    <field name="leave_taken" domain="[('state','=','approved')]" attrs="{'readonly':[('state','not in',('draft', 'rejected'))],'required':[('state','=','draft')]}"/>-->
+<!--&lt;!&ndash;                                    <field name="to_date_camp"/>&ndash;&gt;-->
+<!--                                </group>-->
+<!--                            </group>-->
                             <separator string="Not being actually in camp on Sunday"/>
                             <group>
                                 <group>

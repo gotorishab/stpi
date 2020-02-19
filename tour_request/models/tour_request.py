@@ -202,6 +202,7 @@ class EmployeeTourClaim(models.Model):
     department = fields.Many2one('hr.department', string="Department", compute='compute_des_dep', store=True)
     detail_of_journey = fields.One2many('tour.claim.journey','employee_journey')
     detail_of_journey_lodging = fields.One2many('tour.claim.journey.lodging','employee_journey')
+    detail_of_journey_leave = fields.One2many('employee.leave.taken','employee_journey')
     advance_requested = fields.Float(string="Advance Requested", readonly=True, compute='_compute_approved_amount')
     balance_left = fields.Float(string="Balance left", readonly=True, compute='_compute_approved_amount')
     tour_sequence = fields.Char(string="tour sequence")
@@ -424,6 +425,37 @@ class TourClaimJourney(models.Model):
     #         rec.no_of_days = (rec.to_date - rec.from_date).days
     #
     #
+
+
+
+
+
+
+
+class EmployeeLeaveTaken(models.Model):
+    _name = 'employee.leave.taken'
+    _description = 'Leave Taken'
+
+
+    tour_sequence = fields.Char('Tour number')
+    employee_journey = fields.Many2one('employee.tour.claim', invisible=1)
+    from_date_camp = fields.Date(string='From Date', compute='compute_get_leave_details')
+    to_date_camp = fields.Date(string='To Date', compute='compute_get_leave_details')
+    leave_taken = fields.Many2one('hr.leave', string='Date of absence from place of halt ',
+                                   )
+
+    state = fields.Selection(
+        [('draft', 'Draft'), ('submitted', 'Waiting for Approval'), ('approved', 'Approved'), ('rejected', 'Rejected'), ('paid', 'Paid')
+         ], required=True, default='draft', string='Status')
+
+
+
+    @api.depends('leave_taken')
+    def compute_get_leave_details(self):
+        for line in self:
+            if line.leave_taken:
+                line.from_date_camp = line.leave_taken.request_date_from
+                line.to_date_camp = line.leave_taken.request_date_to
 
 
 

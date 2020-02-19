@@ -45,6 +45,10 @@ class TourClaimWizard(models.TransientModel):
                     'tour_sequence': i.tour_sequence,
                     'employee_journey': self.claim_id.id,
                     })
+                self.env['employee.leave.taken'].create({
+                    'tour_sequence': i.tour_sequence,
+                    'employee_journey': self.claim_id.id,
+                    })
 
 
 class TourWizardLine(models.TransientModel):
