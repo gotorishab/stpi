@@ -1,6 +1,6 @@
 {
     'name': 'STPI Leave Management',
-    'version': '12.0.1.0',
+    'version': '12.0.1.1',
     'summary': 'Manage Leave Requests',
     'description': """
         Helps you to manage Leave Requests of your company's staff.
@@ -11,7 +11,7 @@
     'maintainer': 'Dexciss Technology Pvt. Ltd,Pune',
     'website': "https://www.dexciss.com",
     'depends': [
-        'hr_holidays','hr','sandwich_rule','hr_branch_company','hr_payroll','hr_employee_stpi'
+        'hr_holidays','hr','sandwich_rule','hr_branch_company','hr_payroll','hr_employee_stpi','resource'
     ],
     'data': [
         'data/hr_leave_type_data.xml',
@@ -27,7 +27,8 @@
         'views/hr_employee_view.xml',
         'views/hr_leave_view.xml',
         'views/hr_payslip_view.xml',
-        'views/hr_leave_allocation_view.xml'
+        'views/hr_leave_allocation_view.xml',
+        'views/resource_calendar_view.xml'
     ],
     'demo': [],
     'images': ['static/description/banner.jpg'],

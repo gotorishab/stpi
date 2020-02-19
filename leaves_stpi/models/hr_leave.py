@@ -117,10 +117,121 @@ class HrLeave(models.Model):
                         if res.leave_type_id.leave_type not in allowed_prefix.name:
 #                             print("-----------------------------=============")
                             raise ValidationError(_('You Are not allowed to club %s with %s type')% (res.holiday_status_id.name,res.leave_type_id.name))
-            
+                        
+        leave_ids = self.env['hr.leave'].search([('employee_id','=',res.employee_id.id),('id','!=',res.id)])
+        print("?????????????????leave_idsleave_ids?????????",leave_ids)
+        if leave_ids:
+            for leave in leave_ids:
+                ans = []
+                if leave.request_date_from < res.request_date_from:
+                    d1 = leave.request_date_from    # small date
+                    d2 = res.request_date_from # big date
+#                     print("////////////////////greater////////////////",d1,d2)
+                    days = [d1 + timedelta(days=x) for x in range((d2-d1).days)]
+#                     print("????????????????????????????????greaterrrrrrrrrrrr",days)
+                elif leave.request_date_from > res.request_date_from:
+                    d1 = res.request_date_from   # small date
+                    d2 =  leave.request_date_from # big date
+#                     print("/////////////////////////lessssssss///////////",d1,d2)
+                    days = [d1 + timedelta(days=x) for x in range((d2-d1).days)]
+#                     print("???????????????????????????????lessssssss?",days)
+                for day in days:
+                    week = day.strftime('%Y-%m-%d')
+                    print("weekkkkkkk",week)
+                    year, month, day = (int(x) for x in week.split('-'))    
+                    answer = date(year, month, day).strftime('%A')
+                    ans.append(answer)
+                    print(":<<<<<<<<<<<<<<<<</<<<<<<<<<",answer,ans )
+                    if ans in ['Friday', 'Saturday', 'Sunday']: 
+                        print("'Friday', 'Saturday', 'Sunday'LLLLLLLLLLLLLLLLLLLLL")
+                        if answer == 'Thursday':
+    #                         print("<:::::::::Thursday:::::::::Friday::::::::::::::::::::::::")
+                            pre_post_le = self.env['hr.leave.pre.post'].create({'pre_post_leave':res.id,
+                                                                                 'pre_post':'pre',
+                                                                                 'leave':'leave',
+                                                                                 'leave_type_id':res.holiday_status_id.id,
+                                                                                 'from_date':week,
+                                                                                 'to_date':week,
+                                                                                 'no_of_days_leave':1,
+                                                                                 'status':leave.state,
+                                                                                 'applied_on':leave.create_date,
+                                                                                 'days_between_last_leave':0.0,
+                                                                                 'are_days_weekend':False
+                                                                                })
+    #                         print("{{{{{{{{{{{{{{{{{{{{{",pre_post_le)
+                        elif answer == 'Friday':
+                            print("<:::::::::::::::::Friday:::::::::::::::::::::::::")
+                            pre_post_le = self.env['hr.leave.pre.post'].create({'pre_post_leave':res.id,
+                                                                                 'pre_post':'pre',
+                                                                                 'leave':'leave',
+                                                                                 'leave_type_id':res.holiday_status_id.id,
+                                                                                 'from_date':week,
+                                                                                 'to_date':week,
+                                                                                 'no_of_days_leave':1,
+                                                                                 'status':leave.state,
+                                                                                 'applied_on':leave.create_date,
+                                                                                 'days_between_last_leave':0.0,
+                                                                                 'are_days_weekend':False
+                                                                                })
+    #                         print("{{{{{{{{{{{{{{{{{{{{{",pre_post_le)
+                        elif answer == 'Saturday':
+                            print("<::::::::::Saturday::::::::::::::::::::::::::::::::")
+                            pre_post_le = self.env['hr.leave.pre.post'].create({'pre_post_leave':res.id,
+                                                                                 'pre_post':'post',
+                                                                                 'leave':'holiday',
+                                                                                 'leave_type_id':'',
+                                                                                 'from_date':week,
+                                                                                 'to_date':week,
+                                                                                 'no_of_days_leave':1,
+                                                                                 'status':leave.state,
+                                                                                 'applied_on':leave.create_date,
+                                                                                 'days_between_last_leave':0.0,
+                                                                                 'are_days_weekend':True
+                                                                                })
+    #                         print("{{{{{{{{{{{{{{{{{{{{{",pre_post_le)
+                        elif answer == 'Sunday':
+    #                         print("<::::::::::Sunday::::::::::::::::::::::::::::::::")
+                            pre_post_le = self.env['hr.leave.pre.post'].create({'pre_post_leave':res.id,
+                                                                                 'pre_post':'post',
+                                                                                 'leave':'holiday',
+                                                                                 'leave_type_id':'',
+                                                                                 'from_date':week,
+                                                                                 'to_date':week,
+                                                                                 'no_of_days_leave':1,
+                                                                                 'status':leave.state,
+                                                                                 'applied_on':leave.create_date,
+                                                                                 'days_between_last_leave':0.0,
+                                                                                 'are_days_weekend':True
+                                                                                })
+    #                         print("{{{{{{{{{{{{{{{{{{{{{",pre_post_le)
+                    
+                pre_post_le = self.env['hr.leave.pre.post'].create({'pre_post_leave':res.id,
+                                                                             'pre_post':'post',
+                                                                             'leave':'leave',
+                                                                             'leave_type_id':'',
+                                                                             'from_date':leave.request_date_from,
+                                                                             'to_date':leave.request_date_to,
+                                                                             'no_of_days_leave':leave.number_of_days_display,
+                                                                             'status':leave.state,
+                                                                             'applied_on':leave.create_date,
+                                                                             'days_between_last_leave':0.0,
+#                                                                              'are_days_weekend':
+                                                                            })
+                print("prepostttttttttttttttttttttttttt",pre_post_le)
+#                 if pre_post_le:
+#                     print
+#                     raise Va/lidationError(_('You are not create this leaves'))
         return res
     
- 
+    @api.constrains('pre_post_leaves_ids.leave')
+    @api.onchange('pre_post_leaves_ids.leave')
+    def onchange_pre_post_leaves_ids(self):
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        for line in self.pre_post_leaves_ids:
+            print("@@@@@@@@@@@@@@@@@@@@@@@@@@2")
+            if line.leave == 'holiday' and line.leave == 'leave':
+                raise ValidationError(_('<<<<<<<<<<<<<<<<<<<'))
+    
     @api.constrains('date_from','date_to','employee_id')                
     @api.onchange('date_from','date_to','employee_id')
     def onchange_employee(self):
@@ -240,37 +351,7 @@ class HrLeave(models.Model):
                 self.allow_request_unit_half_2 = True
             else:
                 self.allow_request_unit_half_2 = False
-        leave_ids = self.env['hr.leave'].search([('employee_id','=',self.employee_id.id),('state','=','validate')])
-        print("?????????????????leave_idsleave_ids?????????",leave_ids)
-        if leave_ids:
-            for leaves in leave_ids:
-                if date.today() > self.request_date_from :
-                    print("greterthennnnnnnnnnnnnnnn")
-                    days_between_last = self.request_date_from - self.request_date_to
-                    pre_post_le = self.env['hr.leave.pre.post'].create({'pre_post_leave':self.id,
-                                                                     'pre_post':'pre',
-                                                                     'leave_type_id':leaves.holiday_status_id.id,
-                                                                     'from_date':leaves.request_date_from,
-                                                                     'to_date':leaves.request_date_to,
-                                                                     'no_of_days_leave':leaves.number_of_days_display,
-                                                                     'status':leaves.state,
-                                                                     'applied_on':leaves.create_date,
-                                                                     'days_between_last_leave':0.0
-                                                                    })
-                elif date.today() < self.request_date_from:
-                    print("lessthennnnnnnnnnnnnnsss")
-                    days_between_last = self.request_date_from - self.request_date_to
-                    pre_post_le = self.env['hr.leave.pre.post'].create({'pre_post_leave':self.id,
-                                                                     'pre_post':'post',
-                                                                     'leave_type_id':leaves.holiday_status_id.id,
-                                                                     'from_date':leaves.request_date_from,
-                                                                     'to_date':leaves.request_date_to,
-                                                                     'no_of_days_leave':leaves.number_of_days_display,
-                                                                     'status':leaves.state,
-                                                                     'applied_on':leaves.create_date,
-                                                                     'days_between_last_leave':0.0
-                                                                    })
-                    print("createpre_post_lepre_post_le",pre_post_le)
+        
     
     @api.constrains('date_from','date_to','employee_id','request_unit_half_2') 
     @api.onchange('date_from', 'date_to', 'employee_id','request_unit_half_2')
@@ -385,6 +466,9 @@ class HRLeavePrePost(models.Model):
     from_date = fields.Date(string="From Date",readonly=True)
     to_date = fields.Date(string="To Date",readonly=True)
     no_of_days_leave = fields.Float(string="No of Days Leave",readonly=True)
+    leave = fields.Selection([('holiday','H'),
+                              ('leave','L')
+                            ],string="Leave Is")
     status = fields.Selection([ ('draft', 'To Submit'),
                             ('cancel', 'Cancelled'),
                             ('confirm', 'To Approve'),

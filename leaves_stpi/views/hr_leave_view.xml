@@ -125,6 +125,7 @@
                         <field name="pre_post_leaves_ids">
                             <tree string="Leaves">
                                 <field name="pre_post"/>
+                                <field name="leave"/>
                                 <field name="leave_type_id"/>
                                 <field name="from_date"/>
                                 <field name="to_date"/>

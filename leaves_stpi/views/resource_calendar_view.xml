@@ -1,0 +1,52 @@
+<odoo>
+
+    <record id="resource_calendar_form_view_inherit_id" model="ir.ui.view">
+        <field name="name">resource.calendar.form.inherit</field>
+        <field name="model">resource.calendar</field>
+        <field name="inherit_id" ref="resource.resource_calendar_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form/sheet" position="before">
+                <header>
+                    <button string="Assign Leaves" name="allow_public_holiday_on_caledar"  type="object"/>
+                </header>
+            </xpath>
+            
+            <xpath expr="//form/sheet/group/field[@name='hours_per_day']" position="after">
+                <field name="branch_id"/>
+            </xpath>
+            
+            <xpath expr="//form/sheet/notebook/page/field[@name='global_leave_ids']/tree/field[@name='name']" position="after">
+                <field name="date"/>
+            </xpath>
+            
+            <xpath expr="//form/sheet/notebook/page/field[@name='global_leave_ids']/tree/field[@name='date_from']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            
+            <xpath expr="//form/sheet/notebook/page/field[@name='global_leave_ids']/tree/field[@name='date_to']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="resource.action_resource_calendar_form" model="ir.actions.act_window">
+        <field name="name">Assign Public Holiday</field>
+        <field name="res_model">resource.calendar</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" eval="False"/>
+        <field name="search_view_id" ref="resource.view_resource_calendar_search"/>
+        <field name="help" type="html">
+          <p class="o_view_nocontent_smiling_face">
+            Define working hours and time table that could be scheduled to your project members
+          </p>
+        </field>
+    </record>
+
+
+    <menuitem id="resource.menu_resource_calendar"
+        parent="hr_holidays.menu_hr_holidays_configuration"
+        action="resource.action_resource_calendar_form"
+        sequence="1"/>
+        
+</odoo>

@@ -6,6 +6,7 @@ import datetime
 from odoo.tools.float_utils import float_round
 import calendar
 
+
 class HrLeaveType(models.Model):
     _inherit = 'hr.leave.type'
     _description = 'HR Leave Type Changes For STPI'
