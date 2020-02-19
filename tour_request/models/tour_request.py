@@ -189,7 +189,7 @@ class EmployeeTourClaim(models.Model):
             for i in tour_req:
                 if i:
                     advance_requested += i.advance_requested
-            for line in record.detail_of_journey:
+            for line in record.detail_of_journey_lodging:
                 if line:
                     total_claimed += ((line.daily_lodging_charge + line.daily_boarding_charge + line.daily_boarding_lodginf_charge)*line.no_of_days + line.other_details)
             record.total_claimed_amount = total_claimed
@@ -201,16 +201,23 @@ class EmployeeTourClaim(models.Model):
     designation = fields.Many2one('hr.job', string="Designation", compute='compute_des_dep')
     department = fields.Many2one('hr.department', string="Department", compute='compute_des_dep', store=True)
     detail_of_journey = fields.One2many('tour.claim.journey','employee_journey')
+    detail_of_journey_lodging = fields.One2many('tour.claim.journey.lodging','employee_journey')
     advance_requested = fields.Float(string="Advance Requested", readonly=True, compute='_compute_approved_amount')
     balance_left = fields.Float(string="Balance left", readonly=True, compute='_compute_approved_amount')
     tour_sequence = fields.Char(string="tour sequence")
     total_claimed_amount = fields.Float(string="Total Claimed Amount", compute='_compute_approved_amount')
     amount_paid = fields.Float(string="Amount Paid")
+    from_date_camp = fields.Date(string='From Date')
+    to_date_camp = fields.Date(string='To Date')
+    leave_taken = fields.Many2one('hr.leave', string='Date of absence from place of halt ',
+                                   )
+
     state = fields.Selection(
         [('draft', 'Draft'), ('submitted', 'Waiting for Approval'), ('approved', 'Approved'), ('rejected', 'Rejected'), ('paid', 'Paid')
          ], required=True, default='draft', string='Status')
     action_app = fields.Boolean('Action Approve bool', invisible=1)
     action_clos = fields.Boolean('Action Paid Close bool', invisible=1)
+
     @api.depends('employee_id')
     def compute_des_dep(self):
         for rec in self:
@@ -369,12 +376,12 @@ class TourClaimJourney(models.Model):
     _description = "Tour Claim Journey Details"
 
 
-
-    @api.multi
-    @api.depends('daily_lodging_charge','daily_boarding_charge','daily_boarding_lodginf_charge','no_of_days')
-    def _Compute_total_amount_paid(self):
-        for rec in self:
-            rec.total_amount_paid = (rec.daily_lodging_charge + rec.daily_boarding_charge + rec.daily_boarding_lodginf_charge)*rec.no_of_days
+    #
+    # @api.multi
+    # @api.depends('daily_lodging_charge','daily_boarding_charge','daily_boarding_lodginf_charge','no_of_days')
+    # def _Compute_total_amount_paid(self):
+    #     for rec in self:
+    #         rec.total_amount_paid = (rec.daily_lodging_charge + rec.daily_boarding_charge + rec.daily_boarding_lodginf_charge)*rec.no_of_days
 
 
     tour_sequence = fields.Char('Tour number')
@@ -385,7 +392,6 @@ class TourClaimJourney(models.Model):
     to_l = fields.Many2one('res.city', string='To City')
     departure_time = fields.Float('Departure Time')
     arrival_time = fields.Float('Arrival Time')
-    leave_taken = fields.Many2many('hr.leave', string='Date of absence from place of halt ', domain="[('state','=','approved'),('employee_id', '=', self.employee_id),('date_from', '>', self.departure_date),('date_to', '<', self.arrival_date)]")
     amount_claimed = fields.Float('Amount Claimed')
     distance = fields.Float('Distance')
     approved_approved = fields.Float('Approved Amount')
@@ -395,6 +401,48 @@ class TourClaimJourney(models.Model):
     boarding = fields.Boolean('Boarding required?')
     lodging = fields.Boolean('Lodging required?')
     conveyance = fields.Boolean('Local Conveyance required?')
+    # arranged_by = fields.Selection([('self', 'Self'), ('company', 'Company')], string='Arranged By')
+    # from_date = fields.Date('From Date')
+    # to_date = fields.Date('To Date')
+    # no_of_days = fields.Float('No. of days', compute='compute_no_of_days', store=True)
+    # name_of_hotel = fields.Char('Name of Hotel/Guest House')
+    # daily_lodging_charge = fields.Float('Daily Lodging Charges')
+    # daily_boarding_charge = fields.Float('Daily Boarding Charges')
+    # daily_boarding_lodginf_charge = fields.Float('Daily Lodging and Boarding Charges')
+    # total_amount_paid = fields.Float('Total Amount Paid', compute='_Compute_total_amount_paid')
+    # other_details = fields.Float('Details of other reimbursable expenses ')
+
+    state = fields.Selection(
+        [('draft', 'Draft'), ('submitted', 'Waiting for Approval'), ('approved', 'Approved'), ('rejected', 'Rejected'), ('paid', 'Paid')
+         ], related='employee_journey.state')
+
+
+    #
+    # @api.constrains('from_date','to_date')
+    # def compute_no_of_days(self):
+    #     for rec in self:
+    #         rec.no_of_days = (rec.to_date - rec.from_date).days
+    #
+    #
+
+
+
+class JourneyLodgingBoarding(models.Model):
+
+    _name = "tour.claim.journey.lodging"
+    _description = "Tour Claim Journey Details Lodging Boarding"
+
+
+
+    @api.multi
+    @api.depends('daily_lodging_charge','daily_boarding_charge','daily_boarding_lodginf_charge','no_of_days')
+    def _Compute_total_amount_paid(self):
+        for rec in self:
+            rec.total_amount_paid = (rec.daily_lodging_charge + rec.daily_boarding_charge + rec.daily_boarding_lodginf_charge)*rec.no_of_days
+
+
+    tour_sequence = fields.Char('Tour number')
+    employee_journey = fields.Many2one('employee.tour.claim', invisible=1)
     arranged_by = fields.Selection([('self', 'Self'), ('company', 'Company')], string='Arranged By')
     from_date = fields.Date('From Date')
     to_date = fields.Date('To Date')
@@ -416,6 +464,11 @@ class TourClaimJourney(models.Model):
     def compute_no_of_days(self):
         for rec in self:
             rec.no_of_days = (rec.to_date - rec.from_date).days
+
+
+
+
+
 
 
 class TravelMode(models.Model):

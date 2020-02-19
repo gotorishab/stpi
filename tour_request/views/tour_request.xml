@@ -224,6 +224,7 @@
                             icon="fa-clock-o"/>
                             <div class="oe_clear"/>
                             <br/>
+                            <separator string="Details of Journey"/>
                             <field name="detail_of_journey">
                                     <tree editable="bottom" create="0">
                                         <field name="tour_sequence" readonly="1"/>
@@ -240,7 +241,31 @@
                                         <field name="boarding" readonly="1"/>
                                         <field name="lodging" readonly="1"/>
                                         <field name="conveyance" readonly="1"/>
-                                        <field name="leave_taken" attrs="{'readonly':[('state','not in',('draft', 'rejected'))],'required':[('state','=','draft')]}"/>
+<!--                                        <field name="amount_claimed" sum="Total Amount" attrs="{'readonly':[('state','not in',('draft', 'rejected'))]}"/>-->
+                                        <field name="distance" sum="Total Distance Covered" attrs="{'readonly':[('state','not in',('draft', 'rejected'))]}"/>
+<!--                                        <field name="approved_approved" sum="Total Amount Approved" attrs="{'invisible':[('state','in',('draft', 'rejected'))]}" groups="tour_request.group_tour_request_approvere"/>-->
+                                        <field name="state" invisible="1"/>
+                                    </tree>
+                            </field>
+                            <separator string="Date of absence from place to halt"/>
+                            <group>
+                                <group>
+                                    <field name="leave_taken" domain="[('state','=','approved'),('employee_id', '=', employee_id)]" attrs="{'readonly':[('state','not in',('draft', 'rejected'))],'required':[('state','=','draft')]}"/>
+<!--                                    <field name="to_date_camp"/>-->
+                                </group>
+                            </group>
+                            <separator string="Not being actually in camp on Sunday"/>
+                            <group>
+                                <group>
+                                    <field name="from_date_camp" attrs="{'readonly':[('state','not in',('draft', 'rejected'))],'required':[('state','=','draft')]}"/>
+                                    <field name="to_date_camp" attrs="{'readonly':[('state','not in',('draft', 'rejected'))],'required':[('state','=','draft')]}"/>
+                                </group>
+                            </group>
+                            <separator string="Lodging and Boarding"/>
+                            <field name="detail_of_journey_lodging">
+                                    <tree editable="bottom" create="0">
+                                        <field name="tour_sequence" readonly="1"/>
+                                        <field name="employee_journey" invisible="1"/>
                                         <field name="arranged_by" attrs="{'readonly':[('state','not in',('draft', 'rejected'))],'required':[('state','=','draft')]}"/>
                                         <field name="from_date" attrs="{'readonly':[('state','not in',('draft', 'rejected'))],'required':[('state','=','draft')]}"/>
                                         <field name="to_date" attrs="{'readonly':[('state','not in',('draft', 'rejected'))],'required':[('state','=','draft')]}"/>
@@ -251,9 +276,6 @@
                                         <field name="daily_boarding_lodginf_charge" attrs="{'readonly':[('state','not in',('draft', 'rejected'))],'invisible':[('arranged_by','!=','self')]}"/>
                                         <field name="total_amount_paid" readonly="1"/>
                                         <field name="other_details" attrs="{'readonly':[('state','not in',('draft', 'rejected'))]}"/>
-<!--                                        <field name="amount_claimed" sum="Total Amount" attrs="{'readonly':[('state','not in',('draft', 'rejected'))]}"/>-->
-                                        <field name="distance" sum="Total Distance Covered" attrs="{'readonly':[('state','not in',('draft', 'rejected'))]}"/>
-<!--                                        <field name="approved_approved" sum="Total Amount Approved" attrs="{'invisible':[('state','in',('draft', 'rejected'))]}" groups="tour_request.group_tour_request_approvere"/>-->
                                         <field name="state" invisible="1"/>
                                     </tree>
                             </field>
