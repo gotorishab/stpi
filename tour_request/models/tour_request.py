@@ -439,9 +439,15 @@ class EmployeeLeaveTaken(models.Model):
 
     tour_sequence = fields.Char('Tour number')
     employee_journey = fields.Many2one('employee.tour.claim', invisible=1)
+    employee_id = fields.Many2one('hr.employee', string='Employee')
+    departure_date = fields.Date('Departure Date')
+    arrival_date = fields.Date('Arrival Date')
+    from_l = fields.Many2one('res.city', string='From City')
+    to_l = fields.Many2one('res.city', string='To City')
     from_date_camp = fields.Date(string='From Date', compute='compute_get_leave_details')
     to_date_camp = fields.Date(string='To Date', compute='compute_get_leave_details')
     leave_taken = fields.Many2one('hr.leave', string='Date of absence from place of halt ',
+                                  domain="[('state','=','approved'),('employee_id','=',employee_id),('request_date_from','<=',departure_date),('request_date_to','>=',arrival_date)]"
                                    )
 
     state = fields.Selection(

@@ -252,7 +252,12 @@
                                     <tree editable="bottom" create="0">
                                         <field name="tour_sequence" readonly="1"/>
                                         <field name="employee_journey" invisible="1"/>
-                                        <field name="leave_taken" domain="[('state','=','approved'),('employee_id','=','employee_journey.employee_id')]"/>
+                                        <field name="employee_id" invisible="1"/>
+                                        <field name="departure_date" invisible="1"/>
+                                        <field name="arrival_date" invisible="1"/>
+                                        <field name="from_l" readonly="1"/>
+                                        <field name="to_l" readonly="1"/>
+                                        <field name="leave_taken"/>
                                         <field name="from_date_camp"/>
                                         <field name="to_date_camp"/>
                                         <field name="state" invisible="1"/>
@@ -268,8 +273,8 @@
                             <separator string="Not being actually in camp on Sunday"/>
                             <group>
                                 <group>
-                                    <field name="from_date_camp" attrs="{'readonly':[('state','not in',('draft', 'rejected'))],'required':[('state','=','draft')]}"/>
-                                    <field name="to_date_camp" attrs="{'readonly':[('state','not in',('draft', 'rejected'))],'required':[('state','=','draft')]}"/>
+                                    <field name="from_date_camp" attrs="{'readonly':[('state','not in',('draft', 'rejected'))]}"/>
+                                    <field name="to_date_camp" attrs="{'readonly':[('state','not in',('draft', 'rejected'))]}"/>
                                 </group>
                             </group>
                             <separator string="Lodging and Boarding"/>

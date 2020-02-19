@@ -23,6 +23,8 @@ class TourClaimWizard(models.TransientModel):
     @api.multi
     def confirm_loan_payment(self):
         self.claim_id.detail_of_journey.unlink()
+        self.claim_id.detail_of_journey_lodging.unlink()
+        self.claim_id.detail_of_journey_leave.unlink()
         for i in self.unpaid_detail_of_journey:
             if i.done:
                 self.env['tour.claim.journey'].create({
@@ -48,6 +50,11 @@ class TourClaimWizard(models.TransientModel):
                 self.env['employee.leave.taken'].create({
                     'tour_sequence': i.tour_sequence,
                     'employee_journey': self.claim_id.id,
+                    'employee_id': self.claim_id.employee_id.id,
+                    'departure_date': i.departure_date,
+                    'arrival_date': i.arrival_date,
+                    'from_l': i.from_l.id,
+                    'to_l': i.to_l.id,
                     })
 
 
