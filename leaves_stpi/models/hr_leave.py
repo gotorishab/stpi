@@ -368,17 +368,54 @@ class HrLeave(models.Model):
 #                 self.number_of_days_display = self.number_of_days
         else:
             self.number_of_days = 0
+            
+    @api.multi
+    def action_refuse(self):
+        today = date.today()
+        if self.holiday_status_id.carried_forward != True:
+            if self.request_date_from:
+                year = self.request_date_from.year
+                print("LLLLLLLLLLLLLLLLLLLLLLLLLLLL",year,today.year)
+                if today.year != year:
+                    print("?///////////////////")
+                    raise ValidationError(_("You are not carried forward leave because leave is not in current year"))
+                else:
+                    return super(HrLeave,self).action_refuse()
+        else:
+            return super(HrLeave,self).action_refuse()
+        
         
     @api.multi
     def action_approve(self):
+        today = date.today()
         for leave in self:
-            leave.pending_since = date.today()
+            print("Pppppppppppppppppppppp")
+            leave.pending_since = today
+            print("????????????????????????????",leave.pending_since)
             if not leave.name:
                 leave.name = '-'
                 return super(HrLeave, self).action_approve()
             else:
                 return super(HrLeave, self).action_approve()
 
+    @api.multi
+    def _create_resource_leave(self):
+        """ This method will create entry in resource calendar leave object at the time of holidays validated """
+        for leave in self:
+            date_from = fields.Datetime.from_string(leave.date_from)
+            date_to = fields.Datetime.from_string(leave.date_to)
+            print("resource_calendar_leavesresource_calendar_leavesresource_calendar_leaves")
+            self.env['resource.calendar.leaves'].create({
+                'name': leave.name,
+                'date_from': fields.Datetime.to_string(date_from),
+                'holiday_id': leave.id,
+                'date_to': fields.Datetime.to_string(date_to),
+                'resource_id': leave.employee_id.resource_id.id,
+                'calendar_id': leave.employee_id.resource_calendar_id.id,
+                'time_type': leave.holiday_status_id.time_type,
+                'date':leave.date_from
+            })
+        return True
     
     @api.onchange('request_date_from_period', 'request_hour_from', 'request_hour_to',
                   'request_date_from', 'request_date_to',
