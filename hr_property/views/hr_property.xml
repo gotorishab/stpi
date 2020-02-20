@@ -49,69 +49,69 @@
                         <page string="Annual Property Declaration">
                             <group>
                                 <group>
-                                    <field name="dist_name"/>
-                                    <field name="house_build"/>
-                                    <field name="other_lands"/>
-                                    <field name="present_value"/>
+                                    <field name="dist_name" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <field name="house_build" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <field name="other_lands" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <field name="present_value" attrs="{'readonly':[('state','!=','draft')]}"/>
                                 </group>
                                 <group>
-                                    <field name="state_relation"/>
-                                    <field name="how_acquired"/>
-                                    <field name="annual_income"/>
+                                    <field name="state_relation" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <field name="how_acquired" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <field name="annual_income" attrs="{'readonly':[('state','!=','draft')]}"/>
                                 </group>
                             </group>
                         </page>
                         <page string="Buy/Sell Movable Property">
                             <group>
                                 <group>
-                                    <field name="application_purpose"/>
-                                    <field name="propert_ad"/>
-                                    <field name="probable_date"/>
-                                    <field name="actual_date"/>
-                                    <field name="make_model"/>
-                                    <field name="des_property"/>
-                                    <field name="mode_of_acquisition"/>
-                                    <field name="sapur_pro"/>
-                                    <field name="acquisition_source"/>
+                                    <field name="application_purpose" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <field name="propert_ad" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <field name="probable_date" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <field name="actual_date" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <field name="make_model" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <field name="des_property" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <field name="mode_of_acquisition" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <field name="sapur_pro" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <field name="acquisition_source" attrs="{'readonly':[('state','!=','draft')]}"/>
                                 </group>
                                 <group>
-                                    <field name="other_source"/>
-                                    <field name="party_transaction"/>
-                                    <field name="address_party"/>
-                                    <field name="party_relation"/>
-                                    <field name="relationi_party_state"/>
-                                    <field name="app_deal"/>
-                                    <field name="nature_deal"/>
-                                    <field name="tran_arr"/>
-                                    <field name="acquistion_gift"/>
-                                    <field name="other_factss"/>
+                                    <field name="other_source" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <field name="party_transaction" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <field name="address_party" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <field name="party_relation" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <field name="relationi_party_state" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <field name="app_deal" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <field name="nature_deal" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <field name="tran_arr" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <field name="acquistion_gift" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <field name="other_factss" attrs="{'readonly':[('state','!=','draft')]}"/>
                                 </group>
                             </group>
                         </page>
                         <page string="Buy/Sell Immovable Property">
                             <group>
                                 <group>
-                                    <field name="immov_appl_purpose"/>
-                                    <field name="immov_propert_ad"/>
-                                    <field name="im_probable_date"/>
-                                    <field name="im_address_details"/>
-                                    <field name="im_pro_des"/>
-                                    <field name="im_free_leas"/>
-                                    <field name="im_full_half"/>
-                                    <field name="im_tran_not_ex"/>
-                                    <field name="im_property_price"/>
+                                    <field name="immov_appl_purpose" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <field name="immov_propert_ad" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <field name="im_probable_date" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <field name="im_address_details" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <field name="im_pro_des" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <field name="im_free_leas" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <field name="im_full_half" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <field name="im_tran_not_ex" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <field name="im_property_price" attrs="{'readonly':[('state','!=','draft')]}"/>
                                 </group>
                                 <group>
-                                    <field name="im_acquisition_source"/>
-                                    <field name="im_other_source"/>
-                                    <field name="copy_attached"/>
-                                    <field name="im_details_party"/>
-                                    <field name="im_party_relation"/>
-                                    <field name="im_relationi_party_state"/>
-                                    <field name="im_app_deal"/>
-                                    <field name="im_tran_arr"/>
-                                    <field name="im_acq_gift"/>
-                                    <field name="im_other_rel_fact"/>
+                                    <field name="im_acquisition_source" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <field name="im_other_source" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <field name="copy_attached" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <field name="im_details_party" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <field name="im_party_relation" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <field name="im_relationi_party_state" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <field name="im_app_deal" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <field name="im_tran_arr" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <field name="im_acq_gift" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <field name="im_other_rel_fact" attrs="{'readonly':[('state','!=','draft')]}"/>
                                 </group>
                             </group>
                         </page>
@@ -119,22 +119,27 @@
                             <page string="Investment">
                             <group>
                                 <group>
-                                    <field name="each_transaction_details"/>
-                                    <field name="party_particulars"/>
-                                    <field name="party_relate_app"/>
-                                    <field name="applicant_dealing"/>
+                                    <field name="each_transaction_details" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <field name="party_particulars" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <field name="party_relate_app" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <field name="applicant_dealing" attrs="{'readonly':[('state','!=','draft')]}"/>
 
                                 </group>
                                 <group>
-                                    <field name="invest_acquisition_source"/>
-                                    <field name="invest_other_source"/>
-                                    <field name="invest_other_rel_fact"/>
+                                    <field name="invest_acquisition_source" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <field name="invest_other_source" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <field name="invest_other_rel_fact" attrs="{'readonly':[('state','!=','draft')]}"/>
                                 </group>
                             </group>
                         </page>
                         </page>
                     </notebook>
                 </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
             </form>
         </field>
     </record>
