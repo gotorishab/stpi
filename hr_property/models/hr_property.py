@@ -3,7 +3,6 @@ from odoo.exceptions import ValidationError
 import re
 
 class HrProperty(models.Model):
-
     _name = "hr.property"
     _description = "HR Property"
 
