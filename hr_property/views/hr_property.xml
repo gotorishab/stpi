@@ -313,6 +313,7 @@
     <menuitem id = "hr_property_menu_hr_id_configuration"
               name = "Configuration"
               parent="hr_property_menu_hr_id"
+               groups="base.group_no_one"
               />
 
 

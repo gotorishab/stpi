@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 {
-	'name': 'Tour Request',
+	'name': 'HR - Property - STPI',
 	'version': '12.0.1.0.0',
-	'summary': 'Tour Request',
+	'summary': 'HR - Property - STPI',
 	'category': 'Tools',
 	'author': 'Dexciss Technologies Pvt Ltd(@ RGupta)',
 	'maintainer': 'dexciss Techno Solutions',
