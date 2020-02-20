@@ -179,6 +179,7 @@
     <menuitem id = "vigilance_configuration"
               name = "Configuration"
               parent = "vigilance_menu_id"
+              groups="my_vigilance.group_vigilance_manager"
               sequence = "100"
               />
 
