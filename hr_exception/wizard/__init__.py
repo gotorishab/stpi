@@ -16,3 +16,4 @@ from . import hr_declaration_wizard
 from . import employee_profile_wizard
 from . import hr_payslip_wizard
 from . import hr_payslip_batch_wizard
+from . import hr_property_wizard
