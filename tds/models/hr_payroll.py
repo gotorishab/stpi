@@ -96,7 +96,7 @@ class HrPayslip(models.Model):
         for loan in tax_payment_idss:
             if loan.tax_payment_id.state != 'rejected':
                 tax_payment_ids.append((0, 0, {
-                    "tax_payslip_id": loan.loan_id.id,
+                    "tax_payslip_id": loan.tax_payment_id.id,
                     "date": loan.date,
                     "amount": loan.amount,
                     "paid": loan.paid
