@@ -92,8 +92,8 @@ class HrPayslip(models.Model):
             """
         tax_payment_ids = []
         self.tax_payment_ids.unlink()
-        tax_payment_ids = self.env['tax.payment'].search([('tax_payment_id.employee_id', '=', self.employee_id.id), ('paid', '=', False)])
-        for loan in tax_payment_ids:
+        tax_payment_idss = self.env['tax.payment'].search([('tax_payment_id.employee_id', '=', self.employee_id.id), ('paid', '=', False)])
+        for loan in tax_payment_idss:
             if loan.tax_payment_id.state != 'rejected':
                 tax_payment_ids.append((0, 0, {
                     "tax_payslip_id": loan.loan_id.id,
