@@ -67,7 +67,7 @@
                     <notebook>
                         <page string="Installments">
                             <field name="loan_lines" readonly="1">
-                                <tree string="Installments" default_order="closing_blance_principle desc" >
+                                <tree string="Installments" default_order="closing_blance_principle desc, date asc" >
                                     <!--date invisible and approval_d added by RGupta@Dexciss-->
                                     <field name="state" invisible="1"/>
                                     <field name="date" attrs="{'invisible':[('state','!=','approve')]}"/>
@@ -289,6 +289,7 @@
     <menuitem id = "loan_reporting_menu_id"
               name = "Reporting"
               parent ="menu_hr_loans_and_advances"
+              groups="ohrms_loan.group_loan_approver"
               />
     <menuitem id = "loan_analysis_id"
               name = "Loan Analysis"
