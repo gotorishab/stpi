@@ -49,7 +49,7 @@ class HrLeave(models.Model):
                             ('validate1', 'Second Approval'),
                             ('validate', 'Approved')
                             ],string="Status",readonly=True)
-    applied_on = fields.Datetime(string="Applied On",readonly=True)
+    applied_on = fields.Datetime(string="Applied On",readonly=True,)
     days_between_last_leave = fields.Float(string="Days Between Last Leave",readonly=True)
     are_days_weekend = fields.Boolean(string="Are Days Weekend",readonly=True)
     allow_request_unit_half_2 = fields.Boolean(string='Allow Half Day')
@@ -236,11 +236,15 @@ class HrLeave(models.Model):
     @api.onchange('date_from','date_to','employee_id')
     def onchange_employee(self):
         for leave in self:
+            
             leave.branch_id = leave.employee_id.branch_id.id
             leave.employee_type = leave.employee_id.employee_type
             leave.employee_state = leave.employee_id.state
             leave.gender = leave.employee_id.gende
             leave.manager_designation_id = leave.employee_id.parent_id.job_id
+            if leave.create_date:
+                created_date = leave.create_date
+                leave.pending_since = created_date.strftime('%Y-%m-%d')
 #             print("{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{",leave.employee_state,leave.employee_type,leave.branch_id)
             leave_ids = self.env['hr.leave'].search([('employee_id','=',leave.employee_id.id),
                                                      ('state','=','validate')],limit=1, order="request_date_to desc")
@@ -300,6 +304,8 @@ class HrLeave(models.Model):
                 self.no_of_days_display_half = self.number_of_days_display * 2
             else:
                 self.holiday_half_pay = False
+                
+            
             
                 
             
@@ -372,6 +378,9 @@ class HrLeave(models.Model):
     @api.multi
     def action_refuse(self):
         today = date.today()
+        for leave in self:
+            leave.manager_designation_id = None
+            leave.pending_since = None
         if self.holiday_status_id.carried_forward != True:
             if self.request_date_from:
                 year = self.request_date_from.year
@@ -384,13 +393,24 @@ class HrLeave(models.Model):
         else:
             return super(HrLeave,self).action_refuse()
         
+    @api.multi
+    def action_confirm(self):
+        for leave in self:
+            created_date = leave.create_date
+            leave.manager_designation_id = leave.employee_id.parent_id.job_id
+            leave.pending_since = created_date.strftime('%Y-%m-%d')
+
+        return super(HrLeave, self).action_confirm()
+        
+        
         
     @api.multi
     def action_approve(self):
         today = date.today()
         for leave in self:
             print("Pppppppppppppppppppppp")
-            leave.pending_since = today
+            leave.pending_since = None
+            leave.manager_designation_id = None
             print("????????????????????????????",leave.pending_since)
             if not leave.name:
                 leave.name = '-'
@@ -513,7 +533,7 @@ class HRLeavePrePost(models.Model):
                             ('validate1', 'Second Approval'),
                             ('validate', 'Approved')
                             ],string="Status",readonly=True)
-    applied_on = fields.Datetime(string="Applied On",readonly=True)
+    applied_on = fields.Datetime(string="Applied On",readonly=True,invisible=True)
     days_between_last_leave = fields.Float(string="Days Between Last Leave",readonly=True)
     are_days_weekend = fields.Boolean(string="Are Days Weekend",readonly=True)
 

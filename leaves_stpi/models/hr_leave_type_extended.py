@@ -58,25 +58,25 @@ class HrLeaveType(models.Model):
                                     ('November','November'),
                                     ('December','December')
                                     ],string="Lapse Month")
-    allow_service_leave = fields.Many2many('leave.employee.type',string="Allow Service Leave")
-    max_encash_leave = fields.Integer(string="Maximum Encash Leave")
-    group_id = fields.Many2one('hr.leave.group',string="Group")
+    allow_service_leave = fields.Many2many('leave.employee.type',string="Allowed Service Type(s)")
+    max_encash_leave = fields.Integer(string="Maximum Allowed Encashment")
+    group_id = fields.Many2one('hr.leave.group',string="Group",invisible=True)
     currency_id = fields.Many2one('res.currency', string='Currency', required=True, default=lambda self: self.env.user.company_id.currency_id)
-    use_balance_from_id = fields.Many2one('leave.type',string="Use Balance From")
-    maximum_allow_leave = fields.Integer(string="Maximum Allow Leave")
+    use_balance_from_id = fields.Many2one('leave.type',string="Use Balance From",invisible=True)
+    maximum_allow_leave = fields.Integer(string="Maximum Allowed Leaves")
     gende = fields.Selection([('male','Male'),
                                      ('female','Female'),
                                      ('transgender','Transgender')   
-                                    ],string="Allow Gender")
-    allow_emp_stage = fields.Many2many('leave.type.employee.stage',string="Allow Employee Stage")
+                                    ],string="Allowed Gender(s)")
+    allow_emp_stage = fields.Many2many('leave.type.employee.stage',string="Allowed Employee Stage(s)")
     encash_leave = fields.Boolean(string="Encashed Leave")
-    cerificate = fields.Boolean(string="Certificate")
-    sandwich_rule = fields.Boolean(string="Sandwich Rule")
+    cerificate = fields.Boolean(string="Requires Attachment")
+    sandwich_rule = fields.Boolean(string="Sandwich Rule Applicable")
     creadit_policy_id = fields.One2many('leave.type.credit.policy','leave_policy','Credit Leave Policy')
-    commuted = fields.Boolean(string="Commuted")
+    commuted = fields.Boolean(string="Is Commuted Leave")
     amount_total = fields.Monetary(string='Total',store=True, readonly=True, compute='_compute_amount')
     
-    allowed_prefix_leave = fields.Many2many('leave.type',string="Allowed Prefix Leave")
+    allowed_prefix_leave = fields.Many2many('leave.type',string="Allowed Combination Leave(s)")
     mid_year_factor = fields.Float(string="Mid Year Factor",compute="compute_mid_year_factor")
     
     @api.model

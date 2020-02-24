@@ -7,12 +7,29 @@
         <field name="arch" type="xml">
             <xpath expr="//form/sheet" position="before">
                 <header>
-                    <button string="Assign Leaves" name="allow_public_holiday_on_caledar"  type="object"/>
+                    <button string="Assign Holiday Calendar" name="allow_public_holiday_on_caledar"  type="object"/>
                 </header>
             </xpath>
             
+            <xpath expr="//form/sheet/div/button[@name='%(resource.resource_calendar_leaves_action_from_calendar)d']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            
+            <xpath expr="//form/sheet/div/button[@name='%(resource.resource_resource_action_from_calendar)d']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            
+            
             <xpath expr="//form/sheet/group/field[@name='hours_per_day']" position="after">
                 <field name="branch_id"/>
+            </xpath>
+            
+            <xpath expr="//form/sheet/group/field[@name='hours_per_day']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            
+            <xpath expr="//notebook/page[2]" position="attributes">
+                <attribute name="string">Branch Holidays</attribute> 
             </xpath>
             
             <xpath expr="//form/sheet/notebook/page/field[@name='global_leave_ids']/tree/field[@name='name']" position="after">
@@ -30,7 +47,7 @@
     </record>
 
     <record id="resource.action_resource_calendar_form" model="ir.actions.act_window">
-        <field name="name">Assign Public Holiday</field>
+        <field name="name">Public Holiday Calendar</field>
         <field name="res_model">resource.calendar</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>

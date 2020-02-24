@@ -1,17 +1,17 @@
 <odoo>
 
-    <record id="hr_holidays_tree_inh" model="ir.ui.view">
+    <!-- <record id="hr_holidays_tree_inh" model="ir.ui.view">
         <field name="name">hr.leave.tree.inherit</field>
         <field name="model">hr.leave</field>
         <field name="inherit_id" ref="hr_holidays.hr_leave_view_tree_my"/>
         <field name="arch" type="xml">
             <field name="holiday_status_id" position="after">
-                <field name="commuted_leave"/>
+                <field name="commuted_leave" string="Commuted Type"/>
                 <field name="manager_designation_id"/>
                 <field name="pending_since"/>
             </field>
         </field>
-    </record>
+    </record> -->
     
     <record id="hr_holidays_tree_inherit_leave" model="ir.ui.view">
         <field name="name">hr.leave.tree.inherit.leave</field>
@@ -19,7 +19,7 @@
         <field name="inherit_id" ref="hr_holidays.hr_leave_view_tree"/>
         <field name="arch" type="xml">
             <field name="holiday_status_id" position="after">
-                <field name="commuted_leave"/>
+                <field name="commuted_leave" string="Commuted Type"/>
                 <field name="manager_designation_id"/>
                 <field name="pending_since"/>
             </field>
@@ -54,7 +54,7 @@
             <field name="holiday_status_id" position="after">
                 <field name="commuted_leave" attrs="{'invisible':[('commuted','!=',True)]}" readonly="1"/>
                 <field name="attachement" invisible="1"/>
-                <field name="commuted"/>
+                <field name="commuted" attrs="{'invisible':[('commuted','!=',True)]}"/>
                 <field name="attachement_proof" attrs="{'invisible': [('attachement','!=',True),('commuted','!=',True)],'required': [('attachement','=',True)]}"/>
                 <field name="employee_type" invisible="1"/>
                 <!-- <field name="branch_id"/> -->
@@ -65,8 +65,8 @@
             </field>
             
             <field name="name" position="before">
-                <field name="manager_designation_id" readonly="1"/>
-                <field name="pending_since"/>
+                <field name="manager_designation_id" readonly="1" attrs="{'invisible':[('manager_designation_id','=',False)]}"/>
+                <field name="pending_since" attrs="{'invisible':[('manager_designation_id','=',False)]}"/>
             </field>
             
             <xpath expr="//field[@name='number_of_days_display']" position="attributes">
@@ -145,9 +145,9 @@
                                 <field name="to_date"/>
                                 <field name="no_of_days_leave"/>
                                 <field name="status"/>
-                                <field name="applied_on"/>
-                                <field name="days_between_last_leave"/>
-                                <field name="are_days_weekend"/>
+                                <field name="applied_on" invisible="1"/>
+                                <field name="days_between_last_leave" invisible="1"/>
+                                <field name="are_days_weekend" invisible="1"/>
                             </tree>
                         </field>
                     </page>
