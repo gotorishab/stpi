@@ -29,11 +29,21 @@ class HrHolidays(models.Model):
         if self.request_date_from and self.request_date_to:
             self.count_no_of_leave = (self.request_date_to - self.request_date_from).days +1
 
-    @api.onchange('number_of_days_display','hr_consider_sandwich_rule')
+    @api.constrains('holiday_status_id')
+    @api.onchange('holiday_status_id','number_of_days_display','hr_consider_sandwich_rule')
     def check_leave_type(self):
-        if self.hr_consider_sandwich_rule and self.employee_id and self.number_of_days_display:
+        if self.holiday_status_id:
+            if self.holiday_status_id.sandwich_rule == True:
+                print("????????????????????????????????////////////////")
+                self.hr_consider_sandwich_rule = True
+                time_delta = self.date_to - self.date_from
+                self.number_of_days_display = math.ceil(time_delta.days + float(time_delta.seconds) / 86400)
+                print("if number_of_days_display teuwwwww",self.number_of_days_display)
+                print(">>>>>>>>>>>>>>>>>>>>>>>>>>>",self.hr_consider_sandwich_rule)
+        elif self.hr_consider_sandwich_rule and self.employee_id and self.number_of_days_display:
             time_delta = self.date_to - self.date_from
             self.number_of_days_display = math.ceil(time_delta.days + float(time_delta.seconds) / 86400)
+            print("if sandwichrule teuwwwww",self.number_of_days_display)
         else:
             if self.employee_id and self.date_from and self.date_to:
                 self.sandwich_rule = False
@@ -188,6 +198,7 @@ class ResourceMixin(models.AbstractModel):
         # actual hours per day
         if compute_leaves:
             intervals = calendar._work_intervals(from_datetime, to_datetime, resource, domain)
+            print("printprintprintprintprintprintprintprint",compute_leaves,intervals)
         else:
             intervals = calendar._attendance_intervals(from_datetime, to_datetime, resource)
         day_hours = defaultdict(float)

@@ -5,7 +5,7 @@
     'name': "Sandwich Rule For HR Leave",
     'summary': """
         Calculate leave as per sandwich Rules.
-        Updated by 21/10/19 by smehata
+        Updated by 21/10/20 by smehata
     """,
     'description': """
          Transition by SMehata

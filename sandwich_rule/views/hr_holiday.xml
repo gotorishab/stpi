@@ -17,7 +17,6 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
             <field name="department_id" position='after'>
                 <!--<field name='hr_consider_sandwich_rule' groups="hr.group_hr_manager" attrs="{'readonly': [('state', '!=', 'confirm')]}"/>-->
                 <field name='hr_consider_sandwich_rule' invisible="1"/>
-
             </field>
             <field name="date_from" position="replace">
                 <field name="night_shift" invisible="1"/>

@@ -119,7 +119,7 @@
             
             <xpath expr="//form/sheet" position="inside">
                 <notebook>
-                    <page string="Holiday/Leave" name="last_applied">
+                    <page string="Holiday/Leave" name="last_applied" invisible="1">
                         <group>
                             <group>
                                 <field name="leave_type_id"/>

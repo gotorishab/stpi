@@ -80,7 +80,7 @@
         <record id="hr_leave_type_cl" model="hr.leave.type">
             <field name="name">Casual Leave</field>
             <field name="leave_type">Casual Leave</field>
-            <field name="maximum_allow_leave">5</field>
+            <field name="maximum_allow_leave">15</field>
             <field name="leave_month">December</field>
             <field name="gende">transgender</field>
             <field name="allow_service_leave" eval="[(6, 0, [ref('regular_employee')])]"/>
