@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_my_vigilance,my.vigilance,model_my_vigilance,base.group_user,1,1,1,1
+access_vigilance_receipt_type,vigilance.receipt.type,model_vigilance_receipt_type,base.group_user,1,1,1,1
