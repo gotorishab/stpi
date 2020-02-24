@@ -56,7 +56,7 @@ class HrLoan(models.Model):
     name = fields.Char(string="Loan Name", default="Loan Request", readonly=True)
     date = fields.Date(string="Requested Date", default=fields.Date.today(), readonly=True)
     employee_id = fields.Many2one('hr.employee', string="Employee")
-    employee_id_related = fields.Many2one('hr.employee', related="employee_id", string="Employee")
+    employee_id_related = fields.Many2one('hr.employee', related="employee_id", string="Requested By")
     department_id = fields.Many2one('hr.department', related="employee_id.department_id", readonly=True,
                                     string="Department", store=True)
     type_id =fields.Many2one('loan.type',string="Type")
@@ -125,10 +125,10 @@ class HrLoan(models.Model):
                 raise UserError(_('Please enter valid no. of installments %d') %self.type_id.max_emi)
 
 
-    @api.constrains('loan_amount')
+    @api.constrains('loan_amount','type_id')
     def check_loan_amount(self):
         if self.loan_amount > 0.00:
-            max_all = self.env['allowed.loan.amount'].search([('pay_level_id', '=', self.employee_id.job_id.pay_level_id.id)], limit=1)
+            max_all = self.env['allowed.loan.amount'].search([('pay_level_id', '=', self.employee_id.job_id.pay_level_id.id),('loan_type', '=', self.type_id.id)], limit=1)
             if max_all.amount and self.loan_amount > max_all.amount:
                 raise UserError(_('You are not allowed to take loan more than Rs. %s/-') %max_all.amount)
     #
@@ -201,36 +201,68 @@ class HrLoan(models.Model):
         company based on payment start date and the no of installments.
             """
         for loan in self:
+            fcb_in = 0.00
+            new_ins = 0.00
+            closing_balance = 0.00
             loan.loan_lines.unlink()
             date_start = datetime.strptime(str(loan.payment_date), '%Y-%m-%d')
-            if loan.installment <=0:
+            if loan.installment < loan.type_id.threshold_emi:
+                cur_ins = loan.installment - loan.type_id.threshold_below_emi
+                new_ins = loan.type_id.threshold_below_emi
+            elif loan.installment > loan.type_id.threshold_emi:
+                cur_ins = loan.installment - loan.type_id.threshold_above_emi
+                new_ins = loan.type_id.threshold_above_emi
+            else:
+                cur_ins = loan.installment
+
+            if loan.installment <= 0:
                 raise UserError(_('Please enter Number of Installment grater than Zero'))
-            if loan.loan_amount <=0:
+            if loan.loan_amount <= 0:
                 raise UserError(_('Please enter Loan Amount grater than Zero'))
 
-            amount = loan.loan_amount / loan.installment
+            if cur_ins > 0:
+                amount = loan.loan_amount / cur_ins
+            else:
+                amount = loan.loan_amount
 
-            for i in range(1, loan.installment + 1):
-                cb_interest= 0.0
-                for j in  range (0,i):
+            for i in range(1, cur_ins + 1):
+                cb_interest = 0.0
+                for j in range(0, i):
                     # print('-----j',j)
-                    cb_interest += ((loan.loan_amount-(amount * (j))) * (self.interest/100))/12
+                    cb_interest += ((loan.loan_amount - (amount * (j))) * (self.interest / 100)) / 12
+                    fcb_in = cb_interest
 
-                closing_balance = loan.loan_amount-amount * i
-                year_interest =(loan.loan_amount-(amount * (i-1)))* (self.interest/100)
-                monthly_interest = year_interest/12
+                closing_balance = loan.loan_amount - amount * i
+                year_interest = (loan.loan_amount - (amount * (i - 1))) * (self.interest / 100)
+                monthly_interest = year_interest / 12
                 self.env['hr.loan.line'].create({
                     'date': date_start,
                     'principle_recovery_installment': amount,
                     'closing_blance_principle': closing_balance,
-                    'yearly_interest_amount':year_interest,
-                    'monthly_interest_amount':monthly_interest ,
-                    'cb_interest':cb_interest,
+                    'yearly_interest_amount': year_interest,
+                    'monthly_interest_amount': monthly_interest,
+                    'cb_interest': cb_interest,
                     'pending_amount': closing_balance + monthly_interest,
                     'amount': amount + monthly_interest,
                     'employee_id': loan.employee_id.id,
                     'loan_id': loan.id})
                 date_start = date_start + relativedelta(months=1)
+
+            if closing_balance == 0.00:
+                for k in range(1, new_ins + 1):
+                    cb_int = fcb_in / new_ins
+                    self.env['hr.loan.line'].create({
+                        'date': date_start,
+                        'principle_recovery_installment': 0.00,
+                        'closing_blance_principle': 0.00,
+                        'yearly_interest_amount': 0.00,
+                        'monthly_interest_amount': 0.00,
+                        'cb_interest': 0.00,
+                        'pending_amount': cb_int,
+                        'amount': 0.00,
+                        'employee_id': loan.employee_id.id,
+                        'loan_id': loan.id})
+                    date_start = date_start + relativedelta(months=1)
         return True
 
     @api.multi
