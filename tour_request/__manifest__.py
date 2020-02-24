@@ -14,6 +14,7 @@
 		'security/security.xml',
 		'data/travel_mode_demo_data.xml',
         'views/tour_request.xml',
+        'views/tour_claim.xml',
         'wizard/tour_claim_wizard.xml',
 	],
 	'images': [],
