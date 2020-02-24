@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_dashboard_external_iframe_dashboard_external_iframe,dashboard_external_iframe.dashboard_external_iframe,model_dashboard_external_iframe_dashboard_external_iframe,,1,0,0,0
