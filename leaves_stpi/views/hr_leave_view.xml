@@ -136,7 +136,7 @@
                         </group>
                     </page>
                     <page string="Pre/Post Leaves" name="pre_post_leaves">
-                        <field name="pre_post_leaves_ids">
+                        <field name="pre_post_leaves_ids" readonly="1">
                             <tree string="Leaves">
                                 <field name="pre_post"/>
                                 <field name="leave"/>
