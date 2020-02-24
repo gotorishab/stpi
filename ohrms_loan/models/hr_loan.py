@@ -153,28 +153,20 @@ class HrLoan(models.Model):
 
     @api.multi
     def action_cancel(self):
-        self.ensure_one()
-        compose_form_id = self.env.ref('mail.email_compose_message_wizard_form').id
-        ctx = dict(
-            default_composition_mode='comment',
-            default_res_id=self.id,
-
-            default_model='hr.loan',
-            default_is_log='True',
-            custom_layout='mail.mail_notification_light'
-        )
-        mw = {
-            'type': 'ir.actions.act_window',
+        rc = {
+            'name': 'Reason for Revert',
             'view_type': 'form',
             'view_mode': 'form',
-            'res_model': 'mail.compose.message',
-            'view_id': compose_form_id,
+            'view_id': self.env.ref('ohrms_loan.view_reason_revert_loan_wizard').id,
+            'res_model': 'revert.loan.wizard',
+            'type': 'ir.actions.act_window',
             'target': 'new',
-            'context': ctx,
+            'context': {
+                'default_res_model': self._name,
+                'default_res_id': self.id,
+            }
         }
-        self.write({'state': 'cancel'})
-        self.sudo().action_reset_to_draft()
-        return mw
+        return rc
     #
     #
     # @api.multi
@@ -243,7 +235,7 @@ class HrLoan(models.Model):
                     'monthly_interest_amount': monthly_interest,
                     'cb_interest': cb_interest,
                     'pending_amount': closing_balance + monthly_interest,
-                    'amount': amount + monthly_interest,
+                    'amount': amount,
                     'employee_id': loan.employee_id.id,
                     'loan_id': loan.id})
                 date_start = date_start + relativedelta(months=1)
@@ -259,7 +251,7 @@ class HrLoan(models.Model):
                         'monthly_interest_amount': 0.00,
                         'cb_interest': 0.00,
                         'pending_amount': cb_int,
-                        'amount': 0.00,
+                        'amount': cb_int,
                         'employee_id': loan.employee_id.id,
                         'loan_id': loan.id})
                     date_start = date_start + relativedelta(months=1)
