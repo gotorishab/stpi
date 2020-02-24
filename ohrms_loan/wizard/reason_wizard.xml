@@ -7,7 +7,7 @@
             <field name="arch" type="xml">
                 <form string="Describe reason for cancellation" version="7.0">
                     <group>
-                        <field name="reason_des" required="1" placeholder="Reason for taking this action"/>
+                        <field name="reason_des" required="1" placeholder="Input reason for Reverting the Loan Request"/>
                     </group>
 
                     <newline/>

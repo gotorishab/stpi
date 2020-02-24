@@ -198,7 +198,7 @@ class HrLoan(models.Model):
             closing_balance = 0.00
             loan.loan_lines.unlink()
             date_start = datetime.strptime(str(loan.payment_date), '%Y-%m-%d')
-            if loan.installment < loan.type_id.threshold_emi:
+            if loan.installment <= loan.type_id.threshold_emi:
                 cur_ins = loan.installment - loan.type_id.threshold_below_emi
                 new_ins = loan.type_id.threshold_below_emi
             elif loan.installment > loan.type_id.threshold_emi:
@@ -234,12 +234,11 @@ class HrLoan(models.Model):
                     'yearly_interest_amount': year_interest,
                     'monthly_interest_amount': monthly_interest,
                     'cb_interest': cb_interest,
-                    'pending_amount': closing_balance + monthly_interest,
+                    'pending_amount': closing_balance + cb_interest,
                     'amount': amount,
                     'employee_id': loan.employee_id.id,
                     'loan_id': loan.id})
                 date_start = date_start + relativedelta(months=1)
-
             if closing_balance == 0.00:
                 for k in range(1, new_ins + 1):
                     cb_int = fcb_in / new_ins

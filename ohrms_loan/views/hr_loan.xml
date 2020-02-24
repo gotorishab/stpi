@@ -144,13 +144,6 @@
         </field>
     </record>
     
-    
-    
-    
-    
-
-
-
 
 
     <!--============Action view of hr.loan Draft============-->
@@ -183,7 +176,7 @@
         <field name="context">{'search_default_myloan': 1}</field>
         <field name="search_view_id" ref="view_loan_request_search_form"/>
         <!--<field name="search_view_id" ref="hr.loan_search_view"/>-->
-        <field name="domain">[('state','=','approved')]</field>
+        <field name="domain">[('state','=','approve')]</field>
     </record>
     <!--============Action view of hr.loan rejected============-->
     <record id="hr_loan_rejected_action" model="ir.actions.act_window">
@@ -194,7 +187,7 @@
         <field name="context">{'search_default_myloan': 1}</field>
         <field name="search_view_id" ref="view_loan_request_search_form"/>
         <!--<field name="search_view_id" ref="hr.loan_search_view"/>-->
-        <field name="domain">[('state','=','cancel')]</field>
+        <field name="domain">[('state','=','refuse')]</field>
     </record>
 
 

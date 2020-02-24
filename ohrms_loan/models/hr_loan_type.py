@@ -13,7 +13,7 @@ class LoanType(models.Model):
     filter_domain = fields.Char(string="Domain")
 
     threshold_emi = fields.Integer(string='Threshold EMI')
-    threshold_below_emi = fields.Integer(string='Interest EMI Below Threshold')
+    threshold_below_emi = fields.Integer(string='Interest EMI Below/Equal to Threshold')
     threshold_above_emi = fields.Integer(string='Interest EMI above Threshold')
 
 
