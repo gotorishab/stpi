@@ -93,9 +93,8 @@ class EmployeeTourClaim(models.Model):
                     'from_l': i.from_l.id,
                     'to_l': i.to_l.id,
                 }))
-                # rec.detail_of_journey.unlink()
-                rec.detail_of_journey = detail_of_journey
-
+            rec.detail_of_journey.unlink()
+            rec.detail_of_journey = detail_of_journey
             for i in rec.tour_request_id.employee_journey:
                 detail_of_journey_leave.append((0, 0, {
                     'employee_journey': rec.id,
@@ -105,8 +104,8 @@ class EmployeeTourClaim(models.Model):
                     'from_l': i.from_l.id,
                     'to_l': i.to_l.id,
                 }))
-                # rec.detail_of_journey_leave.unlink()
-                rec.detail_of_journey_leave = detail_of_journey_leave
+            rec.detail_of_journey_leave.unlink()
+            rec.detail_of_journey_leave = detail_of_journey_leave
 
             for i in rec.tour_request_id.employee_journey:
                 detail_of_journey_lodging.append((0, 0, {
@@ -122,8 +121,8 @@ class EmployeeTourClaim(models.Model):
                     'lodging': i.lodging,
                     'conveyance': i.conveyance,
                 }))
-                # rec.detail_of_journey_lodging.unlink()
-                rec.detail_of_journey_lodging = detail_of_journey_lodging
+            rec.detail_of_journey_lodging.unlink()
+            rec.detail_of_journey_lodging = detail_of_journey_lodging
 
 
 
