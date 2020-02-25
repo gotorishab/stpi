@@ -6,8 +6,8 @@
             <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='resource_calendar_id']" position="after">
-                    <field name = 'employee_type' invisible = 'True'/>
-                    <field name = 'mode_of_promotion' attrs="{'invisible': [('employee_type', '!=', 'regular')], 'required': [('employee_type', '=', 'regular')]}"/>
+                    <field name = 'employee_type' readonly = 'True'/>
+                    <field name = 'mode_of_promotion' attrs="{'invisible': [('employee_type', '!=', 'regular')], 'readonly': [('employee_type', '=', 'regular')]}"/>
                 </xpath>
 
                 <xpath expr="//field[@name='struct_id']" position="after">
@@ -22,6 +22,7 @@
                     <group name = 'Basic Details'>
                         <field name = 'basicinc'/>
                         <field name = 'da'/>
+                        <field name = 'updated_basic'/>
                         <field name = 'supplementary_allowance'/>
                         <field name = 'voluntary_provident_fund'/>
                         <field name = 'xnohra'/>

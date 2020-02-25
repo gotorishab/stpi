@@ -6,7 +6,7 @@ from datetime import datetime, date, timedelta
 class HrDeclaration(models.Model):
     _name = 'hr.declaration'
     _inherit = ['mail.thread', 'mail.activity.mixin']
-    _description = 'HR Declaration'
+    _description = 'IT Declaration'
 
 
     def _default_employee(self):
@@ -228,7 +228,7 @@ class HrDeclaration(models.Model):
     pending_tax = fields.Float(string='Pending Tax', compute='compute_tax_paid_pending', store=True)
 
     state = fields.Selection(
-        [('draft', 'Draft'), ('to_approve', 'To Approve'), ('approved', 'Approved'), ('rejected', 'Rejected')
+        [('draft', 'Draft'), ('to_approve', 'To Approve'), ('approved', 'Approved'), ('rejected', 'Rejected'), ('verified', 'Verified')
          ], required=True, default='draft', string='Status', track_visibility='always')
 
 
@@ -475,7 +475,7 @@ class HrDeclaration(models.Model):
             ex_rebate_id = self.env['saving.master'].sudo().search([('saving_type', '=', 'Revised Rebate under Section 87A (2019-20)'), ('it_rule', '=', 'section87a')], limit=1)
             my_investment = 0.00
             my_allowed_rebate = 0.00
-            if rec.tax_salary_final <= 50000 and rec.tax_payable >= 12500:
+            if rec.tax_payable >= 12500:
                 my_investment = 12500
             elif rec.tax_salary_final <= 50000 and rec.tax_payable <= 12500:
                 my_investment = 10000
@@ -862,6 +862,13 @@ class HrDeclaration(models.Model):
                 raise UserError(
                     'You cannot delete a Tax which is not in draft or Rejected state')
         return super(HrDeclaration, self).unlink()
+
+
+    @api.multi
+    def button_verify(self):
+        for data in self:
+            data.write({'state': 'verified'})
+
 
 
 class StandardDeclarations(models.Model):

@@ -29,7 +29,7 @@
                     <button name="button_reject" string="Reject" type="object" states="to_approve" groups="tds.group_manager_hr_declaration"/>
                     <button name="button_compute_tax" string="Compute Tax" class="oe_highlight" type="object"/>
                     <button name="button_payment_tax" string="Tax Payment" class="oe_highlight" type="object" invisible="1"/>
-<!--                    <button name="button_verify" string="Verify" type="object" class="oe_highlight" states="approved" groups="tds.group_manager_hr_declaration"/>-->
+                    <button name="button_verify" string="Verify" type="object" class="oe_highlight" states="approved" groups="tds.group_manager_hr_declaration"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,to_approve,approved" />
                 </header>
                 <sheet>
@@ -70,10 +70,7 @@
                                 <field name="exemption_id" invisible="1"/>
                                 <field name="it_rule" required="1"/>
                                 <field name="saving_master" widget="selection" required="1"/>
- 
- 
-                                <field name="investment" sum="Total"/>
- 
+                                <field name="investment" invisible="1"/>
                                 <field name="allowed_rebate" sum="Total"/>
                             </tree>
                         </field>
@@ -107,7 +104,7 @@
 
                     <page string="Deducations">
                         <separator string="Slab - 80 Declaration "/>
-                        <field name="slab_ids" attrs="{'readonly':[('state','!=','draft')]}">
+                        <field name="slab_ids" attrs="{'readonly':[('state','=','verified')]}">
                             <tree string="Slab - 80 Declaration" editable="bottom">
                                 <field name="slab_id" invisible="1"/>
                                 <field name="it_rule" required="1"/>
@@ -134,7 +131,7 @@
 <!--                            </tree>-->
 <!--                        </field>-->
                          <separator string="Medical Insurance Premium paid"/>
-                        <field name="med_ins_ids" attrs="{'readonly':[('state','!=','draft')]}">
+                        <field name="med_ins_ids" attrs="{'readonly':[('state','=','verified')]}">
                             <tree string="Medical Insurance Premium paid" editable="bottom">
                                 <field name="med_ins_id" invisible="1"/>
                                 <field name="it_rule" required="1"/>
@@ -147,7 +144,7 @@
                                 <field name="allowed_rebate_under_80d" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                             </group>
                          <separator string="Deductions on Interest on Savings Account"/>
-                        <field name="deduction_saving_ids" attrs="{'readonly':[('state','!=','draft')]}">
+                        <field name="deduction_saving_ids" attrs="{'readonly':[('state','=','verified')]}">
                             <tree string="Deductions on Interest on Savings Account" editable="bottom">
                                 <field name="deduction_saving_id" invisible="1"/>
                                 <field name="it_rule" required="1"/>
@@ -163,7 +160,7 @@
                                 <field name="allowed_rebate_under_80dsa" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                             </group>
                         <separator string="Tax Benefits on Home Loan"/>
-                        <field name="tax_home_ids" attrs="{'readonly':[('state','!=','draft')]}">
+                        <field name="tax_home_ids" attrs="{'readonly':[('state','=','verified')]}">
                             <tree string="Tax Benefits on Home Loan" editable="bottom">
                                 <field name="tax_home_id" invisible="1"/>
                                 <field name="it_rule" required="1"/>
@@ -180,7 +177,7 @@
                                 <field name="allowed_rebate_under_24" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                             </group>
                         <separator string="Tax benefit on Education Loan (80E) "/>
-                        <field name="tax_education_ids" attrs="{'readonly':[('state','!=','draft')]}">
+                        <field name="tax_education_ids" attrs="{'readonly':[('state','=','verified')]}">
                             <tree string="Tax benefit on Education Loan (80E) " editable="bottom">
                                 <field name="tax_education_id" invisible="1"/>
                                 <field name="it_rule" required="1"/>
@@ -193,7 +190,7 @@
                                 <field name="allowed_rebate_under_80e" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                             </group>
                          <separator string="RGESS"/>
-                        <field name="rgess_ids" attrs="{'readonly':[('state','!=','draft')]}">
+                        <field name="rgess_ids" attrs="{'readonly':[('state','=','verified')]}">
                             <tree string="RGESS" editable="bottom">
                                 <field name="rgess_id" invisible="1"/>
                                 <field name="it_rule" required="1"/>
@@ -208,7 +205,7 @@
                                 <field name="allowed_rebate_under_80ccg" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                             </group>
                          <separator string="Deductions on Medical Expenditure for a Handicapped Relative"/>
-                        <field name="dedmedical_ids" attrs="{'readonly':[('state','!=','draft')]}">
+                        <field name="dedmedical_ids" attrs="{'readonly':[('state','=','verified')]}">
                             <tree string="Deductions on Medical Expenditure for a Handicapped Relative" editable="bottom">
                                 <field name="dedmedical_id" invisible="1"/>
                                 <field name="it_rule" required="1"/>
@@ -221,7 +218,7 @@
                                 <field name="allowed_rebate_under_80cdd" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                             </group>
                         <separator string="Deductions on Medical Expenditure on Self or Dependent Relative"/>
-                        <field name="dedmedical_self_ids" attrs="{'readonly':[('state','!=','draft')]}">
+                        <field name="dedmedical_self_ids" attrs="{'readonly':[('state','=','verified')]}">
                             <tree string="Deductions on Medical Expenditure on Self or Dependent Relative" editable="bottom">
                                 <field name="dedmedical_self_id" invisible="1"/>
                                 <field name="it_rule" required="1"/>
@@ -251,7 +248,7 @@
                             </group>
                         </page>
                         <page string="Rent Paid" name="rent_paid_g">
-                            <field name="rent_paid_ids" attrs="{'readonly':[('state','!=','draft')]}">
+                            <field name="rent_paid_ids" attrs="{'readonly':[('state','=','verified')]}">
                                 <tree string="Rent Paid" editable="bottom">
                                     <field name="rent_paid_id" invisible="1"/>
                                     <field name="date_from" required="1"/>
@@ -288,12 +285,12 @@
     </record>
 
 
-        <!--HR Declaration search view-->
+        <!--IT Declaration search view-->
     <record id="view_hr_declaration_request_search_form" model="ir.ui.view">
         <field name="name">hr.declaration.search.form</field>
         <field name="model">hr.declaration</field>
         <field name="arch" type="xml">
-           <search string="HR Declaration">
+           <search string="IT Declaration">
                <filter string="My Declarations" name="mydeclaration" domain="[('employee_id.user_id.id', '=', uid)]" />
                 <field name="employee_id" string="Employee"/>
                     <filter string="Employee" name="employee_id" context="{'group_by':'employee_id'}"/>
@@ -306,7 +303,7 @@
     
         <!--============Action view of hr.declaration Draft============-->
     <record id="hr_declaration_menu_action_all" model="ir.actions.act_window">
-        <field name="name">HR Declaration</field>
+        <field name="name">IT Declaration</field>
         <field name="res_model">hr.declaration</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
@@ -317,7 +314,7 @@
 
         <!--============Action view of hr.declaration Draft============-->
     <record id="hr_declaration_menu_action" model="ir.actions.act_window">
-        <field name="name">HR Declaration</field>
+        <field name="name">IT Declaration</field>
         <field name="res_model">hr.declaration</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
@@ -327,7 +324,7 @@
     </record>
     <!--============Action view of hr.declaration Waiting============-->
     <record id="hr_declaration_pending_action" model="ir.actions.act_window">
-        <field name="name">HR Declaration</field>
+        <field name="name">IT Declaration</field>
         <field name="res_model">hr.declaration</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
@@ -337,7 +334,7 @@
     </record>
     <!--============Action view of hr.declaration approved============-->
     <record id="hr_declaration_approved_action" model="ir.actions.act_window">
-        <field name="name">HR Declaration</field>
+        <field name="name">IT Declaration</field>
         <field name="res_model">hr.declaration</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
@@ -347,7 +344,7 @@
     </record>
     <!--============Action view of hr.declaration verified============-->
     <record id="hr_declaration_verified_action" model="ir.actions.act_window">
-        <field name="name">HR Declaration</field>
+        <field name="name">IT Declaration</field>
         <field name="res_model">hr.declaration</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
@@ -357,7 +354,7 @@
     </record>
     <!--============Action view of hr.declaration rejected============-->
     <record id="hr_declaration_rejected_action" model="ir.actions.act_window">
-        <field name="name">HR Declaration</field>
+        <field name="name">IT Declaration</field>
         <field name="res_model">hr.declaration</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
@@ -367,9 +364,9 @@
     </record>
     
     
-    <!--===============Action view of Employee HR Declaration claim Status=================-->
+    <!--===============Action view of Employee IT Declaration claim Status=================-->
     <record id="menu_hr_declaration_status_action" model="ir.actions.act_window">
-        <field name="name">HR Declaration</field>
+        <field name="name">IT Declaration</field>
         <field name="res_model">hr.declaration</field>
         <!--<field name="view_type">form</field>-->
         <field name="view_mode">tree,form,search</field>
@@ -377,9 +374,9 @@
     </record>
 
 
-<!--===============Action view of Employee HR Declaration claim Department=================-->
+<!--===============Action view of Employee IT Declaration claim Department=================-->
     <record id="menu_hr_declaration_department_action" model="ir.actions.act_window">
-        <field name="name">HR Declaration</field>
+        <field name="name">IT Declaration</field>
         <field name="res_model">hr.declaration</field>
         <!--<field name="view_type">form</field>-->
         <field name="view_mode">tree,form,search</field>
@@ -387,9 +384,9 @@
     </record>
 
 
-<!--===============Action view of Employee HR Declaration claim Job=================-->
+<!--===============Action view of Employee IT Declaration claim Job=================-->
     <record id="menu_hr_declaration_job_action" model="ir.actions.act_window">
-        <field name="name">HR Declaration</field>
+        <field name="name">IT Declaration</field>
         <field name="res_model">hr.declaration</field>
         <!--<field name="view_type">form</field>-->
         <field name="view_mode">tree,form,search</field>
@@ -397,9 +394,9 @@
     </record>
 
 
-<!--===============Action view of Employee HR Declaration claim Branch=================-->
+<!--===============Action view of Employee IT Declaration claim Branch=================-->
     <record id="menu_hr_declaration_branch_action" model="ir.actions.act_window">
-        <field name="name">HR Declaration</field>
+        <field name="name">IT Declaration</field>
         <field name="res_model">hr.declaration</field>
         <!--<field name="view_type">form</field>-->
         <field name="view_mode">tree,form,search</field>
@@ -419,12 +416,12 @@
 
 
       <menuitem id="menu_hr_declaration_main"
-                name="HR Declaration"
+                name="IT Declaration"
                 web_icon="tds,static/description/icon.png"
       />
 
       <menuitem id="menu_hr_declaration_id"
-                name="HR Declaration"
+                name="IT Declaration"
                 parent="menu_hr_declaration_main"
       />
 
@@ -472,19 +469,19 @@
                   action ="hr_declaration_menu_action_all"
                   sequence="1"
                   />
-    <menuitem name="HR Declaration by status"
+    <menuitem name="IT Declaration by status"
                 id="menu_hr_declaration_status" parent="menu_hr_declaration"
                  action="menu_hr_declaration_status_action"
                  />
-    <menuitem name="HR Declaration by Department"
+    <menuitem name="IT Declaration by Department"
                 id="menu_hr_declaration_department" parent="menu_hr_declaration"
                  action="menu_hr_declaration_department_action"
                  />
-    <menuitem name="HR Declaration by Functional Designation"
+    <menuitem name="IT Declaration by Functional Designation"
                 id="menu_hr_declaration_job" parent="menu_hr_declaration"
                  action="menu_hr_declaration_job_action"
                  />
-    <menuitem name="HR Declaration by Branch"
+    <menuitem name="IT Declaration by Branch"
                 id="menu_hr_declaration_branch" parent="menu_hr_declaration"
                  action="menu_hr_declaration_branch_action"
                  />

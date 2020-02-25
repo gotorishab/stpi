@@ -17,7 +17,7 @@ class InheritContractss(models.Model):
 
     employee_type = fields.Selection([('regular', 'Regular Employee'),
                                       ('contractual_with_agency', 'Contractual with Agency'),
-                                      ('contractual_with_stpi', 'Contractual with STPI')], string='Employment Type',
+                                      ('contractual_with_stpi', 'Contractual with STPI')], string='Employment Type'
                                      )
 
     basicinc = fields.Float(string='Basic Increment %')
@@ -25,6 +25,7 @@ class InheritContractss(models.Model):
     supplementary_allowance = fields.Float(string='Supplementary Allowance')
     voluntary_provident_fund = fields.Float(string='Voluntary Provident Fund (%)')
     xnohra = fields.Boolean(string='Rent Recovery?')
+    updated_basic = fields.Float(string='Updated Basic', compute='_compute_updated_basic_f_da')
 
     pay_level_id = fields.Many2one('hr.payslip.paylevel', string='Pay Level')
     pay_level = fields.Many2one('payslip.pay.level', string='Pay Band')
@@ -60,10 +61,22 @@ class InheritContractss(models.Model):
     misc_deduction = fields.Monetary(string="Misc. Deducation")
     license_dee = fields.Monetary(string=" License Fee")
 
+
+
+    @api.multi
+    @api.depends('wage','da')
+    def _compute_updated_basic_f_da(self):
+        for rec in self:
+            rec.updated_basic = rec.wage * (1 + rec.da/100)
+
+
     @api.constrains('employee_id')
     @api.onchange('employee_id')
     def _get_add_city(self):
         for rec in self:
+            if rec.employee_id:
+                rec.employee_type = rec.employee_id.employee_type
+                rec.mode_of_promotion = rec.employee_id.mode_of_promotion
             if rec.city_id.name:
                 if rec.city_id.name == 'Hyderabad' or rec.city_id.name == 'Delhi' or rec.city_id.name == 'Banglore' or rec.city_id.name == 'Mumbai' or rec.city_id.name == 'Chennai' or rec.city_id.name == 'Kolkata':
                     rec.city_tier = 'a1'
