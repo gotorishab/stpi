@@ -144,11 +144,12 @@ class HrLeave(models.Model):
         if count > 1:
             for pr_po in res.pre_post_leaves_ids:
                 if pr_po.pre_post == 'pre' and pr_po.leave == 'leave':
+                    print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<",prefix,pr_po.leave_type_id.name)
                     if pr_po.leave_type_id.name not in prefix:
                         raise ValidationError(_('You Are not allowed to club %s with %s type') % (
                         res.holiday_status_id.name, pr_po.leave_type_id.name))
                 if pr_po.pre_post == 'post' and pr_po.leave == 'leave':
-                    if pr_po.leave_type_id.name == prefix:
+                    if pr_po.leave_type_id.name not in prefix:
                         raise ValidationError(_('You Are not allowed to club %s with %s type') % (
                         res.holiday_status_id.name, pr_po.leave_type_id.name))
 

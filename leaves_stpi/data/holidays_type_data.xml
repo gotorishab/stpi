@@ -3,7 +3,7 @@
     <data noupdate="1">
         <!-- Casual leave -->
         <record id="holiday_status_type_cl" model="leave.type">
-            <field name="name">Casual Leaves</field>
+            <field name="name">Casual Leave</field>
         </record>
 
         <!-- half_pay_leave-->
