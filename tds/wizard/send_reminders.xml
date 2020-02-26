@@ -29,7 +29,7 @@
 
 
     <menuitem id="hr_menu_send_reminder_tds_request" name="Send Reminders" action="tds.send_reminder_wizard_action"
-            parent="tds.menu_hr_declaration_main" sequence="99"/>
+            parent="tds.menu_hr_declaration_main" groups="base.group_no_one" sequence="99"/>
 
 
     </data>

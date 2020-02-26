@@ -11,6 +11,13 @@ class HrDeclarationCron(models.Model):
         search_id = self.env['hr.declaration'].search(
             [('state', 'not in', ['approved', 'rejected'])])
         for rec in search_id:
+            proll = self.env['hr.payslip.line'].sudo().search([('slip_id.employee_id', '=', rec.employee_id.id),
+                                                               ('slip_id.state', '=', 'done'),
+                                                               ('code', '=', 'NET'),
+                                                               ('slip_id.date_to', '>', rec.date_range.date_start),
+                                                               ], order="date_to desc", limit=1)
+            for pr in proll:
+                rec.forecast_gross = round(pr.amount * 12)
             sum = 0
             dstart = rec.date_range.date_start
             dend = rec.date_range.date_end
@@ -18,25 +25,51 @@ class HrDeclarationCron(models.Model):
                                                                ('slip_id.state', '=', 'done'),
                                                                ('salary_rule_id.taxable_percentage', '>', 0),
                                                                ('slip_id.date_from', '>=', dstart),
-                                                               ('slip_id.date_to', '<=', dend)])
+                                                               ('slip_id.date_to', '<=', dend)], order="date_to desc")
             for i in proll:
                 sum += i.taxable_amount
-            rec.tax_salary_final = sum
+            rec.tax_salary_final = round(sum)
             # rec.income_after_rebate = rec.tax_salary_final - rec.net_allowed_rebate
             age = 0
             if rec.employee_id.birthday:
                 age = ((datetime.now().date() - rec.employee_id.birthday).days) / 365
 
-            inc_tax_slab = self.env['income.tax.slab'].sudo().search([('salary_from', '<=', rec.tax_salary_final),
-                                                                      ('salary_to', '>=', rec.tax_salary_final),
-                                                                      ('age_from', '<=', age),
-                                                                      ('age_to', '>=', age)], order="create_date desc",
-                                                                     limit=1)
-            for tax_slab in inc_tax_slab:
-                t1 = (tax_slab.tax_rate * (rec.tax_salary_final / 100))
-                t2 = (t1 * (1 + tax_slab.surcharge / 100))
-                t3 = (t2 * (1 + tax_slab.cess / 100))
-                rec.tax_payable = t3
+            # inc_tax_slab =  self.env['income.tax.slab'].sudo().search([('salary_from', '<=', rec.tax_salary_final),
+            #                                                     ('salary_to', '>=', rec.tax_salary_final),
+            #                                                     ('age_from', '<=', age),
+            #                                                     ('age_to', '>=', age)],order ="create_date desc",
+            #                                                    limit=1)
+            # for tax_slab in inc_tax_slab:
+            #     t1 = (tax_slab.tax_rate * (rec.tax_salary_final/100))
+            #     t2 = (t1 * (1 + tax_slab.surcharge / 100))
+            #     t3 = (t2 * (1 + tax_slab.cess / 100))
+            #     rec.tax_payable = round(t3)
+            tax_salary_final = 0.00
+
+            if rec.tax_salary_final <= 250000.00:
+                tax_salary_final = 0.00
+            elif rec.tax_salary_final > 250000.00 and rec.tax_salary_final <= 500000.00:
+                tax_salary_final = (rec.tax_salary_final - 250000.00) * 5 / 100
+                tax_salary_final = tax_salary_final + (tax_salary_final * 4 / 100)
+            elif rec.tax_salary_final > 500000.00 and rec.tax_salary_final <= 1000000.00:
+                tax_salary_final = ((rec.tax_salary_final - 500000.00) * 20 / 100)
+                tax_salary_final = tax_salary_final + (tax_salary_final * 4 / 100)
+                tax_salary_final = tax_salary_final + 13000.00
+            elif rec.tax_salary_final > 1000000.00 and rec.tax_salary_final <= 5000000.00:
+                tax_salary_final = ((rec.tax_salary_final - 1000000.00) * 30 / 100)
+                tax_salary_final = tax_salary_final + (tax_salary_final * 4 / 100)
+                tax_salary_final = tax_salary_final + 13000.00 + 104000.00
+            elif rec.tax_salary_final > 5000000.00 and rec.tax_salary_final <= 10000000.00:
+                tax_salary_final = ((rec.tax_salary_final - 5000000.00) * 30 / 100)
+                tax_salary_final = tax_salary_final + (tax_salary_final * 4 / 100)
+                tax_salary_final = tax_salary_final + (tax_salary_final * 10 / 100)
+                tax_salary_final = tax_salary_final + 13000.00 + 104000.00 + 1248000.00
+            elif rec.tax_salary_final > 10000000.00:
+                tax_salary_final = ((rec.tax_salary_final - 10000000.00) * 30 / 100)
+                tax_salary_final = tax_salary_final + (tax_salary_final * 4 / 100)
+                tax_salary_final = tax_salary_final + (tax_salary_final * 15 / 100)
+                tax_salary_final = tax_salary_final + 13000.00 + 104000.00 + 1248000.00 + 1716000.00
+            rec.tax_payable = round(tax_salary_final)
             if rec.tax_payable <= 0.00:
                 rec.tax_payable_zero = False
                 rec.tax_payable = 0.00
@@ -75,18 +108,32 @@ class HrDeclarationCron(models.Model):
                  ('it_rule', '=', 'mus10ale')], limit=1)
             child_id = self.env['employee.relative'].sudo().search(
                 [('employee_id', '=', rec.employee_id.id)])
+            prl_id = self.env['hr.payslip.line'].sudo().search(
+                [('slip_id.employee_id', '=', rec.employee_id.id), ('slip_id.state', '=', 'done'), ('code', '=', 'CCA'),
+                 ('slip_id.date_from', '>', rec.date_range.date_start),
+                 ('slip_id.date_to', '<', rec.date_range.date_end)], order="date_to desc")
             count = 0
             my_investment = 0.00
             my_allowed_rebate = 0.00
-            for cc in child_id:
-                if cc.relate_type_name == 'Son' or cc.relate_type_name == 'Daughter':
-                    count += 1
+            pl_amount = 0.00
+            count_paylines = 0.00
             if ex_child_id:
+                for cc in child_id:
+                    if cc.relate_type_name == 'Son' or cc.relate_type_name == 'Daughter':
+                        count += 1
+                for pl in prl_id:
+                    count_paylines += 1
+                    pl_amount += pl.amount
                 if rec.employee_id.date_of_join and rec.date_range.date_start < rec.employee_id.date_of_join <= rec.date_range.date_end:
                     nm = ((rec.date_range.date_end - rec.employee_id.date_of_join).days) / 30
-                    my_investment = count * 100 * nm
+                    relative_sum = count * 100 * int(nm)
                 else:
-                    my_investment = count * 100 * 12
+                    relative_sum = count * 100 * int(count_paylines)
+                if pl_amount < relative_sum:
+                    my_investment = pl_amount
+                else:
+                    my_investment = relative_sum
+
                 if my_investment <= ex_child_id.rebate:
                     my_allowed_rebate = my_investment
                 else:
@@ -105,7 +152,7 @@ class HrDeclarationCron(models.Model):
             prl_id = self.env['hr.payslip.line'].sudo().search(
                 [('slip_id.employee_id', '=', rec.employee_id.id), ('slip_id.state', '=', 'done'), ('code', '=', 'HRA'),
                  ('slip_id.date_from', '>', rec.date_range.date_start),
-                 ('slip_id.date_to', '<', rec.date_range.date_end)])
+                 ('slip_id.date_to', '<', rec.date_range.date_end)], order="date_to desc")
             sum_bs = 0.00
             sum_rent = 0.00
             sum_prl = 0.00
@@ -118,7 +165,7 @@ class HrDeclarationCron(models.Model):
                 sum_bs = ((rec.basic_salary + rec.da_salary) * 50) / 100
             else:
                 sum_bs = ((rec.basic_salary + rec.da_salary) * 40) / 100
-            sum_rent = rec.rent_paid - ((rec.basic_salary + rec.da_salary) * 10) / 100
+            sum_rent = rec.rent_paid - (((rec.basic_salary + rec.da_salary) * 10) / 100)
             if sum_prl <= sum_bs and sum_prl <= sum_rent:
                 sum = sum_prl
             elif sum_bs <= sum_prl and sum_bs <= sum_rent:
@@ -172,7 +219,7 @@ class HrDeclarationCron(models.Model):
                 limit=1)
             my_investment = 0.00
             my_allowed_rebate = 0.00
-            if rec.tax_salary_final <= 50000 and rec.tax_payable >= 12500:
+            if rec.tax_payable >= 12500:
                 my_investment = 12500
             elif rec.tax_salary_final <= 50000 and rec.tax_payable <= 12500:
                 my_investment = 10000
@@ -200,7 +247,7 @@ class HrDeclarationCron(models.Model):
                  ('slip_id.state', '=', 'done'),
                  ('salary_rule_id.pf_register', '=', True),
                  ('slip_id.date_from', '>', rec.date_range.date_start),
-                 ('slip_id.date_to', '<', rec.date_range.date_end)])
+                 ('slip_id.date_to', '<', rec.date_range.date_end)], order="date_to desc")
             sum = 0
             for sr in prl_80c_id:
                 if sr.code == 'CEPF' or sr.code == 'VCPF':
@@ -232,27 +279,41 @@ class HrDeclarationCron(models.Model):
             pr_pt_id = self.env['hr.payslip.line'].sudo().search(
                 [('slip_id.employee_id', '=', rec.employee_id.id), ('slip_id.state', '=', 'done'), ('code', '=', 'PTD'),
                  ('slip_id.date_from', '>', rec.date_range.date_start),
-                 ('slip_id.date_to', '<', rec.date_range.date_end)])
+                 ('slip_id.date_to', '<', rec.date_range.date_end)], order="date_to desc")
             for pt in pr_pt_id:
                 sum_pt += pt.amount
             if (rec.tax_salary_final + rec.previous_employer_income - exempt_am) > 0.00:
-                rec.income_after_exemption = rec.tax_salary_final + rec.previous_employer_income - exempt_am
+                rec.income_after_exemption = round(rec.tax_salary_final + rec.previous_employer_income - exempt_am)
             else:
                 rec.income_after_exemption = 0.00
             if rec.income_after_exemption - std_am > 0.00:
-                rec.income_after_std_ded = rec.income_after_exemption - std_am
+                rec.income_after_std_ded = round(rec.income_after_exemption - std_am)
             else:
                 rec.income_after_std_ded = 0.00
             if rec.income_after_std_ded - sum_pt > 0.00:
-                rec.income_after_pro_tax = rec.income_after_std_ded - sum_pt
+                rec.income_after_pro_tax = round(rec.income_after_std_ded - sum_pt)
             else:
                 rec.income_after_pro_tax = 0.00
             if (rec.income_after_pro_tax - rec.total_tds_paid - (
                     rec.allowed_rebate_under_80c + rec.allowed_rebate_under_80b + rec.allowed_rebate_under_80d + rec.allowed_rebate_under_80dsa + rec.allowed_rebate_under_80e + rec.allowed_rebate_under_80ccg + rec.allowed_rebate_under_tbhl + rec.allowed_rebate_under_80ee + rec.allowed_rebate_under_24 + rec.allowed_rebate_under_80cdd + rec.allowed_rebate_under_80mesdr)) > 0.00:
-                rec.taxable_income = rec.income_after_pro_tax - rec.total_tds_paid - (
-                        rec.allowed_rebate_under_80c + rec.allowed_rebate_under_80b + rec.allowed_rebate_under_80d + rec.allowed_rebate_under_80dsa + rec.allowed_rebate_under_80e + rec.allowed_rebate_under_80ccg + rec.allowed_rebate_under_tbhl + rec.allowed_rebate_under_80ee + rec.allowed_rebate_under_24 + rec.allowed_rebate_under_80cdd + rec.allowed_rebate_under_80mesdr)
+                rec.taxable_income = round(rec.income_after_pro_tax - rec.total_tds_paid - (
+                            rec.allowed_rebate_under_80c + rec.allowed_rebate_under_80b + rec.allowed_rebate_under_80d + rec.allowed_rebate_under_80dsa + rec.allowed_rebate_under_80e + rec.allowed_rebate_under_80ccg + rec.allowed_rebate_under_tbhl + rec.allowed_rebate_under_80ee + rec.allowed_rebate_under_24 + rec.allowed_rebate_under_80cdd + rec.allowed_rebate_under_80mesdr))
             else:
                 rec.taxable_income = 0.00
             rec.tax_computed_bool = True
-            rec.sudo().button_payment_tax()
+            for lines in rec.tax_payment_ids:
+                if lines.paid == False:
+                    lines.unlink()
+            edate = rec.date_range.date_end
+            date = datetime.now().date().replace(day=1)+ relativedelta(months=1)
+            month_cal = ((edate - date).days)/30
+            if month_cal > 0:
+                amount = (rec.pending_tax)/month_cal
+                for i in range(int(month_cal)):
+                    self.env['tax.payment'].create({
+                        'tax_payment_id': rec.id,
+                        'date': date,
+                        'amount': amount,
+                    })
+                    date = date + relativedelta(months=1)
         return True
