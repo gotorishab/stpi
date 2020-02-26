@@ -9,13 +9,12 @@
                 <filter string="Current Month" name='is_current_month' domain="[('is_current_month','=',True)]"/>
                 <filter string="Draft" name="draft" domain="[('state','=','draft')]" help="Draft Slip"/>
                 <filter string="Done" name="done" domain="[('state','=','done')]" help="Done Slip"/>
-                <filter string="Mode Payment Order" name="paid"/>
+                <filter string="Mode Payment Order" name="paid" domain="[('paid','=',True)]"/>
                 <field name="date_from"/>
                 <field name="date_to"/>
                 <field name="paid"/>
                 <field name="payslip_batch"/>
             </xpath>
-            
         </field>
     </record>
 
