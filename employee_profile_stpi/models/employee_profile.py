@@ -210,7 +210,7 @@ class EmployeeProfile(models.Model):
 
     @api.constrains('employee_id')
     @api.onchange('employee_id')
-    def onchange_emp_get_data(self):
+    def onchange_emp_get_data(self,working_list=None):
         for rec in self:
             rec.designation = rec.employee_id.job_id.id
             rec.department = rec.employee_id.department_id.id
@@ -247,7 +247,6 @@ class EmployeeProfile(models.Model):
             rec.recruitment_type = rec.employee_id.recruitment_type
             rec.fax_number = rec.employee_id.fax_number
             address_current_ids = []
-            rec.address_current_ids.unlink()
             for address in rec.employee_id.address_ids:
                 address_current_ids.append((0, 0, {
                     'employee_current_profile': rec.id,
@@ -261,6 +260,8 @@ class EmployeeProfile(models.Model):
                     'is_correspondence_address': address.is_correspondence_address,
                     'city': address.city,
                 }))
+            else:
+                rec.address_current_ids = working_list
             rec.address_current_ids = address_current_ids
             resume_line_current_ids = []
             for address in rec.employee_id.resume_line_ids:
@@ -279,7 +280,8 @@ class EmployeeProfile(models.Model):
                     'sequence': address.sequence,
                     'acquired': address.acquired,
                 }))
-            rec.resume_line_current_ids.unlink()
+            else:
+                rec.resume_line_current_ids = working_list
             rec.resume_line_current_ids = resume_line_current_ids
             employee_skill_current_ids = []
             for address in rec.employee_id.employee_skill_ids:
@@ -291,7 +293,8 @@ class EmployeeProfile(models.Model):
                     'skill_type_id': address.skill_type_id.id,
                     'level_progress': address.level_progress,
                 }))
-            rec.employee_skill_current_ids.unlink()
+            else:
+                rec.employee_skill_current_ids = working_list
             rec.employee_skill_current_ids = employee_skill_current_ids
             relative_current_ids = []
             for address in rec.employee_id.relative_ids:
@@ -313,7 +316,8 @@ class EmployeeProfile(models.Model):
                     'prec_gratuity': address.prec_gratuity,
                     'prec_pension': address.prec_pension,
                 }))
-            rec.relative_current_ids.unlink()
+            else:
+                rec.relative_current_ids = working_list
             rec.relative_current_ids = relative_current_ids
             prev_occu_current_ids = []
             for address in rec.employee_id.prev_occu_ids:
@@ -335,12 +339,13 @@ class EmployeeProfile(models.Model):
                     'attachment': address.attachment,
                     'remarks': address.remarks,
                 }))
-            rec.prev_occu_current_ids.unlink()
+            else:
+                rec.prev_occu_current_ids = working_list
             rec.prev_occu_current_ids = prev_occu_current_ids
 
 
     @api.onchange('employee_id')
-    def onchange_emp_temp_get_data(self):
+    def onchange_emp_temp_get_data(self,working_list=None):
         for rec in self:
             address_ids = []
             for address in rec.employee_id.address_ids:
@@ -356,7 +361,8 @@ class EmployeeProfile(models.Model):
                     'is_correspondence_address': address.is_correspondence_address,
                     'city': address.city,
                 }))
-            rec.address_ids.unlink()
+            else:
+                rec.address_ids = working_list
             rec.address_ids = address_ids
             resume_line_ids = []
             for address in rec.employee_id.resume_line_ids:
@@ -375,7 +381,8 @@ class EmployeeProfile(models.Model):
                     'sequence': address.sequence,
                     'acquired': address.acquired,
                 }))
-            rec.resume_line_ids.unlink()
+            else:
+                rec.resume_line_ids = working_list
             rec.resume_line_ids = resume_line_ids
             employee_skill_ids = []
             for address in rec.employee_id.employee_skill_ids:
@@ -387,7 +394,8 @@ class EmployeeProfile(models.Model):
                     'skill_type_id': address.skill_type_id.id,
                     'level_progress': address.level_progress,
                 }))
-            rec.employee_skill_ids.unlink()
+            else:
+                rec.employee_skill_ids = working_list
             rec.employee_skill_ids = employee_skill_ids
             relative_ids = []
             for address in rec.employee_id.relative_ids:
@@ -409,7 +417,8 @@ class EmployeeProfile(models.Model):
                     'prec_gratuity': address.prec_gratuity,
                     'prec_pension': address.prec_pension,
                 }))
-            rec.relative_ids.unlink()
+            else:
+                rec.relative_ids = working_list
             rec.relative_ids = relative_ids
             prev_occu_ids = []
             for address in rec.employee_id.prev_occu_ids:
@@ -431,7 +440,8 @@ class EmployeeProfile(models.Model):
                     'attachment': address.attachment,
                     'remarks': address.remarks,
                 }))
-            rec.prev_occu_ids.unlink()
+            else:
+                rec.prev_occu_ids = working_list
             rec.prev_occu_ids = prev_occu_ids
 
 

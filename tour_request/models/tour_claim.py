@@ -78,7 +78,7 @@ class EmployeeTourClaim(models.Model):
 
     @api.onchange('tour_request_id')
     @api.constrains('tour_request_id')
-    def get_journey_details_tour(self):
+    def get_journey_details_tour(self,working_list=None):
         for rec in self:
             detail_of_journey = []
             detail_of_journey_lodging = []
@@ -93,8 +93,10 @@ class EmployeeTourClaim(models.Model):
                     'from_l': i.from_l.id,
                     'to_l': i.to_l.id,
                 }))
-            rec.detail_of_journey.unlink()
-            rec.detail_of_journey = detail_of_journey
+
+            # rec.detail_of_journey.unlink()
+            else:
+                rec.detail_of_journey = working_list
             for i in rec.tour_request_id.employee_journey:
                 detail_of_journey_leave.append((0, 0, {
                     'employee_journey': rec.id,
@@ -104,9 +106,9 @@ class EmployeeTourClaim(models.Model):
                     'from_l': i.from_l.id,
                     'to_l': i.to_l.id,
                 }))
-            rec.detail_of_journey_leave.unlink()
-            rec.detail_of_journey_leave = detail_of_journey_leave
-
+            # rec.detail_of_journey_leave.unlink()
+            else:
+                rec.detail_of_journey_leave = working_list
             for i in rec.tour_request_id.employee_journey:
                 detail_of_journey_lodging.append((0, 0, {
                     'employee_journey': rec.id,
@@ -121,7 +123,11 @@ class EmployeeTourClaim(models.Model):
                     'lodging': i.lodging,
                     'conveyance': i.conveyance,
                 }))
-            rec.detail_of_journey_lodging.unlink()
+            # rec.detail_of_journey_lodging.unlink()
+            else:
+                rec.detail_of_journey_lodging = working_list
+            rec.detail_of_journey = detail_of_journey
+            rec.detail_of_journey_leave = detail_of_journey_leave
             rec.detail_of_journey_lodging = detail_of_journey_lodging
 
 
