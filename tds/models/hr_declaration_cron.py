@@ -317,3 +317,14 @@ class HrDeclarationCron(models.Model):
                     })
                     date = date + relativedelta(months=1)
         return True
+
+
+
+
+
+    def send_reminder_action_button_cron(self):
+        id_dec = self.env['hr.declaration'].search([('state', 'in', ['draft','to_approve','approved'])])
+        for rec in id_dec:
+            template_id = rec.env.ref('tds.email_template_tds').id
+            template = rec.env['mail.template'].browse(template_id)
+            template.send_mail(rec.id, force_send=True)

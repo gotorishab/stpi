@@ -172,6 +172,7 @@ class HrDeclaration(models.Model):
 
 
 
+
     employee_id = fields.Many2one('hr.employee', string='Requeested By', default=_default_employee, track_visibility='always')
     job_id = fields.Many2one('hr.job', string="Functional Designation", store=True, track_visibility='always')
     branch_id = fields.Many2one('res.branch', string="Branch", store=True, track_visibility='always')
@@ -307,27 +308,20 @@ class HrDeclaration(models.Model):
 
     @api.multi
     def button_reset_to_draft(self):
-        self.ensure_one()
-        compose_form_id = self.env.ref('mail.email_compose_message_wizard_form').id
-        ctx = dict(
-            default_composition_mode='comment',
-            default_res_id=self.id,
-
-            default_model='hr.declaration',
-            default_is_log='True',
-            custom_layout='mail.mail_notification_light'
-        )
-        mw = {
-            'type': 'ir.actions.act_window',
+        rc = {
+            'name': 'Register actions',
             'view_type': 'form',
             'view_mode': 'form',
-            'res_model': 'mail.compose.message',
-            'view_id': compose_form_id,
+            'view_id': self.env.ref('tds.view_reason_revert_tds_wizard').id,
+            'res_model': 'revert.tds.wizard',
+            'type': 'ir.actions.act_window',
             'target': 'new',
-            'context': ctx,
+            'context': {
+                'default_res_model': self._name,
+                'default_res_id': self.id,
+            }
         }
-        self.write({'state': 'draft'})
-        return mw
+        return rc
 
 
     @api.multi

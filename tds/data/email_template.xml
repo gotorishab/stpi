@@ -13,12 +13,18 @@
 
     <p>Hello ${object.employee_id.name},</p>
 
-    <p>Here is your Declaration from ${user.name}: </p>
+    <p>As we are advancing in the financial year, it is requested to complete your IT Declaration and submit all the required proofs by attaching supporting documents to your respective declaration.</p>
 
-    <p style="border-left: 1px solid #8e0000; margin-left: 30px;">
-       &nbsp;&nbsp;Name: <strong>${object.employee_id.name}</strong><br />
-    </p>
-    <p>If you have any question, do not hesitate to contact us.</p>
+    <p>This is a system generated message and needs to be ignored if you have already submitted the documents.</p>
+
+
+<p style="margin-top: 24px; margin-bottom: 16px;">
+    <a t-att-href="'/mail/view?model=%s&amp;res_id=%s' % (object._name, object.id)" style="background-color:#875A7B; padding: 10px; text-decoration: none; color: #fff; border-radius: 5px;">
+            Income Tax Declaration
+    </a>
+</p>
+
+    <p>For any concerns, please contact Admin/HR Department.</p>
     <br/>
     <br/>
 </div>

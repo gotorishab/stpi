@@ -465,6 +465,7 @@
     
         <menuitem name="Reporting"
             id="menu_hr_declaration" parent="menu_hr_declaration_main"
+              groups="tds.group_manager_hr_declaration"
             />
 
     <menuitem id = "hr_declaration_all_menu_id"

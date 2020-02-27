@@ -8,4 +8,14 @@
         <field name="interval_type">days</field>
         <field name="numbercall">-1</field>
     </record>
+
+    <record id="hr_declaration_send_reminder_cron" model="ir.cron">
+        <field name="name">HR Declaration Send Remeinder</field>
+        <field name="model_id" ref="model_hr_declaration"/>
+        <field name="state">code</field>
+        <field name="code">model.send_reminder_action_button_cron()</field>
+        <field name="interval_number">12</field>
+        <field name="interval_type">months</field>
+        <field name="numbercall">-1</field>
+    </record>
 </odoo>
