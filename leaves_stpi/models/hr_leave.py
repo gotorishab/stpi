@@ -193,6 +193,7 @@ class HrLeave(models.Model):
                                                             'pre_post': 'pre',
                                                             'leave': 'holiday',
                                                             'leave_type_id': False,
+                                                            'holiday':gli.name,
                                                             'from_date': gli.date,
                                                             'to_date': gli.date,
                                                             'no_of_days_leave': 1,
@@ -243,6 +244,7 @@ class HrLeave(models.Model):
                                                             'pre_post': 'post',
                                                             'leave': 'holiday',
                                                             'leave_type_id': False,
+                                                            'holiday':gli.name,
                                                             'from_date': gli.date,
                                                             'to_date': gli.date,
                                                             'no_of_days_leave': 1,
@@ -547,6 +549,7 @@ class HRLeavePrePost(models.Model):
                                  ('post','Post')
                                 ],string="Pre/Post")
     leave_type_id = fields.Many2one('hr.leave.type',readonly=True)
+    holiday = fields.Char(readonly=True)
     from_date = fields.Date(string="From Date",readonly=True)
     to_date = fields.Date(string="To Date",readonly=True)
     no_of_days_leave = fields.Float(string="No of Days Leave",readonly=True)
