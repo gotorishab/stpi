@@ -63,6 +63,7 @@
 <!--                            <field name="net_allowed_rebate" readonly="1"/>-->
 <!--                            <field name="income_after_rebate" readonly="1"/>-->
                             <field name="tax_payable" readonly="1" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="tax_payable_after_rebate" readonly="1" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                         </group>
                     </group>
                     <notebook>
@@ -104,9 +105,15 @@
                                 <field name="allowed_rebate" sum="Total"/>
                             </tree>
                         </field>
+                        <group class="oe_subtotal_footer oe_right" colspan="2" >
+                                <field name="rebate_received" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            </group>
                     </page>
 
                     <page string="Deducations">
+                        <group class="oe_subtotal_header oe_right" colspan="2" >
+                                <field name="total_deductions" class="oe_subtotal_header_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            </group>
                         <separator string="Slab - 80 Declaration "/>
                         <field name="slab_ids" attrs="{'readonly':[('state','=','verified')]}">
                             <tree string="Slab - 80 Declaration" editable="bottom">
@@ -258,7 +265,7 @@
                                     <field name="date_from" required="1"/>
                                     <field name="date_to" required="1"/>
                                     <field name="amount" required="1" sum="Amount"/>
-                                    <field name="attchment" required="1"/>
+                                    <field name="attchment"/>
                                 </tree>
                             </field>
                         </page>
