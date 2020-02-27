@@ -105,6 +105,9 @@
                                 <field name="allowed_rebate" sum="Total"/>
                             </tree>
                         </field>
+                        <group class="oe_subtotal_footer oe_right" colspan="2" >
+                                <field name="rebate_received" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            </group>
                     </page>
 
                     <page string="Deducations">

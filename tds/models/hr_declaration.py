@@ -216,6 +216,8 @@ class HrDeclaration(models.Model):
 
     tax_payable_after_rebate = fields.Float('Tax Payable after Rebate')
 
+    rebate_received = fields.Float(string='Rebate Received')
+
     tax_payable_zero = fields.Boolean('Tax Payable greater than equal to zero')
     tax_computed_bool = fields.Boolean('Tax computed bool', default = False)
     tax_payment_ids = fields.One2many('tax.payment','tax_payment_id', string='Tax Payment')
@@ -523,7 +525,7 @@ class HrDeclaration(models.Model):
                 if rec.tax_salary_final <= 500000:
                     my_investment = ex_rebate_id.rebate
                 else:
-                    my_investment = 0
+                    my_investment = 0.00
                 if my_investment <= ex_rebate_id.rebate:
                     my_allowed_rebate = my_investment
                 else:
@@ -632,8 +634,13 @@ class HrDeclaration(models.Model):
 
             if rec.tax_payable >= sum_rbt:
                 rec.tax_payable_after_rebate = rec.tax_payable - sum_rbt
+                rec.rebate_received = sum_rbt
             else:
                 rec.tax_payable_after_rebate = 0.00
+                rec.rebate_received = tax_payable
+
+
+
             rec.tax_computed_bool = True
             rec.sudo().button_payment_tax()
         return True
