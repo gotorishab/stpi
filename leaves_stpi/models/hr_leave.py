@@ -6,6 +6,7 @@ from datetime import datetime, timedelta,date
 from odoo.addons.resource.models.resource import float_to_time, HOURS_PER_DAY
 from pytz import timezone, UTC
 import math
+from dateutil.relativedelta import relativedelta
 
 class HrLeave(models.Model):
     _inherit = 'hr.leave'
@@ -118,40 +119,40 @@ class HrLeave(models.Model):
 # #                             print("-----------------------------=============")
 #                             raise ValidationError(_('You Are not allowed to club %s with %s type')% (res.holiday_status_id.name,res.leave_type_id.name))
 
-
-        if res.holiday_status_id.sandwich_rule == True:
-            date = today = datetime.now().date()
-            for pr_po in res.pre_post_leaves_ids:
-                if pr_po.pre_post == 'pre' and pr_po.leave == 'leave':
-                    date = pr_po.to_date
-#                     print('=================================================================================================', date)
-                if pr_po.pre_post == 'pre' and pr_po.leave == 'holiday':
-#                     print('==============================')
-                    if date < pr_po.from_date < res.request_date_from:
-                        raise ValidationError(_('You are not allowed to apply for this leave because of Sandwich rule applicability. Please cancel this leave and correct the existing Leave to cover the holidays/weekends'))
-            date = today = datetime.now().date()
-            for pr_po in res.pre_post_leaves_ids:
-                if pr_po.pre_post == 'post' and pr_po.leave == 'leave':
-                    date = pr_po.from_date
-                if pr_po.pre_post == 'post' and pr_po.leave == 'holiday' and date > pr_po.from_date > res.request_date_to:
-                    raise ValidationError(_('You are not allowed to apply for this leave because of Sandwich rule applicability. Please cancel this leave and correct the existing Leave to cover the holidays/weekends'))
-
-        count=0
-        prefix = []
-        for allow_comb in res.holiday_status_id.allowed_prefix_leave:
-            prefix.append(allow_comb.name)
-            count+=1
-        if count > 1:
-            for pr_po in res.pre_post_leaves_ids:
-                if pr_po.pre_post == 'pre' and pr_po.leave == 'leave':
-                    print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<",prefix,pr_po.leave_type_id.name)
-                    if pr_po.leave_type_id.name not in prefix:
-                        raise ValidationError(_('You Are not allowed to club %s with %s type') % (
-                        res.holiday_status_id.name, pr_po.leave_type_id.name))
-                if pr_po.pre_post == 'post' and pr_po.leave == 'leave':
-                    if pr_po.leave_type_id.name not in prefix:
-                        raise ValidationError(_('You Are not allowed to club %s with %s type') % (
-                        res.holiday_status_id.name, pr_po.leave_type_id.name))
+#         date_val_pre = datetime.now().date()
+#         date_val_post = datetime.now().date()
+        if res.pre_post_leaves_ids:
+            date_val_pre = res.pre_post_leaves_ids[0].to_date
+            date_val_post = res.pre_post_leaves_ids[0].to_date
+            if res.holiday_status_id.sandwich_rule == True:
+                for dates in res.pre_post_leaves_ids:
+                    if dates.pre_post == 'pre' and dates.leave == 'holiday':
+                        
+                        if date_val_pre < dates.to_date:
+                            date_val_pre = dates.to_date
+                date_val_pre = date_val_pre+relativedelta(days=1)
+                print("========================",date_val_pre)
+                
+                for dates in res.pre_post_leaves_ids:
+                    if dates.pre_post == 'post' and dates.leave == 'holiday':
+                        if date_val_post > dates.to_date:
+                            date_val_post = dates.to_date
+                date_val_post = date_val_post-relativedelta(days=1)
+                date = today = datetime.now().date()
+                for pr_po in res.pre_post_leaves_ids:
+                    if pr_po.pre_post == 'pre' and pr_po.leave == 'leave':
+                        date = pr_po.to_date
+                    if pr_po.pre_post == 'pre' and pr_po.leave == 'holiday':
+                        if date < pr_po.from_date < res.request_date_from:
+                            if date_val_pre == res.request_date_from:
+                                raise ValidationError(_('You are not allowed to apply for this leave because of Sandwich rule applicability. Please cancel this leave and correct the existing Leave to cover the holidays/weekends'))
+                date = today = datetime.now().date()
+                for pr_po in res.pre_post_leaves_ids:
+                    if pr_po.pre_post == 'post' and pr_po.leave == 'leave':
+                        date = pr_po.from_date
+                    if pr_po.pre_post == 'post' and pr_po.leave == 'holiday' and date > pr_po.from_date > res.request_date_to:
+                        if date_val_post == res.request_date_to:
+                            raise ValidationError(_('You are not allowed to apply for this leave because of Sandwich rule applicability. Please cancel this leave and correct the existing Leave to cover the holidays/weekends'))
 
         return res
 
