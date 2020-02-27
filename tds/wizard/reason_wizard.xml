@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <record id="view_reason_revert_vigilance_wizard" model="ir.ui.view">
-            <field name="name">revert.vigilance.wizard</field>
-            <field name="model">revert.vigilance.wizard</field>
+        <record id="view_reason_revert_tds_wizard" model="ir.ui.view">
+            <field name="name">revert.tds.wizard</field>
+            <field name="model">revert.tds.wizard</field>
             <field name="arch" type="xml">
                 <form string="Action Taken" version="7.0">
                     <group>
-                        <field name="reason_des" required="1" placeholder="Action Taken"/>
+                        <field name="reason_des" required="1" placeholder="Reason for reverting"/>
                     </group>
 
                     <newline/>
@@ -21,13 +21,13 @@
         </record>
 
         
-        <record id="action_vigilance_cancel_wizard" model="ir.actions.act_window">
+        <record id="action_tds_cancel_wizard" model="ir.actions.act_window">
             <field name="name">Reason for Cancellation</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="res_model">revert.vigilance.wizard</field>
+            <field name="res_model">revert.tds.wizard</field>
             <field name="view_type">form</field>
             <field name="view_mode">form</field>
-            <field name="view_id" ref="view_reason_revert_vigilance_wizard"/>
+            <field name="view_id" ref="view_reason_revert_tds_wizard"/>
         </record>
     </data>
 </odoo>

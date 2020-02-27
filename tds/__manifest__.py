@@ -17,6 +17,7 @@
 		'data/email_template.xml',
 		'data/hr_declaration_cron.xml',
 		'wizard/send_reminders.xml',
+		'wizard/reason_wizard.xml',
         'views/date_range.xml',
         'views/hr_payslip.xml',
         'views/tds.xml',
