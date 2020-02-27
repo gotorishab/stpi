@@ -169,8 +169,8 @@ class HrLeave(models.Model):
                 pre_holiday_ids = []
                 for leave in leave_ids:
                     if leave.request_date_to < rec.request_date_from:
-                        if not rec.pre_post_leaves_ids:
-                            pre_ids.append((0, 0, {
+#                         if not rec.pre_post_leaves_ids:
+                        pre_ids.append((0, 0, {
                                 'pre_post_leave': rec.id,
                                 'pre_post': 'pre',
                                 'leave': 'leave',
@@ -180,44 +180,48 @@ class HrLeave(models.Model):
                                 'no_of_days_leave': leave.number_of_days_display,
                                 'status': leave.state,
                                 }))
-                    
-                    print("///////////pre_post_le/////////////////",rec.pre_post_leaves_ids.ids)
+                    else:
+                        rec.pre_post_leaves_ids = working_list
+                    print("///////////pre_post_le/////////////////",pre_ids)
                     for gli in rec.employee_id.resource_calendar_id.global_leave_ids:
 #                         print("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOgli",gli)
 #                         print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",leave.request_date_to,gli.date,rec.request_date_from)
                         if leave.request_date_to < gli.date < rec.request_date_from:
-                            if not rec.pre_post_leaves_ids:
-                                pre_holiday_ids.append((0, 0, {'pre_post_leave': rec.id,
-                                                                                    'pre_post': 'pre',
-                                                                                    'leave': 'holiday',
-                                                                                    'leave_type_id': False,
-                                                                                    'from_date': gli.date,
-                                                                                    'to_date': gli.date,
-                                                                                    'no_of_days_leave': 1,
-                                                                                    'status': 'validate',
-                                                                                    }))
+#                             if not rec.pre_post_leaves_ids:
+                            pre_holiday_ids.append((0, 0, {'pre_post_leave': rec.id,
+                                                            'pre_post': 'pre',
+                                                            'leave': 'holiday',
+                                                            'leave_type_id': False,
+                                                            'from_date': gli.date,
+                                                            'to_date': gli.date,
+                                                            'no_of_days_leave': 1,
+                                                            'status': 'validate',
+                                                            }))
+                        else:
+                            rec.pre_post_leaves_ids = working_list
 #                 print("<<<<<<<<<<Pre ids<<<<<<<<<<<<<",pre_ids)
 #                 print("<<<<<<<<<<PRE HOLIDAY IDS<<<<<<<<<<<<<",pre_holiday_ids)
                 rec.pre_post_leaves_ids = pre_ids
                 rec.pre_post_leaves_ids = pre_holiday_ids
-            
+#                 print("resuletpreeeeeee============",rec.pre_post_leaves_ids)
             else:
-                print("elsssssssssssssssssssssssssss")
                 rec.pre_post_leaves_ids = working_list
-                print("elsssssssssssssssssssssssssss",rec.pre_post_leaves_ids)
+#                 print("elsssssssssssssssssssssssssss",rec.pre_post_leaves_ids)
 #                 print("<<<<<<<<<<rec.pre_post_leaves_ids<<<<<<<<<<<<<",rec.pre_post_leaves_ids.ids)
  
-            leave_ids = self.env['hr.leave'].search([('employee_id', '=', rec.employee_id.id),
+            post_leave_ids = self.env['hr.leave'].search([('employee_id', '=', rec.employee_id.id),
                                                      ('request_date_to','!=',rec.request_date_to),
                                                      ('state', 'not in', ['cancel','refuse'])], limit=1, order="request_date_from asc")
-            print("LLLLLLLLLLLLLLLLLLpostttttttttttttttttttLLLLLLLLLL",leave_ids)
-            if leave_ids:
+            print("LLLLLLLLLLLLLLLLLLpostttttttttttttttttttLLLLLLLLLL",post_leave_ids)
+            if post_leave_ids:
                 post_ids = []
                 post_holiday_ids = []
-                for leave in leave_ids:
+                for leave in post_leave_ids:
+#                     print("1111111111111111111111111")
                     if leave.request_date_from > rec.request_date_to:
-                        if not rec.pre_post_leaves_ids:
-                            post_ids.append((0, 0,{'pre_post_leave': rec.id,
+#                         print("22222222222222222222222222")
+#                         if not rec.pre_post_leaves_ids:
+                        post_ids.append((0, 0,{'pre_post_leave': rec.id,
                                                 'pre_post': 'post',
                                                 'leave': 'leave',
                                                 'leave_type_id': leave.holiday_status_id.id,
@@ -227,11 +231,14 @@ class HrLeave(models.Model):
                                                 'status': leave.state,
                                                 }))
 #                     print("OOOOOOOOOOOrequest_date_fromOOOOOOOOOOOOOOO",post_ids)
-                    
+#                     else:
+#                         rec.pre_post_leaves_ids = working_list
+                     
                     for gli in rec.employee_id.resource_calendar_id.global_leave_ids:
                         if leave.request_date_from > gli.date > rec.request_date_to:
-                            if not rec.pre_post_leaves_ids:
-                                post_holiday_ids.append((0, 0,{'pre_post_leave': rec.id,
+#                             if not rec.pre_post_leaves_ids:
+                            print("gggggggggggggggggggg",gli)
+                            post_holiday_ids.append((0, 0,{'pre_post_leave': rec.id,
                                                             'pre_post': 'post',
                                                             'leave': 'holiday',
                                                             'leave_type_id': False,
@@ -240,13 +247,17 @@ class HrLeave(models.Model):
                                                             'no_of_days_leave': 1,
                                                             'status': 'validate',
                                                             }))
-                                print("PPPPPPPPPPPPPPrequest_date_fromholidayPPPPPPPPPPPPP",post_holiday_ids)
-                rec.pre_post_leaves_ids = post_ids
-                rec.pre_post_leaves_ids = post_holiday_ids
+                            print("PPPPPPPPPPPPPPrequest_date_fromholidayPPPPPPPPPPPPP",post_holiday_ids)
+#                         else:
+#                             rec.pre_post_leaves_ids = working_list
+                if post_ids or post_holiday_ids:
+                    rec.pre_post_leaves_ids = post_ids
+                    rec.pre_post_leaves_ids = post_holiday_ids
+                    print("resulttttttttttt",rec.pre_post_leaves_ids)
             else:
                 rec.pre_post_leaves_ids = working_list
                 print("elsssssssssssssssssssssssssss",rec.pre_post_leaves_ids)
-#           
+           
    
     @api.constrains('date_from','date_to','employee_id')                
     @api.onchange('date_from','date_to','employee_id')
@@ -529,7 +540,7 @@ class HRLeavePrePost(models.Model):
     _name = 'hr.leave.pre.post'
     _description = 'HR Leave Pre Post'
     
-    pre_post_leave = fields.Many2one('hr.leave',string="Leaves",ondelete ='cascade',store=False)
+    pre_post_leave = fields.Many2one('hr.leave',string="Leaves",store=True)
     
     pre_post = fields.Selection([('pre','Pre'),
                                  ('post','Post')
