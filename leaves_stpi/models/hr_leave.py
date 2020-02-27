@@ -268,37 +268,37 @@ class HrLeave(models.Model):
             leave.employee_state = leave.employee_id.state
             leave.gender = leave.employee_id.gende
             leave.manager_designation_id = leave.employee_id.parent_id.job_id
-            if leave.create_date:
-                created_date = leave.create_date
-                leave.pending_since = created_date.strftime('%Y-%m-%d')
-#             print("{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{",leave.employee_state,leave.employee_type,leave.branch_id)
-            leave_ids = self.env['hr.leave'].search([('employee_id','=',leave.employee_id.id),
-                                                     ('state','=','validate')],limit=1, order="request_date_to desc")
-#             print("<<<<<<<<<<<<<<<<<<<<",leave_ids)
-            if leave_ids:
-                leave.leave_type_id = leave_ids.holiday_status_id.id
-                leave.from_date = leave_ids.request_date_from
-                leave.to_date = leave_ids.request_date_to
-                leave.no_of_days_leave = leave_ids.number_of_days_display
-                leave.status = leave_ids.state
-                leave.applied_on = leave_ids.create_date
-                days_between_last_leave = leave.request_date_from - leave_ids.request_date_to
-                leave.days_between_last_leave = days_between_last_leave.days - 1
-                
-                d1 = leave_ids.request_date_to   # start date
-                d2 = leave.request_date_from  # end date
-#                 print("////////////////////////////////////",((d2-d1).days + 1),leave_ids.request_date_to )
-                days = [d1 + timedelta(days=x) for x in range((d2-d1).days + 1)]
-#                 print("????????????????????????????????",days)
-                for day in days:
-                    week = day.strftime('%Y-%m-%d')
-                    print("weekkkkkkk",week)
-                    year, month, day = (int(x) for x in week.split('-'))    
-                    answer = date(year, month, day).strftime('%A')
-#                     print(":<<<<<<<<<<<<<<<<<<<<<<<<<<",answer)
-                    if answer == 'Saturday' or answer == 'Sunday' or answer == 'Saturday' and answer == 'Sunday':
-                        leave.are_days_weekend = True
-                        raise ValidationError(_('You are not allowed to apply for leave during this date range because of Sandwich rule applicability on this leave type'))
+#             if leave.create_date:
+#                 created_date = leave.create_date
+#                 leave.pending_since = created_date.strftime('%Y-%m-%d')
+# #             print("{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{",leave.employee_state,leave.employee_type,leave.branch_id)
+#             leave_ids = self.env['hr.leave'].search([('employee_id','=',leave.employee_id.id),
+#                                                      ('state','=','validate')],limit=1, order="request_date_to desc")
+# #             print("<<<<<<<<<<<<<<<<<<<<",leave_ids)
+#             if leave_ids:
+#                 leave.leave_type_id = leave_ids.holiday_status_id.id
+#                 leave.from_date = leave_ids.request_date_from
+#                 leave.to_date = leave_ids.request_date_to
+#                 leave.no_of_days_leave = leave_ids.number_of_days_display
+#                 leave.status = leave_ids.state
+#                 leave.applied_on = leave_ids.create_date
+#                 days_between_last_leave = leave.request_date_from - leave_ids.request_date_to
+#                 leave.days_between_last_leave = days_between_last_leave.days - 1
+#                 
+#                 d1 = leave_ids.request_date_to   # start date
+#                 d2 = leave.request_date_from  # end date
+# #                 print("////////////////////////////////////",((d2-d1).days + 1),leave_ids.request_date_to )
+#                 days = [d1 + timedelta(days=x) for x in range((d2-d1).days + 1)]
+# #                 print("????????????????????????????????",days)
+#                 for day in days:
+#                     week = day.strftime('%Y-%m-%d')
+#                     print("weekkkkkkk",week)
+#                     year, month, day = (int(x) for x in week.split('-'))    
+#                     answer = date(year, month, day).strftime('%A')
+# #                     print(":<<<<<<<<<<<<<<<<<<<<<<<<<<",answer)
+#                     if answer == 'Saturday' or answer == 'Sunday' or answer == 'Saturday' and answer == 'Sunday':
+#                         leave.are_days_weekend = True
+#                         raise ValidationError(_('You are not allowed to apply for leave during this date range because of Sandwich rule applicability on this leave type'))
                     
 #            
     

@@ -138,7 +138,6 @@
                     <page string="Pre/Post Leaves" name="pre_post_leaves">
                         <field name="pre_post_leaves_ids">
                             <tree string="Leaves">
-                                <!-- <field name="pre_post_leave"/> -->
                                 <field name="pre_post"/>
                                 <field name="leave"/>
                                 <field name="leave_type_id"/>
