@@ -63,6 +63,7 @@
 <!--                            <field name="net_allowed_rebate" readonly="1"/>-->
 <!--                            <field name="income_after_rebate" readonly="1"/>-->
                             <field name="tax_payable" readonly="1" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="tax_payable_after_rebate" readonly="1" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                         </group>
                     </group>
                     <notebook>
@@ -107,6 +108,9 @@
                     </page>
 
                     <page string="Deducations">
+                        <group class="oe_subtotal_header oe_right" colspan="2" >
+                                <field name="total_deductions" class="oe_subtotal_header_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            </group>
                         <separator string="Slab - 80 Declaration "/>
                         <field name="slab_ids" attrs="{'readonly':[('state','=','verified')]}">
                             <tree string="Slab - 80 Declaration" editable="bottom">
