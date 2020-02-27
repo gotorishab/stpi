@@ -172,6 +172,7 @@ class HrDeclaration(models.Model):
 
 
 
+
     employee_id = fields.Many2one('hr.employee', string='Requeested By', default=_default_employee, track_visibility='always')
     job_id = fields.Many2one('hr.job', string="Functional Designation", store=True, track_visibility='always')
     branch_id = fields.Many2one('res.branch', string="Branch", store=True, track_visibility='always')
