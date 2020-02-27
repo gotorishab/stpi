@@ -60,7 +60,7 @@ class HrLeave(models.Model):
     
     no_of_days_display_half = fields.Float(string="Duartion Half")
     holiday_half_pay = fields.Boolean(string="Half Pay Holiday")
-    pre_post_leaves_ids = fields.One2many('hr.leave.pre.post','pre_post_leave',string='Leaves',readonly=True,track_visibility='always')
+    pre_post_leaves_ids = fields.One2many('hr.leave.pre.post','pre_post_leave',string='Leaves',readonly=True)
     commuted_leave = fields.Text(string="Leave Type")
     manager_designation_id = fields.Many2one('hr.job',string="Pending With")
     pending_since = fields.Date(string="Pending Since",readonly=True)
@@ -125,7 +125,7 @@ class HrLeave(models.Model):
                 if pr_po.pre_post == 'pre' and pr_po.leave == 'leave':
                     date = pr_po.to_date
 #                     print('=================================================================================================', date)
-                if pr_po.leave == 'holiday':
+                if pr_po.pre_post == 'pre' and pr_po.leave == 'holiday':
 #                     print('==============================')
                     if date < pr_po.from_date < res.request_date_from:
                         raise ValidationError(_('You are not allowed to apply for this leave because of Sandwich rule applicability. Please cancel this leave and correct the existing Leave to cover the holidays/weekends'))
@@ -133,7 +133,7 @@ class HrLeave(models.Model):
             for pr_po in res.pre_post_leaves_ids:
                 if pr_po.pre_post == 'post' and pr_po.leave == 'leave':
                     date = pr_po.from_date
-                if pr_po.leave == 'holiday' and date > pr_po.from_date > res.request_date_to:
+                if pr_po.pre_post == 'post' and pr_po.leave == 'holiday' and date > pr_po.from_date > res.request_date_to:
                     raise ValidationError(_('You are not allowed to apply for this leave because of Sandwich rule applicability. Please cancel this leave and correct the existing Leave to cover the holidays/weekends'))
 
         count=0
@@ -158,9 +158,8 @@ class HrLeave(models.Model):
     
     @api.constrains('request_date_from','request_date_to','employee_id')
     @api.onchange('request_date_from','request_date_to','employee_id')
-    def create_pre_post_lines(self):
+    def create_pre_post_lines(self,working_list=None):
         for rec in self:
-            rec.pre_post_leaves_ids.unlink()
             leave_ids = self.env['hr.leave'].search([('employee_id', '=', rec.employee_id.id),
                                                      ('request_date_to','!=',rec.request_date_to),
                                                      ('state', 'not in', ['cancel','refuse'])], limit=1, order="request_date_to desc")
@@ -170,36 +169,42 @@ class HrLeave(models.Model):
                 pre_holiday_ids = []
                 for leave in leave_ids:
                     if leave.request_date_to < rec.request_date_from:
-                        pre_ids.append((0, 0, {
-                            'pre_post_leave': rec.id,
-                            'pre_post': 'pre',
-                            'leave': 'leave',
-                            'leave_type_id': leave.holiday_status_id.id,
-                            'from_date': leave.request_date_from,
-                            'to_date': leave.request_date_to,
-                            'no_of_days_leave': leave.number_of_days_display,
-                            'status': leave.state,
-                            }))
+                        if not rec.pre_post_leaves_ids:
+                            pre_ids.append((0, 0, {
+                                'pre_post_leave': rec.id,
+                                'pre_post': 'pre',
+                                'leave': 'leave',
+                                'leave_type_id': leave.holiday_status_id.id,
+                                'from_date': leave.request_date_from,
+                                'to_date': leave.request_date_to,
+                                'no_of_days_leave': leave.number_of_days_display,
+                                'status': leave.state,
+                                }))
                     
                     print("///////////pre_post_le/////////////////",rec.pre_post_leaves_ids.ids)
                     for gli in rec.employee_id.resource_calendar_id.global_leave_ids:
 #                         print("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOgli",gli)
 #                         print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",leave.request_date_to,gli.date,rec.request_date_from)
                         if leave.request_date_to < gli.date < rec.request_date_from:
-                            
-                            pre_holiday_ids.append((0, 0, {'pre_post_leave': rec.id,
-                                                                                'pre_post': '',
-                                                                                'leave': 'holiday',
-                                                                                'leave_type_id': False,
-                                                                                'from_date': gli.date,
-                                                                                'to_date': gli.date,
-                                                                                'no_of_days_leave': 1,
-                                                                                'status': 'validate',
-                                                                                }))
+                            if not rec.pre_post_leaves_ids:
+                                pre_holiday_ids.append((0, 0, {'pre_post_leave': rec.id,
+                                                                                    'pre_post': 'pre',
+                                                                                    'leave': 'holiday',
+                                                                                    'leave_type_id': False,
+                                                                                    'from_date': gli.date,
+                                                                                    'to_date': gli.date,
+                                                                                    'no_of_days_leave': 1,
+                                                                                    'status': 'validate',
+                                                                                    }))
 #                 print("<<<<<<<<<<Pre ids<<<<<<<<<<<<<",pre_ids)
 #                 print("<<<<<<<<<<PRE HOLIDAY IDS<<<<<<<<<<<<<",pre_holiday_ids)
                 rec.pre_post_leaves_ids = pre_ids
                 rec.pre_post_leaves_ids = pre_holiday_ids
+            
+            else:
+                print("elsssssssssssssssssssssssssss")
+                rec.pre_post_leaves_ids = working_list
+                print("elsssssssssssssssssssssssssss",rec.pre_post_leaves_ids)
 #                 print("<<<<<<<<<<rec.pre_post_leaves_ids<<<<<<<<<<<<<",rec.pre_post_leaves_ids.ids)
  
             leave_ids = self.env['hr.leave'].search([('employee_id', '=', rec.employee_id.id),
@@ -211,7 +216,8 @@ class HrLeave(models.Model):
                 post_holiday_ids = []
                 for leave in leave_ids:
                     if leave.request_date_from > rec.request_date_to:
-                        post_ids.append((0, 0,{'pre_post_leave': rec.id,
+                        if not rec.pre_post_leaves_ids:
+                            post_ids.append((0, 0,{'pre_post_leave': rec.id,
                                                 'pre_post': 'post',
                                                 'leave': 'leave',
                                                 'leave_type_id': leave.holiday_status_id.id,
@@ -224,8 +230,9 @@ class HrLeave(models.Model):
                     
                     for gli in rec.employee_id.resource_calendar_id.global_leave_ids:
                         if leave.request_date_from > gli.date > rec.request_date_to:
-                            post_holiday_ids.append((0, 0,{'pre_post_leave': rec.id,
-                                                            'pre_post': '',
+                            if not rec.pre_post_leaves_ids:
+                                post_holiday_ids.append((0, 0,{'pre_post_leave': rec.id,
+                                                            'pre_post': 'post',
                                                             'leave': 'holiday',
                                                             'leave_type_id': False,
                                                             'from_date': gli.date,
@@ -233,13 +240,13 @@ class HrLeave(models.Model):
                                                             'no_of_days_leave': 1,
                                                             'status': 'validate',
                                                             }))
-                            print("PPPPPPPPPPPPPPrequest_date_fromholidayPPPPPPPPPPPPP",post_holiday_ids)
+                                print("PPPPPPPPPPPPPPrequest_date_fromholidayPPPPPPPPPPPPP",post_holiday_ids)
                 rec.pre_post_leaves_ids = post_ids
                 rec.pre_post_leaves_ids = post_holiday_ids
-
-
-
-
+            else:
+                rec.pre_post_leaves_ids = working_list
+                print("elsssssssssssssssssssssssssss",rec.pre_post_leaves_ids)
+#           
    
     @api.constrains('date_from','date_to','employee_id')                
     @api.onchange('date_from','date_to','employee_id')
@@ -282,88 +289,7 @@ class HrLeave(models.Model):
                         leave.are_days_weekend = True
                         raise ValidationError(_('You are not allowed to apply for leave during this date range because of Sandwich rule applicability on this leave type'))
                     
-#             print("???//////////////////////////",leave_ids)
-        
-#             leave_ids = self.env['hr.leave'].search([('employee_id','=',leave.employee_id.id),
-#                                                      ],limit=1, order="request_date_to desc")
-#             print("?????????????????leave_idsleave_ids?????????",leave_ids)
-#             crteria_list = [(5, 0,0)]
-#             if leave_ids:
-#                 for leave in leave_ids:
-#                     if leave.date_to < leave.date_to:
-#                         crteria_list.append((0,0,{'pre_post_leave':leave.id,
-#                                                              'pre_post':'pre',
-#                                                              'leave':'leave',
-#                                                              'leave_type_id':leave.holiday_status_id.id,
-#                                                              'from_date':leave.request_date_from,
-#                                                              'to_date':leave.request_date_to,
-#                                                              'no_of_days_leave':leave.number_of_days_display,
-#                                                              'status':leave.state,
-#                                                              'applied_on':leave.create_date,
-#                                                              'days_between_last_leave':0.0,
-#                                                             }))
-#                     else:
-#                         crteria_list.append((0,0,{'pre_post_leave':leave.id,
-#                                                  'pre_post':'post',
-#                                                  'leave':'leave',
-#                                                  'leave_type_id':leave.holiday_status_id.id,
-#                                                  'from_date':leave.request_date_from,
-#                                                  'to_date':leave.request_date_to,
-#                                                  'no_of_days_leave':leave.number_of_days_display,
-#                                                  'status':leave.state,
-#                                                  'applied_on':leave.create_date,
-#                                                  'days_between_last_leave':0.0,
-#                                                 }))
-#     
-#                     print("prepostttttttttttttttttttttttttt",crteria_list)
-#                     if crteria_list:
-#                         print("11111111111111111111111111")
-#                         leave.pre_post_leaves_ids = crteria_list
-#                         print("<<<<<<<<<<<res.pre_post_leaves_ids",leave.pre_post_leaves_ids)
-#                         
-#                     if leave.request_date_from < leave.request_date_from:
-#                         d1 = leave.request_date_from    # small date
-#                         d2 = leave.request_date_from # big date
-#     #                     print("////////////////////greater////////////////",d1,d2)
-#                         days = [d1 + timedelta(days=x) for x in range((d2-d1).days)]
-#     #                     print("????????????????????????????????greaterrrrrrrrrrrr",days)
-#                     elif leave.request_date_from > leave.request_date_from:
-#                         d1 = leave.request_date_from   # small date
-#                         d2 =  leave.request_date_from # big date
-#     #                     print("/////////////////////////lessssssss///////////",d1,d2)
-#                         days = [d1 + timedelta(days=x) for x in range((d2-d1).days)]
-#     #                     print("???????????????????????????????lessssssss?",days)
-#                         for day in days:
-#                             week = day.strftime('%Y-%m-%d')
-#                             print("weekkkkkkk",week)
-#                             year, month, day = (int(x) for x in week.split('-'))    
-#                             answer = date(year, month, day).strftime('%A')
-#         #                     
-#                             week = datetime.strptime(week, '%Y-%m-%d').date()
-#                             for resource_ids in leave.employee_id.resource_calendar_id.global_leave_ids:
-#                                 resource_date = datetime.strptime(str(resource_ids.date), '%Y-%m-%d').date()
-#         #                         print("222222222222222222222222222222",type(week.date))
-#                                 print("111111111111111111111111111",week,resource_date)
-#                                  
-#                                 if week == resource_date:
-#                                     print("trueeeeeeeeeeeeeee")
-#                                     crteria_list.append((0,0,{'pre_post_leave':leave.id,
-#                                                                     'pre_post':'post',
-#                                                                     'leave':'holiday',
-#                                                                     'leave_type_id':'',
-#                                                                     'from_date':week,
-#                                                                     'to_date':week,
-#                                                                     'no_of_days_leave':1,
-#                                                                     'status':leave.state,
-#                                                                     'applied_on':leave.create_date,
-#                                                                     'days_between_last_leave':0.0,
-#                                                                     'are_days_weekend':True
-#                                                                     }))
-#                                     print("holidayssssssssss",crteria_list)
-#                                     if crteria_list:
-#                                         print("11111111111111111111111111")
-#                                         leave.pre_post_leaves_ids = crteria_list
-    
+#            
     
     @api.constrains('date_from','date_to','holiday_status_id')
     @api.onchange('date_from','date_to','holiday_status_id')
@@ -603,7 +529,8 @@ class HRLeavePrePost(models.Model):
     _name = 'hr.leave.pre.post'
     _description = 'HR Leave Pre Post'
     
-    pre_post_leave = fields.Many2one('hr.leave',string="Leaves")
+    pre_post_leave = fields.Many2one('hr.leave',string="Leaves",ondelete ='cascade',store=False)
+    
     pre_post = fields.Selection([('pre','Pre'),
                                  ('post','Post')
                                 ],string="Pre/Post")
