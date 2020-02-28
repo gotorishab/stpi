@@ -9,10 +9,10 @@
             <form string="LTC">
                 <header>
                     <button name="button_submit" string="Submit" class="oe_highlight" type="object" states="draft"/>
-                    <button name="button_approved" string="Approve" class="oe_highlight" type="object" states="submitted" groups="tour_request.group_tour_request_approvere"/>
+                    <button name="button_approved" string="Approve" class="oe_highlight" type="object" states="submitted" groups="tour_request.group_tour_claim_approvere"/>
                      <button name="button_reset_to_draft" string="Revert" type="object" states="submitted"/>
                     <button name="button_reject" string="Reject" type="object" states="submitted"/>
-                    <button name="button_pay" string="Paid" type="object" class="oe_highlight" states="approved"/>
+                    <button name="button_pay" string="Paid" type="object" class="oe_highlight" states="approved" groups="tour_request.group_tour_claim_finance"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,submitted,approved" />
                 </header>
                 <sheet>
@@ -36,7 +36,7 @@
                             <div class="oe_clear"/>
                             <br/>
                             <separator string="Details of Journey"/>
-                            <field name="detail_of_journey">
+                            <field name="detail_of_journey" attrs="{'readonly':[('state','not in',('draft', 'rejected'))]}">
                                     <tree editable="bottom" create="0">
                                         <field name="employee_journey" invisible="1"/>
                                          <field name="from_l" readonly="1"/>
@@ -47,20 +47,16 @@
                                         <field name='arrival_time' readonly='1' />
                                         <field name='arranged_by' attrs="{'readonly':[('state','not in',('draft', 'rejected'))],'required':[('state','=','draft')]}"/>
                                         <field name="state" invisible="1"/>
-                                        <field name="amount_claimed" sum="Total Amount" attrs="{'readonly':[('state','not in',('draft', 'rejected'))],'required':[('state','=','draft')]}"/>
+                                        <field name="amount_claimed" sum="Total Amount" attrs="{'required':[('arranged_by','=','self')],'invisible':[('arranged_by','!=','self')]}"/>
                                         <field name="distance" sum="Total Distance Covered" attrs="{'readonly':[('state','not in',('draft', 'rejected'))]}"/>
 <!--                                        <field name="approved_approved" sum="Total Amount Approved" attrs="{'invisible':[('state','in',('draft', 'rejected'))]}" groups="tour_request.group_tour_request_approvere"/>-->
 
                                     </tree>
                             </field>
                             <separator string="Date of absence from place to halt"/>
-                            <field name="detail_of_journey_leave">
-                                    <tree editable="bottom" create="0">
+                            <field name="detail_of_journey_leave" attrs="{'readonly':[('state','not in',('draft', 'rejected'))]}">
+                                    <tree editable="bottom">
                                         <field name="employee_journey" invisible="1"/>
-                                        <field name="departure_date" invisible="1"/>
-                                        <field name="arrival_date" invisible="1"/>
-                                        <field name="from_l" readonly="1"/>
-                                        <field name="to_l" readonly="1"/>
                                         <field name="leave_taken" attrs="{'readonly':[('state','not in',('draft', 'rejected'))],'required':[('state','=','draft')]}"/>
                                         <field name="from_date_camp"/>
                                         <field name="to_date_camp"/>
@@ -75,23 +71,25 @@
                                 </group>
                             </group>
                             <separator string="Lodging and Boarding"/>
-                            <field name="detail_of_journey_lodging">
-                                    <tree editable="bottom" create="0">
+                            <field name="detail_of_journey_lodging" attrs="{'readonly':[('state','not in',('draft', 'rejected'))]}">
+                                    <tree editable="bottom">
                                         <field name="employee_journey" invisible="1"/>
                                         <field name="arranged_by" attrs="{'readonly':[('state','not in',('draft', 'rejected'))],'required':[('state','=','draft')]}"/>
                                         <field name="from_date" attrs="{'readonly':[('state','not in',('draft', 'rejected'))],'required':[('state','=','draft')]}"/>
                                         <field name="to_date" attrs="{'readonly':[('state','not in',('draft', 'rejected'))],'required':[('state','=','draft')]}"/>
                                         <field name="no_of_days" readonly="1"/>
                                         <field name="name_of_hotel" attrs="{'readonly':[('state','not in',('draft', 'rejected'))]}"/>
-                                        <field name="daily_lodging_charge" attrs="{'readonly':[('state','not in',('draft', 'rejected'))],'invisible':[('arranged_by','!=','self')]}"/>
-                                        <field name="daily_boarding_charge" attrs="{'readonly':[('state','not in',('draft', 'rejected'))],'invisible':[('arranged_by','!=','self')]}"/>
-                                        <field name="daily_boarding_lodginf_charge" attrs="{'readonly':[('state','not in',('draft', 'rejected'))],'invisible':[('arranged_by','!=','self')]}"/>
+                                        <field name="claiming_separately" attrs="{'readonly':[('state','not in',('draft', 'rejected'))],'invisible':[('arranged_by','!=','self')],'required':[('arranged_by','=','self')]}"/>
+                                        <field name="daily_lodging_charge" attrs="{'readonly':[('state','not in',('draft', 'rejected'))],'invisible':[('claiming_separately','!=','yes')]}"/>
+                                        <field name="daily_boarding_charge" attrs="{'readonly':[('state','not in',('draft', 'rejected'))],'invisible':[('claiming_separately','!=','yes')]}"/>
+                                        <field name="daily_boarding_lodginf_charge" attrs="{'readonly':[('state','not in',('draft', 'rejected'))],'invisible':[('claiming_separately','!=','no')]}"/>
                                         <field name="total_amount_paid" readonly="1"/>
-                                        <field name="other_details" attrs="{'readonly':[('state','not in',('draft', 'rejected'))]}"/>
+<!--                                        <field name="other_details" attrs="{'readonly':[('state','not in',('draft', 'rejected'))]}"/>-->
                                         <field name="state" invisible="1"/>
                                     </tree>
                             </field>
                              <group class="oe_subtotal_footer oe_right" colspan="2" >
+                                <field name="other_details" attrs="{'readonly':[('state','not in',('draft', 'rejected'))]}"/>
                                 <field name="total_claimed_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                                 <field name="advance_requested" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                                 <field name="amount_paid" widget="monetary" options="{'currency_field': 'currency_id'}" readonly="1"/>
@@ -112,8 +110,12 @@
         <field name="arch" type="xml">
             <tree string="LTC">
                 <field name="employee_id"/>
-                <field name="tour_sequence"/>
+                <field name="designation"/>
+                <field name="department"/>
+                <field name="branch_id"/>
                 <field name="state"/>
+                <field name="__last_update"/>
+                <field name="write_uid"/>
             </tree>
         </field>
     </record>

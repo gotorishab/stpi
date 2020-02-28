@@ -16,18 +16,23 @@ class EmployeeTourClaim(models.Model):
     @api.depends('tour_request_id')
     def _compute_approved_amount(self):
         total_claimed = 0.0
-        advance_requested = 0.0
+        total_cl_journey = 0.0
         for record in self:
             record.advance_requested = record.tour_request_id.advance_requested
             for line in record.detail_of_journey_lodging:
                 if line:
-                    total_claimed += ((line.daily_lodging_charge + line.daily_boarding_charge + line.daily_boarding_lodginf_charge)*line.no_of_days + line.other_details)
-            record.total_claimed_amount = total_claimed
+                    no_of_days = (line.to_date - line.from_date).days
+                    total_claimed += ((line.daily_lodging_charge + line.daily_boarding_charge + line.daily_boarding_lodginf_charge)*no_of_days)
+            for line in record.detail_of_journey:
+                if line:
+                    total_cl_journey += line.amount_claimed
+            record.total_claimed_amount = total_claimed + record.other_details + total_cl_journey
             record.balance_left = record.total_claimed_amount - record.advance_requested - record.amount_paid
 
 
-    employee_id = fields.Many2one('hr.employee', string='Employee', default=_default_employee)
+    employee_id = fields.Many2one('hr.employee', string='Requested By', default=_default_employee)
     designation = fields.Many2one('hr.job', string="Designation", compute='compute_des_dep')
+    branch_id = fields.Many2one('res.branch', 'Branch', compute='compute_des_dep')
     department = fields.Many2one('hr.department', string="Department", compute='compute_des_dep', store=True)
     tour_request_id = fields.Many2one('tour.request', string='Select Tour', store=True)
     detail_of_journey = fields.One2many('tour.claim.journey','employee_journey')
@@ -36,6 +41,7 @@ class EmployeeTourClaim(models.Model):
     advance_requested = fields.Float(string="Advance Requested", readonly=True, compute='_compute_approved_amount')
     balance_left = fields.Float(string="Balance left", readonly=True, compute='_compute_approved_amount')
     tour_sequence = fields.Char(string="tour sequence")
+    other_details = fields.Float('Details of other reimbursable expenses ')
     total_claimed_amount = fields.Float(string="Total Claimed Amount", compute='_compute_approved_amount')
     amount_paid = fields.Float(string="Amount Paid")
 
@@ -81,8 +87,8 @@ class EmployeeTourClaim(models.Model):
     def get_journey_details_tour(self,working_list=None):
         for rec in self:
             detail_of_journey = []
-            detail_of_journey_lodging = []
-            detail_of_journey_leave = []
+            # detail_of_journey_lodging = []
+            # detail_of_journey_leave = []
             for i in rec.tour_request_id.employee_journey:
                 detail_of_journey.append((0, 0, {
                     'employee_journey': rec.id,
@@ -93,42 +99,38 @@ class EmployeeTourClaim(models.Model):
                     'from_l': i.from_l.id,
                     'to_l': i.to_l.id,
                 }))
-
-            # rec.detail_of_journey.unlink()
             else:
                 rec.detail_of_journey = working_list
-            for i in rec.tour_request_id.employee_journey:
-                detail_of_journey_leave.append((0, 0, {
-                    'employee_journey': rec.id,
-                    'employee_id': rec.employee_id.id,
-                    'departure_date': i.departure_date,
-                    'arrival_date': i.arrival_date,
-                    'from_l': i.from_l.id,
-                    'to_l': i.to_l.id,
-                }))
-            # rec.detail_of_journey_leave.unlink()
-            else:
-                rec.detail_of_journey_leave = working_list
-            for i in rec.tour_request_id.employee_journey:
-                detail_of_journey_lodging.append((0, 0, {
-                    'employee_journey': rec.id,
-                    'from_date': i.departure_date,
-                    'to_date': i.arrival_date,
-                    'from_l': i.from_l.id,
-                    'to_l': i.to_l.id,
-                    'travel_mode': i.travel_mode.id,
-                    'mode_detail': i.mode_detail,
-                    'travel_entitled': i.travel_entitled,
-                    'boarding': i.boarding,
-                    'lodging': i.lodging,
-                    'conveyance': i.conveyance,
-                }))
-            # rec.detail_of_journey_lodging.unlink()
-            else:
-                rec.detail_of_journey_lodging = working_list
             rec.detail_of_journey = detail_of_journey
-            rec.detail_of_journey_leave = detail_of_journey_leave
-            rec.detail_of_journey_lodging = detail_of_journey_lodging
+            # for i in rec.tour_request_id.employee_journey:
+            #     detail_of_journey_leave.append((0, 0, {
+            #         'employee_journey': rec.id,
+            #         'employee_id': rec.employee_id.id,
+            #         'departure_date': i.departure_date,
+            #         'arrival_date': i.arrival_date,
+            #         'from_l': i.from_l.id,
+            #         'to_l': i.to_l.id,
+            #     }))
+            # else:
+            #     rec.detail_of_journey_leave = working_list
+            # for i in rec.tour_request_id.employee_journey:
+            #     detail_of_journey_lodging.append((0, 0, {
+            #         'employee_journey': rec.id,
+            #         'from_date': i.departure_date,
+            #         'to_date': i.arrival_date,
+            #         'from_l': i.from_l.id,
+            #         'to_l': i.to_l.id,
+            #         'travel_mode': i.travel_mode.id,
+            #         'mode_detail': i.mode_detail,
+            #         'travel_entitled': i.travel_entitled,
+            #         'boarding': i.boarding,
+            #         'lodging': i.lodging,
+            #         'conveyance': i.conveyance,
+            #     }))
+            # else:
+            #     rec.detail_of_journey_lodging = working_list
+            # rec.detail_of_journey_leave = detail_of_journey_leave
+            # rec.detail_of_journey_lodging = detail_of_journey_lodging
 
 
 
@@ -137,6 +139,7 @@ class EmployeeTourClaim(models.Model):
         for rec in self:
             rec.designation = rec.employee_id.job_id.id
             rec.department = rec.employee_id.department_id.id
+            rec.branch_id = rec.employee_id.branch_id.id
 
     @api.multi
     def button_submit(self):
@@ -163,7 +166,6 @@ class EmployeeTourClaim(models.Model):
         ctx = dict(
             default_composition_mode='comment',
             default_res_id=self.id,
-
             default_model='employee.tour.claim',
             default_is_log='True',
             custom_layout='mail.mail_notification_light'
@@ -227,22 +229,44 @@ class TourClaimJourney(models.Model):
          ], related='employee_journey.state')
 
 
+    @api.onchange('arranged_by')
+    @api.constrains('arranged_by')
+    def arranged_by_claim(self):
+        for rec in self:
+            if rec.arranged_by == 'company':
+                rec.amount_claimed = 0.00
+
+
 
 class EmployeeLeaveTaken(models.Model):
     _name = 'employee.leave.taken'
     _description = 'Leave Taken'
 
 
-    employee_id = fields.Many2one('hr.employee', string='Employee')
-    employee_journey = fields.Many2one('employee.tour.claim', string='Tour Claim')
-    departure_date = fields.Date('Departure Date')
-    arrival_date = fields.Date('Arrival Date')
 
-    from_l = fields.Many2one('res.city', string='From City')
-    to_l = fields.Many2one('res.city', string='To City')
-    leave_taken = fields.Many2one('hr.leave', string='Date of absence from place of halt ',
-                                  domain="[('state','=','approved'),('request_date_from','<=',departure_date),('request_date_to','>=',arrival_date)]"
-    )
+    def _default_employee(self):
+        return self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+
+
+    @api.onchange('leave_taken')
+    def change_leave_taken(self):
+        fdat = datetime.now().date()
+        tdat = datetime.now().date()
+        for fd in self.employee_journey.tour_request_id.employee_journey:
+            fdat = fd.departure_date
+            tdat = fd.arrival_date
+        for fd in self.employee_journey.tour_request_id.employee_journey:
+            if fd.departure_date <= fdat:
+                fdat = fd.departure_date
+            if fd.arrival_date >= tdat:
+                tdat = fd.arrival_date
+        return {'domain': {'leave_taken': [('state', 'not in', ['cancel','refuse']),('employee_id', '=', self.employee_journey.employee_id.id)
+            ,('request_date_from', '>=', fdat),('request_date_to', '<=', tdat)]}}
+
+
+    employee_id = fields.Many2one('hr.employee', string='Employee',default=_default_employee)
+    employee_journey = fields.Many2one('employee.tour.claim', string='Tour Claim')
+    leave_taken = fields.Many2one('hr.leave', string='Date of absence from place of halt ')
 
     from_date_camp = fields.Date(string='From Date', compute='compute_get_leave_details')
     to_date_camp = fields.Date(string='To Date', compute='compute_get_leave_details')
@@ -268,8 +292,10 @@ class JourneyLodgingBoarding(models.Model):
     @api.depends('daily_lodging_charge', 'daily_boarding_charge', 'daily_boarding_lodginf_charge', 'no_of_days')
     def _Compute_total_amount_paid(self):
         for rec in self:
-            pass
-    #         rec.total_amount_paid = (rec.daily_lodging_charge + rec.daily_boarding_charge + rec.daily_boarding_lodginf_charge) * rec.no_of_days
+            no_of_days = 0.00
+            if rec.from_date and rec.to_date:
+                no_of_days = (rec.to_date - rec.from_date).days
+            rec.total_amount_paid = (rec.daily_lodging_charge + rec.daily_boarding_charge + rec.daily_boarding_lodginf_charge) * no_of_days
 
     employee_journey = fields.Many2one('employee.tour.claim', string='Tour Claim')
     arranged_by = fields.Selection([('self', 'Self'), ('company', 'Company')], string='Arranged By')
@@ -280,24 +306,45 @@ class JourneyLodgingBoarding(models.Model):
     boarding = fields.Boolean('Boarding required?')
     lodging = fields.Boolean('Lodging required?')
     conveyance = fields.Boolean('Local Conveyance required?')
-
     name_of_hotel = fields.Char('Name of Hotel/Guest House')
+    claiming_separately = fields.Selection([('yes', 'Yes'), ('no', 'No')], string='Claiming Lodging & Boarding Separately')
     daily_lodging_charge = fields.Float('Daily Lodging Charges')
     daily_boarding_charge = fields.Float('Daily Boarding Charges')
     daily_boarding_lodginf_charge = fields.Float('Daily Lodging and Boarding Charges')
     total_amount_paid = fields.Float('Total Amount Paid', compute='_Compute_total_amount_paid')
-    other_details = fields.Float('Details of other reimbursable expenses ')
+    # other_details = fields.Float('Details of other reimbursable expenses ')
 
     state = fields.Selection(
         [('draft', 'Draft'), ('submitted', 'Waiting for Approval'), ('approved', 'Approved'),
          ('rejected', 'Rejected'), ('paid', 'Paid')
          ], related='employee_journey.state')
 
+    @api.onchange('from_date', 'to_date')
     @api.constrains('from_date', 'to_date')
     def compute_no_of_days(self):
         for rec in self:
-            no_of_days = (rec.to_date - rec.from_date).days
+            no_of_days = 0.00
+            if rec.from_date and rec.to_date:
+                no_of_days = (rec.to_date - rec.from_date).days
             rec.no_of_days = no_of_days
+
+    @api.onchange('claiming_separately')
+    @api.constrains('claiming_separately')
+    def claim_sep(self):
+        for rec in self:
+            if rec.arranged_by == 'company':
+                rec.daily_boarding_lodginf_charge = 0.00
+                rec.daily_lodging_charge = 0.00
+                rec.daily_boarding_charge = 0.00
+            if rec.claiming_separately == 'yes':
+                rec.daily_boarding_lodginf_charge = 0.00
+            elif rec.claiming_separately == 'no':
+                rec.daily_lodging_charge = 0.00
+                rec.daily_boarding_charge = 0.00
+            else:
+                rec.daily_boarding_lodginf_charge = 0.00
+                rec.daily_lodging_charge = 0.00
+                rec.daily_boarding_charge = 0.00
 
 
 

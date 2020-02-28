@@ -99,16 +99,12 @@ class HrLeave(models.Model):
             
             type = dict(res.fields_get(["employee_type"],['selection'])['employee_type']["selection"]).get(res.employee_type)
             state = dict(res.fields_get(["employee_state"],['selection'])['employee_state']["selection"]).get(res.employee_state)
-#             print("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLL",type)
             if  res.holiday_status_id.gende == 'transgender' or res.gender == res.holiday_status_id.gende:
-#                 print("gendergendergendergendergendergender")
                 for leave_type_emp in res.holiday_status_id.allow_service_leave:
                     if type not in leave_type_emp.name:
-#                         print("22222222222222222222222",type,leave_type_emp.name)
                         for leave_type_state in res.holiday_status_id.allow_emp_stage: 
                             if state not in leave_type_state.name:
-#                                 print("#333333333333333333333",state,leave_type_state.name)
-                                raise ValidationError(_("Your re not allow to take this leave"))
+                                raise ValidationError(_("Your are not allow to take this leave"))
 #
 #         if res.holiday_status_id:
 #             if res.days_between_last_leave == 0:
@@ -131,7 +127,6 @@ class HrLeave(models.Model):
                         if date_val_pre < dates.to_date:
                             date_val_pre = dates.to_date
                 date_val_pre = date_val_pre+relativedelta(days=1)
-                print("========================",date_val_pre)
                 
                 for dates in res.pre_post_leaves_ids:
                     if dates.pre_post == 'post' and dates.leave == 'holiday':
@@ -193,7 +188,6 @@ class HrLeave(models.Model):
                                                             'pre_post': 'pre',
                                                             'leave': 'holiday',
                                                             'leave_type_id': False,
-                                                            'holiday':gli.name,
                                                             'from_date': gli.date,
                                                             'to_date': gli.date,
                                                             'no_of_days_leave': 1,
@@ -244,7 +238,6 @@ class HrLeave(models.Model):
                                                             'pre_post': 'post',
                                                             'leave': 'holiday',
                                                             'leave_type_id': False,
-                                                            'holiday':gli.name,
                                                             'from_date': gli.date,
                                                             'to_date': gli.date,
                                                             'no_of_days_leave': 1,
@@ -549,7 +542,6 @@ class HRLeavePrePost(models.Model):
                                  ('post','Post')
                                 ],string="Pre/Post")
     leave_type_id = fields.Many2one('hr.leave.type',readonly=True)
-    holiday = fields.Char(readonly=True)
     from_date = fields.Date(string="From Date",readonly=True)
     to_date = fields.Date(string="To Date",readonly=True)
     no_of_days_leave = fields.Float(string="No of Days Leave",readonly=True)
