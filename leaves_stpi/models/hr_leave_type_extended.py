@@ -66,7 +66,7 @@ class HrLeaveType(models.Model):
     maximum_allow_leave = fields.Integer(string="Maximum Allowed Leaves")
     gende = fields.Selection([('male','Male'),
                                      ('female','Female'),
-                                     ('transgender','Transgender')   
+                                     ('transgender','Both')
                                     ],string="Allowed Gender(s)")
     allow_emp_stage = fields.Many2many('leave.type.employee.stage',string="Allowed Employee Stage(s)")
     encash_leave = fields.Boolean(string="Encashed Leave")

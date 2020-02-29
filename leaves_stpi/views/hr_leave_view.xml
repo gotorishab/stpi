@@ -141,6 +141,7 @@
                                 <field name="pre_post"/>
                                 <field name="leave"/>
                                 <field name="leave_type_id"/>
+                                <field name="holiday"/>
                                 <field name="from_date"/>
                                 <field name="to_date"/>
                                 <field name="no_of_days_leave"/>
