@@ -59,6 +59,9 @@ class HrLeave(models.Model):
         ('pm', 'Afternoon')],
         string="Date Period Start", default='am')
 
+    countpre = fields.Float(string='CountPre')
+    countpost = fields.Float(string='CountPost')
+
     no_of_days_display_half = fields.Float(string="Duartion Half")
     holiday_half_pay = fields.Boolean(string="Half Pay Holiday")
     pre_post_leaves_ids = fields.One2many('hr.leave.pre.post', 'pre_post_leave', string='Leaves', readonly=True)
@@ -118,30 +121,34 @@ class HrLeave(models.Model):
 
 
             # print('==========================Employee shift===================================', res.employee_id.resource_calendar_id)
-            countpre = 0.00
-            countpost = 0.00
+            res.countpre = 0.00
+            res.countpost = 0.00
             if res.pre_post_leaves_ids and res.holiday_status_id.sandwich_rule == True:
                 for preh in res.pre_post_leaves_ids:
                     if preh.pre_post == 'pre' and preh.leave == 'holiday':
-                        countpre += 1
-                # print('======================Pre Holiday Count===========================', countpre)
+                        res.countpre += 1
+                print('======================Pre Holiday Count===========================', res.countpre)
                 for posth in res.pre_post_leaves_ids:
                     if posth.pre_post == 'post' and posth.leave == 'holiday':
-                        countpost += 1
+                        res.countpost += 1
                 # print('======================Post Holiday Count===========================', countpost)
                 for ldate in res.pre_post_leaves_ids:
                     if ldate.pre_post == 'pre' and ldate.leave == 'leave':
                         countpredays = (res.request_date_from - ldate.to_date).days
                         # print('======================Pre Leave Count===========================', (countpredays - 1))
-                        if int(countpredays - 1) == int(countpre):
-                            raise ValidationError(_(
+                        if int(countpredays - 1) == int(res.countpre):
+                            for hpre in res.pre_post_leaves_ids:
+                                if hpre.pre_post == 'pre' and hpre.holiday != False:
+                                    raise ValidationError(_(
                                 'You are not allowed to apply for this leave because of Sandwich rule applicability. Please cancel this leave and correct the existing Leave to cover the holidays/weekends'))
                     if ldate.pre_post == 'post' and ldate.leave == 'leave':
                         countpostdays = (ldate.from_date - res.request_date_to).days
                         # print('======================Post Leave Count===========================', (countpostdays - 1))
-                        if int(countpostdays - 1) == int(countpost):
-                            raise ValidationError(_(
-                                'You are not allowed to apply for this leave because of Sandwich rule applicability. Please cancel this leave and correct the existing Leave to cover the holidays/weekends'))
+                        if int(countpostdays - 1) == int(res.countpost):
+                            for hpre in res.pre_post_leaves_ids:
+                                if hpre.pre_post == 'post' and hpre.holiday != False:
+                                    raise ValidationError(_(
+                                        'You are not allowed to apply for this leave because of Sandwich rule applicability. Please cancel this leave and correct the existing Leave to cover the holidays/weekends'))
 
             count = 0
             prefix = []
@@ -170,6 +177,8 @@ class HrLeave(models.Model):
     @api.onchange('request_date_from', 'request_date_to', 'employee_id')
     def create_pre_post_lines(self, working_list=None):
         for rec in self:
+            rec.countpre = 0.00
+            rec.countpost = 0.00
             leave_ids = self.env['hr.leave'].search([('employee_id', '=', rec.employee_id.id),
                                                      ('request_date_to', '!=', rec.request_date_to),
                                                      ('request_date_to', '<=', rec.request_date_from),
@@ -354,36 +363,36 @@ class HrLeave(models.Model):
                     raise ValidationError(_('The number of remaining leaves is not sufficient for this leave type.\n'
                                             'Please also check the leaves waiting for validation.'))
 
-    @api.constrains('date_from', 'date_to', 'holiday_status_id')
-    @api.onchange('date_from', 'date_to', 'holiday_status_id')
-    def check_date_from_live(self):
-        res = {}
-        if self.employee_id:
-            if self.holiday_status_id.sandwich_rule == False:
-                days = []
-                for each in self.employee_id.resource_calendar_id.attendance_ids:
-                    if int(each.dayofweek) not in days:
-                        days.append(int(each.dayofweek))
-                if self.date_from:
-
-                    start_date = self.date_from
-                    date_number = start_date.weekday()
-                    #                     print("==================",date_number,days)
-                    if date_number not in days:
-                        res.update({'value': {'date_to': '', 'date_from': '', 'number_of_days_display': 0.00,
-                                              'sandwich_rule': False}, 'warning': {
-                            'title': 'Validation!',
-                            'message': 'Since the leave you are applying has got weekends/holidays in between.You are requested to edit the last leave and apply covering the weekends/Holidays..'}})
-                if self.date_to:
-                    end_date = self.date_to
-                    date_number = end_date.weekday()
-                    if date_number not in days:
-                        res.update({'value': {'date_to': '', 'number_of_days_display': 0.00, 'sandwich_rule': False},
-                                    'warning': {
-                                        'title': 'Validation!',
-                                        'message': 'Since the leave you are applying has got weekends/holidays in between. You are requested to edit the last leave and apply covering the weekends/Holidays..'}})
-
-        return res
+    # @api.constrains('date_from', 'date_to', 'holiday_status_id')
+    # @api.onchange('date_from', 'date_to', 'holiday_status_id')
+    # def check_date_from_live(self):
+    #     res = {}
+    #     if self.employee_id:
+    #         if self.holiday_status_id.sandwich_rule == False:
+    #             days = []
+    #             for each in self.employee_id.resource_calendar_id.attendance_ids:
+    #                 if int(each.dayofweek) not in days:
+    #                     days.append(int(each.dayofweek))
+    #             if self.date_from:
+    #
+    #                 start_date = self.date_from
+    #                 date_number = start_date.weekday()
+    #                 #                     print("==================",date_number,days)
+    #                 if date_number not in days:
+    #                     res.update({'value': {'date_to': '', 'date_from': '', 'number_of_days_display': 0.00,
+    #                                           'sandwich_rule': False}, 'warning': {
+    #                         'title': 'Validation!',
+    #                         'message': 'Since the leave you are applying has got weekends/holidays in between.You are requested to edit the last leave and apply covering the weekends/Holidays..'}})
+    #             if self.date_to:
+    #                 end_date = self.date_to
+    #                 date_number = end_date.weekday()
+    #                 if date_number not in days:
+    #                     res.update({'value': {'date_to': '', 'number_of_days_display': 0.00, 'sandwich_rule': False},
+    #                                 'warning': {
+    #                                     'title': 'Validation!',
+    #                                     'message': 'Since the leave you are applying has got weekends/holidays in between. You are requested to edit the last leave and apply covering the weekends/Holidays..'}})
+    #
+    #     return res
 
     @api.constrains('request_date_from', 'request_date_to', 'employee_id')
     @api.onchange('request_date_from', 'request_date_to', 'employee_id')

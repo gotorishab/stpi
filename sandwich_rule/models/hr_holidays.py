@@ -49,29 +49,29 @@ class HrHolidays(models.Model):
                 self.sandwich_rule = False
                 self.number_of_days_display = self._get_number_of_days(self.date_from, self.date_to, self.employee_id.id)
 
-    @api.onchange('date_from','date_to')
-    def check_date_from_live(self):
-        res = {}
-        if self.employee_id:
-            days=[]
-            for each in self.employee_id.resource_calendar_id.attendance_ids:
-                if int(each.dayofweek) not in days:
-                    days.append(int(each.dayofweek))
-            if self.date_from:
-
-                start_date=self.date_from
-                date_number=start_date.weekday()
-                if date_number not in days:
-                    res.update({'value': {'date_to': '','date_from': '','number_of_days_display':0.00,'sandwich_rule':False}, 'warning': {
-                               'title': 'Validation!', 'message': 'This day is already holiday.'}})
-            if self.date_to:
-                end_date=self.date_to
-                date_number=end_date.weekday()
-                if date_number not in days:
-                    res.update({'value': {'date_to': '','number_of_days_display':0.00,'sandwich_rule':False}, 'warning': {
-                               'title': 'Validation!', 'message': 'This day is already holiday.'}})
-
-        return res
+    # @api.onchange('date_from','date_to')
+    # def check_date_from_live(self):
+    #     res = {}
+    #     if self.employee_id:
+    #         days=[]
+    #         for each in self.employee_id.resource_calendar_id.attendance_ids:
+    #             if int(each.dayofweek) not in days:
+    #                 days.append(int(each.dayofweek))
+    #         if self.date_from:
+    #
+    #             start_date=self.date_from
+    #             date_number=start_date.weekday()
+    #             if date_number not in days:
+    #                 res.update({'value': {'date_to': '','date_from': '','number_of_days_display':0.00,'sandwich_rule':False}, 'warning': {
+    #                            'title': 'Validation!', 'message': 'This day is already holiday.'}})
+    #         if self.date_to:
+    #             end_date=self.date_to
+    #             date_number=end_date.weekday()
+    #             if date_number not in days:
+    #                 res.update({'value': {'date_to': '','number_of_days_display':0.00,'sandwich_rule':False}, 'warning': {
+    #                            'title': 'Validation!', 'message': 'This day is already holiday.'}})
+    #
+    #     return res
 
     @api.onchange('request_date_from_period', 'request_hour_from', 'request_hour_to',
                   'request_date_from', 'request_date_to',
