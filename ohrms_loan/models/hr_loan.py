@@ -80,6 +80,9 @@ class HrLoan(models.Model):
     paid = fields.Boolean(string="Paid")
     total_interest = fields.Float(string="Total Interest", compute='_compute_loan_amount')
 
+    dis_date = fields.Date(string='Disbursement Date')
+    pro_ins = fields.Float(string='Prorated Installment')
+
     # treasury_account_id = fields.Many2one('account.account', string="Treasury Account")
     # emp_account_id = fields.Many2one('account.account', string="Loan Account")
     # journal_id = fields.Many2one('account.journal', string="Journal")
@@ -167,6 +170,16 @@ class HrLoan(models.Model):
             }
         }
         return rc
+
+
+    @api.multi
+    def action_calculate_dis(self):
+        for rec in self:
+            if rec.dis_date and rec.payment_date:
+                days = (rec.payment_date - rec.dis_date).days
+                interest = (rec.loan_amount/rec.installment)*12
+                interest2 = (interest*days)/30
+
     #
     #
     # @api.multi
