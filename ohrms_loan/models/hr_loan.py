@@ -186,7 +186,8 @@ class HrLoan(models.Model):
                         count += 0
                 for lines in rec.loan_lines:
                     if lines.principle_recovery_installment == 0.00:
-                        lines.amount += rec.pro_ins / count
+                        if count > 0.00:
+                            lines.amount += rec.pro_ins / count
 
 
     #
