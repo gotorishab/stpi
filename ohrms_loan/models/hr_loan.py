@@ -179,6 +179,7 @@ class HrLoan(models.Model):
                 days = (rec.payment_date - rec.dis_date).days
                 interest = (rec.loan_amount/rec.installment)*12
                 interest2 = (interest*days)/30
+                rec.pro_ins = interest2
 
     #
     #
