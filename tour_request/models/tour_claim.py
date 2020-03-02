@@ -6,6 +6,7 @@ import re
 
 class EmployeeTourClaim(models.Model):
     _name = 'employee.tour.claim'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = 'Tour Claim'
 
     def _default_employee(self):
@@ -30,28 +31,28 @@ class EmployeeTourClaim(models.Model):
             record.balance_left = record.total_claimed_amount - record.advance_requested - record.amount_paid
 
 
-    employee_id = fields.Many2one('hr.employee', string='Requested By', default=_default_employee)
-    designation = fields.Many2one('hr.job', string="Designation", compute='compute_des_dep')
-    branch_id = fields.Many2one('res.branch', 'Branch', compute='compute_des_dep')
-    department = fields.Many2one('hr.department', string="Department", compute='compute_des_dep', store=True)
-    tour_request_id = fields.Many2one('tour.request', string='Select Tour', store=True)
-    detail_of_journey = fields.One2many('tour.claim.journey','employee_journey')
-    detail_of_journey_lodging = fields.One2many('tour.claim.journey.lodging','employee_journey')
-    detail_of_journey_leave = fields.One2many('employee.leave.taken','employee_journey')
-    advance_requested = fields.Float(string="Advance Requested", readonly=True, compute='_compute_approved_amount')
-    balance_left = fields.Float(string="Balance left", readonly=True, compute='_compute_approved_amount')
-    tour_sequence = fields.Char(string="tour sequence")
-    other_details = fields.Float('Details of other reimbursable expenses ')
-    total_claimed_amount = fields.Float(string="Total Claimed Amount", compute='_compute_approved_amount')
-    amount_paid = fields.Float(string="Amount Paid")
+    employee_id = fields.Many2one('hr.employee', string='Requested By', default=_default_employee,track_visibility='always')
+    designation = fields.Many2one('hr.job', string="Designation", compute='compute_des_dep',track_visibility='always')
+    branch_id = fields.Many2one('res.branch', 'Branch', compute='compute_des_dep',track_visibility='always')
+    department = fields.Many2one('hr.department', string="Department", compute='compute_des_dep', store=True,track_visibility='always')
+    tour_request_id = fields.Many2one('tour.request', string='Select Tour', store=True,track_visibility='always')
+    detail_of_journey = fields.One2many('tour.claim.journey','employee_journey',track_visibility='always')
+    detail_of_journey_lodging = fields.One2many('tour.claim.journey.lodging','employee_journey',track_visibility='always')
+    detail_of_journey_leave = fields.One2many('employee.leave.taken','employee_journey',track_visibility='always')
+    advance_requested = fields.Float(string="Advance Requested", readonly=True, compute='_compute_approved_amount',track_visibility='always')
+    balance_left = fields.Float(string="Balance left", readonly=True, compute='_compute_approved_amount',track_visibility='always')
+    tour_sequence = fields.Char(string="tour sequence",track_visibility='always')
+    other_details = fields.Float('Details of other reimbursable expenses ',track_visibility='always')
+    total_claimed_amount = fields.Float(string="Total Claimed Amount", compute='_compute_approved_amount',track_visibility='always')
+    amount_paid = fields.Float(string="Amount Paid",track_visibility='always')
 
-    from_date_camp = fields.Date(string='From Date')
-    to_date_camp = fields.Date(string='To Date')
+    from_date_camp = fields.Date(string='From Date',track_visibility='always')
+    to_date_camp = fields.Date(string='To Date',track_visibility='always')
 
-    leave_taken = fields.Many2one('hr.leave', string='Date of absence from place of halt ')
+    leave_taken = fields.Many2one('hr.leave', string='Date of absence from place of halt ',track_visibility='always')
     state = fields.Selection(
         [('draft', 'Draft'), ('submitted', 'Waiting for Approval'), ('approved', 'Approved'), ('rejected', 'Rejected'), ('paid', 'Paid')
-         ], required=True, default='draft', string='Status')
+         ], required=True, default='draft', string='Status',track_visibility='always')
     action_app = fields.Boolean('Action Approve bool', invisible=1)
     action_clos = fields.Boolean('Action Paid Close bool', invisible=1)
 
