@@ -34,7 +34,10 @@
              <xpath expr="//field[@name='report_note']" position="attributes">
                 <attribute name="attrs">{'required':[('state','=','confirm')]}</attribute>
             </xpath>
-            
+            <xpath expr="//field[@name='payslip_status']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
             <xpath expr="//field[@name='holiday_type']" position="after">
                 <field name="by_branch_id" attrs="{'invisible':[('holiday_type','!=','branch')]}"/>
             </xpath>

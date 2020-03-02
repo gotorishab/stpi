@@ -62,7 +62,7 @@ class HrLeaveType(models.Model):
     max_encash_leave = fields.Integer(string="Maximum Allowed Encashment")
     group_id = fields.Many2one('hr.leave.group',string="Group",invisible=True)
     currency_id = fields.Many2one('res.currency', string='Currency', required=True, default=lambda self: self.env.user.company_id.currency_id)
-    use_balance_from_id = fields.Many2one('leave.type',string="Use Balance From",invisible=True)
+    use_balance_from_id = fields.Many2one('leave.type',string="Use Balance From")
     maximum_allow_leave = fields.Integer(string="Maximum Allowed Leaves")
     gende = fields.Selection([('male','Male'),
                                      ('female','Female'),

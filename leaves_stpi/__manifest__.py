@@ -28,7 +28,8 @@
         'views/hr_leave_view.xml',
         'views/hr_payslip_view.xml',
         'views/hr_leave_allocation_view.xml',
-        'views/resource_calendar_view.xml'
+        'views/resource_calendar_view.xml',
+        # 'views/report_leave_report.xml'
     ],
     
     'demo': [],
