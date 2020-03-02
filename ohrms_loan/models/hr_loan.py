@@ -176,11 +176,17 @@ class HrLoan(models.Model):
     def action_calculate_dis(self):
         for rec in self:
             if rec.dis_date and rec.payment_date:
+                count = 0
                 days = (rec.payment_date - rec.dis_date).days
                 interest = (rec.loan_amount*rec.installment)/100
                 interest2 = (interest*days)/365
                 rec.pro_ins = interest2
-
+                for lines in rec.loan_lines:
+                    if lines.principle_recovery_installment == 0.00:
+                        count += 0
+                for lines in rec.loan_lines:
+                    if lines.principle_recovery_installment == 0.00:
+                        lines.amount += rec.pro_ins / count
 
 
     #
