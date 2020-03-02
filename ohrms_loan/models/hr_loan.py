@@ -182,8 +182,8 @@ class HrLoan(models.Model):
                 interest2 = (interest*days)/365
                 rec.pro_ins = interest2
                 for lines in rec.loan_lines:
-                    if lines.principle_recovery_installment == 0.00:
-                        count += 0
+                    if round(lines.principle_recovery_installment) == 0:
+                        count += 1
                 for lines in rec.loan_lines:
                     if lines.principle_recovery_installment == 0.00:
                         if count > 0.00:
