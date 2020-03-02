@@ -177,9 +177,11 @@ class HrLoan(models.Model):
         for rec in self:
             if rec.dis_date and rec.payment_date:
                 days = (rec.payment_date - rec.dis_date).days
-                interest = (rec.loan_amount/rec.installment)*12
+                interest = (rec.loan_amount/rec.installment)
                 interest2 = (interest*days)/30
                 rec.pro_ins = interest2
+
+
 
     #
     #
