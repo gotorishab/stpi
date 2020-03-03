@@ -337,7 +337,7 @@ class HrDeclarationCron(models.Model):
                 rec.rebate_received = sum_rbt
             else:
                 rec.tax_payable_after_rebate = 0.00
-                rec.rebate_received = tax_payable
+                rec.rebate_received = rec.tax_payable
 
             rec.tax_computed_bool = True
             for lines in rec.tax_payment_ids:
