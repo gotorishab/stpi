@@ -16,6 +16,21 @@
             </tree>
         </field>
     </record>
+    
+    <record id="hr_pf_widthdrawl_tree_view_hide_create" model="ir.ui.view">
+        <field name="name">pf.widthdrawl.tree.create.hide</field>
+        <field name="model">pf.widthdrawl</field>
+        <field name="arch" type="xml">
+            <tree string="PF Widthdrawl" create='false'>
+                <field name="employee_id"/>
+                <field name="advance_amount" />
+                <field name="designation"/>
+                <field name="branch_id"/>
+                <field name="center"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
 
     <!-- HR employee pf widthdrawl form view-->
     <record id="hr_pf_widthdrawl_view" model="ir.ui.view">
@@ -41,7 +56,8 @@
                             <field name="bank_account_number" readonly="1"/>
                         </group>
                         <group>
-                            <field name="rule"/>
+                            <field name="rule" invisible="1"/>
+                            <field name="pf_type" widget="selection"/>
                             <field name="branch_id"/>
                             <field name="purpose" readonly="True"/>
                             <field name="attachment_document" readonly="True"/>
@@ -128,6 +144,7 @@
         <field name="context">{'search_default_employee_id': 1}</field>
         <field name="domain">[('state','=','approved')]</field>
         <field name="search_view_id" ref="pf_withdrawl_search_view"/>
+        <field name="view_id" ref="hr_pf_widthdrawl_tree_view_hide_create"/>
     </record>
     
     <!--pf.widthdrawl request by department-->
@@ -139,6 +156,7 @@
         <field name="context">{'search_default_department': 1}</field>
         <field name="domain">[('state','=','approved')]</field>
         <field name="search_view_id" ref="pf_withdrawl_search_view"/>
+        <field name="view_id" ref="hr_pf_widthdrawl_tree_view_hide_create"/>
     </record>
     
     <!--pf.widthdrawl request by branch-->
@@ -150,6 +168,7 @@
         <field name="domain">[('state','=','approved')]</field>
         <field name="context">{'search_default_branch_id': 1}</field>
         <field name="search_view_id" ref="pf_withdrawl_search_view"/>
+        <field name="view_id" ref="hr_pf_widthdrawl_tree_view_hide_create"/>
     </record>
     
     <!--pf.widthdrawl request by status-->
@@ -160,6 +179,7 @@
         <field name="view_mode">tree,form</field>
         <field name="context">{'search_default_status': 1}</field>
         <field name="search_view_id" ref="pf_withdrawl_search_view"/>
+        <field name="view_id" ref="hr_pf_widthdrawl_tree_view_hide_create"/>
     </record>
     
     <!--pf.widthdrawl request by all-->
@@ -171,6 +191,7 @@
         <field name="domain">[('state','=','approved')]</field>
         <field name="context">{'search_default_pf_withdrawl': 1}</field>
         <field name="search_view_id" ref="pf_withdrawl_search_view"/>
+        <field name="view_id" ref="hr_pf_widthdrawl_tree_view_hide_create"/>
     </record>
 
 
@@ -198,6 +219,8 @@
                         </group>
                         <group>
                             <field name="amount"/>
+                            <field name="advance_amount"/>
+                            <field name="advance_left" />
                         </group>
                     </group>
                     <notebook>
@@ -213,6 +236,12 @@
                                 class="oe_stat_button"
                                 icon="fa-clock-o"/>
                                 <div class="oe_clear"/>
+                            <div class="oe_clear"/>
+                            <group class="oe_subtotal_footer oe_right" colspan="2" >
+                                <field name="currency_id" options="{'no_create': True}" invisible="1 "/>
+                                <field name="advance_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                <field name="advance_left" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            </group>
                         </page>
                     </notebook>
                 </sheet>

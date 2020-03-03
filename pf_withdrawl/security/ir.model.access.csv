@@ -3,3 +3,4 @@ access_pf_widthdrawl,pf.widthdrawl,model_pf_widthdrawl,base.group_user,1,1,1,1
 access_pf_employee,pf.employee,model_pf_employee,base.group_user,1,1,1,1
 access_pf_employee_details,pf.employee.details,model_pf_employee_details,base.group_user,1,1,1,1
 access_abc_ab,abc.ab,model_abc_ab,base.group_user,1,1,1,1
+access_pf_type,pf.type,model_pf_type,base.group_user,1,1,1,1

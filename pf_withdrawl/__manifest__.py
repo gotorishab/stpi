@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
 	'name': 'Pf Withdrawal',
-	'version': '12.0.0.0.0',
+	'version': '12.0.0.0.1',
 	'summary': 'PF Withdrawal',
 	'category': 'Tools',
 	'author': 'Dexciss Technologies Pvt Ltd(@ RGupta and Sangita)',
@@ -13,6 +13,7 @@
 		'security/ir.model.access.csv',
 		'security/pf_withdrawal_security.xml',
         'views/pf_withdrawal.xml',
+        'views/pf_type_view.xml'
 	],
 	'images': [],
 	'license': 'AGPL-3',
