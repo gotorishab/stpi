@@ -1,0 +1,55 @@
+<odoo>
+
+    <record id="hr_pf_type_tree_view" model="ir.ui.view">
+        <field name="name">pf.type.tree</field>
+        <field name="model">pf.type</field>
+        <field name="arch" type="xml">
+            <tree string="PF Type">
+                <field name="name"/>
+                <field name="purpose"/>
+                <field name="attachment_document"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="hr_pf_type_form_view" model="ir.ui.view">
+        <field name="name">pf.type.form</field>
+        <field name="model">pf.type</field>
+        <field name="arch" type="xml">
+            <form string="PF Type">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="purpose"/>
+                        </group>
+                        <group>
+                            <field name="attachment_document"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="action_hr_pf_type" model="ir.actions.act_window">
+        <field name="name">PF Type</field>
+        <field name="res_model">pf.type</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+     </record>
+
+    <menuitem id ="pf_type_menuitem" 
+            action="action_hr_pf_type"
+            name="PF Type"
+            sequence="6"  
+            parent="pf_withdrawl_menu_report_menu_id" 
+          />
+
+</odoo>

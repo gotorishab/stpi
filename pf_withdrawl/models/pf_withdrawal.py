@@ -25,21 +25,22 @@ class PfWidthdrawl(models.Model):
     rule=fields.Selection([('A','23(1)(A)'),
                            ('B','23(1)(B)'),
                            ('E','23(1)(E)')],string="Rules",track_visibility='always',)
-    purpose=fields.Selection([('a','Purchase of dwelling sight/flat/ construction of house/ renovation of house'),
-                              ('b','Repayment of loans'),
-                              ('e','For marriage and Education')],string="Purpose",track_visibility='always',)
-    attachment_document=fields.Selection([('ai',""""""'1) Declaration form for purchase of dwelling site.'
-                                                '2) Declaration & Undertaking for non-encumbrance.'
-                                                '3) Agreement of sale/Copy of Sale Deed/Allotment Letter.'
-                                                '4) Copy of prior intimation under rule 18(2) of CCS Conduct Rules, 1964.'
-                                                '5) Estimate of Repairs, Renovation, Construction.'""""""),
-                                 ('bi','1) Certificate of Home Loan Sanctioned. 2) Copy of Sale Deed.3) Certificate of Outstanding Home Loan. 4) Copy of prior intimation under rule 18(2) of CCS Conduct Rules, 1964.'),
-                                 ('ei','Marriage 1) Copy of invitation card. Education 1) Admission letter/Fee Details/Other')],
-                                string='Attach Documents',track_visibility='always',)
+    pf_type = fields.Many2one('pf.type',string="PF Type",track_visibility='always')
+#     purpose=fields.Selection([('a','Purchase of dwelling sight/flat/ construction of house/ renovation of house'),
+#                               ('b','Repayment of loans'),
+#                               ('e','For marriage and Education')],
+    purpose = fields.Text(string="Purpose",track_visibility='always',related="pf_type.purpose")
+#     attachment_document=fields.Selection([('ai',""""""'1) Declaration form for purchase of dwelling site.'
+#                                                 '2) Declaration & Undertaking for non-encumbrance.'
+#                                                 '3) Agreement of sale/Copy of Sale Deed/Allotment Letter.'
+#                                                 '4) Copy of prior intimation under rule 18(2) of CCS Conduct Rules, 1964.'
+#                                                 '5) Estimate of Repairs, Renovation, Construction.'""""""),
+#                                  ('bi','1) Certificate of Home Loan Sanctioned. 2) Copy of Sale Deed.3) Certificate of Outstanding Home Loan. 4) Copy of prior intimation under rule 18(2) of CCS Conduct Rules, 1964.'),
+#                                  ('ei','Marriage 1) Copy of invitation card. Education 1) Admission letter/Fee Details/Other')],
+#                                 string='Attach Documents',track_visibility='always',)
+    attachment_document = fields.Text(string="Attachment Document",track_visibility='always',related="pf_type.attachment_document")
 #     attachment_ids=fields.Many2many('abc.ab',string="Attachment")
-    attachment_ids = fields.Many2many(
-        'ir.attachment', 'mail_compose_message_ir_attachments_rel',
-        'wizard_id', 'attachment_id', 'Attachments')
+    attachment_ids = fields.Many2many('ir.attachment', string='Files',track_visibility='always')
     branch_id = fields.Many2one('res.branch',string="Branch",track_visibility='onchange')
     department_id = fields.Many2one('hr.department','Department',track_visibility='onchange')
     
@@ -56,6 +57,15 @@ class PfWidthdrawl(models.Model):
     @api.multi
     def button_approved(self):
         for rec in self:
+            pf_withd = []
+            pf_employee = self.env['pf.employee'].search([('employee_id','=',self.employee_id.id)])
+            print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<",pf_employee)
+            if pf_employee:
+                for pf_emp in pf_employee:
+                    pf_emp.amount = pf_emp.amount - self.advance_amount
+                    pf_emp.pf_withdrwal_amount = pf_emp.amount 
+                    print("???????????????????????????/",pf_emp,pf_emp.amount,pf_emp.pf_withdrwal_amount)
+#                 raise ValidationError(_("::::::::::::::::::::::"))
             rec.write({'state': 'approved'})
 
     @api.multi
@@ -69,27 +79,27 @@ class PfWidthdrawl(models.Model):
             rec.write({'state': 'draft'})
 
 
-    @api.constrains('rule')
-    @api.onchange('rule')
-    def _onchange_rule(self):
-        for e in self:
-            if e.rule == 'A':
-                e.purpose = 'a'
-            elif e.rule == 'B':
-                e.purpose = 'b'
-            elif e.rule == 'E':
-                e.purpose = 'e'
+#     @api.constrains('rule')
+#     @api.onchange('rule')
+#     def _onchange_rule(self):
+#         for e in self:
+#             if e.rule == 'A':
+#                 e.purpose = 'a'
+#             elif e.rule == 'B':
+#                 e.purpose = 'b'
+#             elif e.rule == 'E':
+#                 e.purpose = 'e'
 
-    @api.constrains('purpose')
-    @api.onchange('purpose')
-    def _onchange_purpose(self):
-        for e in self:
-            if e.purpose== 'a':
-                e.attachment_document='ai'
-            elif e.purpose=='b':
-                e.attachment_document='bi'
-            elif e.purpose=='e':
-                e.attachment_document='ei'
+#     @api.constrains('purpose')
+#     @api.onchange('purpose')
+#     def _onchange_purpose(self):
+#         for e in self:
+#             if e.purpose== 'a':
+#                 e.attachment_document='ai'
+#             elif e.purpose=='b':
+#                 e.attachment_document='bi'
+#             elif e.purpose=='e':
+#                 e.attachment_document='ei'
 
 
     @api.constrains('employee_id')
@@ -131,11 +141,13 @@ class PfEmployee(models.Model):
     def _default_employee(self):
         return self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
 
-
     employee_id=fields.Many2one('hr.employee', string="Request By", default=_default_employee)
+    advance_amount = fields.Float('Advance Amount Taken', compute='_compute_amount')
+    advance_left = fields.Float('Amount Left', compute='_compute_amount')
     amount = fields.Float('Amount', compute='_compute_amount')
     pf_details_ids=fields.One2many('pf.employee.details', 'pf_details_id', string="Employee")
-
+    currency_id = fields.Many2one('res.currency', string='Currency',
+                              default=lambda self: self.env.user.company_id.currency_id)
     @api.depends('employee_id')
     def _compute_amount(self):
         for rec in self:
@@ -145,7 +157,23 @@ class PfEmployee(models.Model):
                 for details in pf_employee_obj:
                     sum += details.amount
             rec.amount = sum
-
+            
+    @api.depends('pf_details_ids')
+    def _compute_amount(self):
+        for rec in self:
+            sum = 0.00
+            sum1 = 0.00
+            for details in rec.pf_details_ids:
+                sum += details.amount
+            pf_advance = self.env['pf.widthdrawl'].search(
+                [('employee_id', '=', rec.employee_id.id),
+                 ('state', '=', 'approved')], limit=1)
+            for ad in pf_advance:
+                sum1 += ad.advance_amount
+            rec.amount = sum
+            rec.advance_amount = sum1
+            rec.advance_left = rec.amount - rec.advance_amount
+    
 
     @api.multi
     def get_pf_details(self):
@@ -158,7 +186,7 @@ class PfEmployee(models.Model):
                      ('slip_id.state', '=', 'done'),
                      ('salary_rule_id.pf_register', '=', True),
                      ])
-#                 print("????????????????????????",pay_rules)
+                print("????????????????????????",pay_rules)
                 if pay_rules:
                     for i in pay_rules:
                         pf_details_ids.append((0, 0, {
@@ -168,8 +196,6 @@ class PfEmployee(models.Model):
                             'reference': i.slip_id.number,
                         }))
                     self.pf_details_ids = pf_details_ids
-
-
 
 
 class PfEmployeeDetails(models.Model):
