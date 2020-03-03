@@ -8,6 +8,24 @@ class HrApplicationSd(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = 'Hr Requisition Application'
 
+
+
+    # @api.onchange('leave_taken')
+    # def change_leave_taken(self):
+    #     fdat = datetime.now().date()
+    #     tdat = datetime.now().date()
+    #     for fd in self.employee_journey.tour_request_id.employee_journey:
+    #         fdat = fd.departure_date
+    #         tdat = fd.arrival_date
+    #     for fd in self.employee_journey.tour_request_id.employee_journey:
+    #         if fd.departure_date <= fdat:
+    #             fdat = fd.departure_date
+    #         if fd.arrival_date >= tdat:
+    #             tdat = fd.arrival_date
+    #     return {'domain': {'leave_taken': [('state', 'not in', ['cancel','refuse']),('employee_id', '=', self.employee_journey.employee_id.id)
+    #         ,('request_date_from', '>=', fdat),('request_date_to', '<=', tdat)]}}
+
+
     name = fields.Char('Sequence')
     branch_id = fields.Many2one('res.branch', string='Branch')
     contact = fields.Char('Contact')
@@ -39,6 +57,7 @@ class HrApplicationSd(models.Model):
     @api.multi
     def button_to_approve(self):
         for rec in self:
+            rec.allowed_categories_ids.unlink()
             allowed_categories_ids = []
             for jobs in rec.job_position_ids:
                 allowed_categories_ids.append((0, 0, {
