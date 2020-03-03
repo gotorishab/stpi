@@ -689,6 +689,18 @@ class HrDeclaration(models.Model):
             else:
                 raise ValidationError(
                     "This declaration is already applied for this duration, please correct the dates 3")
+        model = self.env['ir.model'].search([('model', '=', 'hr.declaration')])
+        res.env['mail.activity'].create(
+            {
+                'res_id': res.id,
+                'res_model_id': model.id,
+                'user_id': res.employee_id.user_id.id,
+                'date_deadline': datetime.now().date(),
+                'activity_type_id': 4,
+                'note': 'TDS',
+                'summary': 'IT Declaration'
+            }
+        )
         return res
 
 
