@@ -156,20 +156,24 @@ class HrLeave(models.Model):
                 prefix.append(allow_comb.name)
                 count += 1
             # print("===========================Number of Allowed Prefix Leave==============================", count)
-            if count > 1:
+            if count > 0:
                 for pr_po in res.pre_post_leaves_ids:
                     if pr_po.pre_post == 'pre' and pr_po.leave == 'leave':
                         # print("==========================List of Allowed Prefix Leave==================================",prefix)
                         # print("==========================Current Pre leave type==================================",pr_po.leave_type_id.name)
-                        if pr_po.leave_type_id.name not in prefix:
-                            raise ValidationError(_('Leave Type is not allowed to be clubbed with  %s ') % (
-                                pr_po.leave_type_id.name))
+                        countpre_club_days = (res.request_date_from - pr_po.to_date).days
+                        if countpre_club_days == 1:
+                            if pr_po.leave_type_id.name not in prefix:
+                                raise ValidationError(_('Leave Type is not allowed to be clubbed with  %s ') % (
+                                    pr_po.leave_type_id.name))
                     if pr_po.pre_post == 'post' and pr_po.leave == 'leave':
                         # print("==========================List of Allowed Prefix Leave==================================",prefix)
                         # print("==========================Current Post leave type==================================",pr_po.leave_type_id.name)
-                        if pr_po.leave_type_id.name not in prefix:
-                            raise ValidationError(_('Leave Type is not allowed to be clubbed with  %s ') % (
-                                pr_po.leave_type_id.name))
+                        countpost_club_days = (pr_po.from_date - res.request_date_to).days
+                        if countpost_club_days == 1:
+                            if pr_po.leave_type_id.name not in prefix:
+                                raise ValidationError(_('Leave Type is not allowed to be clubbed with  %s ') % (
+                                    pr_po.leave_type_id.name))
 
         return res
 
@@ -179,6 +183,8 @@ class HrLeave(models.Model):
         for rec in self:
             rec.countpre = 0.00
             rec.countpost = 0.00
+            pre_ids = []
+            pre_holiday_ids = []
             leave_ids = self.env['hr.leave'].search([('employee_id', '=', rec.employee_id.id),
                                                      ('request_date_to', '!=', rec.request_date_to),
                                                      ('request_date_to', '<=', rec.request_date_from),
@@ -186,8 +192,7 @@ class HrLeave(models.Model):
                                                     order="request_date_to desc")
             # print("==============Leave Ids pre onchange=======================", leave_ids)
             if leave_ids:
-                pre_ids = []
-                pre_holiday_ids = []
+
                 for leave in leave_ids:
                     # print('======================Check Date pre========================================', leave.request_date_to)
                     # print('======================Check Date current from========================================', rec.request_date_from)
@@ -277,6 +282,10 @@ class HrLeave(models.Model):
             else:
                 rec.pre_post_leaves_ids = working_list
                 # print("elsssssssssssssssssssssssssss",rec.pre_post_leaves_ids)
+
+            if leave_ids and not post_leave_ids:
+                rec.pre_post_leaves_ids = pre_ids
+                rec.pre_post_leaves_ids = pre_holiday_ids
 
     @api.constrains('date_from', 'date_to', 'employee_id')
     @api.onchange('date_from', 'date_to', 'employee_id')

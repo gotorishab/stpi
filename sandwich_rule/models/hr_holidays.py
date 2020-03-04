@@ -40,6 +40,10 @@ class HrHolidays(models.Model):
                 self.number_of_days_display = math.ceil(time_delta.days + float(time_delta.seconds) / 86400)
                 print("if number_of_days_display teuwwwww",self.number_of_days_display)
                 print(">>>>>>>>>>>>>>>>>>>>>>>>>>>",self.hr_consider_sandwich_rule)
+            else:
+                self.sandwich_rule = False
+                self.number_of_days_display = self._get_number_of_days(self.date_from, self.date_to,
+                                                                       self.employee_id.id)
         elif self.hr_consider_sandwich_rule and self.employee_id and self.number_of_days_display:
             time_delta = self.date_to - self.date_from
             self.number_of_days_display = math.ceil(time_delta.days + float(time_delta.seconds) / 86400)

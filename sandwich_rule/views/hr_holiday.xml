@@ -11,8 +11,8 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="inherit_id" ref="hr_holidays.hr_leave_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//group" position="after">
-                <field name="sandwich_rule" invisible='1'/>
-                <div attrs="{'invisible':[('sandwich_rule', '=', False)]}" style="font-size: 20px;color: red;">Sandwich Rule is Applied.</div>
+                <field name="sandwich_rule"/>
+<!--                <div attrs="{'invisible':[('sandwich_rule', '=', False)]}" style="font-size: 20px;color: red;">Sandwich Rule is Applied.</div>-->
             </xpath> 
             <field name="department_id" position='after'>
                 <!--<field name='hr_consider_sandwich_rule' groups="hr.group_hr_manager" attrs="{'readonly': [('state', '!=', 'confirm')]}"/>-->
