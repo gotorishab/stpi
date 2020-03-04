@@ -1,11 +1,5 @@
 <odoo>
   <data>
-    <record id="dashboard_iframe_action" model="ir.actions.act_window">
-      <field name="name">iFrames</field>
-      <field name="res_model">dashboard_iframe</field>
-      <field name="view_type">form</field>
-      <field name="view_mode">tree,form,kanban</field>
-    </record>
 
     <record model="ir.ui.view" id="dashboard_iframe_tree">
       <field name="name">dashboard_iframe.tree</field>
@@ -51,10 +45,17 @@
         </kanban>
       </field>
     </record>
+    
+    <record id="dashboard_iframe_action" model="ir.actions.act_window">
+      <field name="name">iFrames</field>
+      <field name="res_model">dashboard_iframe</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">tree,form,kanban</field>
+    </record>
 
     <menuitem
             name="iFrames"
-            id="dashboard_iframe_menuitem"
+            id="dashboard_iframe_menuitem_id"
             parent="base.menu_board_root"
             action="dashboard_iframe_action"
             sequence="5"/>

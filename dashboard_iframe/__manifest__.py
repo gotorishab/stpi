@@ -26,7 +26,7 @@
 
     # always loaded
     'data': [
-        # 'security/ir.model.access.csv',
+        'security/ir.model.access.csv',
         'views/dashboard_iframe.xml',
         'security/dashboard_iframe_access_rules.xml'
     ],
