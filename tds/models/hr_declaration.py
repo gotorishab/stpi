@@ -637,10 +637,7 @@ class HrDeclaration(models.Model):
                 rec.rebate_received = sum_rbt
             else:
                 rec.tax_payable_after_rebate = 0.00
-                rec.rebate_received = tax_payable
-
-
-
+                rec.rebate_received = rec.tax_payable
             rec.tax_computed_bool = True
             rec.sudo().button_payment_tax()
         return True
@@ -689,6 +686,18 @@ class HrDeclaration(models.Model):
             else:
                 raise ValidationError(
                     "This declaration is already applied for this duration, please correct the dates 3")
+        model = self.env['ir.model'].search([('model', '=', 'hr.declaration')])
+        res.env['mail.activity'].create(
+            {
+                'res_id': res.id,
+                'res_model_id': model.id,
+                'user_id': res.employee_id.user_id.id,
+                'date_deadline': datetime.now().date(),
+                'activity_type_id': 4,
+                'note': 'TDS',
+                'summary': 'IT Declaration'
+            }
+        )
         return res
 
 

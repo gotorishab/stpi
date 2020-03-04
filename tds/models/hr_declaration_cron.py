@@ -44,37 +44,36 @@ class HrDeclarationCron(models.Model):
             #     t2 = (t1 * (1 + tax_slab.surcharge / 100))
             #     t3 = (t2 * (1 + tax_slab.cess / 100))
             #     rec.tax_payable = round(t3)
-            tax_salary_final = 0.00
-
-            if rec.tax_salary_final <= 250000.00:
-                tax_salary_final = 0.00
-            elif rec.tax_salary_final > 250000.00 and rec.tax_salary_final <= 500000.00:
-                tax_salary_final = (rec.tax_salary_final - 250000.00) * 5 / 100
-                tax_salary_final = tax_salary_final + (tax_salary_final * 4 / 100)
-            elif rec.tax_salary_final > 500000.00 and rec.tax_salary_final <= 1000000.00:
-                tax_salary_final = ((rec.tax_salary_final - 500000.00) * 20 / 100)
-                tax_salary_final = tax_salary_final + (tax_salary_final * 4 / 100)
-                tax_salary_final = tax_salary_final + 13000.00
-            elif rec.tax_salary_final > 1000000.00 and rec.tax_salary_final <= 5000000.00:
-                tax_salary_final = ((rec.tax_salary_final - 1000000.00) * 30 / 100)
-                tax_salary_final = tax_salary_final + (tax_salary_final * 4 / 100)
-                tax_salary_final = tax_salary_final + 13000.00 + 104000.00
-            elif rec.tax_salary_final > 5000000.00 and rec.tax_salary_final <= 10000000.00:
-                tax_salary_final = ((rec.tax_salary_final - 5000000.00) * 30 / 100)
-                tax_salary_final = tax_salary_final + (tax_salary_final * 4 / 100)
-                tax_salary_final = tax_salary_final + (tax_salary_final * 10 / 100)
-                tax_salary_final = tax_salary_final + 13000.00 + 104000.00 + 1248000.00
-            elif rec.tax_salary_final > 10000000.00:
-                tax_salary_final = ((rec.tax_salary_final - 10000000.00) * 30 / 100)
-                tax_salary_final = tax_salary_final + (tax_salary_final * 4 / 100)
-                tax_salary_final = tax_salary_final + (tax_salary_final * 15 / 100)
-                tax_salary_final = tax_salary_final + 13000.00 + 104000.00 + 1248000.00 + 1716000.00
-            rec.tax_payable = round(tax_salary_final)
-            if rec.tax_payable <= 0.00:
-                rec.tax_payable_zero = False
-                rec.tax_payable = 0.00
-            else:
-                rec.tax_payable_zero = True
+            # tax_salary_final = 0.00
+            # if rec.tax_salary_final <= 250000.00:
+            #     tax_salary_final = 0.00
+            # elif rec.tax_salary_final > 250000.00 and rec.tax_salary_final <= 500000.00 :
+            #     tax_salary_final = (rec.tax_salary_final - 250000.00) * 5/100
+            #     tax_salary_final = tax_salary_final + (tax_salary_final * 4/100)
+            # elif rec.tax_salary_final > 500000.00 and rec.tax_salary_final <= 1000000.00:
+            #     tax_salary_final = ((rec.tax_salary_final - 500000.00) * 20/100)
+            #     tax_salary_final = tax_salary_final + (tax_salary_final *4/100)
+            #     tax_salary_final = tax_salary_final + 13000.00
+            # elif rec.tax_salary_final > 1000000.00 and rec.tax_salary_final <= 5000000.00:
+            #     tax_salary_final = ((rec.tax_salary_final - 1000000.00) * 30 / 100)
+            #     tax_salary_final = tax_salary_final + (tax_salary_final * 4/100)
+            #     tax_salary_final = tax_salary_final + 13000.00 + 104000.00
+            # elif rec.tax_salary_final > 5000000.00 and rec.tax_salary_final <= 10000000.00:
+            #     tax_salary_final = ((rec.tax_salary_final - 5000000.00) * 30 / 100)
+            #     tax_salary_final = tax_salary_final + (tax_salary_final * 4/100)
+            #     tax_salary_final = tax_salary_final + (tax_salary_final * 10/100)
+            #     tax_salary_final = tax_salary_final + 13000.00 + 104000.00 + 1248000.00
+            # elif rec.tax_salary_final > 10000000.00:
+            #     tax_salary_final = ((rec.tax_salary_final - 10000000.00) * 30 / 100)
+            #     tax_salary_final = tax_salary_final + (tax_salary_final * 4 / 100)
+            #     tax_salary_final = tax_salary_final + (tax_salary_final * 15 / 100)
+            #     tax_salary_final = tax_salary_final + 13000.00 + 104000.00 + 1248000.00 + 1716000.00
+            # rec.tax_payable = round(tax_salary_final)
+            # if rec.tax_payable <= 0.00:
+            #     rec.tax_payable_zero = False
+            #     rec.tax_payable = 0.00
+            # else:
+            #     rec.tax_payable_zero = True
             rec.std_ded_ids.unlink()
             rec.exemption_ids.unlink()
             rec.rebate_ids.unlink()
@@ -219,13 +218,11 @@ class HrDeclarationCron(models.Model):
                 limit=1)
             my_investment = 0.00
             my_allowed_rebate = 0.00
-            if rec.tax_payable >= 12500:
-                my_investment = 12500
-            elif rec.tax_salary_final <= 50000 and rec.tax_payable <= 12500:
-                my_investment = 10000
-            elif rec.tax_salary_final >= 50000:
-                my_investment = 0
             if ex_rebate_id:
+                if rec.tax_salary_final <= 500000:
+                    my_investment = ex_rebate_id.rebate
+                else:
+                    my_investment = 0.00
                 if my_investment <= ex_rebate_id.rebate:
                     my_allowed_rebate = my_investment
                 else:
@@ -300,6 +297,48 @@ class HrDeclarationCron(models.Model):
                             rec.allowed_rebate_under_80c + rec.allowed_rebate_under_80b + rec.allowed_rebate_under_80d + rec.allowed_rebate_under_80dsa + rec.allowed_rebate_under_80e + rec.allowed_rebate_under_80ccg + rec.allowed_rebate_under_tbhl + rec.allowed_rebate_under_80ee + rec.allowed_rebate_under_24 + rec.allowed_rebate_under_80cdd + rec.allowed_rebate_under_80mesdr))
             else:
                 rec.taxable_income = 0.00
+
+            tax_salary_final = 0.00
+            if rec.taxable_income <= 250000.00:
+                tax_salary_final = 0.00
+            elif rec.taxable_income > 250000.00 and rec.taxable_income <= 500000.00:
+                tax_salary_final = (rec.taxable_income - 250000.00) * 5 / 100
+                tax_salary_final = tax_salary_final + (tax_salary_final * 4 / 100)
+            elif rec.taxable_income > 500000.00 and rec.taxable_income <= 1000000.00:
+                tax_salary_final = ((rec.taxable_income - 500000.00) * 20 / 100)
+                tax_salary_final = tax_salary_final + (tax_salary_final * 4 / 100)
+                tax_salary_final = tax_salary_final + 13000.00
+            elif rec.taxable_income > 1000000.00 and rec.taxable_income <= 5000000.00:
+                tax_salary_final = ((rec.taxable_income - 1000000.00) * 30 / 100)
+                tax_salary_final = tax_salary_final + (tax_salary_final * 4 / 100)
+                tax_salary_final = tax_salary_final + 13000.00 + 104000.00
+            elif rec.taxable_income > 5000000.00 and rec.taxable_income <= 10000000.00:
+                tax_salary_final = ((rec.taxable_income - 5000000.00) * 30 / 100)
+                tax_salary_final = tax_salary_final + (tax_salary_final * 4 / 100)
+                tax_salary_final = tax_salary_final + (tax_salary_final * 10 / 100)
+                tax_salary_final = tax_salary_final + 13000.00 + 104000.00 + 1248000.00
+            elif rec.taxable_income > 10000000.00:
+                tax_salary_final = ((rec.taxable_income - 10000000.00) * 30 / 100)
+                tax_salary_final = tax_salary_final + (tax_salary_final * 4 / 100)
+                tax_salary_final = tax_salary_final + (tax_salary_final * 15 / 100)
+                tax_salary_final = tax_salary_final + 13000.00 + 104000.00 + 1248000.00 + 1716000.00
+            rec.tax_payable = round(tax_salary_final)
+            if rec.tax_payable <= 0.00:
+                rec.tax_payable_zero = False
+                rec.tax_payable = 0.00
+            else:
+                rec.tax_payable_zero = True
+            sum_rbt = 0.0
+            for rbt in rec.rebate_ids:
+                sum_rbt += rbt.allowed_rebate
+
+            if rec.tax_payable >= sum_rbt:
+                rec.tax_payable_after_rebate = rec.tax_payable - sum_rbt
+                rec.rebate_received = sum_rbt
+            else:
+                rec.tax_payable_after_rebate = 0.00
+                rec.rebate_received = rec.tax_payable
+
             rec.tax_computed_bool = True
             for lines in rec.tax_payment_ids:
                 if lines.paid == False:
