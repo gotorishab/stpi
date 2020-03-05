@@ -175,6 +175,31 @@ class HrLeave(models.Model):
                                 raise ValidationError(_('Leave Type is not allowed to be clubbed with  %s ') % (
                                     pr_po.leave_type_id.name))
 
+            count = 0
+            leave_ids = self.env['hr.leave'].search([('employee_id', '=', rec.employee_id.id),
+                                                     ('request_date_from', '>=', (date.today().year, 1, 1)),
+                                                     ('request_date_to', '<=', date.today().year, 12, 31),
+                                                     ('holiday_status_id.leave_type', '=', 'Restricted Leave')
+                                                     ('state', 'not in', ['cancel', 'refuse'])],
+                                                    order="request_date_to desc")
+            for leaves in leave_ids:
+                count += 1
+            if count > res.employee_id.resource_calendar_id.max_allowed_rh and res.holiday_status_id.leave_type == 'Restricted Leave':
+                raise ValidationError(_(
+                    'You are not allowed to take leave'))
+
+
+            rh_dates=[]
+            if res.holiday_status_id.leave_type == 'Restricted Leave':
+                for allow_comb in res.employee_id.resource_calendar_id.global_leave_ids:
+                    if allow_comb.restricted_holiday == True:
+                        rh_dates.append(allow_comb.date)
+                if not(res.request_date_from in rh_dates and res.request_date_to in rh_dates):
+                    raise ValidationError(_(
+                        'You are not allowed to take leave'))
+
+
+
         return res
 
     @api.constrains('request_date_from', 'request_date_to', 'employee_id')

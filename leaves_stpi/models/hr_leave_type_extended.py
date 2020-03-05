@@ -31,7 +31,8 @@ class HrLeaveType(models.Model):
                                ('Special Casual Leave','Special Casual Leave'),
                                ('Extra Ordinary Leave','Extra Ordinary Leave'),
                                ('Paternity Leave','Paternity Leave'),
-                               ('Child Care Leave','Child Care Leave')
+                               ('Child Care Leave','Child Care Leave'),
+                               ('Restricted Leave','Restricted Leave')
                         ],string='Name',required=True)
     leave_type = fields.Selection([('Casual Leave','Casual Leave'),
                                ('Half Pay Leave','Half Pay Leave'),
@@ -41,7 +42,8 @@ class HrLeaveType(models.Model):
                                ('Special Casual Leave','Special Casual Leave'),
                                ('Extra Ordinary Leave','Extra Ordinary Leave'),
                                ('Paternity Leave','Paternity Leave'),
-                               ('Child Care Leave','Child Care Leave')
+                               ('Child Care Leave','Child Care Leave'),
+                               ('Restricted Leave','Restricted Leave')
                                 ],string="Leave Type",required=True)
     leave_per_year = fields.Integer(string="Leave Per Year",readonly=True)
     carried_forward = fields.Boolean(string="Carried Forward")
