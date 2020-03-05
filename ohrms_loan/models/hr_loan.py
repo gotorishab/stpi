@@ -29,7 +29,7 @@ class HrLoan(models.Model):
             for line in loan.loan_lines:
                 if line.paid:
                     total_paid += line.amount
-                    print("-----------",total_paid)
+                    # print("-----------",total_paid)
                 loan.total_interest += line.monthly_interest_amount
                 loan.total_paid_amount = total_paid
                 loan.total_amount = loan.loan_amount
@@ -82,7 +82,7 @@ class HrLoan(models.Model):
 
     dis_date = fields.Date(string='Disbursement Date')
     pro_ins = fields.Float(string='Prorated Installment')
-
+    calculate_bool = fields.Boolean(string='Check Bool', default=False)
     # treasury_account_id = fields.Many2one('account.account', string="Treasury Account")
     # emp_account_id = fields.Many2one('account.account', string="Loan Account")
     # journal_id = fields.Many2one('account.journal', string="Journal")
@@ -111,6 +111,16 @@ class HrLoan(models.Model):
             res = super(HrLoan, self).create(values)
             return res
 
+
+    @api.onchange('dis_date')
+    def onchange_dis_rate(self):
+        for rec in self:
+            if rec.calculate_bool == True:
+                raise ValidationError(_("You are not allowed to change the date"))
+            else:
+                if rec.approve_date > rec.dis_date:
+                    raise ValidationError(_("Disbursement Date must be less than Approve Date"))
+            # rec.calculate_bool = False
 
     @api.constrains('type_id')
     @api.onchange('type_id')
@@ -175,19 +185,25 @@ class HrLoan(models.Model):
     @api.multi
     def action_calculate_dis(self):
         for rec in self:
-            if rec.dis_date and rec.payment_date:
-                count = 0
-                days = (rec.payment_date - rec.dis_date).days
-                interest = (rec.loan_amount*rec.installment)/100
-                interest2 = (interest*days)/365
-                rec.pro_ins = interest2
-                for lines in rec.loan_lines:
-                    if round(lines.principle_recovery_installment) == 0:
-                        count += 1
-                for lines in rec.loan_lines:
-                    if lines.principle_recovery_installment == 0.00:
-                        if count > 0.00:
-                            lines.amount += rec.pro_ins / count
+            if rec.calculate_bool == True:
+                raise ValidationError(_("Your are not allowed to calculate it now"))
+            else:
+                if rec.dis_date and rec.payment_date:
+                    count = 0
+                    days = (rec.payment_date - rec.dis_date).days
+                    interest = (rec.loan_amount*rec.installment)/100
+                    interest2 = (interest*days)/365
+                    rec.pro_ins = interest2
+                    for lines in rec.loan_lines:
+                        if round(lines.principle_recovery_installment) == 0:
+                            count += 1
+                    for lines in rec.loan_lines:
+                        if lines.principle_recovery_installment == 0.00:
+                            if count > 0.00:
+                                lines.monthly_interest_amount = rec.pro_ins / count
+                                lines.amount += rec.pro_ins / count
+                    rec.calculate_bool = True
+
 
 
     #

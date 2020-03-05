@@ -49,6 +49,7 @@
                                         <field name="state" invisible="1"/>
                                         <field name="amount_claimed" sum="Total Amount" attrs="{'required':[('arranged_by','=','self')],'invisible':[('arranged_by','!=','self')]}"/>
                                         <field name="distance" sum="Total Distance Covered" attrs="{'readonly':[('state','not in',('draft', 'rejected'))]}"/>
+                                        <field name="document" attrs="{'readonly':[('state','not in',('draft', 'rejected'))]}"/>
 <!--                                        <field name="approved_approved" sum="Total Amount Approved" attrs="{'invisible':[('state','in',('draft', 'rejected'))]}" groups="tour_request.group_tour_request_approvere"/>-->
 
                                     </tree>
@@ -84,6 +85,7 @@
                                         <field name="daily_boarding_charge" attrs="{'readonly':[('state','not in',('draft', 'rejected'))],'invisible':[('claiming_separately','!=','yes')]}"/>
                                         <field name="daily_boarding_lodginf_charge" attrs="{'readonly':[('state','not in',('draft', 'rejected'))],'invisible':[('claiming_separately','!=','no')]}"/>
                                         <field name="total_amount_paid" readonly="1"/>
+                                        <field name="document" attrs="{'readonly':[('state','not in',('draft', 'rejected'))]}"/>
 <!--                                        <field name="other_details" attrs="{'readonly':[('state','not in',('draft', 'rejected'))]}"/>-->
                                         <field name="state" invisible="1"/>
                                     </tree>
@@ -114,7 +116,7 @@
         <field name="name">employee.tour.claim.tree</field>
         <field name="model">employee.tour.claim</field>
         <field name="arch" type="xml">
-            <tree string="LTC">
+            <tree string="Tour Claim" default_order="create_date desc">
                 <field name="employee_id"/>
                 <field name="designation"/>
                 <field name="department"/>

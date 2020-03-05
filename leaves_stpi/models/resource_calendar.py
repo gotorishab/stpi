@@ -10,6 +10,7 @@ class ResourceCalendar(models.Model):
     _description= ' Resource Calendar Branch'
     
     branch_id = fields.Many2one('res.branch',string="Branch",required=True)
+    max_allowed_rh = fields.Float(string='Max Allowed Restricted Holiday')
     from_date = fields.Date(string='From Date')
     to_date = fields.Date(string='To Date')
     week_list = fields.Selection([
@@ -103,6 +104,7 @@ class ResourceCalendarLeaves(models.Model):
     _description= ' Resource Calendar Leaves'
     
     date = fields.Date(string="Date",required=True)
+    restricted_holiday = fields.Boolean(string='Restricted Holiday')
     
     @api.onchange('date')
     def onchange_date(self):

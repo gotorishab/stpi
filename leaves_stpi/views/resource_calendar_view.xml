@@ -22,6 +22,7 @@
             
             <xpath expr="//form/sheet/group/field[@name='hours_per_day']" position="after">
                 <field name="branch_id"/>
+                <field name="max_allowed_rh"/>
             </xpath>
 
             <xpath expr="//field[@name='global_leave_ids']" position="before">
@@ -43,6 +44,7 @@
             
             <xpath expr="//form/sheet/notebook/page/field[@name='global_leave_ids']/tree/field[@name='name']" position="after">
                 <field name="date"/>
+                <field name="restricted_holiday"/>
             </xpath>
             
             <xpath expr="//form/sheet/notebook/page/field[@name='global_leave_ids']/tree/field[@name='date_from']" position="attributes">

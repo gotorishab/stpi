@@ -6,7 +6,7 @@
         <field name="name">tour.request.tree</field>
         <field name="model">tour.request</field>
         <field name="arch" type="xml">
-            <tree string="Tour Request">
+            <tree string="Tour Request" default_order="create_date desc">
                  <field name="tour_sequence"/>
                  <field name="employee_id"/>
                 <field name="designation"/>

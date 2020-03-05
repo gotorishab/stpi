@@ -160,6 +160,23 @@ class EmployeeTourClaim(models.Model):
                     'You cannot delete a Tour Claim which is not in draft state')
         return super(EmployeeTourClaim, self).unlink()
 
+
+
+    @api.model
+    def create(self, vals):
+        res =super(EmployeeTourClaim, self).create(vals)
+        tdat_id = res.tour_request_id.employee_journey[0]
+        tdat = tdat_id.arrival_date
+        for fd in res.tour_request_id.employee_journey:
+            if fd.arrival_date >= tdat:
+                tdat = fd.arrival_date
+        if datetime.now().date() < tdat:
+            raise ValidationError(
+                "You are not allowed to claim this")
+        return res
+
+
+
     @api.multi
     def button_reset_to_draft(self):
         self.ensure_one()
@@ -223,6 +240,7 @@ class TourClaimJourney(models.Model):
     arrival_time = fields.Float('Arrival Time')
     amount_claimed = fields.Float('Amount Claimed')
     distance = fields.Float('Distance')
+    document = fields.Binary(string='Document')
     arranged_by = fields.Selection([('self', 'Self'), ('company', 'Company')], string='Arranged By')
     state = fields.Selection(
         [('draft', 'Draft'), ('submitted', 'Waiting for Approval'), ('approved', 'Approved'),
@@ -313,6 +331,8 @@ class JourneyLodgingBoarding(models.Model):
     daily_boarding_charge = fields.Float('Daily Boarding Charges')
     daily_boarding_lodginf_charge = fields.Float('Daily Lodging and Boarding Charges')
     total_amount_paid = fields.Float('Total Amount Paid', compute='_Compute_total_amount_paid')
+    document = fields.Binary(string='Document')
+
     # other_details = fields.Float('Details of other reimbursable expenses ')
 
     state = fields.Selection(

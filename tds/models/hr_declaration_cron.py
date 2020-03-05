@@ -158,6 +158,7 @@ class HrDeclarationCron(models.Model):
             sum = 0.00
             my_investment = 0.00
             my_allowed_rebate = 0.00
+            sum_list = []
             for cc in prl_id:
                 sum_prl += cc.amount
             if rec.employee_id.address_home_id.city_id.metro == True:
@@ -165,12 +166,17 @@ class HrDeclarationCron(models.Model):
             else:
                 sum_bs = ((rec.basic_salary + rec.da_salary) * 40) / 100
             sum_rent = rec.rent_paid - (((rec.basic_salary + rec.da_salary) * 10) / 100)
-            if sum_prl <= sum_bs and sum_prl <= sum_rent:
-                sum = sum_prl
-            elif sum_bs <= sum_prl and sum_bs <= sum_rent:
-                sum = sum_bs
-            else:
-                sum = sum_rent
+
+            sum_list.append(sum_prl)
+            sum_list.append(sum_bs)
+            sum_list.append(sum_rent)
+            # print('=============================================================================',sum_list)
+            compare = 0.00
+            compare_value = 10000000000000.00
+            for i in sum_list:
+                if compare_value > i and i > compare:
+                    compare_value = i
+            sum = compare_value
             if ex_hra_id:
                 my_investment = sum
                 if my_investment <= ex_hra_id.rebate:
