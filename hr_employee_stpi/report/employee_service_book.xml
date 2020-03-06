@@ -362,9 +362,9 @@
                                                     <span t-esc="doc.description"/>
                                                 </td>
                                                 <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">
-                                                    <t t-foreach="doc.doc_attachment_id" t-as="att">
-                                                        <span t-esc="att.name"/>
-                                                    </t>
+<!--                                                    <t t-foreach="doc.doc_attachment_id" t-as="att">-->
+<!--                                                        <span t-esc="att.name"/>-->
+<!--                                                    </t>-->
                                                 </td>
                                             </tr>
                                         </t>
