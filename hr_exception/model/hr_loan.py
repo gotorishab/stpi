@@ -1,4 +1,4 @@
-from odoo import api, models, fields, _
+from odoo import api, models, fields,_
 from odoo.exceptions import UserError, ValidationError
 
 
@@ -14,7 +14,6 @@ class ExceptionRule(models.Model):
             ('hr.loan', 'Hr Loan'),
             ('hr.loan.line', 'Hr Loan Line'),
         ])
-
 
 class HrLoan(models.Model):
     _inherit = ['hr.loan', 'base.exception']
@@ -32,18 +31,14 @@ class HrLoan(models.Model):
         order_set.test_exceptions()
         return True
 
-    @api.constrains('ignore_exception', 'loan_lines', 'state')
+    @api.constrains('ignore_exception','loan_lines','state')
     def sale_check_exception(self):
         if self.state == 'approve':
-            self._check_exception()
-        if self.state == 'close':
             self._check_exception()
 
     @api.onchange('loan_lines')
     def onchange_ignore_exception(self):
         if self.state == 'approve':
-            self.ignore_exception = False
-        if self.state == 'close':
             self.ignore_exception = False
 
     @api.multi
@@ -74,28 +69,14 @@ class HrLoan(models.Model):
         # print("------------approve_expense_sheets")
         if self.detect_exceptions():
             # print("--------------_popup_exceptions",self._popup_exceptions)
-            self.action_app = True
             return self._popup_exceptions()
-
         else:
             return super(HrLoan, self).action_approve()
-
-    @api.multi
-    def loan_close_approve(self):
-        # print("------------approve_expense_sheets")
-        if self.detect_exceptions():
-            # print("--------------_popup_exceptions",self._popup_exceptions)
-            self.action_clos = True
-            return self._popup_exceptions()
-
-        else:
-            return super(HrLoan, self).loan_close_approve()
 
     @api.model
     def _get_popup_action(self):
         action = self.env.ref('hr_exception.action_hr_loan_confirm')
         return action
-
 
 class HrLoanLine(models.Model):
     _inherit = ['hr.loan.line', 'base.exception']
@@ -107,7 +88,6 @@ class HrLoanLine(models.Model):
         default='hr_loan_line',
     )
 
-
 class Approvalslist(models.Model):
     _inherit = "approvals.list"
 
@@ -117,14 +97,7 @@ class Approvalslist(models.Model):
         if res:
             # print("----------------------self.model_id.model", self.model_id.model)
             if self.model_id.model == 'hr.loan':
-                if self.resource_ref.action_app:
-                    self.resource_ref.action_approve()
-                    self.resource_ref.action_app = False
-                if self.resource_ref.action_clos:
-                    self.resource_ref.loan_close_approve()
-                    self.resource_ref.confirm_loan_payment()
-                    self.resource_ref.action_clos = False
-
+                self.resource_ref.action_approve()
         return res
 
     @api.multi

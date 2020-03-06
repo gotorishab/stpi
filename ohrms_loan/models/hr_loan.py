@@ -34,7 +34,10 @@ class HrLoan(models.Model):
                 loan.total_paid_amount = total_paid
                 loan.total_amount = loan.loan_amount
                 balance_amount = (loan.total_interest + loan.total_amount) - loan.total_paid_amount
-                loan.balance_amount = balance_amount
+                if balance_amount <= 0.00:
+                    loan.balance_amount = 0.00
+                else:
+                    loan.balance_amount = balance_amount
 
 
                 
@@ -193,7 +196,10 @@ class HrLoan(models.Model):
                     days = (rec.payment_date - rec.dis_date).days
                     interest = (rec.loan_amount*rec.installment)/100
                     interest2 = (interest*days)/365
-                    rec.pro_ins = interest2
+                    if interest2 <= 0.00:
+                        rec.pro_ins = 0.00
+                    else:
+                        rec.pro_ins = interest2
                     for lines in rec.loan_lines:
                         if round(lines.principle_recovery_installment) == 0:
                             count += 1
