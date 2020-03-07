@@ -32,10 +32,6 @@ class EmployeeProfile(models.Model):
     resume_line_ids = fields.One2many('hr.resume.line.update', 'employee_update_profile', string="Resumé lines")
     employee_skill_ids = fields.One2many('hr.employee.skill.update', 'employee_update_profile', string="Skills")
 
-
-
-
-
     category = fields.Many2one('employee.category', string='Category', track_visibility='always')
     religion = fields.Many2one('employee.religion', string='Religion', track_visibility='always')
     minority = fields.Boolean('Minority', default=False, track_visibility='always')
@@ -97,6 +93,11 @@ class EmployeeProfile(models.Model):
 
     fax_number = fields.Char('FAX number', track_visibility='always')
 
+    new_designation = fields.Many2one('hr.job', string="Functional Designation")
+    new_branch_id = fields.Many2one('res.branch', string="Branch")
+    new_department = fields.Many2one('hr.department', string="Department")
+
+
     new_category = fields.Many2one('employee.category', string='Category', track_visibility='always')
     new_religion = fields.Many2one('employee.religion', string='Religion', track_visibility='always')
     new_minority = fields.Boolean('Minority', default=False, track_visibility='always')
@@ -134,18 +135,70 @@ class EmployeeProfile(models.Model):
     new_bank_account_number = fields.Char(string='Bank Account number')
     new_ifsc_code = fields.Char(string='IFSC Code')
     new_passport_id = fields.Char(string='Passport No.')
-
-
-
     new_birthday = fields.Date('Date of Birth')
     new_place_of_birth = fields.Char('Place of Birth')
     new_country_of_birth = fields.Many2one('res.country', string="Country of Birth")
-
-
     new_salutation = fields.Many2one('res.partner.title', string='Salutation', track_visibility='always')
-
     new_fax_number = fields.Char('FAX number', track_visibility='always')
+    new_employee_type = fields.Selection([('regular', 'Regular Employee'),
+                                      ('contractual_with_agency', 'Contractual with Agency'),
+                                      ('contractual_with_stpi', 'Contractual with STPI')], string='Employment Type',
+                                     track_visibility='always', store=True)
 
+    new_recruitment_type = fields.Selection([
+        ('d_recruitment', 'Direct Recruitment(DR)'),
+        ('transfer', 'Transfer(Absorption)'),
+        ('i_absorption', 'Immediate Absorption'),
+        ('deputation', 'Deputation'),
+        ('c_appointment', 'Compassionate Appointment'),
+        ('promotion', 'Promotion'),
+    ], 'Recruitment Type', track_visibility='always', store=True)
+
+    # Contract Page
+    oc_struct_id = fields.Many2one('hr.payroll.structure', string='Salary Type')
+    oc_pay_level_id = fields.Many2one('hr.payslip.paylevel', string='Pay Level')
+    oc_pay_level = fields.Many2one('payslip.pay.level', string='Pay Band')
+    oc_city_id = fields.Many2one('res.city', string='City', store=True)
+    oc_employee_hra_cat = fields.Selection([('x', 'X'),
+                                         ('y', 'Y'),
+                                         ('z', 'Z'),
+                                         ], string='HRA Category', store=True)
+    oc_city_tier = fields.Selection([('a', 'A'),
+                                  ('a1', 'A1'),
+                                  ('other', 'Other'),
+                                  ], string='City Tier')
+    oc_date_start = fields.Date('Start Date', required=True, default=fields.Date.today,
+                             help="Start date of the contract.")
+    oc_date_end = fields.Date('End Date',
+                           help="End date of the contract (if it's a fixed-term contract).")
+    oc_trial_date_end = fields.Date('End of Probation Period',
+                                 help="End date of the trial period (if there is one).")
+    oc_wage = fields.Float('Wage', digits=(16, 2), track_visibility="onchange",
+                           help="Employee's monthly gross wage.")
+
+
+
+    nc_struct_id = fields.Many2one('hr.payroll.structure', string='Salary Type')
+    nc_pay_level_id = fields.Many2one('hr.payslip.paylevel', string='Pay Level')
+    nc_pay_level = fields.Many2one('payslip.pay.level', string='Pay Band')
+    nc_city_id = fields.Many2one('res.city', string='City', store=True)
+    nc_employee_hra_cat = fields.Selection([('x', 'X'),
+                                         ('y', 'Y'),
+                                         ('z', 'Z'),
+                                         ], string='HRA Category',
+                                        store=True)
+    nc_city_tier = fields.Selection([('a', 'A'),
+                                  ('a1', 'A1'),
+                                  ('other', 'Other'),
+                                  ], string='City Tier')
+    nc_date_start = fields.Date('Start Date', required=True, default=fields.Date.today,
+                             help="Start date of the contract.")
+    nc_date_end = fields.Date('End Date',
+                           help="End date of the contract (if it's a fixed-term contract).")
+    nc_trial_date_end = fields.Date('End of Probation Period',
+                                 help="End date of the trial period (if there is one).")
+    nc_wage = fields.Float('Wage', digits=(16, 2), required=True, track_visibility="onchange",
+                           help="Employee's monthly gross wage.")
 
 
 
@@ -342,6 +395,20 @@ class EmployeeProfile(models.Model):
             else:
                 rec.prev_occu_current_ids = working_list
             rec.prev_occu_current_ids = prev_occu_current_ids
+            emp_contract = self.env['hr.contract'].search([('employee_id', '=', rec.employee_id.id), ('state', '=', 'open')], limit=1)
+            for em_c in emp_contract:
+                rec.oc_struct_id = em_c.struct_id.id
+                rec.oc_pay_level_id = em_c.pay_level_id.id
+                rec.oc_pay_level = em_c.pay_level.id
+                rec.oc_city_id = em_c.city_id.id
+                rec.oc_employee_hra_cat = em_c.employee_hra_cat
+                rec.oc_city_tier = em_c.city_tier
+                rec.oc_date_start = em_c.date_start
+                rec.oc_date_end = em_c.date_end
+                rec.oc_trial_date_end = em_c.trial_date_end
+                rec.oc_wage = em_c.wage
+
+
 
 
     @api.onchange('employee_id')
@@ -492,6 +559,81 @@ class EmployeeProfile(models.Model):
     @api.multi
     def button_approved(self):
         for rec in self:
+            if rec.new_employee_type:
+                rec.employee_id.employee_type = rec.new_employee_type
+                self.env['employee.profile.report'].create({
+                    'employee_id': str(rec.employee_id.name),
+                    'requested_by': str(rec.requested_by),
+                    'approved_by': str(rec.env.user.name),
+                    'designation': str(rec.designation.name),
+                    'department': str(rec.department.name),
+                    'branch_id': str(rec.branch_id.name),
+                    'date': rec.date,
+                    'approved_date': datetime.now().date(),
+                    'field_n': 'Employement Type',
+                    'old_value': str(rec.employee_type),
+                    'new_value': str(rec.new_employee_type),
+                })
+            if rec.new_recruitment_type:
+                rec.employee_id.recruitment_type = rec.new_recruitment_type
+                self.env['employee.profile.report'].create({
+                    'employee_id': str(rec.employee_id.name),
+                    'requested_by': str(rec.requested_by),
+                    'approved_by': str(rec.env.user.name),
+                    'designation': str(rec.designation.name),
+                    'department': str(rec.department.name),
+                    'branch_id': str(rec.branch_id.name),
+                    'date': rec.date,
+                    'approved_date': datetime.now().date(),
+                    'field_n': 'Recruitment Type',
+                    'old_value': str(rec.recruitment_type),
+                    'new_value': str(rec.new_recruitment_type),
+                })
+            if rec.new_designation:
+                rec.employee_id.job_id = rec.new_designation.id
+                self.env['employee.profile.report'].create({
+                    'employee_id': str(rec.employee_id.name),
+                    'requested_by': str(rec.requested_by),
+                    'approved_by': str(rec.env.user.name),
+                    'designation': str(rec.designation.name),
+                    'department': str(rec.department.name),
+                    'branch_id': str(rec.branch_id.name),
+                    'date': rec.date,
+                    'approved_date': datetime.now().date(),
+                    'field_n': 'Designation',
+                    'old_value': str(rec.designation.name),
+                    'new_value': str(rec.new_designation.name),
+                })
+            if rec.new_branch_id:
+                rec.employee_id.branch_id = rec.new_branch_id.id
+                self.env['employee.profile.report'].create({
+                    'employee_id': str(rec.employee_id.name),
+                    'requested_by': str(rec.requested_by),
+                    'approved_by': str(rec.env.user.name),
+                    'designation': str(rec.designation.name),
+                    'department': str(rec.department.name),
+                    'branch_id': str(rec.branch_id.name),
+                    'date': rec.date,
+                    'approved_date': datetime.now().date(),
+                    'field_n': 'Branch',
+                    'old_value': str(rec.branch_id.name),
+                    'new_value': str(rec.new_branch_id.name),
+                })
+            if rec.new_department:
+                rec.employee_id.department_id = rec.new_department.id
+                self.env['employee.profile.report'].create({
+                    'employee_id': str(rec.employee_id.name),
+                    'requested_by': str(rec.requested_by),
+                    'approved_by': str(rec.env.user.name),
+                    'designation': str(rec.designation.name),
+                    'department': str(rec.department.name),
+                    'branch_id': str(rec.branch_id.name),
+                    'date': rec.date,
+                    'approved_date': datetime.now().date(),
+                    'field_n': 'Department',
+                    'old_value': str(rec.department.name),
+                    'new_value': str(rec.new_department.name),
+                })
             if rec.new_category:
                 rec.employee_id.category = rec.new_category.id
                 self.env['employee.profile.report'].create({
@@ -955,6 +1097,50 @@ class EmployeeProfile(models.Model):
                     }))
                 rec.employee_id.prev_occu_ids.unlink()
                 rec.employee_id.prev_occu_ids = prev_occu_ids
+
+            emp_contract = self.env['hr.contract'].search(
+                [('employee_id', '=', rec.employee_id.id), ('state', '=', 'open')], limit=1)
+            for em_cnt in emp_contract:
+                if rec.nc_struct_id:
+                    emp_contract.write({
+                        'struct_id': rec.nc_struct_id.id,
+                    })
+                if rec.nc_pay_level_id:
+                    emp_contract.write({
+                        'pay_level_id': rec.nc_pay_level_id.id,
+                    })
+                if rec.nc_pay_level:
+                    emp_contract.write({
+                        'pay_level': rec.nc_pay_level.id,
+                    })
+                if rec.nc_city_id:
+                    emp_contract.write({
+                        'city_id': rec.nc_city_id.id,
+                    })
+                if rec.nc_employee_hra_cat:
+                    emp_contract.write({
+                        'employee_hra_cat': rec.nc_employee_hra_cat,
+                    })
+                if rec.nc_city_tier:
+                    emp_contract.write({
+                        'city_tier': rec.nc_city_tier,
+                    })
+                if rec.nc_date_start:
+                    emp_contract.write({
+                        'date_start': rec.nc_date_start,
+                    })
+                if rec.nc_date_end:
+                    emp_contract.write({
+                        'date_end': rec.nc_date_end,
+                    })
+                if rec.nc_trial_date_end:
+                    emp_contract.write({
+                        'trial_date_end': rec.nc_trial_date_end,
+                    })
+                if rec.nc_wage:
+                    emp_contract.write({
+                        'wage': rec.nc_wage,
+                    })
             rec.write({'state': 'approved'})
 
 
