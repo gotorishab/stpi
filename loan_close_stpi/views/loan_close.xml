@@ -14,6 +14,11 @@
                     <field name="state" widget="statusbar" statusbar_visible="draft,submitted,approved" />
                 </header>
                 <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" invisible="1"/>
+                        </h1>
+                    </div>
                 <group>
                     <group>
                         <field name="employee_id" readonly="1"/>
@@ -22,18 +27,23 @@
                         <field name="department" readonly="1"/>
                     </group>
                     <group>
+                        <field name="date" readonly="1"/>
                         <field name="loan_id" domain="[('state','=','approve'),('employee_id','=',employee_id),('balance_amount','!=',0.00)]" options="{'no_create_edit': True,'no_create': True}" attrs="{'readonly':[('state','!=','draft')],'required':[('state','=','draft')]}"/>
                         <field name="loan_amount"/>
                         <field name="remarks" attrs="{'readonly':[('state','!=','draft')],'required':[('state','=','draft')]}"/>
                     </group>
                 </group>
-                <field name="unpaid_loan_lines">
+                    <notebook>
+                        <page name="installments" string="Installments">
+                            <field name="unpaid_loan_lines">
                     <tree editable="1" create="0" default_order="date asc">
                         <field name="date" readonly="1"/>
                         <field name="amount" readonly="1"/>
                         <field name="paid" invisible="0"/>
                     </tree>
                 </field>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
@@ -46,10 +56,10 @@
         <field name="model">hr.loan.close</field>
         <field name="arch" type="xml">
             <tree string="Loan Close" default_order="create_date desc">
+                <field name="name"/>
                 <field name="employee_id"/>
-                <field name="designation"/>
-                <field name="department"/>
-                <field name="branch_id"/>
+                <field name="loan_amount"/>
+                <field name="date"/>
                 <field name="state"/>
                 <field name="__last_update"/>
                 <field name="write_uid"/>
@@ -64,7 +74,7 @@
         <field name="model">hr.loan.close</field>
         <field name="arch" type="xml">
            <search string="Loan Close">
-               <filter string="My Loans" name="my_loan" domain="[('employee_id.user_id.id', '=', uid)]" />
+               <filter string="My Loans" name="my_loan_close" domain="[('employee_id.user_id.id', '=', uid)]" />
                 <field name="employee_id" string="Employee"/>
                 <field name="department" string="Department"/>
                     <filter string="Employee" name="employee_id" context="{'group_by':'employee_id'}"/>
@@ -74,16 +84,61 @@
         </field>
     </record>
 
-    <!--===============Action view of Tour Claim===============-->
-    <record id="action_view_close_loan" model="ir.actions.act_window">
-        <field name="name">Loan Close</field>
+<!--    &lt;!&ndash;===============Action view of Loan Close===============&ndash;&gt;-->
+<!--    <record id="action_view_close_loan" model="ir.actions.act_window">-->
+<!--        <field name="name">Loan Close</field>-->
+<!--        <field name="res_model">hr.loan.close</field>-->
+<!--        <field name="view_type">form</field>-->
+<!--        <field name="view_mode">tree,form,search</field>-->
+<!--        <field name="context">{'search_default_status': 1}</field>-->
+<!--        <field name="search_view_id" ref="view_loan_close_search_form"/>-->
+<!--    </record>-->
+
+    
+    
+    <!--============Action view of hr.loan.close Draft============-->
+    <record id="hr_loan_close_menu_action" model="ir.actions.act_window">
+        <field name="name">Loan Requests</field>
         <field name="res_model">hr.loan.close</field>
         <field name="view_type">form</field>
-        <field name="view_mode">tree,form,search</field>
-        <field name="context">{'search_default_status': 1}</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_my_loan_close': 1}</field>
         <field name="search_view_id" ref="view_loan_close_search_form"/>
+        <!--<field name="search_view_id" ref="hr.loan.close_search_view"/>-->
+        <field name="domain">[('state','=','draft')]</field>
     </record>
-
+    <!--============Action view of hr.loan.close Waiting============-->
+    <record id="hr_loan_close_pending_action" model="ir.actions.act_window">
+        <field name="name">Loan Requests</field>
+        <field name="res_model">hr.loan.close</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_loan_close_search_form"/>
+        <!--<field name="search_view_id" ref="hr.loan.close_search_view"/>-->
+        <field name="domain">[('state','=','submitted')]</field>
+    </record>
+    <!--============Action view of hr.loan.close approved============-->
+    <record id="hr_loan_close_approved_action" model="ir.actions.act_window">
+        <field name="name">Loan Requests</field>
+        <field name="res_model">hr.loan.close</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_my_loan_close': 1}</field>
+        <field name="search_view_id" ref="view_loan_close_search_form"/>
+        <!--<field name="search_view_id" ref="hr.loan.close_search_view"/>-->
+        <field name="domain">[('state','=','approved')]</field>
+    </record>
+    <!--============Action view of hr.loan.close rejected============-->
+    <record id="hr_loan_close_rejected_action" model="ir.actions.act_window">
+        <field name="name">Loan Requests</field>
+        <field name="res_model">hr.loan.close</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_my_loan_close': 1}</field>
+        <field name="search_view_id" ref="view_loan_close_search_form"/>
+        <!--<field name="search_view_id" ref="hr.loan.close_search_view"/>-->
+        <field name="domain">[('state','=','rejected')]</field>
+    </record>
     
     
     
@@ -93,10 +148,32 @@
         id="menu_hr_loan_close_request"
     />
 
-    <menuitem name="All"
-        parent="menu_hr_loan_close_request"
-        id="menu_hr_loan_close_request_all"
-        action="action_view_close_loan"/>
+<!--    <menuitem name="All"-->
+<!--        parent="menu_hr_loan_close_request"-->
+<!--        id="menu_hr_loan_close_request_all"-->
+<!--        action="action_view_close_loan"/>-->
 
 
+        <menuitem id = "hr_loan_close_new_menu_id"
+                  name = "New"
+                  parent ="menu_hr_loan_close_request"
+                  action ="hr_loan_close_menu_action"
+                  />
+
+        <menuitem id = "hr_loan_close_pending_menu_id"
+                  name = "Pending Approvals"
+                  parent ="menu_hr_loan_close_request"
+                  action ="hr_loan_close_pending_action"
+                  />
+        <menuitem id = "hr_loan_close_approved_menu_id"
+                  name = "Approved"
+                  parent ="menu_hr_loan_close_request"
+                  action ="hr_loan_close_approved_action"
+                  />
+        <menuitem id = "hr_loan_close_rejected_menu_id"
+                  name = "Rejected"
+                  parent ="menu_hr_loan_close_request"
+                  action ="hr_loan_close_rejected_action"
+                  />
+    
 </odoo>

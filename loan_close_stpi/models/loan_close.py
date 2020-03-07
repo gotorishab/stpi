@@ -12,7 +12,6 @@ class LoanClose(models.Model):
                 for line in rec.unpaid_loan_lines:
                     if line.paid:
                         temp += line.amount
-                        # print("amount===============>>>>",temp,line.amount)
                 rec.loan_amount = temp
 
 
@@ -20,8 +19,10 @@ class LoanClose(models.Model):
     def _default_employee(self):
         return self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
 
+    name = fields.Char(string="Loan Name", default="Loan Request")
+    date = fields.Date(string="Requested Date", default=fields.Date.today())
     loan_id = fields.Many2one('hr.loan', string="Loan Ref.")
-    employee_id = fields.Many2one('hr.employee', string="Employee", default=_default_employee)
+    employee_id = fields.Many2one('hr.employee', string="Requested By", default=_default_employee)
     designation = fields.Many2one('hr.job', string="Designation", compute='compute_des_dep', track_visibility='always')
     branch_id = fields.Many2one('res.branch', 'Branch', compute='compute_des_dep', track_visibility='always')
     department = fields.Many2one('hr.department', string="Department", compute='compute_des_dep', store=True,
@@ -49,6 +50,7 @@ class LoanClose(models.Model):
             else:
                 name = 'Lone Close Request'
             res.append((record.id, name))
+            record.name = str(name)
         return res
 
 
@@ -140,14 +142,12 @@ class LoanClose(models.Model):
             for lines in rec.unpaid_loan_lines:
                 if lines.paid:
                     lines.loan_line_id.paid = True
-                    print('=====================================================',lines.loan_line_id.date)
-                    print('=====================================================',lines.loan_line_id.paid)
             rec.write({'state': 'approved'})
 
 
 
 
-class UnpaidInstallmentLine(models.TransientModel):
+class UnpaidInstallmentLine(models.Model):
     _name = "hr.loan.line.unpaid"
     _description = "Installment Line"
 

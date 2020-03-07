@@ -34,10 +34,11 @@ class HrLoan(models.Model):
                 loan.total_paid_amount = total_paid
                 loan.total_amount = loan.loan_amount
                 balance_amount = (loan.total_interest + loan.total_amount) - loan.total_paid_amount
-                if balance_amount <= 0.00:
-                    loan.balance_amount = 0.00
-                else:
-                    loan.balance_amount = balance_amount
+                loan.balance_amount = balance_amount
+            if round(loan.balance_amount) <= 0.00:
+                loan.balance_amount = 0.00
+            else:
+                loan.balance_amount = round(loan.balance_amount)
 
 
                 

@@ -17,3 +17,4 @@ from . import employee_profile
 from . import hr_payslip
 from . import hr_payslip_batch
 from . import hr_property
+from . import loan_close
