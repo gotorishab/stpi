@@ -129,9 +129,9 @@ class Reimbursement(models.Model):
             search_id = self.env['reimbursement'].search([('employee_id', '=', rec.employee_id.id), ('name', '=', rec.name), ('state', 'not in', ['draft','rejected'])])
             index = False
             for emp in search_id:
-                if rec.from_date <= emp.from_date or rec.from_date >= emp.to_date:
-                    if rec.to_date <= emp.from_date or rec.to_date >= emp.to_date:
-                        if not (rec.from_date <= emp.from_date and rec.to_date >= emp.to_date):
+                if rec.date_range.date_start <= emp.from_date or rec.date_range.date_start >= emp.to_date:
+                    if rec.date_range.date_end <= emp.from_date or rec.date_range.date_end >= emp.to_date:
+                        if not (rec.date_range.date_start <= emp.from_date and rec.date_range.date_end >= emp.to_date):
                             index = True
                         else:
                             raise ValidationError("This reimbursement is already applied for this duration, please correct the dates")
