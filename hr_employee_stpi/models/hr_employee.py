@@ -299,12 +299,13 @@ class HrEmployee(models.Model):
     @api.depends('employee_type')
     def _compute_identify_no(self):
         for res in self:
-            if res.employee_type == 'regular':
-                seq = self.env['ir.sequence'].next_by_code('hr.employee')
-                res.identify_id = 'STPI' + str(seq)
-            else:
-                seq = self.env['ir.sequence'].next_by_code('identify.seqid')
-                res.identify_id = 'STPITEMP' + str(seq)
+            if res.identify_id == False:
+                if res.employee_type == 'regular':
+                    seq = self.env['ir.sequence'].next_by_code('hr.employee')
+                    res.identify_id = 'STPI' + str(seq)
+                else:
+                    seq = self.env['ir.sequence'].next_by_code('identify.seqid')
+                    res.identify_id = 'STPITEMP' + str(seq)
 
     @api.constrains('date_of_join', 'office_order_date')
     @api.onchange('date_of_join','office_order_date')

@@ -72,6 +72,21 @@
                             </t>
                         </tr>
                         <tr>
+                            <t t-if="o.pan_no">
+                                <!-- <td class="text-left">1 </td> -->
+                                <td class="text-left"><strong>PAN Number</strong></td>
+                                <td class="text-left" colspan="2"><span t-field="o.pan_no"/></td>
+                            </t>
+                        </tr>
+                        <tr>
+                            <t t-if="o.passport_id">
+                                <!-- <td class="text-left">1 </td> -->
+                                <td class="text-left"><strong>Passport Number</strong></td>
+                                <td class="text-left" colspan="2"><span t-field="o.passport_id"/></td>
+                            </t>
+                        </tr>
+
+                        <tr>
                             <!-- <td class="text-left">2 </td> -->
                             <td class="text-left"><strong>Father's and Mother's Name</strong></td>
                             <t t-foreach="o.relative_ids" t-as="ri">
@@ -362,9 +377,9 @@
                                                     <span t-esc="doc.description"/>
                                                 </td>
                                                 <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">
-<!--                                                    <t t-foreach="doc.doc_attachment_id" t-as="att">-->
-<!--                                                        <span t-esc="att.name"/>-->
-<!--                                                    </t>-->
+                                                    <t t-foreach="doc.doc_attachment_id" t-as="att">
+                                                        <span t-esc="att.name"/>
+                                                    </t>
                                                 </td>
                                             </tr>
                                         </t>
