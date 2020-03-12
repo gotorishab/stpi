@@ -11,7 +11,6 @@ class ExceptionRule(models.Model):
     model = fields.Selection(
         selection_add=[
             ('reimbursement', 'Reimbursement'),
-            ('reimbursement.relatives','Reimbursement Line'),
         ])
 
 class Reimbursement(models.Model):
@@ -29,16 +28,16 @@ class Reimbursement(models.Model):
         order_set = self.search([('state', '=', 'draft')])
         order_set.test_exceptions()
         return True
-
-    @api.constrains('ignore_exception','relative_ids','state')
-    def sale_check_exception(self):
-        if self.state == 'done':
-            self._check_exception()
-
-    @api.onchange('relative_ids')
-    def onchange_ignore_exception(self):
-        if self.state == 'purchase':
-            self.ignore_exception = False
+    #
+    # @api.constrains('ignore_exception','relative_ids','state')
+    # def sale_check_exception(self):
+    #     if self.state == 'done':
+    #         self._check_exception()
+    #
+    # @api.onchange('relative_ids')
+    # def onchange_ignore_exception(self):
+    #     if self.state == 'purchase':
+    #         self.ignore_exception = False
 
     @api.multi
     def button_approved(self):
@@ -52,9 +51,9 @@ class Reimbursement(models.Model):
         action = self.env.ref('hr_exception.action_reimbursement_confirm')
         return action
 
-    def _reimbursement_get_lines(self):
-        self.ensure_one()
-        return self.relative_ids
+    # def _reimbursement_get_lines(self):
+    #     self.ensure_one()
+    #     return self.relative_ids
 
 
     @api.multi
@@ -66,16 +65,16 @@ class Reimbursement(models.Model):
             raise UserError(_('Do not allow Pending Approval Reimbursement for Cancel.'))
         return super(Reimbursement, self).button_reject()
 
-
-class ReimbursementLine(models.Model):
-    _inherit = ['reimbursement.relatives', 'base.exception']
-    _name = 'reimbursement.relatives'
-    _order = 'main_exception_id asc'
-
-    rule_group = fields.Selection(
-        selection_add=[('reimbursement_line','Reimbursement Line')],
-        default='reimbursement_line',
-    )
+#
+# class ReimbursementLine(models.Model):
+#     _inherit = ['reimbursement.relatives', 'base.exception']
+#     _name = 'reimbursement.relatives'
+#     _order = 'main_exception_id asc'
+#
+#     rule_group = fields.Selection(
+#         selection_add=[('reimbursement_line','Reimbursement Line')],
+#         default='reimbursement_line',
+#     )
 
 
 class Approvalslist(models.Model):

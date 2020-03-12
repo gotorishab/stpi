@@ -30,18 +30,11 @@
                         <field name="main_exception_id" options='{"no_open": True}' string="Error:" attrs="{'invisible':[('main_exception_id','=', False)]}"/>
                         <field name="ignore_exception" invisible="1"/>
                     </xpath>
-                    <xpath expr="//notebook" position="inside">
-                        <page string="Other Info" groups="base.group_no_one">
-                            <field name="exception_ids" colspan="2" nolabel="1" readonly="1"/>
-                        </page>
-                    </xpath>
-                    <xpath expr="//sheet" position="after">
-                        <div class="oe_chatter">
-                            <field name="message_follower_ids" widget="mail_followers"/>
-                            <field name="activity_ids" widget="mail_activity"/>
-                            <field name="message_ids" widget="mail_thread"/>
-                       </div>
-                    </xpath>
+<!--                    <xpath expr="//notebook" position="inside">-->
+<!--                        <page string="Other Info" groups="base.group_no_one">-->
+<!--                            <field name="exception_ids" colspan="2" nolabel="1" readonly="1"/>-->
+<!--                        </page>-->
+<!--                    </xpath>-->
                 </field>
         </record>
 
