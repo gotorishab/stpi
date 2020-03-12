@@ -174,7 +174,7 @@ class HrDeclaration(models.Model):
 
 
 
-    employee_id = fields.Many2one('hr.employee', string='Requeested By', default=_default_employee, track_visibility='always')
+    employee_id = fields.Many2one('hr.employee', string='Requested By', default=_default_employee, track_visibility='always')
     job_id = fields.Many2one('hr.job', string="Functional Designation", store=True, track_visibility='always')
     branch_id = fields.Many2one('res.branch', string="Branch", store=True, track_visibility='always')
     department_id = fields.Many2one('hr.department', string="Department", store=True, track_visibility='always')
@@ -503,7 +503,7 @@ class HrDeclaration(models.Model):
                 }))
                 rec.exemption_ids = exemption_ids
             ex_lunch_id = self.env['saving.master'].sudo().search([('saving_type', '=', 'Lunch Subsidy Allowance'), ('it_rule', '=', 'mus10ale')], limit=1)
-            reimbursement_id =  self.env['reimbursement'].sudo().search([('employee_id', '=', rec.employee_id.id),('name', '=', 'lunch'),('from_date', '>', rec.date_range.date_start),('to_date', '<', rec.date_range.date_end),('state', '=', 'approved')])
+            reimbursement_id =  self.env['reimbursement'].sudo().search([('employee_id', '=', rec.employee_id.id),('name', '=', 'lunch'),('date_range.date_start', '>', rec.date_range.date_start),('date_range.date_end', '<', rec.date_range.date_end),('state', '=', 'approved')])
             sum=0.00
             my_investment = 0.00
             my_allowed_rebate = 0.00

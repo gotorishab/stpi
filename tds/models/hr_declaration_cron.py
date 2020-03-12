@@ -197,8 +197,9 @@ class HrDeclarationCron(models.Model):
                 [('saving_type', '=', 'Lunch Subsidy Allowance'), ('it_rule', '=', 'mus10ale')], limit=1)
             reimbursement_id = self.env['reimbursement'].sudo().search(
                 [('employee_id', '=', rec.employee_id.id), ('name', '=', 'lunch'),
-                 ('from_date', '>', rec.date_range.date_start), ('to_date', '<', rec.date_range.date_end),
-                 ('state', '=', 'approved')])
+                 ('date_range.date_start', '>', rec.date_range.date_start),
+                 ('date_range.date_end', '<', rec.date_range.date_end), ('state', '=', 'approved')])
+
             sum = 0.00
             my_investment = 0.00
             my_allowed_rebate = 0.00
