@@ -46,13 +46,13 @@ class Reimbursement(models.Model):
     branch_id = fields.Many2one('res.branch', string='Branch', store=True, track_visibility='always')
     department_id = fields.Many2one('hr.department', string='Department', store=True, track_visibility='always')
 
-    claimed_amount = fields.Float(string='Claimed Amount')
-    net_amount = fields.Float(string='Amount', compute='compute_net_amount')
-    date_range_type = fields.Many2one('date.range.type', string='Applicable Period')
-    date_range = fields.Many2one('date.range', string='Date Range')
+    claimed_amount = fields.Float(string='Claimed Amount', track_visibility='always')
+    net_amount = fields.Float(string='Amount', compute='compute_net_amount', track_visibility='always')
+    date_range_type = fields.Many2one('date.range.type', string='Applicable Period', track_visibility='always')
+    date_range = fields.Many2one('date.range', string='Date Range', track_visibility='always')
 
-    amount_lunch = fields.Float(string='Lunch Daily')
-    lunch_tds_amt = fields.Float('Amount for TDS')
+    amount_lunch = fields.Float(string='Lunch Daily', track_visibility='always')
+    lunch_tds_amt = fields.Float('Amount for TDS', track_visibility='always')
     working_days = fields.Char(string='Number of days: ', track_visibility='always')
 
     # amount_tel = fields.Float(string='Claimed Amount')
