@@ -7,7 +7,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='resource_calendar_id']" position="after">
                     <field name = 'employee_type' readonly = 'True'/>
-                    <field name = 'mode_of_promotion' attrs="{'invisible': [('employee_type', '!=', 'regular')], 'readonly': [('employee_type', '=', 'regular')]}"/>
+                    <field name = 'recruitment_type' attrs="{'invisible': [('employee_type', '!=', 'regular')], 'readonly': [('employee_type', '=', 'regular')]}"/>
                 </xpath>
 
                 <xpath expr="//field[@name='struct_id']" position="after">

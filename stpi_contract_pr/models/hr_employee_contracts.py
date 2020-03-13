@@ -6,7 +6,7 @@ class InheritContractss(models.Model):
     _inherit = 'hr.contract'
     _description = 'HR Contract'
 
-    mode_of_promotion = fields.Selection([('absorption', 'Absorption'),
+    recruitment_type = fields.Selection([('absorption', 'Absorption'),
                                      ('compassion', 'Compassionate Appt.'),
                                      ('deputation', 'Deputation'),
                                      ('deput_absorp', 'Deputation & Absorption'),
@@ -74,9 +74,9 @@ class InheritContractss(models.Model):
     @api.onchange('employee_id')
     def _get_add_city(self):
         for rec in self:
-            if rec.employee_id:
-                rec.employee_type = rec.employee_id.employee_type
-                rec.mode_of_promotion = rec.employee_id.mode_of_promotion
+            # if rec.employee_id:
+            #     rec.employee_type = rec.employee_id.employee_type
+            #     rec.mode_of_promotion = rec.employee_id.mode_of_promotion
             if rec.city_id.name:
                 if rec.city_id.name == 'Hyderabad' or rec.city_id.name == 'Delhi' or rec.city_id.name == 'Banglore' or rec.city_id.name == 'Mumbai' or rec.city_id.name == 'Chennai' or rec.city_id.name == 'Kolkata':
                     rec.city_tier = 'a1'
@@ -113,7 +113,7 @@ class InheritContractss(models.Model):
                         'type_id': employee.type_id.id,
                         'date_start': datetime.now().date(),
                         'employee_type': 'regular',
-                        'mode_of_promotion': employee.mode_of_promotion,
+                        'recruitment_type': employee.recruitment_type,
                         'wage': employee.wage,
                     }
                 )
