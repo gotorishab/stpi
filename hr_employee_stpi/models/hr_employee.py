@@ -126,25 +126,25 @@ class HrEmployee(models.Model):
 
 
 
-    @api.constrains('mobile_phone','work_phone','phone')
-    @api.onchange('mobile_phone','work_phone','phone')
-    def _check_mobile_phone_num(self):
-        for rec in self:
-            if rec.mobile_phone and not rec.mobile_phone.isnumeric():
-                raise ValidationError(_("Phone number must be a number"))
-            if rec.mobile_phone and len(rec.mobile_phone) != 10:
-                raise ValidationError(_("Please enter correct Mobile number."
-                                        "It must be of 10 digits"))
-            if rec.work_phone and not rec.work_phone.isnumeric():
-                raise ValidationError(_("Phone number must be a number"))
-            if rec.work_phone and len(rec.work_phone) != 10:
-                raise ValidationError(_("Please enter correct work phone number."
-                                        "It must be of 10 digits"))
-            if rec.phone and not rec.phone.isnumeric():
-                raise ValidationError(_("Phone number must be a number"))
-            if rec.phone and len(rec.phone) != 10:
-                raise ValidationError(_("Please enter correct phone number."
-                                                "It must be of 10 digits"))
+    # @api.constrains('mobile_phone','work_phone','phone')
+    # @api.onchange('mobile_phone','work_phone','phone')
+    # def _check_mobile_phone_num(self):
+    #     for rec in self:
+    #         if rec.mobile_phone and not rec.mobile_phone.isnumeric():
+    #             raise ValidationError(_("Phone number must be a number"))
+    #         if rec.mobile_phone and len(rec.mobile_phone) != 10:
+    #             raise ValidationError(_("Please enter correct Mobile number."
+    #                                     "It must be of 10 digits"))
+    #         if rec.work_phone and not rec.work_phone.isnumeric():
+    #             raise ValidationError(_("Phone number must be a number"))
+    #         if rec.work_phone and len(rec.work_phone) != 10:
+    #             raise ValidationError(_("Please enter correct work phone number."
+    #                                     "It must be of 10 digits"))
+    #         if rec.phone and not rec.phone.isnumeric():
+    #             raise ValidationError(_("Phone number must be a number"))
+    #         if rec.phone and len(rec.phone) != 10:
+    #             raise ValidationError(_("Please enter correct phone number."
+    #                                             "It must be of 10 digits"))
 
     @api.constrains('personal_email')
     def _check_personal_mail_val(self):
