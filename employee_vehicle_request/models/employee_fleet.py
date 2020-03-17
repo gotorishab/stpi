@@ -268,7 +268,7 @@ class EmployeeFleet(models.Model):
     branch_id= fields.Many2one('res.branch', string="Branch", compute='compute_des_dep',store=True)
     department_id = fields.Many2one('hr.department','Department',track_visibility='onchange')
     req_date = fields.Date(string='Requested Date', default=datetime.now().date(), required=1, readonly=True,help="Requested Date")
-    fleet = fields.Many2one('fleet.vehicle', string='Vehicle', required=0, readonly=True,
+    fleet = fields.Many2one('fleet.vehicle', string='Vehicle', required=0, readonly=True, help="only available vehicles are being displayed. No results >>> No vehicle avaiable",
                             states={'draft': [('readonly', False)]})
     date_from = fields.Datetime(string='From', required=1, readonly=True,track_visibility='always',
                                 states={'draft': [('readonly', False)]})

@@ -67,6 +67,17 @@ class Reimbursement(models.Model):
             if rec.month and rec.year:
                 rec.date_related_month = date(int(rec.year), int(rec.month), 15)
 
+    @api.constrains('employee_id', 'month','year')
+    def check_unique_attendence(self):
+        for rec in self:
+            count = 0
+            emp_id = self.env['reimbursement.attendence'].search(
+                [('month', '=', rec.month),('year', '=', rec.year), ('employee_id', '=', rec.employee_id.id)])
+            for e in emp_id:
+                count += 1
+            if count > 1:
+                raise ValidationError("It must be unique")
+
 
 class ReimbursementConfiguration(models.Model):
     _name = "reimbursement.configuration"

@@ -7,9 +7,10 @@
         <field name="model">reimbursement</field>
         <field name="arch" type="xml">
             <tree string="Reimbursement">
-                  <field name="employee_id"/>
-                  <field name="name"/>
-                 <field name="state"/>
+                <field name="reimbursement_sequence"/>
+                <field name="employee_id"/>
+                <field name="name"/>
+                <field name="state"/>
                 <field name="__last_update"/>
                 <field name="write_uid"/>
             </tree>
@@ -25,14 +26,14 @@
                 <header>
                     <button name="button_submit" string="Submit" class="oe_highlight" type="object" states="draft"/>
                      <button name="button_reset_to_draft" string="Revert" type="object" states="waiting_for_approval"/>
-                    <button name="button_approved" string="Approve" class="oe_highlight" type="object" states="waiting_for_approval" groups="reimbursement_stpi.group_approving_authority"/>
+                    <button name="button_approved" string="Approve" class="oe_highlight" type="object" states="waiting_for_approval" groups ="reimbursement_stpi.group_approving_authority"/>
                     <button name="button_reject" string="Reject" type="object" attrs="{'invisible':[('state','not in',('waiting_for_approval'))]}"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,waiting_for_approval ,approved" />
                 </header>
                 <sheet>
                     <group>
                         <group>
-                            <field name="reimbursement_sequence" attrs="{'invisible':[('reimbursement_sequence','=', False)], 'readonly':[('reimbursement_sequence','!=', False)]}"/>
+                            <field name="reimbursement_sequence" invisible="1"/>
                             <field name="employee_id" readonly="1" required="1"/>
                             <field name="job_id" readonly="1"/>
                             <field name="branch_id" readonly="1"/>
@@ -41,10 +42,6 @@
                             <field name="date_range" attrs="{'readonly':[('state','not in',('draft'))], 'required':[('state','in',('draft'))]}" options='{"no_create":1,"no_create_edit":1}'/>
                             <field name="lunch_tds_amt" invisible="1"/>
                         </group>
-                        <group>
-                            <field name="__last_update"/>
-                            <field name="write_uid"/>
-                         </group>
                     </group>
                     <notebook>
                         <page string="Reimbursement Details">
@@ -276,7 +273,6 @@
             <tree string="Reimbursement" editable="bottom">
                   <field name="name" required="1"/>
                   <field name="branch_id" required="1"/>
-                  <field name="name" required="1"/>
                   <field name="group_ids" widget="many2many_tags" placeholder="Groups..." options="{'color_field': 'color', 'no_create_edit': True}" required="1"/>
                 <field name="full" required="1"/>
                 <field name="allowed" attrs="{'readonly':[('full','=',True)], 'required':[('full','=',False)]}"/>

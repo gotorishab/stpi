@@ -47,11 +47,11 @@ class Reimbursement(models.Model):
     department_id = fields.Many2one('hr.department', string='Department', store=True, track_visibility='always')
 
     claimed_amount = fields.Float(string='Claimed Amount', track_visibility='always')
-    net_amount = fields.Float(string='Amount', compute='compute_net_amount', track_visibility='always')
+    net_amount = fields.Float(string='Eligible Amount', compute='compute_net_amount', track_visibility='always')
     date_range_type = fields.Many2one('date.range.type', string='Applicable Period', track_visibility='always')
     date_range = fields.Many2one('date.range', string='Date Range', track_visibility='always')
 
-    amount_lunch = fields.Float(string='Lunch Daily', track_visibility='always')
+    amount_lunch = fields.Float(string='Daily Eligible Amount', track_visibility='always')
     lunch_tds_amt = fields.Float('Amount for TDS', track_visibility='always')
     working_days = fields.Char(string='Number of days: ', track_visibility='always')
 
@@ -80,13 +80,17 @@ class Reimbursement(models.Model):
             rec.branch_id = rec.employee_id.branch_id.id
 
 
-
-    @api.constrains('name','employee_id','date_range')
     @api.onchange('name','employee_id','date_range')
-    def _onchange_name_employee_date(self):
+    def only_onchange_name_employee_date(self):
         for rec in self:
             rec.claimed_amount = 0
             rec.net_amount = 0
+
+
+    @api.constrains('name','employee_id','date_range')
+    @api.onchange('name','employee_id','date_range')
+    def onchange_name_employee_date(self):
+        for rec in self:
             if rec.employee_id and rec.name == 'lunch':
                 count = 0
                 serch_id = self.env['reimbursement.attendence'].search([('employee_id', '=', rec.employee_id.id),('date_related_month', '>=', rec.date_range.date_start),('date_related_month', '<', rec.date_range.date_end)])
