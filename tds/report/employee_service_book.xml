@@ -44,9 +44,9 @@
                     <p align="right">Date _________________</p>
                     <p>Particulars of Other Income for the financial year ending on <span t-field="o.date_range.date_end"/>.</p>
 
-                    <table style="width:50%">
+                    <table style="width:50%" border="0">
                         <tr>
-                            <th>Gross Annual Value</th>
+                            <th colspan="2" align="center">Income from House Property</th>
                         </tr>
                         <tr>
                             <td>Gross Annual Value</td>
@@ -57,24 +57,21 @@
                             <td> -- </td>
                         </tr>
                         <tr>
-                            <td>Deductions u/s 24
-                                <table>
-                                     <tr>
-                            <td>Statutory Deduction (30% of NAV (c) above)</td>
+                            <td>Deductions u/s 24 (Statutory Deduction (30% of NAV (c) above))</td>
                             <td> -- </td>
                         </tr>
                         <tr>
-                            <td>Interest on Borrowed Capital</td>
+                            <td>Deductions u/s 24 (Interest on Borrowed Capital)</td>
                             <td> -- </td>
                         </tr>
-                                </table>
-                            </td>
+                        <tr>
+                            <td>Income under the HousDividende Property</td>
                             <td> -- </td>
                         </tr>
-
                     </table>
+                    <br/>
 
-
+                    <h6>Verification</h6>
                     <p>I _________________, do hereby declare that the above is true to the best of my knowledge and belief.</p>
                     <p>Verified today the __________ day of __________ 2020</p>
                     <p align="right">Signature of the Employee _________________</p>

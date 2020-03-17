@@ -212,7 +212,11 @@ class HrDeclaration(models.Model):
     dedmedical_self_ids = fields.One2many('declaration.dedmedicalself', 'dedmedical_self_id', string='Deductions on Medical Expenditure on Self or Dependent Relative')
     # net_allowed_rebate = fields.Float('Net Allowed Rebate', compute='compute_net_allowed_rebate')
     # income_after_rebate = fields.Float('Income after Rebate')
+    income_after_house_property = fields.Float(string='Income from House Property')
+    income_from_home= fields.Float(string='Income from Income from Rent')
+
     tax_payable = fields.Float('Tax Payable')
+
 
     tax_payable_after_rebate = fields.Float('Tax Payable after Rebate')
 
