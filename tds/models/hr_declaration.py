@@ -213,14 +213,19 @@ class HrDeclaration(models.Model):
     rgess_ids = fields.One2many('declaration.rgess', 'rgess_id', string='Deductions on Rajiv Gandhi Equity Saving Scheme')
     dedmedical_ids = fields.One2many('declaration.dedmedical', 'dedmedical_id', string='Deductions on Medical Expenditure for a Handicapped Relative')
     dedmedical_self_ids = fields.One2many('declaration.dedmedicalself', 'dedmedical_self_id', string='Deductions on Medical Expenditure on Self or Dependent Relative')
+    income_house_ids = fields.One2many('income.house','income_house_id','Income from House Property')
+    income_other_ids = fields.One2many('income.other','income_other_id','Income from Other Sources')
     # net_allowed_rebate = fields.Float('Net Allowed Rebate', compute='compute_net_allowed_rebate')
     # income_after_rebate = fields.Float('Income after Rebate')
     income_after_house_property = fields.Float(string='Income from House Property')
+    income_after_other_sources = fields.Float(string='Income from Other Sources')
+
     income_from_home= fields.Float(string='Income from Income from Rent')
     income_dividend= fields.Float(string='Dividend Income')
     income_interest= fields.Float(string='Interest Income')
     income_pension= fields.Float(string='Pension Income')
     income_other= fields.Float(string='Other Income')
+
 
     tax_payable = fields.Float('Tax Payable')
 
@@ -364,6 +369,16 @@ class HrDeclaration(models.Model):
     @api.multi
     def button_compute_tax(self):
         for rec in self:
+            sum = 0
+            for line in rec.income_house_ids:
+                sum+=line.investment
+            rec.income_after_house_property = sum
+
+            sum = 0
+            for line in rec.income_other_ids:
+                sum+=line.investment
+            rec.income_after_other_sources = sum
+
             sum = 0
             for lines in rec.rent_paid_ids:
                 if lines.date_to <= datetime.now().date():
@@ -981,6 +996,34 @@ class dedmedicalselfDeclarations(models.Model):
 
 
 
+class IncomeHouse(models.Model):
+    _name = 'income.house'
+    _description = 'Income from House'
+
+    income_house_id = fields.Many2one('hr.declaration', string='Ded Medical Self')
+    document = fields.Binary(string='Document')
+    it_rule = fields.Selection([
+        ('income_house', 'Income from House Property')
+    ], string='IT Rule -Section', default='income_house')
+    saving_master = fields.Many2one('saving.master', string='Saving Type')
+    investment = fields.Float(string='Amount')
+
+
+
+class IncomeOther(models.Model):
+    _name = 'income.other'
+    _description = 'Income from other Sources'
+
+    income_other_id = fields.Many2one('hr.declaration', string='Ded Medical Self')
+    document = fields.Binary(string='Document')
+    it_rule = fields.Selection([
+        ('income_other', 'Income from other Sources')
+    ], string='IT Rule -Section', default='income_other')
+    saving_master = fields.Many2one('saving.master', string='Saving Type')
+    investment = fields.Float(string='Amount')
+
+
+
 
 class SavingsMaster(models.Model):
     _name = 'saving.master'
@@ -1009,6 +1052,8 @@ class SavingsMaster(models.Model):
         ('section80g', 'Section 80G'),
         ('80gg', '80 GG'),
         ('us_194_aa', 'u/s 194A'),
+        ('income_house', 'Income from House Property'),
+        ('income_other', 'Income from other Sources'),
     ], string='IT Rule -Section ')
     saving_type = fields.Char('Saving Type')
     description = fields.Text('Description')
@@ -1077,3 +1122,4 @@ class TaxPayment(models.Model):
     # def _select_emp_from_m2o(self):
     #     for rec in self:
     #         rec.employee_id = rec.tax_payment_id.employee_id.id
+

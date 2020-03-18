@@ -17,3 +17,5 @@ access_declaration_deduction,declaration.deduction,model_declaration_deduction,b
 access_saving_master,saving.master,model_saving_master,base.group_user,1,1,1,1
 access_tax_payment,tax.payment,model_tax_payment,base.group_user,1,1,1,1
 access_rent_paid,rent.paid,model_rent_paid,base.group_user,1,1,1,1
+access_income_house,income.house,model_income_house,base.group_user,1,1,1,1
+access_income_other,income.other,model_income_other,base.group_user,1,1,1,1

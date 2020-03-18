@@ -50,7 +50,8 @@
                             <field name="tax_payable_zero" invisible="1"/>
                             <field name="tax_computed_bool" invisible="1"/>
                             <field name="currency_id" options="{'no_create': True}" invisible="1 "/>
-                            <field name="income_after_house_property"/>
+                            <field name="income_after_house_property" readonly="1"/>
+                            <field name="income_after_other_sources" readonly="1"/>
                             <field name="income_from_home"/>
                             <field name="income_dividend"/>
                             <field name="income_interest"/>
@@ -114,6 +115,34 @@
                         <group class="oe_subtotal_footer oe_right" colspan="2" >
                                 <field name="rebate_received" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                             </group>
+                    </page>
+                    <page string="Income">
+                        <separator string="Income from House Property"/>
+                        <field name="income_house_ids">
+                            <tree string="Income from House Property" editable="bottom">
+                                <field name="income_house_id" invisible="1"/>
+                                <field name="it_rule" invisible="1"/>
+                                <field name="saving_master" options="{'no_create_edit': True, 'no_create': True}" domain="[('it_rule', '=', it_rule)]"/>
+                                <field name="investment"/>
+                                <field name="document"/>
+                            </tree>
+                        </field>
+<!--                        <group class="oe_subtotal_footer oe_right" colspan="2" >-->
+<!--                                <field name="rebate_received" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>-->
+<!--                            </group>-->
+                        <separator string="Income from Other Sources"/>
+                        <field name="income_other_ids">
+                            <tree string="Income from Other Sources" editable="bottom">
+                                <field name="income_other_id" invisible="1"/>
+                                <field name="it_rule" invisible="1"/>
+                                <field name="saving_master" options="{'no_create_edit': True, 'no_create': True}" domain="[('it_rule', '=', it_rule)]"/>
+                                <field name="investment"/>
+                                <field name="document"/>
+                            </tree>
+                        </field>
+<!--                        <group class="oe_subtotal_footer oe_right" colspan="2" >-->
+<!--                                <field name="rebate_received" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>-->
+<!--                            </group>-->
                     </page>
 
                     <page string="Deducations">
