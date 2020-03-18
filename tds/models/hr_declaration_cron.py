@@ -11,13 +11,41 @@ class HrDeclarationCron(models.Model):
         search_id = self.env['hr.declaration'].search(
             [('state', 'not in', ['approved', 'rejected'])])
         for rec in search_id:
+            sum = 0
+            for lines in rec.rent_paid_ids:
+                if lines.date_to <= datetime.now().date():
+                    sum += lines.amount
+            rec.rent_paid = round(sum)
+            if rec.rent_paid > 100000.00:
+                rec.rent_paid_attach_files = True
+            else:
+                rec.rent_paid_attach_files = False
+            bs = 0.00
+            da = 0.00
+            dstart = rec.date_range.date_start
+            dend = rec.date_range.date_end
+            prl_id = self.env['hr.payslip.line'].sudo().search([('slip_id.employee_id', '=', rec.employee_id.id),
+                                                                ('slip_id.state', '=', 'done'),
+                                                                ('slip_id.date_from', '>=', dstart),
+                                                                ('slip_id.date_to', '<=', dend),
+                                                                # ('slip_id.date_to', '<=', datetime.now().date())
+                                                                ], order="date_to desc")
+            for pr in prl_id:
+                if pr.code == 'BASIC':
+                    bs += pr.amount
+                elif pr.code == 'DA':
+                    da += pr.amount
+            rec.basic_salary = round(bs)
+            rec.da_salary = round(da)
+            sum = 0
             proll = self.env['hr.payslip.line'].sudo().search([('slip_id.employee_id', '=', rec.employee_id.id),
                                                                ('slip_id.state', '=', 'done'),
                                                                ('code', '=', 'NET'),
-                                                               ('slip_id.date_to', '>', rec.date_range.date_start),
+                                                               ('slip_id.date_to', '>', rec.date_range.date_start)
                                                                ], order="date_to desc", limit=1)
             for pr in proll:
                 rec.forecast_gross = round(pr.amount * 12)
+
             sum = 0
             dstart = rec.date_range.date_start
             dend = rec.date_range.date_end
@@ -199,7 +227,6 @@ class HrDeclarationCron(models.Model):
                 [('employee_id', '=', rec.employee_id.id), ('name', '=', 'lunch'),
                  ('date_range.date_start', '>', rec.date_range.date_start),
                  ('date_range.date_end', '<', rec.date_range.date_end), ('state', '=', 'approved')])
-
             sum = 0.00
             my_investment = 0.00
             my_allowed_rebate = 0.00
@@ -345,8 +372,8 @@ class HrDeclarationCron(models.Model):
             else:
                 rec.tax_payable_after_rebate = 0.00
                 rec.rebate_received = rec.tax_payable
-
             rec.tax_computed_bool = True
+
             for lines in rec.tax_payment_ids:
                 if lines.paid == False:
                     lines.unlink()

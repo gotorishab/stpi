@@ -127,18 +127,19 @@ class HrDeclaration(models.Model):
             rec.total_deductions =  rec.allowed_rebate_under_80c + rec.allowed_rebate_under_80b + rec.allowed_rebate_under_80d + rec.allowed_rebate_under_80dsa + rec.allowed_rebate_under_80ee + rec.allowed_rebate_under_24 + rec.allowed_rebate_under_tbhl + rec.allowed_rebate_under_80e+ rec.allowed_rebate_under_80ccg + rec.allowed_rebate_under_80cdd + rec.allowed_rebate_under_80mesdr
 
 
-    @api.multi
-    @api.depends('rent_paid_ids')
-    def compute_rent_lines(self):
-        for rec in self:
-            sum = 0
-            for lines in rec.rent_paid_ids:
-                sum += lines.amount
-            rec.rent_paid = round(sum)
-            if rec.rent_paid > 100000.00:
-                rec.rent_paid_attach_files = True
-            else:
-                rec.rent_paid_attach_files = False
+    # @api.multi
+    # @api.depends('rent_paid_ids')
+    # def compute_rent_lines(self):
+    #     for rec in self:
+    #         sum = 0
+    #         for lines in rec.rent_paid_ids:
+    #             if lines.date_to <= datetime.now().date():
+    #                 sum += lines.amount
+    #         rec.rent_paid = round(sum)
+    #         if rec.rent_paid > 100000.00:
+    #             rec.rent_paid_attach_files = True
+    #         else:
+    #             rec.rent_paid_attach_files = False
 
     @api.multi
     @api.depends('tax_payment_ids','tax_payable_after_rebate')
@@ -151,25 +152,27 @@ class HrDeclaration(models.Model):
             rec.tax_paid = round(total_paid)
             rec.pending_tax = round(rec.tax_payable_after_rebate - rec.tax_paid)
 
-    @api.multi
-    @api.depends('employee_id','date_range')
-    def _compute_bda_salary(self):
-        for rec in self:
-            bs = 0.00
-            da = 0.00
-            dstart = rec.date_range.date_start
-            dend = rec.date_range.date_end
-            prl_id = self.env['hr.payslip.line'].sudo().search([('slip_id.employee_id', '=', rec.employee_id.id),
-                                                               ('slip_id.state', '=', 'done'),
-                                                               ('slip_id.date_from', '>=', dstart),
-                                                               ('slip_id.date_to', '<=', dend)],order ="date_to desc")
-            for pr in prl_id:
-                if pr.code == 'BASIC':
-                    bs += pr.amount
-                elif pr.code == 'DA':
-                    da += pr.amount
-            rec.basic_salary = round(bs)
-            rec.da_salary = round(da)
+    # @api.multi
+    # @api.depends('employee_id','date_range')
+    # def _compute_bda_salary(self):
+    #     for rec in self:
+    #         bs = 0.00
+    #         da = 0.00
+    #         dstart = rec.date_range.date_start
+    #         dend = rec.date_range.date_end
+    #         prl_id = self.env['hr.payslip.line'].sudo().search([('slip_id.employee_id', '=', rec.employee_id.id),
+    #                                                            ('slip_id.state', '=', 'done'),
+    #                                                            ('slip_id.date_from', '>=', dstart),
+    #                                                            ('slip_id.date_to', '<=', dend),
+    #                                                            # ('slip_id.date_to', '<=', datetime.now().date())
+    #                                                             ],order ="date_to desc")
+    #         for pr in prl_id:
+    #             if pr.code == 'BASIC':
+    #                 bs += pr.amount
+    #             elif pr.code == 'DA':
+    #                 da += pr.amount
+    #         rec.basic_salary = round(bs)
+    #         rec.da_salary = round(da)
 
 
 
@@ -181,7 +184,7 @@ class HrDeclaration(models.Model):
     date_range = fields.Many2one('date.range','Financial Year', track_visibility='always')
     date = fields.Date(string="Date", default=fields.Date.today(), readonly=True, track_visibility='always')
     rent_paid_ids = fields.One2many('rent.paid', 'rent_paid_id', string='Rent Paid')
-    rent_paid = fields.Float(string='Rent Paid', compute='compute_rent_lines')
+    rent_paid = fields.Float(string='Rent Paid')
 
     rent_paid_attach_files = fields.Boolean(string='Attach Files?')
     pan_card = fields.Binary(string = 'Attach Pan Card')
@@ -189,8 +192,8 @@ class HrDeclaration(models.Model):
 
     tax_salary_final = fields.Float(string='Gross Salary', store=True, track_visibility='always')
     forecast_gross = fields.Float(string='Forecast Gross')
-    basic_salary = fields.Float(string='Basic Salary', compute='_compute_bda_salary')
-    da_salary = fields.Float(string='DA', compute='_compute_bda_salary')
+    basic_salary = fields.Float(string='Basic Salary')
+    da_salary = fields.Float(string='DA')
     total_tds_paid = fields.Float(string='Total TDS Paid')
     previous_employer_income = fields.Float(string='Previous Employer Income')
     income_after_exemption = fields.Float(string='Income after Exemption')
@@ -275,6 +278,25 @@ class HrDeclaration(models.Model):
 
 
 
+    @api.onchange('date_range')
+    # @api.constrains('date_range')
+    def get_rent_lines_ids(self):
+        for rec in self:
+            rec.rent_paid_ids.unlink()
+            rent_paid_ids = []
+            sdate = rec.date_range.date_start
+            edate = rec.date_range.date_end
+            while sdate < edate:
+                eadate = sdate + relativedelta(months=1) - relativedelta(days=1)
+                rent_paid_ids.append((0, 0, {
+                    'rent_paid_id': rec.id,
+                    'date_from': sdate,
+                    'date_to': eadate,
+                    # 'amount': 0.00,
+                }))
+                sdate = sdate + relativedelta(months=1)
+            rec.rent_paid_ids = rent_paid_ids
+
 
     @api.multi
     @api.depends('employee_id')
@@ -302,7 +324,7 @@ class HrDeclaration(models.Model):
             proll = self.env['hr.payslip.line'].sudo().search([('slip_id.employee_id', '=', rec.employee_id.id),
                                                         ('slip_id.state', '=', 'done'),
                                                        ('code', '=', 'NET'),
-                                                        ('slip_id.date_to', '>', rec.date_range.date_start),
+                                                        ('slip_id.date_to', '>', rec.date_range.date_start)
                                                     ],order ="date_to desc", limit=1)
             for pr in proll:
                 rec.forecast_gross = round(pr.amount*12)
@@ -338,6 +360,34 @@ class HrDeclaration(models.Model):
     @api.multi
     def button_compute_tax(self):
         for rec in self:
+            sum = 0
+            for lines in rec.rent_paid_ids:
+                if lines.date_to <= datetime.now().date():
+
+                    sum += lines.amount
+            rec.rent_paid = round(sum)
+            if rec.rent_paid > 100000.00:
+                rec.rent_paid_attach_files = True
+            else:
+                rec.rent_paid_attach_files = False
+            bs = 0.00
+            da = 0.00
+            dstart = rec.date_range.date_start
+            dend = rec.date_range.date_end
+            prl_id = self.env['hr.payslip.line'].sudo().search([('slip_id.employee_id', '=', rec.employee_id.id),
+                                                                ('slip_id.state', '=', 'done'),
+                                                                ('slip_id.date_from', '>=', dstart),
+                                                                ('slip_id.date_to', '<=', dend),
+                                                                ('slip_id.date_to', '<=', datetime.now().date())
+                                                                ], order="date_to desc")
+            for pr in prl_id:
+                if pr.code == 'BASIC':
+                    bs += pr.amount
+                elif pr.code == 'DA':
+                    da += pr.amount
+            rec.basic_salary = round(bs)
+            rec.da_salary = round(da)
+
             rec.sudo().button_forecast_gross()
             sum = 0
             dstart = rec.date_range.date_start
