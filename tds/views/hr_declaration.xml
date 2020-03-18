@@ -50,6 +50,12 @@
                             <field name="tax_payable_zero" invisible="1"/>
                             <field name="tax_computed_bool" invisible="1"/>
                             <field name="currency_id" options="{'no_create': True}" invisible="1 "/>
+                            <field name="income_after_house_property"/>
+                            <field name="income_from_home"/>
+                            <field name="income_dividend"/>
+                            <field name="income_interest"/>
+                            <field name="income_pension"/>
+                            <field name="income_other"/>
 
                         </group>
                         <group>

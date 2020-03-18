@@ -217,6 +217,10 @@ class HrDeclaration(models.Model):
     # income_after_rebate = fields.Float('Income after Rebate')
     income_after_house_property = fields.Float(string='Income from House Property')
     income_from_home= fields.Float(string='Income from Income from Rent')
+    income_dividend= fields.Float(string='Dividend Income')
+    income_interest= fields.Float(string='Interest Income')
+    income_pension= fields.Float(string='Pension Income')
+    income_other= fields.Float(string='Other Income')
 
     tax_payable = fields.Float('Tax Payable')
 
@@ -399,7 +403,7 @@ class HrDeclaration(models.Model):
                                                          ('slip_id.date_to', '<=', dend)],order ="date_to desc")
             for i in proll:
                 sum += i.taxable_amount
-            rec.tax_salary_final = round(sum)
+            rec.tax_salary_final = round(sum) + rec.income_after_house_property + rec.income_from_home + rec.income_dividend + rec.income_interest + rec.income_pension + rec.income_other
             # rec.income_after_rebate = rec.tax_salary_final - rec.net_allowed_rebate
             age = 0
             if rec.employee_id.birthday:

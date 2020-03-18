@@ -33,6 +33,19 @@
                             <td class="text-left"><strong>Amount Invested for deduction u/s 80C</strong></td>
                             <td class="text-left"><span t-field="o.allowed_rebate_under_80c"/></td>
                         </tr>
+
+                        <tr>
+                            <td class="text-left"><strong>Medical Insurance Premium u/s 80D</strong></td>
+                            <td class="text-left"><span t-field="o.allowed_rebate_under_80d"/></td>
+                        </tr>
+                        <tr>
+                            <td class="text-left"><strong>Education Loan Interest u/s 80E</strong></td>
+                            <td class="text-left"><span t-field="o.allowed_rebate_under_80e"/></td>
+                        </tr>
+                        <tr>
+                            <td class="text-left"><strong>Amount invested in NPS u/s 80CCD (1b)</strong></td>
+                            <td class="text-left"><span t-field="o.allowed_rebate_under_80b"/></td>
+                        </tr>
                     </table>
                     <p>Certified that the above information given is correct to the best of my knowledge and
                         the insurance policies would not expire or surrendered before <span t-field="o.date_range.date_end"/>.
@@ -67,6 +80,34 @@
                         <tr>
                             <td>Income under the HousDividende Property</td>
                             <td> -- </td>
+                        </tr>
+                    </table>
+                    <br/>
+
+
+                    <table style="width:50%" border="0">
+                        <tr>
+                            <th colspan="2" align="center">Income from Other Sources</th>
+                        </tr>
+                        <tr>
+                            <td>Dividend Income</td>
+                            <td><span t-field="o.income_dividend"/></td>
+                        </tr>
+                        <tr>
+                            <td>Interest Income</td>
+                            <td><span t-field="o.income_interest"/></td>
+                        </tr>
+                        <tr>
+                            <td>Pension Income</td>
+                            <td><span t-field="o.income_pension"/></td>
+                        </tr>
+                        <tr>
+                            <td>Other Income</td>
+                            <td><span t-field="o.income_other"/></td>
+                        </tr>
+                        <tr>
+                            <td>TDS deducted at source on above income, if any</td>
+                            <td><span t-field="o.income_other"/></td>
                         </tr>
                     </table>
                     <br/>
