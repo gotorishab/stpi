@@ -373,16 +373,13 @@ class HrDeclaration(models.Model):
             for line in rec.income_house_ids:
                 sum+=line.investment
             rec.income_after_house_property = sum
-
             sum = 0
             for line in rec.income_other_ids:
                 sum+=line.investment
             rec.income_after_other_sources = sum
-
             sum = 0
             for lines in rec.rent_paid_ids:
                 if lines.date_to <= datetime.now().date():
-
                     sum += lines.amount
             rec.rent_paid = round(sum)
             if rec.rent_paid > 100000.00:
@@ -418,7 +415,7 @@ class HrDeclaration(models.Model):
                                                          ('slip_id.date_to', '<=', dend)],order ="date_to desc")
             for i in proll:
                 sum += i.taxable_amount
-            rec.tax_salary_final = round(sum) + rec.income_after_house_property + rec.income_from_home + rec.income_dividend + rec.income_interest + rec.income_pension + rec.income_other
+            rec.tax_salary_final = round(sum) + rec.income_after_house_property + rec.income_after_other_sources
             # rec.income_after_rebate = rec.tax_salary_final - rec.net_allowed_rebate
             age = 0
             if rec.employee_id.birthday:
@@ -765,6 +762,13 @@ class HrDeclaration(models.Model):
             else:
                 raise ValidationError(
                     "This declaration is already applied for this duration, please correct the dates")
+        sum=0
+        for lines in rec.tax_payment_ids:
+            sum += lines.amount
+        if sum != rec.tax_payable_after_rebate:
+            raise ValidationError(
+                "Tax payment lines amount must be eqqual to Tax payable after rebate")
+
         # model = self.env['ir.model'].search([('model', '=', 'hr.declaration')])
         # res.env['mail.activity'].create(
         #     {
@@ -1000,7 +1004,7 @@ class IncomeHouse(models.Model):
     _name = 'income.house'
     _description = 'Income from House'
 
-    income_house_id = fields.Many2one('hr.declaration', string='Ded Medical Self')
+    income_house_id = fields.Many2one('hr.declaration', string='Income from House Property')
     document = fields.Binary(string='Document')
     it_rule = fields.Selection([
         ('income_house', 'Income from House Property')
@@ -1009,12 +1013,22 @@ class IncomeHouse(models.Model):
     investment = fields.Float(string='Amount')
 
 
+    @api.constrains('saving_master')
+    def check_unique_saving(self):
+        for rec in self:
+            count = 0
+            emp_id = self.env['income.house'].search(
+                [('saving_master', '=', rec.saving_master.id), ('income_house_id', '=', rec.income_house_id.id)])
+            for e in emp_id:
+                count += 1
+            if count > 1:
+                raise ValidationError("Income from House Property")
 
 class IncomeOther(models.Model):
     _name = 'income.other'
     _description = 'Income from other Sources'
 
-    income_other_id = fields.Many2one('hr.declaration', string='Ded Medical Self')
+    income_other_id = fields.Many2one('hr.declaration', string='Income from other Sources')
     document = fields.Binary(string='Document')
     it_rule = fields.Selection([
         ('income_other', 'Income from other Sources')
@@ -1023,6 +1037,16 @@ class IncomeOther(models.Model):
     investment = fields.Float(string='Amount')
 
 
+    @api.constrains('saving_master')
+    def check_unique_saving(self):
+        for rec in self:
+            count = 0
+            emp_id = self.env['income.house'].search(
+                [('saving_master', '=', rec.saving_master.id), ('income_other_id', '=', rec.income_other_id.id)])
+            for e in emp_id:
+                count += 1
+            if count > 1:
+                raise ValidationError("Income from other Sources Type must be unique")
 
 
 class SavingsMaster(models.Model):

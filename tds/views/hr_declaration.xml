@@ -52,12 +52,11 @@
                             <field name="currency_id" options="{'no_create': True}" invisible="1 "/>
                             <field name="income_after_house_property" readonly="1"/>
                             <field name="income_after_other_sources" readonly="1"/>
-                            <field name="income_from_home"/>
-                            <field name="income_dividend"/>
-                            <field name="income_interest"/>
-                            <field name="income_pension"/>
-                            <field name="income_other"/>
-
+                            <field name="income_from_home" invisible="1"/>
+                            <field name="income_dividend" invisible="1"/>
+                            <field name="income_interest" invisible="1"/>
+                            <field name="income_pension" invisible="1"/>
+                            <field name="income_other" invisible="1"/>
                         </group>
                         <group>
                             <field name="basic_salary" readonly="1" widget="monetary" options="{'currency_field': 'currency_id'}"/>
@@ -278,7 +277,7 @@
                             </group>
                     </page>
                         <page string="Tax Payment" name="tax_payment_g">
-                            <field name="tax_payment_ids" readonly="1" attrs="{'invisible':[('tax_payable_zero','=',False)]}">
+                            <field name="tax_payment_ids" attrs="{'invisible':[('tax_payable_zero','=',False)]}">
                                 <tree string="Tax Payment" editable="bottom">
                                     <field name="tax_payment_id" invisible="1"/>
                                     <field name="date" required="1"/>
