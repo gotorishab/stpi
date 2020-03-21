@@ -61,7 +61,7 @@ class HrLeave(models.Model):
 
     countpre = fields.Float(string='CountPre')
     countpost = fields.Float(string='CountPost')
-
+    ltc = fields.Boolean(string='For LTC?')
     no_of_days_display_half = fields.Float(string="Duartion Half")
     holiday_half_pay = fields.Boolean(string="Half Pay Holiday")
     pre_post_leaves_ids = fields.One2many('hr.leave.pre.post', 'pre_post_leave', string='Leaves', readonly=True)
@@ -176,10 +176,10 @@ class HrLeave(models.Model):
                                     pr_po.leave_type_id.name))
 
             count = 0
-            leave_ids = self.env['hr.leave'].search([('employee_id', '=', rec.employee_id.id),
+            leave_ids = self.env['hr.leave'].search([('employee_id', '=', res.employee_id.id),
                                                      ('request_date_from', '>=', (date.today().year, 1, 1)),
-                                                     ('request_date_to', '<=', date.today().year, 12, 31),
-                                                     ('holiday_status_id.leave_type', '=', 'Restricted Leave')
+                                                     ('request_date_to', '<=', (date.today().year, 12, 31)),
+                                                     ('holiday_status_id.leave_type', '=', 'Restricted Leave'),
                                                      ('state', 'not in', ['cancel', 'refuse'])],
                                                     order="request_date_to desc")
             for leaves in leave_ids:

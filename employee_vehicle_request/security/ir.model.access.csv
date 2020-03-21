@@ -5,3 +5,4 @@ access_fleet_reserved_hr_user,access.fleet.reserved.hr.user,model_fleet_reserved
 access_employee_fleet_employee,access.employee.fleet.employee,model_employee_fleet,base.group_user,1,1,1,0
 access_employee_fleet_hr,access.employee.fleet.hr,model_employee_fleet,hr.group_hr_manager,1,1,1,1
 access_employee_fleet_hr_user,access.employee.fleet.hr.user,model_employee_fleet,hr.group_hr_user,1,1,1,0
+access_agency_details,agency.details,model_agency_details,base.group_user,1,1,1,1

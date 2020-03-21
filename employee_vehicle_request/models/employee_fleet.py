@@ -57,32 +57,32 @@ class EmployeeFleet(models.Model):
 
     @api.multi
     def send(self):
-        fleet_obj = self.env['fleet.vehicle'].search([])
-        check_availability = 0
-        self.remark_date_to = datetime.now()
-        for i in fleet_obj:
-            for each in i.reserved_time:
-                if each.date_from <= self.date_from <= each.date_to:
-                    check_availability = 1
-                elif self.date_from < each.date_from:
-                    if each.date_from <= self.date_to <= each.date_to:
-                        check_availability = 1
-                    elif self.date_to > each.date_to:
-                        check_availability = 1
-                    else:
-                        check_availability = 0
-                else:
-                    check_availability = 0
-        if check_availability == 0:
-            reserved_id = self.fleet.reserved_time.create({'employee': self.employee.id,
-                                                           'date_from': self.date_from,
-                                                           'date_to': self.date_to,
-                                                           'reserved_obj': self.fleet.id,
-                                                           })
-            self.write({'reserved_fleet_id': reserved_id.id})
-            self.state = 'waiting'
-        else:
-            raise Warning('Sorry This vehicle is already requested by another employee')
+        # fleet_obj = self.env['fleet.vehicle'].search([])
+        # check_availability = 0
+        # self.remark_date_to = datetime.now()
+        # for i in fleet_obj:
+        #     for each in i.reserved_time:
+        #         if each.date_from <= self.date_from <= each.date_to:
+        #             check_availability = 1
+        #         elif self.date_from < each.date_from:
+        #             if each.date_from <= self.date_to <= each.date_to:
+        #                 check_availability = 1
+        #             elif self.date_to > each.date_to:
+        #                 check_availability = 1
+        #             else:
+        #                 check_availability = 0
+        #         else:
+        #             check_availability = 0
+        # if check_availability == 0:
+        #     reserved_id = self.fleet.reserved_time.create({'employee': self.employee.id,
+        #                                                    'date_from': self.date_from,
+        #                                                    'date_to': self.date_to,
+        #                                                    'reserved_obj': self.fleet.id,
+        #                                                    })
+        #     self.write({'reserved_fleet_id': reserved_id.id})
+        self.state = 'waiting'
+        # else:
+        #     raise Warning('Sorry This vehicle is already requested by another employee')
 
         if self.employee.user_id:
             self.activity_schedule(summary='Vahical Request', activity_type_id=4,
@@ -196,30 +196,30 @@ class EmployeeFleet(models.Model):
         self.returned_date = fields.datetime.now()
         self.state = 'return'
 
-    @api.constrains('date_rom', 'date_to')
-    def onchange_date_to(self):
-        for each in self:
-            if each.date_from > each.date_to:
-                raise Warning('Date To must be greater than Date From')
-
-    @api.onchange('date_from', 'date_to')
-    def check_availability(self):
-        if self.date_from and self.date_to:
-            self.fleet = ''
-            fleet_obj = self.env['fleet.vehicle'].search([])
-            for i in fleet_obj:
-                for each in i.reserved_time:
-                    if each.date_from <= self.date_from <= each.date_to:
-                        i.write({'check_availability': False})
-                    elif self.date_from < each.date_from:
-                        if each.date_from <= self.date_to <= each.date_to:
-                            i.write({'check_availability': False})
-                        elif self.date_to > each.date_to:
-                            i.write({'check_availability': False})
-                        else:
-                            i.write({'check_availability': True})
-                    else:
-                        i.write({'check_availability': True})
+    # @api.constrains('date_rom', 'date_to')
+    # def onchange_date_to(self):
+    #     for each in self:
+    #         if each.date_from > each.date_to:
+    #             raise Warning('Date To must be greater than Date From')
+    #
+    # @api.onchange('date_from', 'date_to')
+    # def check_availability(self):
+    #     if self.date_from and self.date_to:
+    #         self.fleet = ''
+    #         fleet_obj = self.env['fleet.vehicle'].search([])
+    #         for i in fleet_obj:
+    #             for each in i.reserved_time:
+    #                 if each.date_from <= self.date_from <= each.date_to:
+    #                     i.write({'check_availability': False})
+    #                 elif self.date_from < each.date_from:
+    #                     if each.date_from <= self.date_to <= each.date_to:
+    #                         i.write({'check_availability': False})
+    #                     elif self.date_to > each.date_to:
+    #                         i.write({'check_availability': False})
+    #                     else:
+    #                         i.write({'check_availability': True})
+    #                 else:
+    #                     i.write({'check_availability': True})
 
 
     def activity_feedback(self, act_type_xmlids, user_id=None, feedback=None):
@@ -268,12 +268,15 @@ class EmployeeFleet(models.Model):
     branch_id= fields.Many2one('res.branch', string="Branch", compute='compute_des_dep',store=True)
     department_id = fields.Many2one('hr.department','Department',track_visibility='onchange')
     req_date = fields.Date(string='Requested Date', default=datetime.now().date(), required=1, readonly=True,help="Requested Date")
-    fleet = fields.Many2one('fleet.vehicle', string='Vehicle', required=0, readonly=True, help="only available vehicles are being displayed. No results >>> No vehicle avaiable",
-                            states={'draft': [('readonly', False)]})
-    date_from = fields.Datetime(string='From', required=1, readonly=True,track_visibility='always',
-                                states={'draft': [('readonly', False)]})
-    date_to = fields.Datetime(string='To', required=1, readonly=True,track_visibility='always',
-                              states={'draft': [('readonly', False)]})
+    fleet = fields.Many2one('fleet.vehicle', string='Vehicle', help="only available vehicles are being displayed. No results >>> No vehicle avaiable",
+                            )
+    date_from = fields.Datetime(string='From')
+    date_to = fields.Datetime(string='To')
+    requested_date = fields.Date(string='Requested Date')
+    half_day = fields.Boolean(string='Half Day')
+    driver_name = fields.Char(string='Driver Name')
+    agency_id = fields.Many2one('agency.details', string='Agency')
+    driver_mobile = fields.Char(string='Driver Mobile')
     returned_date = fields.Datetime(string='Returned Date', readonly=1)
     purpose = fields.Text(string='Purpose', required=1, readonly=True,track_visibility='always',
                           states={'draft': [('readonly', False)]}, help="Purpose")
@@ -305,3 +308,12 @@ class EmployeeFleet(models.Model):
         for s in self:
             if self.fleet.driver_id:
                 s.driver_id = self.fleet.driver_id.id
+
+
+class AgencyDetails(models.Model):
+    _name = 'agency.details'
+    _description = 'Agency Details'
+
+    name = fields.Char(string='Name')
+    phone = fields.Char(string='Phone')
+    address = fields.Char(string='Address')

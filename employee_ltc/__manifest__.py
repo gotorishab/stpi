@@ -16,6 +16,7 @@
         'security/ir.model.access.csv',
         'security/ltc_security.xml',
         'views/employee_ltc.xml',
+        'views/ltc_ledger.xml',
         'report/ltc_report.xml',
 
 

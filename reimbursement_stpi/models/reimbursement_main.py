@@ -28,7 +28,7 @@ class Reimbursement(models.Model):
             if rec.name:
                 gr_id = self.env['reimbursement.configuration'].search(
                     [('name', '=', rec.name), ('group_ids.users', '=', rec.env.user.id), ('branch_id', '=', rec.branch_id.id)], order='name desc', limit=1)
-                return {'domain': {'date_range': [('type_id', '=', gr_id.date_range_type.id)]}}
+                return {'domain': {'date_range': [('type_id', '=', gr_id.date_range_type.id),('date_end', '<=', datetime.now().date())]}}
 
 
     name = fields.Selection([
@@ -61,9 +61,11 @@ class Reimbursement(models.Model):
     phone = fields.Binary(string='Phone Attachment', track_visibility='always')
     bill_no = fields.Char(string='Bill number', track_visibility='always')
     bill_due_date = fields.Date(string='Bill Due Date', track_visibility='always')
+    mobile_no = fields.Char(string='Mobile Number')
 
+    brief_date = fields.Date(string='Date')
     no_of_months = fields.Char(string='No of months', track_visibility='always')
-
+    attach_news = fields.Binary(string='Attanhment')
     remarks = fields.Text(string='Remarks: ', track_visibility='always')
 
     state = fields.Selection([('draft', 'Draft'), ('waiting_for_approval', 'Submitted'), ('forwarded', 'Forwarded'),
@@ -100,6 +102,26 @@ class Reimbursement(models.Model):
                 rec.working_days = count
                 rec.claimed_amount = float(count * 75)
                 rec.lunch_tds_amt = float(count * 50)
+            elif rec.employee_id and rec.name == 'telephone':
+                rec.mobile_no = rec.employee_id.mobile_phone
+
+
+    @api.constrains('working_days')
+    @api.onchange('working_days')
+    def onchange_working_days(self):
+        for rec in self:
+            if rec.employee_id and rec.name == 'lunch' and rec.working_days:
+                rec.amount_lunch = 75
+                count = float(rec.working_days)
+                rec.claimed_amount = float(count * 75)
+                rec.lunch_tds_amt = float(count * 50)
+                if type(rec.date_range.date_end - rec.date_range.date_start) != int:
+                    days = (rec.date_range.date_end - rec.date_range.date_start).days
+                else:
+                    days = (rec.date_range.date_end - rec.date_range.date_start)
+                if float(count) > float(days):
+                    raise UserError(
+                        "You can claim for %s" % rec.name + ", maximum of  %s" % (days+1) + " days")
 
 
 
@@ -133,20 +155,20 @@ class Reimbursement(models.Model):
             search_id = self.env['reimbursement'].search([('employee_id', '=', rec.employee_id.id), ('name', '=', rec.name), ('state', 'not in', ['draft','rejected'])])
             index = False
             for emp in search_id:
-                if rec.date_range.date_start <= emp.date_range.date_start or rec.date_range.date_start >= emp.date_range.date_end:
-                    if rec.date_range.date_end <= emp.date_range.date_start or rec.date_range.date_end >= emp.date_range.date_end:
-                        if not (rec.date_range.date_start <= emp.date_range.date_start and rec.date_range.date_end >= emp.date_range.date_end):
-                            index = True
+                if rec.name != 'briefcase':
+                    if rec.date_range.date_start <= emp.date_range.date_start or rec.date_range.date_start >= emp.date_range.date_end:
+                        if rec.date_range.date_end <= emp.date_range.date_start or rec.date_range.date_end >= emp.date_range.date_end:
+                            if not (rec.date_range.date_start <= emp.date_range.date_start and rec.date_range.date_end >= emp.date_range.date_end):
+                                index = True
+                            else:
+                                raise ValidationError("This reimbursement is already applied for this duration, please correct the dates")
                         else:
-                            raise ValidationError("This reimbursement is already applied for this duration, please correct the dates")
+                            raise ValidationError("This reimbursement is already applied for this d7uration, please correct the dates")
                     else:
                         raise ValidationError("This reimbursement is already applied for this duration, please correct the dates")
-                else:
-                    raise ValidationError("This reimbursement is already applied for this duration, please correct the dates")
             else:
                 index = True
             if index == True:
-                rec.claim_date = datetime.now().date()
                 if int(rec.net_amount) <= 0:
                     raise ValidationError(
                         "Amount must be greater than zero")
@@ -156,14 +178,27 @@ class Reimbursement(models.Model):
                         order='name desc',
                         limit=1)
                     if gr_id.open == False:
-                        submit_min = rec.date_range.date_end + relativedelta(days=1)
-                        submit_max = rec.date_range.date_end + relativedelta(days=gr_id.max_submit)
-                        today = datetime.now().date()
-                        if not(submit_min < today <= submit_max):
-                            raise ValidationError(
-                                "You can claim for %s" % rec.name + " between  %s" % submit_min + " and %s" % submit_max)
+                        if rec.name != 'briefcase':
+                            submit_min = rec.date_range.date_end + relativedelta(days=1)
+                            submit_max = rec.date_range.date_end + relativedelta(days=gr_id.max_submit)
+                            today = datetime.now().date()
+                            if not(submit_min < today <= submit_max):
+                                raise ValidationError(
+                                    "You can claim for %s" % rec.name + " between  %s" % submit_min + " and %s" % submit_max)
+                            else:
+                                rec.write({'state': 'waiting_for_approval'})
                         else:
-                            rec.write({'state': 'waiting_for_approval'})
+                            search_id = self.env['reimbursement'].search(
+                                [('employee_id', '=', rec.employee_id.id), ('name', '=', rec.name),
+                                 ('state', 'not in', ['draft', 'rejected'])])
+                            for record in search_id:
+                                min_date = record.brief_date + relativedelta(year=2)
+                                if min_date > rec.brief_date:
+                                    raise ValidationError(
+                                        "You are allowed to claim for breifcase reimbursement after %s" % min_date)
+                            else:
+                                rec.write({'state': 'waiting_for_approval'})
+
                     else:
                         rec.write({'state': 'waiting_for_approval'})
 

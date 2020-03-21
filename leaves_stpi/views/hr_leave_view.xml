@@ -55,6 +55,7 @@
             </xpath>
             
             <field name="holiday_status_id" position="after">
+                <field name="ltc"/>
                 <field name="commuted_leave" attrs="{'invisible':[('commuted','!=',True)]}" readonly="1"/>
                 <field name="attachement" invisible="1"/>
                 <field name="commuted" attrs="{'invisible':[('commuted','!=',True)]}"/>

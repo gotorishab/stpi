@@ -37,16 +37,21 @@
                                 <field name="employee" options="{'no_create': True}"/>
                                 <field name="branch_id" readonly="1"/>
                                 <field name="department_id" readonly="1" invisible="1"/>
-                                <field name="date_from"/>
-                                <field name="date_to"/>
+                                <field name="date_from" invisible="1"/>
+                                <field name="date_to" invisible="1"/>
+                                <field name="requested_date" required="1"/>
+                                <field name="half_day"/>
+                                <field name="driver_name" attrs="{'invisible': [('state','=','draft')],'required': [('state','!=','draft')]}" groups="employee_vehicle_request.group_employee_manager_v"/>
+                                <field name="driver_mobile" attrs="{'invisible': [('state','=','draft')],'required': [('state','!=','draft')]}" groups="employee_vehicle_request.group_employee_manager_v"/>
+                                <field name="agency_id" attrs="{'invisible': [('state','=','draft')],'required': [('state','!=','draft')]}" options="{'no_create': True}" groups="employee_vehicle_request.group_employee_manager_v"/>
                                 <field name="returned_date" attrs="{'invisible': [('state','!=','return')]}"/>
                                 <field name="via"/>
                             </group>
                             <group>
                                 <field name="req_date"/>
                                 <field name="created_by" invisible="1"/>
-                                <field name="fleet" domain="[('check_availability','=',True)]" options="{'no_create': True}"/>
-                                <field name="driver_id" readonly="1"/>
+                                <field name="fleet" attrs="{'invisible': [('state','=','draft')],'required': [('state','!=','draft')]}" options="{'no_create': True}"/>
+                                <field name="driver_id" invisible="1"/>
                                 <field name="purpose"/>
                                 <field name="from_location"/>
                                 <field name="to_location"/>

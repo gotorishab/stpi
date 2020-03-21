@@ -39,6 +39,7 @@
         'security/ir.model.access.csv',
         'report/travel_formate_report_view.xml',
         'views/employee_fleet_view.xml',
+        'views/agency_view.xml',
         'views/travel_formate_report_view.xml',
     ],
     'images': ['static/description/banner.jpg'],

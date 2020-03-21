@@ -2,6 +2,19 @@
 
 <odoo>
 
+    <record model="ir.module.category" id="module_ltc_claim_employee">
+        <field name="name">LTC</field>
+        <field name="description">Help You For LTC</field>
+        <field name="sequence">21</field>
+    </record>
+
+
+    <record id="group_ltc_manager" model="res.groups">
+        <field name="name">LTC Manager</field>
+        <field name="stpi">1</field>
+        <field name="category_id" ref="module_ltc_claim_employee"/>
+    </record>
+
 
    <record id="ltc_advance_record_rule" model="ir.rule">
         <field name="name">LTC Advance</field>

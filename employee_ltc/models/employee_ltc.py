@@ -15,25 +15,33 @@ class EmployeeLtcAdvance(models.Model):
     def _default_employee(self):
         return self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
 
+
+    @api.onchange('block_year')
+    def change_slect_leave(self):
+        return {'domain': {'slect_leave': [('ltc', '=', True),('employee_id', '=', self.employee_id.id),('request_date_from', '>=', self.block_year.date_start),('request_date_to', '<=', self.block_year.date_end)
+            ]}}
+
     ltc_sequence = fields.Char('LTC number',track_visibility='always')
-    employee_id = fields.Many2one('hr.employee', string='Employee', default=_default_employee,track_visibility='always')
+    employee_id = fields.Many2one('hr.employee', string='Requested By', default=_default_employee,track_visibility='always')
     branch_id = fields.Many2one('res.branch', string='Branch', store=True)
     job_id = fields.Many2one('hr.job', string='Functional Designation', store=True)
     department_id = fields.Many2one('hr.department', string='Department', store=True)
     date = fields.Date(string="Requested Date", default=datetime.now().date(),track_visibility='always')
     place_of_trvel=fields.Selection([('hometown', 'Hometown'), ('india', 'Anywhere in India'), ('conversion', 'Conversion of Hometown')], default='hometown', string='Place of Travel',track_visibility='always')
     hometown_address = fields.Char(string='Address',track_visibility='always')
-    block_year=fields.Char('Block year',track_visibility='always')
-    slect_leave = fields.Many2one('hr.leave',string = 'Leave', domain="[('employee_id', '=', employee_id)]",track_visibility='always')
-    leave_period = fields.Char(string = 'Leave period', compute='compute_get_leave_details',track_visibility='always')
+    block_year=fields.Many2one('date.range', 'Block year',track_visibility='always', domain=[('type_id.name', '=', '2 Year Block')])
+    slect_leave = fields.Many2one('hr.leave',string = 'Leave',track_visibility='always')
+    leave_period = fields.Char(string = 'Leave period',track_visibility='always')
     total_leaves = fields.Char(string = 'Total Leaves',track_visibility='always')
     left_leaves = fields.Char(string = 'Left Leaves',track_visibility='always')
-    depart_date=fields.Date('Departue Date', compute='compute_get_leave_details',track_visibility='always')
-    arrival_date=fields.Date('Arrival Date', compute='compute_get_leave_details',track_visibility='always')
+    depart_date=fields.Date('Departue Date',track_visibility='always')
+    arrival_date=fields.Date('Arrival Date',track_visibility='always')
     advance_ammount=fields.Char('Advance Amount Required',track_visibility='always')
     single_fare=fields.Float('Single Train Fare/ Bus fare from the office to Place of Visit by Shortest Route',track_visibility='always')
     single_fare_approved=fields.Float('Approved Amount',track_visibility='always')
     attach_file = fields.Binary('Attach a File',track_visibility='always')
+    relative_ids = fields.One2many('family.details.ltc','relative_id', string='Relatives')
+    are_you_coming = fields.Boolean('Are you coming?')
     family_details = fields.Many2many('employee.relative', string='Family Details', domain="[('employee_id', '=', employee_id),('ltc', '=', True)]",track_visibility='always')
     partner_working=fields.Selection([('yes', 'Yes'), ('no', 'No')], default='no', string='Whether Wife/ Husband is employed and if so whether entitled to LTC',track_visibility='always')
     mode_of_travel=fields.Selection([('road', 'By Road'),('train', 'By Train'),('air', 'By Air')], default='road', string='Mode of Travel',track_visibility='always')
@@ -53,7 +61,16 @@ class EmployeeLtcAdvance(models.Model):
             rec.department_id = rec.employee_id.department_id.id
             rec.branch_id = rec.employee_id.branch_id.id
 
+    @api.onchange('place_of_trvel')
+    def false_everything(self):
+        for line in self:
+            line.slect_leave = False
+            line.leave_period = False
+            line.depart_date = False
+            line.arrival_date = False
+
     @api.onchange('employee_id','place_of_trvel')
+    @api.constrains('employee_id','place_of_trvel')
     def get_home_address(self):
         for line in self:
             my_add = ''
@@ -64,19 +81,26 @@ class EmployeeLtcAdvance(models.Model):
                 line.hometown_address = my_add
             else:
                 line.hometown_address = ''
-            line.slect_leave = False
-            line.leave_period = False
-            line.depart_date = False
-            line.arrival_date = False
 
 
-    @api.depends('slect_leave')
-    def compute_get_leave_details(self):
+    @api.onchange('slect_leave')
+    # @api.constrains('slect_leave')
+    def onchange_get_leave_details(self):
         for line in self:
             if line.slect_leave:
                 line.leave_period = line.slect_leave.number_of_days_display
                 line.depart_date = line.slect_leave.request_date_from
                 line.arrival_date = line.slect_leave.request_date_to
+
+    @api.onchange('depart_date','arrival_date')
+    @api.constrains('depart_date','arrival_date')
+    def onchange_get_period_leave(self):
+        for line in self:
+            if line.slect_leave:
+                if type(line.arrival_date - line.depart_date) != int:
+                    line.leave_period = (line.arrival_date - line.depart_date).days + 1
+                else:
+                    line.leave_period = (line.arrival_date - line.depart_date) + 1
 
 
 
@@ -109,6 +133,9 @@ class EmployeeLtcAdvance(models.Model):
             else:
                 raise ValidationError(
                     _('You are not eligible to take LTC, You have to complete atleast 1 year'))
+            if rec.hometown_address == '':
+                raise ValidationError(
+                    _('You are not allowed to submit. Please enter hometwon address'))
 
 
     @api.multi
@@ -132,6 +159,27 @@ class EmployeeLtcAdvance(models.Model):
         seq = self.env['ir.sequence'].next_by_code('employee.ltc.advance')
         sequence = 'LTC' + seq
         res.ltc_sequence = sequence
+        if res.state == 'approved':
+            if res.are_you_coming == True:
+                create_ledger_self = self.env['ledger.ltc'].create(
+                    {
+                        'employee_id': res.employee_id.id,
+                        'relative_name': res.employee_id.name,
+                        'relation': 'Self',
+                        'ltc_date': datetime.now().date(),
+                        'place_of_trvel': res.place_of_trvel,
+                    }
+                )
+            for relative in res.relative_ids:
+                create_ledger_family = self.env['ledger.ltc'].create(
+                    {
+                        'employee_id': res.employee_id.id,
+                        'relative_name': relative.name.name,
+                        'relation': relative.name.relate_type.name,
+                        'ltc_date': datetime.now().date(),
+                        'place_of_trvel': res.place_of_trvel,
+                    }
+                )
         return res
 
     @api.multi
@@ -265,3 +313,59 @@ class JourneyDetails(models.Model):
     fair_paid = fields.Char('Fair Paid')
     ticket_attach = fields.Binary('Attach Ticket')
     not_connected_by_train = fields.Boolean('Not Connected by Trains')
+
+
+
+class BlockYear(models.Model):
+    _name = 'block.year'
+    _description = "Block Year"
+
+    name = fields.Char('Name')
+    from_date = fields.Date('From Date')
+    to_date = fields.Date('To Date')
+
+
+class FamilyDetails(models.Model):
+    _name = 'family.details.ltc'
+    _description = "LTC Family Details"
+
+
+    @api.onchange('name')
+    def change_leave_taken(self):
+        return {'domain': {'name': [('ltc', '=', True),('employee_id', '=', self.relative_id.employee_id.id)
+            ]}}
+
+    relative_id = fields.Many2one('employee.ltc.advance', string='Relative ID')
+    name = fields.Many2one('employee.relative','Name')
+    relation = fields.Char(string='Relation', compute='_compute_relations')
+    age = fields.Float(string='Age', compute='_compute_relations')
+
+
+    @api.depends('name')
+    def _compute_relations(self):
+        for rec in self:
+            rec.relation = rec.name.relate_type.name
+            rec.age = rec.name.age
+
+    @api.constrains('name', 'relation','age')
+    def check_relative(self):
+        for rec in self:
+            count = 0
+            emp_id = self.env['family.details.ltc'].search(
+                [('name', '=', rec.name.id), ('relative_id', '=', rec.relative_id.id)])
+            for e in emp_id:
+                count += 1
+            if count > 1:
+                raise ValidationError("The Relative type must be unique")
+
+
+
+class LtcLedger(models.Model):
+    _name = 'ledger.ltc'
+    _description = "LTC Ledger"
+
+    employee_id = fields.Many2one('hr.employee', string='Requested By')
+    relative_name = fields.Char(string='Relative Name')
+    relation = fields.Char(string='Relative')
+    ltc_date = fields.Date(string='LTC Date')
+    place_of_trvel=fields.Selection([('hometown', 'Hometown'), ('india', 'Anywhere in India'), ('conversion', 'Conversion of Hometown')], default='hometown', string='LTC Type')
