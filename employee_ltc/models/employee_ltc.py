@@ -29,7 +29,7 @@ class EmployeeLtcAdvance(models.Model):
     date = fields.Date(string="Requested Date", default=datetime.now().date(),track_visibility='always')
     place_of_trvel=fields.Selection([('hometown', 'Hometown'), ('india', 'Anywhere in India'), ('conversion', 'Conversion of Hometown')], default='hometown', string='Place of Travel',track_visibility='always')
     hometown_address = fields.Char(string='Address',track_visibility='always')
-    block_year=fields.Many2one('date.range', 'Block year',track_visibility='always', domain=[('type_id.name', '=', '2 Year Block')])
+    block_year=fields.Many2one('block.year', 'Block year',track_visibility='always')
     slect_leave = fields.Many2one('hr.leave',string = 'Leave',track_visibility='always')
     leave_period = fields.Char(string = 'Leave period',track_visibility='always')
     total_leaves = fields.Char(string = 'Total Leaves',track_visibility='always')
@@ -321,8 +321,8 @@ class BlockYear(models.Model):
     _description = "Block Year"
 
     name = fields.Char('Name')
-    from_date = fields.Date('From Date')
-    to_date = fields.Date('To Date')
+    date_start = fields.Date('From Date')
+    date_end = fields.Date('To Date')
 
 
 class FamilyDetails(models.Model):
