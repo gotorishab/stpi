@@ -140,8 +140,30 @@ class EmployeeLtcAdvance(models.Model):
 
     @api.multi
     def button_approved(self):
-        for rec in self:
-            rec.write({'state': 'approved'})
+        for res in self:
+            if res.are_you_coming == True:
+                create_ledger_self = self.env['ledger.ltc'].create(
+                    {
+                        'employee_id': res.employee_id.id,
+                        'relative_name': res.employee_id.name,
+                        'relation': 'Self',
+                        'block_year': res.block_year.id,
+                        'ltc_date': datetime.now().date(),
+                        'place_of_trvel': res.place_of_trvel,
+                    }
+                )
+            for relative in res.relative_ids:
+                create_ledger_family = self.env['ledger.ltc'].create(
+                    {
+                        'employee_id': res.employee_id.id,
+                        'relative_name': relative.name.name,
+                        'relation': relative.name.relate_type.name,
+                        'block_year': res.block_year.id,
+                        'ltc_date': datetime.now().date(),
+                        'place_of_trvel': res.place_of_trvel,
+                    }
+                )
+            res.write({'state': 'approved'})
 
     @api.multi
     def button_reject(self):
@@ -159,27 +181,51 @@ class EmployeeLtcAdvance(models.Model):
         seq = self.env['ir.sequence'].next_by_code('employee.ltc.advance')
         sequence = 'LTC' + seq
         res.ltc_sequence = sequence
-        if res.state == 'approved':
-            if res.are_you_coming == True:
-                create_ledger_self = self.env['ledger.ltc'].create(
-                    {
-                        'employee_id': res.employee_id.id,
-                        'relative_name': res.employee_id.name,
-                        'relation': 'Self',
-                        'ltc_date': datetime.now().date(),
-                        'place_of_trvel': res.place_of_trvel,
-                    }
-                )
-            for relative in res.relative_ids:
-                create_ledger_family = self.env['ledger.ltc'].create(
-                    {
-                        'employee_id': res.employee_id.id,
-                        'relative_name': relative.name.name,
-                        'relation': relative.name.relate_type.name,
-                        'ltc_date': datetime.now().date(),
-                        'place_of_trvel': res.place_of_trvel,
-                    }
-                )
+        pp = datetime.now().date() - relativedelta(years=4)
+        val_ids = self.env['ledger.ltc'].search([
+            ('employee_id', '=', res.employee_id.id),
+            ('ltc_date', '>=', pp),
+        ])
+        if res.employee_id.date_of_join + relativedelta(year=8) >= datetime.now().date():
+            count_india = 0
+            count_home = 0
+            for ltc_pre in val_ids:
+                if ltc_pre.place_of_trvel == res.place_of_trvel:
+                    if ltc_pre.block_year == res.block_year.id:
+                        raise ValidationError(
+                            _('You are not allowed to take LTC for this block year'))
+                if ltc_pre.place_of_trvel == 'india':
+                    count_india += 1
+                if res.place_of_trvel == 'india' and count_india > 1:
+                    raise ValidationError(
+                        _(
+                            'You are not allowed to take LTC for this block year as you are able to take Anywhere in India LTC, once in 4 years'))
+                if ltc_pre.place_of_trvel == 'hometown':
+                    count_home += 1
+                if res.place_of_trvel == 'hometown' and count_home > 4 :
+                    raise ValidationError(
+                        _(
+                            'You are not allowed to take LTC for this block year as you are able to take Hometown LTC, maximum of 4 times in 4 years'))
+        else:
+            count_total = 0
+            count_india = 0
+            for ltc_pre in val_ids:
+                if ltc_pre.place_of_trvel == res.place_of_trvel:
+                    if ltc_pre.block_year == res.block_year.id:
+                        raise ValidationError(
+                            _('You are not allowed to take LTC for this block year'))
+                if ltc_pre.place_of_trvel == 'india':
+                    count_india += 1
+                if res.place_of_trvel == 'india' and count_india > 1 :
+                    raise ValidationError(
+                        _(
+                            'You are not allowed to take LTC for this block year as you are able to take Anywhere in India LTC, once in 4 years'))
+                if ltc_pre.place_of_trvel == 'hometown':
+                            count_india += 1
+                if res.place_of_trvel == 'hometown' and count_india > 2:
+                    raise ValidationError(
+                        _(
+                            'You are not allowed to take LTC for this block year as you are able to take Hometown LTC, twice in 4 years'))
         return res
 
     @api.multi
@@ -367,5 +413,6 @@ class LtcLedger(models.Model):
     employee_id = fields.Many2one('hr.employee', string='Requested By')
     relative_name = fields.Char(string='Relative Name')
     relation = fields.Char(string='Relative')
+    block_year = fields.Many2one('block.year', string='Block year')
     ltc_date = fields.Date(string='LTC Date')
     place_of_trvel=fields.Selection([('hometown', 'Hometown'), ('india', 'Anywhere in India'), ('conversion', 'Conversion of Hometown')], default='hometown', string='LTC Type')
