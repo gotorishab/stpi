@@ -94,7 +94,8 @@
                     <table style="width:1000px;">
                         <tr>
                             <td class="text-left"><strong>Particulars from 1 to 6 verified</strong></td>
-                            <td class="text-left"><input type="radio" name="particular" value="yes">Yes  </input><input type="radio" name="particular" value="no">No</input></td>
+                            <td class="text-left"><span t-field="o.all_particulars_verified"/></td>
+<!--                            <td class="text-left"><input type="radio" name="particular" value="yes">Yes  </input><input type="radio" name="particular" value="no">No</input></td>-->
                         </tr>
                         <tr>
                             <td class="text-left"><strong>Amount Entitled for reimbursement</strong></td>

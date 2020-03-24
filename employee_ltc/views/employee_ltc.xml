@@ -30,28 +30,34 @@
                             <field name="depart_date" attrs="{'readonly': [('state', '!=', 'draft')],'required': [('state', '=', 'draft'),('are_you_coming', '=', True)],'invisible': [('are_you_coming', '=', False)]}"/>
                             <field name="arrival_date" attrs="{'readonly': [('state', '!=', 'draft')],'required': [('state', '=', 'draft'),('are_you_coming', '=', True)],'invisible': [('are_you_coming', '=', False)]}"/>
                             <field name="leave_period" readonly="1" attrs="{'invisible': [('are_you_coming', '=', False)]}"/>
-                            <field name="advance_ammount" attrs="{'readonly': [('state', '!=', 'draft')],'required': [('state', '=', 'draft')]}"/>
-                            <field name="single_fare" attrs="{'readonly': [('state', '!=', 'draft')],'required': [('state', '=', 'draft')]}"/>
-                            <field name="attach_file" attrs="{'invisible': [('single_fare', '=', False)],'readonly': [('state', '!=', 'draft')]}"/>
+                           <field name="advance_ammount" attrs="{'readonly': [('state', '!=', 'draft')],'required': [('state', '=', 'draft')]}"/>
                         </group>
                         <group>
+                            <field name="single_fare" attrs="{'readonly': [('state', '!=', 'draft')],'required': [('state', '=', 'draft')]}"/>
+                            <field name="attach_file" attrs="{'invisible': [('single_fare', '=', False)],'readonly': [('state', '!=', 'draft')]}"/>
                             <field name="single_fare_approved" attrs="{'invisible': [('state', '=', 'draft')]}" groups="employee_ltc.group_ltc_manager"/>
                             <field name="partner_working" attrs="{'readonly': [('state', '!=', 'draft')],'required': [('state', '=', 'draft')]}"/>
                             <field name="mode_of_travel" attrs="{'readonly': [('state', '!=', 'draft')],'required': [('state', '=', 'draft')]}"/>
                             <field name="el_encashment" attrs="{'readonly': [('state', '!=', 'draft')],'required': [('state', '=', 'draft')]}"/>
                             <field name="no_of_days" attrs="{'invisible': [('el_encashment', '=', 'no')], 'required': [('el_encashment', '=', 'yes')],'readonly': [('state', '!=', 'draft')]}"/>
-                            <field name="amount" attrs="{'invisible': [('el_encashment', '=', 'no')],}"/>
+                            <field name="amount" attrs="{'invisible': [('el_encashment', '=', 'no')]}"/>
+                            <field name="all_particulars_verified" attrs="{'invisible': [('state', '=', 'draft')]}" groups="employee_ltc.group_ltc_manager"/>
                         </group>
                     </group>
 <!--                    <field name="family_details" options="{'no_create_edit': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>-->
-                    <field name="relative_ids">
-                        <tree editable="bottom">
-                            <field name="relative_id" invisible="1"/>
-                            <field name="name" required="1" options="{'no_create_edit': True}"/>
-                            <field name="relation"/>
-                            <field name="age"/>
-                        </tree>
-                    </field>
+                    <notebook>
+                        <page string="Family Details">
+                            <field name="relative_ids" attrs="{'readonly': [('state', '!=', 'draft')]}">
+                                <tree editable="bottom">
+                                    <field name="relative_id" invisible="1"/>
+                                    <field name="name" required="1" options="{'no_create_edit': True}"/>
+                                    <field name="relation"/>
+                                    <field name="age"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+
                 </sheet>
                 <div class="oe_chatter">
                         <field name="message_follower_ids" widget="mail_followers"/>
@@ -228,20 +234,61 @@
                 <sheet>
                     <group>
                         <group>
-                            <field name="employee_id" readonly="1"/>
+<!--                            <field name="employee_id" readonly="1"/>-->
                             <field name="employee_id" readonly="1"/>
                             <field name="branch_id" readonly="1"/>
                             <field name="department_id" readonly="1"/>
                             <field name="job_id" readonly="1"/>
-                            <field name="amount_claimed" readonly="1"/>
-                            <field name="ltc_availed_for" readonly="1"/>
-                            <field name="leave_period" readonly="1"/>
-                            <field name="place_of_visit" required="1"/>
+                        </group>
+                        <group>
+                            <field name="ltc_availed_for_m2o" required="1" domain="[('state','=','approved'),('employee_id','=',employee_id)]" options='{"no_create":1,"no_create_edit":1"}'/>
+                            <field name="ltc_availed_for" invisible="1"/>
+                            <field name="place_of_trvel"/>
+                            <field name="leave_period"/>
+                            <field name="place_of_visit"/>
+                            <field name="remarks" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                         </group>
                     </group>
                     <notebook>
-                        <page name="detailofjourney" string="Detail of journey(s) performed">
-                            <field name="detail_of_journey"/>
+                        <page name="detailofjourney" string="Details">
+                            <separator string="Relatives Details"/>
+                            <field name="relative_claim_ids" attrs="{'readonly': [('state', '!=', 'draft')]}">
+                                <tree create="0" edit="0">
+                                    <field name="relative_id" invisible="1"/>
+                                    <field name="relative_claim_id" invisible="1"/>
+                                    <field name="name"/>
+                                    <field name="relation"/>
+                                    <field name="age"/>
+                                </tree>
+                            </field>
+                            <separator string="Details of Journey(s) performed"/>
+                            <field name="detail_of_journey" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <separator string="Particulars of journey(s) for which higher class of accomodation that the on to which the Govt. Servent is not entitled, was used:"/>
+                            <field name="detail_of_journey_gov" attrs="{'readonly': [('state', '!=', 'draft')]}">
+                                <tree create="0" edit="0">
+                                    <field name="relate_to_ltc" invisible="1"/>
+                                    <field name="from_l"/>
+                                    <field name="to_l"/>
+                                    <field name="travel_mode" options="{'no_create_edit': True}"/>
+                                    <field name="fair_paid"/>
+                                </tree>
+                            </field>
+                            <separator string="Particulars of journey(s) by road between the places not connected by trains"/>
+                            <field name="detail_of_journey_train" attrs="{'readonly': [('state', '!=', 'draft')]}">
+                                <tree create="0" edit="0">
+                                    <field name="employee_id" invisible="1"/>
+                                    <field name="relate_to_ltc" invisible="1"/>
+                                    <field name="from_l"/>
+                                    <field name="to_l"/>
+                                    <field name="travel_mode" options="{'no_create_edit': True}"/>
+                                    <field name="remarks"/>
+                                </tree>
+                            </field>
+                            <group class="oe_subtotal_footer oe_right" colspan="2" >
+                                <field name="currency_id" invisible="1"/>
+                                <field name="amount_claimed" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+
+                            </group>
                         </page>
                     </notebook>
                 </sheet>
@@ -293,7 +340,7 @@
 
         <!--============Action view of Employee LTC claim Draft============-->
     <record id="employeeltc_claim_action_draft" model="ir.actions.act_window">
-        <field name="name">claim Request</field>
+        <field name="name">Claim Request</field>
         <field name="res_model">employee.ltc.claim</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
@@ -304,7 +351,7 @@
 
     <!--============Action view of Employee LTC claim To Approve============-->
     <record id="employeeltc_claim_action_to_approve" model="ir.actions.act_window">
-        <field name="name">claim Request</field>
+        <field name="name">Claim Request</field>
         <field name="res_model">employee.ltc.claim</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
@@ -316,7 +363,7 @@
 
     <!--============Action view of Employee LTC claim Approved============-->
     <record id="employeeltc_claim_action_approved" model="ir.actions.act_window">
-        <field name="name">claim Request</field>
+        <field name="name">Claim Request</field>
         <field name="res_model">employee.ltc.claim</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
@@ -328,7 +375,7 @@
 
     <!--============Action view of Employee LTC claim Rejected============-->
     <record id="employeeltc_claim_action_rejected" model="ir.actions.act_window">
-        <field name="name">claim Request</field>
+        <field name="name">Claim Request</field>
         <field name="res_model">employee.ltc.claim</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
@@ -396,20 +443,15 @@
         <field name="model">employee.ltc.journey</field>
         <field name="arch" type="xml">
             <tree string="LTC" editable="bottom">
-                <field name="departure_timings" required="1"/>
-                <field name="arrival_timings" required="1"/>
                 <field name="from_l" required="1"/>
                 <field name="to_l" required="1"/>
+                <field name="departure_timings" required="1"/>
+                <field name="arrival_timings" required="1"/>
+                <field name="travel_mode" required="1"/>
                 <field name="distance"/>
-                <field name="mode_of_travlel" required="1"/>
-                <field name="coc_air" attrs="{'invisible':[('mode_of_travlel','!=','air')],'required':[('mode_of_travlel','=','air')]}"/>
-                <field name="coc_train" attrs="{'invisible':[('mode_of_travlel','!=','train')],'required':[('mode_of_travlel','=','train')]}"/>
-                <field name="coc_bus" attrs="{'invisible':[('mode_of_travlel','!=','bus')],'required':[('mode_of_travlel','=','bus')]}"/>
-                <field name="no_of_persons"/>
-                <field name="ticket_attach"/>
                 <field name="fair_paid"/>
-                <field name="not_connected_by_train"/>
-
+                <field name="ticket_no"/>
+                <field name="ticket_attach"/>
             </tree>
         </field>
     </record>

@@ -15,8 +15,9 @@
     'data': [
         'security/ir.model.access.csv',
         'security/ltc_security.xml',
+        'data/ltc_mode_demo_data.xml',
         'views/employee_ltc.xml',
-        'views/ltc_ledger.xml',
+        'views/ltc_configuration.xml',
         'report/ltc_report.xml',
 
 

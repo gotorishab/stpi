@@ -3,18 +3,13 @@ from odoo.exceptions import ValidationError
 from dateutil.relativedelta import relativedelta
 from datetime import datetime, date
 
-
-
-
 class EmployeeLtcAdvance(models.Model):
     _name = 'employee.ltc.advance'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _description='Advance Request'
 
-
     def _default_employee(self):
         return self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
-
 
     @api.onchange('block_year')
     def change_slect_leave(self):
@@ -40,6 +35,7 @@ class EmployeeLtcAdvance(models.Model):
     single_fare=fields.Float('Single Train Fare/ Bus fare from the office to Place of Visit by Shortest Route',track_visibility='always')
     single_fare_approved=fields.Float('Approved Amount',track_visibility='always')
     attach_file = fields.Binary('Attach a File',track_visibility='always')
+    all_particulars_verified=fields.Selection([('yes', 'Yes'), ('no', 'No')], default='yes', string='All particulars verified?', track_visibility='always')
     relative_ids = fields.One2many('family.details.ltc','relative_id', string='Relatives')
     are_you_coming = fields.Boolean('Are you coming?')
     family_details = fields.Many2many('employee.relative', string='Family Details', domain="[('employee_id', '=', employee_id),('ltc', '=', True)]",track_visibility='always')
@@ -182,50 +178,94 @@ class EmployeeLtcAdvance(models.Model):
         sequence = 'LTC' + seq
         res.ltc_sequence = sequence
         pp = datetime.now().date() - relativedelta(years=4)
-        val_ids = self.env['ledger.ltc'].search([
-            ('employee_id', '=', res.employee_id.id),
-            ('ltc_date', '>=', pp),
-        ])
-        if res.employee_id.date_of_join + relativedelta(year=8) >= datetime.now().date():
-            count_india = 0
-            count_home = 0
-            for ltc_pre in val_ids:
-                if ltc_pre.place_of_trvel == res.place_of_trvel:
-                    if ltc_pre.block_year == res.block_year.id:
+        if res.are_you_coming == True:
+            val_ids = self.env['ledger.ltc'].search([
+                ('employee_id', '=', res.employee_id.id),
+                ('relative_name', '=', res.employee_id.name),
+                ('ltc_date', '>=', pp),
+            ])
+            if res.employee_id.date_of_join + relativedelta(year=8) >= datetime.now().date():
+                count_india = 0
+                count_home = 0
+                for ltc_pre in val_ids:
+                    if ltc_pre.place_of_trvel == res.place_of_trvel and ltc_pre.block_year == res.block_year:
+                            raise ValidationError(
+                                _('You are not allowed to take LTC for this block year'))
+                    if ltc_pre.place_of_trvel == 'india':
+                        count_india += 1
+                    if res.place_of_trvel == 'india' and count_india > 1:
+                        raise ValidationError(
+                            _(
+                                'You are not allowed to take LTC for this block year as you are able to take Anywhere in India LTC, once in 4 years'))
+                    if ltc_pre.place_of_trvel == 'hometown':
+                        count_home += 1
+                    if res.place_of_trvel == 'hometown' and count_home > 4 :
+                        raise ValidationError(
+                            _(
+                                'You are not allowed to take LTC for this block year as you are able to take Hometown LTC, maximum of 4 times in 4 years'))
+            else:
+                count_total = 0
+                count_india = 0
+                for ltc_pre in val_ids:
+                    if ltc_pre.place_of_trvel == res.place_of_trvel and ltc_pre.block_year == res.block_year:
+                            raise ValidationError(
+                                _('You are not allowed to take LTC for this block year'))
+                    if ltc_pre.place_of_trvel == 'india':
+                        count_india += 1
+                    if res.place_of_trvel == 'india' and count_india > 1 :
+                        raise ValidationError(
+                            _(
+                                'You are not allowed to take LTC for this block year as you are able to take Anywhere in India LTC, once in 4 years'))
+                    if ltc_pre.place_of_trvel == 'hometown':
+                                count_india += 1
+                    if res.place_of_trvel == 'hometown' and count_india > 2:
+                        raise ValidationError(
+                            _(
+                                'You are not allowed to take LTC for this block year as you are able to take Hometown LTC, twice in 4 years'))
+        for lines in res.relative_ids:
+            rel_ids = self.env['ledger.ltc'].search([
+                ('employee_id', '=', res.employee_id.id),
+                ('relative_name', '=', lines.name.name),
+                ('ltc_date', '>=', pp),
+            ])
+            if res.employee_id.date_of_join + relativedelta(year=8) >= datetime.now().date():
+                count_india = 0
+                count_home = 0
+                for ltc_pre in rel_ids:
+                    if ltc_pre.place_of_trvel == res.place_of_trvel and ltc_pre.block_year == res.block_year:
+                            raise ValidationError(
+                                _('You are not allowed to take LTC for this block year'))
+                    if ltc_pre.place_of_trvel == 'india':
+                        count_india += 1
+                    if res.place_of_trvel == 'india' and count_india > 1:
+                        raise ValidationError(
+                            _(
+                                'You are not allowed to take LTC for this block year as you are able to take Anywhere in India LTC, once in 4 years'))
+                    if ltc_pre.place_of_trvel == 'hometown':
+                        count_home += 1
+                    if res.place_of_trvel == 'hometown' and count_home > 4:
+                        raise ValidationError(
+                            _(
+                                'You are not allowed to take LTC for this block year as you are able to take Hometown LTC, maximum of 4 times in 4 years'))
+            else:
+                count_total = 0
+                count_india = 0
+                for ltc_pre in rel_ids:
+                    if res.place_of_trvel == ltc_pre.place_of_trvel and res.block_year == ltc_pre.block_year:
                         raise ValidationError(
                             _('You are not allowed to take LTC for this block year'))
-                if ltc_pre.place_of_trvel == 'india':
-                    count_india += 1
-                if res.place_of_trvel == 'india' and count_india > 1:
-                    raise ValidationError(
-                        _(
-                            'You are not allowed to take LTC for this block year as you are able to take Anywhere in India LTC, once in 4 years'))
-                if ltc_pre.place_of_trvel == 'hometown':
-                    count_home += 1
-                if res.place_of_trvel == 'hometown' and count_home > 4 :
-                    raise ValidationError(
-                        _(
-                            'You are not allowed to take LTC for this block year as you are able to take Hometown LTC, maximum of 4 times in 4 years'))
-        else:
-            count_total = 0
-            count_india = 0
-            for ltc_pre in val_ids:
-                if ltc_pre.place_of_trvel == res.place_of_trvel:
-                    if ltc_pre.block_year == res.block_year.id:
+                    if ltc_pre.place_of_trvel == 'india':
+                        count_india += 1
+                    if res.place_of_trvel == 'india' and count_india > 1:
                         raise ValidationError(
-                            _('You are not allowed to take LTC for this block year'))
-                if ltc_pre.place_of_trvel == 'india':
-                    count_india += 1
-                if res.place_of_trvel == 'india' and count_india > 1 :
-                    raise ValidationError(
-                        _(
-                            'You are not allowed to take LTC for this block year as you are able to take Anywhere in India LTC, once in 4 years'))
-                if ltc_pre.place_of_trvel == 'hometown':
-                            count_india += 1
-                if res.place_of_trvel == 'hometown' and count_india > 2:
-                    raise ValidationError(
-                        _(
-                            'You are not allowed to take LTC for this block year as you are able to take Hometown LTC, twice in 4 years'))
+                            _(
+                                'You are not allowed to take LTC for this block year as you are able to take Anywhere in India LTC, once in 4 years'))
+                    if ltc_pre.place_of_trvel == 'hometown':
+                        count_india += 1
+                    if res.place_of_trvel == 'hometown' and count_india > 2:
+                        raise ValidationError(
+                            _(
+                                'You are not allowed to take LTC for this block year as you are able to take Hometown LTC, twice in 4 years'))
         return res
 
     @api.multi
@@ -254,111 +294,6 @@ class EmployeeLtcAdvance(models.Model):
 
 
 
-
-class EmployeeLtcClaim(models.Model):
-    _name = 'employee.ltc.claim'
-    _inherit = ['mail.thread', 'mail.activity.mixin']
-    _description='Claim Submission'
-
-
-    def _default_employee(self):
-        return self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
-
-
-    employee_id = fields.Many2one('hr.employee', string='Employee', default=_default_employee,track_visibility='always')
-    branch_id = fields.Many2one('res.branch', string='Branch', store=True)
-    job_id = fields.Many2one('hr.job', string='Functional Designation', store=True)
-    department_id = fields.Many2one('hr.department', string='Department', store=True)
-    amount_claimed = fields.Char('Advance Amount Claimed', compute='_compute_fetch_ltc_details',track_visibility='always')
-    ltc_availed_for = fields.Char('LTC availed for', compute='_compute_fetch_ltc_details',track_visibility='always')
-    leave_period = fields.Char('Leave period', compute='_compute_fetch_ltc_details',track_visibility='always')
-    place_of_visit = fields.Char('Place of visit',track_visibility='always')
-    detail_of_journey = fields.One2many('employee.ltc.journey','relate_to_ltc', string='Details of Journey',track_visibility='always')
-    state = fields.Selection(
-        [('draft', 'Draft'), ('to_approve', 'To Approve'), ('approved', 'Approved'), ('rejected', 'Rejected')
-         ], required=True, default='draft',track_visibility='always', string='Status')
-
-
-
-
-    @api.onchange('employee_id')
-    @api.constrains('employee_id')
-    def onchange_emp_get_base(self):
-        for rec in self:
-            rec.job_id = rec.employee_id.job_id.id
-            rec.department_id = rec.employee_id.department_id.id
-            rec.branch_id = rec.employee_id.branch_id.id
-
-
-
-    @api.multi
-    def button_to_approve(self):
-        for rec in self:
-            rec.write({'state': 'to_approve'})
-
-    @api.multi
-    def button_approved(self):
-        for rec in self:
-            rec.write({'state': 'approved'})
-
-    @api.multi
-    def button_reject(self):
-        for rec in self:
-            rec.write({'state': 'rejected'})
-
-    @api.multi
-    def button_reset_to_draft(self):
-        for rec in self:
-            rec.write({'state': 'draft'})
-
-
-    @api.depends('employee_id')
-    def _compute_fetch_ltc_details(self):
-        for rec in self:
-            if rec.employee_id:
-                ltc_ad = self.env['employee.ltc.advance'].search([('employee_id','=',rec.employee_id.id)],order='ltc_sequence desc', limit=1)
-                rec.amount_claimed = ltc_ad.amount
-                rec.leave_period =ltc_ad.leave_period
-                rec.ltc_availed_for = ltc_ad.ltc_sequence
-
-    @api.multi
-    @api.depends('ltc_availed_for','employee_id')
-    def name_get(self):
-        res = []
-        name = ''
-        for record in self:
-            if record.ltc_availed_for and record.employee_id:
-                name = str(record.employee_id.name) + ' - ' + str(record.ltc_availed_for) + ' - LTC Claim'
-            else:
-                name = 'LTC Claim'
-            res.append((record.id, name))
-        return res
-
-
-class JourneyDetails(models.Model):
-    _name = 'employee.ltc.journey'
-    _description = "Employee LTC Journey"
-
-    employee_id = fields.Many2one('hr.employee', string='Employee')
-    relate_to_ltc = fields.Many2one('employee.ltc.claim')
-    departure_timings = fields.Datetime('Date & Time of Departure')
-    arrival_timings = fields.Datetime('Date & Time of Arrival')
-    from_l = fields.Char('From')
-    to_l = fields.Char('To')
-    distance = fields.Char('Distance(in Kms.)')
-
-    mode_of_travlel=fields.Selection([('air', 'By Air'), ('train', 'By Train'), ('bus', 'By Bus'), ('car', 'By Car')], string='Mode of Travel')
-
-    coc_air=fields.Selection([('first', 'First Class'), ('business', 'Business Class'), ('economy', 'Economy Class')], string='Class of Accomodation')
-
-    coc_train=fields.Selection([('ac1', 'AC 1-Tier'), ('ac2', 'AC 2-Tier'), ('ac3', 'AC 3-Tier'), ('1st', 'First Class'), ('ac_chair', 'A.C Chair Class'), ('sleeper', 'Sleeper'), ('2nd_sit', 'Second Sitting')], string='Class of Accomodation')
-
-    coc_bus=fields.Selection([('ac', 'AC'), ('n_ac', 'Non AC'), ('seater', 'Seater'), ('semi_sleep', 'Semi Sleeper'), ('sleeper', 'Sleeper')], string='Class of Accomodation')
-
-    no_of_persons = fields.Char('No. of persons')
-    fair_paid = fields.Char('Fair Paid')
-    ticket_attach = fields.Binary('Attach Ticket')
-    not_connected_by_train = fields.Boolean('Not Connected by Trains')
 
 
 

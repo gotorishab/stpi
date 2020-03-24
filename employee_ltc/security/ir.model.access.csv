@@ -4,4 +4,8 @@ access_employee_ltc_claim,employee.ltc.claim,model_employee_ltc_claim,base.group
 access_employee_ltc_journey,employee.ltc.journey,model_employee_ltc_journey,base.group_user,1,1,1,1
 access_block_year,block.year,model_block_year,base.group_user,1,1,1,1
 access_family_details_ltc,family.details.ltc,model_family_details_ltc,base.group_user,1,1,1,1
+access_family_claim_ltc,family.claim.ltc,model_family_claim_ltc,base.group_user,1,1,1,1
 access_ledger_ltc,ledger.ltc,model_ledger_ltc,base.group_user,1,1,1,1
+access_travel_mode_ltc,travel.mode.ltc,model_travel_mode_ltc,base.group_user,1,1,1,1
+access_employee_ltc_journey_gov,employee.ltc.journey.gov,model_employee_ltc_journey_gov,base.group_user,1,1,1,1
+access_employee_ltc_journey_train,employee.ltc.journey.train,model_employee_ltc_journey_train,base.group_user,1,1,1,1
