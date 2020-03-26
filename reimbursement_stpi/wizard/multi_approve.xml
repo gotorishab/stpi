@@ -28,6 +28,6 @@
             multi="True"
             key2="client_action_multi" name="Approve/Reject"
                 res_model="reimbursement.approve" src_model="reimbursement"
-            view_mode="form" target="new" view_type="form"/>
+            view_mode="form" target="new" view_type="form" groups ="reimbursement_stpi.group_approving_authority"/>
     </data>
 </odoo>
