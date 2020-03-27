@@ -17,6 +17,9 @@
                            string="Stock Requests"/>
                     <field name="stock_request_ids" invisible="1"/>
                 </button>
+                <xpath expr = "//button[@name='button_scrap']" position="attributes">
+                <attribute name = "groups">stock.group_stock_manager</attribute>
+            </xpath>
             </div>
         </field>
     </record>

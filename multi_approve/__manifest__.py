@@ -11,9 +11,11 @@
 	'depends': ['base','tds','tour_request','reimbursement_stpi'],
 	'data': [
 
-		'wizard/reimbursement.xml'
-		'wizard/tds.xml'
-		'wizard/tour_request.xml'
+		'wizard/reimbursement.xml',
+		'wizard/tds.xml',
+		'wizard/tour_request.xml',
+		'wizard/tour_claim.xml',
+		'wizard/vehicle_request.xml',
 	],
 	'images': [],
 	'license': 'AGPL-3',

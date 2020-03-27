@@ -24,7 +24,7 @@
 
 
 
-    <act_window id="action_cheque_requests_action_confirm"
+    <act_window id="action_reimbursement_action_confirm"
             multi="True"
             key2="client_action_multi" name="Approve/Reject"
                 res_model="reimbursement.approve" src_model="reimbursement"

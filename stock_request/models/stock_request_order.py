@@ -3,6 +3,8 @@
 
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError, AccessError
+from dateutil.relativedelta import relativedelta
+from datetime import datetime, date, timedelta
 
 REQUEST_STATES = [
     ('draft', 'Draft'),
@@ -21,6 +23,9 @@ class StockRequestOrder(models.Model):
         res = super(StockRequestOrder, self).default_get(fields)
         warehouse = None
         location = None
+        if self.env.user.default_branch_id:
+            branch = self.env.user.default_branch_id
+            res['branch_id'] = branch.id
         if 'warehouse_id' not in res and res.get('company_id'):
             if self.env.user.warehouse_id:
                 warehouse = self.env.user.warehouse_id
@@ -37,6 +42,7 @@ class StockRequestOrder(models.Model):
         if warehouse:
             res['warehouse_id'] = warehouse.id
             res['location_id'] = location.id
+
 #             print(">>>>>>>>>>>>>>>",res['location_id'])
         return res
 
@@ -83,6 +89,8 @@ class StockRequestOrder(models.Model):
         default=lambda self: self.env['res.company']._company_default_get(
             'stock.request.order'),
     )
+    date = fields.Date(string="Requested Date", default=fields.Date.today(), readonly=True, track_visibility='always')
+
     expected_date = fields.Datetime(
         'Expected Date', default=fields.Datetime.now, index=True,
         required=True, readonly=True,
@@ -108,6 +116,8 @@ class StockRequestOrder(models.Model):
                                    compute='_compute_picking_ids',
                                    readonly=True,
                                    )
+    branch_id = fields.Many2one('res.branch', string="Branch", store=True)
+
     stock_request_ids = fields.One2many(
         'stock.request',
         inverse_name='order_id',
