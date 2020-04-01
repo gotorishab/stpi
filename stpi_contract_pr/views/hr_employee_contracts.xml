@@ -20,6 +20,8 @@
 
                 <xpath expr="//group[@name='salary_and_advantages']" position="after">
                     <group name = 'Basic Details'>
+                        <field name = 'transport_deduction'/>
+                        <field name = 'pf_deduction'/>
                         <field name = 'basicinc'/>
                         <field name = 'da'/>
                         <field name = 'updated_basic'/>

@@ -106,6 +106,7 @@ class HrEmployee(models.Model):
     #Identification
     identify_id = fields.Char(string='Identification No.',copy=False, store=True, track_visibility='always', compute='_compute_identify_no')
     pan_no = fields.Char('PAN Card No.',track_visibility='always')
+    uan_no = fields.Char('UAN No.',track_visibility='always')
     pan_upload = fields.Binary('Upload(PAN)',track_visibility='always')
     aadhar_no = fields.Char('Aadhar Card No.',track_visibility='always')
     aadhar_upload = fields.Binary('Upload(Aadhar)',track_visibility='always')

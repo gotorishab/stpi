@@ -173,6 +173,7 @@
                             </group>
                             <group name="identify_id" string="Identification Documents">
                                 <field name="identification_id" groups="hr.group_hr_user" invisible="True"/>
+                                <field name="uan_no"/>
                                 <field name="pan_no" required="True"/>
                                 <field name="pan_upload"/>
                                 <field name="aadhar_no" required="True"/>

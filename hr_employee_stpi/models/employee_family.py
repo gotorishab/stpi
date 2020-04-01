@@ -97,3 +97,15 @@ class Employeefamily(models.Model):
     def onchange_relative_type(self):
         pass
 
+
+    @api.multi
+    @api.depends('name','relate_type','age')
+    def name_get(self):
+        res = []
+        for record in self:
+            if record.name and record.relate_type and record.age:
+                name = str(record.name) + ' [' + str(record.relate_type.name) + ':' + str(int(record.age)) + ']'
+            else:
+                name = 'Relative'
+            res.append((record.id, name))
+        return res
