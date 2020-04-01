@@ -9,13 +9,14 @@ class PfWidthdrawl(models.Model):
     _name="pf.widthdrawl"
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = "PF Widthdrawl"
-    _rec_name = 'employee_id'
+    # _rec_name = 'employee_id'
 
 
     def _default_employee(self):
         return self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
 
-
+    name = fields.Char(string='Name')
+    date = fields.Date(string="Requested Date", default=fields.Date.today())
     employee_id=fields.Many2one('hr.employee', string="Request By", default=_default_employee,track_visibility='always',)
     advance_amount=fields.Float(string="Advance Amount",track_visibility='always',)
     designation=fields.Many2one('hr.job', string="Designation",track_visibility='always',)
@@ -57,6 +58,10 @@ class PfWidthdrawl(models.Model):
     @api.multi
     def button_approved(self):
         for rec in self:
+            pf_balance = self.env['pf.employee'].search([('employee_id', '=', self.employee_id.id)],limit=1)
+            #         print("////////////////////////",pf_balance)
+            if pf_balance:
+                pf_balance.get_pf_details()
             pf_withd = []
             pf_employee = self.env['pf.employee'].search([('employee_id','=',self.employee_id.id)])
             print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<",pf_employee)
@@ -78,6 +83,30 @@ class PfWidthdrawl(models.Model):
         for rec in self:
             rec.write({'state': 'draft'})
 
+
+
+
+    @api.model
+    def create(self, vals):
+        res =super(PfWidthdrawl, self).create(vals)
+        sequence = ''
+        seq = self.env['ir.sequence'].next_by_code('pf.widthdrawl')
+        sequence = str(seq)
+        res.name = sequence
+        return res
+
+    @api.multi
+    @api.depends('name')
+    def name_get(self):
+        res = []
+        name = ''
+        for record in self:
+            if record.employee_id:
+                name = str(record.employee_id.name) + ' - PF Withdrawal' + str(record.name)
+            else:
+                name = 'PF Withdrawal'
+            res.append((record.id, name))
+        return res
 
 #     @api.constrains('rule')
 #     @api.onchange('rule')
@@ -142,7 +171,7 @@ class PfEmployee(models.Model):
         return self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
 
     employee_id=fields.Many2one('hr.employee', string="Request By", default=_default_employee)
-    advance_amount = fields.Float('Advance Amount Taken', compute='_compute_amount')
+    advance_amount = fields.Float('Advance Amount Taken')
     advance_left = fields.Float('Amount Left', compute='_compute_amount')
     amount = fields.Float('Amount', compute='_compute_amount')
     pf_details_ids=fields.One2many('pf.employee.details', 'pf_details_id', string="Employee")
@@ -171,7 +200,7 @@ class PfEmployee(models.Model):
             for ad in pf_advance:
                 sum1 += ad.advance_amount
             rec.amount = sum
-            rec.advance_amount = sum1
+            # rec.advance_amount = sum1
             rec.advance_left = rec.amount - rec.advance_amount
     
 
@@ -179,6 +208,7 @@ class PfEmployee(models.Model):
     def get_pf_details(self):
         pf_details_ids = []
         for rec in self:
+            advance_amount = 0.00
             rec.pf_details_ids.unlink()
             if rec.employee_id:
                 pay_rules = self.env['hr.payslip.line'].search(
@@ -186,27 +216,56 @@ class PfEmployee(models.Model):
                      ('slip_id.state', '=', 'done'),
                      ('salary_rule_id.pf_register', '=', True),
                      ])
-                print("????????????????????????",pay_rules)
                 if pay_rules:
                     for i in pay_rules:
                         pf_details_ids.append((0, 0, {
-                            'pf_details_id': self.id,
+                            'pf_details_id': rec.id,
+                            'employee_id': rec.employee_id.id,
+                            'type': 'Deposit',
+                            'pf_code': i.code,
+                            'description': i.name,
                             'date': datetime.now().date(),
                             'amount': i.total,
                             'reference': i.slip_id.number,
                         }))
-                    self.pf_details_ids = pf_details_ids
+                pf_advance = self.env['pf.widthdrawl'].search(
+                    [('employee_id', '=', rec.employee_id.id),
+                     ('state', '=', 'approved')], limit=1)
+                if pf_advance:
+                    for i in pf_advance:
+                        pf_details_ids.append((0, 0, {
+                            'pf_details_id': rec.id,
+                            'employee_id': rec.employee_id.id,
+                            'type': 'Withdrawal',
+                            'pf_code': i.pf_type.name,
+                            # 'description': i.name,
+                            'date': i.date,
+                            'amount': i.advance_amount,
+                            'reference': i.name,
+                        }))
+                rec.pf_details_ids = pf_details_ids
+                for lines in rec.pf_details_ids:
+                    if lines.type == 'Withdrawal':
+                        advance_amount += lines.amount
+                rec.advance_amount = advance_amount
 
 
 class PfEmployeeDetails(models.Model):
     _name = "pf.employee.details"
     _description = "PF"
 
+
     pf_details_id = fields.Many2one('pf.employee', string="Employee")
+    employee_id=fields.Many2one('hr.employee')
     date = fields.Date('Date')
+    type = fields.Selection([
+                            ('Deposit', 'Deposit'),
+                            ('Withdrawal', 'Withdrawal'),
+                            ], string="Type")
+    pf_code = fields.Char(string='PF code')
+    description = fields.Char(string='Description')
     amount = fields.Float('Amount')
     reference = fields.Char('Reference')
-
 
 class AbcAb(models.Model):
     _name = "abc.ab"

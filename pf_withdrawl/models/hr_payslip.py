@@ -8,7 +8,7 @@ class HrPayslip(models.Model):
     @api.multi
     def action_payslip_done(self):
         res =  super(HrPayslip, self).action_payslip_done()
-        pf_balance = self.env['pf.employee'].search([('employee_id','=',self.employee_id.id)])
+        pf_balance = self.env['pf.employee'].search([('employee_id','=',self.employee_id.id)],limit=1)
 #         print("////////////////////////",pf_balance)
         if pf_balance:
             pf_balance.get_pf_details()
