@@ -11,6 +11,7 @@ class ResourceCalendar(models.Model):
     
     branch_id = fields.Many2one('res.branch',string="Branch",required=True)
     max_allowed_rh = fields.Float(string='Max Allowed Restricted Holiday')
+    max_allowed_gh = fields.Float(string='Max Allowed Gestured Holiday')
     from_date = fields.Date(string='From Date')
     to_date = fields.Date(string='To Date')
     week_list = fields.Selection([
@@ -104,8 +105,28 @@ class ResourceCalendarLeaves(models.Model):
     _description= ' Resource Calendar Leaves'
     
     date = fields.Date(string="Date",required=True)
+    holiday_type = fields.Selection([('rh', 'Restricted Holiday'),
+                                      ('gh', 'Gestured Holiday')], string='Any of these holiday?',
+                                     )
     restricted_holiday = fields.Boolean(string='Restricted Holiday')
-    
+    gestured_holiday = fields.Boolean(string='Gestured Holiday')
+
+    @api.onchange('holiday_type')
+    @api.constrains('holiday_type')
+    def onchange_h_type(self):
+        for rec in self:
+            if rec.holiday_type == 'rh':
+                rec.restricted_holiday = True
+                rec.gestured_holiday = False
+            elif rec.holiday_type == 'gh':
+                rec.restricted_holiday = False
+                rec.gestured_holiday = True
+            else:
+                rec.restricted_holiday = False
+                rec.gestured_holiday = False
+
+
+
     @api.onchange('date')
     def onchange_date(self):
         a = time()

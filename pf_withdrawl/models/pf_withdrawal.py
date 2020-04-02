@@ -5,8 +5,7 @@ from odoo.exceptions import ValidationError, UserError
 
 
 class PfWidthdrawl(models.Model):
-
-    _name="pf.widthdrawl"
+    _name = "pf.widthdrawl"
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = "PF Widthdrawl"
     # _rec_name = 'employee_id'
@@ -58,21 +57,17 @@ class PfWidthdrawl(models.Model):
     @api.multi
     def button_approved(self):
         for rec in self:
-            pf_balance = self.env['pf.employee'].search([('employee_id', '=', self.employee_id.id)],limit=1)
+            rec.write({'state': 'approved'})
+            pf_balance = self.env['pf.employee'].search([('employee_id', '=', rec.employee_id.id)],limit=1)
             #         print("////////////////////////",pf_balance)
             if pf_balance:
                 pf_balance.get_pf_details()
             pf_withd = []
-            pf_employee = self.env['pf.employee'].search([('employee_id','=',self.employee_id.id)])
-            print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<",pf_employee)
+            pf_employee = self.env['pf.employee'].search([('employee_id','=',rec.employee_id.id)])
             if pf_employee:
                 for pf_emp in pf_employee:
                     pf_emp.amount = pf_emp.amount - self.advance_amount
-                    pf_emp.pf_withdrwal_amount = pf_emp.amount 
-                    print("???????????????????????????/",pf_emp,pf_emp.amount,pf_emp.pf_withdrwal_amount)
-#                 raise ValidationError(_("::::::::::::::::::::::"))
-            rec.write({'state': 'approved'})
-
+                    pf_emp.pf_withdrwal_amount = pf_emp.amount
     @api.multi
     def button_reject(self):
         for rec in self:
@@ -84,14 +79,12 @@ class PfWidthdrawl(models.Model):
             rec.write({'state': 'draft'})
 
 
-
-
     @api.model
     def create(self, vals):
         res =super(PfWidthdrawl, self).create(vals)
         sequence = ''
         seq = self.env['ir.sequence'].next_by_code('pf.widthdrawl')
-        sequence = str(seq)
+        sequence = 'PF Withdrawal - ' + str(seq)
         res.name = sequence
         return res
 
@@ -99,14 +92,14 @@ class PfWidthdrawl(models.Model):
     @api.depends('name')
     def name_get(self):
         res = []
-        name = ''
         for record in self:
-            if record.employee_id:
-                name = str(record.employee_id.name) + ' - PF Withdrawal' + str(record.name)
+            if record.name:
+                name = record.name
             else:
                 name = 'PF Withdrawal'
             res.append((record.id, name))
         return res
+
 
 #     @api.constrains('rule')
 #     @api.onchange('rule')
@@ -202,7 +195,20 @@ class PfEmployee(models.Model):
             rec.amount = sum
             # rec.advance_amount = sum1
             rec.advance_left = rec.amount - rec.advance_amount
-    
+
+
+
+    @api.model
+    def create(self, values):
+        res = super(PfEmployee, self).create(values)
+        count = 0
+        search_id = self.env['pf.employee'].search(
+            [('employee_id', '=', res.employee_id.id)])
+        for emp in search_id:
+            count += 1
+        if count > 1:
+            raise ValidationError("You are not apply for more thn one")
+
 
     @api.multi
     def get_pf_details(self):
@@ -230,7 +236,7 @@ class PfEmployee(models.Model):
                         }))
                 pf_advance = self.env['pf.widthdrawl'].search(
                     [('employee_id', '=', rec.employee_id.id),
-                     ('state', '=', 'approved')], limit=1)
+                     ('state', '=', 'approved')])
                 if pf_advance:
                     for i in pf_advance:
                         pf_details_ids.append((0, 0, {
@@ -238,7 +244,7 @@ class PfEmployee(models.Model):
                             'employee_id': rec.employee_id.id,
                             'type': 'Withdrawal',
                             'pf_code': i.pf_type.name,
-                            # 'description': i.name,
+                            'description': ' ',
                             'date': i.date,
                             'amount': i.advance_amount,
                             'reference': i.name,

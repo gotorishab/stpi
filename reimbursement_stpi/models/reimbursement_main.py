@@ -41,7 +41,7 @@ class Reimbursement(models.Model):
         ('quarterly', 'Newspaper Reimbursements'),
     ], string='Reimbursement Type', store=True, track_visibility='always')
     reimbursement_sequence = fields.Char('Reimbursement number', track_visibility='always')
-    employee_id = fields.Many2one('hr.employee', store=True, track_visibility='always')
+    employee_id = fields.Many2one('hr.employee', store=True, track_visibility='always', string='Requested By')
     job_id = fields.Many2one('hr.job', string='Functional Designation', store=True, track_visibility='always')
     branch_id = fields.Many2one('res.branch', string='Branch', store=True, track_visibility='always')
     department_id = fields.Many2one('hr.department', string='Department', store=True, track_visibility='always')

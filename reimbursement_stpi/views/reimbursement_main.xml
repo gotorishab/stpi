@@ -42,8 +42,12 @@
                             <field name="job_id" readonly="1"/>
                             <field name="branch_id" readonly="1"/>
                             <field name="department_id" readonly="1"/>
+<!--                            <label string="Claim Submission Period :" attrs="{'invisible':['name','!=','telephone']}"/>-->
                             <field name="name" attrs="{'readonly':[('state','not in',('draft'))], 'required':[('state','in',('draft'))]}"/>
-                            <field name="date_range" attrs="{'readonly':[('state','not in',('draft'))], 'required':[('state','in',('draft')),('name','not in',('briefcase'))],'invisible':[('name','in',('briefcase'))]}" options='{"no_create":1,"no_create_edit":1}'/>
+                            <label for="date_range" string="Claim Submission period"/>
+<!--                            <label for="date_range" string="Claim Submission period" attrs="{'invisible':[('name','not in',('telephone'))]}"/>-->
+<!--                            <label for="date_range" string="Date Range" attrs="{'invisible':[('name','in',('telephone'))]}"/>-->
+                            <field name="date_range" attrs="{'readonly':[('state','not in',('draft'))], 'required':[('state','in',('draft')),('name','not in',('briefcase'))],'invisible':[('name','in',('briefcase'))]}" options='{"no_create":1,"no_create_edit":1}' nolabel="1"/>
                             <field name="brief_date" attrs="{'invisible':[('name','not in',('briefcase'))],'required':[('name','in',('briefcase'))],'readonly':[('state','not in',('draft'))]}"/>
                             <field name="lunch_tds_amt" invisible="1"/>
                         </group>

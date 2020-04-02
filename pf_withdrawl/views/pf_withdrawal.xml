@@ -7,6 +7,7 @@
         <field name="model">pf.widthdrawl</field>
         <field name="arch" type="xml">
             <tree string="PF Widthdrawl">
+                <field name="name"/>
                 <field name="employee_id"/>
                 <field name="advance_amount" />
                 <field name="designation"/>
@@ -82,7 +83,7 @@
         <field name="name">pf.widthdrawl.search</field>
         <field name="model">pf.widthdrawl</field>
         <field name="arch" type="xml">
-           <search string="PF Withdrawl">
+           <search string="PF withdrawal">
                 <filter string="PF Withdrwal" name="pf_withdrawl" domain="[('employee_id.user_id.id', '=', uid)]" />
                 <field name="employee_id" string="Employee"/>
                 <field name="branch_id" string="Branch"/>
@@ -97,7 +98,7 @@
 
     <!-- HR employee pf widthdrawl action New view-->
      <record id="action_hr_pf_widthdrawl" model="ir.actions.act_window">
-        <field name="name">PF Widthdrawl New</field>
+        <field name="name">PF Widthdrawl - New</field>
         <field name="res_model">pf.widthdrawl</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
@@ -107,7 +108,7 @@
 
     <!-- HR employee pf widthdrawl action To Approve view-->
     <record id="action_pf_widthdrawl_waiting_approval" model="ir.actions.act_window">
-        <field name="name">PF Widthdrawl To Approve</field>
+        <field name="name">PF Widthdrawl - To Approve</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">pf.widthdrawl</field>
         <field name="view_type">form</field>
@@ -118,7 +119,7 @@
     
     <!-- HR employee pf widthdrawl action Approved view-->
     <record id="action_pf_widthdrawl_waiting_approved" model="ir.actions.act_window">
-        <field name="name">PF Widthdrawl Approved</field>
+        <field name="name">PF Widthdrawl - Approved</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">pf.widthdrawl</field>
         <field name="view_type">form</field>
@@ -129,7 +130,7 @@
     
     <!-- HR employee pf widthdrawl action Rejected view-->
     <record id="action_pf_widthdrawl_waiting_rejected" model="ir.actions.act_window">
-        <field name="name">PF Widthdrawl Rejected</field>
+        <field name="name">PF Widthdrawl - Rejected</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">pf.widthdrawl</field>
         <field name="view_type">form</field>
@@ -140,7 +141,7 @@
     
     <!--PF Withdrwal by employee-->
     <record id="groupby_employee_action_employee" model="ir.actions.act_window">
-        <field name="name">PF Widthdrawl By Employee</field>
+        <field name="name">PF Widthdrawl - By Employee</field>
         <field name="res_model">pf.widthdrawl</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
@@ -152,7 +153,7 @@
     
     <!--pf.widthdrawl request by department-->
     <record id="groupby_department_action_employee" model="ir.actions.act_window">
-        <field name="name">PF Withdrawl By Department</field>
+        <field name="name">PF withdrawal - By Department</field>
         <field name="res_model">pf.widthdrawl</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
@@ -164,7 +165,7 @@
     
     <!--pf.widthdrawl request by branch-->
     <record id="groupby_branch_action_employee" model="ir.actions.act_window">
-        <field name="name">Pf Widthdrawl By Branch</field>
+        <field name="name">Pf Widthdrawl - By Branch</field>
         <field name="res_model">pf.widthdrawl</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
@@ -176,7 +177,7 @@
     
     <!--pf.widthdrawl request by status-->
     <record id="groupby_status_action_employee" model="ir.actions.act_window">
-        <field name="name">PF Widthdrawl By Status</field>
+        <field name="name">PF Widthdrawl - By Status</field>
         <field name="res_model">pf.widthdrawl</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
@@ -187,7 +188,7 @@
     
     <!--pf.widthdrawl request by all-->
     <record id="groupby_all_action_employee" model="ir.actions.act_window">
-        <field name="name">PF Widthdrawl By All</field>
+        <field name="name">PF Widthdrawl - By All</field>
         <field name="res_model">pf.widthdrawl</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
@@ -196,6 +197,13 @@
         <field name="search_view_id" ref="pf_withdrawl_search_view"/>
         <field name="view_id" ref="hr_pf_widthdrawl_tree_view_hide_create"/>
     </record>
+
+    <record id="seq_pf_widthdrawl_sequence" model="ir.sequence">
+        <field name="name">pf.widthdrawl</field>
+        <field name="code">pf.widthdrawl</field>
+        <field name="padding">3</field>
+        <field name="company_id" eval="False"/>
+     </record>
 
 
        <!-- HR employee pf widthdrawl Employee -->
@@ -276,7 +284,7 @@
             <field name="name">pf.employee.details.pivot</field>
             <field name="model">pf.employee.details</field>
             <field name="arch" type="xml">
-                <pivot string="Reimbursement Analysis">
+                <pivot string="PF Withdrawal Analysis">
                     <field name="employee_id" type="row"/>
                     <field name="date" type="row"/>
                     <field name="type" type="col"/>
@@ -296,13 +304,13 @@
 
      
     <menuitem id = "pf_withdrawl_menu"
-                  name = "PF Withdrawl"
+                  name = "PF withdrawal"
                   web_icon="pf_withdrawl,static/description/icon.png"
                   sequence="5"
                   />
                   
         <menuitem id ="pf_withdrawl_menu_id" 
-                    name="PF Withdrawl"  
+                    name="PF withdrawal"
                     parent="pf_withdrawl_menu" 
                     sequence="1"
                   />
@@ -340,35 +348,35 @@
                     />
                   
         <menuitem id ="pf_withdrawl_employee_id" 
-                name="PF Withdrawl by Employee"  
+                name="PF withdrawal by Employee"
                 parent="pf_withdrawl_menu_report_menu_id" 
                 sequence="7"
                 action="groupby_employee_action_employee"/>
         
         <menuitem id ="pf_withdrawl_by_department" 
                     action="groupby_department_action_employee"
-                    name="PF Withdrawl By Department"  
+                    name="PF withdrawal By Department"
                     sequence="3"
                     parent="pf_withdrawl_menu_report_menu_id" 
                   />
         
         <menuitem id ="pf_withdrawl_by_branch" 
                     action="groupby_branch_action_employee"
-                    name="PF Withdrawl By Branch"
+                    name="PF withdrawal By Branch"
                     sequence="4"  
                     parent="pf_withdrawl_menu_report_menu_id" 
                   />
         
         <menuitem id ="pf_withdrawl_by_status" 
                     action="groupby_status_action_employee"
-                    name="Pf Withdrawl By Status"
+                    name="PF withdrawal By Status"
                     sequence="5"  
                     parent="pf_withdrawl_menu_report_menu_id" 
                   />
                   
         <menuitem id ="pf_withdrawl_by_all" 
                     action="groupby_all_action_employee"
-                    name="PF Withdrawl By All"
+                    name="PF withdrawal By All"
                     sequence="6"  
                     parent="pf_withdrawl_menu_report_menu_id" 
                   />
