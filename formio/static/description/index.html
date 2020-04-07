@@ -116,6 +116,60 @@
 <section class="oe_container oe_dark">
   <div class="oe_row oe_spaced">
     <h2 class="oe_slogan" style="color:#875A7B;">Changelog</h2>
+    <h4 class="oe_mb16">2.0</h4>
+    <ul>
+      <li>
+        Odoo formio <strong>view types</strong> for Builder and Form.
+        Finally one can switch view types (form, formio) within the window action.
+      </li>
+      <li>
+        Moved the so-called <em>Form dock</em> (info bar) into the iframe. This updates the info on a (iframe) window reload.
+      </li>
+      <li>
+        Remove the <em>submit done url</em> implementation, which is useless in a backend usage/context.
+      </li>
+      <li>
+        Other improvements and simplification.
+      </li>
+    </ul>
+    <h4 class="oe_mb16">1.10</h4>
+    <ul>
+      <li>
+        Extend <code>formio.form create</code> methods with <code>_prepare_create_vals</code> method, which in turn specific modules could call to assign field <code>vals</code>.
+      </li>
+      <li>
+        Fix method <code>compute_res_fields</code> which stores fields regarding the resource model (made possible by change in former point).
+      </li>
+    </ul>
+    <h4 class="oe_mb16">1.9</h4>
+    <ul>
+      <li>
+        Computed fields regarding resource model: Store res_name and res_partner_id. Change dependent compute method.
+      </li>
+      <li>
+        Add (related) field submission partner.
+      </li>
+    </ul>
+    <h4 class="oe_mb16">1.8</h4>
+    <ul>
+      <li>
+        Change URLs and controllers FROM <code>/formio/form/&lt;action&gt;/&lt;string:uuid&gt;</code> URLs TO <code>/formio/form/&lt;string:uuid&gt;/&lt;action&gt;</code>. This solves issues regarding relative URLs from a Formio Javascript perspective (components).
+        The UUID was stripped by the Formio Javascript client API.<br/>
+        Should solve: <a href="https://github.com/novacode-nl/odoo-formio/issues/11" target="_blank">https://github.com/novacode-nl/odoo-formio/issues/11</a>
+      </li>
+      <li>
+        Remove 2 legacy (obsolete) controller methods for routes: <code>/formio/form/&lt;string:uuid&gt;</code> and <code>/formio/builder/&lt;int:builder_id&gt;</code>
+      </li>
+    </ul>
+    <h4 class="oe_mb16">1.7</h4>
+    <ul>
+      <li>
+        Prevent Javascript clashes between Odoo and Form.io. Hence remove all Odoo Javascript (assets) loading in the Form.io iframe.
+      </li>
+      <li>
+        Add and load standalone JsonRPC client.
+      </li>
+    </ul>
     <h4 class="oe_mb16">1.6</h4>
     <ul>
       <li>
@@ -137,13 +191,10 @@
     <h4 class="oe_mb16">1.4</h4>
     <ul>
       <li>
-        Click button to display the <strong>Form Builder</strong> in <strong>Full Screen</strong>.
-      </li>
-    </ul>
-    <h4 class="oe_mb16">1.3</h4>
-    <ul>
-      <li>
         Include and serve the Formio.js library assets (JS, CSS) within the module. Don't use CDN anymore.
+      </li>
+      <li>
+        Click button to display the <strong>Form Builder</strong> in <strong>Full Screen</strong>.
       </li>
     </ul>
     <h4 class="oe_mb16">1.3</h4>

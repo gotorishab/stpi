@@ -13,7 +13,7 @@ class MyVigilance(models.Model):
 
     vigilance_sequence = fields.Char('Vigilance number')
     reg_no = fields.Char(string = 'Registration number',track_visibility='always')
-    name = fields.Char(string="Name",track_visibility='always')
+    name = fields.Char(string="Case Name",track_visibility='always')
     date_of_receipt = fields.Date(string="Date of Receipt", default=fields.Date.today(),track_visibility='always')
     address = fields.Char(string="Address",track_visibility='always')
     district = fields.Char(string="District",track_visibility='always')
@@ -42,6 +42,11 @@ class MyVigilance(models.Model):
     def button_in_progress(self):
         for rec in self:
             rec.write({'state': 'in_progress'})
+
+    @api.multi
+    def button_re_open(self):
+        for rec in self:
+            rec.button_in_progress()
 
     @api.multi
     def button_register_actions(self):

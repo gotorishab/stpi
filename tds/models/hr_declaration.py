@@ -763,24 +763,11 @@ class HrDeclaration(models.Model):
                 raise ValidationError(
                     "This declaration is already applied for this duration, please correct the dates")
         sum=0
-        for lines in rec.tax_payment_ids:
+        for lines in res.tax_payment_ids:
             sum += lines.amount
-        if sum != rec.tax_payable_after_rebate:
+        if sum != res.tax_payable_after_rebate:
             raise ValidationError(
-                "Tax payment lines amount must be eqqual to Tax payable after rebate")
-
-        # model = self.env['ir.model'].search([('model', '=', 'hr.declaration')])
-        # res.env['mail.activity'].create(
-        #     {
-        #         'res_id': res.id,
-        #         'res_model_id': model.id,
-        #         'user_id': res.employee_id.user_id.id,
-        #         'date_deadline': datetime.now().date(),
-        #         'activity_type_id': 4,
-        #         'note': 'TDS',
-        #         'summary': 'IT Declaration'
-        #     }
-        # )
+                "Tax payment lines amount must be equal to Tax payable after rebate")
         return res
 
 

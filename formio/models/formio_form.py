@@ -48,15 +48,18 @@ class Form(models.Model):
     act_window_multi_url = fields.Char(compute='_compute_act_window_url', readonly=True)
     res_model_id = fields.Many2one(related='builder_id.res_model_id', readonly=True, string='Resource Model')
     res_model_name = fields.Char(related='res_model_id.name', readonly=True, string='Resource Name')
-    res_model = fields.Char(related='res_model_id.model', readonly=True, string='Resource Model')
+    res_model = fields.Char(related='res_model_id.model', readonly=True, string='Resource Model Name')
     res_id = fields.Integer("Record ID", ondelete='restrict',
         help="Database ID of the record in res_model to which this applies")
     res_act_window_url = fields.Char(compute='_compute_res_fields', readonly=True)
-    res_name = fields.Char(compute='_compute_res_fields', readonly=True)
-    res_info = fields.Char(compute='_compute_res_fields', readonly=True)
+    res_name = fields.Char(compute='_compute_res_fields', string='Resource Name', store=True)
+    res_info = fields.Char(compute='_compute_res_fields', string='Resource Info', readonly=True)
+    res_partner_id = fields.Many2one('res.partner', compute='_compute_res_fields', store=True, readonly=True, string='Resource Partner')
     user_id = fields.Many2one(
         'res.users', string='Assigned user',
         index=True, track_visibility='onchange')
+    assigned_partner_id = fields.Many2one('res.partner', related='user_id.partner_id', string='Assigned Partner')
+    assigned_partner_name = fields.Char(related='assigned_partner_id.name')
     invitation_mail_template_id = fields.Many2one(
         'mail.template', 'Invitation Mail',
         domain=[('model', '=', 'formio.form')],
@@ -65,13 +68,26 @@ class Form(models.Model):
     submission_user_id = fields.Many2one(
         'res.users', string='Submission User', readonly=True,
         help='User who submitted the form.')
+    submission_partner_id = fields.Many2one('res.partner', related='submission_user_id.partner_id', string='Submission Partner')
+    submission_partner_name = fields.Char(related='submission_partner_id.name')
     submission_date = fields.Datetime(
         string='Submission Date', readonly=True, track_visibility='onchange',
         help='Datetime when the form was last submitted.')
-    submit_done_url = fields.Char(related='builder_id.submit_done_url')
-    portal = fields.Boolean("Portal", related='builder_id.portal', help="Form is accessible by assigned portal user")
+    portal = fields.Boolean("Portal", related='builder_id.portal', readonly=True, help="Form is accessible by assigned portal user")
     portal_submit_done_url = fields.Char(related='builder_id.portal_submit_done_url')
     allow_unlink = fields.Boolean("Allow delete", compute='_compute_access')
+
+    @api.model
+    def create(self, vals):
+        vals = self._prepare_create_vals(vals)
+        res = super(Form, self).create(vals)
+        return res
+
+    def _prepare_create_vals(self, vals):
+        return vals
+
+    def _get_builder_from_id(self, builder_id):
+        return self.env['formio.builder'].browse(builder_id)
 
     @api.multi
     @api.depends('state')
@@ -99,6 +115,17 @@ class Form(models.Model):
         for r in self:
             r.display_state = get_field_selection_label(r, 'state')
 
+    @api.multi
+    @api.depends('title')
+    def name_get(self):
+        res = []
+        for r in self:
+            name = '{title} [{id}]'.format(
+                title=r.title, id=r.id
+            )
+            res.append((r.id, name))
+        return res
+
     def _decode_data(self, data):
         """ Convert data (str) to dictionary
 
@@ -115,11 +142,18 @@ class Form(models.Model):
         return data
 
     @api.multi
-    def action_client_formio_form(self):
+    def action_view_formio(self):
+        self.ensure_one()
+
         return {
-            'type': 'ir.actions.client',
-            'tag': 'formio_form',
-            'target': 'main',
+            "name": self.name,
+            "type": "ir.actions.act_window",
+            "res_model": "formio.form",
+            "views": [(False, 'formio_form')],
+            "view_mode": "formio_form",
+            "target": "current",
+            "res_id": self.id,
+            "context": {}
         }
 
     @api.multi
@@ -175,6 +209,11 @@ class Form(models.Model):
         return str(uuid.uuid4())
 
     @api.onchange('builder_id')
+    def _onchange_builder_domain(self):
+        res = {}
+        return res
+
+    @api.onchange('builder_id')
     def _onchange_builder(self):
         if not self.env.user.has_group('formio.group_formio_user_all_forms'):
             self.user_id = self.env.user.id
@@ -224,23 +263,18 @@ class Form(models.Model):
                 action=action.id)
             r.act_window_url = url
 
+    @api.depends('res_id')
     def _compute_res_fields(self):
-        for r in self:
-            r.res_act_window_url = False
-            r.res_name = False
-            r.res_info = False
+        pass
         
     @api.multi
-    def action_formio(self):
-        return {
-            'type': 'ir.actions.act_url',
-            'url': self.url,
-            'target': 'self',
-        }
-
-    @api.multi
     def action_open_res_act_window(self):
-        raise NotImplementedError
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': self.res_model,
+            'res_id': self.res_id,
+            "views": [[False, "form"]],
+        }
 
     @api.model
     def get_form(self, uuid, mode):
