@@ -1,0 +1,168 @@
+<odoo>
+
+    <!--=======Tree view of HR appraisal.main=======-->
+    <record id="hr_appraisal_main_tree_view" model="ir.ui.view">
+        <field name="name">appraisal.main.tree</field>
+        <field name="model">appraisal.main</field>
+        <field name="arch" type="xml">
+            <tree string="HR appraisal.mains">
+                  <field name="appraisal_sequence"/>
+                  <field name="employee_id"/>
+                  <field name="template_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <!--=======Form view of HR appraisal.main=======-->
+    <record id="hr_appraisal_main_form_view" model="ir.ui.view">
+        <field name="name">appraisal.main.form</field>
+        <field name="model">appraisal.main</field>
+        <field name="arch" type="xml">
+            <form string="HR appraisal">
+                <header>
+                    <button name="button_self_reviewed" string="Reviewed(Self)" class="oe_highlight" type="object" states="draft"/>
+                     <button name="button_line_manager_reviewed" string="Reviewed(Line Manager)" class="oe_highlight" type="object" states="self_review" groups="appraisal_stpi.group_line_manager_appraisal"/>
+                    <button name="button_hod_reviewed" string="Reviewed(HoD Reviewed)" class="oe_highlight" type="object" states="line_manager_review" groups="appraisal_stpi.group_hod_appraisal"/>
+                    <button name="button_completed" string="Reviewed(Complete)" class="oe_highlight" type="object" states="hod_review" groups="appraisal_stpi.group_manager_appraisal"/>
+                    <button name="button_reject" string="Reject" type="object" attrs="{'invisible':[('state','in',('draft'))]}"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,self_review,line_manager_review,hod_review,completed" />
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="employee_id" readonly="1"/>
+                            <field name="abap_period" options="{'no_create_edit': True, 'no_create': True}" required="1" domain="[('type_id', '=', 'Calender Year')]"/>
+                            <field name="branch_id" readonly="1"/>
+                            <field name="category_id" readonly="1"/>
+                            <field name="dob" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="job_id" readonly="1"/>
+                            <field name="struct_id" readonly="1"/>
+                            <field name="pay_level_id" readonly="1"/>
+                            <field name="pay_level" readonly="1"/>
+                            <field name="template_id" options="{'no_create_edit': True, 'no_create': True}" required="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string = "Officer Reported">
+                            <group>
+                                <field name="duties_description"/>
+                                <field name="targets"/>
+                                <field name="achievement"/>
+                                <field name="sortfalls"/>
+                                <field name="immovatable_property"/>
+                            </group>
+                        </page>
+                        <page string = "KPI/KRA">
+                            <field name="kpia_ids">
+                                <tree editable="bottom" create="0">
+                                    <field name="kpia_id" invisible="1"/>
+                                    <field name="kra" readonly="1"/>
+                                    <field name="kpi" readonly="1"/>
+                                    <field name="reporting_auth"/>
+                                    <field name="reviewing_auth"/>
+                                    <field name="reviewing_auth_user" readonly="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="seq_appraisal_sequence" model="ir.sequence">
+        <field name="name">Appraisal Aain</field>
+        <field name="code">appraisal.main</field>
+        <field name="padding">3</field>
+        <field name="company_id" eval="False"/>
+     </record>
+    <!--============Action view of Appraisal============-->
+    <record id="appraisal_menu_new_action" model="ir.actions.act_window">
+        <field name="name">Appraisal</field>
+        <field name="res_model">appraisal.main</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    
+
+    <!--============Action view of Appraisal============-->
+    <record id="appraisal_menu_waiting_action" model="ir.actions.act_window">
+        <field name="name">Appraisal</field>
+        <field name="res_model">appraisal.main</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <!--============Action view of Appraisal============-->
+    <record id="appraisal_menu_approved_action" model="ir.actions.act_window">
+        <field name="name">Appraisal</field>
+        <field name="res_model">appraisal.main</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <!--============Action view of Appraisal============-->
+    <record id="appraisal_menu_reject_action" model="ir.actions.act_window">
+        <field name="name">Appraisal</field>
+        <field name="res_model">appraisal.main</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!--============Action view of Appraisal============-->
+    <record id="menu_appraisal_employee_action" model="ir.actions.act_window">
+        <field name="name">Appraisal</field>
+        <field name="res_model">appraisal.main</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+
+      <menuitem id="menu_appraisal_main"
+                name="Appraisal"
+      />
+
+      <menuitem id="menu_appraisal_id"
+                name="Appraisal"
+                parent="menu_appraisal_main"
+      />
+
+    <menuitem id = "appraisal_new_menu_id"
+                  name = "New"
+                  parent ="menu_appraisal_id"
+                  action ="appraisal_menu_new_action"
+                  />
+    <menuitem id = "appraisal_waiting_menu_id"
+                  name = "Waiting for review"
+                  parent ="menu_appraisal_id"
+                  action ="appraisal_menu_waiting_action"
+                  />
+    <menuitem id = "appraisal_approved_menu_id"
+                  name = "Approved"
+                  parent ="menu_appraisal_id"
+                  action ="appraisal_menu_approved_action"
+                  />
+    <menuitem id = "appraisal_rejected_menu_id"
+                  name = "Rejected"
+                  parent ="menu_appraisal_id"
+                  action ="appraisal_menu_reject_action"
+                  />
+
+
+      <menuitem id="menu_appraisal_reporting_id"
+                name="Reporting"
+                parent="menu_appraisal_main"
+      />
+
+      <menuitem id="menu_appraisal_employee_id"
+                name="Appraisal by Employee"
+                parent="menu_appraisal_reporting_id"
+                action="menu_appraisal_employee_action"
+      />
+
+</odoo>
