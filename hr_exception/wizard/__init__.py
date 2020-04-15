@@ -18,3 +18,4 @@ from . import hr_payslip_wizard
 from . import hr_payslip_batch_wizard
 from . import hr_property_wizard
 from . import loan_close_wizard
+from . import appraisal1_wizard

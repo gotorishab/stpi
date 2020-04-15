@@ -9,6 +9,7 @@
                   <field name="appraisal_sequence"/>
                   <field name="employee_id"/>
                   <field name="template_id"/>
+                  <field name="state"/>
             </tree>
         </field>
     </record>

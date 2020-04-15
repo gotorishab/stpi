@@ -49,9 +49,14 @@
     </record>
 
 
+      <menuitem id="menu_appraisal_configuration_id"
+                name="Configuration"
+                parent="menu_appraisal_main"
+      />
+
       <menuitem id="menu_appraisal_template_id"
                 name="Templates"
-                parent="menu_appraisal_main"
+                parent="menu_appraisal_configuration_id"
                 action="template_menu_new_action"
       />
 
