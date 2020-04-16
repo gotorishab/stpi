@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_create_appraisal_wizard" model="ir.ui.view">
+            <field name="name">create.appraisal</field>
+            <field name="model">create.appraisal</field>
+            <field name="arch" type="xml">
+                <form string="Action Taken">
+                    <p class="oe_grey">
+                        This will create the appraisal.
+                    </p>
+                    <group>
+                        <group>
+                            <field name="employee_ids" widget="many2many_tags"/>
+                        </group>
+                        <group>
+                            <field name="abap_period"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button string="Create" name="create_appraisal_action_button" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        
+        <record id="create_appraisal_wizard_action" model="ir.actions.act_window">
+            <field name="name">Create Appraisal</field>
+            <field name="res_model">create.appraisal</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="view_id" ref="view_create_appraisal_wizard"/>
+        </record>
+
+
+    <menuitem id="hr_menu_create_appraisal_id" name="Create Appraisals" action="appraisal_stpi.create_appraisal_wizard_action"
+            parent="appraisal_stpi.menu_appraisal_main" sequence="99"/>
+
+
+    </data>
+</odoo>

@@ -32,7 +32,7 @@
                     <group>
                         <group>
                             <field name="employee_id" readonly="1"/>
-                            <field name="abap_period" options="{'no_create_edit': True, 'no_create': True}" required="1" domain="[('type_id', '=', 'Calender Year')]"/>
+                            <field name="abap_period" options="{'no_create_edit': True, 'no_create': True}" required="1" domain="[('type_id.name', '=', 'Calendar Year')]"/>
                             <field name="branch_id" readonly="1"/>
                             <field name="category_id" readonly="1"/>
                             <field name="dob" readonly="1"/>
@@ -42,18 +42,44 @@
                             <field name="struct_id" readonly="1"/>
                             <field name="pay_level_id" readonly="1"/>
                             <field name="pay_level" readonly="1"/>
-                            <field name="template_id" options="{'no_create_edit': True, 'no_create': True}" required="1"/>
+                            <field name="template_id" readonly="1" required="1"/>
+                            <field name="overall_grade"/>
                         </group>
                     </group>
                     <notebook>
                         <page string = "Officer Reported">
-                            <group>
-                                <field name="duties_description"/>
-                                <field name="targets"/>
-                                <field name="achievement"/>
-                                <field name="sortfalls"/>
-                                <field name="immovatable_property"/>
-                            </group>
+<!--                            <group>-->
+                                <separator string="Brief description of duties"/>
+                                <newline/>
+                                <field name="duties_description" nolabel="1"/>
+                                <newline/>
+                                <br />
+                                <br />
+                                <br />
+                                <separator string="Please  specify  targets/objectives/goals  (in  quantitative  or  other  terms)  of  work  you  set  for  yourself or that were set for you, eight to ten items of work in the order of priority and your achievement against each target. (Example: Annual Action Plan for your Division)"/>
+                                <newline/>
+                                <field name="app_ids" nolabel="1">
+                                    <tree editable="bottom">
+                                        <field name="app_id" invisible="1"/>
+                                        <field name="targets"/>
+                                        <field name="achievements"/>
+                                    </tree>
+                                </field>
+                                <newline/>
+                                <br />
+                                <br />
+                                <br />
+                                <separator string="Please  state  briefly,  the  shortfalls  with  reference  to  the  targets/objective/goals  referred  to  in  item  2.  Please  specify  constraints,  if  any, in achieving the targets."/>
+                            <newline/>
+                            <field name="sortfalls" nolabel="1"/>
+                                <newline/>
+                                <br />
+                                <br />
+                                <br />
+                                <separator string="Please  state  whether  the  annual  return  on  Immovable  property  for  the  preceding  calendar  year  was  filed  within  the  prescribed  date  i.e  31st  January  of  the  year  following  the  calendar  year. If not, the date of filling the return should be given"/>
+                            <newline/>
+                            <field name="immovatable_property" nolabel="1"/>
+<!--                            </group>-->
                         </page>
                         <page string = "KPI/KRA">
                             <field name="kpia_ids">
@@ -66,31 +92,106 @@
                                     <field name="reviewing_auth_user" readonly="1"/>
                                 </tree>
                             </field>
+                            <group class="oe_subtotal_footer oe_right" colspan="2" >
+                                <field name="overall_rate_num" class="oe_subtotal_footer_separator"/>
+                            </group>
+                        </page>
+                        <page string="GENERAL">
+                            <separator string="Please comment on the officer’s accessibility to the public and responsiveness to their needs)."/>
+                            <newline/>
+                            <field name="comment_oa" nolabel="1"/>
+                            <newline/>
+                            <br />
+                            <br />
+                            <br />
+                            <separator string="Please  give  recommendations  for  training  with  a  view  to  further  improving  the  effectiveness and capabilities of the officers)."/>
+                            <newline/>
+                            <field name="train_gen" nolabel="1"/>
+                            <newline/>
+                            <br />
+                            <br />
+                            <br />
+                            <separator string="State of Health"/>
+                            <newline/>
+                            <field name="soh" nolabel="1"/>
+                            <newline/>
+                            <br />
+                            <br />
+                            <br />
+                            <separator string="Integrity"/>
+                            <newline/>
+                            <separator string="(Please comment on the integrity of the officer)"/>
+                            <newline/>
+                            <field name="inte_general" nolabel="1"/>
+                            <newline/>
+                            <br />
+                            <br />
+                            <br />
+                            <separator string="Pen picture by Reporting Officer (in about 100 words) on the  overall  qualities  of  the  officer  including  area  of  strengths  and  lesser  strength,  extraordinary  achievement, significant failures (ref: A and B  of Part –3) and attitude towards weaker sections. "/>
+                            <newline/>
+                            <field name="pen_picture" nolabel="1"/>
+                            <newline/>
+                            <br />
+                            <br />
+                            <br />
+                        </page>
+                        <page string="Remarks of the reviewing officer">
+                            <separator string="Length of service under the Reviewing Officer"/>
+                            <field name="len_rev" nolabel="1"/>
+                            <newline/>
+                            <br />
+                            <br />
+                            <br />
+                            <separator string="Do  you  agree  with  the  assessment  made  by  the  reporting  officer  with respect to the work output and the various attributes in Part-3 and Part-4?   Do you agree with the assessment of Reporting Officer in respect of extraordinary achievements/significant failures of the officer reported upon? (Ref; A (iv) of Part-3  and 5 of Part-4)."/>
+                            <newline/>
+                            <separator string="in  case  you  do  not  agree  with  any  of  the  numerical  assessment  of  attributes  please  record  your  assessment  in    the  column  provided  for  you  in  that  section  and  initial your entries."/>
+                            <newline/>
+                            <field name="ag_no" nolabel="1" widget="radio"/>
+                            <newline/>
+                            <br />
+                            <br />
+                            <br />
+                            <separator string="In case of disagreement,  please specify the reasons.  Is there anything you wish to modify or add? "/>
+                            <newline/>
+                            <field name="dis_mod" nolabel="1"/>
+                            <newline/>
+                            <br />
+                            <br />
+                            <br />
+                            <separator string="Pen picture by Reviewing Officer. Please comment (in about 100 words) on the overall qualities  of  the  officer  including  area  of  strengths  and  lesser  strength  and  his  attitude  towards  weaker sections."/>
+                            <newline/>
+                            <field name="pen_pic_rev" nolabel="1"/>
+                            <newline/>
+                            <br />
+                            <br />
+                            <br />
                         </page>
                     </notebook>
                 </sheet>
+                <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
             </form>
         </field>
     </record>
 
 
-        <!--Tour search view-->
 <!--    <record id="view_appraisal_search_form" model="ir.ui.view">-->
 <!--        <field name="name">appraisal.main.search.form</field>-->
 <!--        <field name="model">appraisal.main</field>-->
 <!--        <field name="arch" type="xml">-->
-<!--           <search string="TAppraisal">-->
-<!--               <filter string="My Tour Claims" name="my_claim" domain="[('employee_id.user_id.id', '=', uid)]" />-->
-<!--                <field name="employee_id" string="Employee"/>-->
-<!--                <field name="department" string="Department"/>-->
-<!--                    <filter string="Employee" name="employee_id" context="{'group_by':'employee_id'}"/>-->
-<!--                    <filter string="Status" name="status" context="{'group_by':'state'}"/>-->
+<!--           <search string="Appraisal">-->
+<!--               <filter string="Employee" name="employee_id" context="{'group_by':'employee_id'}"/>-->
+<!--               <filter string="Department" name="department_id" context="{'group_by':'department_id'}"/>-->
+<!--               <filter string="Status" name="status" context="{'group_by':'state'}"/>-->
 <!--            </search>-->
 <!--        </field>-->
 <!--    </record>-->
 
     <record id="seq_appraisal_sequence" model="ir.sequence">
-        <field name="name">Appraisal Aain</field>
+        <field name="name">Appraisal Main</field>
         <field name="code">appraisal.main</field>
         <field name="padding">3</field>
         <field name="company_id" eval="False"/>
@@ -157,6 +258,7 @@
         <field name="res_model">appraisal.main</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
+        <field name="context">{'group_by': 'employee_id'}</field>
     </record>
     <!--============Action view of Appraisal============-->
     <record id="menu_appraisal_branch_action" model="ir.actions.act_window">
@@ -164,6 +266,7 @@
         <field name="res_model">appraisal.main</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
+        <field name="context">{'group_by': 'branch_id'}</field>
     </record>
     <!--============Action view of Appraisal============-->
     <record id="menu_appraisal_status_action" model="ir.actions.act_window">
@@ -171,6 +274,7 @@
         <field name="res_model">appraisal.main</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
+        <field name="context">{'group_by': 'state'}</field>
     </record>
 
 

@@ -1,0 +1,15 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="pay_level_form_inherit">
+            <field name="name">hr.payslip.paylevel.inherit</field>
+            <field name="model">hr.payslip.paylevel</field>
+            <field name="inherit_id" ref="stpi_contract_pr.pay_level_form_view_id"/>
+            <field name="arch" type="xml">
+                <xpath expr = "//field[@name='grade_pay']" position="after">
+                    <field name = "template_id"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
+
