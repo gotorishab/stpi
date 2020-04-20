@@ -2,4 +2,5 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_hr_requisition_application,hr.requisition.application,model_hr_requisition_application,base.group_user,1,1,1,1
 access_update_advertisement,update.advertisement,model_update_advertisement,base.group_user,1,1,1,1
 access_employement_type,employement.type,model_employement_type,base.group_user,1,1,1,1
+access_recruitment_type,recruitment.type,model_recruitment_type,base.group_user,1,1,1,1
 access_allowed_categories,allowed.categories,model_allowed_categories,base.group_user,1,1,1,1

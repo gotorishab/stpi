@@ -1,0 +1,38 @@
+<odoo>
+
+    <data noupdate="1">
+
+
+        <record model="employement.type" id="regular_id">
+            <field name="name">Regular Employee</field>
+        </record>
+        <record model="employement.type" id="cont_ag">
+            <field name="name">Contractual with Agency</field>
+        </record>
+        <record model="employement.type" id="cont_stpi">
+            <field name="name">Contractual with STPI</field>
+        </record>
+
+
+        <record model="recruitment.type" id="dr">
+            <field name="name">Direct Recruitment(DR)</field>
+        </record>
+        <record model="recruitment.type" id="transfer">
+            <field name="name">Transfer(Absorption)</field>
+        </record>
+        <record model="recruitment.type" id="im_ab">
+            <field name="name">Immediate Absorption</field>
+        </record>
+        <record model="recruitment.type" id="Deputation">
+            <field name="name">Deputation</field>
+        </record>
+        <record model="recruitment.type" id="CompassionateAppointment">
+            <field name="name">Compassionate Appointment</field>
+        </record>
+        <record model="recruitment.type" id="Promotion">
+            <field name="name">Promotion</field>
+        </record>
+
+    </data>
+
+</odoo>

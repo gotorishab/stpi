@@ -13,22 +13,23 @@ class HRJobInherit(models.Model):
     advertisement_count = fields.Integer('Advertisement count', compute='_compute_advertisement_count')
     vacant_post = fields.Integer('Vacant Post', compute='compute_sanctioedpost')
 
-    employee_type = fields.Many2many('employement.type', string='Employment Type')
+    employee_type = fields.Many2many('employement.type', string='Employment Type', track_visibility='always')
+    recruitment_type = fields.Many2many('recruitment.type', string='Recruitment Type', track_visibility='always')
     # employee_type = fields.Char(string='Employment Type', related='employee_type_name.name')
     state = fields.Selection([
         ('recruit', 'Recruitment in Progress'),
         ('open', 'Not Recruiting')
     ], string='Status', readonly=True, required=True, track_visibility='always', copy=False, default='open',
         help="Set whether the recruitment process is open or closed for this job position.")
-
-    recruitment_type = fields.Selection([
-        ('d_recruitment', 'Direct Recruitment(DR)'),
-        ('transfer', 'Transfer(Absorption)'),
-        ('i_absorption', 'Immediate Absorption'),
-        ('deputation', 'Deputation'),
-        ('c_appointment', 'Compassionate Appointment'),
-        ('promotion', 'Promotion'),
-    ], 'Recruitment Type', track_visibility='always')
+    #
+    # recruitment_type = fields.Selection([
+    #     ('d_recruitment', 'Direct Recruitment(DR)'),
+    #     ('transfer', 'Transfer(Absorption)'),
+    #     ('i_absorption', 'Immediate Absorption'),
+    #     ('deputation', 'Deputation'),
+    #     ('c_appointment', 'Compassionate Appointment'),
+    #     ('promotion', 'Promotion'),
+    # ], 'Recruitment Type', track_visibility='always')
 
     technical = fields.Selection([
         ('tech', 'Technical'),
@@ -37,6 +38,8 @@ class HRJobInherit(models.Model):
 
     advertisement_id = fields.Many2one('hr.requisition.application', string='Advertisement')
     allowed_degrees = fields.Many2many('hr.recruitment.degree', string='Allowed Degrees')
+
+    vacant_p_z = fields.Boolean(string='Is vacant post less than zero', compute="compute_sanctioedpost", store=1)
 
     pay_level_id = fields.Many2one('hr.payslip.paylevel', string='Pay Level')
     struct_id = fields.Many2one('hr.payroll.structure', string='Salary Type')
@@ -50,6 +53,18 @@ class HRJobInherit(models.Model):
     hhpercent = fields.Float('Hearing Handicapped %')
     phpercent = fields.Float('Physically Handicapped %')
 
+
+
+    @api.depends('birthday')
+    def _check_next_month(self):
+        for rec in self:
+            month = (datetime.datetime.now().replace(day=1)+ relativedelta(months=1)).strftime("%m")
+            if rec.birthday:
+                bday_month = rec.birthday.strftime("%m")
+                if month == bday_month:
+                    rec.is_next_month = True
+                else:
+                    rec.is_next_month = False
 
 
     def see_all_advertisements(self):
@@ -79,6 +94,8 @@ class HRJobInherit(models.Model):
             record.vacant_post = int(record.sanctionedpost) - int(record.no_of_employee)
             if record.vacant_post and record.vacant_post < 0:
                 record.vacant_post = 0
+            if record.vacant_post and record.vacant_post > 0:
+                record.vacant_p_z = False
 
 
     @api.constrains('no_of_recruitment', 'sanctionedpost')
@@ -92,8 +109,14 @@ class HRJobInherit(models.Model):
 
 
 class EmploymentType(models.Model):
-    _name='employement.type'
+    _name = 'employement.type'
     _description ='Employement Type'
+
+    name = fields.Char('Name')
+
+class RecruitmentType(models.Model):
+    _name = 'recruitment.type'
+    _description ='Recruitment Type'
 
     name = fields.Char('Name')
 

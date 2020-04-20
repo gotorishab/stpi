@@ -15,6 +15,7 @@
         'security/ir.model.access.csv',
         'security/employee_job_position.xml',
         'data/hr_advertisement_cron.xml',
+        'data/emp_rec_type.xml',
         'security/recruitment_advertisement.xml',
         'wizard/update_advertisement.xml',
         'views/hr_app_in.xml',

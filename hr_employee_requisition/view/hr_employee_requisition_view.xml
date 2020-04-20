@@ -40,7 +40,7 @@
                     <group>
                         <group>
                             <field name="user_id" readonly="1" domain="[('state','=','recruit')]"/>
-                            <field name="job_position" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="job_position" attrs="{'readonly':[('state','!=','draft')]}" domain="[('vacant_post', '>=', 1)]" options="{'no_create_edit': True, 'no_create': True}"/>
                             <field name="department_id" readonly="1"/>
                             <field name="reason_code_id" attrs="{'readonly':[('state','!=','draft')],'required':[('state','=','draft')]}"/>
                             <field name="recruitment_team_id" invisible="1"/>

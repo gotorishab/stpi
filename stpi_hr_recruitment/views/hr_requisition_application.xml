@@ -47,7 +47,7 @@
                 </group>
                 <notebook>
                     <page name="job_position" string="Job Position">
-                        <field name = "job_position_ids" attrs="{'readonly': [('state', '!=', 'draft')],'required': [('state', '=', 'draft')]}" domain="['|', ('branch_id', '=', branch_id),('branch_id', '=', False),('state', '=', 'open')]"/>
+                        <field name = "job_position_ids" attrs="{'readonly': [('state', '!=', 'draft')],'required': [('state', '=', 'draft')]}" domain="['|', ('branch_id', '=', branch_id),('branch_id', '=', False)]"/>
                     </page>
                     <page name="allowed_categories" string="Allowed Categories">
                         <field name="allowed_categories_ids">

@@ -8,11 +8,9 @@ class HrRequisition(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
 
-
-
     name = fields.Char(string='Job Requisition Number', required=True, copy=False, readonly=True, index=True,
                        default=lambda self: _('New'),track_visibility='always')
-    job_position = fields.Many2one('hr.job',string="Job Position",required=True, domain="[('sanctionedpost', '>', 0)]",
+    job_position = fields.Many2one('hr.job',string="Job Position",required=True,
                                    help='Job Title of the employee',track_visibility='always')
     department_id = fields.Many2one('hr.department', string="Department",required=True,related="job_position.department_id",
                                     help='Department of the employee',track_visibility='always')
