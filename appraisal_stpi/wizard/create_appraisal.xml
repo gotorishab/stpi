@@ -5,17 +5,17 @@
             <field name="name">create.appraisal</field>
             <field name="model">create.appraisal</field>
             <field name="arch" type="xml">
-                <form string="Action Taken">
-                    <p class="oe_grey">
-                        This will create the appraisal.
-                    </p>
+                <form string="Create Appraisal">
                     <group>
-                        <group>
-                            <field name="employee_ids" widget="many2many_tags"/>
-                        </group>
-                        <group>
-                            <field name="abap_period"/>
-                        </group>
+                        <span colspan="4" nolabel="1">This wizard will create appraisal for all selected employee(s) based on the selected APAR period.</span>
+                    </group>
+                    <group colspan="4">
+                        <separator string="Employees" colspan="4"/>
+                        <newline/>
+                        <field name="employee_ids" nolabel="1" options="{'no_create_edit': True, 'no_create': True}" required="1"/>
+                    </group>
+                    <group colspan="2">
+                        <field name="abap_period" domain="[('type_id.name', '=', 'Calendar Year')]" options="{'no_create_edit': True, 'no_create': True}" required="1"/>
                     </group>
                     <footer>
                         <button string="Create" name="create_appraisal_action_button" type="object" class="btn-primary"/>

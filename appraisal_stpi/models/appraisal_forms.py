@@ -63,7 +63,7 @@ class AppraisalForms(models.Model):
     def get_basic_details(self):
         for rec in self:
             rec.category_id = rec.employee_id.category.id
-            rec.dob = rec.employee_id.birthday
+            # rec.dob = rec.employee_id.birthday
             rec.job_id = rec.employee_id.job_id.id
             rec.branch_id = rec.employee_id.branch_id.id
             emp_contract = self.env['hr.contract'].search([('employee_id', '=', rec.employee_id.id), ('state', '=', 'open')], limit=1)
