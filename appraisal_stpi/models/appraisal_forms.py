@@ -53,7 +53,7 @@ class AppraisalForms(models.Model):
         for rec in self:
             for line in rec.kpia_ids:
                 avg = (int(line.reporting_auth) + int(line.reviewing_auth))/2
-                rec.overall_rate_num = 5
+                rec.overall_rate_num = 0
             over_rate = self.env['overall.rate'].search([('from_int', '<=', rec.overall_rate_num), ('to_int', '>=', rec.overall_rate_num)], limit=1)
             rec.overall_grade = over_rate.name
 
@@ -80,9 +80,9 @@ class AppraisalForms(models.Model):
             #     }))
             # rec.kpia_ids = kpi_kpa
 
-    @api.onchange('template_id')
     @api.constrains('template_id')
-    def get_template_details_details(self,working_list=None):
+    @api.onchange('template_id')
+    def get_template_details_details(self):
         for rec in self:
             kpi_kpa = []
             for i in rec.template_id.kpi_kpa_ids:
@@ -91,18 +91,24 @@ class AppraisalForms(models.Model):
                     'kpi': i.kpi,
                     'kra': i.kra,
                 }))
-            else:
-                rec.kpia_ids = working_list
             rec.kpia_ids = kpi_kpa
 
 
     @api.model
     def create(self, vals):
+        kpi_kpa = []
         res =super(AppraisalForms, self).create(vals)
         sequence = ''
         seq = self.env['ir.sequence'].next_by_code('appraisal.main')
         sequence = str(res.employee_id.name) + ' - Appraisal - ' + str(seq)
         res.appraisal_sequence = sequence
+        for i in res.template_id.kpi_kpa_ids:
+            kpi_kpa.append((0, 0, {
+                'kpia_id': res.id,
+                'kpi': i.kpi,
+                'kra': i.kra,
+            }))
+        res.kpia_ids = kpi_kpa
         return res
 
     @api.multi
@@ -176,7 +182,6 @@ class KPIForm(models.Model):
 
 
     @api.onchange('reviewing_auth')
-    @api.constrains('reviewing_auth')
     def get_user_name(self):
         for rec in self:
             rec.reviewing_auth_user = rec.env.uid
