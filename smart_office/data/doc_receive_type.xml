@@ -1,0 +1,29 @@
+<odoo>
+
+    <data noupdate="1">
+
+
+        <record model="doc.rf" id="private_demo">
+            <field name="name">Private</field>
+        </record>
+        <record model="doc.rf" id="government_demo">
+            <field name="name">Government</field>
+        </record>
+
+        <record model="doc.type" id="organisation_demo">
+            <field name="name">Organisation</field>
+        </record>
+        <record model="doc.type" id="individual_demo">
+            <field name="name">Individual</field>
+        </record>
+        <record model="doc.type" id="central_demo">
+            <field name="name">Central</field>
+        </record>
+        <record model="doc.type" id="state_demo">
+            <field name="name">State</field>
+        </record>
+
+
+    </data>
+
+</odoo>

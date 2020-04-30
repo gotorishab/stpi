@@ -1,4 +1,7 @@
-from odoo import models, api, fields
+from odoo import models, api, fields,_
+from datetime import datetime, date, timedelta
+import requests
+import json
 
 class AddLetter(models.Model):
     _inherit = "muk_dms.file"
@@ -44,9 +47,15 @@ class AddLetter(models.Model):
                                      ('cd_dvd', 'CD or DVD')])
     doc_enclosure_detail = fields.Text('Enclosure Details')
 
+    file_track_ids = fields.One2many('file.tracking.information', 'create_let_id', string = "files")
+    pdf_file = fields.Binary(related='content')
+    folder_id = fields.Many2one('folder.master', string="Folder Name")
+
     # Receipt Information
+    doc_receive_m2o = fields.Many2one('doc.rf', string='Doc receive from')
     doc_recieve_from = fields.Selection([('private', 'Private'),
                                          ('govt', 'Government')], default='private')
+    doc_type_m2o = fields.Many2one('doc.type', string='Doc Type')
     doc_type = fields.Selection([('organization', 'Organization'),
                                  ('individual', 'Individual'),
                                  ('state', 'State'),
@@ -65,6 +74,8 @@ class AddLetter(models.Model):
     doc_state = fields.Many2one('res.country.state', 'State')
     doc_department_id = fields.Many2one('muk.doc.department', 'Department')
     doc_letter_details = fields.Text('Letter Details')
+    file_holder = fields.Many2one('res.users', string = "File holder")
+
     # doc_letter_category = fields.Selection([('salary', 'Salary'),
     #                                         ('employee_details', 'Employee Details'),
     #                                         ('forest_conservation', 'Forest Conservation'),
@@ -72,7 +83,7 @@ class AddLetter(models.Model):
     #                                         ('view_sec', 'View Sec'),
     #                                         (('lr_sec', 'LR Sec'))], default='salary')
 
-    reference_ids = fields.Many2many('muk_dms.file', 'muk_dms_file_rel', 'field1', 'field2', 'Reference Letter')
+    reference_ids = fields.Many2many('muk_dms.file', 'muk_dms_file_rel', 'field1', 'field2', 'Reference Letter', domain="[('id', '!=', id)]")
 
     forward_from_id = fields.Many2one('res.users', 'Forward From', default=lambda self:self.env.user.id)
     forward_to_id = fields.Many2one('res.users', 'Forward To')
@@ -90,6 +101,33 @@ class AddLetter(models.Model):
             'context': {'form_view_ref': 'smart_office.view_add_files_doc_form',
                         'default_files': files},
         }
+    @api.onchange('doc_receive_m2o')
+    @api.constrains('doc_receive_m2o')
+    def get_doc_receive(self):
+        for rec in self:
+            rec.doc_type_m2o = False
+            if rec.doc_receive_m2o.name == 'Private':
+                rec.doc_recieve_from = 'private'
+            elif rec.doc_receive_m2o.name == 'Government':
+                rec.doc_recieve_from = 'govt'
+            else:
+                rec.doc_recieve_from = ''
+
+    @api.onchange('doc_type_m2o')
+    @api.constrains('doc_type_m2o')
+    def get_doc_type(self):
+        for rec in self:
+            if rec.doc_type_m2o.name == 'Organisation':
+                rec.doc_type = 'organization'
+            elif rec.doc_type_m2o.name == 'Individual':
+                rec.doc_type = 'individual'
+            elif rec.doc_type_m2o.name == 'Central':
+                rec.doc_type = 'central'
+            elif rec.doc_type_m2o.name == 'State':
+                rec.doc_type = 'state'
+            else:
+                rec.doc_type = ''
+
 
 
 class Organisation(models.Model):
@@ -111,3 +149,18 @@ class Department(models.Model):
     _description = "Department"
 
     name = fields.Char('Organisation Name')
+
+
+class DocReceive(models.Model):
+    _name = 'doc.rf'
+    _description='Doc Receive From'
+
+    name = fields.Char('Doc Receive From')
+
+
+class DocType(models.Model):
+    _name = 'doc.type'
+    _description='Doc Receive From'
+
+    name = fields.Char('Doc Type')
+    doc_receive_id = fields.Many2one('doc.rf')

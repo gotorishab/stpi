@@ -1,0 +1,40 @@
+<odoo>
+
+    <!-- ============ Form View of forward button============= -->
+        <record id="forward_button_form_view" model="ir.ui.view">
+            <field name="name">file.wizard.form</field>
+            <field name="model">file.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Letter information">
+
+                        <group>
+                            <group>
+                                <field name = "department"/>
+                                <field name = "jobposition"/>
+                            </group>
+                            <group>
+                                 <field name = "employee"/>
+                                 <field name = "user"/>
+                                 <field name="defid" invisible = "1"/>
+                            </group>
+                        </group>
+
+                     <footer>
+                        <button name = "confirm_button" string = "Confirm" type = "object" class="oe_highlight"/>
+                        <button name="cancel" string = "Cancel" special = "cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+     <!-- =============== Action View of forward button================ -->
+     <record id="forward_button_wizard_action_view" model="ir.actions.act_window">
+         <field name="name">Forward</field>
+         <field name="type">ir.actions.act_window</field>
+         <field name="res_model">file.wizard</field>
+         <field name="view_type">form</field>
+         <field name="view_mode">form</field>
+         <field name="target">new</field>
+    </record>
+
+</odoo>

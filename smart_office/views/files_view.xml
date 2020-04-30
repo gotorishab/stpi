@@ -28,43 +28,17 @@
             <field name="priority">99</field>
             <field name="arch" type="xml">
                 <xpath expr="//form" position="replace">
-                    <form string="Deal With File">
-                        <group col="2">
-                            <group string="Note Log">
-                                <field name="note_log_ids" context="{'default_type': 'green'}">
-                                    <tree string="Note Log">
-                                        <field name="name"/>
-                                    </tree>
-                                    <form string="Note Log">
-                                        <field name="name"/>
-                                        <field name="type" readonly="1"/>
-                                    </form>
-                                </field>
-                                <field name="correspondence_log_ids" context="{'default_type': 'correspondence'}">
-                                    <tree string="Correspondence Log">
-                                        <field name="name"/>
-                                    </tree>
-                                    <form string="Correspondence Log">
-                                        <field name="name"/>
-                                        <field name="type" readonly="1"/>
-                                    </form>
-                                </field>
-                            </group>
-                            <group>
-                                <field name="doc_file_preview" widget="pdf_viewer" nolabel="1"/>
-                            </group>
-                            <!--                            <group string="Action">-->
-                            <!--                                <field colspan="2" name="file_action" required="1" widget="radio"/>-->
-                            <!--                                <field colspan="2" name="doc_file_status" widget="radio"/>-->
-                            <!--                                <field name="designation_id" colspan="2"/>-->
-                            <!--                                <field name="doc_remarks" colspan="2"/>-->
-                            <!--                            </group>-->
-                        </group>
-                        <footer>
-                            <button name="print_merged_report" string="Print" type="object" class="btn-primary"/>
-                            <button string="Cancel" class="btn-default" special="cancel"/>
-                        </footer>
-                    </form>
+
+                    <form string="Embedded Webpage" version="7.0" edit="false" create="false">
+
+              <div style="position:absolute; left:0; top:0; width:100%; height:100%;">
+
+                 <iframe src="http://google.com" height="2000" width="100%"></iframe>
+
+
+              </div>
+
+          </form>
                 </xpath>
             </field>
         </record>
@@ -102,7 +76,8 @@
         </record>
 
         <menuitem id="menuitem_smart_office_files"
-                  name="Manage Files"/>
+                  name="Manage Files"
+                  parent="muk_dms.main_menu_muk_dms"/>
 
         <menuitem id="menuitem_add_files_incoming"
                   parent="smart_office.menuitem_smart_office_files"

@@ -220,22 +220,22 @@
 				<field name="custom_thumbnail" widget="image" class="oe_avatar oe_edit_only" 
 					options="{'preview_image': 'custom_thumbnail_medium', 'size': [90, 90]}" />
 				<div class="oe_title">
-					<label for="name" class="oe_edit_only" />
+					<label for="name" class="oe_edit_only"/>
 					<h1>
-						<field name="name" />
+					<field name="name"/>
 					</h1>
 					<h4>
- 						<field name="path_json" widget="path_json" options="{'prefix': True, 'suffix': False}" />
+					<field name="path_json" widget="path_json" options="{'prefix': True, 'suffix': False}"/>
 					</h4>
-				</div>
-				<group name="content">
+					</div>
+					<group name="content">
 					<group>
-						<field name="content" filename="name" />
-						<field name="size" widget="binary_size" />
+					<field name="content" filename="name"/>
+					<field name="size" widget="binary_size"/>
 					</group>
 					<group>
-						<field name="extension" />
-						<field name="mimetype" />
+					<field name="extension"/>
+					<field name="mimetype"/>
 					</group>
 				</group>
 				<group name="settings">

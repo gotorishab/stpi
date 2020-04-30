@@ -23,6 +23,7 @@ class AddFiles(models.Model):
     job_position_id = fields.Many2one('hr.job', 'Job Position')
     employee_id = fields.Many2one('hr.employee', 'Employee')
 
+
     @api.model
     def create(self, vals):
         if self._context.get('smart_office', False):

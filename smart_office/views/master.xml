@@ -1,0 +1,118 @@
+<odoo>
+    <record id="muk_doc_organisation_tree_view"  model="ir.ui.view">
+        <field name="name">muk.doc.organisation</field>
+        <field name="model">muk.doc.organisation</field>
+        <field name ="arch" type="xml">
+            <tree editable="bottom">
+                 <field name="name" required="1"/>
+            </tree>
+        </field>
+    </record>
+    <record id="muk_doc_organisation_action_view" model="ir.actions.act_window">
+        <field name="name">Organisation</field>
+        <field name="res_model">muk.doc.organisation</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+
+
+    <record id="muk_doc_sender_tree_view"  model="ir.ui.view">
+        <field name="name">muk.doc.sender</field>
+        <field name="model">muk.doc.sender</field>
+        <field name ="arch" type="xml">
+            <tree editable="bottom">
+                 <field name="name" required="1"/>
+            </tree>
+        </field>
+    </record>
+    <record id="muk_doc_sender_action_view" model="ir.actions.act_window">
+        <field name="name">sender</field>
+        <field name="res_model">muk.doc.sender</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+
+
+    <record id="muk_doc_department_tree_view"  model="ir.ui.view">
+        <field name="name">muk.doc.department</field>
+        <field name="model">muk.doc.department</field>
+        <field name ="arch" type="xml">
+            <tree editable="bottom">
+                 <field name="name" required="1"/>
+            </tree>
+        </field>
+    </record>
+    <record id="muk_doc_department_action_view" model="ir.actions.act_window">
+        <field name="name">department</field>
+        <field name="res_model">muk.doc.department</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+
+
+    <record id="muk_doc_rtf_tree_view"  model="ir.ui.view">
+        <field name="name">doc.rf</field>
+        <field name="model">doc.rf</field>
+        <field name ="arch" type="xml">
+            <tree editable="bottom">
+                 <field name="name" required="1"/>
+            </tree>
+        </field>
+    </record>
+    <record id="muk_doc_rtf_action_view" model="ir.actions.act_window">
+        <field name="name">Document Received From</field>
+        <field name="res_model">doc.rf</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+
+    <record id="muk_doc_type_tree_view"  model="ir.ui.view">
+        <field name="name">doc.type</field>
+        <field name="model">doc.type</field>
+        <field name ="arch" type="xml">
+            <tree editable="bottom">
+                 <field name="name" required="1"/>
+                 <field name="doc_receive_id" required="1"/>
+            </tree>
+        </field>
+    </record>
+    <record id="muk_doc_type_action_view" model="ir.actions.act_window">
+        <field name="name">Document Type</field>
+        <field name="res_model">doc.type</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+
+    <menuitem id="muk_organisation_configuration"
+        name="Organisation"
+        parent="muk_dms.cat_menu_muk_dms_config"
+        action="muk_doc_organisation_action_view"
+        />
+    <menuitem id="muk_sender_configuration"
+        name="Sender"
+        parent="muk_dms.cat_menu_muk_dms_config"
+        action="muk_doc_sender_action_view"
+        />
+    <menuitem id="muk_department_configuration"
+        name="Department"
+        parent="muk_dms.cat_menu_muk_dms_config"
+        action="muk_doc_department_action_view"
+        />
+    <menuitem id="muk_rf_configuration"
+        name="Doc Receive From"
+        parent="muk_dms.cat_menu_muk_dms_config"
+        action="muk_doc_rtf_action_view"
+        />
+        <menuitem id="muk_type_configuration"
+        name="Doc Type"
+        parent="muk_dms.cat_menu_muk_dms_config"
+        action="muk_doc_type_action_view"
+        />
+
+
+</odoo>

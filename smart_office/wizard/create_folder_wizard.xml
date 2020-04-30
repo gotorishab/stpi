@@ -1,0 +1,33 @@
+<odoo>
+
+    <!-- ============ Form View of forward button============= -->
+        <record id="createfolder_form_view" model="ir.ui.view">
+            <field name="name">assignfolder.wizard.form</field>
+            <field name="model">assignfolder.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Create File">
+                    <group>
+                        <group>
+                            <field name = "folder" string="File"/>
+                            <field name = "deffolderid" invisible="1"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name = "confirm_button" string = "Confirm" type = "object" class="oe_highlight"/>
+                        <button name="cancel" string = "Cancel" special = "cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+     <!-- =============== Action View of forward button================ -->
+     <record id="createfolder_wizard_action_view" model="ir.actions.act_window">
+         <field name="name">Create Folder</field>
+         <field name="type">ir.actions.act_window</field>
+         <field name="res_model">assignfolder.wizard</field>
+         <field name="view_type">form</field>
+         <field name="view_mode">form</field>
+         <field name="target">new</field>
+    </record>
+
+</odoo>
