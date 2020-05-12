@@ -430,7 +430,7 @@
     </field>
 </record>
 
-<menuitem id="menu_dms_directory" name="Files" sequence="30"
+<menuitem id="menu_dms_directory" name="Directory" sequence="30"
 	parent="main_menu_muk_dms" action="action_dms_directory" />
 	
 <record id="view_dms_directory_new_form" model="ir.ui.view">

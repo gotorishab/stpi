@@ -65,15 +65,15 @@
                     </page>
                 </page>
                 <page name="page_technical" position="after">
-                    <page name="letter_info" string="File Movement">
-                        <field name="tracker_ids">
-                            <tree string="File Movement">
-                                <field name="type"/>
-                                <field name="from_id"/>
-                                <field name="to_id"/>
-                            </tree>
-                        </field>
-                    </page>
+<!--                    <page name="letter_info" string="File Movement">-->
+<!--                        <field name="tracker_ids">-->
+<!--                            <tree string="File Movement">-->
+<!--                                <field name="type"/>-->
+<!--                                <field name="from_id"/>-->
+<!--                                <field name="to_id"/>-->
+<!--                            </tree>-->
+<!--                        </field>-->
+<!--                    </page>-->
                     <page string="File Tracking Information" name="file_track">
                         <field name="file_track_ids" readonly = "1"/>
                     </page>

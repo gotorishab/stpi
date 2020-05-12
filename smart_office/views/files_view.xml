@@ -75,14 +75,14 @@
             </field>
         </record>
 
-        <menuitem id="menuitem_smart_office_files"
-                  name="Manage Files"
-                  parent="muk_dms.main_menu_muk_dms"/>
-
-        <menuitem id="menuitem_add_files_incoming"
-                  parent="smart_office.menuitem_smart_office_files"
-                  action="action_view_add_files_incoming"
-                  name="Incoming Files"/>
+<!--        <menuitem id="menuitem_smart_office_files"-->
+<!--                  name="Manage Files"-->
+<!--                  parent="muk_dms.main_menu_muk_dms"/>-->
+s
+<!--        <menuitem id="menuitem_add_files_incoming"-->
+<!--                  parent="smart_office.menuitem_smart_office_files"-->
+<!--                  action="action_view_add_files_incoming"-->
+<!--                  name="Incoming Files"/>-->
 
         <report
                 id="merged_report_action"

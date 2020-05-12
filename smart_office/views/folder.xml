@@ -17,7 +17,7 @@
                             <group>
                                 <field name="write_date"/>
                                 <field name="sequence"/>
-                                <field name="iframe_dashboard"/>
+                                <field name="iframe_dashboard" invisible="1"/>
                                 <field name="type" widget="many2many_tags" placeholder="Type..." options="{'color_field': 'color'}"/>
                                 <field name="status"/>
                             </group>
@@ -69,7 +69,7 @@
 
      <!-- ==========Action View of master of Folder model=========== -->
      <record id="foldermaster_action_view" model="ir.actions.act_window">
-            <field name="name">Folders</field>
+            <field name="name">Files</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">folder.master</field>
             <field name="view_type">form</field>
@@ -80,6 +80,6 @@
         <menuitem id="menuitem_files_fol"
                   parent="muk_dms.main_menu_muk_dms"
                   action="foldermaster_action_view"
-                  name="My Files"/>
+                  name="Files"/>
 
 </odoo>
