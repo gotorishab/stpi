@@ -36,6 +36,8 @@ class FileWizard(models.TransientModel):
                 raise UserError(_("%s is not configured to owned this file") % rec.employee.name)
             else:
                 if rec.defid.responsible_user_id.id == rec.env.user.id:
+                    rec.defid.last_owner_id = rec.env.user.id
+                    rec.defid.current_owner_id = rec.user.id
                     rec.defid.responsible_user_id = rec.user.id
                     self.env['file.tracking.information'].create({
                          'create_let_id': rec.defid.id,

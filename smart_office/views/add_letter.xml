@@ -6,6 +6,7 @@
             <field name="inherit_id" ref="muk_dms.view_dms_file_form"/>
             <field name="arch" type="xml">
                 <field name="create_uid" position="after">
+                    <field name="last_owner_id" readonly="1"/>
                     <field name="current_owner_id" readonly="1"/>
                 </field>
                 <xpath expr = "//div[@name='button_box']" position="inside">
@@ -13,14 +14,60 @@
                     <button name = "%(createfolder_wizard_action_view)d" type = "action" string = "Create File" icon = "fa-folder-open-o" context = "{'default_deffolderid': id}"/>
 
                 </xpath>
-
+                <xpath expr = "//field[@name='directory']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr = "//field[@name='category']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr = "//field[@name='tags']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
                 <xpath expr = "//field[@name='content']" position="after">
-                    <field name="name" string="Letter Number"/>
+                    <field name="name" string="Letter Number" invisible="1"/>
+                    <field name="letter_number" string="Letter Number" attrs="{'invisible':[('letter_number','=', False)],'readonly':[('letter_number','!=', False)]}"/>
+                    <field name="sender_type" options="{'no_create_edit': True}"/>
+                    <field name="sender_type_related" invisible="1"/>
+                    <field name="other_st" attrs="{'invisible':[('sender_type_related','!=', 'Others')],'required':[('sender_type_related','=', 'Others')]}"/>
+                    <field name="delivery_mode" options="{'no_create_edit': True}"/>
+                    <field name="delivery_mode_related" invisible="1"/>
+                    <field name="other_dm" attrs="{'invisible':[('delivery_mode_related','!=', 'Others')],'required':[('delivery_mode_related','=', 'Others')]}"/>
+                    <field name="language_of_letter" options="{'no_create_edit': True}"/>
+                    <field name="language_of_letter_related" invisible="1"/>
+                    <field name="other_lol" attrs="{'invisible':[('language_of_letter_related','!=', 'Others')],'required':[('language_of_letter_related','=', 'Others')]}"/>
+                    <field name="letter_type" options="{'no_create_edit': True}"/>
+                    <field name="letter_type_related" invisible="1"/>
+                    <field name="other_lt" attrs="{'invisible':[('letter_type_related','!=', 'Others')],'required':[('letter_type_related','=', 'Others')]}"/>
+
+                </xpath>
+                <xpath expr = "//field[@name='extension']" position="after">
+                    <field name="category"/>
+                    <field name="tags"/>
+                    <field name="directory" attrs="{'invisible':[('directory','=', False)],'readonly':[('directory','!=', False)]}"/>
                 </xpath>
 
                 <xpath expr = "//field[@name='content']" position="attributes">
                     <attribute name="invisible">1</attribute>
                 </xpath>
+                <xpath expr = "//field[@name='storage']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr = "//field[@name='extension']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr = "//field[@name='mimetype']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr = "//field[@name='size']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+
+                <xpath expr = "//button[@name='lock']" position="attributes">
+                    <attribute name="string">Submit</attribute>
+                </xpath>
+<!--                <xpath expr = "//field[@name='directory']" position="attributes">-->
+<!--                    <attribute name="attrs">{'invisible':[('directory','=', False)],'readonly':[('directory','!=', False)]}</attribute>-->
+<!--                </xpath>-->
 
                 <label for="name" position="replace">
                     <label for="content" class="oe_edit_only" string="Content"/>
@@ -35,6 +82,34 @@
                 <page name="page_meta" position="before">
                     <page name = 'pdf_viewer' string="Content PDF">
                         <field name="pdf_file" widget="pdf_viewer" />
+                    </page>
+                    <page name="sender_details" string="Sender Details">
+                        <group>
+                            <group string="Sender Information">
+                                <field name="sender_ministry"/>
+                                <field name="sender_department"/>
+                                <field name="sender_name"/>
+                                <field name="sender_designation"/>
+                                <field name="sender_organisation"/>
+                            </group>
+                            <group  string="Sender Address">
+                                <field name="sender_address"/>
+                                <field name="sender_country"/>
+                                <field name="sender_state"/>
+                                <field name="sender_city"/>
+                                <field name="sender_pincode"/>
+                            </group>
+                            <group string="Sender Contact Details">
+                                <field name="sender_landline"/>
+                                <field name="sender_mobile"/>
+                                <field name="sender_fax"/>
+                                <field name="sender_email"/>
+                            </group>
+                            <group>
+                                <field name="sender_enclosures"/>
+                                <field name="sender_remarks"/>
+                            </group>
+                        </group>
                     </page>
                     <page name="letter_info" string="Letter Info">
                         <group>
@@ -80,7 +155,12 @@
                 </page>
             </field>
         </record>
-
+        <record id="seq_letter_dms" model="ir.sequence">
+                <field name="name">eFile sequence</field>
+                <field name="code">muk_dms.file</field>
+                <field name="padding">3</field>
+                <field name="company_id" eval="False"/>
+             </record>
 <!--        <record id="view_add_letter_doc_form" model="ir.ui.view">-->
 <!--            <field name="name">Add Document/Letter</field>-->
 <!--            <field name="model">muk_dms.file</field>-->

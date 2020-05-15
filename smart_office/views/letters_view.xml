@@ -1,6 +1,5 @@
 <odoo>
     <data>
-
         <record id="view_add_letter_incoming_tree" model="ir.ui.view">
             <field name="name">Incoming Letters</field>
             <field name="model">muk_dms.file</field>

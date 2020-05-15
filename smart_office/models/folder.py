@@ -79,7 +79,7 @@ class FolderMaster(models.Model):
             'username': 'admin',
             'password': 'password',
         }
-        req = requests.post('http://103.92.47.152/corporate_demo/www/web-service/user-login', data=data,
+        req = requests.post(self.iframe_dashboard, data=data,
                             json=None)
         return {
             'name': 'Files',

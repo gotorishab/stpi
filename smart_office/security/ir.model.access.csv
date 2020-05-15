@@ -8,6 +8,10 @@ muk_letter_tracker,muk_letter_tracker,model_muk_letter_tracker,,1,1,1,1
 muk_letter_tracker,muk_letter_tracker,model_muk_letter_tracker,,1,1,1,1
 doc_rf,doc.rf,model_doc_rf,,1,1,1,1
 doc_type,doc.type,model_doc_type,,1,1,1,1
+doc_sender_type,doc.sender.type,model_doc_sender_type,,1,1,1,1
+doc_delivery_mode,doc.delivery.mode,model_doc_delivery_mode,,1,1,1,1
+doc_letter_language,doc.letter.language,model_doc_letter_language,,1,1,1,1
+doc_letter_type,doc.letter.type,model_doc_letter_type,,1,1,1,1
 access_file_tracking_information,file.tracking.information,model_file_tracking_information,base.group_user,1,1,1,1
 access_folder_master,folder.master,model_folder_master,base.group_user,1,1,1,1
 access_folder_type,folder.type,model_folder_type,base.group_user,1,1,1,1

@@ -27,6 +27,7 @@
         'wizard/create_folder_wizard.xml',
         'views/file_tracking_information.xml',
         'views/add_letter.xml',
+        'views/in_out_letter_view.xml',
         # 'views/letters_view.xml',
         'views/add_files.xml',
         'views/folder.xml',
