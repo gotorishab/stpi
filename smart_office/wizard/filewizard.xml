@@ -6,7 +6,6 @@
             <field name="model">file.wizard</field>
             <field name="arch" type="xml">
                 <form string="Letter information">
-
                         <group>
                             <group>
                                 <field name = "department"/>
@@ -18,7 +17,45 @@
                                  <field name="defid" invisible = "1"/>
                             </group>
                         </group>
-
+                    <group string="Secondary User 1">
+                        <group>
+                            <field name = "s1department"/>
+                            <field name = "s1jobposition"/>
+                            </group>
+                            <group>
+                                 <field name = "s1employee"/>
+                                 <field name = "s1user"/>
+                            </group>
+                    </group>
+                    <group string="Secondary User 2">
+                        <group>
+                            <field name = "s2department"/>
+                            <field name = "s2jobposition"/>
+                            </group>
+                            <group>
+                                 <field name = "s2employee"/>
+                                 <field name = "s2user"/>
+                            </group>
+                    </group>
+                    <group string="Secondary User 3">
+                        <group>
+                            <field name = "s3department"/>
+                            <field name = "s3jobposition"/>
+                            </group>
+                            <group>
+                                 <field name = "s3employee"/>
+                                 <field name = "s3user"/>
+                            </group>
+                    </group>
+                    <field name="sec_own_ids" invisible="1">
+                        <tree editable="bottom">
+                            <field name="sec_own_id" invisible="1"/>
+                            <field name="department"/>
+                            <field name="jobposition"/>
+                            <field name="employee"/>
+                            <field name="user"/>
+                        </tree>
+                    </field>
                      <footer>
                         <button name = "confirm_button" string = "Confirm" type = "object" class="oe_highlight"/>
                         <button name="cancel" string = "Cancel" special = "cancel"/>

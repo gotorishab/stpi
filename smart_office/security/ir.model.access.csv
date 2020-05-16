@@ -15,6 +15,8 @@ doc_letter_type,doc.letter.type,model_doc_letter_type,,1,1,1,1
 access_file_tracking_information,file.tracking.information,model_file_tracking_information,base.group_user,1,1,1,1
 access_folder_master,folder.master,model_folder_master,base.group_user,1,1,1,1
 access_folder_type,folder.type,model_folder_type,base.group_user,1,1,1,1
+access_file_wizard,file.wizard,model_file_wizard,base.group_user,1,1,1,1
+access_secondary_file_owner,secondary.file.owner,model_secondary_file_owner,base.group_user,1,1,1,1
 
 
 

@@ -10,6 +10,9 @@ class AddLetter(models.Model):
 
     current_owner_id = fields.Many2one('res.users', 'Current Owner')
     last_owner_id = fields.Many2one('res.users', 'Last Owner')
+    sec_owner_one = fields.Many2one('res.users', 'Secondary Owner 1')
+    sec_owner_two = fields.Many2one('res.users', 'Secondary Owner 2')
+    sec_owner_three = fields.Many2one('res.users', 'Secondary Owner 3')
 
     tracker_ids = fields.One2many('muk.letter.tracker', 'letter_id')
 
@@ -37,7 +40,6 @@ class AddLetter(models.Model):
         date = datetime.now().date()
         sequence = str(date.strftime('%Y%m%d')) + '/' + str(seq)
         res.letter_number = sequence
-        res.name = 'File' + ' ' + str(date.strftime('%Y%m%d')) + '-' + str(seq)
         data = {
             'document_type': res.document_type,
             'enclosure_details': res.doc_enclosure_detail,
@@ -89,7 +91,7 @@ class AddLetter(models.Model):
     folder_id = fields.Many2one('folder.master', string="Folder Name")
 
     letter_number = fields.Char('Letter Number')
-
+    sec_owner = fields.Many2many('res.users', string='Secondary Owners')
     sender_type_related = fields.Char(related='sender_type.name')
     delivery_mode_related = fields.Char(related='delivery_mode.name')
     language_of_letter_related = fields.Char(related='language_of_letter.name')
