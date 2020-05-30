@@ -56,7 +56,7 @@ class WizardLateComing(models.TransientModel):
     @api.multi
     def confirm_report(self):
         for rec in self:
-            dr = self.env['pf.ledger.report'].search([('employee_id', '=', rec.employee_id.id),('ledger_for_year', 'in', rec.ledger_for_year.id)])
+            dr = self.env['pf.ledger.report'].search([('employee_id', '=', rec.employee_id.id),('ledger_for_year', '=', rec.ledger_for_year.id)])
             for lines in dr:
                 lines.unlink()
             from_date = rec.from_date
@@ -158,7 +158,7 @@ class WizardLateComing(models.TransientModel):
                 'res_model': 'pf.ledger.report',
                 'type': 'ir.actions.act_window',
                 'target': 'current',
-                'domain': [('employee_id', '=', rec.employee_id.id),('ledger_for_year', 'in', rec.ledger_for_year.id)]
+                'domain': [('employee_id', '=', rec.employee_id.id),('ledger_for_year', '=', rec.ledger_for_year.id)]
             }
 
 
