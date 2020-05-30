@@ -153,6 +153,7 @@ class WizardLateComing(models.TransientModel):
                     'employee_id': rec.employee_id.id,
                     'ledger_for_year': rec.ledger_for_year.id,
                     'branch_id': rec.branch_id.id,
+                    'month': str(month),
                     'epmloyee_contribution': str(emp),
                     'voluntary_contribution': str(volun),
                     'employer_contribution': str(emplyr),

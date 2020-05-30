@@ -25,23 +25,23 @@ class LateComingReport(models.Model):
     total = fields.Char('Total')
     # is_current_month = fields.Boolean(compute="_check_current_month", store=True)
     # is_not_sat_sun = fields.Boolean(compute="_check_sat_sun", store=True)
-
-
-    @api.depends('date')
-    def _check_current_month(self):
-        for rec in self:
-            first_day = date.today().replace(day=1)
-            last_day = date.today().replace(day=1) + relativedelta(months=1) - relativedelta(days=1)
-            if rec.date:
-                if first_day <= rec.date <= last_day:
-                    rec.is_current_month = True
-                else:
-                    rec.is_current_month = False
-
-    @api.depends('month')
-    def _check_sat_sun(self):
-        for rec in self:
-            if rec.name == 'Sunday' or rec.name == 'Saturday':
-                rec.is_not_sat_sun = True
-            else:
-                rec.is_not_sat_sun = False
+    #
+    #
+    # @api.depends('date')
+    # def _check_current_month(self):
+    #     for rec in self:
+    #         first_day = date.today().replace(day=1)
+    #         last_day = date.today().replace(day=1) + relativedelta(months=1) - relativedelta(days=1)
+    #         if rec.date:
+    #             if first_day <= rec.date <= last_day:
+    #                 rec.is_current_month = True
+    #             else:
+    #                 rec.is_current_month = False
+    #
+    # @api.depends('month')
+    # def _check_sat_sun(self):
+    #     for rec in self:
+    #         if rec.name == 'Sunday' or rec.name == 'Saturday':
+    #             rec.is_not_sat_sun = True
+    #         else:
+    #             rec.is_not_sat_sun = False

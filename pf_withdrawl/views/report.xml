@@ -12,6 +12,11 @@
                 <field name="ledger_for_year"/>
                 <field name="month"/>
                 <field name="epmloyee_contribution"/>
+                <field name="voluntary_contribution"/>
+                <field name="employer_contribution"/>
+                <field name="interest_employee_voluntary"/>
+                <field name="interest_employer"/>
+                <field name="total"/>
             </tree>
         </field>
     </record>
