@@ -59,7 +59,8 @@ class WizardLateComing(models.TransientModel):
             dr = self.env['pf.ledger.report'].search([('employee_id', '=', rec.employee_id.id),('ledger_for_year', '=', rec.ledger_for_year.id)])
             for lines in dr:
                 lines.unlink()
-            from_date = rec.from_date
+            from_date = rec.from_date = rec.ledger_for_year.date_start
+            to_date = rec.to_date = rec.ledger_for_year.date_end
             X = 0.00
             pf_advance = self.env['pf.widthdrawl'].search(
                 [('employee_id', '=', rec.employee_id.id),
