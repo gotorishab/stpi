@@ -160,7 +160,7 @@ class WizardLateComing(models.TransientModel):
                     'interest_employer': str(employer_contribution),
                     'total': str(total),
                 })
-                from_date += from_date + relativedelta(months=1)
+                from_date = from_date + relativedelta(months=1)
                 print('================creation lines================', cr_lines)
             return {
                 'name': 'PF Ledger',
