@@ -53,6 +53,7 @@
                             <field name="name" invisible="1"/>
                             <field name="employee_id" options="{'no_create_edit': True}" readonly="1"/>
                             <field name="advance_amount" />
+                            <field name="interest" />
                             <field name="designation" readonly="1"/>
                             <field name="center" readonly="1"/>
                             <field name="date" required="1"/>

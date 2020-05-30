@@ -3,8 +3,7 @@ from odoo import models, fields, api,_
 class HrPayslip(models.Model):
     _inherit = 'hr.payslip'
     _description = "Payslip"
-    
-    
+
     @api.multi
     def action_payslip_done(self):
         res =  super(HrPayslip, self).action_payslip_done()

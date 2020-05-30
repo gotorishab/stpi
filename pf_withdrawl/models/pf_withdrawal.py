@@ -18,6 +18,7 @@ class PfWidthdrawl(models.Model):
     date = fields.Date(string="Requested Date", default=fields.Date.today())
     employee_id=fields.Many2one('hr.employee', string="Request By", default=_default_employee,track_visibility='always',)
     advance_amount=fields.Float(string="Advance Amount",track_visibility='always',)
+    interest=fields.Float(string="Interest",track_visibility='always',)
     designation=fields.Many2one('hr.job', string="Designation",track_visibility='always',)
     center=fields.Char(string="Work Location",track_visibility='always',)
     present_pay=fields.Float(string="Present Pay", compute='_compute_present_pay')

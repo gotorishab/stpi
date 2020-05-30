@@ -60,38 +60,95 @@ class WizardLateComing(models.TransientModel):
             for lines in dr:
                 lines.unlink()
             from_date = rec.from_date
+            X = 0.00
+            pf_advance = self.env['pf.widthdrawl'].search(
+                [('employee_id', '=', rec.employee_id.id),
+                 ('state', '=', 'approved')], limit=1)
+            for p in pf_advance:
+                X = p.interest
             while from_date < rec.to_date:
+                pay_rules = self.env['hr.payslip.line'].search(
+                    [('slip_id.employee_id', '=', rec.employee_id.id),
+                     ('slip_id.state', '=', 'done'),
+                     ('slip_id.date_from', '>=', from_date),
+                     ('slip_id.date_to', '<', from_date + relativedelta(months=1)),
+                     ('salary_rule_id.pf_register', '=', True),
+                     ])
+                emp = 0
+                volun = 0
+                emplyr = 0
+                employee_interest = 0
+                employer_contribution = 0
+                for ln in pay_rules:
+                    if ln.salary_rule_id.pf_eve_type == 'employee':
+                        emp += ln.total
+                    elif ln.salary_rule_id.pf_eve_type == 'voluntary':
+                        volun += ln.total
+                    elif ln.salary_rule_id.pf_eve_type == 'employer':
+                        emplyr += ln.total
                 if str(from_date.month) == '1':
                     month = 'January'
+                    employee_interest = (((emp + volun) * X) * 3) / 12
+                    employer_contribution = (((emplyr) * X) * 3) / 12
                 elif str(from_date.month) == '2':
                     month = 'February'
+                    employee_interest = (((emp + volun) * X) * 2) / 12
+                    employer_contribution = (((emplyr) * X) * 2) / 12
                 elif str(from_date.month) == '3':
                     month = 'March'
+                    employee_interest = (((emp + volun) * X) * 1) / 12
+                    employer_contribution = (((emplyr) * X) * 1) / 12
                 elif str(from_date.month) == '4':
                     month = 'April'
+                    employee_interest = (((emp + volun) * X) * 12) / 12
+                    employer_contribution = (((emplyr) * X) * 12) / 12
                 elif str(from_date.month) == '5':
                     month = 'May'
+                    employee_interest = (((emp + volun) * X) * 11) / 12
+                    employer_contribution = (((emplyr) * X) * 11) / 12
                 elif str(from_date.month) == '6':
                     month = 'June'
+                    employee_interest = (((emp + volun) * X) * 10) / 12
+                    employer_contribution = (((emplyr) * X) * 10) / 12
                 elif str(from_date.month) == '7':
                     month = 'July'
+                    employee_interest = (((emp + volun) * X) * 9) / 12
+                    employer_contribution = (((emplyr) * X) * 9) / 12
                 elif str(from_date.month) == '8':
                     month = 'August'
+                    employee_interest = (((emp + volun) * X) * 8) / 12
+                    employer_contribution = (((emplyr) * X) * 8) / 12
                 elif str(from_date.month) == '9':
                     month = 'September'
+                    employee_interest = (((emp + volun) * X) * 7) / 12
+                    employer_contribution = (((emplyr) * X) * 7) / 12
                 elif str(from_date.month) == '10':
                     month = 'October'
+                    employee_interest = (((emp + volun) * X) * 6) / 12
+                    employer_contribution = (((emplyr) * X) * 6) / 12
                 elif str(from_date.month) == '11':
                     month = 'November'
+                    employee_interest = (((emp + volun) * X) * 5) / 12
+                    employer_contribution = (((emplyr) * X) * 5) / 12
                 elif str(from_date.month) == '12':
                     month = 'December'
+                    employee_interest = (((emp + volun) * X) * 4) / 12
+                    employer_contribution = (((emplyr) * X) * 4) / 12
                 else:
                     month = ''
+                    employee_interest = 0
+                    employer_contribution = 0
+                total = emp + volun + emplyr + employee_interest + employer_contribution
                 self.env['pf.ledger.report'].create({
                     'employee_id': rec.employee_id.id,
                     'ledger_for_year': rec.ledger_for_year.id,
                     'branch_id': rec.branch_id.id,
-                    'month': month,
+                    'epmloyee_contribution': str(emp),
+                    'voluntary_contribution': str(volun),
+                    'employer_contribution': str(emplyr),
+                    'interest_employee_voluntary': str(employee_interest),
+                    'interest_employer': str(employer_contribution),
+                    'total': str(total),
                 })
                 from_date += from_date + relativedelta(months=1)
             return {
