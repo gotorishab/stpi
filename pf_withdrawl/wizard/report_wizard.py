@@ -17,15 +17,15 @@ class WizardLateComing(models.TransientModel):
     # def _default_employee(self):
     #     return self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
 
-    def _default_from_date(self):
-        epoch_year = date.today().year
-        year_start = date(epoch_year, 4, 1)
-        return year_start
-
-    def _default_to_date(self):
-        epoch_year = date.today().year
-        year_end = date(epoch_year, 3, 31)
-        return year_end
+    # def _default_from_date(self):
+    #     epoch_year = date.today().year
+    #     year_start = date(epoch_year, 4, 1)
+    #     return year_start
+    #
+    # def _default_to_date(self):
+    #     epoch_year = date.today().year
+    #     year_end = date(epoch_year, 3, 31)
+    #     return year_end
 
     @api.onchange('ledger_for_year')
     def get_dates(self):
@@ -47,8 +47,8 @@ class WizardLateComing(models.TransientModel):
                                   ],string="Report On", default='pf_ledger')
     employee_id = fields.Many2one('hr.employee','Requested By', default=_default_employee)
     ledger_for_year = fields.Many2one('date.range', string='Ledger for the year')
-    from_date = fields.Date(string='From Date', default=_default_from_date)
-    to_date = fields.Date(string='To Date', default=_default_to_date)
+    from_date = fields.Date(string='From Date')
+    to_date = fields.Date(string='To Date')
     branch_id = fields.Many2one('res.branch', string='Branch')
     job_id = fields.Many2one('hr.job', string='Functional Designation')
 
