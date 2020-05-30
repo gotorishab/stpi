@@ -13,10 +13,10 @@
 		'security/ir.model.access.csv',
 		'security/pf_withdrawal_security.xml',
         'views/pf_withdrawal.xml',
-        'wizard/report_wizard.xml'
-        'views/report.xml'
-        'views/salary_rule.xml'
-        'views/pf_type_view.xml'
+        'wizard/report_wizard.xml',
+        'views/report.xml',
+        'views/salary_rule.xml',
+        'views/pf_type_view.xml',
 	],
 	'images': [],
 	'license': 'AGPL-3',
