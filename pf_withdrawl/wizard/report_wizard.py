@@ -64,9 +64,14 @@ class WizardLateComing(models.TransientModel):
             pf_advance = self.env['pf.widthdrawl'].search(
                 [('employee_id', '=', rec.employee_id.id),
                  ('state', '=', 'approved')], limit=1)
+            print('---------------pf advance================',pf_advance)
             for p in pf_advance:
                 X = p.interest
+            print('===============from date initial===================', from_date)
+            print('===============To date initial===================', rec.to_date)
             while from_date < rec.to_date:
+                print('===============from date===================',from_date)
+                print('===============To date===================',rec.to_date)
                 pay_rules = self.env['hr.payslip.line'].search(
                     [('slip_id.employee_id', '=', rec.employee_id.id),
                      ('slip_id.state', '=', 'done'),
@@ -74,6 +79,7 @@ class WizardLateComing(models.TransientModel):
                      ('slip_id.date_to', '<', from_date + relativedelta(months=1)),
                      ('salary_rule_id.pf_register', '=', True),
                      ])
+                print('=============Payslip===============',pay_rules)
                 emp = 0
                 volun = 0
                 emplyr = 0
@@ -86,6 +92,9 @@ class WizardLateComing(models.TransientModel):
                         volun += ln.total
                     elif ln.salary_rule_id.pf_eve_type == 'employer':
                         emplyr += ln.total
+                print('==================Employee===================',emp)
+                print('==================Voluntary===================',volun)
+                print('==================Employer===================',emplyr)
                 if str(from_date.month) == '1':
                     month = 'January'
                     employee_interest = (((emp + volun) * X) * 3) / 12
@@ -139,7 +148,7 @@ class WizardLateComing(models.TransientModel):
                     employee_interest = 0
                     employer_contribution = 0
                 total = emp + volun + emplyr + employee_interest + employer_contribution
-                self.env['pf.ledger.report'].create({
+                cr_lines = self.env['pf.ledger.report'].create({
                     'employee_id': rec.employee_id.id,
                     'ledger_for_year': rec.ledger_for_year.id,
                     'branch_id': rec.branch_id.id,
@@ -151,6 +160,7 @@ class WizardLateComing(models.TransientModel):
                     'total': str(total),
                 })
                 from_date += from_date + relativedelta(months=1)
+                print('================creation lines================', cr_lines)
             return {
                 'name': 'PF Ledger',
                 'view_type': 'form',
