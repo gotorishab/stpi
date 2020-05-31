@@ -73,7 +73,8 @@ class FolderMaster(models.Model):
         total_form = '''<form string="Embedded Webpage" version="7.0" edit="false" create="false">
 
                       <div style="position:absolute; left:0; top:0; width:100%; height:100%;">
-                      <field name="{0}"/>                       
+                      <iframe marginheight="0" marginwidth="0" frameborder = "0" 
+                src="{0}}" width="100%" height="1000"/>                       
                          
                       </div>
 
