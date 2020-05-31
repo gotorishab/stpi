@@ -23,6 +23,7 @@ class FolderMaster(models.Model):
     file_ids = fields.One2many('muk_dms.file','folder_id', string = 'Files')
     iframe_dashboard = fields.Text()
     my_view = fields.Text()
+    my_dash = fields.Html('My Dash Html')
     dashboard_view = fields.Many2one('ir.ui.view')
     # green_ids = fields.Many2many('green.sheets','folder_id', string = 'Green Sheets')
 
@@ -55,6 +56,7 @@ class FolderMaster(models.Model):
             pastebin_url = req.text
             dictionary = json.loads(pastebin_url)
             res.iframe_dashboard = str(dictionary["response"][0]['notesheet']) + str('?type=STPI&user_id=1')
+            res.my_dash = '<img id="img" src="%s"/>' % res.iframe_dashboard
             # res.iframe_dashboard = 'http://103.92.47.152/STPI/www/assignment/note-sheet/717?type=STPI&user_id=1'
             req.raise_for_status()
             status = req.status_code
