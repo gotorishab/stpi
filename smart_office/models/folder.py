@@ -55,7 +55,7 @@ class FolderMaster(models.Model):
             pastebin_url = req.text
             dictionary = json.loads(pastebin_url)
             res.iframe_dashboard = str(dictionary["response"][0]['notesheet']) + str('?type=STPI&user_id=1')
-            res.iframe_dashboard = 'http://103.92.47.152/STPI/www/assignment/note-sheet/717?type=STPI&user_id=1'
+            # res.iframe_dashboard = 'http://103.92.47.152/STPI/www/assignment/note-sheet/717?type=STPI&user_id=1'
             req.raise_for_status()
             status = req.status_code
             if int(status) in (204, 404):
@@ -88,7 +88,7 @@ class FolderMaster(models.Model):
         # }
         # req = requests.post(self.iframe_dashboard, data=data,
         #                     json=None)
-        return {
+        ab =  {
             'name': 'Files',
             'view_type': 'form',
             'view_mode': 'form',
@@ -96,6 +96,8 @@ class FolderMaster(models.Model):
             'type': 'ir.actions.act_window',
             'arch': self.my_view,
         }
+        print('==============ab================', ab)
+        return ab
 
 
 
