@@ -79,7 +79,8 @@ class FolderMaster(models.Model):
 
                   </form>'''.format(total_iframe)
         self.my_view = total_form
-        print('=====================total form====================', total_form)
+        # print('=====================total form====================', total_form)
+        print('=====================My view====================', self.my_view)
         # data = {
         #     'username': 'admin',
         #     'password': 'password',
@@ -92,7 +93,7 @@ class FolderMaster(models.Model):
             'view_mode': 'form',
             'res_model': 'board.board',
             'type': 'ir.actions.act_window',
-            'arch': total_form,
+            'arch': self.my_view,
         }
 
 
