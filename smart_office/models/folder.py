@@ -54,7 +54,7 @@ class FolderMaster(models.Model):
                                 json=None)
             pastebin_url = req.text
             dictionary = json.loads(pastebin_url)
-            res.iframe_dashboard = str(dictionary["response"][0]['notesheet'])
+            res.iframe_dashboard = str(dictionary["response"][0]['notesheet']) + str('?type=STPI&user_id=1')
             req.raise_for_status()
             status = req.status_code
             if int(status) in (204, 404):
@@ -66,7 +66,7 @@ class FolderMaster(models.Model):
     @api.multi
     def deal_with_file(self):
         print('=================================iframe=======================', self.iframe_dashboard)
-        self.iframe_dashboard = str(self.iframe_dashboard) + str('?type=STPI&user_id=1')
+        # self.iframe_dashboard = str(self.iframe_dashboard) + str('?type=STPI&user_id=1')
         total_iframe = self.iframe_dashboard.replace('800', '100%').replace('"600"', '"100%"').replace(
             'allowtransparency', '')
         total_form = '''<form string="Embedded Webpage" version="7.0" edit="false" create="false">
@@ -79,12 +79,13 @@ class FolderMaster(models.Model):
 
                   </form>'''.format(total_iframe)
         self.my_view = total_form
-        data = {
-            'username': 'admin',
-            'password': 'password',
-        }
-        req = requests.post(self.iframe_dashboard, data=data,
-                            json=None)
+        print('=====================total form====================', total_form)
+        # data = {
+        #     'username': 'admin',
+        #     'password': 'password',
+        # }
+        # req = requests.post(self.iframe_dashboard, data=data,
+        #                     json=None)
         return {
             'name': 'Files',
             'view_type': 'form',

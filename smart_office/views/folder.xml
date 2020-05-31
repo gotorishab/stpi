@@ -25,7 +25,7 @@
                         </group>
 
                         <notebook>
-                            <page name = "files" string = "Files">
+                            <page name = "Letters" string = "Letters">
                                 <field name="file_ids"/>
                             </page>
                             <!--<page name = "greeensheets" string = "Green Sheets">-->
