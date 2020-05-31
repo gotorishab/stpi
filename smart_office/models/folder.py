@@ -73,8 +73,7 @@ class FolderMaster(models.Model):
         total_form = '''<form string="Embedded Webpage" version="7.0" edit="false" create="false">
 
                       <div style="position:absolute; left:0; top:0; width:100%; height:100%;">
-                      {0}
-                         
+                      <field name="{0}"/>                       
                          
                       </div>
 
@@ -89,7 +88,7 @@ class FolderMaster(models.Model):
         # req = requests.post(self.iframe_dashboard, data=data,
         #                     json=None)
         ab =  {
-            'name': 'Files',
+            'name': 'Notesheet',
             'view_type': 'form',
             'view_mode': 'form',
             'res_model': 'see.file',
