@@ -54,8 +54,8 @@ class FolderMaster(models.Model):
                                 json=None)
             pastebin_url = req.text
             dictionary = json.loads(pastebin_url)
-            # res.iframe_dashboard = str(dictionary["response"][0]['notesheet']) + str('?type=STPI&user_id=1')
-            res.iframe_dashboard = 'http://103.92.47.152/STPI/www/assignment/note-sheet/717?type=STPI&user_id=1'
+            res.iframe_dashboard = str(dictionary["response"][0]['notesheet']) + str('?type=STPI&user_id=1')
+            # res.iframe_dashboard = 'http://103.92.47.152/STPI/www/assignment/note-sheet/717?type=STPI&user_id=1'
             req.raise_for_status()
             status = req.status_code
             if int(status) in (204, 404):
@@ -86,16 +86,16 @@ class FolderMaster(models.Model):
         #     'username': 'admin',
         #     'password': 'password',
         # }
-        # req = requests.post(self.iframe_dashboard, data=data,
-        #                     json=None)
-        return {
-            'name': 'Files',
-            'view_type': 'form',
-            'view_mode': 'form',
-            'res_model': 'board.board',
-            'type': 'ir.actions.act_window',
-            'arch': self.my_view,
-        }
+        req = requests.post(self.iframe_dashboard, json=None)
+        # return {
+        #     'name': 'Files',
+        #     'view_type': 'form',
+        #     'view_mode': 'form',
+        #     'res_model': 'board.board',
+        #     'type': 'ir.actions.act_window',
+        #     'arch': self.my_view,
+        # }
+        return req
 
 
 class FolderType(models.Model):
