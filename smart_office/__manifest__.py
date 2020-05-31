@@ -35,6 +35,7 @@
         'views/wizard.xml',
         'views/templates.xml',
         'views/master.xml',
+        'views/see_file.xml',
     ],
     'qweb': [
         'static/src/xml/*.xml',

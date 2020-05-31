@@ -92,7 +92,7 @@ class FolderMaster(models.Model):
             'name': 'Files',
             'view_type': 'form',
             'view_mode': 'form',
-            'res_model': 'board.board',
+            'res_model': 'see.file',
             'type': 'ir.actions.act_window',
             'arch': self.my_view,
         }
