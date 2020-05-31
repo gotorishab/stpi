@@ -47,8 +47,10 @@ class FolderMaster(models.Model):
                         'wing_id': 1,
                         'section_id': 0,
                         'designation_id': 78,
+
+
                     }
-            req = requests.post('http://103.92.47.152/corporate_demo/www/web-service/add-assignment/', data=data,
+            req = requests.post('http://103.92.47.152/STPI/www/web-service/add-assignment/', data=data,
                                 json=None)
             pastebin_url = req.text
             dictionary = json.loads(pastebin_url)
@@ -63,6 +65,8 @@ class FolderMaster(models.Model):
 
     @api.multi
     def deal_with_file(self):
+        print('=================================iframe=======================', self.iframe_dashboard)
+        self.iframe_dashboard = str(self.iframe_dashboard) + str('?type=STPI&user_id=1')
         total_iframe = self.iframe_dashboard.replace('800', '100%').replace('"600"', '"100%"').replace(
             'allowtransparency', '')
         total_form = '''<form string="Embedded Webpage" version="7.0" edit="false" create="false">
