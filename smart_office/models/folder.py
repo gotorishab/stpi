@@ -94,7 +94,8 @@ class FolderMaster(models.Model):
             'view_mode': 'form',
             'res_model': 'see.file',
             'type': 'ir.actions.act_window',
-            'arch': self.my_view,
+            'view_id': self.env.ref('smart_office.see_file_view1').id,
+            # 'arch': self.my_view,
         }
         print('==============ab================', ab)
         return ab

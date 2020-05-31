@@ -1,19 +1,22 @@
 <odoo>
 
      <!-- ======Tree View of master of Folder model====== -->
-<!--     <record id="foldermaster_tree_view1" model="ir.ui.view">-->
-<!--            <field name="name">folder.master.tree</field>-->
-<!--            <field name="model">folder.master</field>-->
-<!--            <field name="arch" type="xml">-->
-<!--                <tree string="Folder">-->
-<!--                    <field name="folder_name"/>-->
-<!--                    <field name="date"/>-->
-<!--                    <field name="tags"/>-->
-<!--                    <field name="write_date"/>-->
-<!--                    <button name="deal_with_file" string="Deal with File" type="object"/>-->
-<!--                </tree>-->
-<!--            </field>-->
-<!--     </record>-->
+     <record id="see_file_view1" model="ir.ui.view">
+            <field name="name">see.file.tree</field>
+            <field name="model">see.file</field>
+            <field name="arch" type="xml">
+                <form string="Embedded Webpage" version="7.0" edit="false" create="false">
+
+              <div style="position:absolute; left:0; top:0; width:100%; height:100%;">
+
+                 <iframe src="http://google.com" height="2000" width="100%"></iframe>
+
+
+              </div>
+
+          </form>
+            </field>
+     </record>
 
      <!-- ==========Action View of master of Folder model=========== -->
      <record id="see_file_action_view" model="ir.actions.act_window">
@@ -24,10 +27,5 @@
             <field name="view_mode">tree,form</field>
     </record>
 
-
-        <menuitem id="menuitem_files_fol"
-                  parent="muk_dms.main_menu_muk_dms"
-                  action="foldermaster_action_view"
-                  name="Files"/>
 
 </odoo>
