@@ -17,8 +17,7 @@
                         <script type="text/javascript">
                          $(document).ready(function(){
 <!--                            if(document.getElementById("img")){-->
-                            var value= document.getElementById("img").src;
-                            var value= document.getElementById("img").src;
+                            var value= document.getElementById("my_url");
 <!--                            document.getElementById("custom_src").src=value;-->
 <!--                            }-->
                             alert(value);
