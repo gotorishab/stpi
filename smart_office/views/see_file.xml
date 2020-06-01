@@ -16,7 +16,7 @@
 
                         <script type="text/javascript">
                          $(document).ready(function(){
-                            alert(default_my_url);
+                            alert(see.file);
 <!--                          var url = 'http://103.92.47.152/STPI/www/assignment/note-sheet/665?type=STPI&amp;user_id=1';-->
 <!--                          $('#my_notesheet_url').attr('src',url);-->
 <!--                         alert('Hello');-->
