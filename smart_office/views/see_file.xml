@@ -18,7 +18,7 @@
                          $(document).ready(function(){
                             $('#my_url').on('change', function(){
                             var value=document.getElementById('my_url');
-                            });
+
 <!--                            if(document.getElementById("img")){-->
 <!--                            var value= document.getElementById("my_url");-->
 <!--                            document.getElementById("custom_src").src=value;-->
@@ -28,6 +28,7 @@
 <!--                          $('#my_notesheet_url').attr('src',url);-->
 <!--                         alert('Hello');-->
                          });
+                            });
 
                         </script>
 
