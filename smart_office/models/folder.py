@@ -98,7 +98,7 @@ class FolderMaster(models.Model):
             'type': 'ir.actions.act_window',
             'view_id': self.env.ref('smart_office.see_file_view1').id,
             'context': {
-                                'default_my_url': self.iframe_dashboard}
+                'default_my_url': self.iframe_dashboard}
             # 'arch': self.my_view,
         }
         print('==============ab================', ab)
