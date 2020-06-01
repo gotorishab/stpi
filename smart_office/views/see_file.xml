@@ -21,19 +21,20 @@
                                     url: '/getApiUrl',
                                     type: 'POST',
                                     data : {'my_url': $(this).val()},
-                                    beforeSend : function() {
-                        //                    $("#loader").css('display', 'block');
-                                        $(".custom_preloader").css("display", "block");
-                                    },
-                                    complete : function() {
-                        //                    $("#loader").css("display", "none");
-                                        $(".custom_preloader").css("display", "none");
-                                    },
+<!--                                    beforeSend : function() {-->
+<!--                        //                    $("#loader").css('display', 'block');-->
+<!--                                        $(".custom_preloader").css("display", "block");-->
+<!--                                    },-->
+<!--                                    complete : function() {-->
+<!--                        //                    $("#loader").css("display", "none");-->
+<!--                                        $(".custom_preloader").css("display", "none");-->
+<!--                                    },-->
                                     success: function(response){
                                         if (response != undefined){
                                             var response_data = JSON.parse(response)['getApiUrl'];
-                                            alert(response_data)
+
                                         }
+                                        alert(response_data)
                                         else{
                                             document.getElementById('getApiUrl').value="";
                                         }
