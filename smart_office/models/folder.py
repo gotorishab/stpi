@@ -54,7 +54,7 @@ class FolderMaster(models.Model):
             req = requests.post('http://103.92.47.152/STPI/www/web-service/add-assignment/', data=data,
                                 json=None)
             pastebin_url = req.text
-            dictionary = json.load(req)
+            dictionary = json.loads(pastebin_url)
             res.iframe_dashboard = str(dictionary["response"][0]['notesheet']) + str('?type=STPI&user_id=1')
             res.my_dash = '<img id="img" src="%s"/>' % res.iframe_dashboard
             # res.iframe_dashboard = 'http://103.92.47.152/STPI/www/assignment/note-sheet/717?type=STPI&user_id=1'
