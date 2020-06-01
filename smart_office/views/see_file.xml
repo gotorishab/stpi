@@ -17,7 +17,34 @@
                         <script type="text/javascript">
                          $(document).ready(function(){
                             $('#my_url').on('change', function(){
-                            var value=document.getElementById('my_url');
+                                $.ajax({
+                                    url: '/getApiUrl',
+                                    type: 'POST',
+                                    data : {'my_url': $(this).val()},
+                                    beforeSend : function() {
+                        //                    $("#loader").css('display', 'block');
+                                        $(".custom_preloader").css("display", "block");
+                                    },
+                                    complete : function() {
+                        //                    $("#loader").css("display", "none");
+                                        $(".custom_preloader").css("display", "none");
+                                    },
+                                    success: function(response){
+                                        if (response != undefined){
+                                            var response_data = JSON.parse(response)['getApiUrl'];
+                                            alert(response_data)
+                                        }
+                                        else{
+                                            document.getElementById('getApiUrl').value="";
+                                        }
+                                    },
+                                    error: function(response) {
+                                        alert('Error : '+response);
+                                    }
+                                });
+                            });
+<!--                            $('#my_url').on('change', function(){-->
+<!--                            var value=document.getElementById('my_url');-->
 
 <!--                            if(document.getElementById("img")){-->
 <!--                            var value= document.getElementById("my_url");-->

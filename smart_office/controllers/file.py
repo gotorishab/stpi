@@ -14,12 +14,12 @@ _logger = logging.getLogger(__name__)
 
 class Maincontroller(Website):
 
-    @http.route('/getEligibilityCritirea', type='http', auth="public", website=True, csrf=False)
-    def getEligibilityCritirea(self, **kw):
+    @http.route('/getApiUrl', type='http', auth="public", website=True, csrf=False)
+    def getApiUrl(self, **kw):
         if kw.get('courses_id'):
-            course_id = request.env['op.admission.register'].sudo().search(
-                [('id', '=', int(kw.get('courses_id')))])
-            eligibility_citirea = ""
-            if course_id:
-                eligibility_citirea = course_id.batch_id.course_id.eligibility_citirea
-            return json.dumps(dict(eligibility_citirea=str(eligibility_citirea)))
+            my_url = request.env['op.admission.register'].sudo().search(
+                [('iframe_dashboard', '=', int(kw.get('my_url')))])
+            getApiUrl = ""
+            if my_url:
+                getApiUrl = my_url.iframe_dashboard
+            return json.dumps(dict(getApiUrl=str(getApiUrl)))
