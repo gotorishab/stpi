@@ -84,29 +84,21 @@ class FolderMaster(models.Model):
         self.my_view = total_form
         # print('=====================total form====================', total_form)
         print('=====================My view====================', self.my_view)
-        # data = {
-        #     'username': 'admin',
-        #     'password': 'password',
-        # }
-        # req = requests.post(self.iframe_dashboard, data=data,
-        #                     json=None)
-        ab =  {
+
+        return  {
             'name': 'Notesheet',
-            'view_type': 'kanban',
-            'view_mode': 'kanban',
+            'view_type': 'form',
+            'view_mode': 'form',
             'res_model': 'see.file',
             'type': 'ir.actions.act_window',
             'view_id': self.env.ref('smart_office.see_file_view1').id,
             'context': {
                 'default_my_url': self.iframe_dashboard,
-                'default_url': self.iframe_dashboard,
-                'default_url_attach': '<img id="img" src="%s"/>' % self.iframe_dashboard,
 
             }
             # 'arch': self.my_view,
         }
-        print('==============ab================', ab)
-        return ab
+
 
 
 

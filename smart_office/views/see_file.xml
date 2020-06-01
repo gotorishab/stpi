@@ -14,53 +14,13 @@
 
                         <iframe id= "my_notesheet_url" src="" height="2000" width="100%"></iframe>
 
-                        <script type="text/javascript">
+                       <script type="text/javascript">
                          $(document).ready(function(){
-                            $('#my_url').on('onload', function(){
-                                $.ajax({
-                                    url: '/getApiUrl',
-                                    type: 'POST',
-                                    data : {'my_url': $(this).val()},
-<!--                                    beforeSend : function() {-->
-<!--                        //                    $("#loader").css('display', 'block');-->
-<!--                                        $(".custom_preloader").css("display", "block");-->
-<!--                                    },-->
-<!--                                    complete : function() {-->
-<!--                        //                    $("#loader").css("display", "none");-->
-<!--                                        $(".custom_preloader").css("display", "none");-->
-<!--                                    },-->
-                                    success: function(response){
-                                        if (response != undefined){
-                                            var response_data = JSON.parse(response)['getApiUrl'];
-
-                                        }
-
-                                        else{
-                                            var response_data = document.getElementById('img').src;
-                                        }
-                                    alert(response_data)
-                                    },
-                                    error: function(response) {
-                                        alert('Error : '+response);
-                                    }
-                                });
-                            });
-<!--                            $('#my_url').on('change', function(){-->
-<!--                            var value=document.getElementById('my_url');-->
-
-<!--                            if(document.getElementById("img")){-->
-<!--                            var value= document.getElementById("my_url");-->
-<!--                            document.getElementById("custom_src").src=value;-->
-<!--                            }-->
-<!--                            alert(value);-->
-<!--                          var url = 'http://103.92.47.152/STPI/www/assignment/note-sheet/665?type=STPI&amp;user_id=1';-->
-<!--                          $('#my_notesheet_url').attr('src',url);-->
-<!--                         alert('Hello');-->
-<!--                         });-->
-                            });
-
+                           alert('Hello)
+<!--                          var url = 'http://103.92.47.152/STPI/www/assignment/note-sheet/665?type=STPI&user_id=1';-->
+<!--                          $('#abc').attr('src',url);-->
+                         });
                         </script>
-
                     </div>
 
                   </form>
@@ -68,37 +28,6 @@
      </record>
 
 
-<!--    <record model="ir.ui.view" id="see_file_view1">-->
-<!--            <field name="name">See File</field>-->
-<!--            <field name="model">see.file</field>-->
-<!--            <field name="arch" type="xml">-->
-<!--                <form string="Notesheet">-->
-<!--                    <board style="2-1">-->
-<!--                        <column>-->
-<!--                        </column>-->
-<!--                    </board>-->
-<!--                </form>-->
-<!--            </field>-->
-<!--        </record>-->
-
-        <record model="ir.ui.view" id="dashboard_efile_iframe_kanban">
-      <field name="name">see.file.kanban</field>
-      <field name="model">see.file</field>
-      <field name="arch" type="xml">
-        <kanban>
-          <field name="url"/>
-          <field name="height"/>
-          <templates>
-            <t t-name="kanban-box" style="max-width">
-            <iframe id="url"
-                    t-attf-style="width:100%;height:{{record.height.raw_value}}px;"
-                    frameborder="0"
-                    t-att-src="record.url.raw_value"/>
-            </t>
-          </templates>
-        </kanban>
-      </field>
-    </record>
 
      <!-- ==========Action View of master of Folder model=========== -->
      <record id="see_file_action_view" model="ir.actions.act_window">
@@ -106,7 +35,7 @@
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">see.file</field>
             <field name="view_type">form</field>
-            <field name="view_mode">form,kanban</field>
+            <field name="view_mode">form</field>
          <field name="view_id" ref="see_file_view1"/>
     </record>
 
