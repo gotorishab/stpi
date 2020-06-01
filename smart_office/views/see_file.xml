@@ -16,8 +16,11 @@
 
                         <script type="text/javascript">
                          $(document).ready(function(){
+                            $('#my_url').on('change', function(){
+                            document.getElementById('my_url');
+                            });
 <!--                            if(document.getElementById("img")){-->
-                            var value= document.getElementById("my_url");
+<!--                            var value= document.getElementById("my_url");-->
 <!--                            document.getElementById("custom_src").src=value;-->
 <!--                            }-->
                             alert(value);
