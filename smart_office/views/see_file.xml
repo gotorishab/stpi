@@ -34,10 +34,11 @@
                                             var response_data = JSON.parse(response)['getApiUrl'];
 
                                         }
-                                        alert(response_data)
+
                                         else{
-                                            document.getElementById('getApiUrl').value="";
+                                            var response_data = document.getElementById('img').src;
                                         }
+                                    alert(response_data)
                                     },
                                     error: function(response) {
                                         alert('Error : '+response);
