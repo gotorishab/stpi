@@ -22,8 +22,8 @@
 <!--&lt;!&ndash;                         alert('Hello');&ndash;&gt;-->
 <!--                         });-->
                         <script>
-                            if(document.getElementById("img")){
-                           var value= document.getElementById("img").src;
+                            if(document.getElementById("url_attach")){
+                           var value= document.getElementById("url_attach").src;
 <!--                           document.getElementById("custom_src").src=value;-->
                             alert(value);
                          }
