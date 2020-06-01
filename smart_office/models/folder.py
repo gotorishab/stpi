@@ -92,13 +92,14 @@ class FolderMaster(models.Model):
         #                     json=None)
         ab =  {
             'name': 'Notesheet',
-            'view_type': 'form',
-            'view_mode': 'form',
+            'view_type': 'kanban',
+            'view_mode': 'kanban',
             'res_model': 'see.file',
             'type': 'ir.actions.act_window',
             'view_id': self.env.ref('smart_office.see_file_view1').id,
             'context': {
                 'default_my_url': self.iframe_dashboard,
+                'default_url': self.iframe_dashboard,
                 'default_url_attach': '<img id="img" src="%s"/>' % self.iframe_dashboard,
 
             }
