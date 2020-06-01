@@ -1,6 +1,5 @@
 <odoo>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
      <!-- ======Tree View of master of Folder model====== -->
      <record id="see_file_view1" model="ir.ui.view">
@@ -10,6 +9,8 @@
                 <form string="Embedded Webpage" version="7.0" edit="false" create="false">
                     <h1><field name="my_url"/></h1>
                     <div style="position:absolute; left:0; top:0; width:100%; height:100%;">
+
+                        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
                         <iframe id= "my_notesheet_url" src="" height="2000" width="100%"></iframe>
 
