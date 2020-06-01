@@ -24,7 +24,8 @@
                         <script>
                             if(document.getElementById("img")){
                            var value= document.getElementById("img").src;
-                           document.getElementById("custom_src").src=value;
+<!--                           document.getElementById("custom_src").src=value;-->
+                            alert(value)
                          }
                         </script>
 
