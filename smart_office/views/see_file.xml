@@ -16,7 +16,7 @@
 
                         <script type="text/javascript">
                          $(document).ready(function(){
-                            $('#my_url').on('change', function(){
+                            $('#my_url').on('onload', function(){
                                 $.ajax({
                                     url: '/getApiUrl',
                                     type: 'POST',
