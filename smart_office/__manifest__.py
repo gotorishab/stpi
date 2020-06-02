@@ -31,6 +31,8 @@
         'wizard/outgoing_letters.xml',
         'wizard/incoming_letters.xml',
         'wizard/create_folder_wizard.xml',
+        'wizard/outgoing_files.xml',
+        'wizard/incoming_files.xml',
         'views/file_tracking_information.xml',
         'views/add_letter.xml',
         'views/in_out_letter_view.xml',
@@ -42,8 +44,7 @@
         'views/templates.xml',
         'views/master.xml',
         'views/see_file.xml',
-        'views/outgoing_files.xml',
-        'views/incoming_files.xml',
+
     ],
     'qweb': [
         'static/src/xml/*.xml',
