@@ -89,7 +89,7 @@ class FolderMaster(models.Model):
         return  {
             'name': 'Notesheet',
             'view_type': 'form',
-            'view_mode': 'kanban',
+            'view_mode': 'tree,form,kanban',
             'res_model': 'see.file',
             'type': 'ir.actions.act_window',
             # 'arch': self.my_view,
