@@ -12,11 +12,12 @@ class IncomingLetterWizard(models.TransientModel):
 
     def show_outgoing_letter(self):
         if self:
-            previous_owner = []
+            my_id = []
             files = self.env['muk_dms.file'].search()
+            srch_id = self.env.user.id
             for file in files:
-                file.srch_id = self.env.user.id
-                previous_owner += file.previous_owner
+                if srch_id in file.previous_owner.ids:
+                    my_id.append(file.id)
             return {
                 'name': 'Outgoing Files',
                 'view_type': 'form',
@@ -25,7 +26,7 @@ class IncomingLetterWizard(models.TransientModel):
                 'type': 'ir.actions.act_window',
                 'target': 'current',
                 # 'view_id': self.env.ref('hr_applicant.view_employee_relative_tree').id,
-                'domain': [('srch_id', 'in', previous_owner)],
+                'domain': [('id', 'in', my_id)],
                 }
 
 
