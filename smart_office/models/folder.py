@@ -11,6 +11,17 @@ class FolderMaster(models.Model):
 
     folder_name = fields.Char(string = 'File Name')
 
+
+    current_owner_id = fields.Many2one('res.users', 'Current Owner')
+    last_owner_id = fields.Many2one('res.users', 'Last Owner')
+
+    sec_owner = fields.Many2many('res.users', string='Secondary Owners')
+
+    previous_owner = fields.Many2many('res.users', string='Previous/Current Owners')
+
+
+
+
     date = fields.Date(string='Date', default = fields.Date.today())
     subject = fields.Many2one('code.subject', string='Subject')
     tags = fields.Many2many('muk_dms.tag', string='Tags')

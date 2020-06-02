@@ -26,6 +26,7 @@
         'data/dem_file.xml',
         # 'security/ir_rule.xml',
         'wizard/filewizard.xml',
+        'wizard/folderwizard.xml',
         'wizard/pull_into.xml',
         'wizard/outgoing_letters.xml',
         'wizard/incoming_letters.xml',

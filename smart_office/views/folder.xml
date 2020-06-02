@@ -6,6 +6,10 @@
             <field name="arch" type="xml">
                 <form string="File">
                     <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name = "%(folder_forward_button_wizard_action_view)d" type = "action" string = "Forward" icon = "fa-forward" context = "{'default_defid': id}"/>
+                            <button name="deal_with_file" string="Deal with File" type="object"/>
+                        </div>
                         <group>
                             <group>
 
