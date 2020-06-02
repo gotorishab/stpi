@@ -9,4 +9,5 @@ class FolderMaster(models.Model):
 
     my_url = fields.Text()
     my_url_html = fields.Html()
+    my_url_text = fields.Text()
 

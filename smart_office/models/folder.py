@@ -97,6 +97,14 @@ class FolderMaster(models.Model):
             'context': {
                 'default_my_url': self.iframe_dashboard,
                 'default_my_url_html': html_url,
+                'default_my_url_text': '''
+                <html>
+                <body>
+                <iframe marginheight="0" marginwidth="0" frameborder = "0" 
+                src="{0}" width="100%" height="1000"/>
+                </body>
+                </html>
+                '''.format(total_iframe)
 
             }
             #
