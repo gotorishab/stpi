@@ -56,7 +56,7 @@ class FolderMaster(models.Model):
             pastebin_url = req.text
             dictionary = json.loads(pastebin_url)
             res.iframe_dashboard = str(dictionary["response"][0]['notesheet']) + str('?type=STPI&user_id=1')
-            res.my_dash = '<img id="img" src="%s"/>' % res.iframe_dashboard
+            # res.my_dash = '<img id="img" src="%s"/>' % res.iframe_dashboard
             # res.iframe_dashboard = 'http://103.92.47.152/STPI/www/assignment/note-sheet/717?type=STPI&user_id=1'
             req.raise_for_status()
             status = req.status_code
@@ -91,12 +91,14 @@ class FolderMaster(models.Model):
             'view_mode': 'form',
             'res_model': 'see.file',
             'type': 'ir.actions.act_window',
-            'view_id': self.env.ref('smart_office.see_file_view1').id,
+            'arch': self.my_view,
+            # 'view_id': self.env.ref('smart_office.see_file_view1').id,
             'context': {
                 'default_my_url': self.iframe_dashboard,
+                'default_my_url_html': self.iframe_dashboard,
 
             }
-            # 'arch': self.my_view,
+            #
         }
 
 

@@ -14,6 +14,9 @@ class AddLetter(models.Model):
     sec_owner_two = fields.Many2one('res.users', 'Secondary Owner 2')
     sec_owner_three = fields.Many2one('res.users', 'Secondary Owner 3')
 
+    sec_owner = fields.Many2many('res.users', string='Secondary Owners')
+    previous_owner = fields.Many2many('res.users', string='Previous Owners')
+
     tracker_ids = fields.One2many('muk.letter.tracker', 'letter_id')
 
     @api.onchange('name')
@@ -91,7 +94,7 @@ class AddLetter(models.Model):
     folder_id = fields.Many2one('folder.master', string="Folder Name")
 
     letter_number = fields.Char('Letter Number')
-    sec_owner = fields.Many2many('res.users', string='Secondary Owners')
+
     sender_type_related = fields.Char(related='sender_type.name')
     delivery_mode_related = fields.Char(related='delivery_mode.name')
     language_of_letter_related = fields.Char(related='language_of_letter.name')
@@ -142,6 +145,7 @@ class AddLetter(models.Model):
     sender_email = fields.Char("Email")
     sender_enclosures = fields.Char("Enclosure")
     sender_remarks = fields.Char("Remarks")
+
 
     # doc_letter_category = fields.Selection([('salary', 'Salary'),
     #                                         ('employee_details', 'Employee Details'),

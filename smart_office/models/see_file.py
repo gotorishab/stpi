@@ -8,3 +8,5 @@ class FolderMaster(models.Model):
     _name = 'see.file'
 
     my_url = fields.Text()
+    my_url_html = fields.Html()
+

@@ -33,6 +33,7 @@ class FileWizard(models.Model):
     sec_own_ids = fields.One2many('secondary.file.owner', 'sec_own_id')
 
 
+
     @api.onchange('department','jobposition')
     def _onchange_user(self):
         for rec in self:
@@ -90,13 +91,16 @@ class FileWizard(models.Model):
             if rec.user.id == False:
                 raise UserError(_("%s is not configured to owned this file") % rec.employee.name)
             else:
-                if rec.defid.responsible_user_id.id == rec.env.user.id:
+                if rec.defid.current_owner_id.id == rec.env.user.id:
                     rec.defid.last_owner_id = rec.env.user.id
                     rec.defid.current_owner_id = rec.user.id
-                    rec.defid.sec_owner_one = rec.s1user.id
-                    rec.defid.sec_owner_two = rec.s2user.id
-                    rec.defid.sec_owner_three = rec.s3user.id
+                    # rec.defid.sec_owner_one = rec.s1user.id
+                    # rec.defid.sec_owner_two = rec.s2user.id
+                    # rec.defid.sec_owner_three = rec.s3user.id
                     rec.defid.responsible_user_id = rec.user.id
+                    for line in rec.sec_own_ids:
+                        rec.sec_owner += line.employee.user_id.id
+                    rec.defid.previous_owner += rec.env.user.id
                     self.env['file.tracking.information'].create({
                          'create_let_id': rec.defid.id,
                         'forwarded_date': datetime.now().date(),
@@ -108,7 +112,7 @@ class FileWizard(models.Model):
                     for emp in rec.sec_own_ids:
                         rec.defid.sec_owner += emp.user
                 else:
-                    raise ValidationError("You are not able to forward this file, as you are not the owner of this file")
+                    raise ValidationError("You are not able to forward this file, as you are not the Primary owner of this file")
 
 
 
