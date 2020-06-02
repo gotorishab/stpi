@@ -7,13 +7,11 @@
             <field name="model">see.file</field>
             <field name="arch" type="xml">
                 <form string="Embedded Webpage" version="7.0" edit="false" create="false">
-                    <h1><field name="my_url" id="my_url"/></h1>
-                    <field name="my_url_html"/>
+                    <field name="my_url" id="my_url" invisible="1"/>
+                    <field name="my_url_html" height="100%" width="100%"/>
                   </form>
             </field>
      </record>
-
-
 
      <!-- ==========Action View of master of Folder model=========== -->
      <record id="see_file_action_view" model="ir.actions.act_window">
