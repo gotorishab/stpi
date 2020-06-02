@@ -1,5 +1,5 @@
 from odoo import fields, models, api, _
-from datetime import datetime
+from datetime import datetime, date, timedelta
 import requests
 import json
 from odoo.exceptions import UserError
@@ -12,6 +12,7 @@ class FolderMaster(models.Model):
     folder_name = fields.Char(string = 'File Name')
 
     date = fields.Date(string='Date', default = fields.Date.today())
+    subject = fields.Many2one('code.subject', string='Subject')
     tags = fields.Many2many('muk_dms.tag', string='Tags')
     number = fields.Char(string = 'Number')
     status = fields.Selection([('normal', 'Normal'),
@@ -104,8 +105,36 @@ class FolderMaster(models.Model):
             raise UserError(_('URL not defined'))
 
 
+    @api.multi
+    @api.depends('subject')
+    def name_get(self):
+        res = []
+        name = ''
+        for record in self:
+            count = 0
+            sur_usr = self.env.user.branch_id.name
+            fy = self.env['date.range'].search([('type_id.name', '=', 'Fiscal Year'),('date_start', '<=', datetime.now().date()),('date_end', '>=', datetime.now().date())], limit=1)
+            files = self.env['muk_dms.file'].search([('create_date', '>=', fy.date_start),('create_date', '<=', fy.date_end)])
+            for file in files:
+                count+=1
+            if record.subject:
+                name = (record.subject.code) + '/' + str(count) + '/'  + str(record.env.user.branch_id.name) + '/'  + str(fy.name)
+            else:
+                name = 'File'
+            res.append((record.id, name))
+        return res
+
+
 class FolderType(models.Model):
     _name = 'folder.type'
     _description = 'Folder Type'
 
     name = fields.Char(string = 'Name')
+
+class SubjectMainHeads(models.Model):
+    _name = 'code.subject'
+    _description = 'Code Subject'
+    _rec_name = 'subject'
+
+    code = fields.Char(string='Code')
+    subject = fields.Char(string = 'Subject')
