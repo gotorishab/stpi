@@ -53,19 +53,23 @@ class FolderMaster(models.Model):
                     }
             req = requests.post('http://103.92.47.152/STPI/www/web-service/add-assignment/', data=data,
                                 json=None)
-            pastebin_url = req.text
-            print('============Patebin url=================', pastebin_url)
-            dictionary = json.loads(pastebin_url)
-            res.iframe_dashboard = str(dictionary["response"][0]['notesheet']) + str('?type=STPI&user_id=1')
-            # res.my_dash = '<img id="img" src="%s"/>' % res.iframe_dashboard
-            # res.iframe_dashboard = 'http://103.92.47.152/STPI/www/assignment/note-sheet/717?type=STPI&user_id=1'
-            req.raise_for_status()
-            status = req.status_code
-            if int(status) in (204, 404):
-                response = False
-            else:
-                response = req.json()
-            return (status, response)
+            try:
+                pastebin_url = req.text
+                print('============Patebin url=================', pastebin_url)
+                dictionary = json.loads(pastebin_url)
+                res.iframe_dashboard = str(dictionary["response"][0]['notesheet']) + str('?type=STPI&user_id=1')
+                # res.my_dash = '<img id="img" src="%s"/>' % res.iframe_dashboard
+                # res.iframe_dashboard = 'http://103.92.47.152/STPI/www/assignment/note-sheet/717?type=STPI&user_id=1'
+                req.raise_for_status()
+                status = req.status_code
+                if int(status) in (204, 404):
+                    response = False
+                else:
+                    response = req.json()
+                return (status, response)
+            except Exception as e:
+                print('=============Error==========',e)
+
 
     @api.multi
     def deal_with_file(self):
