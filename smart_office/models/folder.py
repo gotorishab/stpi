@@ -84,7 +84,8 @@ class FolderMaster(models.Model):
         self.my_view = total_form
         # print('=====================total form====================', total_form)
         print('=====================My view====================', self.my_view)
-
+        html_url = '''<iframe marginheight="0" marginwidth="0" frameborder = "0" 
+                src="{0}" width="100%" height="1000"/> '''.format(total_iframe)
         return  {
             'name': 'Notesheet',
             'view_type': 'form',
@@ -95,7 +96,7 @@ class FolderMaster(models.Model):
             # 'view_id': self.env.ref('smart_office.see_file_view1').id,
             'context': {
                 'default_my_url': self.iframe_dashboard,
-                'default_my_url_html': self.iframe_dashboard,
+                'default_my_url_html': html_url,
 
             }
             #
