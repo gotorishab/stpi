@@ -19,6 +19,7 @@
 
     'data': [
         'data/data.xml',
+        'views/load_ifrme_widget.xml',
         'data/sequence.xml',
         'security/ir.model.access.csv',
         'data/doc_receive_type.xml',

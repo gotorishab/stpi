@@ -1,3 +1,5 @@
+
+
 odoo.define('smart_office.header', function (require) {
     "use strict";
 
