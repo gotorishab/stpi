@@ -33,11 +33,18 @@ class IncomingLetterWizard(models.TransientModel):
     def show_outgoing_sec_letter(self):
         if self:
             my_file = []
+            emp_l = []
             emp = self.env['hr.employee'].search([('parent_id', '=', self.env.user.id)])
+            for e in emp:
+                emp_l.append(e.id)
             files = self.env['muk_dms.file'].search([])
             for file in files:
+                print('=====================employee======================', type(emp))
+                print('=====================employee======================', (emp))
+                print('====================previous owner=============', type(file.previous_owner.ids))
+                print('====================previous owner=============', (file.previous_owner.ids))
                 for po in file.previous_owner.ids:
-                    if po in emp:
+                    if po.id in emp_l:
                         my_file.append(file.id)
             return {
                 'name': 'Incoming Files',
