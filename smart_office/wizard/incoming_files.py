@@ -18,7 +18,6 @@ class IncomingfileWizard(models.TransientModel):
             for file in files:
                 if srch_id in file.sec_owner.ids:
                     my_id.append(file.id)
-
             return {
                 'name': 'Incoming Files',
                 'view_type': 'form',

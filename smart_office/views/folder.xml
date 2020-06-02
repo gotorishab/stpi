@@ -84,7 +84,11 @@
 
         <menuitem id="menuitem_files_fol"
                   parent="muk_dms.main_menu_muk_dms"
-                  action="foldermaster_action_view"
                   name="Files"/>
+
+        <menuitem id="menuitem_files_add_fol"
+                  parent="menuitem_files_fol"
+                  action="foldermaster_action_view"
+                  name="ADd Files"/>
 
 </odoo>

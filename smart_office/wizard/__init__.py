@@ -6,3 +6,5 @@ from . import outgoing_letters
 from . import incoming_letters
 from . import pull_into
 from . import folderwizard
+from . import incoming_files
+from . import outgoing_files

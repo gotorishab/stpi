@@ -44,6 +44,8 @@ class FolderMaster(models.Model):
     @api.model
     def create(self, vals):
         res = super(FolderMaster, self).create(vals)
+        vals['last_owner_id'] = self.env.user.id
+        vals['current_owner_id'] = self.env.user.id
         res.sudo().create_file()
         return res
 

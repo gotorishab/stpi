@@ -4,16 +4,16 @@ from datetime import datetime, date, timedelta
 import requests
 import json
 
-class IncomingLetterWizard(models.TransientModel):
-    _name = 'letter.outgoing'
+class OutgoingfileWizard(models.TransientModel):
+    _name = 'file.outgoing'
     _description = 'Wizard of Outgoing Files'
 
-    letter_id = fields.Many2one('muk_dms.file', string='Letter')
+    file_id = fields.Many2one('folder.master', string='file')
 
-    def show_outgoing_letter(self):
+    def show_outgoing_file(self):
         if self:
             my_id = []
-            files = self.env['muk_dms.file'].search([])
+            files = self.env['folder.master'].search([])
             srch_id = self.env.user.id
             for file in files:
                 if srch_id in file.previous_owner.ids:
@@ -22,7 +22,7 @@ class IncomingLetterWizard(models.TransientModel):
                 'name': 'Outgoing Files',
                 'view_type': 'form',
                 'view_mode': 'kanban,tree,graph,pivot,form',
-                'res_model': 'muk_dms.file',
+                'res_model': 'folder.master',
                 'type': 'ir.actions.act_window',
                 'target': 'current',
                 # 'view_id': self.env.ref('hr_applicant.view_employee_relative_tree').id,
@@ -30,14 +30,14 @@ class IncomingLetterWizard(models.TransientModel):
                 }
 
 
-    def show_outgoing_sec_letter(self):
+    def show_outgoing_sec_file(self):
         if self:
             my_file = []
             emp_l = []
             emp = self.env['hr.employee'].search(['|', ('parent_id', '=', self.env.user.id), ('parent_id.parent_id', '=', self.env.user.id)])
             for e in emp:
                 emp_l.append(e.id)
-            files = self.env['muk_dms.file'].search([])
+            files = self.env['folder.master'].search([])
             for file in files:
                 for po in file.previous_owner.ids:
                     if po.id in emp.ids:
@@ -46,7 +46,7 @@ class IncomingLetterWizard(models.TransientModel):
                 'name': 'Incoming Files',
                 'view_type': 'form',
                 'view_mode': 'kanban,tree,graph,pivot,form',
-                'res_model': 'muk_dms.file',
+                'res_model': 'folder.master',
                 'type': 'ir.actions.act_window',
                 'target': 'current',
                 # 'view_id': self.env.ref('hr_applicant.view_employee_relative_tree').id,

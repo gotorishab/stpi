@@ -42,6 +42,8 @@
         'views/templates.xml',
         'views/master.xml',
         'views/see_file.xml',
+        'views/outgoing_files.xml',
+        'views/incoming_files.xml',
     ],
     'qweb': [
         'static/src/xml/*.xml',

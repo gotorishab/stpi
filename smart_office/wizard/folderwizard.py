@@ -94,14 +94,12 @@ class FileWizard(models.Model):
                 if rec.defid.current_owner_id.id == rec.env.user.id:
                     rec.defid.last_owner_id = rec.env.user.id
                     rec.defid.current_owner_id = rec.user.id
-                    rec.defid.responsible_user_id = rec.user.id
                     for line in rec.sec_own_ids:
                         rec.defid.sec_owner += line.employee.user_id.id
                     rec.defid.previous_owner += rec.env.user.id
                     for file in rec.defid.file_ids:
                         file.last_owner_id = rec.env.user.id
                         file.current_owner_id = rec.user.id
-                        file.responsible_user_id = rec.user.id
                         for line in rec.sec_own_ids:
                             file.sec_owner += line.employee.user_id.id
                         file.previous_owner += rec.env.user.id

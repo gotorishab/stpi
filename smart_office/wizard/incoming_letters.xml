@@ -10,8 +10,8 @@
                         This will show you incoming letters.
                     </p>
                     <footer>
-                        <button string="Incoming Files" name="show_incoming_letter" type="object" class="btn-primary"/>
-                        <button string="Subordinates Incoming Files" name="show_incoming_sec_letter" type="object" class="btn-primary"/>
+                        <button string="Incoming Letters" name="show_incoming_letter" type="object" class="btn-primary"/>
+                        <button string="Subordinates Incoming Letters" name="show_incoming_sec_letter" type="object" class="btn-primary"/>
                         <button string="Cancel" class="btn-secondary" special="cancel"/>
                     </footer>
                 </form>
