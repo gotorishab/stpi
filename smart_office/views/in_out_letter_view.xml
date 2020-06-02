@@ -40,14 +40,14 @@
                   action="action_add_my_letter"
                   name="Add Letters"/>
 
-        <menuitem id="menuitem_view_letter_incoming"
-                  parent="muk_dms.menu_dms_file"
-                  action="action_view_letter_incoming"
-                  name="Incoming Letters"/>
+<!--        <menuitem id="menuitem_view_letter_incoming"-->
+<!--                  parent="muk_dms.menu_dms_file"-->
+<!--                  action="action_view_letter_incoming"-->
+<!--                  name="Incoming Letters"/>-->
 
-        <menuitem id="menuitem_view_letter_outgoing"
-                  parent="muk_dms.menu_dms_file"
-                  action="action_view_letter_outgoing"
-                  name="Outgoing Letters"/>
+<!--        <menuitem id="menuitem_view_letter_outgoing"-->
+<!--                  parent="muk_dms.menu_dms_file"-->
+<!--                  action="action_view_letter_outgoing"-->
+<!--                  name="Outgoing Letters"/>-->
     </data>
 </odoo>

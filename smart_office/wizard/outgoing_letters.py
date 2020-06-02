@@ -39,8 +39,10 @@ class IncomingLetterWizard(models.TransientModel):
                 emp_l.append(e.id)
             files = self.env['muk_dms.file'].search([])
             for file in files:
-                print('=====================employee======================', type(emp))
-                print('=====================employee======================', (emp))
+                print('=====================employee======================', type(emp.ids))
+                print('=====================employee======================', (emp.ids))
+                print('=====================employee new======================', type(emp_l))
+                print('=====================employee new======================', (emp_l))
                 print('====================previous owner=============', type(file.previous_owner.ids))
                 print('====================previous owner=============', (file.previous_owner.ids))
                 for po in file.previous_owner.ids:
