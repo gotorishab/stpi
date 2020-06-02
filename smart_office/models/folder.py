@@ -95,15 +95,12 @@ class FolderMaster(models.Model):
         return  {
             'name': 'Notesheet',
             'view_type': 'form',
-            'view_mode': 'tree,form,kanban',
+            'view_mode': 'kanban',
             'res_model': 'see.file',
             'type': 'ir.actions.act_window',
             'view_id': self.env.ref('smart_office.see_file_view1_kanban').id
         }
-
-
-
-
+    
 class FolderType(models.Model):
     _name = 'folder.type'
     _description = 'Folder Type'

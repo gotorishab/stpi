@@ -28,7 +28,6 @@
             <field name="arch" type="xml">
                     <kanban class="oe_background_grey o_kanban_dashboard o_account_kanban" create="0">
                        <field name="my_url_text"/>
-<!--                       <field name="my_url_html"/>-->
                         <templates>
                             <t t-name="kanban-box" >
                                 <div style="width:100%;height:100%;">
