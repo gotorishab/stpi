@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <record id="view_outgoing_file_wizard" model="ir.ui.view">
+        <record id="view_outgoing_letter_wizard" model="ir.ui.view">
             <field name="name">letter.outgoing</field>
             <field name="model">letter.outgoing</field>
             <field name="arch" type="xml">
-                <form string="outgoing File">
+                <form string="outgoing letter">
                     <p class="oe_grey">
                         This will show you outgoing letters.
                     </p>
