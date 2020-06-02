@@ -1,7 +1,8 @@
-from odoo import fields, models, api
+from odoo import fields, models, api, _
 from datetime import datetime
 import requests
 import json
+from odoo.exceptions import UserError
 
 class FolderMaster(models.Model):
     _name = 'folder.master'
@@ -73,38 +74,35 @@ class FolderMaster(models.Model):
 
     @api.multi
     def deal_with_file(self):
-        total_iframe = self.iframe_dashboard.replace('800', '100%').replace('"600"', '"100%"').replace(
-            'allowtransparency', '')
-        # total_form = '''<form string="Embedded Webpage" version="7.0" edit="false" create="false">
-        #               <div style="position:absolute; left:0; top:0; width:100%; height:100%;">
-        #               <iframe marginheight="0" marginwidth="0" frameborder = "0"
-        #                 src="{0}" width="100%" height="1000"/>
-        #               </div>
-        #           </form>'''.format(total_iframe)
-        # self.my_view = total_form
-        file_ids = self.env['see.file'].sudo().search([])
-        for id in file_ids:
-            id.unlink()
-        html = '''
-                <html>
-                <body>
-                <iframe marginheight="0" marginwidth="0" frameborder = "0" 
-                src="{0}" width="100%" height="1000"/>
-                </body>
-                </html>
-                '''.format(total_iframe)
-        self.env['see.file'].sudo().create({
-            "my_url":self.iframe_dashboard,
-            "my_url_text":html
-        })
-        return  {
-            'name': 'Notesheet',
-            'view_type': 'form',
-            'view_mode': 'kanban',
-            'res_model': 'see.file',
-            'type': 'ir.actions.act_window',
-            'view_id': self.env.ref('smart_office.see_file_view1_kanban').id
-        }
+        if self.iframe_dashboard:
+            total_iframe = self.iframe_dashboard.replace('800', '100%').replace('"600"', '"100%"').replace(
+                'allowtransparency', '')
+            file_ids = self.env['see.file'].sudo().search([])
+            for id in file_ids:
+                id.unlink()
+            html = '''
+                    <html>
+                    <body>
+                    <iframe marginheight="0" marginwidth="0" frameborder = "0" 
+                    src="{0}" width="100%" height="1000"/>
+                    </body>
+                    </html>
+                    '''.format(total_iframe)
+            self.env['see.file'].sudo().create({
+                "my_url":self.iframe_dashboard,
+                "my_url_text":html
+            })
+            return  {
+                'name': 'Notesheet',
+                'view_type': 'form',
+                'view_mode': 'kanban',
+                'res_model': 'see.file',
+                'type': 'ir.actions.act_window',
+                'view_id': self.env.ref('smart_office.see_file_view1_kanban').id
+            }
+        else:
+            raise UserError(_('URL not defined'))
+
 
 class FolderType(models.Model):
     _name = 'folder.type'
