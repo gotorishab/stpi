@@ -51,8 +51,8 @@
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">see.file</field>
             <field name="view_type">form</field>
-            <field name="view_mode">kanban</field>
-         <field name="view_id" ref="see_file_view1_kanban"/>
+            <field name="view_mode">tree,form,kanban</field>
+<!--         <field name="view_id" ref="see_file_view1_kanban"/>-->
     </record>
 
 
