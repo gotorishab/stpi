@@ -17,7 +17,6 @@
             <field name="name">see.file.kanban</field>
             <field name="model">see.file</field>
             <field name="arch" type="xml">
-                <?xml version="1.0"?>
                     <kanban class="oe_background_grey o_kanban_dashboard o_account_kanban" create="0">
                        <field name="my_url_text"/>
                         <templates>
@@ -29,7 +28,6 @@
                             </t>
                         </templates>
                     </kanban>
-
             </field>
      </record>
 
