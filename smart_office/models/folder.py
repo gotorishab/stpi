@@ -54,6 +54,7 @@ class FolderMaster(models.Model):
             req = requests.post('http://103.92.47.152/STPI/www/web-service/add-assignment/', data=data,
                                 json=None)
             pastebin_url = req.text
+            print('============Patebin url=================', pastebin_url)
             dictionary = json.loads(pastebin_url)
             res.iframe_dashboard = str(dictionary["response"][0]['notesheet']) + str('?type=STPI&user_id=1')
             # res.my_dash = '<img id="img" src="%s"/>' % res.iframe_dashboard
@@ -100,7 +101,7 @@ class FolderMaster(models.Model):
             'type': 'ir.actions.act_window',
             'view_id': self.env.ref('smart_office.see_file_view1_kanban').id
         }
-    
+
 class FolderType(models.Model):
     _name = 'folder.type'
     _description = 'Folder Type'
