@@ -4,7 +4,7 @@ from odoo.exceptions import UserError
 
 
 class PullInto(models.TransientModel):
-    _name = "hr.employee.action.confirm"
+    _name = "pull.into.custom"
     _description = "HR Employee Cheque Action"
 
 
