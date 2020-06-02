@@ -13,7 +13,7 @@ class IncomingLetterWizard(models.TransientModel):
     def show_incoming_letter(self):
         if self:
             my_id = []
-            files = self.env['muk_dms.file'].search()
+            files = self.env['muk_dms.file'].search([])
             srch_id = self.env.user.id
             for file in files:
                 if srch_id in file.sec_owner.ids:
