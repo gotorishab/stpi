@@ -6,7 +6,7 @@
             <field name="name">see.file.tree</field>
             <field name="model">see.file</field>
             <field name="arch" type="xml">
-                <form string="Embedded Webpage" version="7.0" edit="false" create="false">
+                <form string="Embedded Webpage" version="7.0" edit="false" create="1">
                     <field name="my_url" id="my_url" invisible="1"/>
                     <field name="my_url_html" height="100%" width="100%" nolabel="1"/>
                   </form>
@@ -17,7 +17,7 @@
             <field name="name">see.file.kanban</field>
             <field name="model">see.file</field>
             <field name="arch" type="xml">
-                    <kanban class="oe_background_grey o_kanban_dashboard o_account_kanban" create="0">
+                    <kanban class="oe_background_grey o_kanban_dashboard o_account_kanban" create="1">
                        <field name="my_url_text"/>
                        <field name="my_url_html"/>
                         <templates>
@@ -41,7 +41,7 @@
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">see.file</field>
             <field name="view_type">form</field>
-            <field name="view_mode">form, kanban</field>
+            <field name="view_mode">form,kanban</field>
          <field name="view_id" ref="see_file_view1_kanban"/>
     </record>
 
