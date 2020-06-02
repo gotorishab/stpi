@@ -27,7 +27,7 @@
         # 'security/ir_rule.xml',
         'wizard/filewizard.xml',
         'wizard/outgoing_letters.xml',
-        'wizard/incoming_letters.xml.xml',
+        'wizard/incoming_letters.xml',
         'wizard/create_folder_wizard.xml',
         'views/file_tracking_information.xml',
         'views/add_letter.xml',
