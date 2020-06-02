@@ -93,7 +93,7 @@ class FolderMaster(models.Model):
             'res_model': 'see.file',
             'type': 'ir.actions.act_window',
             # 'arch': self.my_view,
-            'view_id': self.env.ref('smart_office.see_file_view1_kanban').id,
+            # 'view_id': self.env.ref('smart_office.see_file_view1_kanban').id,
             'context': {
                 'default_my_url': self.iframe_dashboard,
                 'default_my_url_html': html_url,

@@ -42,7 +42,7 @@
             <field name="res_model">see.file</field>
             <field name="view_type">form</field>
             <field name="view_mode">form,kanban</field>
-         <field name="view_id" ref="see_file_view1_kanban"/>
+<!--         <field name="view_id" ref="see_file_view1_kanban"/>-->
     </record>
 
 
