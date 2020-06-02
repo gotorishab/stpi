@@ -99,7 +99,7 @@ class FileWizard(models.Model):
                     # rec.defid.sec_owner_three = rec.s3user.id
                     rec.defid.responsible_user_id = rec.user.id
                     for line in rec.sec_own_ids:
-                        rec.sec_owner += line.employee.user_id.id
+                        rec.defid.sec_owner += line.employee.user_id.id
                     rec.defid.previous_owner += rec.env.user.id
                     self.env['file.tracking.information'].create({
                          'create_let_id': rec.defid.id,
