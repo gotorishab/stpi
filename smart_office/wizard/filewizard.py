@@ -92,6 +92,8 @@ class FileWizard(models.Model):
                 raise UserError(_("%s is not configured to owned this file") % rec.employee.name)
             else:
                 if rec.defid.current_owner_id.id == rec.env.user.id:
+                    sec_own = []
+                    previous_owner = []
                     rec.defid.last_owner_id = rec.env.user.id
                     rec.defid.current_owner_id = rec.user.id
                     # rec.defid.sec_owner_one = rec.s1user.id
@@ -99,8 +101,10 @@ class FileWizard(models.Model):
                     # rec.defid.sec_owner_three = rec.s3user.id
                     rec.defid.responsible_user_id = rec.user.id
                     for line in rec.sec_own_ids:
-                        rec.defid.sec_owner.append(line.employee.user_id.id)
-                    rec.defid.previous_owner.append(rec.env.user.id)
+                        sec_own.append(line.employee.user_id.id)
+                    rec.defid.sec_owner = [(6,0,sec_own)]
+                    previous_owner.append(rec.env.user.id)
+                    rec.defid.previous_owner = [(6,0,previous_owner)]
                     self.env['file.tracking.information'].create({
                          'create_let_id': rec.defid.id,
                         'forwarded_date': datetime.now().date(),

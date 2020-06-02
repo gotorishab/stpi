@@ -12,13 +12,15 @@ class PullInto(models.TransientModel):
     def pull_intos_action_button(self):
         context = dict(self._context or {})
         active_ids = context.get('active_ids', []) or []
+        previous_owner = []
         for file in self.env['muk_dms.file'].browse(active_ids):
             file.last_owner_id = file.current_owner_id.id
             file.current_owner_id = self.env.user.id
             file.responsible_user_id = self.env.user.id
             file.sec_owner = []
-            file.previous_owner.append(self.env.user.id)
-            file.previous_owner.append(file.last_owner_id)
+            previous_owner.append(self.env.user.id)
+            previous_owner.append(file.last_owner_id)
+            file.previous_owner = [(6,0,previous_owner)]
 
 
     #     context = dict(self._context or {})
