@@ -9,10 +9,31 @@
                 <form string="Embedded Webpage" version="7.0" edit="false" create="false">
                     <field name="my_url" id="my_url" invisible="1"/>
                     <field name="my_url_html" height="100%" width="100%" nolabel="1"/>
-                    <field name="my_url_text"/>
                   </form>
             </field>
      </record>
+
+     <record id="see_file_view1_kanban" model="ir.ui.view">
+            <field name="name">see.file.kanban</field>
+            <field name="model">see.file</field>
+            <field name="arch" type="xml">
+                <?xml version="1.0"?>
+                    <kanban class="oe_background_grey o_kanban_dashboard o_account_kanban" create="0">
+                       <field name="my_url_text"/>
+                        <templates>
+                            <t t-name="kanban-box" >
+                                <div style="width:100%;height:100%;">
+<!--                                    <field name="my_url_html" widget="html" nolabel="1"/>-->
+                                    <field name="my_url_text" widget="html" nolabel="1"/>
+                                </div>
+                            </t>
+                        </templates>
+                    </kanban>
+
+            </field>
+     </record>
+
+
 
      <!-- ==========Action View of master of Folder model=========== -->
      <record id="see_file_action_view" model="ir.actions.act_window">
@@ -20,8 +41,8 @@
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">see.file</field>
             <field name="view_type">form</field>
-            <field name="view_mode">form</field>
-         <field name="view_id" ref="see_file_view1"/>
+            <field name="view_mode">form, kanban</field>
+         <field name="view_id" ref="see_file_view1_kanban"/>
     </record>
 
 
