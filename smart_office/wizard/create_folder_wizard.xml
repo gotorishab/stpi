@@ -29,7 +29,7 @@
 
      <!-- =============== Action View of forward button================ -->
      <record id="createfolder_wizard_action_view" model="ir.actions.act_window">
-         <field name="name">Create Folder</field>
+         <field name="name">Create File</field>
          <field name="type">ir.actions.act_window</field>
          <field name="res_model">assignfolder.wizard</field>
          <field name="view_type">form</field>
