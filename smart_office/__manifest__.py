@@ -34,6 +34,7 @@
         'wizard/outgoing_files.xml',
         'wizard/incoming_files.xml',
         'wizard/assign_folder_wizard.xml',
+        'views/department_job.xml',
         'views/file_tracking_information.xml',
         'views/add_letter.xml',
         'views/in_out_letter_view.xml',

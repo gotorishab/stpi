@@ -8,11 +8,11 @@
                 <form string="Assign to File">
                     <group>
                         <group>
-                                <field name="folder_id" required ="1"/>
+                                <field name="folder_id" required ="1" domain="[('current_owner_id','=',uid)]"/>
                             </group>
                             <group>
-                                <field name="cooespondence_ids" required ="1"/>
-                            </group>
+                                </group>
+                                <field name="cooespondence_ids" required ="1" domain="[('current_owner_id','=',uid)]"/>
                         </group>
                     <footer>
                         <button name = "confirm_button" string = "Confirm" type = "object" class="oe_highlight"/>

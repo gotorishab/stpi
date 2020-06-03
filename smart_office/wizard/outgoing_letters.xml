@@ -11,7 +11,7 @@
                     </p>
                     <footer>
                         <button string="outgoing Letters" name="show_outgoing_letter" type="object" class="btn-primary"/>
-                        <button string="Subordinates outgoing Letters" name="show_outgoing_sec_letter" type="object" class="btn-primary"/>
+                        <button string="Subordinates outgoing Letters" name="show_outgoing_sec_letter" type="object" class="btn-primary" invisible="1"/>
                         <button string="Cancel" class="btn-secondary" special="cancel"/>
                     </footer>
                 </form>

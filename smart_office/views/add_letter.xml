@@ -29,6 +29,9 @@
                                     </button>
 
                 </xpath>
+                <xpath expr = "//button[@name='toggle_active']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
                 <xpath expr = "//field[@name='directory']" position="attributes">
                     <attribute name="invisible">1</attribute>
                 </xpath>
@@ -58,10 +61,9 @@
                 <xpath expr = "//field[@name='extension']" position="after">
                     <field name="category"/>
                     <field name="tags"/>
-                    <field name="directory" attrs="{'invisible':[('directory','=', False)],'readonly':[('directory','!=', False)]}"/>
+                    <field name="directory" invisible="1"/>
                     <field name="php_letter_id" invisible="1"/>
                     <field name="folder_id" attrs="{'invisible':[('folder_id','=', False)]}"/>
-                    <field name="directory" attrs="{'invisible':[('directory','=', False)],'readonly':[('directory','!=', False)]}"/>
                 </xpath>
 
                 <xpath expr = "//field[@name='content']" position="attributes">

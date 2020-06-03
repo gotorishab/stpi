@@ -11,7 +11,7 @@
                     </p>
                     <footer>
                         <button string="outgoing Files" name="show_outgoing_file" type="object" class="btn-primary"/>
-                        <button string="Subordinates outgoing Files" name="show_outgoing_sec_file" type="object" class="btn-primary"/>
+                        <button string="Subordinates outgoing Files" name="show_outgoing_sec_file" type="object" class="btn-primary" invisible="1"/>
                         <button string="Cancel" class="btn-secondary" special="cancel"/>
                     </footer>
                 </form>

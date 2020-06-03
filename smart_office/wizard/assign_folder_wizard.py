@@ -7,15 +7,15 @@ class CreateFolder(models.TransientModel):
 
 
     deffolderid = fields.Many2one('muk_dms.file')
-    cooespondence_ids = fields.Many2many('muk_dms.file')
-    folder_id = fields.Many2many('folder.master', string = "Select File")
+    cooespondence_ids = fields.Many2many('muk_dms.file', string='Correspondence')
+    folder_id = fields.Many2one('folder.master', string="Select File")
 
 
     def confirm_button(self):
         if self:
             letter_id = []
             letter_id.append(self.deffolderid.id)
-            self.folder_id.self.folder_ids = [(6, 0, letter_id)]
+            self.folder_id.folder_ids = [(6, 0, letter_id)]
             form_view = self.env.ref('smart_office.foldermaster_form_view')
             tree_view = self.env.ref('smart_office.foldermaster_tree_view1')
             value = {
