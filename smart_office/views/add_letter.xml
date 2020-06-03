@@ -283,6 +283,19 @@
                 <field name="name" position="replace">
                     <field name="name" string="Letter Name"/>
                 </field>
+
+                <xpath expr = "//field[@name='write_date']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr = "//field[@name='size']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr = "//field[@name='mimetype']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr = "//field[@name='path_names']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
                 <field name="actions" position="after">
                     <field name="letter_number"/>
                     <field name="sender_type"/>
@@ -291,6 +304,9 @@
                     <field name="sender_department"/>
                     <field name="current_owner_id"/>
                 </field>
+                <xpath expr = "//field[@name='actions']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
             </field>
         </record>
     </data>
