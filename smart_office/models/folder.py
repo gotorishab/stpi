@@ -46,6 +46,22 @@ class FolderMaster(models.Model):
         res = super(FolderMaster, self).create(vals)
         vals['last_owner_id'] = self.env.user.id
         vals['current_owner_id'] = self.env.user.id
+        name = ''
+        count = 0
+        sur_usr = self.env.user.branch_id.name
+        fy = self.env['date.range'].search(
+            [('type_id.name', '=', 'Fiscal Year'), ('date_start', '<=', datetime.now().date()),
+             ('date_end', '>=', datetime.now().date())], limit=1)
+        files = self.env['muk_dms.file'].search(
+            [('create_date', '>=', fy.date_start), ('create_date', '<=', fy.date_end)])
+        for file in files:
+            count += 1
+        if res.subject:
+            name = (res.subject.code) + '/' + str(count) + '/' + str(res.env.user.branch_id.name) + '/' + str(
+                fy.name)
+        else:
+            name = 'File'
+        res.number = name
         res.sudo().create_file()
         return res
 
