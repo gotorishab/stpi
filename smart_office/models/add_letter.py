@@ -2,6 +2,7 @@ from odoo import models, api, fields,_
 from datetime import datetime, date, timedelta
 import requests
 import json
+from odoo.exceptions import UserError
 
 class AddLetter(models.Model):
     _inherit = "muk_dms.file"
@@ -46,18 +47,22 @@ class AddLetter(models.Model):
         res.letter_number = sequence
         data = {
             'document_type': res.document_type,
-            'enclosure_details': res.doc_enclosure_detail,
+            'name': res.seq,
+            'enclosure_details': res.sender_enclosures,
             'attachement': [res.content],
             'user_id': 1,
+
         }
-        req = requests.post('http://103.92.47.152/corporate_demo/www/document/add-document', data=data,
+        req = requests.post('http://103.92.47.152/STPI/www/web-service/add-assignment/', data=data,
                             json=None)
-        print("req", req)
-        pastebin_url = req.text
-        print("Test", pastebin_url)
-        # dictionary = json.loads(pastebin_url)
-        # req.raise_for_status()
-        # status = req.status_code
+        try:
+            pastebin_url = req.text
+            print('============Patebin url=================', pastebin_url)
+            dictionary = json.loads(pastebin_url)
+            print('============Dictionary=================', dictionary)
+            res.php_letter_id = str(dictionary["response"][0]['id'])
+        except Exception as e:
+            print('=============Error==========', e)
         if self._context.get('smart_office_incoming_letter', False):
             self.env['muk.letter.tracker'].create(dict(
                 type='create',
@@ -68,9 +73,7 @@ class AddLetter(models.Model):
             res.directory.doc_file_preview = res.content
         return res
 
-    # @api.constrains('name')
-    # def _check_name(self):
-    #     pass
+
 
     # Letter Information
     responsible_user_id = fields.Many2one('res.users', default=lambda self:self.env.user.id)
@@ -79,9 +82,9 @@ class AddLetter(models.Model):
 
     sender_type = fields.Many2one('doc.sender.type',' Sender Type')
     delivery_mode = fields.Many2one('doc.delivery.mode', 'Delivery Mode')
-    language_of_letter = fields.Many2one('doc.letter.language', 'Language of Letter')
-    letter_type = fields.Many2one('doc.letter.type', 'Type of Letter')
-
+    language_of_letter = fields.Many2one('doc.letter.language', 'Correspondence Language')
+    letter_type = fields.Many2one('doc.letter.type', 'Correspondence Type')
+    php_letter_id = fields.Char('PHP Letter ID')
     # doc_no = fields.Char()
 
     # doc_tags = fields.Text('Tags')
@@ -94,7 +97,7 @@ class AddLetter(models.Model):
     pdf_file = fields.Binary(related='content')
     folder_id = fields.Many2one('folder.master', string="Folder Name")
 
-    letter_number = fields.Char('Letter Number')
+    letter_number = fields.Char('correspondence Number')
 
     sender_type_related = fields.Char(related='sender_type.name')
     delivery_mode_related = fields.Char(related='delivery_mode.name')
@@ -102,8 +105,8 @@ class AddLetter(models.Model):
     letter_type_related = fields.Char(related='letter_type.name')
     other_st = fields.Char('Other (Sender Type)')
     other_dm = fields.Char('Other (Delivery Mode)')
-    other_lol = fields.Char('Other (Language of letter)')
-    other_lt = fields.Char('Other (Letter Type)')
+    other_lol = fields.Char('Other (Correspondence Language')
+    other_lt = fields.Char('Other (Correspondence Type)')
 
     # Receipt Information
     doc_receive_m2o = fields.Many2one('doc.rf', string='Doc receive from')
@@ -127,15 +130,17 @@ class AddLetter(models.Model):
     doc_remark = fields.Text('Remark')
     doc_state = fields.Many2one('res.country.state', 'State')
     doc_department_id = fields.Many2one('muk.doc.department', 'Department')
-    doc_letter_details = fields.Text('Letter Details')
+    doc_letter_details = fields.Text('Correspondence Details')
     file_holder = fields.Many2one('res.users', string = "File holder")
 
-    sender_ministry = fields.Char("Ministry")
-    sender_department = fields.Char("Department")
+    sender_ministry = fields.Many2one('doc.sender.minstry',"Ministry")
+    sender_department = fields.Many2one('doc.sender.department',"Department")
     sender_name = fields.Char("Name")
-    sender_designation = fields.Char("Designation")
+    sender_designation = fields.Many2one('doc.sender.designation',"Designation")
     sender_organisation = fields.Char("Organisation")
-    sender_address = fields.Char("Address")
+    sender_address = fields.Many2one('doc.sender.address',"Address")
+    sender_address_text = fields.Text("Sender Address")
+
     sender_city = fields.Many2one('res.city', string="City")
     sender_state = fields.Many2one('res.country.state', string="State")
     sender_country = fields.Many2one('res.country', string="Country")
@@ -155,10 +160,28 @@ class AddLetter(models.Model):
     #                                         ('view_sec', 'View Sec'),
     #                                         (('lr_sec', 'LR Sec'))], default='salary')
 
-    reference_ids = fields.Many2many('muk_dms.file', 'muk_dms_file_rel', 'field1', 'field2', 'Reference Letter', domain="[('id', '!=', id)]")
+    reference_ids = fields.Many2many('muk_dms.file', 'muk_dms_file_rel', 'field1', 'field2', 'Reference Correspondence', domain="[('id', '!=', id)]")
 
     forward_from_id = fields.Many2one('res.users', 'Forward From', default=lambda self:self.env.user.id)
     forward_to_id = fields.Many2one('res.users', 'Forward To')
+
+
+
+    @api.onchange('sender_ministry')
+    def change_sender_minstry(self):
+        if self.sender_ministry == False:
+            self.sender_address = False
+        else:
+            return {'domain': {'sender_address': [('minstry', '=', self.sender_ministry.id)]}}
+
+
+
+    @api.onchange('sender_address')
+    @api.constrains('sender_address')
+    def change_sender_address(self):
+        for rec in self:
+            if rec.sender_address:
+                rec.sender_address_text = rec.sender_address.name
 
 
     def smart_office_create_file(self):
@@ -264,3 +287,32 @@ class LetterType(models.Model):
     _description='Letter Type'
 
     name = fields.Char('Name')
+
+
+
+class SenderMinistry(models.Model):
+    _name = 'doc.sender.minstry'
+    _description='Sender Minstry'
+
+    name = fields.Char('Name')
+
+
+class SenderDepartment(models.Model):
+    _name = 'doc.sender.department'
+    _description='Sender Department'
+
+    name = fields.Char('Department Name')
+
+class SenderDesignation(models.Model):
+    _name = 'doc.sender.designation'
+    _description='Sender Designation'
+
+    name = fields.Char('Department Name')
+
+class SenderAddress(models.Model):
+    _name = 'doc.sender.address'
+    _description='Sender Address'
+    _rec_name='minstry'
+
+    minstry = fields.Many2one('doc.sender.minstry')
+    name = fields.Char('Address')

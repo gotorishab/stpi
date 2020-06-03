@@ -5,9 +5,9 @@
             <field name="name">letter.incoming</field>
             <field name="model">letter.incoming</field>
             <field name="arch" type="xml">
-                <form string="Incoming Letter">
+                <form string="Incoming Correspondence">
                     <p class="oe_grey">
-                        This will show you incoming letters.
+                        This will show you incoming Correspondence.
                     </p>
                     <footer>
                         <button string="Incoming Letters" name="show_incoming_letter" type="object" class="btn-primary"/>
@@ -20,7 +20,7 @@
 
 
         <record id="efile_incoming_letter_action_call" model="ir.actions.act_window">
-            <field name="name">Incoming Letters</field>
+            <field name="name">Incoming Correspondence</field>
             <field name="res_model">letter.incoming</field>
             <field name="view_type">form</field>
             <field name="view_mode">form</field>
@@ -29,7 +29,7 @@
         </record>
 
 
-    <menuitem id="efile_incoming_letter_wizard_view" name="Incoming Letters" action="smart_office.efile_incoming_letter_action_call"
+    <menuitem id="efile_incoming_letter_wizard_view" name="Incoming Correspondence" action="smart_office.efile_incoming_letter_action_call"
             parent="muk_dms.menu_dms_file" sequence="99"/>
 
 

@@ -2,7 +2,7 @@
     <data>
 
         <record id="action_add_my_letter" model="ir.actions.act_window">
-            <field name="name">Add Letters</field>
+            <field name="name">Add correspondence</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">muk_dms.file</field>
             <field name="view_type">form</field>
@@ -38,7 +38,7 @@
         <menuitem id="menuitem_add_my_letter"
                   parent="muk_dms.menu_dms_file"
                   action="action_add_my_letter"
-                  name="Add Letters"/>
+                  name="Add Correspondence"/>
 
 <!--        <menuitem id="menuitem_view_letter_incoming"-->
 <!--                  parent="muk_dms.menu_dms_file"-->

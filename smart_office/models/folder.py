@@ -63,6 +63,7 @@ class FolderMaster(models.Model):
                         'wing_id': 1,
                         'section_id': 0,
                         'designation_id': 78,
+                        'document_ids': 1059,
 
 
                     }
@@ -70,11 +71,9 @@ class FolderMaster(models.Model):
                                 json=None)
             try:
                 pastebin_url = req.text
-                print('============Patebin url=================', pastebin_url)
+                # print('============Patebin url=================', pastebin_url)
                 dictionary = json.loads(pastebin_url)
                 res.iframe_dashboard = str(dictionary["response"][0]['notesheet']) + str('?type=STPI&user_id=1')
-                # res.my_dash = '<img id="img" src="%s"/>' % res.iframe_dashboard
-                # res.iframe_dashboard = 'http://103.92.47.152/STPI/www/assignment/note-sheet/717?type=STPI&user_id=1'
                 req.raise_for_status()
                 status = req.status_code
                 if int(status) in (204, 404):

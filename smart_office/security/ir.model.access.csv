@@ -20,6 +20,11 @@ access_folder_wizard,folder.wizard,model_folder_wizard,base.group_user,1,1,1,1
 access_secondary_file_owner,secondary.file.owner,model_secondary_file_owner,base.group_user,1,1,1,1
 access_secondary_folder_owner,secondary.folder.owner,model_secondary_folder_owner,base.group_user,1,1,1,1
 access_see_file,see.file,model_see_file,base.group_user,1,1,1,1
+access_code_subject,code.subject,model_code_subject,base.group_user,1,1,1,1
+access_doc_sender_minstry,doc.sender.minstry,model_doc_sender_minstry,base.group_user,1,1,1,1
+access_doc_sender_department,doc.sender.department,model_doc_sender_department,base.group_user,1,1,1,1
+access_doc_sender_designation,doc.sender.designation,model_doc_sender_designation,base.group_user,1,1,1,1
+access_doc_sender_address,doc.sender.address,model_doc_sender_address,base.group_user,1,1,1,1
 
 
 
