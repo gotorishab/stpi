@@ -25,6 +25,7 @@ class IncomingLetterWizard(models.TransientModel):
                 'res_model': 'muk_dms.file',
                 'type': 'ir.actions.act_window',
                 'target': 'current',
+                'create': False,
                 # 'view_id': self.env.ref('hr_applicant.view_employee_relative_tree').id,
                 'domain': [('id', 'in', my_id)],
                 }
@@ -49,6 +50,7 @@ class IncomingLetterWizard(models.TransientModel):
                 'res_model': 'muk_dms.file',
                 'type': 'ir.actions.act_window',
                 'target': 'current',
+                'create': False,
                 # 'view_id': self.env.ref('hr_applicant.view_employee_relative_tree').id,
                 'domain': [('id', 'in', my_file)],
                 }

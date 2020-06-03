@@ -97,7 +97,7 @@ class AddLetter(models.Model):
     pdf_file = fields.Binary(related='content')
     folder_id = fields.Many2one('folder.master', string="File Assigned")
 
-    letter_number = fields.Char('correspondence Number')
+    letter_number = fields.Char('Correspondence Number')
 
     sender_type_related = fields.Char(related='sender_type.name')
     delivery_mode_related = fields.Char(related='delivery_mode.name')

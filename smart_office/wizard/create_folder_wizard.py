@@ -39,8 +39,6 @@ class CreateFolder(models.TransientModel):
                 'description': self.description,
                 'file_ids' : [(6, 0, letter_id)]
             })
-            # self.deffolderid.folder_id = file_id.id
-
             form_view = self.env.ref('smart_office.foldermaster_form_view')
             tree_view = self.env.ref('smart_office.foldermaster_tree_view1')
             value = {
