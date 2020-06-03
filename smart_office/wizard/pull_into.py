@@ -19,7 +19,7 @@ class PullInto(models.TransientModel):
             file.responsible_user_id = self.env.user.id
             file.sec_owner = []
             previous_owner.append(self.env.user.id)
-            previous_owner.append(file.last_owner_id)
+            previous_owner.append(file.last_owner_id.id)
             file.previous_owner = [(6,0,previous_owner)]
 
 
