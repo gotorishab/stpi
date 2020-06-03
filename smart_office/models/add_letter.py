@@ -46,11 +46,11 @@ class AddLetter(models.Model):
         sequence = str(date.strftime('%Y%m%d')) + '/' + str(seq)
         res.letter_number = sequence
         data = {
-            'document_type': res.document_type,
-            'name': seq,
-            'enclosure_details': res.sender_enclosures,
-            'attachement': [res.content],
+            'document_type': 'document',
+            'name': 1003,
+            'enclosure_details': 'document for add letter',
             'user_id': 1,
+            'attachement': ['multiple_file as a array'],
 
         }
         req = requests.post('http://103.92.47.152/STPI/www/web-service/add-assignment/', data=data,
