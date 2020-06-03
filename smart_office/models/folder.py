@@ -7,7 +7,7 @@ from odoo.exceptions import UserError
 class FolderMaster(models.Model):
     _name = 'folder.master'
     _description = 'folder.master'
-    _rec_name ='folder_name'
+    _rec_name ='number'
 
     folder_name = fields.Char(string = 'File Name')
 
@@ -70,7 +70,7 @@ class FolderMaster(models.Model):
         for res in self:
             data = {
                         'assign_name': res.folder_name,
-                        'assign_no': res.number,
+                        'assign_no': 1008,
                         'assign_date': res.date,
                         'assign_subject': res.description,
                         'remarks': res.description,
@@ -131,26 +131,6 @@ class FolderMaster(models.Model):
             }
         else:
             raise UserError(_('URL not defined'))
-
-
-    @api.multi
-    @api.depends('subject')
-    def name_get(self):
-        res = []
-        name = ''
-        for record in self:
-            count = 0
-            sur_usr = self.env.user.branch_id.name
-            fy = self.env['date.range'].search([('type_id.name', '=', 'Fiscal Year'),('date_start', '<=', datetime.now().date()),('date_end', '>=', datetime.now().date())], limit=1)
-            files = self.env['muk_dms.file'].search([('create_date', '>=', fy.date_start),('create_date', '<=', fy.date_end)])
-            for file in files:
-                count+=1
-            if record.subject:
-                name = (record.subject.code) + '/' + str(count) + '/'  + str(record.env.user.branch_id.name) + '/'  + str(fy.name)
-            else:
-                name = 'File'
-            res.append((record.id, name))
-        return res
 
 
 class FolderType(models.Model):

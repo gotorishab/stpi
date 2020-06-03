@@ -317,7 +317,7 @@
     </field>
 </record>
 
-<menuitem id="menu_dms_file" name="Letters" sequence="20"
+<menuitem id="menu_dms_file" name="Correspondence" sequence="20"
 	parent="main_menu_muk_dms" action="action_dms_file" />
 	
 <record id="search_dms_file_migration" model="ir.ui.view">

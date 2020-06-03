@@ -16,15 +16,16 @@
                 <xpath expr = "//div[@name='button_box']" position="inside">
                     <button name = "%(forward_button_wizard_action_view)d" type = "action" string = "Forward" icon = "fa-forward" context = "{'default_defid': id}" attrs="{'invisible':[('folder_id','!=', False)]}"/>
                     <button name = "%(createfolder_wizard_action_view)d" type = "action" string = "Create File" icon = "fa-folder-open-o" context = "{'default_deffolderid': id}" attrs="{'invisible':[('folder_id','!=', False)]}"/>
+                    <button name = "%(add_to_existing_wizard_action_view)d" type = "action" string = "Add to existing File" icon = "fa-file" context = "{'default_deffolderid': id}" attrs="{'invisible':[('folder_id','!=', False)]}"/>
 <!--                    <button name = "create_file_of_corres" type = "action" string = "Create File" icon = "fa-folder-open-o"/>-->
                     <button type="object"
                                             class="oe_stat_button"
                                             icon="fa-folder-open-o"
                                             name="action_view_file"
-                                            string = "File"
+                                            string = "Go To File"
                                             attrs="{'invisible':[('folder_id','=', False)]}"
                                             >
-                                            <strong><field name="folder_id" string="File"/></strong><br/>
+                                            <strong><field name="folder_id" string="File" invisible="1"/></strong><br/>
                                     </button>
 
                 </xpath>
@@ -281,7 +282,7 @@
             <field name="inherit_id" ref="muk_dms.view_dms_file_tree"/>
             <field name="arch" type="xml">
                 <field name="name" position="replace">
-                    <field name="name" string="Letter Name"/>
+                    <field name="name" string="Correspondence Name"/>
                 </field>
 
                 <xpath expr = "//field[@name='write_date']" position="attributes">

@@ -8,3 +8,4 @@ from . import pull_into
 from . import folderwizard
 from . import incoming_files
 from . import outgoing_files
+from . import assign_folder_wizard
