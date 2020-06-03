@@ -31,7 +31,6 @@
                     <field name="name" string="Letter Number" invisible="1"/>
                     <field name="letter_number" string="Letter Number" attrs="{'invisible':[('letter_number','=', False)],'readonly':[('letter_number','!=', False)]}"/>
                     <field name="sender_type" options="{'no_create_edit': True}"/>
-                    <field name="php_letter_id"/>
                     <field name="sender_type_related" invisible="1"/>
                     <field name="other_st" attrs="{'invisible':[('sender_type_related','!=', 'Others')],'required':[('sender_type_related','=', 'Others')]}"/>
                     <field name="delivery_mode" options="{'no_create_edit': True}"/>
@@ -91,6 +90,7 @@
                     <page name="sender_details" string="Sender Details">
                         <group>
                             <group string="Sender Information">
+                                <field name="php_letter_id"/>
                                 <field name="sender_ministry"/>
                                 <field name="sender_department"/>
                                 <field name="sender_name"/>

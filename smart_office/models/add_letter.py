@@ -47,7 +47,7 @@ class AddLetter(models.Model):
         res.letter_number = sequence
         data = {
             'document_type': res.document_type,
-            'name': res.seq,
+            'name': seq,
             'enclosure_details': res.sender_enclosures,
             'attachement': [res.content],
             'user_id': 1,
