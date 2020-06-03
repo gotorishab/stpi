@@ -95,7 +95,7 @@ class AddLetter(models.Model):
 
     file_track_ids = fields.One2many('file.tracking.information', 'create_let_id', string = "files")
     pdf_file = fields.Binary(related='content')
-    folder_id = fields.Many2one('folder.master', string="Folder Name")
+    folder_id = fields.Many2one('folder.master', string="File Assigned")
 
     letter_number = fields.Char('correspondence Number')
 
@@ -164,6 +164,28 @@ class AddLetter(models.Model):
 
     forward_from_id = fields.Many2one('res.users', 'Forward From', default=lambda self:self.env.user.id)
     forward_to_id = fields.Many2one('res.users', 'Forward To')
+
+
+
+
+    @api.multi
+    def action_view_file(self):
+        form_view = self.env.ref('base.view_partner_form')
+        tree_view = self.env.ref('base.view_partner_tree')
+        value = {
+            'domain': str([('id', '=', self.partner_id.id)]),
+            'view_type': 'form',
+            'view_mode': 'tree, form',
+            'res_model': 'res.partner',
+            'view_id': False,
+            'views': [(form_view and form_view.id or False, 'form'),
+                      (tree_view and tree_view.id or False, 'tree')],
+            'type': 'ir.actions.act_window',
+            'res_id': self.partner_id.id,
+            'target': 'current',
+            'nodestroy': True
+        }
+        return value
 
 
 

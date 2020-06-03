@@ -14,9 +14,18 @@
                     <field name="sec_owner" readonly="1" widget="many2many_tags"/>
                 </field>
                 <xpath expr = "//div[@name='button_box']" position="inside">
-                    <button name = "%(forward_button_wizard_action_view)d" type = "action" string = "Forward" icon = "fa-forward" context = "{'default_defid': id}"/>
-                    <button name = "%(createfolder_wizard_action_view)d" type = "action" string = "Create File" icon = "fa-folder-open-o" context = "{'default_deffolderid': id}"/>
+                    <button name = "%(forward_button_wizard_action_view)d" type = "action" string = "Forward" icon = "fa-forward" context = "{'default_defid': id}" attrs="{'invisible':[('folder_id','!=', False)]}"/>
+                    <button name = "%(createfolder_wizard_action_view)d" type = "action" string = "Create File" icon = "fa-folder-open-o" context = "{'default_deffolderid': id}" attrs="{'invisible':[('folder_id','!=', False)]}"/>
 <!--                    <button name = "create_file_of_corres" type = "action" string = "Create File" icon = "fa-folder-open-o"/>-->
+                    <button type="object"
+                                            class="oe_stat_button"
+                                            icon="fa-folder-open-o"
+                                            name="action_view_file"
+                                            string = "File"
+                                            attrs="{'invisible':[('folder_id','=', False)]}"
+                                            >
+                                            <strong><field name="folder_id" string="File"/></strong><br/>
+                                    </button>
 
                 </xpath>
                 <xpath expr = "//field[@name='directory']" position="attributes">
