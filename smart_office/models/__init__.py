@@ -6,3 +6,4 @@ from . import wizard
 from . import file_tracking_information
 from . import folder
 from . import see_file
+from . import department_job

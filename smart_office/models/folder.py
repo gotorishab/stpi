@@ -52,16 +52,18 @@ class FolderMaster(models.Model):
         fy = self.env['date.range'].search(
             [('type_id.name', '=', 'Fiscal Year'), ('date_start', '<=', datetime.now().date()),
              ('date_end', '>=', datetime.now().date())], limit=1)
+        debt_id = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+        d_id = debt_id.department_id.stpi_doc_id
         files = self.env['muk_dms.file'].search(
             [('create_date', '>=', fy.date_start), ('create_date', '<=', fy.date_end)])
         for file in files:
             count += 1
         if res.subject:
-            name = (res.subject.code) + '/' + str(count) + '/' + str(res.env.user.branch_id.name) + '/' + str(
+            name = (res.subject.code) + '(' + str(count) + ')/' + str(d_id) + '/' + str(sur_usr) + '/' + str(
                 fy.name)
         else:
             name = 'File'
-        res.number = name
+        res.number = str(name)
         res.sudo().create_file()
         return res
 
@@ -131,6 +133,35 @@ class FolderMaster(models.Model):
             }
         else:
             raise UserError(_('URL not defined'))
+
+
+    @api.multi
+    @api.depends('number')
+    def name_get(self):
+        res = []
+        name = ''
+        for record in self:
+            if record.number:
+                name = record.number
+            else:
+                count = 0
+                sur_usr = self.env.user.branch_id.name
+                fy = self.env['date.range'].search(
+                    [('type_id.name', '=', 'Fiscal Year'), ('date_start', '<=', datetime.now().date()),
+                     ('date_end', '>=', datetime.now().date())], limit=1)
+                debt_id = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+                d_id = debt_id.department_id.stpi_doc_id
+                files = self.env['muk_dms.file'].search(
+                    [('create_date', '>=', fy.date_start), ('create_date', '<=', fy.date_end)])
+                for file in files:
+                    count += 1
+                if self.subject:
+                    name = (self.subject.code) + '(' + str(count) + ')/' + str(d_id) + '/' + str(sur_usr) + '/' + str(
+                        fy.name)
+                else:
+                    name = 'File'
+            res.append((record.id, name))
+        return res
 
 
 class FolderType(models.Model):

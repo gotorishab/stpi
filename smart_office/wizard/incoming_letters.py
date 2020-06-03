@@ -35,7 +35,10 @@ class IncomingLetterWizard(models.TransientModel):
 
     def show_incoming_sec_letter(self):
         if self:
-            emp = self.env['hr.employee'].search(['|', ('parent_id', '=', self.env.user.id), ('parent_id.parent_id', '=', self.env.user.id)])
+            # emp = self.env['hr.employee'].search(['|', ('parent_id', '=', self.env.user.id), ('parent_id.parent_id', '=', self.env.user.id)])
+            my_emp_id = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+            my_job_id = my_emp_id.job_id.status_level
+            emp = self.env['hr.employee'].search([('job_id.status_level', '>=', my_job_id)])
             return {
                 'name': 'Incoming Files',
                 'view_type': 'form',
@@ -45,7 +48,7 @@ class IncomingLetterWizard(models.TransientModel):
                 'target': 'current',
                 'create': False,
                 # 'view_id': self.env.ref('hr_applicant.view_employee_relative_tree').id,
-                'domain': [('current_owner_id', 'in', emp)],
+                'domain': [('current_owner_id', 'in', emp.ids)],
                 }
 
 
