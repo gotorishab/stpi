@@ -16,6 +16,7 @@
                 <xpath expr = "//div[@name='button_box']" position="inside">
                     <button name = "%(forward_button_wizard_action_view)d" type = "action" string = "Forward" icon = "fa-forward" context = "{'default_defid': id}"/>
                     <button name = "%(createfolder_wizard_action_view)d" type = "action" string = "Create File" icon = "fa-folder-open-o" context = "{'default_deffolderid': id}"/>
+<!--                    <button name = "create_file_of_corres" type = "action" string = "Create File" icon = "fa-folder-open-o"/>-->
 
                 </xpath>
                 <xpath expr = "//field[@name='directory']" position="attributes">
@@ -47,6 +48,9 @@
                 <xpath expr = "//field[@name='extension']" position="after">
                     <field name="category"/>
                     <field name="tags"/>
+                    <field name="directory" attrs="{'invisible':[('directory','=', False)],'readonly':[('directory','!=', False)]}"/>
+                    <field name="php_letter_id" invisible="1"/>
+                    <field name="folder_id" attrs="{'invisible':[('folder_id','=', False)]}"/>
                     <field name="directory" attrs="{'invisible':[('directory','=', False)],'readonly':[('directory','!=', False)]}"/>
                 </xpath>
 
@@ -90,7 +94,7 @@
                     <page name="sender_details" string="Sender Details">
                         <group>
                             <group string="Sender Information">
-                                <field name="php_letter_id"/>
+
                                 <field name="sender_ministry"/>
                                 <field name="sender_department"/>
                                 <field name="sender_name"/>
@@ -112,7 +116,7 @@
                                 <field name="sender_email"/>
                             </group>
                             <group>
-                                <field name="sender_enclosures"/>
+                                <field name="sender_enclosures" required="1"/>
                                 <field name="sender_remarks"/>
                             </group>
                         </group>

@@ -7,11 +7,18 @@
             <field name="arch" type="xml">
                 <form string="Create File">
                     <group>
-                        <group>
-                            <field name = "folder" string="File"/>
-                            <field name = "deffolderid" invisible="1"/>
+                            <group>
+                                <field name="folder_name" required ="1"/>
+                                <field name="subject" required="1"/>
+                                <field name="date" readonly="1"/>
+                                <field name="tags" widget="many2many_tags" placeholder="Tags..." options="{'color_field': 'color', 'no_create_edit': True}"/>
+                            </group>
+                            <group>
+                                <field name="type" widget="many2many_tags" placeholder="Type..." options="{'color_field': 'color'}"/>
+                                <field name="status"/>
+                            </group>
+                            <field name="description" placeholder="Description"/>
                         </group>
-                    </group>
                     <footer>
                         <button name = "confirm_button" string = "Confirm" type = "object" class="oe_highlight"/>
                         <button name="cancel" string = "Cancel" special = "cancel"/>

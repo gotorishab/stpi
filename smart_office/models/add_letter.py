@@ -48,7 +48,7 @@ class AddLetter(models.Model):
         data = {
             'document_type': res.document_type,
             'name': 1003,
-            'enclosure_details': 'document for add letter',
+            'enclosure_details': res.sender_enclosures,
             'user_id': 1,
             # 'attachement': ['multiple_file as a array'],
 
@@ -196,6 +196,10 @@ class AddLetter(models.Model):
             'context': {'form_view_ref': 'smart_office.view_add_files_doc_form',
                         'default_files': files},
         }
+
+
+
+
     @api.onchange('doc_receive_m2o')
     @api.constrains('doc_receive_m2o')
     def get_doc_receive(self):
