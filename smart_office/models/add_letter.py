@@ -46,11 +46,11 @@ class AddLetter(models.Model):
         sequence = str(date.strftime('%Y%m%d')) + '/' + str(seq)
         res.letter_number = sequence
         data = {
-            'document_type': 'document',
+            'document_type': res.document_type,
             'name': 1003,
             'enclosure_details': 'document for add letter',
             'user_id': 1,
-            'attachement': ['multiple_file as a array'],
+            # 'attachement': ['multiple_file as a array'],
 
         }
         req = requests.post('http://103.92.47.152/STPI/www/web-service/add-assignment/', data=data,
@@ -78,7 +78,7 @@ class AddLetter(models.Model):
     # Letter Information
     responsible_user_id = fields.Many2one('res.users', default=lambda self:self.env.user.id)
     document_type = fields.Selection([('letter', 'Letter'),
-                                      ('document', 'Document')], default='letter')
+                                      ('document', 'Document')], default='document')
 
     sender_type = fields.Many2one('doc.sender.type',' Sender Type')
     delivery_mode = fields.Many2one('doc.delivery.mode', 'Delivery Mode')
