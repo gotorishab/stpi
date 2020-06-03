@@ -1,7 +1,7 @@
 <odoo>
 
     <!-- ============ Form View of forward button============= -->
-        <record id="assign_folder_form_view" model="ir.ui.view">
+        <record id="assign_to_folder_form_view" model="ir.ui.view">
             <field name="name">assign.folder.wizard.form</field>
             <field name="model">assign.folder.wizard</field>
             <field name="arch" type="xml">
@@ -23,7 +23,7 @@
         </record>
 
      <!-- =============== Action View of forward button================ -->
-     <record id="assign_folder_wizard_action_view" model="ir.actions.act_window">
+     <record id="add_to_existing_wizard_action_view" model="ir.actions.act_window">
          <field name="name">Assign To File</field>
          <field name="type">ir.actions.act_window</field>
          <field name="res_model">assign.folder.wizard</field>
