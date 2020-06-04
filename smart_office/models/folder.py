@@ -30,6 +30,7 @@ class FolderMaster(models.Model):
                                ('urgent', 'Urgent')
                                ], string='Status',track_visibility='always')
     sequence = fields.Integer(string = 'Sequence')
+    first_doc_id = fields.Integer(string = 'First Doc Id')
     type = fields.Many2many('folder.type', string = "Type",track_visibility='always')
     description = fields.Text(string = 'Description',track_visibility='always')
     file_ids = fields.One2many('muk_dms.file','folder_id', string = 'Files',track_visibility='always')
@@ -83,9 +84,7 @@ class FolderMaster(models.Model):
                         'wing_id': 1,
                         'section_id': 0,
                         'designation_id': 78,
-                        'document_ids': 1059,
-
-
+                        'document_ids': res.first_doc_id,
                     }
             req = requests.post('http://103.92.47.152/STPI/www/web-service/add-assignment/', data=data,
                                 json=None)

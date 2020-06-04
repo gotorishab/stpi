@@ -33,6 +33,7 @@
                                 <field name="old_file_number" attrs="{'readonly':[('state','!=', 'draft')]}"/>
                                 <field name="type" widget="many2many_tags" placeholder="Type..." options="{'color_field': 'color'}" attrs="{'readonly':[('state','!=', 'draft')]}"/>
                                 <field name="status"/>
+                                <field name="first_doc_id" invisible="1"/>
                             </group>
                             <field name="description" placeholder="Description" attrs="{'readonly':[('state','!=', 'draft')]}"/>
                         </group>

@@ -37,6 +37,7 @@ class CreateFolder(models.TransientModel):
                 'status': self.status,
                 'type': self.type,
                 'description': self.description,
+                'first_doc_id': int(self.deffolderid.php_letter_id),
                 'file_ids' : [(6, 0, letter_id)]
             })
             form_view = self.env.ref('smart_office.foldermaster_form_view')
