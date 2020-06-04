@@ -60,9 +60,12 @@ class AddLetter(models.Model):
             print('============Patebin url=================', pastebin_url)
             dictionary = json.loads(pastebin_url)
             print('============Dictionary=================', dictionary)
-            print('============Dictionary=================', dictionary["response"][0])
-            print('============Dictionary=================', dictionary["response"][0]['id'])
-            res.php_letter_id = str(dictionary["response"][0]['id'])
+            print('============Dictionary Response=================', dictionary["response"])
+            print('============Dictionary Response 0=================', dictionary["response"][0])
+            print('============Dictionary Response 0 letter data=================', dictionary["response"][0]['LetterData'])
+            print('============Dictionary Response 0 letter data id=================', dictionary["response"][0]['LetterData']['id'])
+            # print('============Dictionary=================', dictionary["response"][0]['id'])
+            # res.php_letter_id = str(dictionary["response"][0]['id'])
         except Exception as e:
             print('=============Error==========', e)
         if self._context.get('smart_office_incoming_letter', False):
