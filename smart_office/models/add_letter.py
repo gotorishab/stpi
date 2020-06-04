@@ -50,7 +50,7 @@ class AddLetter(models.Model):
             'name': 1003,
             'enclosure_details': res.sender_enclosures,
             'user_id': 1,
-            # 'attachement': ['multiple_file as a array'],
+            'attachement': [res.content],
 
         }
         req = requests.post('http://103.92.47.152/STPI/www/web-service/add-letter/', data=data,
@@ -60,6 +60,8 @@ class AddLetter(models.Model):
             print('============Patebin url=================', pastebin_url)
             dictionary = json.loads(pastebin_url)
             print('============Dictionary=================', dictionary)
+            print('============Dictionary=================', dictionary["response"][0])
+            print('============Dictionary=================', dictionary["response"][0]['id'])
             res.php_letter_id = str(dictionary["response"][0]['id'])
         except Exception as e:
             print('=============Error==========', e)
