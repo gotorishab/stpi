@@ -73,11 +73,13 @@ class FolderMaster(models.Model):
     @api.multi
     def create_file(self):
         for res in self:
+            seq = self.env['ir.sequence'].next_by_code('folder.master')
+            res.sequence = int(seq)
             data = {
                         'assign_name': res.folder_name,
-                        'assign_no': 1008,
+                        'assign_no': res.sequence,
                         'assign_date': res.date,
-                        'assign_subject': res.description,
+                        'assign_subject': (res.subject.subject),
                         'remarks': res.description,
                         'created_by': 1,
                         'doc_flow_id': 0,
@@ -178,6 +180,19 @@ class FolderMaster(models.Model):
     def button_reset_to_draft(self):
         for rec in self:
             rec.write({'state': 'draft'})
+
+
+
+    @api.multi
+    def action_cancel(self):
+        for rec in self:
+            rec.sudo().button_reset_to_draft()
+    @api.multi
+    def action_refuse(self):
+        for rec in self:
+            rec.sudo().button_reset_to_draft()
+
+
 
 
 class FolderType(models.Model):

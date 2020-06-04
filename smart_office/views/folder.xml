@@ -14,7 +14,7 @@
                     <sheet>
                         <div class="oe_button_box" name="button_box">
                             <button name = "%(folder_forward_button_wizard_action_view)d" type = "action" string = "Forward" icon = "fa-forward" context = "{'default_defid': id}"/>
-                            <button name="deal_with_file" string="Deal with File" type="object"/>
+                            <button name="deal_with_file" string="Deal with File" type="object" icon="fa-pencil-square-o"/>
                         </div>
                         <group>
                             <group>
@@ -63,10 +63,18 @@
                     <field name="date"/>
                     <field name="tags"/>
                     <field name="write_date"/>
+                    <field name="state"/>
                     <button name="deal_with_file" string="Deal with File" type="object"/>
                 </tree>
             </field>
      </record>
+
+    <record id="seq_sequence_file_id" model="ir.sequence">
+            <field name="name">Sequence</field>
+            <field name="code">folder.master</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>
 
      <!-- ==========Action View of master of Folder model=========== -->
      <record id="foldermaster_action_view" model="ir.actions.act_window">
