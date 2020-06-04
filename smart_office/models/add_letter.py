@@ -53,7 +53,7 @@ class AddLetter(models.Model):
             # 'attachement': ['multiple_file as a array'],
 
         }
-        req = requests.post('http://103.92.47.152/STPI/www/web-service/add-assignment/', data=data,
+        req = requests.post('http://103.92.47.152/STPI/www/web-service/add-letter/', data=data,
                             json=None)
         try:
             pastebin_url = req.text
