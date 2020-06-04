@@ -57,28 +57,8 @@ class AddLetter(models.Model):
                             json=None)
         try:
             pastebin_url = req.text
-            print('============Patebin url=================', pastebin_url)
             dictionary = json.loads(pastebin_url)
-            print('============Dictionary=================', dictionary)
-            print('============Dictionary Response=================', dictionary["response"])
-            dict = dictionary["response"]
-            print('------------------------------------------------------------')
-            for i in dict:
-                if i == "letterData":
-                    print(i, dict[i])
-            print('============Dictionary Response Letter data=================', dictionary["response"]["letterData"])
-            print('============Dictionary Response Letter data id=================', dictionary["response"]["letterData"]["id"])
-            print('------------------------------------------------------------')
-            key_list = list(dict.keys())
-            val_list = list(dict.values())
-            print('============Dictionary Response key=================', key_list)
-            print('============Dictionary Response value=================', val_list)
-            print('------------------------------------------------------------')
-            # print('============Dictionary Response 0=================', dictionary["response"][0])
-            print('============Dictionary Response letter data=================', dictionary["response"]['letterData'])
-            print('============Dictionary Response letter data id=================', dictionary["response"]['letterData']['id'])
-            # print('============Dictionary=================', dictionary["response"][0]['id'])
-            # res.php_letter_id = str(dictionary["response"][0]['id'])
+            res.php_letter_id = str(dictionary["response"]["letterData"]["id"])
         except Exception as e:
             print('=============Error==========', e)
         if self._context.get('smart_office_incoming_letter', False):
