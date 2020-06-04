@@ -61,9 +61,19 @@ class AddLetter(models.Model):
             dictionary = json.loads(pastebin_url)
             print('============Dictionary=================', dictionary)
             print('============Dictionary Response=================', dictionary["response"])
+            dict = dictionary["response"]
+            print('------------------------------------------------------------')
+            for i in dict:
+                print(i, dict[i])
+            print('------------------------------------------------------------')
+            key_list = list(dict.keys())
+            val_list = list(dict.values())
+            print('============Dictionary Response key=================', key_list)
+            print('============Dictionary Response value=================', val_list)
+            print('------------------------------------------------------------')
             # print('============Dictionary Response 0=================', dictionary["response"][0])
-            print('============Dictionary Response letter data=================', dictionary["response"]['LetterData'])
-            print('============Dictionary Response letter data id=================', dictionary["response"]['LetterData']['id'])
+            print('============Dictionary Response letter data=================', dictionary["response"]['letterData'])
+            print('============Dictionary Response letter data id=================', dictionary["response"]['letterData']['id'])
             # print('============Dictionary=================', dictionary["response"][0]['id'])
             # res.php_letter_id = str(dictionary["response"][0]['id'])
         except Exception as e:
