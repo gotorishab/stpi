@@ -66,6 +66,8 @@ class AddLetter(models.Model):
             for i in dict:
                 if i == "letterData":
                     print(i, dict[i])
+            print('============Dictionary Response Letter data=================', dictionary["response"]["letterData"])
+            print('============Dictionary Response Letter data id=================', dictionary["response"]["letterData"]["id"])
             print('------------------------------------------------------------')
             key_list = list(dict.keys())
             val_list = list(dict.values())
