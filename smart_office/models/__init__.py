@@ -8,3 +8,4 @@ from . import folder
 from . import see_file
 from . import department_job
 from . import file_exception
+from . import folder_tracking_information
