@@ -27,3 +27,20 @@ class FileForwardData(http.Controller):
 #             return "The File has been created"
 #         else:
 #             return "No Folder request"
+
+
+class ClosedFile(http.Controller):
+    @http.route(['/closedfile'], type='json', auth='public', csrf=False, methods=['POST'])
+    def get_closed_file(self, **kwargs):
+        forward_details_data = request.env['folder.master'].sudo().search([('state', '=', 'closed')])
+        foward_det = []
+        for rec in forward_details_data:
+            vals={
+                'id': rec.id,
+                'folder_name': rec.folder_name,
+                'number': rec.number,
+                'current_owner_id': rec.current_owner_id.id,
+            }
+            foward_det.append(vals)
+        data = {'status': 200, 'response': foward_det, 'message': 'Success'}
+        return data
