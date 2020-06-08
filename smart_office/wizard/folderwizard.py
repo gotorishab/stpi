@@ -103,7 +103,15 @@ class FileWizard(models.Model):
                         for line in rec.sec_own_ids:
                             file.sec_owner += line.employee.user_id.id
                         file.previous_owner += rec.env.user.id
-                    self.env['file.tracking.information'].create({
+                        self.env['file.tracking.information'].create({
+                             'create_let_id': file.id,
+                            'forwarded_date': datetime.now().date(),
+                            'forwarded_to_user': rec.user.id,
+                            'forwarded_to_dept': rec.department.id,
+                            'job_pos': rec.jobposition.id,
+                            'forwarded_by':rec.env.uid
+                        })
+                    self.env['folder.tracking.information'].create({
                          'create_let_id': rec.defid.id,
                         'forwarded_date': datetime.now().date(),
                         'forwarded_to_user': rec.user.id,
