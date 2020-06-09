@@ -28,6 +28,7 @@ class FileWizard(models.Model):
     s3jobposition = fields.Many2one('hr.job', string = "Job position")
     s3employee = fields.Many2one('hr.employee', string='Employee')
     s3user = fields.Many2one('res.users', related = 's3employee.user_id', string='User')
+    remarks = fields.Text('Remarks')
 
     defid = fields.Many2one('folder.master', invisible=1)
     sec_own_ids = fields.One2many('secondary.folder.owner', 'sec_own_id')
@@ -92,35 +93,85 @@ class FileWizard(models.Model):
                 raise UserError(_("%s is not configured to owned this file") % rec.employee.name)
             else:
                 if rec.defid.current_owner_id.id == rec.env.user.id:
+                    file_count = 0
+                    sec_own = []
+                    previous_owner = []
                     rec.defid.last_owner_id = rec.env.user.id
                     rec.defid.current_owner_id = rec.user.id
                     for line in rec.sec_own_ids:
-                        rec.defid.sec_owner += line.employee.user_id.id
-                    rec.defid.previous_owner += rec.env.user.id
+                        sec_own.append(line.employee.user_id.id)
+                    rec.defid.sec_owner = [(6,0,sec_own)]
+                    previous_owner.append(rec.env.user.id)
+                    rec.defid.previous_owner = [(6,0,previous_owner)]
+                    current_employee  = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+                    self.env['folder.tracking.information'].create({
+                        'create_let_id': rec.defid.id,
+                        'forwarded_date': datetime.now().date(),
+                        'forwarded_to_user': rec.user.id,
+                        'forwarded_to_dept': rec.department.id,
+                        'job_pos': rec.jobposition.id,
+                        'forwarded_by': rec.env.uid,
+                        'remarks': rec.remarks
+                    })
+                    f_details = ""
+                    if file_count == 0:
+                        f_details = "File forwarded with no correspondence"
+                    elif file_count == 1:
+                        f_details = "File forwarded with single correspondence"
+                    elif file_count > 1:
+                        f_details = "File forwarded with multiple Correspondence"
+                    else:
+                        f_details = ""
+                    self.env['file.tracker.report'].create({
+                        'name': str(rec.defid.name),
+                        'number': str(rec.defid.number),
+                        'type': 'File',
+                        'forwarded_by': str(current_employee.user_id.name),
+                        'forwarded_by_dept': str(current_employee.department_id.name),
+                        'forwarded_by_jobpos': str(current_employee.job_id.name),
+                        'forwarded_by_branch': str(current_employee.branch_id.name),
+                        'forwarded_date': datetime.now().date(),
+                        'forwarded_to_user': str(rec.user.name),
+                        'forwarded_to_dept': str(rec.department.name),
+                        'forwarded_to_branch': str(rec.user.branch_id.name),
+                        'job_pos': str(rec.jobposition.name),
+                        'remarks': rec.remarks,
+                        'details': f_details
+                    })
                     for file in rec.defid.file_ids:
+                        file_count+=1
                         file.last_owner_id = rec.env.user.id
+                        file.responsible_user_id = rec.env.user.id
                         file.current_owner_id = rec.user.id
                         for line in rec.sec_own_ids:
                             file.sec_owner += line.employee.user_id.id
                         file.previous_owner += rec.env.user.id
                         self.env['file.tracking.information'].create({
-                             'create_let_id': file.id,
+                            'create_let_id': file.id,
                             'forwarded_date': datetime.now().date(),
                             'forwarded_to_user': rec.user.id,
                             'forwarded_to_dept': rec.department.id,
                             'job_pos': rec.jobposition.id,
-                            'forwarded_by':rec.env.uid
+                            'forwarded_by':rec.env.uid,
+                            'remarks': rec.remarks
                         })
-                    self.env['folder.tracking.information'].create({
-                         'create_let_id': rec.defid.id,
-                        'forwarded_date': datetime.now().date(),
-                        'forwarded_to_user': rec.user.id,
-                        'forwarded_to_dept': rec.department.id,
-                        'job_pos': rec.jobposition.id,
-                        'forwarded_by':rec.env.uid
-                    })
-                    for emp in rec.sec_own_ids:
-                        rec.defid.sec_owner += emp.user
+                        self.env['file.tracker.report'].create({
+                            'name': str(file.name),
+                            'number': str(file.letter_number),
+                            'type': 'Correspondence',
+                            'forwarded_by': str(current_employee.user_id.name),
+                            'forwarded_by_dept': str(current_employee.department_id.name),
+                            'forwarded_by_jobpos': str(current_employee.job_id.name),
+                            'forwarded_by_branch': str(current_employee.branch_id.name),
+                            'forwarded_date': datetime.now().date(),
+                            'forwarded_to_user': str(rec.user.name),
+                            'forwarded_to_dept': str(rec.department.name),
+                            'job_pos': str(rec.jobposition.name),
+                            'forwarded_to_branch': str(rec.user.branch_id.name),
+                            'remarks': rec.remarks,
+                            'details': "Correspondence Forwarded through File {}".format(rec.defid.number)
+                        })
+
                 else:
                     raise ValidationError("You are not able to forward this file, as you are not the Primary owner of this file")
 

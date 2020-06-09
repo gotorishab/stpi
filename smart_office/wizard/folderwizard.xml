@@ -8,11 +8,11 @@
                 <form string="Letter information">
                         <group>
                             <group>
-                                <field name = "department"/>
-                                <field name = "jobposition"/>
+                                <field name = "department" options="{'no_create_edit': True, 'no_create': True}" required="1"/>
+                                <field name = "jobposition" options="{'no_create_edit': True, 'no_create': True}" required="1"/>
                             </group>
                             <group>
-                                 <field name = "employee"/>
+                                 <field name = "employee" options="{'no_create_edit': True, 'no_create': True}" required="1"/>
                                  <field name = "user"/>
                                  <field name="defid" invisible = "1"/>
                             </group>
@@ -20,12 +20,13 @@
                     <field name="sec_own_ids">
                         <tree editable="bottom">
                             <field name="sec_own_id" invisible="1"/>
-                            <field name="department"/>
-                            <field name="jobposition"/>
-                            <field name="employee"/>
+                            <field name="department" options="{'no_create_edit': True, 'no_create': True}" required="1"/>
+                            <field name="jobposition" options="{'no_create_edit': True, 'no_create': True}" required="1"/>
+                            <field name="employee" options="{'no_create_edit': True, 'no_create': True}" required="1"/>
                             <field name="user"/>
                         </tree>
                     </field>
+                    <field name="remarks" nolabel="1" required="1" placeholder="Remarks"/>
                      <footer>
                         <button name = "confirm_button" string = "Confirm" type = "object" class="oe_highlight"/>
                         <button name="cancel" string = "Cancel" special = "cancel"/>

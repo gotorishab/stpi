@@ -16,7 +16,7 @@ class IncomingLetterWizard(models.TransientModel):
             files = self.env['muk_dms.file'].search([])
             srch_id = self.env.user.id
             for file in files:
-                if srch_id in file.sec_owner.ids:
+                if srch_id in file.sec_owner.ids or srch_id == file.current_owner_id.id:
                     my_id.append(file.id)
 
             return {
@@ -26,9 +26,7 @@ class IncomingLetterWizard(models.TransientModel):
                 'res_model': 'muk_dms.file',
                 'type': 'ir.actions.act_window',
                 'target': 'current',
-                'create': False,
-                # 'view_id': self.env.ref('hr_applicant.view_employee_relative_tree').id,
-                'domain': ['|', ('id', 'in', my_id), ('current_owner_id', '=', self.env.user.id)],
+                'domain': [('id', 'in', my_id)],
                 }
 
 

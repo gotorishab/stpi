@@ -80,23 +80,7 @@
             </field>
      </record>
 
-    <record id="seq_sequence_file_id" model="ir.sequence">
-            <field name="name">Sequence</field>
-            <field name="code">folder.master</field>
-            <field name="padding">4</field>
-            <field name="company_id" eval="False"/>
-        </record>
-
      <!-- ==========Action View of master of Folder model=========== -->
-     <record id="foldermaster_action_view" model="ir.actions.act_window">
-            <field name="name">Files</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="res_model">folder.master</field>
-            <field name="view_type">form</field>
-            <field name="view_mode">tree,form</field>
-    </record>
-
-         <!-- ==========Action View of master of Folder Closed=========== -->
      <record id="foldermaster_closed_action_view" model="ir.actions.act_window">
          <field name="name">Files</field>
          <field name="type">ir.actions.act_window</field>
@@ -106,17 +90,7 @@
          <field name="domain">[('state','=','closed'),('current_owner_id.id', '=', uid)]</field>
     </record>
 
-
-        <menuitem id="menuitem_files_fol"
-                  parent="muk_dms.main_menu_muk_dms"
-                  name="Files"/>
-
-        <menuitem id="menuitem_files_add_fol"
-                  parent="menuitem_files_fol"
-                  action="foldermaster_action_view"
-                  name="Add Files"/>
-
-            <menuitem id="menuitem_files_closed_add_fol"
+        <menuitem id="menuitem_files_closed_add_fol"
                   parent="menuitem_files_fol"
                   action="foldermaster_closed_action_view"
                   name="Closed Files"/>

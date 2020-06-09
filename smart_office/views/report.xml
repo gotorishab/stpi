@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <!--=======Tree view of File Tracker=======-->
+    <record id="file_tracking_report_tree_view" model="ir.ui.view">
+        <field name="name">file.tracker.report.tree</field>
+        <field name="model">file.tracker.report</field>
+        <field name="arch" type="xml">
+            <tree string="File Tracker" create="0" delete="0">
+                 <field name="type"/>
+                 <field name="name"/>
+                 <field name="number"/>
+                <field name="forwarded_by"/>
+                <field name="forwarded_by_dept"/>
+                <field name="forwarded_by_jobpos"/>
+                <field name="forwarded_by_branch"/>
+                <field name="forwarded_date"/>
+                <field name="forwarded_to_user"/>
+                <field name="forwarded_to_dept"/>
+                <field name="job_pos"/>
+                <field name="forwarded_to_branch"/>
+                <field name="remarks"/>
+                <field name="details"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <!--============Action view of File Tracker draft============-->
+    <record id="file_tracking_report_menu_action" model="ir.actions.act_window">
+        <field name="name">File Tracking Report</field>
+        <field name="res_model">file.tracker.report</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+
+</odoo>

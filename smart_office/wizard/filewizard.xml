@@ -57,6 +57,7 @@
                             <field name="user"/>
                         </tree>
                     </field>
+                    <field name="remarks" nolabel="1" required="1" placeholder="Remarks"/>
                      <footer>
                         <button name = "confirm_button" string = "Confirm" type = "object" class="oe_highlight"/>
                         <button name="cancel" string = "Cancel" special = "cancel"/>

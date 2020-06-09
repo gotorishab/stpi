@@ -35,6 +35,7 @@
         'wizard/incoming_files.xml',
         'wizard/assign_folder_wizard.xml',
         'wizard/file_exception_wizard_view.xml',
+        'wizard/report_wizard.xml',
         'views/department_job.xml',
         'views/file_tracking_information.xml',
         'views/add_letter.xml',
@@ -48,6 +49,7 @@
         'views/master.xml',
         'views/see_file.xml',
         'views/file_exception.xml',
+        'views/report.xml',
 
     ],
     'qweb': [

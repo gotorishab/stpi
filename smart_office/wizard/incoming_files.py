@@ -16,7 +16,7 @@ class IncomingfileWizard(models.TransientModel):
             files = self.env['folder.master'].search([])
             srch_id = self.env.user.id
             for file in files:
-                if srch_id in file.sec_owner.ids:
+                if srch_id in file.sec_owner.ids or srch_id == file.current_owner_id.id:
                     my_id.append(file.id)
             return {
                 'name': 'Incoming Files',
@@ -26,8 +26,7 @@ class IncomingfileWizard(models.TransientModel):
                 'type': 'ir.actions.act_window',
                 'target': 'current',
                 'create': False,
-                # 'view_id': self.env.ref('hr_applicant.view_employee_relative_tree').id,
-                'domain': ['|', ('id', 'in', my_id), ('current_owner_id', '=', self.env.user.id)],
+                'domain': [('id', 'in', my_id)],
                 }
 
 
@@ -37,12 +36,6 @@ class IncomingfileWizard(models.TransientModel):
             my_emp_id = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
             my_job_id = my_emp_id.job_id.status_level
             emp = self.env['hr.employee'].search([('job_id.status_level', '>=', my_job_id)])
-            my_id = []
-            # files = self.env['folder.master'].search([])
-            # srch_id = self.env.user.id
-            # for file in files:
-            #     if srch_id in file.sec_owner.ids:
-            #         my_id.append(file.id)
             return {
                 'name': 'Incoming Files',
                 'view_type': 'form',

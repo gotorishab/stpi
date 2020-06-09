@@ -35,6 +35,7 @@ class FolderMaster(models.Model):
     description = fields.Text(string = 'Description',track_visibility='always')
     file_ids = fields.One2many('muk_dms.file','folder_id', string = 'Files',track_visibility='always')
     iframe_dashboard = fields.Text()
+    folder_track_ids = fields.One2many('folder.tracking.information', 'create_let_id', string = "Files")
     my_view = fields.Text()
     my_dash = fields.Html('My Dash Html')
     dashboard_view = fields.Many2one('ir.ui.view')
@@ -49,6 +50,8 @@ class FolderMaster(models.Model):
         res = super(FolderMaster, self).create(vals)
         vals['last_owner_id'] = self.env.user.id
         vals['current_owner_id'] = self.env.user.id
+        res.last_owner_id = self.env.user.id
+        res.last_owner_id = self.env.user.id
         name = ''
         count = 0
         sur_usr = self.env.user.branch_id.name
