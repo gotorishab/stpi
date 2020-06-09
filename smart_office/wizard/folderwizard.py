@@ -123,7 +123,7 @@ class FileWizard(models.Model):
                     else:
                         f_details = ""
                     self.env['file.tracker.report'].create({
-                        'name': str(rec.defid.name),
+                        'name': str(rec.defid.folder_name),
                         'number': str(rec.defid.number),
                         'type': 'File',
                         'forwarded_by': str(current_employee.user_id.name),
