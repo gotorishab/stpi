@@ -7,7 +7,7 @@
                 <form string="File">
                     <header>
                         <button name="button_submit" string="Submit" class="oe_highlight" type="object" states="draft"/>
-                        <button name="button_close" string="Approve" class="oe_highlight" type="object" states="in_progress"/>
+                        <button name="button_close" string="Close" class="oe_highlight" type="object" states="in_progress"/>
                         <button name="button_reset_to_draft" string="Reset to Draft" class="oe_highlight" type="object" states="in_progress"/>
                         <field name="state" widget="statusbar" statusbar_visible="draft,in_progress,closed" />
                     </header>
@@ -76,6 +76,7 @@
                     <field name="write_date"/>
                     <field name="state"/>
                     <button name="deal_with_file" string="Deal with File" type="object"/>
+                    <button name="button_close" string="Close" type="object" states="in_progress"/>
                 </tree>
             </field>
      </record>
