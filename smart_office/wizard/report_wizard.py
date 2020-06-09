@@ -56,8 +56,9 @@ class WizardLateComing(models.TransientModel):
                                ('file_forwarded', 'File Forwarded'),
                                ('assigned_to_file', 'Assigned To File'),
                                ('file_closed', 'File Closed'),
-                               ('file_repoened', 'File Reopened')
-                               ], string='Action Taken')
+                               ('file_repoened', 'File Reopened'),
+                               ('all', 'All')
+                               ], string='Action Taken', default='all')
 
 
     @api.multi

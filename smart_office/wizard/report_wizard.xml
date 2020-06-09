@@ -26,6 +26,7 @@
                         <field name="department_id" attrs="{'invisible':[('search_through','!=', 'Department')], 'required':[('search_through','=', 'Department')]}"/>
                     </group>
                     <group>
+                        <field name="action_taken" required="1"/>
                         <field name="date_range" required="1"/>
                         <field name="from_date" readonly="1"/>
                         <field name="to_date" readonly="1"/>
