@@ -50,7 +50,7 @@ class FolderMaster(models.Model):
         res = super(FolderMaster, self).create(vals)
         vals['last_owner_id'] = self.env.user.id
         vals['current_owner_id'] = self.env.user.id
-        res.last_owner_id = self.env.user.id
+        res.current_owner_id = self.env.user.id
         res.last_owner_id = self.env.user.id
         name = ''
         count = 0

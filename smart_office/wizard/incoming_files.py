@@ -18,6 +18,7 @@ class IncomingfileWizard(models.TransientModel):
             for file in files:
                 if srch_id in file.sec_owner.ids or srch_id == file.current_owner_id.id:
                     my_id.append(file.id)
+            print('==================my_id========================', my_id)
             return {
                 'name': 'Incoming Files',
                 'view_type': 'form',
