@@ -9,6 +9,7 @@
                     <field name="forwarded_date"/>
                     <field name="forwarded_to_user"/>
                     <field name="forwarded_to_dept"/>
+                    <field name="remarks"/>
                 </form>
             </field>
         </record>
@@ -24,6 +25,7 @@
                     <field name="forwarded_to_user"/>
                     <field name="forwarded_to_dept"/>
                     <field name="job_pos"/>
+                    <field name="remarks"/>
                 </tree>
             </field>
      </record>
