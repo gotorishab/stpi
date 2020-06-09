@@ -115,8 +115,8 @@ class FileWizard(models.Model):
                         'remarks':rec.remarks
                     })
                     self.env['file.tracker.report'].create({
-                        'name': str(rec.name),
-                        'number': str(rec.letter_number),
+                        'name': str(rec.defid.name),
+                        'number': str(rec.defid.letter_number),
                         'type': 'Correspondence',
                         'forwarded_by': str(current_employee.user_id.name),
                         'forwarded_by_dept': str(current_employee.department_id.name),
