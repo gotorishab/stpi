@@ -70,6 +70,16 @@ class FolderMaster(models.Model):
         else:
             name = 'File'
         res.number = str(name)
+        self.env['file.tracker.report'].create({
+            'name': str(res.folder_name),
+            'number': str(res.number),
+            'type': 'File',
+            'created_by': str(self.env.user.name),
+            'create_date': datetime.now().date(),
+            'action_taken': 'file_created',
+            'remarks': res.description,
+            'details': "File created on {}".format(datetime.now().date())
+        })
         res.sudo().create_file()
         return res
 
@@ -177,11 +187,31 @@ class FolderMaster(models.Model):
     @api.multi
     def button_close(self):
         for rec in self:
+            rec.env['file.tracker.report'].create({
+                'name': str(rec.folder_name),
+                'number': str(rec.number),
+                'type': 'File',
+                'closed_by': str(rec.env.user.name),
+                'close_date': datetime.now().date(),
+                'action_taken': 'file_closed',
+                'remarks': rec.description,
+                'details': "File closed on {}".format(datetime.now().date())
+            })
             rec.write({'state': 'closed'})
 
     @api.multi
     def button_reset_to_draft(self):
         for rec in self:
+            rec.env['file.tracker.report'].create({
+                'name': str(rec.folder_name),
+                'number': str(rec.number),
+                'type': 'File',
+                'repoen_by': str(rec.env.user.name),
+                'repoen_date': datetime.now().date(),
+                'action_taken': 'file_repoened',
+                'remarks': rec.description,
+                'details': "File repoen on {}".format(datetime.now().date())
+            })
             rec.write({'state': 'draft'})
 
 

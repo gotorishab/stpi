@@ -40,6 +40,15 @@ class CreateFolder(models.TransientModel):
                 'first_doc_id': int(self.deffolderid.php_letter_id),
                 'file_ids' : [(6, 0, letter_id)]
             })
+            self.env['file.tracker.report'].create({
+                'name': str(self.deffolderid.name),
+                'type': 'File',
+                'assigned_by': str(self.env.user.name),
+                'assigned_date': datetime.now().date(),
+                'action_taken': 'assigned_to_file',
+                'remarks': self.description,
+                'details': "Correspondence attached to file {}".format(file_id.folder_name)
+            })
             form_view = self.env.ref('smart_office.foldermaster_form_view')
             tree_view = self.env.ref('smart_office.foldermaster_tree_view1')
             value = {

@@ -50,11 +50,36 @@ class WizardLateComing(models.TransientModel):
     branch_id = fields.Many2one('res.branch', string='Branch')
     job_id = fields.Many2one('hr.job', string='Functional Designation')
     department_id = fields.Many2one('hr.department', string='Department')
+    action_taken = fields.Selection([('correspondence_created', 'Correspondence Created'),
+                               ('file_created', 'File Creates'),
+                               ('correspondence_forwarded', 'Correspondence Forwarded'),
+                               ('file_forwarded', 'File Forwarded'),
+                               ('assigned_to_file', 'Assigned To File'),
+                               ('file_closed', 'File Closed'),
+                               ('file_repoened', 'File Reopened')
+                               ], string='Action Taken')
 
 
     @api.multi
     def confirm_report(self):
         for rec in self:
+            if rec.action_taken == 'correspondence_created':
+                view_id = self.env.ref('smart_office.view_correspondence_created_tree').id
+            elif rec.action_taken == 'file_created':
+                view_id = self.env.ref('smart_office.view_file_created_tree').id
+            elif rec.action_taken == 'correspondence_forwarded':
+                view_id = self.env.ref('smart_office.view_correspondence_forwarded_tree').id
+            elif rec.action_taken == 'file_forwarded':
+                view_id = self.env.ref('smart_office.view_file_forwarded_tree').id
+            elif rec.action_taken == 'assigned_to_file':
+                view_id = self.env.ref('smart_office.view_assigned_to_file_tree').id
+            elif rec.action_taken == 'file_closed':
+                view_id = self.env.ref('smart_office.view_file_closed_tree').id
+            elif rec.action_taken == 'file_repoened':
+                view_id = self.env.ref('smart_office.view_file_repoened_tree').id
+            else:
+                view_id = self.env.ref('smart_office.file_tracking_report_tree_view').id
+
             if rec.search_through == 'Employee':
                 if rec.report_of == 'Both':
                     my_ids = self.env['file.tracker.report'].search(['|', ('forwarded_by', '=', rec.employee_id.name), ('forwarded_to_user', '=', rec.employee_id.name), ('forwarded_date', '>=', rec.date_range.date_start), ('forwarded_date', '<=', rec.date_range.date_end)])
@@ -65,6 +90,7 @@ class WizardLateComing(models.TransientModel):
                         'res_model': 'file.tracker.report',
                         'type': 'ir.actions.act_window',
                         'target': 'current',
+                        'view_id': view_id,
                         'domain': [('id', 'in', my_ids.ids)],
                     }
                 else:
@@ -81,6 +107,7 @@ class WizardLateComing(models.TransientModel):
                         'res_model': 'file.tracker.report',
                         'type': 'ir.actions.act_window',
                         'target': 'current',
+                        'view_id': view_id,
                         'domain': [('id', 'in', my_search_id)]
                     }
             elif rec.search_through == 'Branch':
@@ -93,6 +120,7 @@ class WizardLateComing(models.TransientModel):
                         'res_model': 'file.tracker.report',
                         'type': 'ir.actions.act_window',
                         'target': 'current',
+                        'view_id': view_id,
                         'domain': [('id', 'in', my_ids.ids)],
                     }
                 else:
@@ -109,6 +137,7 @@ class WizardLateComing(models.TransientModel):
                         'res_model': 'file.tracker.report',
                         'type': 'ir.actions.act_window',
                         'target': 'current',
+                        'view_id': view_id,
                         'domain': [('id', 'in', my_search_id)]
                     }
             elif rec.search_through == 'Job':
@@ -121,6 +150,7 @@ class WizardLateComing(models.TransientModel):
                         'res_model': 'file.tracker.report',
                         'type': 'ir.actions.act_window',
                         'target': 'current',
+                        'view_id': view_id,
                         'domain': [('id', 'in', my_ids.ids)],
                     }
                 else:
@@ -137,6 +167,7 @@ class WizardLateComing(models.TransientModel):
                         'res_model': 'file.tracker.report',
                         'type': 'ir.actions.act_window',
                         'target': 'current',
+                        'view_id': view_id,
                         'domain': [('id', 'in', my_search_id)]
                     }
             elif rec.search_through == 'Department':
@@ -149,6 +180,7 @@ class WizardLateComing(models.TransientModel):
                         'res_model': 'file.tracker.report',
                         'type': 'ir.actions.act_window',
                         'target': 'current',
+                        'view_id': view_id,
                         'domain': [('id', 'in', my_ids.ids)],
                     }
                 else:
@@ -165,6 +197,7 @@ class WizardLateComing(models.TransientModel):
                         'res_model': 'file.tracker.report',
                         'type': 'ir.actions.act_window',
                         'target': 'current',
+                        'view_id': view_id,
                         'domain': [('id', 'in', my_search_id)]
                     }
             elif rec.search_through == 'All':
@@ -177,6 +210,7 @@ class WizardLateComing(models.TransientModel):
                         'res_model': 'file.tracker.report',
                         'type': 'ir.actions.act_window',
                         'target': 'current',
+                        'view_id': view_id,
                         'domain': [('id', 'in', my_ids.ids)],
                     }
                 else:
@@ -193,6 +227,7 @@ class WizardLateComing(models.TransientModel):
                         'res_model': 'file.tracker.report',
                         'type': 'ir.actions.act_window',
                         'target': 'current',
+                        'view_id': view_id,
                         'domain': [('id', 'in', my_search_id)]
                     }
             else:
@@ -205,6 +240,7 @@ class WizardLateComing(models.TransientModel):
                         'res_model': 'file.tracker.report',
                         'type': 'ir.actions.act_window',
                         'target': 'current',
+                        'view_id': view_id,
                         'domain': [('id', 'in', my_ids.ids)],
                     }
                 else:
@@ -221,5 +257,6 @@ class WizardLateComing(models.TransientModel):
                         'res_model': 'file.tracker.report',
                         'type': 'ir.actions.act_window',
                         'target': 'current',
+                        'view_id': view_id,
                         'domain': [('id', 'in', my_search_id)]
                     }

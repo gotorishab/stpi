@@ -13,6 +13,14 @@ class FileTracker(models.Model):
     name = fields.Char(string='Name')
     number = fields.Char(string='Number')
     type = fields.Char(string='Type')
+    created_by = fields.Char(string='Created By')
+    create_date = fields.Char(string='Create Date')
+    assigned_by = fields.Char(string='Assigned By')
+    assigned_date = fields.Char(string='Assigned Date')
+    closed_by = fields.Char(string='Closed By')
+    close_date = fields.Char(string='Closed Date')
+    repoen_by = fields.Char(string='Reopen By')
+    repoen_date = fields.Char(string='Reopen Date')
     forwarded_by = fields.Char(string='Forwarded By (User)')
     forwarded_by_dept = fields.Char(string='Forwarded By (Department)')
     forwarded_by_jobpos = fields.Char(string='Forwarded By(User Job Position)')
@@ -24,3 +32,11 @@ class FileTracker(models.Model):
     forwarded_to_branch = fields.Char(string='Forwarded To(Branch)')
     remarks = fields.Char(string='Remarks')
     details = fields.Char(string='Details')
+    action_taken = fields.Selection([('correspondence_created', 'Correspondence Created'),
+                               ('file_created', 'File Creates'),
+                               ('correspondence_forwarded', 'Correspondence Forwarded'),
+                               ('file_forwarded', 'File Forwarded'),
+                               ('assigned_to_file', 'Assigned To File'),
+                               ('file_closed', 'File Closed'),
+                               ('file_repoened', 'File Reopened')
+                               ], string='Action Taken')

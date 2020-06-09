@@ -65,9 +65,10 @@ class AddLetter(models.Model):
             'name': str(res.name),
             'number': str(res.letter_number),
             'type': 'Correspondence',
-            'forwarded_to_user': str(self.env.user.name),
-            'forwarded_date': datetime.now().date(),
-            'remarks': res.remarks,
+            'created_by': str(self.env.user.name),
+            'create_date': datetime.now().date(),
+            'action_taken': 'correspondence_created',
+            'remarks': res.sender_remarks,
             'details': "Correspondence created on {}".format(datetime.now().date())
         })
         if self._context.get('smart_office_incoming_letter', False):
