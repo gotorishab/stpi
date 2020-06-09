@@ -18,7 +18,7 @@
                     </group>
                     <group>
                         <field name="report_of" required="1"/>
-                        <field name="details" attrs="{'invisible':[('report_of','=', 'Both')], 'required':[('report_of','!=', 'Both')]}"/>
+                        <field name="details" attrs="{'invisible':[('report_of','=', 'Both')]}"/>
                         <field name="search_through" required="1"/>
                         <field name="employee_id" attrs="{'invisible':[('search_through','!=', 'Employee')], 'required':[('search_through','=', 'Employee')]}"/>
                         <field name="branch_id" attrs="{'invisible':[('search_through','!=', 'Branch')], 'required':[('search_through','=', 'Branch')]}"/>
