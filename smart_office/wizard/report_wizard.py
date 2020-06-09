@@ -34,7 +34,7 @@ class WizardLateComing(models.TransientModel):
     report_of = fields.Selection([('File','File'),
                                   ('Correspondence','Correspondence'),
                                   ('Both','Both'),
-                                  ],string="Report On", default='both')
+                                  ],string="Report On", default='Both')
     search_through = fields.Selection([('Employee','Employee'),
                                   ('Branch','Branch'),
                                   ('Job','Job'),
