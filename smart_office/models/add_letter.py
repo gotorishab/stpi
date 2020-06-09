@@ -61,6 +61,15 @@ class AddLetter(models.Model):
             res.php_letter_id = str(dictionary["response"]["letterData"]["id"])
         except Exception as e:
             print('=============Error==========', e)
+        self.env['file.tracker.report'].create({
+            'name': str(res.name),
+            'number': str(res.letter_number),
+            'type': 'Correspondence',
+            'forwarded_to_user': str(self.env.user.name),
+            'forwarded_date': datetime.now().date(),
+            'remarks': res.remarks,
+            'details': "Correspondence created on {}".format(datetime.now().date())
+        })
         if self._context.get('smart_office_incoming_letter', False):
             self.env['muk.letter.tracker'].create(dict(
                 type='create',
