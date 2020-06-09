@@ -11,7 +11,7 @@ class FolderMaster(models.Model):
     _rec_name ='number'
 
     folder_name = fields.Char(string = 'File Name',track_visibility='always')
-    old_file_number = fields.Char(string = 'Old File Name',track_visibility='always')
+    old_file_number = fields.Char(string = 'Old File Number',track_visibility='always')
 
 
     current_owner_id = fields.Many2one('res.users', 'Current Owner',track_visibility='always')

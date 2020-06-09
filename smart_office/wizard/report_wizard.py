@@ -97,8 +97,13 @@ class WizardLateComing(models.TransientModel):
                 else:
                     my_search_id = []
                     my_ids = self.env['file.tracker.report'].search(['|', ('forwarded_by', '=', rec.employee_id.name), ('forwarded_to_user', '=', rec.employee_id.name), ('forwarded_date', '>=', rec.date_range.date_start), ('forwarded_date', '<=', rec.date_range.date_end)])
-                    for my_id in my_ids:
-                        if my_id.name == rec.details or my_id.number == rec.details:
+                    if len(rec.details) > 2:
+                        for my_id in my_ids:
+                            if my_id.type == rec.report_of:
+                                if my_id.name == rec.details or my_id.number == rec.details:
+                                    my_search_id.append(my_id.id)
+                    else:
+                        for my_id in my_ids:
                             if my_id.type == rec.report_of:
                                 my_search_id.append(my_id.id)
                     return {
@@ -127,8 +132,13 @@ class WizardLateComing(models.TransientModel):
                 else:
                     my_search_id = []
                     my_ids = self.env['file.tracker.report'].search(['|', ('forwarded_by_branch', '=', rec.branch_id.name), ('forwarded_to_branch', '=', rec.branch_id.name), ('forwarded_date', '>=', rec.date_range.date_start), ('forwarded_date', '<=', rec.date_range.date_end)])
-                    for my_id in my_ids:
-                        if my_id.name == rec.details or my_id.number == rec.details:
+                    if len(rec.details) > 2:
+                        for my_id in my_ids:
+                            if my_id.type == rec.report_of:
+                                if my_id.name == rec.details or my_id.number == rec.details:
+                                    my_search_id.append(my_id.id)
+                    else:
+                        for my_id in my_ids:
                             if my_id.type == rec.report_of:
                                 my_search_id.append(my_id.id)
                     return {
@@ -157,8 +167,13 @@ class WizardLateComing(models.TransientModel):
                 else:
                     my_search_id = []
                     my_ids = self.env['file.tracker.report'].search(['|', ('forwarded_by_jobpos', '=', rec.job_id.name), ('job_pos', '=', rec.job_id.name), ('forwarded_date', '>=', rec.date_range.date_start), ('forwarded_date', '<=', rec.date_range.date_end)])
-                    for my_id in my_ids:
-                        if my_id.name == rec.details or my_id.number == rec.details:
+                    if len(rec.details) > 2:
+                        for my_id in my_ids:
+                            if my_id.type == rec.report_of:
+                                if my_id.name == rec.details or my_id.number == rec.details:
+                                    my_search_id.append(my_id.id)
+                    else:
+                        for my_id in my_ids:
                             if my_id.type == rec.report_of:
                                 my_search_id.append(my_id.id)
                     return {
@@ -187,8 +202,13 @@ class WizardLateComing(models.TransientModel):
                 else:
                     my_search_id = []
                     my_ids = self.env['file.tracker.report'].search(['|', ('forwarded_by_dept', '=', rec.department_id.name), ('forwarded_to_dept', '=', rec.department_id.name), ('forwarded_date', '>=', rec.date_range.date_start), ('forwarded_date', '<=', rec.date_range.date_end)])
-                    for my_id in my_ids:
-                        if my_id.name == rec.details or my_id.number == rec.details:
+                    if len(rec.details) > 2:
+                        for my_id in my_ids:
+                            if my_id.type == rec.report_of:
+                                if my_id.name == rec.details or my_id.number == rec.details:
+                                    my_search_id.append(my_id.id)
+                    else:
+                        for my_id in my_ids:
                             if my_id.type == rec.report_of:
                                 my_search_id.append(my_id.id)
                     return {
@@ -217,8 +237,13 @@ class WizardLateComing(models.TransientModel):
                 else:
                     my_search_id = []
                     my_ids = self.env['file.tracker.report'].search([('forwarded_date', '>=', rec.date_range.date_start), ('forwarded_date', '<=', rec.date_range.date_end)])
-                    for my_id in my_ids:
-                        if my_id.name == rec.details or my_id.number == rec.details:
+                    if len(rec.details) > 2:
+                        for my_id in my_ids:
+                            if my_id.type == rec.report_of:
+                                if my_id.name == rec.details or my_id.number == rec.details:
+                                    my_search_id.append(my_id.id)
+                    else:
+                        for my_id in my_ids:
                             if my_id.type == rec.report_of:
                                 my_search_id.append(my_id.id)
                     return {
@@ -247,8 +272,13 @@ class WizardLateComing(models.TransientModel):
                 else:
                     my_search_id = []
                     my_ids = self.env['file.tracker.report'].search([('forwarded_date', '>=', rec.date_range.date_start), ('forwarded_date', '<=', rec.date_range.date_end)])
-                    for my_id in my_ids:
-                        if my_id.name == rec.details or my_id.number == rec.details:
+                    if len(rec.details) > 2:
+                        for my_id in my_ids:
+                            if my_id.type == rec.report_of:
+                                if my_id.name == rec.details or my_id.number == rec.details:
+                                    my_search_id.append(my_id.id)
+                    else:
+                        for my_id in my_ids:
                             if my_id.type == rec.report_of:
                                 my_search_id.append(my_id.id)
                     return {
