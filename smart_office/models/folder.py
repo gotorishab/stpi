@@ -54,18 +54,18 @@ class FolderMaster(models.Model):
         res.last_owner_id = self.env.user.id
         name = ''
         count = 0
-        sur_usr = self.env.user.branch_id.name
+        current_employee = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+        sur_usr = current_employee.branch_id.name
+        d_id = current_employee.department_id.stpi_doc_id
         fy = self.env['date.range'].search(
             [('type_id.name', '=', 'Fiscal Year'), ('date_start', '<=', datetime.now().date()),
              ('date_end', '>=', datetime.now().date())], limit=1)
-        debt_id = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
-        d_id = debt_id.department_id.stpi_doc_id
-        files = self.env['folder.master'].search(
-            [('date', '>=', fy.date_start), ('date', '<=', fy.date_end)])
+        files = self.env['muk_dms.file'].search(
+            [('create_date', '>=', fy.date_start), ('create_date', '<=', fy.date_end)])
         for file in files:
             count += 1
-        if res.subject:
-            name = (res.subject.code) + '(' + str(count) + ')/' + str(d_id) + '/' + str(sur_usr) + '/' + str(
+        if self.subject:
+            name = (self.subject.code) + '(' + str(count) + ')/' + str(d_id) + '/' + str(sur_usr) + '/' + str(
                 fy.name)
         else:
             name = 'File'
@@ -74,7 +74,10 @@ class FolderMaster(models.Model):
             'name': str(res.folder_name),
             'number': str(res.number),
             'type': 'File',
-            'created_by': str(self.env.user.name),
+            'created_by': str(current_employee.user_id.name),
+            'created_by_dept': str(current_employee.department_id.name),
+            'created_by_jobpos': str(current_employee.job_id.name),
+            'created_by_branch': str(current_employee.branch_id.name),
             'create_date': datetime.now().date(),
             'action_taken': 'file_created',
             'remarks': res.description,
@@ -161,12 +164,12 @@ class FolderMaster(models.Model):
                 name = record.number
             else:
                 count = 0
-                sur_usr = self.env.user.branch_id.name
+                current_employee = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+                sur_usr = current_employee.branch_id.name
+                d_id = current_employee.department_id.stpi_doc_id
                 fy = self.env['date.range'].search(
                     [('type_id.name', '=', 'Fiscal Year'), ('date_start', '<=', datetime.now().date()),
                      ('date_end', '>=', datetime.now().date())], limit=1)
-                debt_id = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
-                d_id = debt_id.department_id.stpi_doc_id
                 files = self.env['muk_dms.file'].search(
                     [('create_date', '>=', fy.date_start), ('create_date', '<=', fy.date_end)])
                 for file in files:
@@ -187,11 +190,15 @@ class FolderMaster(models.Model):
     @api.multi
     def button_close(self):
         for rec in self:
+            current_employee = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
             rec.env['file.tracker.report'].create({
                 'name': str(rec.folder_name),
                 'number': str(rec.number),
                 'type': 'File',
-                'closed_by': str(rec.env.user.name),
+                'closed_by': str(current_employee.user_id.name),
+                'closed_by_dept': str(current_employee.department_id.name),
+                'closed_by_jobpos': str(current_employee.job_id.name),
+                'closed_by_branch': str(current_employee.branch_id.name),
                 'close_date': datetime.now().date(),
                 'action_taken': 'file_closed',
                 'remarks': rec.description,
@@ -202,11 +209,15 @@ class FolderMaster(models.Model):
     @api.multi
     def button_reset_to_draft(self):
         for rec in self:
+            current_employee = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
             rec.env['file.tracker.report'].create({
                 'name': str(rec.folder_name),
                 'number': str(rec.number),
                 'type': 'File',
-                'repoen_by': str(rec.env.user.name),
+                'repoen_by': str(current_employee.user_id.name),
+                'repoen_by_dept': str(current_employee.department_id.name),
+                'repoen_by_jobpos': str(current_employee.job_id.name),
+                'repoen_by_branch': str(current_employee.branch_id.name),
                 'repoen_date': datetime.now().date(),
                 'action_taken': 'file_repoened',
                 'remarks': rec.description,

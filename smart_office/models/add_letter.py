@@ -61,11 +61,15 @@ class AddLetter(models.Model):
             res.php_letter_id = str(dictionary["response"]["letterData"]["id"])
         except Exception as e:
             print('=============Error==========', e)
+        current_employee = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
         self.env['file.tracker.report'].create({
             'name': str(res.name),
             'number': str(res.letter_number),
             'type': 'Correspondence',
-            'created_by': str(self.env.user.name),
+            'created_by': str(current_employee.user_id.name),
+            'created_by_dept': str(current_employee.department_id.name),
+            'created_by_jobpos': str(current_employee.job_id.name),
+            'created_by_branch': str(current_employee.branch_id.name),
             'create_date': datetime.now().date(),
             'action_taken': 'correspondence_created',
             'remarks': res.sender_remarks,

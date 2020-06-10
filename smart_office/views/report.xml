@@ -47,6 +47,9 @@
                  <field name="name"/>
                  <field name="number"/>
                  <field name="created_by"/>
+                 <field name="created_by_dept"/>
+                 <field name="created_by_jobpos"/>
+                 <field name="created_by_branch"/>
                  <field name="create_date"/>
                 <field name="remarks"/>
                 <field name="details"/>
@@ -65,6 +68,9 @@
                  <field name="name"/>
                  <field name="number"/>
                  <field name="created_by"/>
+                <field name="created_by_dept"/>
+                 <field name="created_by_jobpos"/>
+                 <field name="created_by_branch"/>
                  <field name="create_date"/>
                 <field name="remarks"/>
                 <field name="details"/>
@@ -136,6 +142,9 @@
                  <field name="name"/>
                  <field name="number"/>
                  <field name="assigned_by"/>
+                <field name="assigned_by_dept"/>
+                 <field name="assigned_by_jobpos"/>
+                 <field name="assigned_by_branch"/>
                  <field name="assigned_date"/>
                 <field name="remarks"/>
                 <field name="details"/>
@@ -155,6 +164,9 @@
                  <field name="name"/>
                  <field name="number"/>
                 <field name="closed_by"/>
+                <field name="closed_by_dept"/>
+                 <field name="closed_by_jobpos"/>
+                 <field name="closed_by_branch"/>
                  <field name="close_date"/>
                 <field name="remarks"/>
                 <field name="details"/>
@@ -173,6 +185,9 @@
                  <field name="name"/>
                  <field name="number"/>
                 <field name="repoen_by"/>
+                <field name="repoen_by_dept"/>
+                 <field name="repoen_by_jobpos"/>
+                 <field name="repoen_by_branch"/>
                  <field name="repoen_date"/>
                 <field name="remarks"/>
                 <field name="details"/>

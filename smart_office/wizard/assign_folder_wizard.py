@@ -16,10 +16,14 @@ class CreateFolder(models.TransientModel):
             letter_id = []
             letter_id.append(self.deffolderid.id)
             self.folder_id.folder_ids = [(6, 0, letter_id)]
+            current_employee = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
             self.env['file.tracker.report'].create({
                 'name': str(self.deffolderid.name),
                 'type': 'File',
-                'assigned_by': str(self.env.user.name),
+                'assigned_by': str(current_employee.user_id.name),
+                'assigned_by_dept': str(current_employee.department_id.name),
+                'assigned_by_jobpos': str(current_employee.job_id.name),
+                'assigned_by_branch': str(current_employee.branch_id.name),
                 'assigned_date': datetime.now().date(),
                 'action_taken': 'assigned_to_file',
                 'remarks': self.description,
