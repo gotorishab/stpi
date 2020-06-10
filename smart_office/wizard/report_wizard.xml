@@ -19,7 +19,7 @@
                     <group>
                         <field name="report_of" required="1"/>
                         <field name="details" placeholder="Name/Number" attrs="{'invisible':[('report_of','=', 'Both')]}"/>
-                        <field name="search_through" required="1"/>
+                        <field name="search_through" attrs="{'invisible':[('report_of','!=', 'Both')], 'required':[('report_of','=', 'Both')]}"/>
                         <field name="employee_id" attrs="{'invisible':['|', ('report_of','!=', 'Both'), ('search_through','!=', 'Employee')], 'required':[('search_through','=', 'Employee')]}"/>
                         <field name="branch_id" attrs="{'invisible':['|', ('report_of','!=', 'Both'), ('search_through','!=', 'Branch')], 'required':[('search_through','=', 'Branch')]}"/>
                         <field name="job_id" attrs="{'invisible':['|', ('report_of','!=', 'Both'), ('search_through','!=', 'Job')], 'required':[('search_through','=', 'Job')]}"/>
