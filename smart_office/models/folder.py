@@ -64,11 +64,8 @@ class FolderMaster(models.Model):
             [('create_date', '>=', fy.date_start), ('create_date', '<=', fy.date_end)])
         for file in files:
             count += 1
-        if self.subject:
-            name = (self.subject.code) + '(' + str(count) + ')/' + str(d_id) + '/' + str(sur_usr) + '/' + str(
+        name = (res.subject.code) + '(' + str(count) + ')/' + str(d_id) + '/' + str(sur_usr) + '/' + str(
                 fy.name)
-        else:
-            name = 'File'
         res.number = str(name)
         self.env['file.tracker.report'].create({
             'name': str(res.folder_name),

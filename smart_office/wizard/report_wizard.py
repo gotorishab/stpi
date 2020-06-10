@@ -69,8 +69,8 @@ class WizardLateComing(models.TransientModel):
                              ('action_taken', '=', rec.action_taken),
                              ('create_date', '>=', rec.date_range.date_start),
                              ('create_date', '<=', rec.date_range.date_end)])
-                        for id in dmn.ids:
-                            views_domain.append(id)
+                        for id in dmn:
+                            views_domain.append(id.id)
                     elif rec.action_taken == 'file_created':
                         view_id = self.env.ref('smart_office.view_file_created_tree').id
                         dmn = self.env['file.tracker.report'].search(
@@ -78,24 +78,24 @@ class WizardLateComing(models.TransientModel):
                              ('action_taken', '=', rec.action_taken),
                              ('create_date', '>=', rec.date_range.date_start),
                              ('create_date', '<=', rec.date_range.date_end)])
-                        for id in dmn.ids:
-                            views_domain.append(id)
+                        for id in dmn:
+                            views_domain.append(id.id)
                     elif rec.action_taken == 'correspondence_forwarded':
                         view_id = self.env.ref('smart_office.view_correspondence_forwarded_tree').id
                         dmn = self.env['file.tracker.report'].search(
                             ['|', ('forwarded_by', '=', rec.employee_id.name), ('forwarded_to_user', '=', rec.employee_id.name), ('action_taken', '=', rec.action_taken),
                              ('forwarded_date', '>=', rec.date_range.date_start),
                              ('forwarded_date', '<=', rec.date_range.date_end)])
-                        for id in dmn.ids:
-                            views_domain.append(id)
+                        for id in dmn:
+                            views_domain.append(id.id)
                     elif rec.action_taken == 'file_forwarded':
                         view_id = self.env.ref('smart_office.view_file_forwarded_tree').id
                         dmn = self.env['file.tracker.report'].search(
                             ['|', ('forwarded_by', '=', rec.employee_id.name), ('forwarded_to_user', '=', rec.employee_id.name), ('action_taken', '=', rec.action_taken),
                              ('forwarded_date', '>=', rec.date_range.date_start),
                              ('forwarded_date', '<=', rec.date_range.date_end)])
-                        for id in dmn.ids:
-                            views_domain.append(id)
+                        for id in dmn:
+                            views_domain.append(id.id)
                     elif rec.action_taken == 'assigned_to_file':
                         view_id = self.env.ref('smart_office.view_assigned_to_file_tree').id
                         dmn = self.env['file.tracker.report'].search(
@@ -103,8 +103,8 @@ class WizardLateComing(models.TransientModel):
                              ('action_taken', '=', rec.action_taken),
                              ('assigned_date', '>=', rec.date_range.date_start),
                              ('assigned_date', '<=', rec.date_range.date_end)])
-                        for id in dmn.ids:
-                            views_domain.append(id)
+                        for id in dmn:
+                            views_domain.append(id.id)
                     elif rec.action_taken == 'file_closed':
                         view_id = self.env.ref('smart_office.view_file_closed_tree').id
                         dmn = self.env['file.tracker.report'].search(
@@ -112,8 +112,8 @@ class WizardLateComing(models.TransientModel):
                              ('action_taken', '=', rec.action_taken),
                              ('close_date', '>=', rec.date_range.date_start),
                              ('close_date', '<=', rec.date_range.date_end)])
-                        for id in dmn.ids:
-                            views_domain.append(id)
+                        for id in dmn:
+                            views_domain.append(id.id)
                     elif rec.action_taken == 'file_repoened':
                         view_id = self.env.ref('smart_office.view_file_repoened_tree').id
                         dmn = self.env['file.tracker.report'].search(
@@ -121,15 +121,15 @@ class WizardLateComing(models.TransientModel):
                              ('action_taken', '=', rec.action_taken),
                              ('repoen_date', '>=', rec.date_range.date_start),
                              ('repoen_date', '<=', rec.date_range.date_end)])
-                        for id in dmn.ids:
-                            views_domain.append(id)
+                        for id in dmn:
+                            views_domain.append(id.id)
                     else:
                         view_id = self.env.ref('smart_office.file_tracking_report_tree_view').id
                         dmn = self.env['file.tracker.report'].search([])
-                        for line in dmn.ids:
+                        for line in dmn:
                             if line.created_by == rec.employee_id.name or line.assigned_by == rec.employee_id.name or line.closed_by == rec.employee_id.name or line.repoen_by == rec.employee_id.name or line.forwarded_by == rec.employee_id.name or line.forwarded_to_user == rec.employee_id.name:
                                 if (rec.date_range.date_start <= line.create_date <= rec.date_range.date_end) or (rec.date_range.date_start <= line.assigned_date <= rec.date_range.date_end) or (rec.date_range.date_start <= line.close_date <= rec.date_range.date_end) or (rec.date_range.date_start <= line.repoen_date <= rec.date_range.date_end) or (rec.date_range.date_start <= line.forwarded_date <= rec.date_range.date_end):
-                                    views_domain.append(line)
+                                    views_domain.append(line.id)
                     return {
                         'name': 'File Tracking Report',
                         'view_type': 'form',
@@ -150,8 +150,8 @@ class WizardLateComing(models.TransientModel):
                              ('action_taken', '=', rec.action_taken),
                              ('create_date', '>=', rec.date_range.date_start),
                              ('create_date', '<=', rec.date_range.date_end)])
-                        for id in dmn.ids:
-                            views_domain.append(id)
+                        for id in dmn:
+                            views_domain.append(id.id)
                     elif rec.action_taken == 'file_created':
                         view_id = self.env.ref('smart_office.view_file_created_tree').id
                         dmn = self.env['file.tracker.report'].search(
@@ -159,8 +159,8 @@ class WizardLateComing(models.TransientModel):
                              ('action_taken', '=', rec.action_taken),
                              ('create_date', '>=', rec.date_range.date_start),
                              ('create_date', '<=', rec.date_range.date_end)])
-                        for id in dmn.ids:
-                            views_domain.append(id)
+                        for id in dmn:
+                            views_domain.append(id.id)
                     elif rec.action_taken == 'correspondence_forwarded':
                         view_id = self.env.ref('smart_office.view_correspondence_forwarded_tree').id
                         dmn = self.env['file.tracker.report'].search(
@@ -173,8 +173,8 @@ class WizardLateComing(models.TransientModel):
                             ['|', ('forwarded_by_branch', '=', rec.branch_id.name), ('forwarded_to_branch', '=', rec.branch_id.name), ('action_taken', '=', rec.action_taken),
                              ('forwarded_date', '>=', rec.date_range.date_start),
                              ('forwarded_date', '<=', rec.date_range.date_end)])
-                        for id in dmn.ids:
-                            views_domain.append(id)
+                        for id in dmn:
+                            views_domain.append(id.id)
                     elif rec.action_taken == 'assigned_to_file':
                         view_id = self.env.ref('smart_office.view_assigned_to_file_tree').id
                         dmn = self.env['file.tracker.report'].search(
@@ -182,8 +182,8 @@ class WizardLateComing(models.TransientModel):
                              ('action_taken', '=', rec.action_taken),
                              ('assigned_date', '>=', rec.date_range.date_start),
                              ('assigned_date', '<=', rec.date_range.date_end)])
-                        for id in dmn.ids:
-                            views_domain.append(id)
+                        for id in dmn:
+                            views_domain.append(id.id)
                     elif rec.action_taken == 'file_closed':
                         view_id = self.env.ref('smart_office.view_file_closed_tree').id
                         dmn = self.env['file.tracker.report'].search(
@@ -191,8 +191,8 @@ class WizardLateComing(models.TransientModel):
                              ('action_taken', '=', rec.action_taken),
                              ('close_date', '>=', rec.date_range.date_start),
                              ('close_date', '<=', rec.date_range.date_end)])
-                        for id in dmn.ids:
-                            views_domain.append(id)
+                        for id in dmn:
+                            views_domain.append(id.id)
                     elif rec.action_taken == 'file_repoened':
                         view_id = self.env.ref('smart_office.view_file_repoened_tree').id
                         dmn = self.env['file.tracker.report'].search(
@@ -200,19 +200,19 @@ class WizardLateComing(models.TransientModel):
                              ('action_taken', '=', rec.action_taken),
                              ('repoen_date', '>=', rec.date_range.date_start),
                              ('repoen_date', '<=', rec.date_range.date_end)])
-                        for id in dmn.ids:
-                            views_domain.append(id)
+                        for id in dmn:
+                            views_domain.append(id.id)
                     else:
                         view_id = self.env.ref('smart_office.file_tracking_report_tree_view').id
                         dmn = self.env['file.tracker.report'].search([])
-                        for line in dmn.ids:
+                        for line in dmn:
                             if line.created_by == rec.employee_id.name or line.assigned_by == rec.employee_id.name or line.closed_by == rec.employee_id.name or line.repoen_by == rec.employee_id.name or line.forwarded_by == rec.employee_id.name or line.forwarded_to_user == rec.employee_id.name:
                                 if (rec.date_range.date_start <= line.create_date <= rec.date_range.date_end) or (
                                         rec.date_range.date_start <= line.assigned_date <= rec.date_range.date_end) or (
                                         rec.date_range.date_start <= line.close_date <= rec.date_range.date_end) or (
                                         rec.date_range.date_start <= line.repoen_date <= rec.date_range.date_end) or (
                                         rec.date_range.date_start <= line.forwarded_date <= rec.date_range.date_end):
-                                    views_domain.append(line)
+                                    views_domain.append(line.id)
                     return {
                         'name': 'File Tracking Report',
                         'view_type': 'form',
@@ -232,8 +232,8 @@ class WizardLateComing(models.TransientModel):
                              ('action_taken', '=', rec.action_taken),
                              ('create_date', '>=', rec.date_range.date_start),
                              ('create_date', '<=', rec.date_range.date_end)])
-                        for id in dmn.ids:
-                            views_domain.append(id)
+                        for id in dmn:
+                            views_domain.append(id.id)
                     elif rec.action_taken == 'file_created':
                         view_id = self.env.ref('smart_office.view_file_created_tree').id
                         dmn = self.env['file.tracker.report'].search(
@@ -241,24 +241,24 @@ class WizardLateComing(models.TransientModel):
                              ('action_taken', '=', rec.action_taken),
                              ('create_date', '>=', rec.date_range.date_start),
                              ('create_date', '<=', rec.date_range.date_end)])
-                        for id in dmn.ids:
-                            views_domain.append(id)
+                        for id in dmn:
+                            views_domain.append(id.id)
                     elif rec.action_taken == 'correspondence_forwarded':
                         view_id = self.env.ref('smart_office.view_correspondence_forwarded_tree').id
                         dmn = self.env['file.tracker.report'].search(
                             ['|', ('forwarded_by_jobpos', '=', rec.job_id.name), ('job_pos', '=', rec.job_id.name), ('action_taken', '=', rec.action_taken),
                              ('forwarded_date', '>=', rec.date_range.date_start),
                              ('forwarded_date', '<=', rec.date_range.date_end)])
-                        for id in dmn.ids:
-                            views_domain.append(id)
+                        for id in dmn:
+                            views_domain.append(id.id)
                     elif rec.action_taken == 'file_forwarded':
                         view_id = self.env.ref('smart_office.view_file_forwarded_tree').id
                         dmn = self.env['file.tracker.report'].search(
                             ['|', ('forwarded_by_jobpos', '=', rec.job_id.name), ('job_pos', '=', rec.job_id.name), ('action_taken', '=', rec.action_taken),
                              ('forwarded_date', '>=', rec.date_range.date_start),
                              ('forwarded_date', '<=', rec.date_range.date_end)])
-                        for id in dmn.ids:
-                            views_domain.append(id)
+                        for id in dmn:
+                            views_domain.append(id.id)
                     elif rec.action_taken == 'assigned_to_file':
                         view_id = self.env.ref('smart_office.view_assigned_to_file_tree').id
                         dmn = self.env['file.tracker.report'].search(
@@ -266,8 +266,8 @@ class WizardLateComing(models.TransientModel):
                              ('action_taken', '=', rec.action_taken),
                              ('assigned_date', '>=', rec.date_range.date_start),
                              ('assigned_date', '<=', rec.date_range.date_end)])
-                        for id in dmn.ids:
-                            views_domain.append(id)
+                        for id in dmn:
+                            views_domain.append(id.id)
                     elif rec.action_taken == 'file_closed':
                         view_id = self.env.ref('smart_office.view_file_closed_tree').id
                         dmn = self.env['file.tracker.report'].search(
@@ -275,8 +275,8 @@ class WizardLateComing(models.TransientModel):
                              ('action_taken', '=', rec.action_taken),
                              ('close_date', '>=', rec.date_range.date_start),
                              ('close_date', '<=', rec.date_range.date_end)])
-                        for id in dmn.ids:
-                            views_domain.append(id)
+                        for id in dmn:
+                            views_domain.append(id.id)
                     elif rec.action_taken == 'file_repoened':
                         view_id = self.env.ref('smart_office.view_file_repoened_tree').id
                         dmn = self.env['file.tracker.report'].search(
@@ -284,19 +284,19 @@ class WizardLateComing(models.TransientModel):
                              ('action_taken', '=', rec.action_taken),
                              ('repoen_date', '>=', rec.date_range.date_start),
                              ('repoen_date', '<=', rec.date_range.date_end)])
-                        for id in dmn.ids:
-                            views_domain.append(id)
+                        for id in dmn:
+                            views_domain.append(id.id)
                     else:
                         view_id = self.env.ref('smart_office.file_tracking_report_tree_view').id
                         dmn = self.env['file.tracker.report'].search([])
-                        for line in dmn.ids:
+                        for line in dmn:
                             if line.created_by == rec.employee_id.name or line.assigned_by == rec.employee_id.name or line.closed_by == rec.employee_id.name or line.repoen_by == rec.employee_id.name or line.forwarded_by == rec.employee_id.name or line.forwarded_to_user == rec.employee_id.name:
                                 if (rec.date_range.date_start <= line.create_date <= rec.date_range.date_end) or (
                                         rec.date_range.date_start <= line.assigned_date <= rec.date_range.date_end) or (
                                         rec.date_range.date_start <= line.close_date <= rec.date_range.date_end) or (
                                         rec.date_range.date_start <= line.repoen_date <= rec.date_range.date_end) or (
                                         rec.date_range.date_start <= line.forwarded_date <= rec.date_range.date_end):
-                                    views_domain.append(line)
+                                    views_domain.append(line.id)
                     return {
                         'name': 'File Tracking Report',
                         'view_type': 'form',
@@ -316,8 +316,8 @@ class WizardLateComing(models.TransientModel):
                              ('action_taken', '=', rec.action_taken),
                              ('create_date', '>=', rec.date_range.date_start),
                              ('create_date', '<=', rec.date_range.date_end)])
-                        for id in dmn.ids:
-                            views_domain.append(id)
+                        for id in dmn:
+                            views_domain.append(id.id)
                     elif rec.action_taken == 'file_created':
                         view_id = self.env.ref('smart_office.view_file_created_tree').id
                         dmn = self.env['file.tracker.report'].search(
@@ -325,24 +325,24 @@ class WizardLateComing(models.TransientModel):
                              ('action_taken', '=', rec.action_taken),
                              ('create_date', '>=', rec.date_range.date_start),
                              ('create_date', '<=', rec.date_range.date_end)])
-                        for id in dmn.ids:
-                            views_domain.append(id)
+                        for id in dmn:
+                            views_domain.append(id.id)
                     elif rec.action_taken == 'correspondence_forwarded':
                         view_id = self.env.ref('smart_office.view_correspondence_forwarded_tree').id
                         dmn = self.env['file.tracker.report'].search(
                             ['|', ('forwarded_by_dept', '=', rec.department_id.name), ('forwarded_to_dept', '=', rec.department_id.name), ('action_taken', '=', rec.action_taken),
                              ('forwarded_date', '>=', rec.date_range.date_start),
                              ('forwarded_date', '<=', rec.date_range.date_end)])
-                        for id in dmn.ids:
-                            views_domain.append(id)
+                        for id in dmn:
+                            views_domain.append(id.id)
                     elif rec.action_taken == 'file_forwarded':
                         view_id = self.env.ref('smart_office.view_file_forwarded_tree').id
                         dmn = self.env['file.tracker.report'].search(
                             ['|', ('forwarded_by_dept', '=', rec.department_id.name), ('forwarded_to_dept', '=', rec.department_id.name), ('action_taken', '=', rec.action_taken),
                              ('forwarded_date', '>=', rec.date_range.date_start),
                              ('forwarded_date', '<=', rec.date_range.date_end)])
-                        for id in dmn.ids:
-                            views_domain.append(id)
+                        for id in dmn:
+                            views_domain.append(id.id)
                     elif rec.action_taken == 'assigned_to_file':
                         view_id = self.env.ref('smart_office.view_assigned_to_file_tree').id
                         dmn = self.env['file.tracker.report'].search(
@@ -350,8 +350,8 @@ class WizardLateComing(models.TransientModel):
                              ('action_taken', '=', rec.action_taken),
                              ('assigned_date', '>=', rec.date_range.date_start),
                              ('assigned_date', '<=', rec.date_range.date_end)])
-                        for id in dmn.ids:
-                            views_domain.append(id)
+                        for id in dmn:
+                            views_domain.append(id.id)
                     elif rec.action_taken == 'file_closed':
                         view_id = self.env.ref('smart_office.view_file_closed_tree').id
                         dmn = self.env['file.tracker.report'].search(
@@ -359,8 +359,8 @@ class WizardLateComing(models.TransientModel):
                              ('action_taken', '=', rec.action_taken),
                              ('close_date', '>=', rec.date_range.date_start),
                              ('close_date', '<=', rec.date_range.date_end)])
-                        for id in dmn.ids:
-                            views_domain.append(id)
+                        for id in dmn:
+                            views_domain.append(id.id)
                     elif rec.action_taken == 'file_repoened':
                         view_id = self.env.ref('smart_office.view_file_repoened_tree').id
                         dmn = self.env['file.tracker.report'].search(
@@ -368,19 +368,19 @@ class WizardLateComing(models.TransientModel):
                              ('action_taken', '=', rec.action_taken),
                              ('repoen_date', '>=', rec.date_range.date_start),
                              ('repoen_date', '<=', rec.date_range.date_end)])
-                        for id in dmn.ids:
-                            views_domain.append(id)
+                        for id in dmn:
+                            views_domain.append(id.id)
                     else:
                         view_id = self.env.ref('smart_office.file_tracking_report_tree_view').id
                         dmn = self.env['file.tracker.report'].search([])
-                        for line in dmn.ids:
+                        for line in dmn:
                             if line.created_by == rec.employee_id.name or line.assigned_by == rec.employee_id.name or line.closed_by == rec.employee_id.name or line.repoen_by == rec.employee_id.name or line.forwarded_by == rec.employee_id.name or line.forwarded_to_user == rec.employee_id.name:
                                 if (rec.date_range.date_start <= line.create_date <= rec.date_range.date_end) or (
                                         rec.date_range.date_start <= line.assigned_date <= rec.date_range.date_end) or (
                                         rec.date_range.date_start <= line.close_date <= rec.date_range.date_end) or (
                                         rec.date_range.date_start <= line.repoen_date <= rec.date_range.date_end) or (
                                         rec.date_range.date_start <= line.forwarded_date <= rec.date_range.date_end):
-                                    views_domain.append(line)
+                                    views_domain.append(line.id)
                     return {
                         'name': 'File Tracking Report',
                         'view_type': 'form',
@@ -399,65 +399,65 @@ class WizardLateComing(models.TransientModel):
                             [('action_taken', '=', rec.action_taken),
                              ('create_date', '>=', rec.date_range.date_start),
                              ('create_date', '<=', rec.date_range.date_end)])
-                        for id in dmn.ids:
-                            views_domain.append(id)
+                        for id in dmn:
+                            views_domain.append(id.id)
                     elif rec.action_taken == 'file_created':
                         view_id = self.env.ref('smart_office.view_file_created_tree').id
                         dmn = self.env['file.tracker.report'].search(
                             [('action_taken', '=', rec.action_taken),
                              ('create_date', '>=', rec.date_range.date_start),
                              ('create_date', '<=', rec.date_range.date_end)])
-                        for id in dmn.ids:
-                            views_domain.append(id)
+                        for id in dmn:
+                            views_domain.append(id.id)
                     elif rec.action_taken == 'correspondence_forwarded':
                         view_id = self.env.ref('smart_office.view_correspondence_forwarded_tree').id
                         dmn = self.env['file.tracker.report'].search(
                             [('forwarded_date', '>=', rec.date_range.date_start),
                              ('forwarded_date', '<=', rec.date_range.date_end)])
-                        for id in dmn.ids:
-                            views_domain.append(id)
+                        for id in dmn:
+                            views_domain.append(id.id)
                     elif rec.action_taken == 'file_forwarded':
                         view_id = self.env.ref('smart_office.view_file_forwarded_tree').id
                         dmn = self.env['file.tracker.report'].search(
                             [('forwarded_date', '>=', rec.date_range.date_start),
                              ('forwarded_date', '<=', rec.date_range.date_end)])
-                        for id in dmn.ids:
-                            views_domain.append(id)
+                        for id in dmn:
+                            views_domain.append(id.id)
                     elif rec.action_taken == 'assigned_to_file':
                         view_id = self.env.ref('smart_office.view_assigned_to_file_tree').id
                         dmn = self.env['file.tracker.report'].search(
                             [('action_taken', '=', rec.action_taken),
                              ('assigned_date', '>=', rec.date_range.date_start),
                              ('assigned_date', '<=', rec.date_range.date_end)])
-                        for id in dmn.ids:
-                            views_domain.append(id)
+                        for id in dmn:
+                            views_domain.append(id.id)
                     elif rec.action_taken == 'file_closed':
                         view_id = self.env.ref('smart_office.view_file_closed_tree').id
                         dmn = self.env['file.tracker.report'].search(
                             [('action_taken', '=', rec.action_taken),
                              ('close_date', '>=', rec.date_range.date_start),
                              ('close_date', '<=', rec.date_range.date_end)])
-                        for id in dmn.ids:
-                            views_domain.append(id)
+                        for id in dmn:
+                            views_domain.append(id.id)
                     elif rec.action_taken == 'file_repoened':
                         view_id = self.env.ref('smart_office.view_file_repoened_tree').id
                         dmn = self.env['file.tracker.report'].search(
                             [('action_taken', '=', rec.action_taken),
                              ('repoen_date', '>=', rec.date_range.date_start),
                              ('repoen_date', '<=', rec.date_range.date_end)])
-                        for id in dmn.ids:
-                            views_domain.append(id)
+                        for id in dmn:
+                            views_domain.append(id.id)
                     else:
                         view_id = self.env.ref('smart_office.file_tracking_report_tree_view').id
                         dmn = self.env['file.tracker.report'].search([])
-                        for line in dmn.ids:
+                        for line in dmn:
                             if line.created_by == rec.employee_id.name or line.assigned_by == rec.employee_id.name or line.closed_by == rec.employee_id.name or line.repoen_by == rec.employee_id.name or line.forwarded_by == rec.employee_id.name or line.forwarded_to_user == rec.employee_id.name:
                                 if (rec.date_range.date_start <= line.create_date <= rec.date_range.date_end) or (
                                         rec.date_range.date_start <= line.assigned_date <= rec.date_range.date_end) or (
                                         rec.date_range.date_start <= line.close_date <= rec.date_range.date_end) or (
                                         rec.date_range.date_start <= line.repoen_date <= rec.date_range.date_end) or (
                                         rec.date_range.date_start <= line.forwarded_date <= rec.date_range.date_end):
-                                    views_domain.append(line)
+                                    views_domain.append(line.id)
                     return {
                         'name': 'File Tracking Report',
                         'view_type': 'form',
@@ -470,8 +470,8 @@ class WizardLateComing(models.TransientModel):
                     }
             else:
                 dmn = self.env['file.tracker.report'].search(['|', ('name', '=', rec.details), ('number', '<=', rec.details)])
-                for id in dmn.ids:
-                    views_domain.append(id)
+                for id in dmn:
+                    views_domain.append(id.id)
                 return {
                     'name': 'File Tracking Report',
                     'view_type': 'form',

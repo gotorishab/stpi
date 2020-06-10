@@ -41,7 +41,7 @@
                             <page name = "Letters" string = "Letters">
                                 <field name="file_ids" readonly="1"/>
                             </page>
-                            <page name="FileTrackingInformation" string="File Tracking Information">
+                            <page name="FileTrackingInformation" string="File Tracking Information" invisible="1">
                                 <field name="folder_track_ids" readonly="1">
                                     <tree editable="bottom">
                                         <field name="create_let_id" invisible="1"/>
@@ -58,8 +58,8 @@
                                     <group>
                                         <field name="current_owner_id"/>
                                         <field name="last_owner_id"/>
-                                        <field name="sec_owner"/>
-                                        <field name="previous_owner"/>
+                                        <field name="sec_owner" widget="many2many_tags"/>
+                                        <field name="previous_owner" widget="many2many_tags"/>
                                     </group>
                                 </group>
                             </page>
@@ -86,6 +86,7 @@
                     <field name="write_date"/>
                     <field name="state"/>
                     <button name="deal_with_file" string="Deal with File" type="object"/>
+                    <button name="%(folder_forward_button_wizard_action_view)d" string="Forward" type="object"/>
                     <button name="button_close" string="Close" type="object" states="in_progress"/>
                 </tree>
             </field>

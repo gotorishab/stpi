@@ -13,20 +13,6 @@ class FileWizard(models.Model):
     jobposition = fields.Many2one('hr.job', string = "Job position")
     employee = fields.Many2one('hr.employee', string='Employee')
     user = fields.Many2one('res.users', related = 'employee.user_id', string='User')
-
-    s1department = fields.Many2one('hr.department', string = "Department")
-    s1jobposition = fields.Many2one('hr.job', string = "Job position")
-    s1employee = fields.Many2one('hr.employee', string='Employee')
-    s1user = fields.Many2one('res.users', related = 's1employee.user_id', string='User')
-
-    s2department = fields.Many2one('hr.department', string = "Department")
-    s2jobposition = fields.Many2one('hr.job', string = "Job position")
-    s2employee = fields.Many2one('hr.employee', string='Employee')
-    s2user = fields.Many2one('res.users', related = 's2employee.user_id', string='User')
-
-    s3department = fields.Many2one('hr.department', string = "Department")
-    s3jobposition = fields.Many2one('hr.job', string = "Job position")
-    s3employee = fields.Many2one('hr.employee', string='Employee')
     s3user = fields.Many2one('res.users', related = 's3employee.user_id', string='User')
     remarks = fields.Text('Remarks')
 
@@ -48,45 +34,6 @@ class FileWizard(models.Model):
                 return {'domain': {'employee': ['|', ('job_id', '=', rec.jobposition.id),('department_id', '=', rec.department.id)]}}
 
 
-    @api.onchange('s1department','s1jobposition')
-    def _onchange_user_one(self):
-        for rec in self:
-            if rec.s1department.id and not rec.s1jobposition.id:
-                return {'domain': {'s1employee': [('department_id', '=', rec.s1department.id)]}}
-            elif rec.s1jobposition.id and not rec.s1department.id:
-                return {'domain': {'s1employee': [('job_id', '=', rec.s1jobposition.id)]}}
-            elif rec.s1jobposition.id and rec.s1department.id:
-                return {'domain': {'s1employee': [('job_id', '=', rec.s1jobposition.id),('department_id', '=', rec.s1department.id)]}}
-            else:
-                return {'domain': {'s1employee': ['|', ('job_id', '=', rec.s1jobposition.id),('department_id', '=', rec.s1department.id)]}}
-
-
-    @api.onchange('s2department','s2jobposition')
-    def _onchange_user_two(self):
-        for rec in self:
-            if rec.s2department.id and not rec.s2jobposition.id:
-                return {'domain': {'s2employee': [('department_id', '=', rec.s2department.id)]}}
-            elif rec.s2jobposition.id and not rec.s2department.id:
-                return {'domain': {'s2employee': [('job_id', '=', rec.s2jobposition.id)]}}
-            elif rec.s2jobposition.id and rec.s2department.id:
-                return {'domain': {'s2employee': [('job_id', '=', rec.s2jobposition.id),('department_id', '=', rec.s2department.id)]}}
-            else:
-                return {'domain': {'s2employee': ['|', ('job_id', '=', rec.s2jobposition.id),('department_id', '=', rec.s2department.id)]}}
-
-
-    @api.onchange('s3department','s3jobposition')
-    def _onchange_user_three(self):
-        for rec in self:
-            if rec.s3department.id and not rec.s3jobposition.id:
-                return {'domain': {'s3employee': [('department_id', '=', rec.s3department.id)]}}
-            elif rec.s3jobposition.id and not rec.s3department.id:
-                return {'domain': {'s3employee': [('job_id', '=', rec.s3jobposition.id)]}}
-            elif rec.s3jobposition.id and rec.s3department.id:
-                return {'domain': {'s3employee': [('job_id', '=', rec.s3jobposition.id),('department_id', '=', rec.s3department.id)]}}
-            else:
-                return {'domain': {'s3employee': ['|', ('job_id', '=', rec.s3jobposition.id),('department_id', '=', rec.s3department.id)]}}
-
-
     def confirm_button(self):
         for rec in self:
             if rec.user.id == False:
@@ -98,11 +45,17 @@ class FileWizard(models.Model):
                     previous_owner = []
                     rec.defid.last_owner_id = rec.env.user.id
                     rec.defid.current_owner_id = rec.user.id
+
                     for line in rec.sec_own_ids:
                         sec_own.append(line.employee.user_id.id)
+
+
                     rec.defid.sec_owner = [(6,0,sec_own)]
+
                     previous_owner.append(rec.env.user.id)
+
                     rec.defid.previous_owner = [(6,0,previous_owner)]
+
                     current_employee  = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
                     self.env['folder.tracking.information'].create({
                         'create_let_id': rec.defid.id,
@@ -138,14 +91,21 @@ class FileWizard(models.Model):
                         'remarks': rec.remarks,
                         'details': f_details
                     })
+                    sec_own = []
+                    previous_owner = []
                     for file in rec.defid.file_ids:
                         file_count+=1
                         file.last_owner_id = rec.env.user.id
                         file.responsible_user_id = rec.env.user.id
                         file.current_owner_id = rec.user.id
                         for line in rec.sec_own_ids:
-                            file.sec_owner += line.employee.user_id.id
-                        file.previous_owner += rec.env.user.id
+                            sec_own.append(line.employee.user_id.id)
+                        file.sec_owner = [(6, 0, sec_own)]
+
+                        previous_owner.append(rec.env.user.id)
+
+                        file.previous_owner = [(6, 0, previous_owner)]
+
                         self.env['file.tracking.information'].create({
                             'create_let_id': file.id,
                             'forwarded_date': datetime.now().date(),
