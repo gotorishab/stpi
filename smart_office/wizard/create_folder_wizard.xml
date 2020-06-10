@@ -16,6 +16,7 @@
                             <group>
                                 <field name="type" widget="many2many_tags" placeholder="Type..." options="{'color_field': 'color'}"/>
                                 <field name="status"/>
+                                <field name="old_file_number"/>
                             </group>
                             <field name="description" placeholder="Description"/>
                         </group>

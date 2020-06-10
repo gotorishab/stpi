@@ -11,6 +11,8 @@ class CreateFolder(models.TransientModel):
     deffolderid = fields.Many2one('muk_dms.file')
     datas = fields.Binary(related='deffolderid.pdf_file')
 
+    old_file_number = fields.Char(string='Old File Number')
+
     folder_name = fields.Char(string = 'File Name')
     subject = fields.Many2one('code.subject', string='Subject')
     date = fields.Date(string='Date', default = fields.Date.today())
@@ -34,6 +36,7 @@ class CreateFolder(models.TransientModel):
                 'subject': self.subject.id,
                 'date': self.date,
                 'tags': self.tags,
+                'old_file_number': self.old_file_number,
                 'status': self.status,
                 'type': self.type,
                 'description': self.description,
