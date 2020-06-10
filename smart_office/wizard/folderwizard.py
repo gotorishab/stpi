@@ -13,7 +13,6 @@ class FileWizard(models.Model):
     jobposition = fields.Many2one('hr.job', string = "Job position")
     employee = fields.Many2one('hr.employee', string='Employee')
     user = fields.Many2one('res.users', related = 'employee.user_id', string='User')
-    s3user = fields.Many2one('res.users', related = 's3employee.user_id', string='User')
     remarks = fields.Text('Remarks')
 
     defid = fields.Many2one('folder.master', invisible=1)
