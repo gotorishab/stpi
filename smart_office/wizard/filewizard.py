@@ -73,6 +73,7 @@ class FileWizard(models.Model):
                         'forwarded_to_dept': str(rec.department.name),
                         'job_pos': str(rec.jobposition.name),
                         'forwarded_to_branch': str(rec.user.branch_id.name),
+                        'action_taken': 'correspondence_forwarded',
                         'remarks': rec.remarks,
                         'details': 'Correspondence Forwarded'
                     })

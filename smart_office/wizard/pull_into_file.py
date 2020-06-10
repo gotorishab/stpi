@@ -5,7 +5,7 @@ from datetime import datetime, date, timedelta
 
 
 class PullInto(models.TransientModel):
-    _name = "pull.into.custom"
+    _name = "pull.into.file.custom"
     _description = "HR Employee Cheque Action"
 
 
@@ -33,16 +33,16 @@ class PullInto(models.TransientModel):
 
 
     @api.multi
-    def pull_intos_action_button(self):
+    def pull_into_files_action_button(self):
         context = dict(self._context or {})
         active_ids = context.get('active_ids', []) or []
         previous_owner = []
         current_employee = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
-        for file in self.env['muk_dms.file'].browse(active_ids):
+        for file in self.env['folder.master'].browse(active_ids):
             self.env['file.tracker.report'].create({
-                'name': str(file.name),
-                'number': str(file.letter_number),
-                'type': 'Correspondence',
+                'name': str(file.folder_name),
+                'number': str(file.number),
+                'type': 'File',
                 'forwarded_by': str(current_employee.user_id.name),
                 'forwarded_by_dept': str(current_employee.department_id.name),
                 'forwarded_by_jobpos': str(current_employee.job_id.name),
@@ -52,9 +52,9 @@ class PullInto(models.TransientModel):
                 'forwarded_to_dept': str(self.department.name),
                 'job_pos': str(self.jobposition.name),
                 'forwarded_to_branch': str(self.user.branch_id.name),
-                'action_taken': 'correspondence_forwarded',
+                'action_taken': 'file_forwarded',
                 'remarks': self.remarks,
-                'details': 'Correspondence Forwarded'
+                'details': 'File Forwarded'
             })
             file.last_owner_id = file.current_owner_id.id
             file.current_owner_id = self.env.user.id

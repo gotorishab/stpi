@@ -128,7 +128,7 @@ class WizardLateComing(models.TransientModel):
                         dmn = self.env['file.tracker.report'].search([])
                         for line in dmn:
                             if line.created_by == rec.employee_id.name or line.assigned_by == rec.employee_id.name or line.closed_by == rec.employee_id.name or line.repoen_by == rec.employee_id.name or line.forwarded_by == rec.employee_id.name or line.forwarded_to_user == rec.employee_id.name:
-                                if (rec.date_range.date_start <= line.create_date <= rec.date_range.date_end) or (rec.date_range.date_start <= line.assigned_date <= rec.date_range.date_end) or (rec.date_range.date_start <= line.close_date <= rec.date_range.date_end) or (rec.date_range.date_start <= line.repoen_date <= rec.date_range.date_end) or (rec.date_range.date_start <= line.forwarded_date <= rec.date_range.date_end):
+                                if (line.create_date and rec.date_range.date_start <= line.create_date <= rec.date_range.date_end) or (line.assigned_date and rec.date_range.date_start <= line.assigned_date <= rec.date_range.date_end) or (line.close_date and rec.date_range.date_start <= line.close_date <= rec.date_range.date_end) or (line.repoen_date and rec.date_range.date_start <= line.repoen_date <= rec.date_range.date_end) or (line.forwarded_date and rec.date_range.date_start <= line.forwarded_date <= rec.date_range.date_end):
                                     views_domain.append(line.id)
                     return {
                         'name': 'File Tracking Report',
@@ -207,11 +207,12 @@ class WizardLateComing(models.TransientModel):
                         dmn = self.env['file.tracker.report'].search([])
                         for line in dmn:
                             if line.created_by == rec.employee_id.name or line.assigned_by == rec.employee_id.name or line.closed_by == rec.employee_id.name or line.repoen_by == rec.employee_id.name or line.forwarded_by == rec.employee_id.name or line.forwarded_to_user == rec.employee_id.name:
-                                if (rec.date_range.date_start <= line.create_date <= rec.date_range.date_end) or (
-                                        rec.date_range.date_start <= line.assigned_date <= rec.date_range.date_end) or (
-                                        rec.date_range.date_start <= line.close_date <= rec.date_range.date_end) or (
-                                        rec.date_range.date_start <= line.repoen_date <= rec.date_range.date_end) or (
-                                        rec.date_range.date_start <= line.forwarded_date <= rec.date_range.date_end):
+                                if (
+                                        line.create_date and rec.date_range.date_start <= line.create_date <= rec.date_range.date_end) or (
+                                        line.assigned_date and rec.date_range.date_start <= line.assigned_date <= rec.date_range.date_end) or (
+                                        line.close_date and rec.date_range.date_start <= line.close_date <= rec.date_range.date_end) or (
+                                        line.repoen_date and rec.date_range.date_start <= line.repoen_date <= rec.date_range.date_end) or (
+                                        line.forwarded_date and rec.date_range.date_start <= line.forwarded_date <= rec.date_range.date_end):
                                     views_domain.append(line.id)
                     return {
                         'name': 'File Tracking Report',
@@ -291,11 +292,12 @@ class WizardLateComing(models.TransientModel):
                         dmn = self.env['file.tracker.report'].search([])
                         for line in dmn:
                             if line.created_by == rec.employee_id.name or line.assigned_by == rec.employee_id.name or line.closed_by == rec.employee_id.name or line.repoen_by == rec.employee_id.name or line.forwarded_by == rec.employee_id.name or line.forwarded_to_user == rec.employee_id.name:
-                                if (rec.date_range.date_start <= line.create_date <= rec.date_range.date_end) or (
-                                        rec.date_range.date_start <= line.assigned_date <= rec.date_range.date_end) or (
-                                        rec.date_range.date_start <= line.close_date <= rec.date_range.date_end) or (
-                                        rec.date_range.date_start <= line.repoen_date <= rec.date_range.date_end) or (
-                                        rec.date_range.date_start <= line.forwarded_date <= rec.date_range.date_end):
+                                if (
+                                        line.create_date and rec.date_range.date_start <= line.create_date <= rec.date_range.date_end) or (
+                                        line.assigned_date and rec.date_range.date_start <= line.assigned_date <= rec.date_range.date_end) or (
+                                        line.close_date and rec.date_range.date_start <= line.close_date <= rec.date_range.date_end) or (
+                                        line.repoen_date and rec.date_range.date_start <= line.repoen_date <= rec.date_range.date_end) or (
+                                        line.forwarded_date and rec.date_range.date_start <= line.forwarded_date <= rec.date_range.date_end):
                                     views_domain.append(line.id)
                     return {
                         'name': 'File Tracking Report',
@@ -375,11 +377,12 @@ class WizardLateComing(models.TransientModel):
                         dmn = self.env['file.tracker.report'].search([])
                         for line in dmn:
                             if line.created_by == rec.employee_id.name or line.assigned_by == rec.employee_id.name or line.closed_by == rec.employee_id.name or line.repoen_by == rec.employee_id.name or line.forwarded_by == rec.employee_id.name or line.forwarded_to_user == rec.employee_id.name:
-                                if (rec.date_range.date_start <= line.create_date <= rec.date_range.date_end) or (
-                                        rec.date_range.date_start <= line.assigned_date <= rec.date_range.date_end) or (
-                                        rec.date_range.date_start <= line.close_date <= rec.date_range.date_end) or (
-                                        rec.date_range.date_start <= line.repoen_date <= rec.date_range.date_end) or (
-                                        rec.date_range.date_start <= line.forwarded_date <= rec.date_range.date_end):
+                                if (
+                                        line.create_date and rec.date_range.date_start <= line.create_date <= rec.date_range.date_end) or (
+                                        line.assigned_date and rec.date_range.date_start <= line.assigned_date <= rec.date_range.date_end) or (
+                                        line.close_date and rec.date_range.date_start <= line.close_date <= rec.date_range.date_end) or (
+                                        line.repoen_date and rec.date_range.date_start <= line.repoen_date <= rec.date_range.date_end) or (
+                                        line.forwarded_date and rec.date_range.date_start <= line.forwarded_date <= rec.date_range.date_end):
                                     views_domain.append(line.id)
                     return {
                         'name': 'File Tracking Report',
@@ -452,11 +455,12 @@ class WizardLateComing(models.TransientModel):
                         dmn = self.env['file.tracker.report'].search([])
                         for line in dmn:
                             if line.created_by == rec.employee_id.name or line.assigned_by == rec.employee_id.name or line.closed_by == rec.employee_id.name or line.repoen_by == rec.employee_id.name or line.forwarded_by == rec.employee_id.name or line.forwarded_to_user == rec.employee_id.name:
-                                if (rec.date_range.date_start <= line.create_date <= rec.date_range.date_end) or (
-                                        rec.date_range.date_start <= line.assigned_date <= rec.date_range.date_end) or (
-                                        rec.date_range.date_start <= line.close_date <= rec.date_range.date_end) or (
-                                        rec.date_range.date_start <= line.repoen_date <= rec.date_range.date_end) or (
-                                        rec.date_range.date_start <= line.forwarded_date <= rec.date_range.date_end):
+                                if (
+                                        line.create_date and rec.date_range.date_start <= line.create_date <= rec.date_range.date_end) or (
+                                        line.assigned_date and rec.date_range.date_start <= line.assigned_date <= rec.date_range.date_end) or (
+                                        line.close_date and rec.date_range.date_start <= line.close_date <= rec.date_range.date_end) or (
+                                        line.repoen_date and rec.date_range.date_start <= line.repoen_date <= rec.date_range.date_end) or (
+                                        line.forwarded_date and rec.date_range.date_start <= line.forwarded_date <= rec.date_range.date_end):
                                     views_domain.append(line.id)
                     return {
                         'name': 'File Tracking Report',

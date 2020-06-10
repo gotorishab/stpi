@@ -122,6 +122,7 @@ class FolderMaster(models.Model):
     @api.multi
     def deal_with_file(self):
         if self.iframe_dashboard:
+            self.write({'state': 'in_progress'})
             total_iframe = self.iframe_dashboard.replace('800', '100%').replace('"600"', '"100%"').replace(
                 'allowtransparency', '')
             file_ids = self.env['see.file'].sudo().search([])

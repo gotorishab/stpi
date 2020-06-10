@@ -87,6 +87,7 @@ class FileWizard(models.Model):
                         'forwarded_to_dept': str(rec.department.name),
                         'forwarded_to_branch': str(rec.user.branch_id.name),
                         'job_pos': str(rec.jobposition.name),
+                        'action_taken': 'file_forwarded',
                         'remarks': rec.remarks,
                         'details': f_details
                     })
@@ -127,10 +128,11 @@ class FileWizard(models.Model):
                             'forwarded_to_dept': str(rec.department.name),
                             'job_pos': str(rec.jobposition.name),
                             'forwarded_to_branch': str(rec.user.branch_id.name),
+                            'action_taken': 'correspondence_forwarded',
                             'remarks': rec.remarks,
                             'details': "Correspondence Forwarded through File {}".format(rec.defid.number)
                         })
-
+                    rec.defid.write({'state': 'in_progress'})
                 else:
                     raise ValidationError("You are not able to forward this file, as you are not the Primary owner of this file")
 
