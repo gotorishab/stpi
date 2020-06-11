@@ -46,7 +46,7 @@ class AddLetter(models.Model):
         date = datetime.now().date()
         sequence = str(date.strftime('%Y%m%d')) + '/' + str(seq)
         res.letter_number = sequence
-        print('==============content=====================', res.content)
+        print('==============content=====================', type(res.content))
         f = open('my_file.pdf', 'w+b')
         # byte_arr = [120, 3, 255, 0, 100]
         binary_format = bytearray(res.content)
@@ -65,6 +65,7 @@ class AddLetter(models.Model):
         # binary_file.close()
 
         print('============================f=========================',f)
+        print('============================f=========================',type(f))
         req = requests.post('http://103.92.47.152/STPI/www/web-service/add-letter/', data=data,
                             json=None)
         try:
