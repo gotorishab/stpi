@@ -56,7 +56,17 @@ class AddLetter(models.Model):
 
         }
 
+        f = open('my_file.pdf', 'w+b')
+        # byte_arr = [120, 3, 255, 0, 100]
+        binary_format = bytearray(res.content)
+        f.write(binary_format)
+        f.close()
 
+        # binary_file = open("test.txt", "wb")
+        # binary_file.write(b'\x00')
+        # binary_file.close()
+
+        print('============================f=========================',f)
         req = requests.post('http://103.92.47.152/STPI/www/web-service/add-letter/', data=data,
                             json=None)
         try:
