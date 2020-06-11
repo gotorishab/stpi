@@ -53,17 +53,17 @@ class AddLetter(models.Model):
             'user_id': 1,
 
         }
-
-        merger = PdfFileMerger()
-        merger.append(PdfFileReader(res.content('pdf.pdf', 'rb')))
-
-        merger.write("document-output.pdf")
-
-        pdf = open(res.content, 'rb')
-
-        files = {
-            'attachement': merger
-        }
+        files = {'filedata': (res.content, open(res.content, 'rb'), 'image/png/pdf')}
+        # merger = PdfFileMerger()
+        # merger.append(PdfFileReader(res.content('pdf.pdf', 'rb')))
+        #
+        # merger.write("document-output.pdf")
+        #
+        # pdf = open(res.content, 'rb')
+        #
+        # files = {
+        #     'attachement': merger
+        # }
         req = requests.post('http://103.92.47.152/STPI/www/web-service/add-letter/', data=data, files=files,
                             json=None)
         try:
