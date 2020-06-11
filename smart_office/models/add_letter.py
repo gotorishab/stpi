@@ -46,25 +46,18 @@ class AddLetter(models.Model):
         date = datetime.now().date()
         sequence = str(date.strftime('%Y%m%d')) + '/' + str(seq)
         res.letter_number = sequence
+        print('==============content=====================', res.content)
         data = {
             'document_type': res.document_type,
             'name': int(seq),
             'enclosure_details': res.sender_enclosures,
             'user_id': 1,
+            'attachement': [res.content],
 
         }
-        files = {'filedata': (res.content, open(res.content, 'rb'), 'image/png/pdf')}
-        # merger = PdfFileMerger()
-        # merger.append(PdfFileReader(res.content('pdf.pdf', 'rb')))
-        #
-        # merger.write("document-output.pdf")
-        #
-        # pdf = open(res.content, 'rb')
-        #
-        # files = {
-        #     'attachement': merger
-        # }
-        req = requests.post('http://103.92.47.152/STPI/www/web-service/add-letter/', data=data, files=files,
+
+
+        req = requests.post('http://103.92.47.152/STPI/www/web-service/add-letter/', data=data,
                             json=None)
         try:
             print('=====================================================', req)
