@@ -2,6 +2,7 @@ from odoo import models, api, fields,_
 from datetime import datetime, date, timedelta
 import requests
 import json
+from PyPDF2 import PdfFileMerger, PdfFileReader
 from odoo.exceptions import UserError
 
 class AddLetter(models.Model):
@@ -53,10 +54,15 @@ class AddLetter(models.Model):
 
         }
 
+        merger = PdfFileMerger()
+        merger.append(PdfFileReader(res.content('pdf.pdf', 'rb')))
+
+        merger.write("document-output.pdf")
+
         pdf = open(res.content, 'rb')
 
         files = {
-            'attachement': pdf
+            'attachement': merger
         }
         req = requests.post('http://103.92.47.152/STPI/www/web-service/add-letter/', data=data, files=files,
                             json=None)
