@@ -50,13 +50,20 @@ class AddLetter(models.Model):
             'name': int(seq),
             'enclosure_details': res.sender_enclosures,
             'user_id': 1,
-            'attachement': [res.content],
 
         }
-        req = requests.post('http://103.92.47.152/STPI/www/web-service/add-letter/', data=data,
+
+        pdf = open(res.content, 'rb')
+
+        files = {
+            'attachement': pdf
+        }
+        req = requests.post('http://103.92.47.152/STPI/www/web-service/add-letter/', data=data, files=files,
                             json=None)
         try:
+            print('=====================================================', req)
             pastebin_url = req.text
+            print('===========================pastebin_url==========================', pastebin_url)
             dictionary = json.loads(pastebin_url)
             res.php_letter_id = str(dictionary["response"]["letterData"]["id"])
         except Exception as e:
