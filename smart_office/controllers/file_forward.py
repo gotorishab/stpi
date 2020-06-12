@@ -19,15 +19,20 @@ class FileForwardData(http.Controller):
             foward_det.append(vals)
         data = {'status': 200, 'response': foward_det, 'message': 'Success'}
         return data
-# class FileForwardData(http.Controller):
-#     @http.route(['/filesforward'], type='json', auth='public', csrf=False, methods=['POST'])
-#     def get_forward_details(self, **kw):
-#         new_file_detail = request.env['folder.master'].sudo().create(kw)
-#         if new_file_detail:
-#             return "The File has been created"
-#         else:
-#             return "No Folder request"
 
+class LetterList(http.Controller):
+    @http.route(['/letterlist'], type='json', auth='public', csrf=False, methods=['POST'])
+    def get_letter_list_details(self, **kwargs):
+        letter_details_data = request.env['muk_dms.file'].sudo().search([])
+        letter_det = []
+        for rec in letter_details_data:
+            vals={
+                'id': rec.id,
+                'attachment': rec.content,
+            }
+            letter_det.append(vals)
+        data = {'status': 200, 'response': letter_det, 'message': 'Success'}
+        return data
 
 class ClosedFile(http.Controller):
     @http.route(['/closedfile'], type='json', auth='public', csrf=False, methods=['POST'])
