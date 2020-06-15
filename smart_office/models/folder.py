@@ -124,6 +124,7 @@ class FolderMaster(models.Model):
         req = requests.post('http://35.244.32.228:8369/letterlist?jsonrpc=2.0&params={}',
                             json=None)
         print('===================================================',req)
+        print('===================================================',req.text)
         if self.iframe_dashboard:
             self.write({'state': 'in_progress'})
             total_iframe = self.iframe_dashboard.replace('800', '100%').replace('"600"', '"100%"').replace(
