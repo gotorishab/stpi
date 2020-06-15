@@ -32,9 +32,10 @@ class FileForwardData(http.Controller):
             }
             letter_det.append(vals)
         data = {"response": letter_det}
+        loaded_r = json.dumps(dict(letter_det=letter_det))
         print('=========================data r===========================',data)
-        data = json.dumps(data)
-        loaded_r = json.loads(data)
+        # data = json.dumps(data)
+        # loaded_r = json.loads(data)
         print('=========================loaded r===========================',loaded_r)
         return loaded_r
 
