@@ -28,11 +28,11 @@ class FileForwardData(http.Controller):
         for rec in letter_details_data:
             vals={
                 'id': rec.id,
-                # 'attachment': rec.content,
+                'attachment': rec.content,
             }
             letter_det.append(vals)
         data = {"response": letter_det}
-        loaded_r = json.dumps(dict(letter_det=letter_det))
+        loaded_r = json.dumps(dict(response=letter_det))
         print('=========================data r===========================',data)
         # data = json.dumps(data)
         # loaded_r = json.loads(data)
