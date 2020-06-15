@@ -23,11 +23,12 @@ class FileForwardData(http.Controller):
     @http.route(['/letterlist'], type='http', auth='public', csrf=False, methods=['POST'])
     def get_letter_list_details(self, **kwargs):
         print('=========================True r===========================')
-        letter_details_data = request.env['muk_dms.file'].sudo().search([])
+        letter_details_data = request.env['muk_dms.file'].sudo().search([], limit=1)
         letter_det = []
         for rec in letter_details_data:
             vals={
                 'id': rec.id,
+                'file_name': rec.name,
                 'attachment': rec.content,
             }
             letter_det.append(vals)
