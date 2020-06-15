@@ -4,9 +4,9 @@ import json
 
 
 class LetterList(http.HttpRequest):
-   @http.route(['/letterlist'], type='json', auth='public', methods=['POST'])
-   def get_letter_list_details(self, **kwargs):
-       if len(kwargs) == 0:
+    @http.route(['/letterlist'], type='json', auth='public', methods=['POST'])
+    def get_letter_list_details(self, **kwargs):
+        if len(kwargs) == 0:
            cr = self.env.cr
            query = """
            SELECT id, attachment FROM muk_dms_file
@@ -16,16 +16,16 @@ class LetterList(http.HttpRequest):
            return {
                'partners': partners,
            }
-       elif len(kwargs) == 1:
-           cr = self.env.cr
-           query = """
+        elif len(kwargs) == 1:
+            cr = self.env.cr
+            query = """
                        SELECT id, attachment FROM muk_dms_file AND id = %s
                        """ %kwargs['id'] # Assuming that the data from the client contains the id of the partner
-           cr.execute(query)
-           partner = cr.dictfetchall()
-           return {
+            cr.execute(query)
+            partner = cr.dictfetchall()
+            return {
                'partners': partner,
-           }
+            }
 
 
 class FileForwardData(http.Controller):
