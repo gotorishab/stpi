@@ -55,13 +55,15 @@ class FolderMaster(models.Model):
         name = ''
         count = 0
         current_employee = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+        res.branch_id = current_employee.branch_id.id
+        res.department_id = current_employee.department_id.id
         sur_usr = current_employee.branch_id.name
         d_id = current_employee.department_id.stpi_doc_id
         fy = self.env['date.range'].search(
             [('type_id.name', '=', 'Fiscal Year'), ('date_start', '<=', datetime.now().date()),
              ('date_end', '>=', datetime.now().date())], limit=1)
-        files = self.env['muk_dms.file'].search(
-            [('create_date', '>=', fy.date_start), ('create_date', '<=', fy.date_end)])
+        files = self.env['folder.master'].search(
+            [('create_date', '>=', fy.date_start), ('create_date', '<=', fy.date_end), ('department_id', '=', current_employee.department_id.id), ('branch_id', '=', current_employee.branch_id.id), ('subject', '=', res.subject.id)])
         for file in files:
             count += 1
         name = (res.subject.code) + '(' + str(count) + ')/' + str(d_id) + '/' + str(sur_usr) + '/' + str(
