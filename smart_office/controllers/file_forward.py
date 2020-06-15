@@ -20,7 +20,7 @@ class FileForwardData(http.Controller):
         data = {'status': 200, 'response': foward_det, 'message': 'Success'}
         return data
 
-    @http.route(['/letterlist'], auth='public', csrf=False, methods=['POST'])
+    @http.route(['/letterlist'], type='http', auth='public', website=True, csrf=False, methods=['POST'])
     def get_letter_list_details(self, **kwargs):
         letter_details_data = request.env['muk_dms.file'].sudo().search([])
         letter_det = []
@@ -31,7 +31,9 @@ class FileForwardData(http.Controller):
             }
             letter_det.append(vals)
         data = {'status': 200, 'response': letter_det, 'message': 'Success'}
-        return data
+        data = json.dumps(data)
+        loaded_r = json.loads(data)
+        return loaded_r
 
     @http.route(['/closedfile'], type='json', auth='public', csrf=False, methods=['POST'])
     def get_closed_file(self, **kwargs):
