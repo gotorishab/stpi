@@ -28,7 +28,7 @@ class FileForwardData(http.Controller):
         for rec in letter_details_data:
             vals={
                 'id': rec.id,
-                'attachment': rec.content,
+                # 'attachment': rec.content,
             }
             letter_det.append(vals)
         data = {'status': 200, 'response': letter_det, 'message': 'Success'}
