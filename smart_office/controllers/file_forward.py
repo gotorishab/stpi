@@ -23,6 +23,23 @@ class FileForwardData(http.Controller):
     @http.route(['/letterlist'], type='http', auth='public', csrf=False, methods=['POST'])
     def get_letter_list_details(self, **kwargs):
         print('=========================True r===========================')
+        letter_details_data = request.env['muk_dms.file'].sudo().search([])
+        letter_det = []
+        for rec in letter_details_data:
+            vals={
+                'id': rec.id,
+                'file_name': rec.name,
+                'attachment': rec.content,
+            }
+            letter_det.append(vals)
+        data = {"response": letter_det}
+        print('=========================letter==========================',letter_det)
+        loaded_r = json.dumps(dict(response=str(letter_det)))
+        return loaded_r
+
+    @http.route(['/lettercall'], type='http', auth='public', csrf=False, methods=['POST'])
+    def get_letter_call_details(self, **kwargs):
+        print('=========================True r===========================')
         letter_details_data = request.env['muk_dms.file'].sudo().search([], limit=1)
         letter_det = []
         for rec in letter_details_data:
@@ -35,10 +52,6 @@ class FileForwardData(http.Controller):
         data = {"response": letter_det}
         print('=========================letter==========================',letter_det)
         loaded_r = json.dumps(dict(response=str(letter_det)))
-        # print('=========================data r===========================',data)
-        # data = json.dumps(data)
-        # loaded_r = json.loads(data)
-        print('=========================loaded r===========================',loaded_r)
         return loaded_r
 
     @http.route(['/closedfile'], type='json', auth='public', csrf=False, methods=['POST'])
