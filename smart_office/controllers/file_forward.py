@@ -2,6 +2,32 @@ from odoo import http
 from odoo.http import request
 import json
 
+
+class LetterList(http.HttpRequest):
+   @http.route(['/letterlist'], type='json', auth='public', methods=['POST'])
+   def get_letter_list_details(self, **kwargs):
+       if len(kwargs) == 0:
+           cr = self.env.cr
+           query = """
+           SELECT id, attachment FROM muk_dms_file
+           """
+           cr.execute(query)
+           partners = cr.dictfetchall()
+           return {
+               'partners': partners,
+           }
+       elif len(kwargs) == 1:
+           cr = self.env.cr
+           query = """
+                       SELECT id, attachment FROM muk_dms_file AND id = %s
+                       """ %kwargs['id'] # Assuming that the data from the client contains the id of the partner
+           cr.execute(query)
+           partner = cr.dictfetchall()
+           return {
+               'partners': partner,
+           }
+
+
 class FileForwardData(http.Controller):
     @http.route(['/filesforward'], type='json', auth='public', csrf=False, methods=['POST'])
     def get_forward_details(self, **kwargs):
@@ -20,18 +46,18 @@ class FileForwardData(http.Controller):
         data = {'status': 200, 'response': foward_det, 'message': 'Success'}
         return data
 
-    @http.route(['/letterlist'], type='json', auth='public', csrf=False, methods=['POST'])
-    def get_letter_list_details(self, **kwargs):
-        letter_details_data = request.env['muk_dms.file'].sudo().search([])
-        letter_det = []
-        for rec in letter_details_data:
-            vals={
-                'id': rec.id,
-                'attachment': rec.content,
-            }
-            letter_det.append(vals)
-        data = {'status': 200, 'response': letter_det, 'message': 'Success'}
-        return data
+    # @http.route(['/letterlist'], type='json', auth='public', csrf=False, methods=['POST'])
+    # def get_letter_list_details(self, **kwargs):
+    #     letter_details_data = request.env['muk_dms.file'].sudo().search([])
+    #     letter_det = []
+    #     for rec in letter_details_data:
+    #         vals={
+    #             'id': rec.id,
+    #             'attachment': rec.content,
+    #         }
+    #         letter_det.append(vals)
+    #     data = {'status': 200, 'response': letter_det, 'message': 'Success'}
+    #     return data
 
     @http.route(['/closedfile'], type='json', auth='public', csrf=False, methods=['POST'])
     def get_closed_file(self, **kwargs):
