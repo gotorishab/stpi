@@ -31,7 +31,7 @@ class FileForwardData(http.Controller):
                 # 'attachment': rec.content,
             }
             letter_det.append(vals)
-        data = {'status': 200, 'response': letter_det, 'message': 'Success'}
+        data = {"response": letter_det}
         print('=========================data r===========================',data)
         data = json.dumps(data)
         loaded_r = json.loads(data)
