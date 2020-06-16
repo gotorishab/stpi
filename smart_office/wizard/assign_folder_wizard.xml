@@ -12,7 +12,7 @@
                             </group>
                             <group>
                                 </group>
-                                <field name="cooespondence_ids" required ="1" domain="[('current_owner_id','=',uid)]"/>
+                                <field name="cooespondence_ids" required ="1" domain="[('current_owner_id', '=', uid),('folder_id', '=', False)]"/>
                         </group>
                     <footer>
                         <button name = "confirm_button" string = "Confirm" type = "object" class="oe_highlight"/>

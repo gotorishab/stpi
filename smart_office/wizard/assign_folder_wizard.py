@@ -15,6 +15,8 @@ class CreateFolder(models.TransientModel):
         if self:
             letter_id = []
             letter_id.append(self.deffolderid.id)
+            for line in self.cooespondence_ids:
+                letter_id.append(line.id)
             self.folder_id.folder_ids = [(6, 0, letter_id)]
             current_employee = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
             self.env['file.tracker.report'].create({
