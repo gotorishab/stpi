@@ -13,6 +13,9 @@ class CreateFolder(models.TransientModel):
 
     old_file_number = fields.Char(string='Old File Number')
 
+    previous_reference = fields.Text('Previous Reference')
+    later_reference = fields.Text('Later Reference')
+
     folder_name = fields.Char(string = 'File Name')
     subject = fields.Many2one('code.subject', string='Subject')
     date = fields.Date(string='Date', default = fields.Date.today())

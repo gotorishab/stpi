@@ -216,6 +216,25 @@ class AddLetter(models.Model):
 
 
 
+    @api.multi
+    def tracker_view_letter(self):
+        for rec in self:
+            views_domain = []
+            dmn = self.env['file.tracker.report'].search(['|', ('name', '=', rec.name), ('number', '=', rec.letter_number)])
+            for id in dmn:
+                views_domain.append(id.id)
+            return {
+                'name': 'File Tracking Report',
+                'view_type': 'form',
+                'view_mode': 'tree',
+                'res_model': 'file.tracker.report',
+                'type': 'ir.actions.act_window',
+                'target': 'current',
+                'domain': [('id', 'in', views_domain)]
+            }
+
+
+
     @api.onchange('sender_ministry')
     def change_sender_minstry(self):
         if self.sender_ministry == False:

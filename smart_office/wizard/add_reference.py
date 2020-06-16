@@ -18,7 +18,6 @@ class AddReference(models.TransientModel):
             for file in self.cooespondence_ids:
                 file.folder_id = self.folder_id.id
                 letter_id.append(file.id)
-                print('=========================my file=======================', file.id)
                 self.env['file.tracker.report'].create({
                     'name': str(file.name),
                     'type': 'Correspondence',
@@ -31,7 +30,6 @@ class AddReference(models.TransientModel):
                     'remarks': self.description,
                     'details': "Correspondence attached to file {}".format(self.folder_id.folder_name)
                 })
-            print('=====================letter id===========================', letter_id)
             self.folder_id.folder_ids = [(4, 0, letter_id)]
             form_view = self.env.ref('smart_office.foldermaster_form_view')
             tree_view = self.env.ref('smart_office.foldermaster_tree_view1')

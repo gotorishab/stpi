@@ -15,6 +15,13 @@
                         <div class="oe_button_box" name="button_box">
                             <button name = "%(folder_forward_button_wizard_action_view)d" type = "action" string = "Forward" icon = "fa-forward" context = "{'default_defid': id}" attrs="{'invisible':[('state','=', 'closed')]}"/>
                             <button name="deal_with_file" string="Deal with File" type="object" icon="fa-pencil-square-o" attrs="{'invisible':[('state','=', 'closed')]}"/>
+                            <button type="object"
+                                            class="oe_stat_button"
+                                            icon="fa-folder-open-o"
+                                            name="tracker_view_file"
+                                            string = "Tracking info - File"
+                                            >
+                                    </button>
                         </div>
                         <group>
                             <group>
@@ -24,6 +31,7 @@
                                 <field name="date" readonly="1"/>
                                 <field name="branch_id" readonly="1"/>
                                 <field name="department_id" readonly="1"/>
+                                <field name="previous_reference"/>
 
                             </group>
                             <group>
@@ -36,6 +44,7 @@
                                 <field name="type" widget="many2many_tags" placeholder="Type..." options="{'color_field': 'color'}" attrs="{'readonly':[('state','!=', 'draft')]}"/>
                                 <field name="status"/>
                                 <field name="first_doc_id" invisible="1"/>
+                                <field name="later_reference"/>
                             </group>
                             <field name="description" placeholder="Description" attrs="{'readonly':[('state','!=', 'draft')]}"/>
                         </group>
@@ -44,13 +53,16 @@
                                 <button name = "%(add_reference_wizard_action_view)d" type = "action" string = "Add Reference" context = "{'default_folder_id': id}" attrs="{'invisible':[('state','=', 'closed')]}"/>
                                 <field name="file_ids" readonly="1"/>
                             </page>
+
+
                             <page name = "Write_correspondence" string = "Write correspondence">
                                 <button type="action" name="%(write_correspondence_wizard_action_view)d" string="Write Correspondence"  colspan="2"
                             class="oe_stat_button"
                             icon="fa-clock-o" context = "{'default_folder_id': id}"/>
-                            <div class="oe_clear"/>
                                 <field name="file_ids_m2m" readonly="1"/>
                             </page>
+
+                            
                             <page name="FileTrackingInformation" string="File Tracking Information" invisible="1">
                                 <field name="folder_track_ids" readonly="1">
                                     <tree editable="bottom">

@@ -28,6 +28,13 @@
                                             >
                                             <strong><field name="folder_id" string="File" invisible="1"/></strong><br/>
                                     </button>
+                    <button type="object"
+                                            class="oe_stat_button"
+                                            icon="fa-folder-open-o"
+                                            name="tracker_view_letter"
+                                            string = "Tracking info - Correspondence"
+                                            >
+                                    </button>
 
                 </xpath>
                 <xpath expr = "//button[@name='toggle_active']" position="attributes">

@@ -33,6 +33,8 @@ class FolderMaster(models.Model):
                                ('urgent', 'Urgent')
                                ], string='Status',track_visibility='always')
     sequence = fields.Integer(string = 'Sequence')
+    previous_reference = fields.Text('Previous Reference')
+    later_reference = fields.Text('Later Reference')
     first_doc_id = fields.Integer(string = 'First Doc Id')
     type = fields.Many2many('folder.type', string = "Type",track_visibility='always')
     description = fields.Text(string = 'Description',track_visibility='always')
@@ -187,42 +189,23 @@ class FolderMaster(models.Model):
         return res
 
 
-
-    def add_reference(self):
+    @api.multi
+    def tracker_view_file(self):
         for rec in self:
+            views_domain = []
+            dmn = self.env['file.tracker.report'].search(['|', ('name', '=', rec.folder_name), ('number', '=', rec.number)])
+            for id in dmn:
+                views_domain.append(id.id)
             return {
-                'name': 'Add Reference',
+                'name': 'File Tracking Report',
                 'view_type': 'form',
-                'view_mode': 'form',
-                'res_model': 'add.reference.file',
+                'view_mode': 'tree',
+                'res_model': 'file.tracker.report',
                 'type': 'ir.actions.act_window',
-                'target': 'new',
-                'view_id': rec.env.ref('smart_office.add_reference_wizard_action_view').id,
-                'context':{
-                        'default_folder_id': rec.id}
+                'target': 'current',
+                'domain': [('id', 'in', views_domain)]
             }
 
-
-
-    def write_correspondence(self):
-        for rec in self:
-            current_employee = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
-            return {
-                'name': 'Write Correspondence',
-                'view_type': 'form',
-                'view_mode': 'form',
-                'res_model': 'write.correspondence',
-                'type': 'ir.actions.act_window',
-                'target': 'new',
-                'view_id': rec.env.ref('smart_office.write_correspondence_wizard_action_view').id,
-                'context':{
-                        'default_folder_id': rec.id,
-                        'default_current_user_id': current_employee.user_id.id,
-                        'default_created_on': datetime.now().date(),
-                        'default_branch_id': current_employee.branch_id.id,
-                        'default_department_id': current_employee.department_id.id,
-                }
-            }
 
 
     @api.multi

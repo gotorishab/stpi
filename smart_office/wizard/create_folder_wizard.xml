@@ -12,11 +12,13 @@
                                 <field name="subject" required="1"/>
                                 <field name="date" readonly="1"/>
                                 <field name="tags" widget="many2many_tags" placeholder="Tags..." options="{'color_field': 'color', 'no_create_edit': True}"/>
+                                <field name="previous_reference"/>
                             </group>
                             <group>
                                 <field name="type" widget="many2many_tags" placeholder="Type..." options="{'color_field': 'color'}"/>
                                 <field name="status"/>
                                 <field name="old_file_number"/>
+                                <field name="later_reference"/>
                             </group>
                             <field name="description" placeholder="Description"/>
                         </group>

@@ -473,7 +473,7 @@ class WizardLateComing(models.TransientModel):
                         'domain': [('id', 'in', views_domain)],
                     }
             else:
-                dmn = self.env['file.tracker.report'].search(['|', ('name', '=', rec.details), ('number', '<=', rec.details)])
+                dmn = self.env['file.tracker.report'].search(['|', ('name', '=', rec.details), ('number', '=', rec.details)])
                 for id in dmn:
                     views_domain.append(id.id)
                 return {
