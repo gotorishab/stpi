@@ -17,8 +17,9 @@ class IncomingLetterWizard(models.TransientModel):
             srch_id = self.env.user.id
             for file in files:
                 if srch_id in file.sec_owner.ids or srch_id == file.current_owner_id.id:
+                    print('=====================first=======================', file.name)
                     if file.folder_id != True:
-                        print('============================================', file.name)
+                        print('=====================second=======================', file.name)
                         my_id.append(file.id)
 
             return {

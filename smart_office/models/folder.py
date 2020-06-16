@@ -196,10 +196,32 @@ class FolderMaster(models.Model):
                 'view_mode': 'tree,form',
                 'res_model': 'add.reference.file',
                 'type': 'ir.actions.act_window',
-                'target': 'current',
-                'view_id': self.env.ref('smart_office.add_reference_wizard_action_view').id,
+                'target': 'new',
+                'view_id': rec.env.ref('smart_office.add_reference_wizard_action_view').id,
                 'context':{
-                        'default_folder_id': self.id}
+                        'default_folder_id': rec.id}
+            }
+
+
+
+    def write_correspondence(self):
+        for rec in self:
+            current_employee = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+            return {
+                'name': 'Write Correspondence',
+                'view_type': 'form',
+                'view_mode': 'tree,form',
+                'res_model': 'write.correspondence',
+                'type': 'ir.actions.act_window',
+                'target': 'new',
+                'view_id': rec.env.ref('smart_office.write_correspondence_wizard_action_view').id,
+                'context':{
+                        'default_folder_id': rec.id,
+                        'default_current_user_id': current_employee.user_id.id,
+                        'default_created_on': datetime.now().date(),
+                        'default_branch_id': current_employee.branch_id.id,
+                        'default_department_id': current_employee.department_id.id,
+                }
             }
 
 
