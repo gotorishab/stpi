@@ -37,21 +37,29 @@ class FileForwardData(http.Controller):
         return loaded_r
 
     @http.route(['/lettercall'], type='http', auth='public', csrf=False, methods=['POST'])
-    def get_letter_call_details(self, **kwargs):
-        print('=========================True r===========================')
-        letter_details_data = request.env['muk_dms.file'].sudo().search([], limit=1)
+    def get_letter_call_details(self, letter_id=None, **kwargs):
         letter_det = []
-        for rec in letter_details_data:
-            vals={
-                'id': rec.id,
-                'file_name': rec.name,
-                'attachment': rec.content,
-            }
-            letter_det.append(vals)
-        data = {"response": letter_det}
-        print('=========================letter==========================',letter_det)
-        loaded_r = json.dumps(dict(response=str(letter_det)))
-        return loaded_r
+        if letter_id:
+            letter_details_data = request.env['muk_dms.file'].sudo().search([('id', '=', letter_id)], limit=1)
+            if letter_details_data:
+                for rec in letter_details_data:
+                    vals = {
+                        'id': rec.id,
+                        'file_name': rec.name,
+                        'attachment': rec.content,
+                    }
+                    letter_det.append(vals)
+                loaded_r = json.dumps(dict(response=str(letter_det)))
+                return loaded_r
+            else:
+                message = "File not found"
+                loaded_r = json.dumps(dict(response=str(message)))
+                return loaded_r
+        else:
+            message = "Please pass the ID"
+            loaded_r = json.dumps(dict(response=str(message)))
+            return loaded_r
+
 
     @http.route(['/closedfile'], type='json', auth='public', csrf=False, methods=['POST'])
     def get_closed_file(self, **kwargs):

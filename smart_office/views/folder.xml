@@ -39,7 +39,7 @@
                         </group>
                         <notebook>
                             <page name = "Letters" string = "Letters">
-                                <field name="file_ids" readonly="1"/>
+                                <field name="file_ids"/>
                             </page>
                             <page name="FileTrackingInformation" string="File Tracking Information" invisible="1">
                                 <field name="folder_track_ids" readonly="1">
