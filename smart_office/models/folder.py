@@ -17,6 +17,9 @@ class FolderMaster(models.Model):
     current_owner_id = fields.Many2one('res.users', 'Current Owner',track_visibility='always')
     last_owner_id = fields.Many2one('res.users', 'Last Owner',track_visibility='always')
 
+    branch_id = fields.Many2one('res.branch', 'Branch')
+    department_id = fields.Many2one('hr.department', 'Department')
+
     sec_owner = fields.Many2many('res.users', string='Secondary Owners',track_visibility='always')
 
     previous_owner = fields.Many2many('res.users', string='Previous/Current Owners',track_visibility='always')

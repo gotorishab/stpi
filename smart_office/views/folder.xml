@@ -22,11 +22,13 @@
                                 <field name="folder_name" required ="1" attrs="{'readonly':[('state','!=', 'draft')]}"/>
                                 <field name="subject" required="1" attrs="{'readonly':[('state','!=', 'draft')]}"/>
                                 <field name="date" readonly="1"/>
-                                <field name="tags" widget="many2many_tags" placeholder="Tags..." options="{'color_field': 'color', 'no_create_edit': True}" attrs="{'readonly':[('state','!=', 'draft')]}"/>
+                                <field name="branch_id" readonly="1"/>
+                                <field name="branch_id" readonly="1"/>
 
                             </group>
                             <group>
                                 <field name="write_date"/>
+                                <field name="tags" widget="many2many_tags" placeholder="Tags..." options="{'color_field': 'color', 'no_create_edit': True}" attrs="{'readonly':[('state','!=', 'draft')]}"/>
                                 <field name="sequence" invisible="1"/>
                                 <field name="iframe_dashboard" invisible="1"/>
                                 <field name="number" readonly="1"/>
