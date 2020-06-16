@@ -41,17 +41,14 @@
                         </group>
                         <notebook>
                             <page name = "Letters" string = "Add Correspondence">
-                                <button type="object" name="add_reference" string="Add Reference"  colspan="2"
-                            class="oe_stat_button"
-                            icon="fa-clock-o"/>
-                            <div class="oe_clear" context = "{'default_folder_id': id}"/>
+                                <button name = "%(add_reference_wizard_action_view)d" type = "action" string = "Add Reference" context = "{'default_folder_id': id}" attrs="{'invisible':[('state','=', 'closed')]}"/>
                                 <field name="file_ids" readonly="1"/>
                             </page>
                             <page name = "Write_correspondence" string = "Write correspondence">
-                                <button type="object" name="write_correspondence" string="Write Correspondence"  colspan="2"
+                                <button type="action" name="%(write_correspondence_wizard_action_view)d" string="Write Correspondence"  colspan="2"
                             class="oe_stat_button"
-                            icon="fa-clock-o"/>
-                            <div class="oe_clear" context = "{'default_folder_id': id}"/>
+                            icon="fa-clock-o" context = "{'default_folder_id': id}"/>
+                            <div class="oe_clear"/>
                                 <field name="file_ids_m2m" readonly="1"/>
                             </page>
                             <page name="FileTrackingInformation" string="File Tracking Information" invisible="1">
