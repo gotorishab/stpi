@@ -7,6 +7,7 @@ class AddReference(models.TransientModel):
 
 
     cooespondence_ids = fields.Many2many('muk_dms.file', string='Correspondence')
+    description = fields.Text()
     folder_id = fields.Many2one('folder.master', string="Select File")
 
 
