@@ -44,15 +44,15 @@
                                 <button type="object" name="%(add_reference_wizard_action_view)d" string="Add Reference"  colspan="2"
                             class="oe_stat_button"
                             icon="fa-clock-o"/>
-                            <div class="oe_clear"/>
+                            <div class="oe_clear" context = "{'default_folder_id': id}"/>
                                 <field name="file_ids" readonly="1"/>
                             </page>
                             <page name = "Write_correspondence" string = "Write correspondence">
                                 <button type="object" name="%(write_correspondence_wizard_action_view)d" string="Write Correspondence"  colspan="2"
                             class="oe_stat_button"
                             icon="fa-clock-o"/>
-                            <div class="oe_clear"/>
-                                <field name="file_ids" readonly="1"/>
+                            <div class="oe_clear" context = "{'default_folder_id': id}"/>
+                                <field name="file_ids_m2m" readonly="1"/>
                             </page>
                             <page name="FileTrackingInformation" string="File Tracking Information" invisible="1">
                                 <field name="folder_track_ids" readonly="1">

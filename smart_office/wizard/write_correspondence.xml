@@ -15,8 +15,8 @@
                                 <field name="department_id" readonly ="1"/>
                             </group>
                             <group>
-                                <field name="select_template"/>
-                                <field name="template_html"/>
+<!--                                <field name="select_template"/>-->
+<!--                                <field name="template_html"/>-->
                             </group>
                     </group>
                     <footer>

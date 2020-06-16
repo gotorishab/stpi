@@ -12,3 +12,4 @@ from . import assign_folder_wizard
 from . import file_exception_wizard
 from . import report_wizard
 from . import add_reference
+from . import write_correspondence

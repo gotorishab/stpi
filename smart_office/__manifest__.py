@@ -37,6 +37,7 @@
         'wizard/file_exception_wizard_view.xml',
         'wizard/report_wizard.xml',
         'wizard/add_reference.xml',
+        'wizard/write_correspondence.xml',
         'views/department_job.xml',
         'views/file_tracking_information.xml',
         'views/add_letter.xml',
