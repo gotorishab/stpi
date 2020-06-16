@@ -4,36 +4,16 @@ from odoo.exceptions import UserError
 from datetime import datetime, date, timedelta
 
 
-class PullInto(models.TransientModel):
-    _name = "pull.into.file.custom"
-    _description = "HR Employee Cheque Action"
+class PullIntoMyInbox(models.TransientModel):
+    _name = "pull.into.file.my.custom"
+    _description = "Pull into my inbox"
 
 
-
-    department = fields.Many2one('hr.department', string = "Department")
-    jobposition = fields.Many2one('hr.job', string = "Job position")
-    employee = fields.Many2one('hr.employee', string='Employee')
-    user = fields.Many2one('res.users', related = 'employee.user_id', string='User')
     remarks = fields.Text('Remarks')
 
 
-
-    @api.onchange('department','jobposition')
-    def _onchange_user(self):
-        for rec in self:
-            if rec.department.id and not rec.jobposition.id:
-                return {'domain': {'employee': [('department_id', '=', rec.department.id)]}}
-            elif rec.jobposition.id and not rec.department.id:
-                return {'domain': {'employee': [('job_id', '=', rec.jobposition.id)]}}
-            elif rec.jobposition.id and rec.department.id:
-                return {'domain': {'employee': [('job_id', '=', rec.jobposition.id),('department_id', '=', rec.department.id)]}}
-            else:
-                return {'domain': {'employee': ['|', ('job_id', '=', rec.jobposition.id),('department_id', '=', rec.department.id)]}}
-
-
-
     @api.multi
-    def pull_into_files_action_button(self):
+    def pull_into_files_my_action_button(self):
         context = dict(self._context or {})
         active_ids = context.get('active_ids', []) or []
         previous_owner = []
@@ -49,10 +29,10 @@ class PullInto(models.TransientModel):
                 'pulled_by_jobpos': str(current_file_employee.job_id.name),
                 'pulled_by_branch': str(current_file_employee.branch_id.name),
                 'pulled_date': datetime.now().date(),
-                'pulled_to_user': str(self.user.name),
-                'pulled_to_dept': str(self.department.name),
-                'pulled_to_job_pos': str(self.jobposition.name),
-                'pulled_to_branch': str(self.user.branch_id.name),
+                'pulled_to_user': str(current_employee.user_id.name),
+                'pulled_to_dept': str(current_employee.department_id.name),
+                'pulled_to_job_pos': str(current_employee.job_id.name),
+                'pulled_to_branch': str(current_employee.branch_id.name),
                 'action_taken': 'file_pulled',
                 'remarks': self.remarks,
                 'details': 'File pulled'

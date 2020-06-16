@@ -31,7 +31,7 @@
 
     <act_window id="action_pull_into_files_action_confirm"
             multi="True"
-            key2="client_action_multi" name="Pull into my inbox"
+            key2="client_action_multi" name="Bulk Transfer"
                 res_model="pull.into.file.custom" src_model="folder.master"
             view_mode="form" target="new" view_type="form"/>
     </data>

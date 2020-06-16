@@ -1,14 +1,9 @@
 from odoo import fields,api,models
-import math
-from datetime import datetime, timedelta, date
-from pytz import timezone, UTC
-from dateutil.relativedelta import relativedelta
 
 
 class FileTracker(models.Model):
     _name="file.tracker.report"
     _description="File Tracking Report"
-
 
     name = fields.Char(string='Name')
     number = fields.Char(string='Number')
@@ -62,14 +57,30 @@ class FileTracker(models.Model):
     forwarded_to_branch = fields.Char(string='Forwarded To(Branch)')
 
 
+    pulled_by = fields.Char(string='pulled By (User)')
+    pulled_by_dept = fields.Char(string='pulled By (Department)')
+    pulled_by_jobpos = fields.Char(string='pulled By(User Job Position)')
+    pulled_by_branch = fields.Char(string='pulled By(Branch)')
+
+
+    pulled_date = fields.Date(string='pulled Date')
+
+    pulled_to_user = fields.Char(string='pulled To (User)')
+    pulled_to_dept = fields.Char(string='pulled To (Department)')
+    pulled_to_job_pos = fields.Char(string='pulled to(User Job Position)')
+    pulled_to_branch = fields.Char(string='pulled To(Branch)')
+
+
 
     remarks = fields.Char(string='Remarks')
     details = fields.Char(string='Details')
     action_taken = fields.Selection([('correspondence_created', 'Correspondence Created'),
-                               ('file_created', 'File Creates'),
-                               ('correspondence_forwarded', 'Correspondence Forwarded'),
-                               ('file_forwarded', 'File Forwarded'),
-                               ('assigned_to_file', 'Assigned To File'),
-                               ('file_closed', 'File Closed'),
-                               ('file_repoened', 'File Reopened')
-                               ], string='Action Taken')
+                                     ('file_created', 'File Creates'),
+                                     ('correspondence_forwarded', 'Correspondence Forwarded'),
+                                     ('file_forwarded', 'File Forwarded'),
+                                     ('correspondence_pulled', 'Correspondence Pulled'),
+                                     ('file_pulled', 'File Pulled'),
+                                     ('assigned_to_file', 'Assigned To File'),
+                                     ('file_closed', 'File Closed'),
+                                     ('file_repoened', 'File Reopened'),
+                                     ], string='Action Taken')

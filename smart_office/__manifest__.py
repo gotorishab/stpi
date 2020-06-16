@@ -38,6 +38,8 @@
         'wizard/report_wizard.xml',
         'wizard/add_reference.xml',
         'wizard/write_correspondence.xml',
+        'wizard/pull_into_my_inbox.xml',
+        'wizard/pull_into_my_inbox_file.xml',
         'views/department_job.xml',
         'views/file_tracking_information.xml',
         'views/add_letter.xml',

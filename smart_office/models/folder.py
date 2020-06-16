@@ -193,7 +193,7 @@ class FolderMaster(models.Model):
             return {
                 'name': 'Add Reference',
                 'view_type': 'form',
-                'view_mode': 'tree,form',
+                'view_mode': 'form',
                 'res_model': 'add.reference.file',
                 'type': 'ir.actions.act_window',
                 'target': 'new',
@@ -210,7 +210,7 @@ class FolderMaster(models.Model):
             return {
                 'name': 'Write Correspondence',
                 'view_type': 'form',
-                'view_mode': 'tree,form',
+                'view_mode': 'form',
                 'res_model': 'write.correspondence',
                 'type': 'ir.actions.act_window',
                 'target': 'new',
