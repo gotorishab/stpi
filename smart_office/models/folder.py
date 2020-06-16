@@ -186,6 +186,23 @@ class FolderMaster(models.Model):
             res.append((record.id, name))
         return res
 
+
+
+    def add_reference(self):
+        for rec in self:
+            return {
+                'name': 'Add Reference',
+                'view_type': 'form',
+                'view_mode': 'tree,form',
+                'res_model': 'add.reference.file',
+                'type': 'ir.actions.act_window',
+                'target': 'current',
+                'view_id': self.env.ref('smart_office.add_reference_wizard_action_view').id,
+                'context':{
+                        'default_folder_id': self.id}
+            }
+
+
     @api.multi
     def button_submit(self):
         for rec in self:

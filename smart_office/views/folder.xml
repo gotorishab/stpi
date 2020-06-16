@@ -41,7 +41,7 @@
                         </group>
                         <notebook>
                             <page name = "Letters" string = "Letters">
-                                <button type="action" name="%(add_reference_wizard_action_view)d" string="Add Reference"  colspan="2"
+                                <button type="action" name="add_reference" string="Add Reference"  colspan="2"
                             class="oe_stat_button"
                             icon="fa-clock-o"/>
                             <div class="oe_clear" context = "{'default_folder_id': id}"/>
