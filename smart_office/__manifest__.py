@@ -36,6 +36,7 @@
         'wizard/assign_folder_wizard.xml',
         'wizard/file_exception_wizard_view.xml',
         'wizard/report_wizard.xml',
+        'wizard/add_reference.xml',
         'views/department_job.xml',
         'views/file_tracking_information.xml',
         'views/add_letter.xml',

@@ -23,7 +23,7 @@
                                 <field name="subject" required="1" attrs="{'readonly':[('state','!=', 'draft')]}"/>
                                 <field name="date" readonly="1"/>
                                 <field name="branch_id" readonly="1"/>
-                                <field name="branch_id" readonly="1"/>
+                                <field name="department_id" readonly="1"/>
 
                             </group>
                             <group>
@@ -41,7 +41,18 @@
                         </group>
                         <notebook>
                             <page name = "Letters" string = "Letters">
-                                <field name="file_ids" domain="[('current_owner_id', '=', uid),('folder_id', '=', False)]"/>
+                                <button type="object" name="%(add_reference_wizard_action_view)d" string="Add Reference"  colspan="2"
+                            class="oe_stat_button"
+                            icon="fa-clock-o"/>
+                            <div class="oe_clear"/>
+                                <field name="file_ids" readonly="1"/>
+                            </page>
+                            <page name = "Write_correspondence" string = "Write correspondence">
+                                <button type="object" name="%(write_correspondence_wizard_action_view)d" string="Write Correspondence"  colspan="2"
+                            class="oe_stat_button"
+                            icon="fa-clock-o"/>
+                            <div class="oe_clear"/>
+                                <field name="file_ids" readonly="1"/>
                             </page>
                             <page name="FileTrackingInformation" string="File Tracking Information" invisible="1">
                                 <field name="folder_track_ids" readonly="1">
