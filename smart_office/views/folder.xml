@@ -62,7 +62,7 @@
                                 <field name="file_ids_m2m" readonly="1"/>
                             </page>
 
-                            
+
                             <page name="FileTrackingInformation" string="File Tracking Information" invisible="1">
                                 <field name="folder_track_ids" readonly="1">
                                     <tree editable="bottom">
