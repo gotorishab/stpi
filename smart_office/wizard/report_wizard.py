@@ -46,14 +46,16 @@ class WizardLateComing(models.TransientModel):
     job_id = fields.Many2one('hr.job', string='Functional Designation')
     department_id = fields.Many2one('hr.department', string='Department')
     action_taken = fields.Selection([('correspondence_created', 'Correspondence Created'),
-                               ('file_created', 'File Creates'),
-                               ('correspondence_forwarded', 'Correspondence Forwarded'),
-                               ('file_forwarded', 'File Forwarded'),
-                               ('assigned_to_file', 'Assigned To File'),
-                               ('file_closed', 'File Closed'),
-                               ('file_repoened', 'File Reopened'),
-                               ('all', 'All')
-                               ], string='Action Taken', default='all')
+                                     ('file_created', 'File Creates'),
+                                     ('correspondence_forwarded', 'Correspondence Forwarded'),
+                                     ('file_forwarded', 'File Forwarded'),
+                                     ('correspondence_pulled', 'Correspondence Pulled'),
+                                     ('file_pulled', 'File Pulled'),
+                                     ('assigned_to_file', 'Assigned To File'),
+                                     ('file_closed', 'File Closed'),
+                                     ('file_repoened', 'File Reopened'),
+                                     ('all', 'All')
+                                     ], string='Action Taken', default='all')
 
 
     @api.multi
