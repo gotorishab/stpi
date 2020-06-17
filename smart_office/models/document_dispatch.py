@@ -8,9 +8,10 @@ class DispatchDocument(models.Model):
     _name = 'dispatch.document'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = 'Dispatch Document'
-    _rec_name = 'version'
+    _rec_name = 'name'
 
 
+    name = fields.Integer('Number')
     cooespondence_ids = fields.Many2many('muk_dms.file', string='Correspondence', track_visibility='always')
     current_user_id = fields.Many2one('res.users', track_visibility='always')
     branch_id = fields.Many2one('res.branch', 'Branch', track_visibility='always')
@@ -35,6 +36,8 @@ class DispatchDocument(models.Model):
         for rec in self:
             current_employee = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
             dd = self.env['dispatch.document'].create({
+                'name': rec.name + 1,
+                'previousversion': rec.id,
                 'template_html': rec.template_html,
                 'select_template': rec.select_template.id,
                 'current_user_id': current_employee.user_id.id,
@@ -47,7 +50,6 @@ class DispatchDocument(models.Model):
                 'cooespondence_ids': rec.cooespondence_ids.ids,
             })
             dd.version = dd.id
-            dd.previousversion = rec.id
             rec.sudo().button_obsellete()
 
 

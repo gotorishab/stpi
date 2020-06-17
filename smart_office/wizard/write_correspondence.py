@@ -14,8 +14,8 @@ class AddReference(models.TransientModel):
     created_on = fields.Date(string='Date', default = fields.Date.today())
     select_template = fields.Many2one('select.template.html')
     template_html = fields.Html('Template')
-    version = fields.Char('Version')
-    previousversion = fields.Char('Previous Version')
+    version = fields.Many2one('dispatch.document', string='Version')
+    previousversion = fields.Many2one('dispatch.document', string = 'Previous Version')
     folder_id = fields.Many2one('folder.master', string="Select File")
 
     @api.onchange('select_template')
@@ -31,6 +31,7 @@ class AddReference(models.TransientModel):
             for letter in self.folder_id.file_ids:
                 letter_id.append(letter.id)
             dd = self.env['dispatch.document'].create({
+                'name': 1,
                 'template_html': self.template_html,
                 'select_template': self.select_template.id,
                 'current_user_id': (current_employee.user_id.id),

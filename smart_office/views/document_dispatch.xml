@@ -15,20 +15,20 @@
                         <group>
                             <group>
 
-                                <field name="current_user_id"/>
-                                <field name="branch_id"/>
-                                <field name="department_id"/>
-                                <field name="job_id"/>
-                                <field name="created_on"/>
+                                <field name="current_user_id" attrs="{'readonly':[('state','!=', 'draft')]}"/>
+                                <field name="branch_id" attrs="{'readonly':[('state','!=', 'draft')]}"/>
+                                <field name="department_id" attrs="{'readonly':[('state','!=', 'draft')]}"/>
+                                <field name="job_id" attrs="{'readonly':[('state','!=', 'draft')]}"/>
+                                <field name="created_on" attrs="{'readonly':[('state','!=', 'draft')]}"/>
                             </group>
                             <group>
-                                <field name="select_template"/>
-                                <field name="version"/>
-                                <field name="previousversion"/>
-                                <field name="folder_id"/>
-                                <field name="cooespondence_ids" widget="many2many_tags"/>
+                                <field name="select_template" attrs="{'readonly':[('state','!=', 'draft')]}"/>
+                                <field name="version" attrs="{'readonly':[('state','!=', 'draft')]}"/>
+                                <field name="previousversion" attrs="{'readonly':[('state','!=', 'draft')]}"/>
+                                <field name="folder_id" attrs="{'readonly':[('state','!=', 'draft')]}"/>
+                                <field name="cooespondence_ids" widget="many2many_tags" attrs="{'readonly':[('state','!=', 'draft')]}"/>
                             </group>
-                            <field name="template_html"/>
+                            <field name="template_html" attrs="{'readonly':[('state','!=', 'draft')]}"/>
                         </group>
                     </sheet>
                     <div class="oe_chatter">
@@ -56,7 +56,8 @@
                     <field name="folder_id"/>
                     <field name="state"/>
                     <button name="button_edit" string="Edit" type="object" states="draft"/>
-                    <button name="button_submit" string="Request Approval" type="object" states="ready_for_dispatched"/>
+                    <button name="%(edit_doc_dispatch_button_wizard_action_view)d" string="Edit Doc" icon="fa-pencil" type="action" context = "{'default_doc_dispatch': id}"/>
+                    <button name="button_submit" string="Request Approval" type="object" states="draft"/>
                 </tree>
             </field>
      </record>
