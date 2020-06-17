@@ -25,6 +25,10 @@ class DispatchDocument(models.Model):
     previousversion = fields.Many2one('dispatch.document', string='Previous  Version', track_visibility='always')
 
     folder_id = fields.Many2one('folder.master', string="File", track_visibility='always')
+    dispatch_mode = fields.Selection(
+        [('hand_to_hand', 'Hand to Hand'),('email', 'Email'), ('fax', 'Fax'), ('splmess', 'Spl. Messenger'), ('post', 'Post')
+         ], string='Dispatch Mode', track_visibility='always')
+
     state = fields.Selection(
         [('draft', 'Draft'),('obsolete', 'Obsolete'), ('reject', 'Reject'), ('ready_for_dispatched', 'Ready for Dispatch'), ('dispatched', 'Dispatched')
          ], required=True, default='draft', string='Status', track_visibility='always')

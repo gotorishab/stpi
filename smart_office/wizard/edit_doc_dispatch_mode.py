@@ -1,26 +1,22 @@
 from odoo import fields, models, api
 from datetime import datetime
 
-class AddReference(models.TransientModel):
-    _name = 'edit.doc.dispatch'
-    _description = 'Add Reference'
+class DispatchMode(models.TransientModel):
+    _name = 'edit.doc.dispatch.mode'
+    _description = 'Edit Dispatch Mode'
 
 
-    select_template = fields.Many2one('select.template.html')
-    template_html = fields.Html('Template')
+    dispatch_mode = fields.Selection(
+        [('hand_to_hand', 'Hand to Hand'),('email', 'Email'), ('fax', 'Fax'), ('splmess', 'Spl. Messenger'), ('post', 'Post')
+         ], string='Dispatch Mode')
     doc_dispatch = fields.Many2one('dispatch.document', string='Document Dispatch')
 
-    @api.onchange('select_template')
-    def get_template(self):
-        if self.select_template:
-            self.template_html = self.select_template.template
 
 
     def confirm_button(self):
         if self:
             self.doc_dispatch.write({
-                'select_template': self.select_template.id,
-                'template_html': self.template_html,
+                'dispatch_mode': self.dispatch_mode,
             })
             form_view = self.env.ref('smart_office.foldermaster_form_view')
             tree_view = self.env.ref('smart_office.foldermaster_tree_view1')

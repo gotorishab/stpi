@@ -41,6 +41,7 @@
         'wizard/pull_into_my_inbox.xml',
         'wizard/pull_into_my_inbox_file.xml',
         'wizard/edit_doc_dispatch.xml',
+        'wizard/edit_doc_dispatch_mode.xml',
         'views/department_job.xml',
         'views/file_tracking_information.xml',
         'views/add_letter.xml',

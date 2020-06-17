@@ -6,7 +6,7 @@
             <field name="arch" type="xml">
                 <form string="File">
                     <header>
-                        <button name="button_ready_for_dispatch" string="Send for Dispatch" class="oe_highlight" type="object" states="draft"/>
+                        <button name="button_ready_for_dispatch" string="Request Approval" class="oe_highlight" type="object" states="draft"/>
                         <button name="button_dispatch" string="Dispatch" class="oe_highlight" type="object" states="ready_for_dispatched"/>
                         <button name="button_reset_to_draft" string="Reopen" class="oe_highlight" type="object" states="ready_for_dispatched"/>
                         <field name="state" widget="statusbar" statusbar_visible="draft,ready_for_dispatched,dispatched" />
@@ -22,8 +22,9 @@
                                 <field name="created_on" attrs="{'readonly':[('state','!=', 'draft')]}"/>
                             </group>
                             <group>
+                                <field name="dispatch_mode" required="1" attrs="{'readonly':[('state','in', ['obsolete', 'reject', 'dispatched'])]}"/>
                                 <field name="select_template" attrs="{'readonly':[('state','!=', 'draft')]}"/>
-                                <field name="version" attrs="{'readonly':[('state','!=', 'draft')]}"/>
+                                <field name="version" invisible="1"/>
                                 <field name="previousversion" attrs="{'readonly':[('state','!=', 'draft')]}"/>
                                 <field name="folder_id" attrs="{'readonly':[('state','!=', 'draft')]}"/>
                                 <field name="cooespondence_ids" widget="many2many_tags" attrs="{'readonly':[('state','!=', 'draft')]}"/>
@@ -56,8 +57,9 @@
                     <field name="folder_id"/>
                     <field name="state"/>
                     <button name="button_edit" string="Edit" type="object" states="draft"/>
-                    <button name="%(edit_doc_dispatch_button_wizard_action_view)d" string="Edit Doc" icon="fa-pencil" type="action" context = "{'default_doc_dispatch': id}"/>
-                    <button name="button_submit" string="Request Approval" type="object" states="draft"/>
+                    <button name="%(edit_doc_dispatch_button_wizard_action_view)d" states="draft" string="Edit Doc" icon="fa-pencil" type="action" context = "{'default_doc_dispatch': id, 'default_select_template': select_template, 'default_template_html': template_html}"/>
+                    <button name="%(edit_doc_dispatch_mode_button_wizard_action_view)d" states="draft,ready_for_dispatched" string="Edit Dispatch Mode" icon="fa-paper-plane-o" type="action" context = "{'default_doc_dispatch': id, 'default_dispatch_mode': dispatch_mode}"/>
+                    <button name="button_ready_for_dispatch" string="Request Approval" type="object" states="draft"/>
                 </tree>
             </field>
      </record>
@@ -72,15 +74,14 @@
          <field name="domain">[('state','=','draft')]</field>
     </record>
 
-     <!-- ==========Action View of master of Folder model=========== -->
-     <record id="dispatch_document_waiting_action_view" model="ir.actions.act_window">
+         <!-- ==========Action View of master of Folder model=========== -->
+     <record id="dispatch_document_ready_for_dispatched_action_view" model="ir.actions.act_window">
             <field name="name">Dispatch Documents</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">dispatch.document</field>
             <field name="view_type">form</field>
          <field name="view_mode">tree,form</field>
-         <field name="domain">[('state','=','in_progress')]</field>
-    </record>
+         <field name="domain">[('state','=','ready_for_dispatched')]</field>
 
      <!-- ==========Action View of master of Folder model=========== -->
      <record id="dispatch_document_dispatched_action_view" model="ir.actions.act_window">
@@ -91,14 +92,7 @@
          <field name="view_mode">tree,form</field>
          <field name="domain">[('state','=','dispatched')]</field>
     </record>
-     <!-- ==========Action View of master of Folder model=========== -->
-     <record id="dispatch_document_ready_for_dispatched_action_view" model="ir.actions.act_window">
-            <field name="name">Dispatch Documents</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="res_model">dispatch.document</field>
-            <field name="view_type">form</field>
-         <field name="view_mode">tree,form</field>
-         <field name="domain">[('state','=','ready_for_dispatched')]</field>
+
     </record>
      <!-- ==========Action View of master of Folder model=========== -->
      <record id="dispatch_document_robsolete_action_view" model="ir.actions.act_window">
@@ -128,31 +122,20 @@
                   action="dispatch_document_draft_action_view"
                   name="Draft"/>
 
-            <menuitem id="menuitem_dispatch_document_waiting"
+            <menuitem id="menuitem_dispatch_document_ready_for_dispatched"
                   parent="menuitem_dispatch_doc_fol"
-                  action="dispatch_document_waiting_action_view"
-                  name="Waiting for Approval"/>
+                  action="dispatch_document_ready_for_dispatched_action_view"
+                  name="Ready for Dispatch"/>
 
             <menuitem id="menuitem_dispatch_document_dispatched"
                   parent="menuitem_dispatch_doc_fol"
                   action="dispatch_document_dispatched_action_view"
                   name="Dispatched"/>
 
-
-
-
-
-            <menuitem id="menuitem_dispatch_document_ready_for_dispatched"
-                  parent="menuitem_dispatch_doc_fol"
-                  action="dispatch_document_ready_for_dispatched_action_view"
-                  name="Ready for Dispatched"/>
-
-
             <menuitem id="menuitem_dispatch_document_obsolete"
                   parent="menuitem_dispatch_doc_fol"
                   action="dispatch_document_robsolete_action_view"
                   name="Obsolete"/>
-
 
             <menuitem id="menuitem_dispatch_document_all"
                   parent="menuitem_dispatch_doc_fol"
