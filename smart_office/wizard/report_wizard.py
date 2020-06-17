@@ -96,6 +96,22 @@ class WizardLateComing(models.TransientModel):
                              ('forwarded_date', '<=', rec.date_range.date_end)])
                         for id in dmn:
                             views_domain.append(id.id)
+                    elif rec.action_taken == 'correspondence_pulled':
+                        view_id = self.env.ref('smart_office.view_correspondence_pulled_tree').id
+                        dmn = self.env['file.tracker.report'].search(
+                            ['|', ('pulled_by', '=', rec.employee_id.name), ('pulled_to_user', '=', rec.employee_id.name), ('action_taken', '=', rec.action_taken),
+                             ('pulled_date', '>=', rec.date_range.date_start),
+                             ('pulled_date', '<=', rec.date_range.date_end)])
+                        for id in dmn:
+                            views_domain.append(id.id)
+                    elif rec.action_taken == 'file_pulled':
+                        view_id = self.env.ref('smart_office.view_file_pulled_tree').id
+                        dmn = self.env['file.tracker.report'].search(
+                            ['|', ('pulled_by', '=', rec.employee_id.name), ('pulled_to_user', '=', rec.employee_id.name), ('action_taken', '=', rec.action_taken),
+                             ('pulled_date', '>=', rec.date_range.date_start),
+                             ('pulled_date', '<=', rec.date_range.date_end)])
+                        for id in dmn:
+                            views_domain.append(id.id)
                     elif rec.action_taken == 'assigned_to_file':
                         view_id = self.env.ref('smart_office.view_assigned_to_file_tree').id
                         dmn = self.env['file.tracker.report'].search(
@@ -173,6 +189,20 @@ class WizardLateComing(models.TransientModel):
                             ['|', ('forwarded_by_branch', '=', rec.branch_id.name), ('forwarded_to_branch', '=', rec.branch_id.name), ('action_taken', '=', rec.action_taken),
                              ('forwarded_date', '>=', rec.date_range.date_start),
                              ('forwarded_date', '<=', rec.date_range.date_end)])
+                        for id in dmn:
+                            views_domain.append(id.id)
+                    elif rec.action_taken == 'correspondence_pulled':
+                        view_id = self.env.ref('smart_office.view_correspondence_pulled_tree').id
+                        dmn = self.env['file.tracker.report'].search(
+                            ['|', ('pulled_by_branch', '=', rec.branch_id.name), ('pulled_to_branch', '=', rec.branch_id.name), ('action_taken', '=', rec.action_taken),
+                             ('pulled_date', '>=', rec.date_range.date_start),
+                             ('pulled_date', '<=', rec.date_range.date_end)])
+                    elif rec.action_taken == 'file_pulled':
+                        view_id = self.env.ref('smart_office.view_file_pulled_tree').id
+                        dmn = self.env['file.tracker.report'].search(
+                            ['|', ('pulled_by_branch', '=', rec.branch_id.name), ('pulled_to_branch', '=', rec.branch_id.name), ('action_taken', '=', rec.action_taken),
+                             ('pulled_date', '>=', rec.date_range.date_start),
+                             ('pulled_date', '<=', rec.date_range.date_end)])
                         for id in dmn:
                             views_domain.append(id.id)
                     elif rec.action_taken == 'assigned_to_file':
@@ -260,6 +290,22 @@ class WizardLateComing(models.TransientModel):
                              ('forwarded_date', '<=', rec.date_range.date_end)])
                         for id in dmn:
                             views_domain.append(id.id)
+                    elif rec.action_taken == 'correspondence_pulled':
+                        view_id = self.env.ref('smart_office.view_correspondence_pulled_tree').id
+                        dmn = self.env['file.tracker.report'].search(
+                            ['|', ('pulled_by_jobpos', '=', rec.job_id.name), ('pulled_to_job_pos', '=', rec.job_id.name), ('action_taken', '=', rec.action_taken),
+                             ('pulled_date', '>=', rec.date_range.date_start),
+                             ('pulled_date', '<=', rec.date_range.date_end)])
+                        for id in dmn:
+                            views_domain.append(id.id)
+                    elif rec.action_taken == 'file_pulled':
+                        view_id = self.env.ref('smart_office.view_file_pulled_tree').id
+                        dmn = self.env['file.tracker.report'].search(
+                            ['|', ('pulled_by_jobpos', '=', rec.job_id.name), ('pulled_to_job_pos', '=', rec.job_id.name), ('action_taken', '=', rec.action_taken),
+                             ('pulled_date', '>=', rec.date_range.date_start),
+                             ('pulled_date', '<=', rec.date_range.date_end)])
+                        for id in dmn:
+                            views_domain.append(id.id)
                     elif rec.action_taken == 'assigned_to_file':
                         view_id = self.env.ref('smart_office.view_assigned_to_file_tree').id
                         dmn = self.env['file.tracker.report'].search(
@@ -345,6 +391,22 @@ class WizardLateComing(models.TransientModel):
                              ('forwarded_date', '<=', rec.date_range.date_end)])
                         for id in dmn:
                             views_domain.append(id.id)
+                    elif rec.action_taken == 'correspondence_pulled':
+                        view_id = self.env.ref('smart_office.view_correspondence_pulled_tree').id
+                        dmn = self.env['file.tracker.report'].search(
+                            ['|', ('pulled_by_dept', '=', rec.department_id.name), ('pulled_to_dept', '=', rec.department_id.name), ('action_taken', '=', rec.action_taken),
+                             ('pulled_date', '>=', rec.date_range.date_start),
+                             ('pulled_date', '<=', rec.date_range.date_end)])
+                        for id in dmn:
+                            views_domain.append(id.id)
+                    elif rec.action_taken == 'file_pulled':
+                        view_id = self.env.ref('smart_office.view_file_pulled_tree').id
+                        dmn = self.env['file.tracker.report'].search(
+                            ['|', ('pulled_by_dept', '=', rec.department_id.name), ('pulled_to_dept', '=', rec.department_id.name), ('action_taken', '=', rec.action_taken),
+                             ('pulled_date', '>=', rec.date_range.date_start),
+                             ('pulled_date', '<=', rec.date_range.date_end)])
+                        for id in dmn:
+                            views_domain.append(id.id)
                     elif rec.action_taken == 'assigned_to_file':
                         view_id = self.env.ref('smart_office.view_assigned_to_file_tree').id
                         dmn = self.env['file.tracker.report'].search(
@@ -424,6 +486,20 @@ class WizardLateComing(models.TransientModel):
                         dmn = self.env['file.tracker.report'].search(
                             [('forwarded_date', '>=', rec.date_range.date_start),
                              ('forwarded_date', '<=', rec.date_range.date_end)])
+                        for id in dmn:
+                            views_domain.append(id.id)
+                    elif rec.action_taken == 'correspondence_pulled':
+                        view_id = self.env.ref('smart_office.view_correspondence_pulled_tree').id
+                        dmn = self.env['file.tracker.report'].search(
+                            [('pulled_date', '>=', rec.date_range.date_start),
+                             ('pulled_date', '<=', rec.date_range.date_end)])
+                        for id in dmn:
+                            views_domain.append(id.id)
+                    elif rec.action_taken == 'file_pulled':
+                        view_id = self.env.ref('smart_office.view_file_pulled_tree').id
+                        dmn = self.env['file.tracker.report'].search(
+                            [('pulled_date', '>=', rec.date_range.date_start),
+                             ('pulled_date', '<=', rec.date_range.date_end)])
                         for id in dmn:
                             views_domain.append(id.id)
                     elif rec.action_taken == 'assigned_to_file':
