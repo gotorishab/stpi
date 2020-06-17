@@ -22,7 +22,7 @@ class DispatchDocument(models.Model):
     previousversion = fields.Char('Previous Version', track_visibility='always')
     folder_id = fields.Many2one('folder.master', string="File", track_visibility='always')
     state = fields.Selection(
-        [('draft', 'Draft'), ('in_progress', 'In Progress'), ('dispatched', 'Dispatched')
+        [('draft', 'Draft'),('obsolete', 'Obsolete'), ('reject', 'Reject'), ('ready_for_dispatched', 'Ready for Dispatch'), ('dispatched', 'Dispatched')
          ], required=True, default='draft', string='Status', track_visibility='always')
 
 
@@ -45,11 +45,22 @@ class DispatchDocument(models.Model):
                 'state': 'draft',
                 'cooespondence_ids': rec.cooespondence_ids.ids,
             })
+            a = self.env['dispatch.document'].search([('folder_id', '=', rec.folder_id.id), ('state', '=', 'draft')])
+            for docs in a:
+                if int(docs.version) < int(rec.version):
+                    docs.sudo().button_obsellete()
+
+
 
     @api.multi
-    def button_submit(self):
+    def button_obsellete(self):
         for rec in self:
-            rec.write({'state': 'in_progress'})
+            rec.write({'state': 'obsolete'})
+
+    @api.multi
+    def button_ready_for_dispatch(self):
+        for rec in self:
+            rec.write({'state': 'ready_for_dispatched'})
 
     @api.multi
     def button_dispatch(self):
@@ -60,3 +71,8 @@ class DispatchDocument(models.Model):
     def button_reset_to_draft(self):
         for rec in self:
             rec.write({'state': 'draft'})
+
+    @api.multi
+    def button_reject(self):
+        for rec in self:
+            rec.write({'state': 'reject'})
