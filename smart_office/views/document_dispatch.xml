@@ -14,6 +14,7 @@
                     <sheet>
                         <group>
                             <group>
+
                                 <field name="current_user_id" attrs="{'readonly':[('state','!=', 'draft')]}"/>
                                 <field name="branch_id" attrs="{'readonly':[('state','!=', 'draft')]}"/>
                                 <field name="department_id" attrs="{'readonly':[('state','!=', 'draft')]}"/>
@@ -21,8 +22,9 @@
                                 <field name="created_on" attrs="{'readonly':[('state','!=', 'draft')]}"/>
                             </group>
                             <group>
+                                <field name="dispatch_mode" attrs="{'readonly':[('state','not in',('draft', 'ready_for_dispatched')]}"/>
                                 <field name="select_template" attrs="{'readonly':[('state','!=', 'draft')]}"/>
-                                <field name="version"/>
+                                <field name="version" invisible="1"/>
                                 <field name="previousversion" attrs="{'readonly':[('state','!=', 'draft')]}"/>
                                 <field name="folder_id" attrs="{'readonly':[('state','!=', 'draft')]}"/>
                                 <field name="cooespondence_ids" widget="many2many_tags" attrs="{'readonly':[('state','!=', 'draft')]}"/>
@@ -80,6 +82,7 @@
             <field name="view_type">form</field>
          <field name="view_mode">tree,form</field>
          <field name="domain">[('state','=','ready_for_dispatched')]</field>
+     </record>
 
      <!-- ==========Action View of master of Folder model=========== -->
      <record id="dispatch_document_dispatched_action_view" model="ir.actions.act_window">
@@ -91,7 +94,6 @@
          <field name="domain">[('state','=','dispatched')]</field>
     </record>
 
-    </record>
      <!-- ==========Action View of master of Folder model=========== -->
      <record id="dispatch_document_robsolete_action_view" model="ir.actions.act_window">
             <field name="name">Dispatch Documents</field>
