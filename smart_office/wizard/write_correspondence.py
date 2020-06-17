@@ -6,6 +6,7 @@ class AddReference(models.TransientModel):
     _description = 'Add Reference'
 
 
+
     cooespondence_ids = fields.Many2many('muk_dms.file', string='Correspondence')
     current_user_id = fields.Many2one('res.users')
     branch_id = fields.Many2one('res.branch', 'Branch')
@@ -30,8 +31,6 @@ class AddReference(models.TransientModel):
             for letter in self.folder_id.file_ids:
                 letter_id.append(letter.id)
             dd = self.env['dispatch.document'].create({
-                'version': '1',
-                'previousversion': '1',
                 'template_html': self.template_html,
                 'select_template': self.select_template.id,
                 'current_user_id': (current_employee.user_id.id),
@@ -42,6 +41,8 @@ class AddReference(models.TransientModel):
                 'folder_id': self.folder_id.id,
                 'state': 'draft',
             })
+            dd.version = dd.id
+            dd.previousversion = dd.id
             dd.cooespondence_ids = [(6, 0, letter_id)]
             form_view = self.env.ref('smart_office.foldermaster_form_view')
             tree_view = self.env.ref('smart_office.foldermaster_tree_view1')

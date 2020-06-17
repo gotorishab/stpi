@@ -56,7 +56,7 @@
                     <field name="folder_id"/>
                     <field name="state"/>
                     <button name="button_edit" string="Edit" type="object" states="draft"/>
-                    <button name="button_submit" string="Submit" type="object" states="in_progress"/>
+                    <button name="button_submit" string="Request Approval" type="object" states="ready_for_dispatched"/>
                 </tree>
             </field>
      </record>

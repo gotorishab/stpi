@@ -8,6 +8,7 @@ class DispatchDocument(models.Model):
     _name = 'dispatch.document'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = 'Dispatch Document'
+    _rec_name = 'version'
 
 
     cooespondence_ids = fields.Many2many('muk_dms.file', string='Correspondence', track_visibility='always')
@@ -18,8 +19,10 @@ class DispatchDocument(models.Model):
     created_on = fields.Date(string='Date', default = fields.Date.today(), track_visibility='always')
     select_template = fields.Many2one('select.template.html', track_visibility='always')
     template_html = fields.Html('Template', track_visibility='always')
-    version = fields.Char('Version', track_visibility='always')
-    previousversion = fields.Char('Previous Version', track_visibility='always')
+
+    version = fields.Many2one('dispatch.document', string='Version', track_visibility='always')
+    previousversion = fields.Many2one('dispatch.document', string='Previous  Version', track_visibility='always')
+
     folder_id = fields.Many2one('folder.master', string="File", track_visibility='always')
     state = fields.Selection(
         [('draft', 'Draft'),('obsolete', 'Obsolete'), ('reject', 'Reject'), ('ready_for_dispatched', 'Ready for Dispatch'), ('dispatched', 'Dispatched')
@@ -32,8 +35,6 @@ class DispatchDocument(models.Model):
         for rec in self:
             current_employee = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
             dd = self.env['dispatch.document'].create({
-                'version': '2',
-                'previousversion': rec.version,
                 'template_html': rec.template_html,
                 'select_template': rec.select_template.id,
                 'current_user_id': current_employee.user_id.id,
@@ -45,10 +46,9 @@ class DispatchDocument(models.Model):
                 'state': 'draft',
                 'cooespondence_ids': rec.cooespondence_ids.ids,
             })
-            a = self.env['dispatch.document'].search([('folder_id', '=', rec.folder_id.id), ('state', '=', 'draft')])
-            for docs in a:
-                if int(docs.version) < int(rec.version):
-                    docs.sudo().button_obsellete()
+            dd.version = dd.id
+            dd.previousversion = rec.id
+            rec.sudo().button_obsellete()
 
 
 
