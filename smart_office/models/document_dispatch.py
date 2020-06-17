@@ -1,8 +1,6 @@
 from odoo import fields, models, api, _
 from datetime import datetime, date, timedelta
-import requests
-import json
-from odoo.exceptions import UserError
+
 
 class DispatchDocument(models.Model):
     _name = 'dispatch.document'
