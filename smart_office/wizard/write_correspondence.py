@@ -17,6 +17,9 @@ class AddReference(models.TransientModel):
     version = fields.Many2one('dispatch.document', string='Version')
     previousversion = fields.Many2one('dispatch.document', string = 'Previous Version')
     folder_id = fields.Many2one('folder.master', string="Select File")
+    dispatch_mode = fields.Selection(
+        [('hand_to_hand', 'Hand to Hand'),('email', 'Email'), ('fax', 'Fax'), ('splmess', 'Spl. Messenger'), ('post', 'Post')
+         ], string='Dispatch Mode', track_visibility='always')
 
     @api.onchange('select_template')
     def get_template(self):
@@ -32,6 +35,7 @@ class AddReference(models.TransientModel):
                 letter_id.append(letter.id)
             dd = self.env['dispatch.document'].create({
                 'name': 1,
+                'dispatch_mode': self.dispatch_mode,
                 'template_html': self.template_html,
                 'select_template': self.select_template.id,
                 'current_user_id': (current_employee.user_id.id),
