@@ -58,7 +58,7 @@
                     <field name="previousversion"/>
                     <field name="folder_id"/>
                     <field name="state"/>
-                    <button name="button_edit" string="Edit" type="object" states="draft"/>
+                    <button name="button_edit" string="Revise" type="object" states="draft"/>
                     <button name="%(edit_doc_dispatch_button_wizard_action_view)d" states="draft" string="Edit Doc" icon="fa-pencil" type="action" context = "{'default_doc_dispatch': id, 'default_select_template': select_template, 'default_template_html': template_html}"/>
                     <button name="%(edit_doc_dispatch_mode_button_wizard_action_view)d" states="draft,ready_for_dispatched" string="Edit Dispatch Mode" icon="fa-paper-plane-o" type="action" context = "{'default_doc_dispatch': id, 'default_dispatch_mode': dispatch_mode}"/>
                     <button name="button_ready_for_dispatch" string="Request Approval" type="object" states="draft"/>

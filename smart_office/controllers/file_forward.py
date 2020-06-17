@@ -3,26 +3,26 @@ from odoo.http import request
 import json
 
 class FileForwardData(http.Controller):
-    @http.route(['/filesforward'], type='json', auth='public', csrf=False, methods=['POST'])
+    @http.route(['/filesforward'], type='http', auth='public', csrf=False, methods=['POST'])
     def get_forward_details(self, **kwargs):
         forward_details_data = request.env['folder.tracking.information'].sudo().search([])
         foward_det = []
         for rec in forward_details_data:
             vals={
                 'id': rec.id,
-                'forwarded_by': rec.forwarded_by,
+                'forwarded_by': rec.forwarded_by.name,
                 'forwarded_date': rec.forwarded_date,
-                'forwarded_to_user': rec.forwarded_to_user,
-                'forwarded_to_dept': rec.forwarded_to_dept,
-                'file_id': rec.create_let_id,
+                'forwarded_to_user': rec.forwarded_to_user.name,
+                'forwarded_to_dept': rec.forwarded_to_dept.name,
+                'file_id': rec.create_let_id.name,
             }
             foward_det.append(vals)
-        data = {'status': 200, 'response': foward_det, 'message': 'Success'}
-        return data
+        loaded_r = json.dumps(dict(response=str(foward_det)))
+        return loaded_r
+
 
     @http.route(['/letterlist'], type='http', auth='public', csrf=False, methods=['POST'])
     def get_letter_list_details(self, **kwargs):
-        print('=========================True r===========================')
         letter_details_data = request.env['muk_dms.file'].sudo().search([])
         letter_det = []
         for rec in letter_details_data:
