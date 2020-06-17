@@ -39,7 +39,11 @@ class FolderMaster(models.Model):
     type = fields.Many2many('folder.type', string = "Type",track_visibility='always')
     description = fields.Text(string = 'Description',track_visibility='always')
     file_ids = fields.One2many('muk_dms.file','folder_id', string = 'Files',track_visibility='always')
+    document_dispatch = fields.One2many('dispatch.document','folder_id', string = 'Document Dispatch',track_visibility='always')
+
+
     file_ids_m2m = fields.Many2many('muk_dms.file', string = 'Reference',track_visibility='always')
+
     iframe_dashboard = fields.Text()
     folder_track_ids = fields.One2many('folder.tracking.information', 'create_let_id', string = "Files")
     my_view = fields.Text()

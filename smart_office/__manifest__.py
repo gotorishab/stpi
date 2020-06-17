@@ -54,6 +54,7 @@
         'views/see_file.xml',
         'views/file_exception.xml',
         'views/report.xml',
+        'views/document_dispatch.xml',
 
     ],
     'qweb': [

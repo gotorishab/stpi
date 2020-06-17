@@ -58,11 +58,9 @@
                             <page name = "Write_correspondence" string = "Write correspondence">
                                 <button type="action" name="%(write_correspondence_wizard_action_view)d" string="Write Correspondence"  colspan="2"
                             class="oe_stat_button"
-                            icon="fa-clock-o" context = "{'default_folder_id': id}"/>
-                                <field name="file_ids_m2m" readonly="1"/>
+                            icon="fa-clock-o" context = "{'default_folder_id': id, 'default_current_user_id': uid, 'default_branch_id': branch_id, 'default_department_id': department_id, 'default_version': '1', 'default_previousversion': '1'}"/>
+                                <field name="document_dispatch" readonly="1"/>
                             </page>
-
-
                             <page name="FileTrackingInformation" string="File Tracking Information" invisible="1">
                                 <field name="folder_track_ids" readonly="1">
                                     <tree editable="bottom">

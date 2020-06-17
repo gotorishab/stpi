@@ -28,6 +28,7 @@ access_doc_sender_designation,doc.sender.designation,model_doc_sender_designatio
 access_doc_sender_address,doc.sender.address,model_doc_sender_address,base.group_user,1,1,1,1
 access_file_tracker_report,file.tracker.report,model_file_tracker_report,base.group_user,1,1,1,1
 access_select_template_html,select.template.html,model_select_template_html,base.group_user,1,1,1,1
+access_dispatch_document,dispatch.document,model_dispatch_document,base.group_user,1,1,1,1
 
 
 

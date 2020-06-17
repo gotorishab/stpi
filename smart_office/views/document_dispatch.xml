@@ -1,0 +1,111 @@
+<odoo>
+        <!-- ======Form View of master of Folder model====== -->
+        <record id="document_dispatch_form_view" model="ir.ui.view">
+            <field name="name">dispatch.document.form</field>
+            <field name="model">dispatch.document</field>
+            <field name="arch" type="xml">
+                <form string="File">
+                    <header>
+                        <button name="button_submit" string="Submit" class="oe_highlight" type="object" states="draft"/>
+                        <button name="button_dispatch" string="Dispatch" class="oe_highlight" type="object" states="in_progress"/>
+                        <button name="button_reset_to_draft" string="Reopen" class="oe_highlight" type="object" states="dispatched"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,in_progress,dispatched" />
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+
+                                <field name="current_user_id"/>
+                                <field name="branch_id"/>
+                                <field name="department_id"/>
+                                <field name="job_id"/>
+                                <field name="created_on"/>
+                            </group>
+                            <group>
+                                <field name="select_template"/>
+                                <field name="version"/>
+                                <field name="previousversion"/>
+                                <field name="folder_id"/>
+                            </group>
+                            <field name="template_html"/>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+     <!-- ======Tree View of master of Folder model====== -->
+     <record id="dispatch_document_tree_view1" model="ir.ui.view">
+            <field name="name">dispatch.document.tree</field>
+            <field name="model">dispatch.document</field>
+            <field name="arch" type="xml">
+                <tree string="Folder">
+                    <field name="current_user_id"/>
+                    <field name="branch_id"/>
+                    <field name="department_id"/>
+                    <field name="created_on"/>
+                    <field name="select_template"/>
+                    <field name="version"/>
+                    <field name="previousversion"/>
+                    <field name="folder_id"/>
+                    <field name="status"/>
+                </tree>
+            </field>
+     </record>
+
+     <!-- ==========Action View of master of Folder model=========== -->
+     <record id="dispatch_document_draft_action_view" model="ir.actions.act_window">
+            <field name="name">Dispatch Documents</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">dispatch.document</field>
+            <field name="view_type">form</field>
+         <field name="view_mode">tree,form</field>
+         <field name="domain">[('state','=','draft')]</field>
+    </record>
+
+     <!-- ==========Action View of master of Folder model=========== -->
+     <record id="dispatch_document_waiting_action_view" model="ir.actions.act_window">
+            <field name="name">Dispatch Documents</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">dispatch.document</field>
+            <field name="view_type">form</field>
+         <field name="view_mode">tree,form</field>
+         <field name="domain">[('state','=','in_progress')]</field>
+    </record>
+
+     <!-- ==========Action View of master of Folder model=========== -->
+     <record id="dispatch_document_dispatched_action_view" model="ir.actions.act_window">
+            <field name="name">Dispatch Documents</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">dispatch.document</field>
+            <field name="view_type">form</field>
+         <field name="view_mode">tree,form</field>
+         <field name="domain">[('state','=','dispatched')]</field>
+    </record>
+
+
+        <menuitem id="menuitem_dispatch_doc_fol"
+                  parent="muk_dms.main_menu_muk_dms"
+                  name="Dispatch"/>
+
+        <menuitem id="menuitem_dispatch_document_draft"
+                  parent="menuitem_dispatch_doc_fol"
+                  action="dispatch_document_draft_action_view"
+                  name="Draft"/>
+
+            <menuitem id="menuitem_dispatch_document_waiting"
+                  parent="menuitem_dispatch_doc_fol"
+                  action="dispatch_document_waiting_action_view"
+                  name="Waiting for Approval"/>
+
+            <menuitem id="menuitem_dispatch_document_dispatched"
+                  parent="menuitem_dispatch_doc_fol"
+                  action="dispatch_document_dispatched_action_view"
+                  name="Dispatched"/>
+
+</odoo>
