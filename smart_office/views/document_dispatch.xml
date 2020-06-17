@@ -26,6 +26,7 @@
                                 <field name="version"/>
                                 <field name="previousversion"/>
                                 <field name="folder_id"/>
+                                <field name="cooespondence_ids" widget="many2many_tags"/>
                             </group>
                             <field name="template_html"/>
                         </group>

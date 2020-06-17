@@ -10,17 +10,34 @@ class DispatchDocument(models.Model):
     _description = 'Dispatch Document'
 
 
-    cooespondence_ids = fields.Many2many('muk_dms.file', string='Correspondence')
-    current_user_id = fields.Many2one('res.users')
-    branch_id = fields.Many2one('res.branch', 'Branch')
-    department_id = fields.Many2one('hr.department', 'Department')
-    job_id = fields.Many2one('hr.job', 'Job Position')
-    created_on = fields.Date(string='Date', default = fields.Date.today())
-    select_template = fields.Many2one('select.template.html')
-    template_html = fields.Html('Template')
-    version = fields.Char('Version')
-    previousversion = fields.Char('Previous Version')
-    folder_id = fields.Many2one('folder.master', string="File")
+    cooespondence_ids = fields.Many2many('muk_dms.file', string='Correspondence', track_visibility='always')
+    current_user_id = fields.Many2one('res.users', track_visibility='always')
+    branch_id = fields.Many2one('res.branch', 'Branch', track_visibility='always')
+    department_id = fields.Many2one('hr.department', 'Department', track_visibility='always')
+    job_id = fields.Many2one('hr.job', 'Job Position', track_visibility='always')
+    created_on = fields.Date(string='Date', default = fields.Date.today(), track_visibility='always')
+    select_template = fields.Many2one('select.template.html', track_visibility='always')
+    template_html = fields.Html('Template', track_visibility='always')
+    version = fields.Char('Version', track_visibility='always')
+    previousversion = fields.Char('Previous Version', track_visibility='always')
+    folder_id = fields.Many2one('folder.master', string="File", track_visibility='always')
     state = fields.Selection(
         [('draft', 'Draft'), ('in_progress', 'In Progress'), ('dispatched', 'Dispatched')
          ], required=True, default='draft', string='Status', track_visibility='always')
+
+
+
+    @api.multi
+    def button_submit(self):
+        for rec in self:
+            rec.write({'state': 'in_progress'})
+
+    @api.multi
+    def button_dispatch(self):
+        for rec in self:
+            rec.write({'state': 'dispatched'})
+
+    @api.multi
+    def button_reset_to_draft(self):
+        for rec in self:
+            rec.write({'state': 'draft'})
