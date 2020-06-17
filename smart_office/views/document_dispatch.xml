@@ -9,7 +9,7 @@
                         <button name="button_ready_for_dispatch" string="Request Approval" class="oe_highlight" type="object" states="draft"/>
                         <button name="button_dispatch" string="Dispatch" class="oe_highlight" type="object" states="ready_for_dispatched"/>
                         <button name="button_reset_to_draft" string="Reopen" class="oe_highlight" type="object" states="ready_for_dispatched"/>
-                        <field name="state" widget="statusbar" statusbar_visible="draft,ready_for_dispatched,dispatched" />
+                        <field name="state" widget="statusbar" statusbar_visible="draft,ready_for_dispatched,dispatched"/>
                     </header>
                     <sheet>
                         <group>
@@ -22,7 +22,7 @@
                                 <field name="created_on" attrs="{'readonly':[('state','!=', 'draft')]}"/>
                             </group>
                             <group>
-                                <field name="dispatch_mode" required="1" attrs="{'readonly':[('state','in', ['obsolete', 'reject', 'dispatched'])]}"/>
+                                <field name="dispatch_mode" required="1" attrs="{'readonly':[('state','not in',('draft', 'ready_for_dispatched')]}"/>
                                 <field name="select_template" attrs="{'readonly':[('state','!=', 'draft')]}"/>
                                 <field name="version" invisible="1"/>
                                 <field name="previousversion" attrs="{'readonly':[('state','!=', 'draft')]}"/>
