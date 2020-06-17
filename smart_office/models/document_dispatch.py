@@ -40,6 +40,7 @@ class DispatchDocument(models.Model):
             dd = self.env['dispatch.document'].create({
                 'name': rec.name + 1,
                 'previousversion': rec.id,
+                'dispatch_mode': rec.dispatch_mode,
                 'template_html': rec.template_html,
                 'select_template': rec.select_template.id,
                 'current_user_id': current_employee.user_id.id,
