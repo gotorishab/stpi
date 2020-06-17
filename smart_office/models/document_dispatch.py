@@ -28,6 +28,25 @@ class DispatchDocument(models.Model):
 
 
     @api.multi
+    def button_edit(self):
+        for rec in self:
+            current_employee = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+            dd = self.env['dispatch.document'].create({
+                'version': '2',
+                'previousversion': rec.version,
+                'template_html': rec.template_html,
+                'select_template': rec.select_template.id,
+                'current_user_id': current_employee.user_id.id,
+                'department_id': current_employee.department_id.id,
+                'job_id': current_employee.job_id.id,
+                'branch_id': current_employee.branch_id.id,
+                'created_on': datetime.now().date(),
+                'folder_id': rec.folder_id.id,
+                'state': 'draft',
+                'cooespondence_ids': rec.cooespondence_ids.ids,
+            })
+
+    @api.multi
     def button_submit(self):
         for rec in self:
             rec.write({'state': 'in_progress'})

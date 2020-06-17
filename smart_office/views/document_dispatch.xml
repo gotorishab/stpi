@@ -55,6 +55,7 @@
                     <field name="previousversion"/>
                     <field name="folder_id"/>
                     <field name="state"/>
+                    <field name="button_edit"/>
                 </tree>
             </field>
      </record>
