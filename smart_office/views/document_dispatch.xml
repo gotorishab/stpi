@@ -53,7 +53,7 @@
                     <field name="version"/>
                     <field name="previousversion"/>
                     <field name="folder_id"/>
-                    <field name="status"/>
+                    <field name="state"/>
                 </tree>
             </field>
      </record>
