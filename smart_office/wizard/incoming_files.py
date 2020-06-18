@@ -26,7 +26,6 @@ class IncomingfileWizard(models.TransientModel):
                 'res_model': 'folder.master',
                 'type': 'ir.actions.act_window',
                 'target': 'current',
-                'create': False,
                 'domain': [('id', 'in', my_id)],
                 }
 
@@ -49,8 +48,6 @@ class IncomingfileWizard(models.TransientModel):
                 'res_model': 'folder.master',
                 'type': 'ir.actions.act_window',
                 'target': 'current',
-                'create': False,
-                # 'view_id': self.env.ref('hr_applicant.view_employee_relative_tree').id,
                 'domain': [('current_owner_id.id', 'in', my_ids)],
                 }
 

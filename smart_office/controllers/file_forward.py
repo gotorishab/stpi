@@ -3,6 +3,7 @@ from odoo.http import request
 import json
 
 class FileForwardData(http.Controller):
+
     @http.route(['/filesforward'], type='http', auth='public', csrf=False, methods=['POST'])
     def get_forward_details(self, **kwargs):
         forward_details_data = request.env['folder.tracking.information'].sudo().search([])
@@ -17,8 +18,11 @@ class FileForwardData(http.Controller):
                 'file_id': rec.create_let_id.name,
             }
             foward_det.append(vals)
+        data = {"response": foward_det}
+        print('=========================letter==========================',foward_det)
         loaded_r = json.dumps(dict(response=str(foward_det)))
         return loaded_r
+
 
 
     @http.route(['/letterlist'], type='http', auth='public', csrf=False, methods=['POST'])
