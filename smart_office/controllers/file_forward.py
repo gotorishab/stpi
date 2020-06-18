@@ -15,7 +15,7 @@ class FileForwardData(http.Controller):
                 'forwarded_date': rec.forwarded_date,
                 'forwarded_to_user': rec.forwarded_to_user.name,
                 'forwarded_to_dept': rec.forwarded_to_dept.name,
-                'file_id': rec.create_let_id.name,
+                'file_id': rec.create_let_id.id,
             }
             foward_det.append(vals)
         data = {"response": foward_det}
