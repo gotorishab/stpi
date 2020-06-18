@@ -36,7 +36,7 @@ class FileForwardData(http.Controller):
         loaded_r = json.dumps(dict(response=str(letter_det)))
         return loaded_r
 
-    @http.route(['/lettercall'], type='http', auth='public', csrf=False, methods=['POST'])
+    @http.route(['/lettercall'], type='json', auth='public', csrf=False, methods=['POST'])
     def get_letter_call_details(self, letter_id=None, **kwargs):
         letter_det = []
         if letter_id:
