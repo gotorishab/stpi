@@ -73,9 +73,9 @@ class NonDocumentsWizard(models.TransientModel):
                         'dedmedical_self_ids': [(6,0,dedmedical_self_ids)],
                     })
             return {
-                'name': 'Not Attached Documents',
-                'view_type': 'form',
-                'view_mode': 'tree,form',
+                'name': 'Pending Documents',
+                'view_type': 'tree',
+                'view_mode': 'tree',
                 'res_model': 'non.documents.report',
                 'type': 'ir.actions.act_window',
                 'target': 'current',
