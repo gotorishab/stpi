@@ -1,0 +1,34 @@
+<odoo>
+
+    <!--=======Tree view of HR Declaration=======-->
+    <record id="non_documents_report_tree_view" model="ir.ui.view">
+        <field name="name">non.documents.report.tree</field>
+        <field name="model">non.documents.report</field>
+        <field name="arch" type="xml">
+            <tree string="Non Ducuments">
+                  <field name="employee_id"/>
+                  <field name="branch_id"/>
+                  <field name="date_range"/>
+                  <field name="income_house_ids"/>
+                  <field name="income_other_ids"/>
+                  <field name="slab_ids"/>
+                  <field name="med_ins_ids"/>
+                  <field name="deduction_saving_ids"/>
+                  <field name="tax_home_ids"/>
+                  <field name="tax_education_ids"/>
+                  <field name="rgess_ids"/>
+                  <field name="dedmedical_ids"/>
+                  <field name="dedmedical_self_ids"/>
+            </tree>
+        </field>
+    </record>
+
+            <!--============Action view of non.documents.report Draft============-->
+    <record id="non_documents_report_action_view" model="ir.actions.act_window">
+        <field name="name">IT Declaration</field>
+        <field name="res_model">non.documents.report</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+</odoo>

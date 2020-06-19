@@ -19,3 +19,4 @@ access_tax_payment,tax.payment,model_tax_payment,base.group_user,1,1,1,1
 access_rent_paid,rent.paid,model_rent_paid,base.group_user,1,1,1,1
 access_income_house,income.house,model_income_house,base.group_user,1,1,1,1
 access_income_other,income.other,model_income_other,base.group_user,1,1,1,1
+access_non_documents_report,non.documents.report,model_non_documents_report,base.group_user,1,1,1,1
