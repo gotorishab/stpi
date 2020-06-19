@@ -74,7 +74,7 @@ class NonDocumentsWizard(models.TransientModel):
                     })
             return {
                 'name': 'Pending Documents',
-                'view_type': 'tree',
+                'view_type': 'form',
                 'view_mode': 'tree',
                 'res_model': 'non.documents.report',
                 'type': 'ir.actions.act_window',
