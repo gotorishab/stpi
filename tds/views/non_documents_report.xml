@@ -5,7 +5,7 @@
         <field name="name">non.documents.report.tree</field>
         <field name="model">non.documents.report</field>
         <field name="arch" type="xml">
-            <tree string="Non Ducuments">
+            <tree string="Non Ducuments" create="0">
                   <field name="employee_id"/>
                   <field name="branch_id"/>
                   <field name="date_range"/>
@@ -20,6 +20,34 @@
                   <field name="dedmedical_ids"/>
                   <field name="dedmedical_self_ids"/>
             </tree>
+        </field>
+    </record>
+    <!--=======Tree view of HR Declaration=======-->
+    <record id="non_documents_report_form_view" model="ir.ui.view">
+        <field name="name">non.documents.report.form</field>
+        <field name="model">non.documents.report</field>
+        <field name="arch" type="xml">
+            <form string="Non Documents" create="0">
+                <group>
+                    <group>
+                        <field name="employee_id"/>
+                        <field name="branch_id"/>
+                          <field name="date_range"/>
+                          <field name="income_house_ids" widget="many2many_tags"/>
+                          <field name="income_other_ids" widget="many2many_tags"/>
+                          <field name="slab_ids" widget="many2many_tags"/>
+                          <field name="med_ins_ids" widget="many2many_tags"/>
+                    </group>
+                    <group>
+                        <field name="deduction_saving_ids" widget="many2many_tags"/>
+                        <field name="tax_home_ids" widget="many2many_tags"/>
+                          <field name="tax_education_ids" widget="many2many_tags"/>
+                          <field name="rgess_ids" widget="many2many_tags"/>
+                          <field name="dedmedical_ids" widget="many2many_tags"/>
+                          <field name="dedmedical_self_ids" widget="many2many_tags"/>
+                    </group>
+                </group>
+            </form>
         </field>
     </record>
 
