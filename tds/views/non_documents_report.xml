@@ -25,9 +25,7 @@
                         name="action_view_declaration"
                         string = "IT Declaration"
                         attrs="{'invisible':[('tds_id','=', False)]}"
-                >
-                    <strong><field name="tds_id" string="IT Declaration" invisible="1"/></strong><br/>
-                </button>
+                />
             </tree>
         </field>
     </record>
