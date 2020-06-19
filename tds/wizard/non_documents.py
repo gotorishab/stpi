@@ -25,7 +25,6 @@ class NonDocumentsWizard(models.TransientModel):
             dedmedical_ids = []
             dedmedical_self_ids = []
             for declaration in id_dec:
-                employee_id = declaration.employee_id.id
                 for line in declaration.income_house_ids:
                     if not line.document:
                         income_house_ids.append(line.id)
@@ -58,9 +57,9 @@ class NonDocumentsWizard(models.TransientModel):
                         dedmedical_self_ids.append(line.id)
                 if income_house_ids or income_other_ids or slab_ids or med_ins_ids or deduction_saving_ids or tax_home_ids or tax_education_ids or rgess_ids or dedmedical_ids or dedmedical_self_ids:
                     self.env['non.documents.report'].create({
-                        'employee_id': employee_id,
                         'tds_id': declaration.id,
-                        'branch_id': self.branch_id.id,
+                        'employee_id': declaration.employee_id.id,
+                        'branch_id': declaration.branch_id.id,
                         'date_range': self.date_range.id,
                         'income_house_ids': [(6,0,income_house_ids)],
                         'income_other_ids': [(6,0,income_other_ids)],

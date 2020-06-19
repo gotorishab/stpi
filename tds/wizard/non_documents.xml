@@ -14,7 +14,7 @@
                             <field name="date_range" required="1" domain="[('tds', '=', True)]" options="{'no_create_edit': True, 'no_create': True}"/>
                         </group>
                         <group>
-                            <field name="branch_id" required="1" options="{'no_create_edit': True, 'no_create': True}"/>
+                            <field name="branch_id" required="1" options="{'no_create_edit': True, 'no_create': True}" widget="many2many_tags"/>
                         </group>
                     </group>
                     <footer>
