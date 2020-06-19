@@ -7,6 +7,7 @@ class NonDocumentsReport(models.Model):
 
     employee_id = fields.Many2one('hr.employee', string='Requested By')
     branch_id = fields.Many2one('res.branch', string="Branch", store=True)
+    tds_id = fields.Many2one('hr.declaration', string="Declaration")
     date_range = fields.Many2one('date.range', string='Date Range')
 
     income_house_ids = fields.Many2many('income.house',string='Income from House Property')
@@ -20,3 +21,22 @@ class NonDocumentsReport(models.Model):
     dedmedical_ids = fields.Many2many('declaration.dedmedical', string='Deductions on Medical Expenditure for a Handicapped Relative')
     dedmedical_self_ids = fields.Many2many('declaration.dedmedicalself', string='Deductions on Medical Expenditure on Self or Dependent Relative')
 
+
+    @api.multi
+    def action_view_declaration(self):
+        form_view = self.env.ref('tds.hr_declaration_form_view')
+        tree_view = self.env.ref('tds.hr_declaration_tree_view')
+        value = {
+            'domain': str([('id', '=', self.tds_id.id)]),
+            'view_type': 'form',
+            'view_mode': 'tree, form',
+            'res_model': 'hr.declaration',
+            'view_id': False,
+            'views': [(form_view and form_view.id or False, 'form'),
+                      (tree_view and tree_view.id or False, 'tree')],
+            'type': 'ir.actions.act_window',
+            'res_id': self.tds_id.id,
+            'target': 'current',
+            'nodestroy': True
+        }
+        return value

@@ -39,7 +39,7 @@
                             <field name="job_id" readonly="1"/>
                              <field name="branch_id" readonly="1"/>
                              <field name="department_id" readonly="1"/>
-                            <field name="date_range" attrs="{'readonly':[('state','!=','draft')], 'required':[('state','=','draft')]}" domain="[('tds', '=', True)]"/>
+                            <field name="date_range" options="{'no_create_edit': True, 'no_create': True}" attrs="{'readonly':[('state','!=','draft')], 'required':[('state','=','draft')]}" domain="[('tds', '=', True)]"/>
                             <field name="rent_paid" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                             <field name="rent_paid_attach_files" invisible="1"/>
                             <field name="pan_card" attrs="{'invisible':[('rent_paid_attach_files','!=',True)], 'required':[('rent_paid_attach_files','!=',False)]}"/>

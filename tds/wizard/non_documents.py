@@ -3,17 +3,17 @@ from odoo import api, fields, models,_
 
 class NonDocumentsWizard(models.TransientModel):
     _name = 'non.documents.wizard'
-    _description = 'Send Reminder'
+    _description = 'Pending Documents'
 
-    date_range = fields.Many2one('date.range', string='Date Range')
-    branch_id = fields.Many2one('res.branch', string='Branch')
+    date_range = fields.Many2one('date.range', string='Financial Year')
+    branch_id = fields.Many2many('res.branch', string='Branch')
 
     def find_non_doc(self):
         if self:
-            non_doc_rep = self.env['non.documents.report'].search([('branch_id', '=', self.branch_id.id),('date_range', '=', self.branch_id.id)])
+            non_doc_rep = self.env['non.documents.report'].search([('branch_id', 'in', self.branch_id.ids),('date_range', '=', self.date_range.id)])
             for line in non_doc_rep:
                 line.unlink()
-            id_dec = self.env['hr.declaration'].search([('branch_id', '=', self.branch_id.id),('date_range', '=', self.date_range.id)])
+            id_dec = self.env['hr.declaration'].search([('branch_id', 'in', self.branch_id.ids),('date_range', '=', self.date_range.id)])
             income_house_ids = []
             income_other_ids = []
             slab_ids = []
@@ -59,6 +59,7 @@ class NonDocumentsWizard(models.TransientModel):
                 if income_house_ids or income_other_ids or slab_ids or med_ins_ids or deduction_saving_ids or tax_home_ids or tax_education_ids or rgess_ids or dedmedical_ids or dedmedical_self_ids:
                     self.env['non.documents.report'].create({
                         'employee_id': employee_id,
+                        'tds_id': declaration.id,
                         'branch_id': self.branch_id.id,
                         'date_range': self.date_range.id,
                         'income_house_ids': [(6,0,income_house_ids)],
@@ -79,5 +80,5 @@ class NonDocumentsWizard(models.TransientModel):
                 'res_model': 'non.documents.report',
                 'type': 'ir.actions.act_window',
                 'target': 'current',
-                'domain': [('branch_id', '=', self.branch_id.id)],
+                'domain': [('branch_id', 'in', self.branch_id.ids),('date_range', '=', self.date_range.id)],
             }
