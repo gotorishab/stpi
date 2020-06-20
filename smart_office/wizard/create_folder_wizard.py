@@ -33,7 +33,11 @@ class CreateFolder(models.TransientModel):
     def confirm_button(self):
         if self:
             letter_id = []
+
             letter_id.append(self.deffolderid.id)
+            string = str(self.deffolderid.php_letter_id)
+            print('===============string================', string)
+            print('===============string 1================', string[1:-1])
             file_id = self.env['folder.master'].create({
                 'folder_name': self.folder_name,
                 'subject': self.subject.id,
@@ -44,8 +48,10 @@ class CreateFolder(models.TransientModel):
                 'type': self.type,
                 'description': self.description,
                 'first_doc_id': int(self.deffolderid.php_letter_id),
+                'document_ids': string[1:-1],
                 'file_ids' : [(6, 0, letter_id)]
             })
+            self.deffolderid.folder_id = file_id.id
             current_employee = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
             self.env['file.tracker.report'].create({
                 'name': str(self.deffolderid.name),

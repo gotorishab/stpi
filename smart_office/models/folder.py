@@ -36,6 +36,7 @@ class FolderMaster(models.Model):
     previous_reference = fields.Text('Previous Reference')
     later_reference = fields.Text('Later Reference')
     first_doc_id = fields.Integer(string = 'First Doc Id')
+    document_ids = fields.Char(string = 'PHP Letter ids')
     type = fields.Many2many('folder.type', string = "Type",track_visibility='always')
     description = fields.Text(string = 'Description',track_visibility='always')
     file_ids = fields.One2many('muk_dms.file','folder_id', string = 'Files',track_visibility='always')
@@ -100,6 +101,7 @@ class FolderMaster(models.Model):
         for res in self:
             seq = self.env['ir.sequence'].next_by_code('folder.master')
             res.sequence = int(seq)
+            print('=======================res.document_ids========================',res.document_ids)
             data = {
                         'assign_name': res.folder_name,
                         'assign_no': res.sequence,
@@ -111,15 +113,15 @@ class FolderMaster(models.Model):
                         'wing_id': 1,
                         'section_id': 0,
                         'designation_id': 78,
-                        'document_ids': res.first_doc_id,
+                        'document_ids': res.document_ids,
                     }
             req = requests.post('http://103.92.47.152/STPI/www/web-service/add-assignment/', data=data,
                                 json=None)
             try:
                 pastebin_url = req.text
-                # print('============Patebin url=================', pastebin_url)
+                print('============Patebin url=================', pastebin_url)
                 dictionary = json.loads(pastebin_url)
-                res.iframe_dashboard = str(dictionary["response"][0]['notesheet']) + str('?type=STPI&user_id=1')
+                res.iframe_dashboard = str(dictionary["response"][0]['notesheet']) + str('?type=STPI&user_id=') + str(self.env.user.id)
                 req.raise_for_status()
                 status = req.status_code
                 if int(status) in (204, 404):
