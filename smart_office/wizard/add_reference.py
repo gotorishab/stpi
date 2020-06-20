@@ -34,6 +34,7 @@ class AddReference(models.TransientModel):
                     'details': "Correspondence attached to file {}".format(self.folder_id.folder_name)
                 })
                 self.folder_id.document_ids = str(self.folder_id.document_ids) + ',' + str(file.php_letter_id)
+            print('============self.folder_id.document_ids=================', self.folder_id.document_ids)
             self.folder_id.folder_ids = [(6, 0, letter_id)]
             data = {
                 'assign_name': self.folder_id.folder_name,
@@ -52,7 +53,7 @@ class AddReference(models.TransientModel):
                                 json=None)
             try:
                 pastebin_url = req.text
-                # print('============Patebin url=================', pastebin_url)
+                print('============Patebin url=================', pastebin_url)
                 dictionary = json.loads(pastebin_url)
                 self.folder_id.iframe_dashboard = ''
                 self.folder_id.iframe_dashboard = str(dictionary["response"][0]['notesheet']) + str('?type=STPI&user_id=') + str(

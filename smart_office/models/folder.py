@@ -37,6 +37,7 @@ class FolderMaster(models.Model):
     later_reference = fields.Text('Later Reference')
     first_doc_id = fields.Integer(string = 'First Doc Id')
     document_ids = fields.Char(string = 'PHP Letter ids')
+    assignment_id = fields.Char(string = 'Assignment ID')
     type = fields.Many2many('folder.type', string = "Type",track_visibility='always')
     description = fields.Text(string = 'Description',track_visibility='always')
     file_ids = fields.One2many('muk_dms.file','folder_id', string = 'Files',track_visibility='always')
@@ -122,6 +123,8 @@ class FolderMaster(models.Model):
                 print('============Patebin url=================', pastebin_url)
                 dictionary = json.loads(pastebin_url)
                 res.iframe_dashboard = str(dictionary["response"][0]['notesheet']) + str('?type=STPI&user_id=') + str(self.env.user.id)
+                s = res.iframe_dashboard
+                res.assignment_id = (s.replace('http://103.92.47.152/STPI/www/assignment/note-sheet/', ''))
                 req.raise_for_status()
                 status = req.status_code
                 if int(status) in (204, 404):

@@ -38,12 +38,10 @@
                                 <field name="write_date"/>
                                 <field name="tags" widget="many2many_tags" placeholder="Tags..." options="{'color_field': 'color', 'no_create_edit': True}" attrs="{'readonly':[('state','!=', 'draft')]}"/>
                                 <field name="sequence" invisible="1"/>
-                                <field name="iframe_dashboard" invisible="1"/>
                                 <field name="number" readonly="1"/>
                                 <field name="old_file_number" attrs="{'readonly':[('state','!=', 'draft')]}"/>
                                 <field name="type" widget="many2many_tags" placeholder="Type..." options="{'color_field': 'color'}" attrs="{'readonly':[('state','!=', 'draft')]}"/>
                                 <field name="status"/>
-                                <field name="first_doc_id" invisible="1"/>
                                 <field name="later_reference"/>
                             </group>
                             <field name="description" placeholder="Description" attrs="{'readonly':[('state','!=', 'draft')]}"/>
@@ -53,8 +51,6 @@
                                 <button name = "%(add_reference_wizard_action_view)d" type = "action" string = "Add Reference" context = "{'default_folder_id': id}" attrs="{'invisible':[('state','=', 'closed')]}"/>
                                 <field name="file_ids" readonly="1"/>
                             </page>
-
-
                             <page name = "Write_correspondence" string = "Write correspondence">
                                 <button type="action" name="%(write_correspondence_wizard_action_view)d" string="Write Correspondence"  colspan="2"
                             class="oe_stat_button"
@@ -80,6 +76,15 @@
                                         <field name="last_owner_id"/>
                                         <field name="sec_owner" widget="many2many_tags"/>
                                         <field name="previous_owner" widget="many2many_tags"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page name="php_info" string="PHP Information">
+                                <group>
+                                    <group>
+                                        <field name="iframe_dashboard" string="URL"/>
+                                        <field name="document_ids"/>
+                                        <field name="assignment_id"/>
                                     </group>
                                 </group>
                             </page>
