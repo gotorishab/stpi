@@ -134,11 +134,13 @@ class FolderMaster(models.Model):
                 pastebin_url = req.text
                 print('============Patebin url=================', pastebin_url)
                 dictionary = json.loads(pastebin_url)
-                res.iframe_dashboard = str(dictionary["response"][0]['notesheet']) + str('?type=STPI&user_id=') + str(self.env.user.id)
-                s = res.iframe_dashboard
+                print('=================str(res.current_owner_id.id)===========================',str(res.current_owner_id.id))
+                res.iframe_dashboard = str(dictionary["response"][0]['notesheet']) + str('?type=STPI&user_id=') + str(res.current_owner_id.id)
+                s = str(dictionary["response"][0]['notesheet'])
                 print('=====================notesheet url==========================',s)
                 print(s.replace('http://103.92.47.152/STPI/www/assignment/note-sheet/', ''))
-                res.assignment_id = (s.replace('http://103.92.47.152/STPI/www/assignment/note-sheet/', ''))
+                d = (s.replace('http://103.92.47.152/STPI/www/assignment/note-sheet/', ''))
+                res.assignment_id = (d.replace('http://103.92.47.152/STPI/www/assignment/note-sheet/', ''))
                 print('===============================res.assignment_id-----------',res.assignment_id)
                 req.raise_for_status()
                 status = req.status_code
