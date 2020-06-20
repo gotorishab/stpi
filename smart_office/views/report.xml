@@ -27,6 +27,15 @@
                 <field name="forwarded_to_dept"/>
                 <field name="job_pos"/>
                 <field name="forwarded_to_branch"/>
+                <field name="pulled_by"/>
+                <field name="pulled_by_dept"/>
+                <field name="pulled_by_jobpos"/>
+                <field name="pulled_by_branch"/>
+                <field name="pulled_date"/>
+                <field name="pulled_to_user"/>
+                <field name="pulled_to_dept"/>
+                <field name="pulled_to_job_pos"/>
+                <field name="pulled_to_branch"/>
                 <field name="remarks"/>
                 <field name="details"/>
                 <field name="action_taken"/>
