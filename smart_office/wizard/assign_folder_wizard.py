@@ -11,6 +11,7 @@ class CreateFolder(models.TransientModel):
     deffolderid = fields.Many2one('muk_dms.file')
     cooespondence_ids = fields.Many2many('muk_dms.file', string='Correspondence')
     folder_id = fields.Many2one('folder.master', string="Select File")
+    description = fields.Text(string = 'Description')
 
 
     def confirm_button(self):
