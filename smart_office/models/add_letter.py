@@ -53,7 +53,7 @@ class AddLetter(models.Model):
             'name': int(seq),
             'enclosure_details': enclosure_details,
             'user_id': current_employee.user_id.id,
-            'attachment': res.content
+            'attachment[]': res.content
         }
         print('==============================name=============================', int(seq))
         print('==============================enclosure_details=============================', enclosure_details)
