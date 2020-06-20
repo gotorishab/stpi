@@ -103,7 +103,6 @@ class FolderMaster(models.Model):
             current_employee = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
             seq = self.env['ir.sequence'].next_by_code('folder.master')
             res.sequence = int(seq)
-            print('=======================res.document_ids========================',res.document_ids)
             data = {
                         'assign_name': res.folder_name,
                         'assign_no': res.sequence,
@@ -114,7 +113,7 @@ class FolderMaster(models.Model):
                         'doc_flow_id': 0,
                         'wing_id': current_employee.department_id.id,
                         'section_id': 0,
-                        'designation_id': current_employee.job_id,
+                        'designation_id': current_employee.job_id.id,
                         'document_ids': res.document_ids,
                     }
             req = requests.post('http://103.92.47.152/STPI/www/web-service/add-assignment/', data=data,
