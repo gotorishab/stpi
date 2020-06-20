@@ -32,10 +32,10 @@ class AddLetter(models.Model):
 
     @api.model
     def create(self, vals):
-        directory = self.env['muk_dms.directory'].search([('name', '=', 'Incoming Files')], limit=1)
+        directory = self.env['muk_dms.directory'].sudo().search([('name', '=', 'Incoming Files')], limit=1)
         vals['directory'] = directory.id
-        if self._context.get('smart_office_incoming_letter', False):
-            vals['directory'] = self.env.ref('smart_office.smart_office_directory').id
+        # if self._context.get('smart_office_incoming_letter', False):
+        #     vals['directory'] = self.env.ref('smart_office.smart_office_directory').id
         vals['responsible_user_id'] = self.env.user.id
         vals['last_owner_id'] = self.env.user.id
         vals['current_owner_id'] = self.env.user.id
