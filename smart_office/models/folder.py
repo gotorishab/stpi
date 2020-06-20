@@ -110,7 +110,7 @@ class FolderMaster(models.Model):
                         'assign_date': res.date,
                         'assign_subject': (res.subject.subject),
                         'remarks': res.description,
-                        'created_by': current_employee.user.id,
+                        'created_by': current_employee.user_id.id,
                         'doc_flow_id': 0,
                         'wing_id': current_employee.department_id.id,
                         'section_id': 0,

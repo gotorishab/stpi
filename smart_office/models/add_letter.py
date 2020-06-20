@@ -52,7 +52,7 @@ class AddLetter(models.Model):
             'document_type': res.document_type,
             'name': int(seq),
             'enclosure_details': res.sender_enclosures,
-            'user_id': current_employee.user.id,
+            'user_id': current_employee.user_id.id,
             'attachment': res.content
         }
         # binary_file = open("test.txt", "wb")
