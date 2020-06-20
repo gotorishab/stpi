@@ -66,7 +66,13 @@ class FileWizard(models.Model):
                         'remarks': rec.remarks
                     })
 
-
+                    print('==============================to_designation_id=============================', rec.jobposition.id)
+                    print('==============================to_user_id=============================', rec.user.id)
+                    print('==============================remarks=============================', rec.remarks)
+                    print('==============================to_designation_ids=============================', rec.jobposition.id)
+                    print('==============================to_user_ids=============================', rec.user.id)
+                    print('==============================user_id=============================', rec.env.user.id)
+                    print('==============================assignment_id=============================', rec.defid.assignment_id)
                     data = {
                         'is_action_taken': 'F',
                         'assignment_flag': 1,
