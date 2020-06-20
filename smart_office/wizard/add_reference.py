@@ -55,8 +55,6 @@ class AddReference(models.TransientModel):
                 pastebin_url = req.text
                 print('============Patebin url=================', pastebin_url)
                 dictionary = json.loads(pastebin_url)
-                self.folder_id.iframe_dashboard = ''
-                self.folder_id.iframe_dashboard = str(dictionary["response"][0]['notesheet']) + str('?type=STPI&user_id=') + str(self.folder_id.current_owner_id.id)
             except Exception as e:
                 print('=============Error==========',e)
             form_view = self.env.ref('smart_office.foldermaster_form_view')
