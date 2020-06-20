@@ -100,7 +100,8 @@ class FolderMaster(models.Model):
     @api.multi
     def create_file(self):
         for res in self:
-            current_employee = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+            current_employee = self.env['hr.employee'].search([('user_id', '=', self.env.user.id)], limit=1)
+            print('====================CUrrent Employee====================', current_employee)
             seq = self.env['ir.sequence'].next_by_code('folder.master')
             res.sequence = int(seq)
             print('=======================assign_name========================',res.folder_name)
