@@ -19,6 +19,7 @@ class FolderMaster(models.Model):
 
     branch_id = fields.Many2one('res.branch', 'Branch')
     department_id = fields.Many2one('hr.department', 'Department')
+    job_id = fields.Many2one('hr.job', 'Job')
 
     sec_owner = fields.Many2many('res.users', string='Secondary Owners',track_visibility='always')
 
@@ -69,6 +70,7 @@ class FolderMaster(models.Model):
         current_employee = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
         res.branch_id = current_employee.branch_id.id
         res.department_id = current_employee.department_id.id
+        res.job_id = current_employee.job_id.id
         sur_usr = current_employee.branch_id.name
         d_id = current_employee.department_id.stpi_doc_id
         fy = self.env['date.range'].search(
@@ -109,9 +111,9 @@ class FolderMaster(models.Model):
             print('=======================assign_date========================',res.date)
             print('=======================assign_subject========================',res.subject.subject)
             print('=======================rremarks========================',res.description)
-            print('=======================created_by========================',current_employee.user_id.id)
-            print('=======================wing_id========================',current_employee.department_id.id)
-            print('=======================designation_id========================',current_employee.job_id.id)
+            print('=======================created_by========================',res.current_owner_id)
+            print('=======================wing_id========================',res.department_id.id)
+            print('=======================designation_id========================',res.job_id.id)
             print('=======================document_ids========================',res.document_ids)
             data = {
                         'assign_name': res.folder_name,
@@ -119,11 +121,11 @@ class FolderMaster(models.Model):
                         'assign_date': res.date,
                         'assign_subject': (res.subject.subject),
                         'remarks': res.description,
-                        'created_by': current_employee.user_id.id,
+                        'created_by': res.current_owner_id.id,
                         'doc_flow_id': 0,
-                        'wing_id': current_employee.department_id.id,
+                        'wing_id': res.department_id.id,
                         'section_id': 0,
-                        'designation_id': current_employee.job_id.id,
+                        'designation_id': res.job_id.id,
                         'document_ids': res.document_ids,
                     }
             req = requests.post('http://103.92.47.152/STPI/www/web-service/add-assignment/', data=data,
