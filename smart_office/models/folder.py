@@ -100,6 +100,7 @@ class FolderMaster(models.Model):
     @api.multi
     def create_file(self):
         for res in self:
+            current_employee = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
             seq = self.env['ir.sequence'].next_by_code('folder.master')
             res.sequence = int(seq)
             print('=======================res.document_ids========================',res.document_ids)
@@ -109,11 +110,11 @@ class FolderMaster(models.Model):
                         'assign_date': res.date,
                         'assign_subject': (res.subject.subject),
                         'remarks': res.description,
-                        'created_by': 1,
+                        'created_by': current_employee.user.id,
                         'doc_flow_id': 0,
-                        'wing_id': 1,
+                        'wing_id': current_employee.department_id.id,
                         'section_id': 0,
-                        'designation_id': 78,
+                        'designation_id': current_employee.job_id,
                         'document_ids': res.document_ids,
                     }
             req = requests.post('http://103.92.47.152/STPI/www/web-service/add-assignment/', data=data,
@@ -124,7 +125,10 @@ class FolderMaster(models.Model):
                 dictionary = json.loads(pastebin_url)
                 res.iframe_dashboard = str(dictionary["response"][0]['notesheet']) + str('?type=STPI&user_id=') + str(self.env.user.id)
                 s = res.iframe_dashboard
+                print('=====================notesheet url==========================',s)
+                print(s.replace('http://103.92.47.152/STPI/www/assignment/note-sheet/', ''))
                 res.assignment_id = (s.replace('http://103.92.47.152/STPI/www/assignment/note-sheet/', ''))
+                print('===============================res.assignment_id-----------',res.assignment_id)
                 req.raise_for_status()
                 status = req.status_code
                 if int(status) in (204, 404):

@@ -46,16 +46,13 @@ class AddLetter(models.Model):
         date = datetime.now().date()
         sequence = str(date.strftime('%Y%m%d')) + '/' + str(seq)
         res.letter_number = sequence
-
-        print('==============content=====================', type(res.content))
-
-        print('==============content=====================', (res.content))
+        current_employee = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
 
         data = {
             'document_type': res.document_type,
             'name': int(seq),
             'enclosure_details': res.sender_enclosures,
-            'user_id': self.env.user.id,
+            'user_id': current_employee.user.id,
             'attachment': res.content
         }
         # binary_file = open("test.txt", "wb")
