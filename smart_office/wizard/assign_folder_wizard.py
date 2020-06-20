@@ -16,6 +16,8 @@ class CreateFolder(models.TransientModel):
 
     def confirm_button(self):
         if self:
+            self.deffolderid.folder_id = self.folder_id.id
+            self.folder_id.document_ids = str(self.folder_id.document_ids) + ',' + str(self.deffolderid.php_letter_id)
             letter_id = []
             letter_id.append(self.deffolderid.id)
             for line in self.cooespondence_ids:
