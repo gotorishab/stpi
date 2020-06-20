@@ -42,11 +42,11 @@ class AddReference(models.TransientModel):
                 'assign_date': self.folder_id.date,
                 'assign_subject': (self.folder_id.subject.subject),
                 'remarks': self.folder_id.description,
-                'created_by': 1,
+                'created_by': self.folder_id.current_owner_id.id,
                 'doc_flow_id': 0,
-                'wing_id': 1,
+                'wing_id': self.folder_id.department_id.id,
                 'section_id': 0,
-                'designation_id': 78,
+                'designation_id': self.folder_id.job_id.id,
                 'document_ids': self.folder_id.document_ids,
             }
             req = requests.post('http://103.92.47.152/STPI/www/web-service/add-assignment/', data=data,
@@ -56,8 +56,7 @@ class AddReference(models.TransientModel):
                 print('============Patebin url=================', pastebin_url)
                 dictionary = json.loads(pastebin_url)
                 self.folder_id.iframe_dashboard = ''
-                self.folder_id.iframe_dashboard = str(dictionary["response"][0]['notesheet']) + str('?type=STPI&user_id=') + str(
-                    self.env.user.id)
+                self.folder_id.iframe_dashboard = str(dictionary["response"][0]['notesheet']) + str('?type=STPI&user_id=') + str(self.folder_id.current_owner_id.id)
             except Exception as e:
                 print('=============Error==========',e)
             form_view = self.env.ref('smart_office.foldermaster_form_view')

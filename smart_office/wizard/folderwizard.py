@@ -65,6 +65,32 @@ class FileWizard(models.Model):
                         'forwarded_by': rec.env.uid,
                         'remarks': rec.remarks
                     })
+
+
+                    data = {
+                        'is_action_taken': 'F',
+                        'assignment_flag': 1,
+                        'to_designation_id': rec.jobposition.id,
+                        'to_user_id': rec.user.id,
+                        'remarks': rec.remarks,
+                        'to_designation_ids': rec.jobposition.id,
+                        'to_user_ids': rec.user.id,
+                        'user_id': rec.env.user.id,
+                        'is_approved': '',
+                        'assignment_id': rec.defid.assignment_id,
+                    }
+
+                    req = requests.post('http://103.92.47.152/STPI/www/web-service/add-letter/', data=data,
+                                        json=None)
+
+                    try:
+                        print('=====================================================', req)
+                        pastebin_url = req.text
+                        print('===========================pastebin_url==========================', pastebin_url)
+                    except Exception as e:
+                        print('=============Error==========', e)
+
+
                     f_details = ""
                     if file_count == 0:
                         f_details = "File forwarded with no correspondence"

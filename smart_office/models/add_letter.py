@@ -51,13 +51,11 @@ class AddLetter(models.Model):
         data = {
             'document_type': res.document_type,
             'name': int(seq),
-            'enclosure_details': res.sender_enclosures,
+            'enclosure_details': res.sender_enclosures + ' *****' + res.name,
             'user_id': current_employee.user_id.id,
             'attachment': res.content
         }
-        # binary_file = open("test.txt", "wb")
-        # binary_file.write(b'\x00')
-        # binary_file.close()
+
         req = requests.post('http://103.92.47.152/STPI/www/web-service/add-letter/', data=data,
                             json=None)
         try:
