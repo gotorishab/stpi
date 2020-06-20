@@ -103,6 +103,15 @@ class FolderMaster(models.Model):
             current_employee = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
             seq = self.env['ir.sequence'].next_by_code('folder.master')
             res.sequence = int(seq)
+            print('=======================assign_name========================',res.folder_name)
+            print('=======================assign_no========================',res.sequence)
+            print('=======================assign_date========================',res.date)
+            print('=======================assign_subject========================',res.subject.subject)
+            print('=======================rremarks========================',res.description)
+            print('=======================created_by========================',current_employee.user_id.id)
+            print('=======================wing_id========================',current_employee.department_id.id)
+            print('=======================designation_id========================',current_employee.job_id.id)
+            print('=======================document_ids========================',res.document_ids)
             data = {
                         'assign_name': res.folder_name,
                         'assign_no': res.sequence,
