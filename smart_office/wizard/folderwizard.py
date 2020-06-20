@@ -85,7 +85,7 @@ class FileWizard(models.Model):
                         'assignment_id': rec.defid.assignment_id,
                     }
 
-                    req = requests.post('http://103.92.47.152/STPI/www/web-service/add-letter/', data=data,
+                    req = requests.post('http://103.92.47.152/STPI/www/web-service/forward-correspondence/', data=data,
                                         json=None)
 
                     try:
