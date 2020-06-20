@@ -47,11 +47,11 @@ class AddLetter(models.Model):
         sequence = str(date.strftime('%Y%m%d')) + '/' + str(seq)
         res.letter_number = sequence
         current_employee = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
-
+        enclosure_details = str(res.sender_enclosures) + ' *****' + str(res.name)
         data = {
             'document_type': res.document_type,
             'name': int(seq),
-            'enclosure_details': res.sender_enclosures + ' *****' + res.name,
+            'enclosure_details': enclosure_details,
             'user_id': current_employee.user_id.id,
             'attachment': res.content
         }

@@ -76,7 +76,6 @@ class FileWizard(models.Model):
                         'to_designation_ids': rec.jobposition.id,
                         'to_user_ids': rec.user.id,
                         'user_id': rec.env.user.id,
-                        'is_approved': '',
                         'assignment_id': rec.defid.assignment_id,
                     }
 
