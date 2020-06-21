@@ -258,27 +258,36 @@ class FolderMaster(models.Model):
                 'details': "File closed on {}".format(datetime.now().date())
             })
 
-            print('==============================to_designation_id=============================', current_employee.job_id.id)
-            print('==============================to_user_id=============================', current_employee.job_id.id)
+            my_current_employee = self.env['hr.employee'].search([('user_id', '=', rec.current_owner_id.id)], limit=1)
+            print('==============================to_designation_id=============================', my_current_employee.job_id.id)
+            print('==============================to_user_id=============================', my_current_employee.job_id.id)
             print('==============================remarks=============================', rec.description)
-            print('==============================to_designation_ids=============================', current_employee.job_id.id)
-            print('==============================to_user_ids=============================', current_employee.job_id.id)
-            print('==============================user_id=============================', current_employee.job_id.id)
+            print('==============================to_designation_ids=============================', my_current_employee.job_id.id)
+            print('==============================to_user_ids=============================', my_current_employee.job_id.id)
+            print('==============================user_id=============================', my_current_employee.job_id.id)
             print('==============================assignment_id=============================', rec.assignment_id)
             data = {
                 'is_action_taken': 'C',
                 'assignment_flag': 1,
-                'to_designation_id': current_employee.job_id.id,
-                'to_user_id': current_employee.user_id.id,
+                'to_designation_id': my_current_employee.job_id.id,
+                'to_user_id': my_current_employee.user_id.id,
                 'remarks': rec.description,
-                'to_designation_ids': current_employee.job_id.id,
-                'to_user_ids': current_employee.user_id.id,
-                'user_id': current_employee.user_id.id,
+                'to_designation_ids': my_current_employee.job_id.id,
+                'to_user_ids': my_current_employee.user_id.id,
+                'user_id': my_current_employee.user_id.id,
                 'assignment_id': rec.assignment_id,
             }
 
             req = requests.post('http://103.92.47.152/STPI/www/web-service/forward-correspondence/', data=data,
                                 json=None)
+            try:
+                print('=====================================================', req)
+                pastebin_url = req.text
+                dictionary = json.loads(pastebin_url)
+                print('===========================pastebin_url==========================', pastebin_url)
+                print('===========================dictionary==========================', dictionary)
+            except Exception as e:
+                print('=============Error==========', e)
 
             rec.write({'state': 'closed'})
 
