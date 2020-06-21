@@ -23,7 +23,7 @@ class IncomingLetterWizard(models.TransientModel):
                         my_id.append(file.id)
 
             return {
-                'name': 'Incoming Files',
+                'name': 'Incoming Correspondence',
                 'view_type': 'form',
                 'view_mode': 'kanban,tree,graph,pivot,form',
                 'res_model': 'muk_dms.file',
@@ -37,17 +37,13 @@ class IncomingLetterWizard(models.TransientModel):
 
     def show_incoming_sec_letter(self):
         if self:
-            # emp = self.env['hr.employee'].search(['|', ('parent_id', '=', self.env.user.id), ('parent_id.parent_id', '=', self.env.user.id)])
-            # my_emp_id = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
-            # my_job_id = my_emp_id.job_id.status_level
-            # emp = self.env['hr.employee'].search([('job_id.status_level', '>=', my_job_id)])
             my_ids = []
             employee = self.env['hr.employee'].search([])
             for emp in employee:
                 if emp.parent_id.user_id.id == self.env.user.id or emp.parent_id.parent_id.user_id.id == self.env.user.id or emp.parent_id.parent_id.parent_id.user_id.id == self.env.user.id or emp.parent_id.parent_id.parent_id.parent_id.user_id.id == self.env.user.id or emp.parent_id.parent_id.parent_id.parent_id.parent_id.user_id.id == self.env.user.id or emp.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.user_id.id == self.env.user.id or emp.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.user_id.id == self.env.user.id or emp.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.user_id.id == self.env.user.id or emp.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.user_id.id == self.env.user.id or emp.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.user_id.id == self.env.user.id or emp.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.user_id.id == self.env.user.id or emp.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.user_id.id == self.env.user.id or emp.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.user_id.id == self.env.user.id or emp.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.user_id.id == self.env.user.id or emp.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.user_id.id == self.env.user.id or emp.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.parent_id.user_id.id == self.env.user.id:
                     my_ids.append(emp.user_id.id)
             return {
-                'name': 'Incoming Files',
+                'name': 'Incoming Correspondence',
                 'view_type': 'form',
                 'view_mode': 'kanban,tree,graph,pivot,form',
                 'res_model': 'muk_dms.file',

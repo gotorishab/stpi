@@ -170,6 +170,14 @@ class FileWizard(models.Model):
                 else:
                     raise ValidationError("You are not able to forward this file, as you are not the Primary owner of this file")
 
+            return {
+                'name': 'Incoming Files',
+                'view_type': 'form',
+                'view_mode': 'tree,form',
+                'res_model': 'folder.master',
+                'type': 'ir.actions.act_window',
+                'target': 'current',
+            }
 
 
 class SecondaryOwners(models.Model):

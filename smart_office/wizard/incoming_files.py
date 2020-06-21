@@ -33,9 +33,6 @@ class IncomingfileWizard(models.TransientModel):
 
     def show_incoming_sec_file(self):
         if self:
-            # my_emp_id = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
-            # my_job_id = my_emp_id.job_id.status_level
-            # emp = self.env['hr.employee'].search([('job_id.status_level', '>=', my_job_id)])
             my_ids = []
             employee = self.env['hr.employee'].search([])
             for emp in employee:

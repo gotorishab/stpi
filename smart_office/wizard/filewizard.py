@@ -79,7 +79,14 @@ class FileWizard(models.Model):
                     })
                 else:
                     raise ValidationError("You are not able to forward this file, as you are not the Primary owner of this file")
-
+            return {
+                'name': 'Incoming correspondence',
+                'view_type': 'form',
+                'view_mode': 'kanban,tree,graph,pivot,form',
+                'res_model': 'muk_dms.file',
+                'type': 'ir.actions.act_window',
+                'target': 'current',
+            }
 
 
 

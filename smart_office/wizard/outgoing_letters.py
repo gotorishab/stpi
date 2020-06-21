@@ -19,7 +19,7 @@ class IncomingLetterWizard(models.TransientModel):
                 if srch_id in file.previous_owner.ids:
                     my_id.append(file.id)
             return {
-                'name': 'Outgoing Files',
+                'name': 'Outgoing Correspondence',
                 'view_type': 'form',
                 'view_mode': 'kanban,tree,graph,pivot,form',
                 'res_model': 'muk_dms.file',
@@ -44,7 +44,7 @@ class IncomingLetterWizard(models.TransientModel):
                     if po.id in emp.ids:
                         my_file.append(file.id)
             return {
-                'name': 'Incoming Files',
+                'name': 'Incoming Correspondence',
                 'view_type': 'form',
                 'view_mode': 'kanban,tree,graph,pivot,form',
                 'res_model': 'muk_dms.file',

@@ -31,7 +31,7 @@
                                 <field name="date" readonly="1"/>
                                 <field name="branch_id" readonly="1"/>
                                 <field name="department_id" readonly="1"/>
-                                <field name="previous_reference"/>
+                                <field name="previous_reference" attrs="{'readonly':[('state','!=', 'draft')]}"/>
 
                             </group>
                             <group>
@@ -41,8 +41,8 @@
                                 <field name="number" readonly="1"/>
                                 <field name="old_file_number" attrs="{'readonly':[('state','!=', 'draft')]}"/>
                                 <field name="type" widget="many2many_tags" placeholder="Type..." options="{'color_field': 'color'}" attrs="{'readonly':[('state','!=', 'draft')]}"/>
-                                <field name="status"/>
-                                <field name="later_reference"/>
+                                <field name="status" attrs="{'readonly':[('state','!=', 'draft')]}"/>
+                                <field name="later_reference" attrs="{'readonly':[('state','!=', 'draft')]}"/>
                             </group>
                             <field name="description" placeholder="Description" attrs="{'readonly':[('state','!=', 'draft')]}"/>
                         </group>
