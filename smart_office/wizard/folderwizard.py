@@ -91,6 +91,9 @@ class FileWizard(models.Model):
                     try:
                         print('=====================================================', req)
                         pastebin_url = req.text
+                        dictionary = json.loads(pastebin_url)
+                        rec.defid.iframe_dashboard = str(dictionary["response"][0]['notesheet']) + str('?type=STPI&user_id=') + str(rec.user.id)
+                        print('===========================url==========================', rec.defid.iframe_dashboard)
                         print('===========================pastebin_url==========================', pastebin_url)
                     except Exception as e:
                         print('=============Error==========', e)
