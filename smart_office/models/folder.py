@@ -257,6 +257,29 @@ class FolderMaster(models.Model):
                 'remarks': rec.description,
                 'details': "File closed on {}".format(datetime.now().date())
             })
+
+            print('==============================to_designation_id=============================', current_employee.job_id.id)
+            print('==============================to_user_id=============================', current_employee.job_id.id)
+            print('==============================remarks=============================', rec.description)
+            print('==============================to_designation_ids=============================', current_employee.job_id.id)
+            print('==============================to_user_ids=============================', current_employee.job_id.id)
+            print('==============================user_id=============================', current_employee.job_id.id)
+            print('==============================assignment_id=============================', rec.assignment_id)
+            data = {
+                'is_action_taken': 'C',
+                'assignment_flag': 1,
+                'to_designation_id': current_employee.job_id.id,
+                'to_user_id': current_employee.user_id.id,
+                'remarks': rec.description,
+                'to_designation_ids': current_employee.job_id.id,
+                'to_user_ids': current_employee.user_id.id,
+                'user_id': current_employee.user_id.id,
+                'assignment_id': rec.assignment_id,
+            }
+
+            req = requests.post('http://103.92.47.152/STPI/www/web-service/forward-correspondence/', data=data,
+                                json=None)
+
             rec.write({'state': 'closed'})
 
     @api.multi
