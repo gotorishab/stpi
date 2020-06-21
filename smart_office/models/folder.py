@@ -46,7 +46,7 @@ class FolderMaster(models.Model):
 
 
     file_ids_m2m = fields.Many2many('muk_dms.file', string = 'Reference',track_visibility='always')
-
+    notesheet_url = fields.Text()
     iframe_dashboard = fields.Text()
     folder_track_ids = fields.One2many('folder.tracking.information', 'create_let_id', string = "Files")
     my_view = fields.Text()
@@ -135,7 +135,7 @@ class FolderMaster(models.Model):
                 print('============Patebin url=================', pastebin_url)
                 dictionary = json.loads(pastebin_url)
                 print('=================str(res.current_owner_id.id)===========================',str(res.current_owner_id.id))
-                res.iframe_dashboard = str(dictionary["response"][0]['notesheet'])
+                res.notesheet_url = str(dictionary["response"][0]['notesheet'])
                 s = str(dictionary["response"][0]['notesheet'])
                 print('=====================notesheet url==========================',s)
                 print(s.replace('http://103.92.47.152/STPI/www/assignment/note-sheet/', ''))
@@ -155,7 +155,7 @@ class FolderMaster(models.Model):
 
     @api.multi
     def deal_with_file(self):
-        self.iframe_dashboard = self.iframe_dashboard + str('?type=STPI&user_id=') + str(self.current_owner_id.id)
+        self.iframe_dashboard = self.notesheet_url + str('?type=STPI&user_id=') + str(self.current_owner_id.id)
         if self.iframe_dashboard:
             self.write({'state': 'in_progress'})
             total_iframe = self.iframe_dashboard.replace('800', '100%').replace('"600"', '"100%"').replace(
