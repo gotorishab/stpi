@@ -82,6 +82,7 @@
                             <page name="php_info" string="PHP Information">
                                 <group>
                                     <group>
+                                            <field name="notesheet_url"/>
                                         <field name="iframe_dashboard" string="URL"/>
                                         <field name="document_ids"/>
                                         <field name="assignment_id"/>
