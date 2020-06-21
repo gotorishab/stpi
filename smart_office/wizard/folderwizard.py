@@ -9,21 +9,9 @@ class FileWizard(models.Model):
     _description = 'Wizard of File Wizard'
     _rec_name = 'user'
 
-    @api.multi
-    def set_user_domain(self):
-        if self.department.id and not self.jobposition.id:
-            return {'domain': {'employee': [('department_id', '=', self.department.id)]}}
-        elif self.jobposition.id and not self.department.id:
-            return {'domain': {'employee': [('job_id', '=', self.jobposition.id)]}}
-        elif self.jobposition.id and self.department.id:
-            return {'domain': {
-                'employee': [('job_id', '=', self.jobposition.id), ('department_id', '=', self.department.id)]}}
-        else:
-            return {'domain': {'employee': [('id', '!=', 0)]}}
-
     department = fields.Many2one('hr.department', string = "Department")
     jobposition = fields.Many2one('hr.job', string = "Job position")
-    employee = fields.Many2one('hr.employee', string='Employee', domain=set_user_domain)
+    employee = fields.Many2one('hr.employee', string='Employee')
     user = fields.Many2one('res.users', related = 'employee.user_id', string='User')
     remarks = fields.Text('Remarks')
 
@@ -31,18 +19,18 @@ class FileWizard(models.Model):
     sec_own_ids = fields.One2many('secondary.folder.owner', 'sec_own_id')
 
 
-    #
-    # @api.onchange('department','jobposition')
-    # def _onchange_user(self):
-    #     for rec in self:
-    #         if rec.department.id and not rec.jobposition.id:
-    #             return {'domain': {'employee': [('department_id', '=', rec.department.id)]}}
-    #         elif rec.jobposition.id and not rec.department.id:
-    #             return {'domain': {'employee': [('job_id', '=', rec.jobposition.id)]}}
-    #         elif rec.jobposition.id and rec.department.id:
-    #             return {'domain': {'employee': [('job_id', '=', rec.jobposition.id),('department_id', '=', rec.department.id)]}}
-    #         else:
-    #             return {'domain': {'employee': ['|', ('job_id', '=', rec.jobposition.id),('department_id', '=', rec.department.id)]}}
+
+    @api.onchange('department','jobposition')
+    def _onchange_user(self):
+        for rec in self:
+            if rec.department.id and not rec.jobposition.id:
+                return {'domain': {'employee': [('department_id', '=', rec.department.id)]}}
+            elif rec.jobposition.id and not rec.department.id:
+                return {'domain': {'employee': [('job_id', '=', rec.jobposition.id)]}}
+            elif rec.jobposition.id and rec.department.id:
+                return {'domain': {'employee': [('job_id', '=', rec.jobposition.id),('department_id', '=', rec.department.id)]}}
+            else:
+                return {'domain': {'employee': ['|', ('job_id', '=', rec.jobposition.id),('department_id', '=', rec.department.id)]}}
 
 
     def confirm_button(self):
