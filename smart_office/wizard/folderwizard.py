@@ -44,6 +44,9 @@ class FileWizard(models.Model):
                     previous_owner = []
                     previous_owner.append(rec.defid.current_owner_id.id)
                     rec.defid.previous_owner = [(6, 0, previous_owner)]
+                    print('========================================po=======================',rec.defid.current_owner_id.id)
+                    print('========================================previous_owner=======================',previous_owner)
+                    print('========================================rec.defid.previous_owner=======================',rec.defid.previous_owner)
                     rec.defid.last_owner_id = rec.env.user.id
                     rec.defid.current_owner_id = rec.user.id
                     for line in rec.sec_own_ids:
