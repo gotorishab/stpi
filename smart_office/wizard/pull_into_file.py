@@ -44,18 +44,22 @@ class PullInto(models.TransientModel):
                 'name': str(file.folder_name),
                 'number': str(file.number),
                 'type': 'File',
-                'pulled_by': str(current_file_employee.user_id.name),
-                'pulled_by_dept': str(current_file_employee.department_id.name),
-                'pulled_by_jobpos': str(current_file_employee.job_id.name),
-                'pulled_by_branch': str(current_file_employee.branch_id.name),
-                'pulled_date': datetime.now().date(),
-                'pulled_to_user': str(self.user.name),
-                'pulled_to_dept': str(self.department.name),
-                'pulled_to_job_pos': str(self.jobposition.name),
-                'pulled_to_branch': str(self.user.branch_id.name),
-                'action_taken': 'file_pulled',
+                'transferred_from': str(current_employee.user_id.name),
+                'transferred_from_dept': str(current_employee.department_id.name),
+                'transferred_from_jobpos': str(current_employee.job_id.name),
+                'transferred_from_branch': str(current_employee.branch_id.name),
+                'transferred_by': str(current_file_employee.user_id.name),
+                'transferred_by_dept': str(current_file_employee.department_id.name),
+                'transferred_by_jobpos': str(current_file_employee.job_id.name),
+                'transferred_by_branch': str(current_file_employee.branch_id.name),
+                'transferred_date': datetime.now().date(),
+                'transferred_to_user': str(self.user.name),
+                'transferred_to_dept': str(self.department.name),
+                'transferred_to_job_pos': str(self.jobposition.name),
+                'transferred_to_branch': str(self.user.branch_id.name),
+                'action_taken': 'file_transferred',
                 'remarks': self.remarks,
-                'details': 'File pulled'
+                'details': 'File transferred'
             })
             file.last_owner_id = file.current_owner_id.id
             file.current_owner_id = self.env.user.id

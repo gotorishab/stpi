@@ -36,6 +36,19 @@
                 <field name="pulled_to_dept"/>
                 <field name="pulled_to_job_pos"/>
                 <field name="pulled_to_branch"/>
+                <field name="transferred_by"/>
+                <field name="transferred_by_dept"/>
+                <field name="transferred_by_jobpos"/>
+                <field name="transferred_by_branch"/>
+                <field name="transferred_from"/>
+                <field name="transferred_from_dept"/>
+                <field name="transferred_from_jobpos"/>
+                <field name="transferred_from_branch"/>
+                <field name="transferred_date"/>
+                <field name="transferred_to_user"/>
+                <field name="transferred_to_dept"/>
+                <field name="transferred_to_job_pos"/>
+                <field name="transferred_to_branch"/>
                 <field name="remarks"/>
                 <field name="details"/>
                 <field name="action_taken"/>
@@ -253,6 +266,66 @@
                 <field name="pulled_to_dept"/>
                 <field name="pulled_to_job_pos"/>
                 <field name="pulled_to_branch"/>
+                <field name="remarks"/>
+                <field name="details"/>
+                <field name="action_taken"/>
+            </tree>
+        </field>
+    </record>
+
+
+
+    <!--=======Tree view of File Tracker=======-->
+    <record id="view_correspondence_transferred_tree" model="ir.ui.view">
+        <field name="name">file.tracker.report.tree</field>
+        <field name="model">file.tracker.report</field>
+        <field name="arch" type="xml">
+            <tree string="File Tracker" create="0" delete="0">
+                 <field name="type"/>
+                 <field name="name"/>
+                 <field name="number"/>
+                <field name="transferred_by"/>
+                <field name="transferred_by_dept"/>
+                <field name="transferred_by_jobpos"/>
+                <field name="transferred_by_branch"/>
+                <field name="transferred_from"/>
+                <field name="transferred_from_dept"/>
+                <field name="transferred_from_jobpos"/>
+                <field name="transferred_from_branch"/>
+                <field name="transferred_date"/>
+                <field name="transferred_to_user"/>
+                <field name="transferred_to_dept"/>
+                <field name="transferred_to_job_pos"/>
+                <field name="transferred_to_branch"/>
+                <field name="remarks"/>
+                <field name="details"/>
+                <field name="action_taken"/>
+            </tree>
+        </field>
+    </record>
+
+    <!--=======Tree view of File Tracker=======-->
+    <record id="view_file_transferred_tree" model="ir.ui.view">
+        <field name="name">file.tracker.report.tree</field>
+        <field name="model">file.tracker.report</field>
+        <field name="arch" type="xml">
+            <tree string="File Tracker" create="0" delete="0">
+                 <field name="type"/>
+                 <field name="name"/>
+                 <field name="number"/>
+                <field name="transferred_by"/>
+                <field name="transferred_by_dept"/>
+                <field name="transferred_by_jobpos"/>
+                <field name="transferred_by_branch"/>
+                <field name="transferred_from"/>
+                <field name="transferred_from_dept"/>
+                <field name="transferred_from_jobpos"/>
+                <field name="transferred_from_branch"/>
+                <field name="transferred_date"/>
+                <field name="transferred_to_user"/>
+                <field name="transferred_to_dept"/>
+                <field name="transferred_to_job_pos"/>
+                <field name="transferred_to_branch"/>
                 <field name="remarks"/>
                 <field name="details"/>
                 <field name="action_taken"/>

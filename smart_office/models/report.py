@@ -72,12 +72,33 @@ class FileTracker(models.Model):
 
 
 
+    transferred_from = fields.Char(string='transferred From)')
+    transferred_from_dept = fields.Char(string='transferred Dept.')
+    transferred_from_jobpos = fields.Char(string='transferred Designation')
+    transferred_from_branch = fields.Char(string='transferred Branch')
+
+    transferred_by = fields.Char(string='transferred From)')
+    transferred_by_dept = fields.Char(string='transferred Dept.')
+    transferred_by_jobpos = fields.Char(string='transferred Designation')
+    transferred_by_branch = fields.Char(string='transferred Branch')
+
+    transferred_date = fields.Date(string='transferred Date')
+
+    transferred_to_user = fields.Char(string='transferred To User')
+    transferred_to_dept = fields.Char(string='transferred To Dept.')
+    transferred_to_job_pos = fields.Char(string='transferred to Designation')
+    transferred_to_branch = fields.Char(string='transferred To Branch')
+
+
+
     remarks = fields.Char(string='Remarks')
     details = fields.Char(string='Details')
     action_taken = fields.Selection([('correspondence_created', 'Correspondence Created'),
                                      ('file_created', 'File Creates'),
                                      ('correspondence_forwarded', 'Correspondence Forwarded'),
                                      ('file_forwarded', 'File Forwarded'),
+                                     ('correspondence_transferred', 'Correspondence Transferred'),
+                                     ('file_transferred', 'File Transferred'),
                                      ('correspondence_pulled', 'Correspondence Pulled'),
                                      ('file_pulled', 'File Pulled'),
                                      ('assigned_to_file', 'Assigned To File'),
