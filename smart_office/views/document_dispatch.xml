@@ -23,6 +23,7 @@
                             </group>
                             <group>
                                 <field name="dispatch_mode" attrs="{'readonly':[('state','not in',['draft', 'ready_for_dispatched'])]}"/>
+                                <field name="enter_mode" attrs="{'readonly':[('state','not in',['draft', 'ready_for_dispatched'])]}"/>
                                 <field name="select_template" attrs="{'readonly':[('state','!=', 'draft')]}"/>
                                 <field name="version" invisible="1"/>
                                 <field name="previousversion" attrs="{'readonly':[('state','!=', 'draft')]}"/>

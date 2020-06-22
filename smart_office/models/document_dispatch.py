@@ -26,7 +26,7 @@ class DispatchDocument(models.Model):
     dispatch_mode = fields.Selection(
         [('hand_to_hand', 'Hand to Hand'),('email', 'Email'), ('fax', 'Fax'), ('splmess', 'Spl. Messenger'), ('post', 'Post')
          ], string='Dispatch Mode', track_visibility='always')
-
+    enter_mode = fields.Char('Enter Mode of Dispatch')
     state = fields.Selection(
         [('draft', 'Draft'),('obsolete', 'Obsolete'), ('reject', 'Reject'), ('ready_for_dispatched', 'Ready for Dispatch'), ('dispatched', 'Dispatched')
          ], required=True, default='draft', string='Status', track_visibility='always')
@@ -54,7 +54,22 @@ class DispatchDocument(models.Model):
             })
             dd.version = dd.id
             rec.sudo().button_obsellete()
-
+            form_view = self.env.ref('smart_office.document_dispatch_form_view')
+            tree_view = self.env.ref('smart_office.dispatch_document_tree_view1')
+            value = {
+                'domain': str([('id', '=', dd.id)]),
+                'view_type': 'form',
+                'view_mode': 'tree, form',
+                'res_model': 'dispatch.document',
+                'view_id': False,
+                'views': [(form_view and form_view.id or False, 'form'),
+                          (tree_view and tree_view.id or False, 'tree')],
+                'type': 'ir.actions.act_window',
+                'res_id': dd.id,
+                'target': 'new',
+                'nodestroy': True
+            }
+            return value
 
 
     @api.multi
