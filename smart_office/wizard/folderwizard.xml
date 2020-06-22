@@ -17,7 +17,7 @@
                                  <field name="defid" invisible = "1"/>
                             </group>
                         </group>
-                    <field name="sec_own_ids">
+                    <field name="sec_own_ids" invisible="1">
                         <tree editable="bottom">
                             <field name="sec_own_id" invisible="1"/>
                             <field name="department" options="{'no_create_edit': True, 'no_create': True}" required="1"/>

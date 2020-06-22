@@ -112,7 +112,7 @@
                     <field name="write_date"/>
                     <field name="state"/>
                     <button name="deal_with_file" string="Deal with File" type="object"/>
-                    <button name="%(folder_forward_button_wizard_action_view)d" string="Forward" type="object"/>
+                    <button name = "%(folder_forward_button_wizard_action_view)d" string="Forward" type="action"/>
                     <button name="button_close" string="Close" type="object" states="in_progress"/>
                 </tree>
             </field>
