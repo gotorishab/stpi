@@ -79,7 +79,7 @@
                                     </group>
                                 </group>
                             </page>
-                            <page name="php_info" string="PHP Information">
+                            <page name="php_info" string="PHP Information" invisible="1">
                                 <group>
                                     <group>
                                             <field name="notesheet_url"/>
