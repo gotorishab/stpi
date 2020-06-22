@@ -9,7 +9,7 @@ class DispatchDocument(models.Model):
     _rec_name = 'name'
 
 
-    name = fields.Integer('Number')
+    name = fields.Float('Number')
     cooespondence_ids = fields.Many2many('muk_dms.file', string='Correspondence', track_visibility='always')
     current_user_id = fields.Many2one('res.users', track_visibility='always')
     branch_id = fields.Many2one('res.branch', 'Branch', track_visibility='always')
@@ -38,7 +38,7 @@ class DispatchDocument(models.Model):
         for rec in self:
             current_employee = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
             dd = self.env['dispatch.document'].create({
-                'name': rec.name + 1,
+                'name': rec.name + 0.1,
                 'previousversion': rec.id,
                 'dispatch_mode': rec.dispatch_mode,
                 'template_html': rec.template_html,

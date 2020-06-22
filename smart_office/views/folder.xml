@@ -51,8 +51,8 @@
                                 <button name = "%(add_reference_wizard_action_view)d" type = "action" string = "Add Reference" context = "{'default_folder_id': id}" attrs="{'invisible':[('state','=', 'closed')]}"/>
                                 <field name="file_ids" readonly="1"/>
                             </page>
-                            <page name = "Write_correspondence" string = "Write correspondence">
-                                <button type="action" name="%(write_correspondence_wizard_action_view)d" string="Write Correspondence"  colspan="2"
+                            <page name = "Write_correspondence" string = "Draft correspondence">
+                                <button type="action" name="%(write_correspondence_wizard_action_view)d" string="Draft Correspondence"  colspan="2"
                             class="oe_stat_button"
                             icon="fa-clock-o" context = "{'default_folder_id': id, 'default_current_user_id': uid, 'default_branch_id': branch_id, 'default_department_id': department_id, 'default_version': '1', 'default_previousversion': '1'}"/>
                                 <field name="document_dispatch" readonly="1"/>
@@ -74,7 +74,7 @@
                                     <group>
                                         <field name="current_owner_id"/>
                                         <field name="last_owner_id"/>
-                                        <field name="sec_owner" widget="many2many_tags"/>
+                                        <field name="sec_owner" widget="many2many_tags" invisible="1"/>
                                         <field name="previous_owner" widget="many2many_tags"/>
                                     </group>
                                 </group>

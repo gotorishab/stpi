@@ -33,8 +33,13 @@ class AddReference(models.TransientModel):
             letter_id = []
             for letter in self.folder_id.file_ids:
                 letter_id.append(letter.id)
+            dis_name = self.env['dispatch.document'].sudo().search([('folder_id', '=', self.folder_id.id)])
+            count = 0
+            for r in dis_name:
+                count+=1
+            name = count + 1
             dd = self.env['dispatch.document'].create({
-                'name': 1,
+                'name': name,
                 'dispatch_mode': self.dispatch_mode,
                 'template_html': self.template_html,
                 'select_template': self.select_template.id,
@@ -47,6 +52,11 @@ class AddReference(models.TransientModel):
                 'state': 'draft',
             })
             dd.version = dd.id
+            dis_name = self.env['dispatch.document'].sudo().search([('name', '=', name - 1)], limit=1)
+            if dis_name:
+                dd.previousversion = dis_name.id
+            else:
+                dd.previousversion = dd.id
             dd.previousversion = dd.id
             dd.cooespondence_ids = [(6, 0, letter_id)]
             form_view = self.env.ref('smart_office.foldermaster_form_view')

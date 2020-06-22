@@ -127,6 +127,7 @@
             <menuitem id="menuitem_dispatch_document_ready_for_dispatched"
                   parent="menuitem_dispatch_doc_fol"
                   action="dispatch_document_ready_for_dispatched_action_view"
+                  groups="smart_office.outward_dispatch_smart_office"
                   name="Ready for Dispatch"/>
 
             <menuitem id="menuitem_dispatch_document_dispatched"
