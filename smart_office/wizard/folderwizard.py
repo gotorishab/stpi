@@ -52,7 +52,7 @@ class FileWizard(models.Model):
                     for line in rec.sec_own_ids:
                         sec_own.append(line.employee.user_id.id)
 
-                    # rec.defid.sec_owner = [(6,0,sec_own)]
+                    rec.defid.sec_owner = [(6,0,sec_own)]
 
                     current_employee  = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
                     self.env['folder.tracking.information'].create({
@@ -131,9 +131,9 @@ class FileWizard(models.Model):
                         file.last_owner_id = rec.env.user.id
                         file.responsible_user_id = rec.env.user.id
                         file.current_owner_id = rec.user.id
-                        # for line in rec.sec_own_ids:
-                        #     sec_own.append(line.employee.user_id.id)
-                        # file.sec_owner = [(6, 0, sec_own)]
+                        for line in rec.sec_own_ids:
+                            sec_own.append(line.employee.user_id.id)
+                        file.sec_owner = [(6, 0, sec_own)]
 
                         previous_owner.append(rec.env.user.id)
 

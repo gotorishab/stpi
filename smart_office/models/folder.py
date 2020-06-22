@@ -21,12 +21,12 @@ class FolderMaster(models.Model):
     department_id = fields.Many2one('hr.department', 'Department')
     job_id = fields.Many2one('hr.job', 'Job')
 
-    # sec_owner = fields.Many2many('res.users', string='Secondary Owners',track_visibility='always')
+    sec_owner = fields.Many2many('res.users', string='Secondary Owners',track_visibility='always')
 
     previous_owner = fields.Many2many('res.users', string='Previous/Current Owners',track_visibility='always')
 
     date = fields.Date(string='Date', default = fields.Date.today(),track_visibility='always')
-    subject = fields.Manone('code.subject', string='Subject',track_visibility='always')
+    subject = fields.Many2one('code.subject', string='Subject',track_visibility='always')
     tags = fields.Many2many('muk_dms.tag', string='Tags',track_visibility='always')
     number = fields.Char(string = 'Number',track_visibility='always')
     status = fields.Selection([('normal', 'Normal'),

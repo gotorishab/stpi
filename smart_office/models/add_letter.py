@@ -12,9 +12,9 @@ class AddLetter(models.Model):
 
     current_owner_id = fields.Many2one('res.users', 'Current Owner')
     last_owner_id = fields.Many2one('res.users', 'Last Owner')
-    # sec_owner_one = fields.Many2one('res.users', 'Secondary Owner 1')
-    # sec_owner_two = fields.Many2one('res.users', 'Secondary Owner 2')
-    # sec_owner_three = fields.Many2one('res.users', 'Secondary Owner 3')
+    sec_owner_one = fields.Many2one('res.users', 'Secondary Owner 1')
+    sec_owner_two = fields.Many2one('res.users', 'Secondary Owner 2')
+    sec_owner_three = fields.Many2one('res.users', 'Secondary Owner 3')
 
     sec_owner = fields.Many2many('res.users', string='Secondary Owners')
     srch_id = fields.Many2many('res.users', string='My Search')

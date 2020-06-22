@@ -16,7 +16,7 @@ class IncomingfileWizard(models.TransientModel):
             files = self.env['folder.master'].search([])
             srch_id = self.env.user.id
             for file in files:
-                if srch_id == file.current_owner_id.id:
+                if srch_id in file.sec_owner.ids or srch_id == file.current_owner_id.id:
                     my_id.append(file.id)
             print('==================my_id========================', my_id)
             return {
