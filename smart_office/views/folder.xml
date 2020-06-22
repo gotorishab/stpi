@@ -74,7 +74,7 @@
                                     <group>
                                         <field name="current_owner_id"/>
                                         <field name="last_owner_id"/>
-                                        <field name="sec_owner" widget="many2many_tags"/>
+<!--                                        <field name="sec_owner" widget="many2many_tags"/>-->
                                         <field name="previous_owner" widget="many2many_tags"/>
                                     </group>
                                 </group>

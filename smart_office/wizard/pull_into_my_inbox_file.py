@@ -40,7 +40,7 @@ class PullIntoMyInbox(models.TransientModel):
             file.last_owner_id = file.current_owner_id.id
             file.current_owner_id = self.env.user.id
             file.responsible_user_id = self.env.user.id
-            file.sec_owner = []
+            # file.sec_owner = []
             previous_owner.append(self.env.user.id)
             previous_owner.append(file.last_owner_id.id)
             file.previous_owner = [(6,0,previous_owner)]
