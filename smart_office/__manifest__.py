@@ -23,7 +23,7 @@
         'data/sequence.xml',
         'security/ir.model.access.csv',
         'data/doc_receive_type.xml',
-        'data/dem_file.xml',
+        # 'data/dem_file.xml',
         # 'security/ir_rule.xml',
         'wizard/filewizard.xml',
         'wizard/folderwizard.xml',
