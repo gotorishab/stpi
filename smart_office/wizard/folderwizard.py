@@ -166,6 +166,7 @@ class FileWizard(models.Model):
                             'details': "Correspondence Forwarded through File {}".format(rec.defid.number)
                         })
                     rec.defid.write({'state': 'in_progress'})
+                    print('========================================rec.defid.previous_owner=======================',rec.defid.previous_owner.ids)
                 else:
                     raise ValidationError("You are not able to forward this file, as you are not the Primary owner of this file")
 
