@@ -17,6 +17,7 @@ class DispatchDocument(models.Model):
     created_on = fields.Date(string='Date', default = fields.Date.today(), track_visibility='always')
     select_template = fields.Many2one('select.template.html', track_visibility='always')
     template_html = fields.Html('Template', track_visibility='always')
+    basic_version = fields.Float('Basic Version')
     
     dispatch_mode_ids = fields.One2many('dispatch.document.mode','dispatch_id',string='Dispatch Mode')
 
@@ -38,6 +39,7 @@ class DispatchDocument(models.Model):
     def button_edit(self):
         for rec in self:
             current_employee = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+            dis_name = self.env['dispatch.document'].sudo().search([('folder_id', '=', self.folder_id.id)])
             dd = self.env['dispatch.document'].create({
                 'name': rec.name + 0.1,
                 'previousversion': rec.id,

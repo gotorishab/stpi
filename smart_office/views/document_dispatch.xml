@@ -26,6 +26,7 @@
                                 <field name="enter_mode" attrs="{'readonly':[('state','not in',['draft', 'ready_for_dispatched'])]}"/>
                                 <field name="select_template" attrs="{'readonly':[('state','!=', 'draft')]}"/>
                                 <field name="version" invisible="1"/>
+                                <field name="basic_version" invisible="1"/>
                                 <field name="previousversion" readonly="1"/>
                                 <field name="folder_id" readonly="1"/>
                                 <field name="cooespondence_ids" widget="many2many_tags" readonly="1"/>
@@ -34,9 +35,6 @@
                         </group>
                         <notebook>
                             <page name = "dispatch_mode" string = "Dispatch Mode">
-                                <field name="file_ids" readonly="1"/>
-                            </page>
-                            <page name="File Tracking Information">
                                 <field name="dispatch_mode_ids">
                                     <tree editable="bottom">
                                         <field name="dispatch_id"/>

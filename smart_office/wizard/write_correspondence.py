@@ -42,6 +42,7 @@ class AddReference(models.TransientModel):
             name = int(max) + 1
             dd = self.env['dispatch.document'].create({
                 'name': name,
+                'basic_version': name,
                 'dispatch_mode': self.dispatch_mode,
                 'template_html': self.template_html,
                 'select_template': self.select_template.id,
