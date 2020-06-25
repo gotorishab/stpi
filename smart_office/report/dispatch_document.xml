@@ -6,7 +6,7 @@
         <t t-foreach="docs" t-as="o">
             <t t-call="web.external_layout">
                 <div class="page">
-                    <h4 class="text-center">Dispatch Document</h4>
+                    <h4 class="text-center"><span t-field="o.print_heading"/></h4>
                     <br/><br/><br/>
                         <table style="width:1000px;">
                             <tr>
@@ -17,7 +17,7 @@
                                 <td style="width=50%"></td>
                                 <td style="width=50%"></td>
                                 <td class="text-left" style="width=15%"><strong>Branch</strong></td>
-                                <td class="text-left" style="width=15%"><span t-field="o.branch_id" t-options='{"format": "MM/dd/yyyy"}'/></td>
+                                <td class="text-left" style="width=15%"><span t-field="o.branch_id"/></td>
                             </tr>
                             <tr>
                                 <td class="text-left"><strong>Department</strong></td>
@@ -38,6 +38,19 @@
                                 <td style="width=50%"></td>
                                 <td class="text-left"><strong>File</strong></td>
                                 <td class="text-left"><span t-field="o.folder_id"/></td>
+                            </tr>
+                        </table>
+
+                    <table style="width:1000px;">
+                            <tr>
+                                <td class="text-left" style="width=15%"><strong>Template</strong></td>
+                                <td class="text-left" style="width=15%"><span t-field="o.select_template"/></td>
+                                <td style="width=50%"></td>
+                                <td style="width=50%"></td>
+                                <td style="width=50%"></td>
+                                <td style="width=50%"></td>
+                                <td class="text-left" style="width=15%"><strong>Content</strong></td>
+                                <td class="text-left" style="width=15%"><span t-field="o.template_html"/></td>
                             </tr>
                         </table>
                     <br/><br/><br/>

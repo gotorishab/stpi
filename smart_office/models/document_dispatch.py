@@ -18,7 +18,7 @@ class DispatchDocument(models.Model):
     select_template = fields.Many2one('select.template.html', track_visibility='always')
     template_html = fields.Html('Template', track_visibility='always')
     basic_version = fields.Float('Basic Version')
-    
+    print_heading = fields.Char('Heading')
     dispatch_mode_ids = fields.One2many('dispatch.document.mode','dispatch_id',string='Dispatch Mode')
 
     version = fields.Many2one('dispatch.document', string='Version', track_visibility='always')
