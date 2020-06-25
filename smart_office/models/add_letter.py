@@ -60,7 +60,7 @@ class AddLetter(models.Model):
         print('==============================name=============================', int(seq))
         print('==============================enclosure_details=============================', enclosure_details)
         print('==============================user_id=============================', current_employee.user_id.id)
-        print('==============================res.content=============================', res.content)
+        # print('==============================res.content=============================', res.content)
         req = requests.post('http://103.92.47.152/STPI/www/web-service/add-letter/', data=data,
                             json=None)
         try:

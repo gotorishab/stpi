@@ -38,10 +38,18 @@ class DispatchDocument(models.Model):
     @api.multi
     def button_edit(self):
         for rec in self:
+            cout = 0
             current_employee = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
             dis_name = self.env['dispatch.document'].sudo().search([('folder_id', '=', self.folder_id.id),('basic_version', '=', self.basic_version)])
+            m_name = self.env['dispatch.document'].sudo().search([('folder_id', '=', self.folder_id.id)])
+            for ct in m_name:
+                cout+=1
+            if cout <1:
+                name = 1
+            else:
+                name = rec.name
             dd = self.env['dispatch.document'].create({
-                'name': rec.name + 0.1,
+                'name': name + 0.001,
                 'basic_version': int(rec.name),
                 'previousversion': rec.id,
                 'dispatch_mode': rec.dispatch_mode,
