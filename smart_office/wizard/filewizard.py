@@ -46,6 +46,9 @@ class FileWizard(models.Model):
                     sec_own = []
                     previous_owner = []
                     previous_owner.append(rec.defid.current_owner_id.id)
+                    transfer_to_emp = self.env['hr.employee'].search([('user_id', '=', rec.user.id)], limit=1)
+                    rec.defid.previous_owner_emp = [(4, transfer_to_emp.id)]
+
                     # rec.defid.previous_owner = [(6, 0, previous_owner)]
 
                     rec.defid.last_owner_id = rec.defid.current_owner_id.id

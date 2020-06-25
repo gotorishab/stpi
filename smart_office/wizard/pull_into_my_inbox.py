@@ -20,6 +20,7 @@ class PullIntoMyInbox(models.TransientModel):
         current_employee = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
         for file in self.env['muk_dms.file'].browse(active_ids):
             current_file_employee = self.env['hr.employee'].search([('user_id', '=', file.current_owner_id.id)], limit=1)
+            transfer_to_emp = self.env['hr.employee'].search([('user_id', '=', file.current_owner_id.id)], limit=1)
             self.env['file.tracker.report'].create({
                 'name': str(file.name),
                 'number': str(file.letter_number),
@@ -37,6 +38,7 @@ class PullIntoMyInbox(models.TransientModel):
                 'remarks': self.remarks,
                 'details': 'Correspondence pulled'
             })
+            file.previous_owner_emp = [(4, transfer_to_emp.id)]
             file.last_owner_id = file.current_owner_id.id
             file.current_owner_id = self.env.user.id
             file.responsible_user_id = self.env.user.id

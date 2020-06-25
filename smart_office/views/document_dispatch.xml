@@ -32,6 +32,17 @@
                             </group>
                             <field name="template_html" attrs="{'readonly':[('state','!=', 'draft')]}"/>
                         </group>
+                        <notesheet>
+                            <page string="Dispatch Mode" name="dispatch_mode">
+                                <field name="dispatch_mode_ids">
+                                    <tree editable="bottom">
+                                        <field name="diapatch_id"/>
+                                        <field name="dispatch_mode"/>
+                                        <field name="enter_mode"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notesheet>
                     </sheet>
                     <div class="oe_chatter">
                         <field name="message_follower_ids" widget="mail_followers"/>

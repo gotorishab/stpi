@@ -308,6 +308,25 @@ class FolderMaster(models.Model):
                 'remarks': rec.description,
                 'details': "File repoen on {}".format(datetime.now().date())
             })
+            my_current_employee = self.env['hr.employee'].search([('user_id', '=', rec.current_owner_id.id)], limit=1)
+            print('==============================assignment_id=============================', rec.assignment_id)
+            print('==============================my_current_employee=============================', rec.my_current_employee)
+            data = {
+                'user_id': my_current_employee.user_id.id,
+                'assignment_id': rec.assignment_id,
+            }
+
+            req = requests.post('http://103.92.47.152/STPI/www/web-service/reopen-files', data=data,
+                                json=None)
+            try:
+                print('=====================================================', req)
+                pastebin_url = req.text
+                dictionary = json.loads(pastebin_url)
+                print('===========================pastebin_url==========================', pastebin_url)
+                print('===========================dictionary==========================', dictionary)
+            except Exception as e:
+                print('=============Error==========', e)
+
             rec.write({'state': 'draft'})
 
 

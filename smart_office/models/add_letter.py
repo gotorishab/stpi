@@ -18,7 +18,9 @@ class AddLetter(models.Model):
 
     sec_owner = fields.Many2many('res.users', string='Secondary Owners')
     srch_id = fields.Many2many('res.users', string='My Search')
+
     previous_owner = fields.Many2many('res.users', string='Previous/Current Owners')
+    previous_owner_emp = fields.Many2many('hr.employee', string='Previous/Current Owners')
 
     tracker_ids = fields.One2many('muk.letter.tracker', 'letter_id')
 

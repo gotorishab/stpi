@@ -15,8 +15,9 @@ class IncomingLetterWizard(models.TransientModel):
             my_id = []
             files = self.env['muk_dms.file'].search([])
             srch_id = self.env.user.id
+            transfer_to_emp = self.env['hr.employee'].search([('user_id', '=', self.env.user.id)], limit=1)
             for file in files:
-                if srch_id in file.previous_owner.ids:
+                if transfer_to_emp.id in file.previous_owner_emp.ids:
                     my_id.append(file.id)
             return {
                 'name': 'Outgoing Correspondence',

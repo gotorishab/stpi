@@ -8,7 +8,6 @@ class DispatchDocument(models.Model):
     _description = 'Dispatch Document'
     _rec_name = 'name'
 
-
     name = fields.Float('Number')
     cooespondence_ids = fields.Many2many('muk_dms.file', string='Correspondence', track_visibility='always')
     current_user_id = fields.Many2one('res.users', track_visibility='always')
@@ -18,6 +17,8 @@ class DispatchDocument(models.Model):
     created_on = fields.Date(string='Date', default = fields.Date.today(), track_visibility='always')
     select_template = fields.Many2one('select.template.html', track_visibility='always')
     template_html = fields.Html('Template', track_visibility='always')
+    
+    dispatch_mode_ids = fields.One2mmany('dispatch.document.mode','diapatch_id',string='Dispatch Mode')
 
     version = fields.Many2one('dispatch.document', string='Version', track_visibility='always')
     previousversion = fields.Many2one('dispatch.document', string='Previous  Version', track_visibility='always')
@@ -96,3 +97,14 @@ class DispatchDocument(models.Model):
     def button_reject(self):
         for rec in self:
             rec.write({'state': 'reject'})
+
+
+class DispatchDocumentMode(models.Model):
+    _name = 'dispatch.document.mode'
+    _description = 'Dispatch Document'
+
+    diapatch_id = fields.Many2one('dispatch.document', string='Dispatch Document')
+    dispatch_mode = fields.Selection(
+        [('hand_to_hand', 'Hand to Hand'),('email', 'Email'), ('fax', 'Fax'), ('splmess', 'Spl. Messenger'), ('post', 'Post')
+         ], string='Dispatch Mode', track_visibility='always')
+    enter_mode = fields.Char('Enter Mode of Dispatch')
