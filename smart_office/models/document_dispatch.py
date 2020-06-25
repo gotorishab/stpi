@@ -18,7 +18,7 @@ class DispatchDocument(models.Model):
     select_template = fields.Many2one('select.template.html', track_visibility='always')
     template_html = fields.Html('Template', track_visibility='always')
     
-    dispatch_mode_ids = fields.One2mmany('dispatch.document.mode','diapatch_id',string='Dispatch Mode')
+    dispatch_mode_ids = fields.One2many('dispatch.document.mode','dispatch_id',string='Dispatch Mode')
 
     version = fields.Many2one('dispatch.document', string='Version', track_visibility='always')
     previousversion = fields.Many2one('dispatch.document', string='Previous  Version', track_visibility='always')
@@ -103,7 +103,7 @@ class DispatchDocumentMode(models.Model):
     _name = 'dispatch.document.mode'
     _description = 'Dispatch Document'
 
-    diapatch_id = fields.Many2one('dispatch.document', string='Dispatch Document')
+    dispatch_id = fields.Many2one('dispatch.document', string='Dispatch Document')
     dispatch_mode = fields.Selection(
         [('hand_to_hand', 'Hand to Hand'),('email', 'Email'), ('fax', 'Fax'), ('splmess', 'Spl. Messenger'), ('post', 'Post')
          ], string='Dispatch Mode', track_visibility='always')
