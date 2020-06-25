@@ -155,7 +155,7 @@ class FolderMaster(models.Model):
 
     @api.multi
     def deal_with_file(self):
-        self.iframe_dashboard = self.notesheet_url + str('?type=STPI&user_id=') + str(self.current_owner_id.id)
+        self.iframe_dashboard = self.notesheet_url + str('?type=STPI&user_id=') + str(self.env.user.id)
         if self.iframe_dashboard:
             self.write({'state': 'in_progress'})
             total_iframe = self.iframe_dashboard.replace('800', '100%').replace('"600"', '"100%"').replace(

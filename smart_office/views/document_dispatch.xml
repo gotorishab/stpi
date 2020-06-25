@@ -38,7 +38,7 @@
                                 <field name="dispatch_mode_ids">
                                     <tree editable="bottom">
                                         <field name="dispatch_id" invisible="1"/>
-                                        <field name="dispatch_number" invisible="1"/>
+                                        <field name="dispatch_number" readonly="1"/>
                                         <field name="dispatch_mode" required="1"/>
                                         <field name="enter_mode" required="1"/>
                                     </tree>
