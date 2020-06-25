@@ -8,6 +8,7 @@
                     <header>
                         <button name="button_ready_for_dispatch" string="Request Approval" class="oe_highlight" type="object" states="draft"/>
                         <button name="button_dispatch" string="Dispatch" class="oe_highlight" type="object" states="ready_for_dispatched"/>
+                        <button name="print_dispatch_document" string="Print Details" type="object" states="dispatched" class="oe_highlight"/>
                         <button name="button_reset_to_draft" string="Reopen" class="oe_highlight" type="object" states="ready_for_dispatched"/>
                         <field name="state" widget="statusbar" statusbar_visible="draft,ready_for_dispatched,dispatched"/>
                     </header>

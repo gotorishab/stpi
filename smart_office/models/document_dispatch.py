@@ -97,6 +97,13 @@ class DispatchDocument(models.Model):
                 dd.sudo().button_obsellete()
             rec.write({'state': 'ready_for_dispatched'})
 
+
+
+    @api.multi
+    def print_dispatch_document(self):
+        return self.env.ref('smart_office.dispatch_document_status_print').report_action(self)
+
+
     @api.multi
     def button_dispatch(self):
         for rec in self:
