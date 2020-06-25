@@ -39,9 +39,10 @@ class DispatchDocument(models.Model):
     def button_edit(self):
         for rec in self:
             current_employee = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
-            dis_name = self.env['dispatch.document'].sudo().search([('folder_id', '=', self.folder_id.id)])
+            dis_name = self.env['dispatch.document'].sudo().search([('folder_id', '=', self.folder_id.id),('basic_version', '=', self.basic_version)])
             dd = self.env['dispatch.document'].create({
                 'name': rec.name + 0.1,
+                'basic_version': int(rec.name),
                 'previousversion': rec.id,
                 'dispatch_mode': rec.dispatch_mode,
                 'template_html': rec.template_html,
@@ -56,7 +57,7 @@ class DispatchDocument(models.Model):
                 'cooespondence_ids': rec.cooespondence_ids.ids,
             })
             dd.version = dd.id
-            rec.sudo().button_obsellete()
+            # rec.sudo().button_obsellete()
             form_view = self.env.ref('smart_office.document_dispatch_form_view')
             tree_view = self.env.ref('smart_office.dispatch_document_tree_view1')
             value = {
@@ -83,6 +84,9 @@ class DispatchDocument(models.Model):
     @api.multi
     def button_ready_for_dispatch(self):
         for rec in self:
+            dis_name = self.env['dispatch.document'].sudo().search([('id', '!=', rec.id),('folder_id', '=', rec.folder_id.id),('basic_version', '=', rec.basic_version)])
+            for dd in dis_name:
+                dd.sudo().button_obsellete()
             rec.write({'state': 'ready_for_dispatched'})
 
     @api.multi

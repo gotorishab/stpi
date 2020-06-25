@@ -310,7 +310,7 @@ class FolderMaster(models.Model):
             })
             my_current_employee = self.env['hr.employee'].search([('user_id', '=', rec.current_owner_id.id)], limit=1)
             print('==============================assignment_id=============================', rec.assignment_id)
-            print('==============================my_current_employee=============================', rec.my_current_employee)
+            print('==============================my_current_employee=============================', my_current_employee)
             data = {
                 'user_id': my_current_employee.user_id.id,
                 'assignment_id': rec.assignment_id,
