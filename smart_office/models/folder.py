@@ -260,11 +260,11 @@ class FolderMaster(models.Model):
 
             my_current_employee = self.env['hr.employee'].search([('user_id', '=', rec.current_owner_id.id)], limit=1)
             print('==============================to_designation_id=============================', my_current_employee.job_id.id)
-            print('==============================to_user_id=============================', my_current_employee.job_id.id)
+            print('==============================to_user_id=============================', my_current_employee.user_id.id)
             print('==============================remarks=============================', rec.description)
             print('==============================to_designation_ids=============================', my_current_employee.job_id.id)
-            print('==============================to_user_ids=============================', my_current_employee.job_id.id)
-            print('==============================user_id=============================', my_current_employee.job_id.id)
+            print('==============================to_user_ids=============================', my_current_employee.user_id.id)
+            print('==============================user_id=============================', my_current_employee.user_id.id)
             print('==============================assignment_id=============================', rec.assignment_id)
             data = {
                 'is_action_taken': 'C',
@@ -310,7 +310,7 @@ class FolderMaster(models.Model):
             })
             my_current_employee = self.env['hr.employee'].search([('user_id', '=', rec.current_owner_id.id)], limit=1)
             print('==============================assignment_id=============================', rec.assignment_id)
-            print('==============================my_current_employee=============================', my_current_employee)
+            # print('==============================my_current_employee=============================', my_current_employee)
             print('==============================current user=============================', my_current_employee.user_id.id)
             data = {
                 'user_id': my_current_employee.user_id.id,
