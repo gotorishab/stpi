@@ -32,8 +32,11 @@
                             </group>
                             <field name="template_html" attrs="{'readonly':[('state','!=', 'draft')]}"/>
                         </group>
-                        <notesheet>
-                            <page string="Dispatch Mode" name="dispatch_mode">
+                        <notebook>
+                            <page name = "dispatch_mode" string = "Dispatch Mode">
+                                <field name="file_ids" readonly="1"/>
+                            </page>
+                            <page name="File Tracking Information">
                                 <field name="dispatch_mode_ids">
                                     <tree editable="bottom">
                                         <field name="dispatch_id"/>
@@ -42,7 +45,7 @@
                                     </tree>
                                 </field>
                             </page>
-                        </notesheet>
+                        </notebook>
                     </sheet>
                     <div class="oe_chatter">
                         <field name="message_follower_ids" widget="mail_followers"/>
