@@ -21,7 +21,7 @@ class OutgoingfileWizard(models.TransientModel):
             return {
                 'name': 'Outgoing Files',
                 'view_type': 'form',
-                'view_mode': 'kanban,tree,graph,pivot,form',
+                'view_mode': 'tree,graph,pivot,form',
                 'res_model': 'folder.master',
                 'type': 'ir.actions.act_window',
                 'target': 'current',

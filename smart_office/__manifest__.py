@@ -61,6 +61,7 @@
         'views/file_exception.xml',
         'views/report.xml',
         'views/document_dispatch.xml',
+        'report/dispatch_document.xml',
 
     ],
     'qweb': [

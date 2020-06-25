@@ -121,4 +121,5 @@ class DispatchDocumentMode(models.Model):
     dispatch_mode = fields.Selection(
         [('hand_to_hand', 'Hand to Hand'),('email', 'Email'), ('fax', 'Fax'), ('splmess', 'Spl. Messenger'), ('post', 'Post')
          ], string='Dispatch Mode', track_visibility='always')
-    enter_mode = fields.Char('Enter Mode of Dispatch')
+    enter_mode = fields.Char('Dispatch Details')
+    dispatch_number = fields.Char('Dispatch Number')
