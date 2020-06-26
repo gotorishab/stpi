@@ -111,6 +111,7 @@ class DispatchDocument(models.Model):
         pdf = self.env.ref('smart_office.dispatch_document_status_print').render_qweb_pdf(self.ids)
         b64_pdf = base64.b64encode(pdf[0])
         directory = self.env['muk_dms.directory'].sudo().search([('name', '=', 'Incoming Files')], limit=1)
+        print('============my usr id======================',self.current_user_id.id)
         mp = self.env['muk_dms.file'].create({
             'name': str(self.print_heading) + str(self.folder_id.folder_name) + '.pdf',
             'content': b64_pdf,
@@ -118,6 +119,7 @@ class DispatchDocument(models.Model):
             'write_uid': self.current_user_id.id,
             'create_uid': self.current_user_id.id,
             'current_owner_id': self.current_user_id.id,
+            'last_owner_id': self.current_user_id.id,
             'sender_enclosures': 'Enclosure Details',
         })
         print('===============================mp===============================', mp.id)
