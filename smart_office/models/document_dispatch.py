@@ -102,7 +102,7 @@ class DispatchDocument(models.Model):
 
     @api.multi
     def print_dispatch_document(self):
-        self.sudo().action_get_attachment()
+        # self.sudo().action_get_attachment()
         self.sudo().action_create_correspondence()
         return self.env.ref('smart_office.dispatch_document_status_print').report_action(self)
 
@@ -123,22 +123,24 @@ class DispatchDocument(models.Model):
             'sender_enclosures': 'Enclosure Details',
         })
         print('===============================mp===============================', mp.id)
+        print('===============================mp current===============================', mp.current_owner_id.id)
+        print('===============================mp write===============================', mp.write_uid.id)
 
-    def action_get_attachment(self):
-        pdf = self.env.ref('smart_office.dispatch_document_status_print').render_qweb_pdf(self.ids)
-        b64_pdf = base64.b64encode(pdf[0])
-        # save pdf as attachment
-        name = "My Attachment"
-        return self.env['ir.attachment'].create({
-            'name': name,
-            'type': 'binary',
-            'datas': b64_pdf,
-            'datas_fname': name + '.pdf',
-            'store_fname': name,
-            'res_model': self._name,
-            'res_id': self.id,
-            'mimetype': 'application/x-pdf'
-        })
+    # def action_get_attachment(self):
+    #     pdf = self.env.ref('smart_office.dispatch_document_status_print').render_qweb_pdf(self.ids)
+    #     b64_pdf = base64.b64encode(pdf[0])
+    #     # save pdf as attachment
+    #     name = "My Attachment"
+    #     return self.env['ir.attachment'].create({
+    #         'name': name,
+    #         'type': 'binary',
+    #         'datas': b64_pdf,
+    #         'datas_fname': name + '.pdf',
+    #         'store_fname': name,
+    #         'res_model': self._name,
+    #         'res_id': self.id,
+    #         'mimetype': 'application/x-pdf'
+    #     })
 
     @api.multi
     def button_dispatch(self):
