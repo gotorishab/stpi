@@ -105,7 +105,7 @@ class DispatchDocument(models.Model):
         pdf = self.env.ref('smart_office.dispatch_document_status_print').report_action(self)
         print('================a==================', pdf)
         report_name = "smart_office.dispatch_document_status_print"
-        pdf = self.env['report'].sudo().get_pdf([self.id], report_name)
+        pdf = self.env['smart_office.dispatch_document_status_print'].sudo().get_pdf([self.id], report_name)
         report_file = base64.encodestring(pdf)
         print('================report_file==================', report_file)
         # print('============================================,self.env.ref('smart_office.dispatch_document_status_print').report_action(self))
