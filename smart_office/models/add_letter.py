@@ -21,7 +21,7 @@ class AddLetter(models.Model):
     dispatch_id = fields.Many2one('dispatch.document')
     previous_owner = fields.Many2many('res.users', string='Previous/Current Owners')
     previous_owner_emp = fields.Many2many('hr.employee', string='Previous/Current Owners')
-
+    content_binary = fields.Text('Content Binary')
     tracker_ids = fields.One2many('muk.letter.tracker', 'letter_id')
 
     @api.onchange('name')
@@ -36,7 +36,7 @@ class AddLetter(models.Model):
     def create(self, vals):
         res = super(AddLetter, self).create(vals)
         print('==============================res.content=============================', res.content)
-
+        res.content_binary = res.content
         if not res.dispatch_id:
             print('============================self.env.user.id===============================',self.env.user.id)
             print('============================current_owner_id===============================',self.current_owner_id.id)
