@@ -15,7 +15,7 @@
                                 <field name="department_id" readonly ="1"/>
                             </group>
                             <group>
-                                <field name="dispatch_mode"/>
+                                <field name="print_heading"/>
                                 <field name="select_template"/>
                             </group>
                         <field name="template_html"/>

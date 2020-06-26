@@ -6,7 +6,7 @@ class AddReference(models.TransientModel):
     _description = 'Add Reference'
 
 
-
+    print_heading = fields.Char('Heading')
     cooespondence_ids = fields.Many2many('muk_dms.file', string='Correspondence')
     current_user_id = fields.Many2one('res.users')
     branch_id = fields.Many2one('res.branch', 'Branch')
