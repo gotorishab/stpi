@@ -18,7 +18,7 @@ class AddLetter(models.Model):
 
     sec_owner = fields.Many2many('res.users', string='Secondary Owners')
     srch_id = fields.Many2many('res.users', string='My Search')
-
+    dispatch_id = fields.Many2one('dispatch.document')
     previous_owner = fields.Many2many('res.users', string='Previous/Current Owners')
     previous_owner_emp = fields.Many2many('hr.employee', string='Previous/Current Owners')
 
@@ -34,72 +34,131 @@ class AddLetter(models.Model):
 
     @api.model
     def create(self, vals):
-        print('============================self.env.user.id===============================',self.env.user.id)
-        print('============================current_owner_id===============================',self.current_owner_id.id)
-        directory = self.env['muk_dms.directory'].sudo().search([('name', '=', 'Incoming Files')], limit=1)
-        vals['directory'] = directory.id
-        # if self._context.get('smart_office_incoming_letter', False):
-        #     vals['directory'] = self.env.ref('smart_office.smart_office_directory').id
-        if self.responsible_user_id == False:
-            vals['responsible_user_id'] = self.env.user.id
-        if self.last_owner_id == False:
-            vals['last_owner_id'] = self.env.user.id
-        if self.current_owner_id == False:
-            vals['current_owner_id'] = self.env.user.id
-        # if 'code' not in vals or vals['code'] == _('New'):
-        #     vals['name'] = self.env['ir.sequence'].next_by_code('muk.dms.letter') or _('New')
         res = super(AddLetter, self).create(vals)
-        seq = self.env['ir.sequence'].next_by_code('muk_dms.file')
-        date = datetime.now().date()
-        sequence = str(date.strftime('%Y%m%d')) + '/' + str(seq)
-        res.letter_number = sequence
-        current_employee = self.env['hr.employee'].search([('user_id', '=', self.current_owner_id.id)], limit=1)
-        enclosure_details = str(res.sender_enclosures) + ' *****' + str(res.name)
-        data = {
-            'document_type': res.document_type,
-            'name': int(seq),
-            'enclosure_details': enclosure_details,
-            'user_id': current_employee.user_id.id,
-            'attachment[]': res.content
-        }
-        print('==============================name=============================', int(seq))
-        print('==============================enclosure_details=============================', enclosure_details)
-        print('==============================user_id=============================', current_employee.user_id.id)
-        # print('==============================res.content=============================', res.content)
-        req = requests.post('http://103.92.47.152/STPI/www/web-service/add-letter/', data=data,
-                            json=None)
-        try:
-            print('=====================================================', req)
-            pastebin_url = req.text
-            print('===========================pastebin_url==========================', pastebin_url)
-            dictionary = json.loads(pastebin_url)
-            res.php_letter_id = str(dictionary["response"]["letterData"]["id"])
-        except Exception as e:
-            print('=============Error==========', e)
-        current_employee = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
-        self.env['file.tracker.report'].create({
-            'name': str(res.name),
-            'number': str(res.letter_number),
-            'type': 'Correspondence',
-            'created_by': str(current_employee.user_id.name),
-            'created_by_dept': str(current_employee.department_id.name),
-            'created_by_jobpos': str(current_employee.job_id.name),
-            'created_by_branch': str(current_employee.branch_id.name),
-            'create_date': datetime.now().date(),
-            'action_taken': 'correspondence_created',
-            'remarks': res.sender_remarks,
-            'details': "Correspondence created on {}".format(datetime.now().date())
-        })
-        if self._context.get('smart_office_incoming_letter', False):
-            self.env['muk.letter.tracker'].create(dict(
-                type='create',
-                # from_id=False,
-                to_id=self.env.user.id,
-                letter_id=res.id
-            ))
-            res.directory.doc_file_preview = res.content
-        return res
-
+        if res.dispatch_id != True:
+            print('============================self.env.user.id===============================',self.env.user.id)
+            print('============================current_owner_id===============================',self.current_owner_id.id)
+            directory = self.env['muk_dms.directory'].sudo().search([('name', '=', 'Incoming Files')], limit=1)
+            vals['directory'] = directory.id
+            # if self._context.get('smart_office_incoming_letter', False):
+            #     vals['directory'] = self.env.ref('smart_office.smart_office_directory').id
+            if self.responsible_user_id == False:
+                vals['responsible_user_id'] = self.env.user.id
+            if self.last_owner_id == False:
+                vals['last_owner_id'] = self.env.user.id
+            if self.current_owner_id == False:
+                vals['current_owner_id'] = self.env.user.id
+            # if 'code' not in vals or vals['code'] == _('New'):
+            #     vals['name'] = self.env['ir.sequence'].next_by_code('muk.dms.letter') or _('New')
+            seq = self.env['ir.sequence'].next_by_code('muk_dms.file')
+            date = datetime.now().date()
+            sequence = str(date.strftime('%Y%m%d')) + '/' + str(seq)
+            res.letter_number = sequence
+            current_employee = self.env['hr.employee'].search([('user_id', '=', self.current_owner_id.id)], limit=1)
+            enclosure_details = str(res.sender_enclosures) + ' *****' + str(res.name)
+            data = {
+                'document_type': res.document_type,
+                'name': int(seq),
+                'enclosure_details': enclosure_details,
+                'user_id': current_employee.user_id.id,
+                'attachment[]': res.content
+            }
+            print('==============================name=============================', int(seq))
+            print('==============================enclosure_details=============================', enclosure_details)
+            print('==============================user_id=============================', current_employee.user_id.id)
+            # print('==============================res.content=============================', res.content)
+            req = requests.post('http://103.92.47.152/STPI/www/web-service/add-letter/', data=data,
+                                json=None)
+            try:
+                print('=====================================================', req)
+                pastebin_url = req.text
+                print('===========================pastebin_url==========================', pastebin_url)
+                dictionary = json.loads(pastebin_url)
+                res.php_letter_id = str(dictionary["response"]["letterData"]["id"])
+            except Exception as e:
+                print('=============Error==========', e)
+            current_employee = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+            self.env['file.tracker.report'].create({
+                'name': str(res.name),
+                'number': str(res.letter_number),
+                'type': 'Correspondence',
+                'created_by': str(current_employee.user_id.name),
+                'created_by_dept': str(current_employee.department_id.name),
+                'created_by_jobpos': str(current_employee.job_id.name),
+                'created_by_branch': str(current_employee.branch_id.name),
+                'create_date': datetime.now().date(),
+                'action_taken': 'correspondence_created',
+                'remarks': res.sender_remarks,
+                'details': "Correspondence created on {}".format(datetime.now().date())
+            })
+            if self._context.get('smart_office_incoming_letter', False):
+                self.env['muk.letter.tracker'].create(dict(
+                    type='create',
+                    # from_id=False,
+                    to_id=self.env.user.id,
+                    letter_id=res.id
+                ))
+                res.directory.doc_file_preview = res.content
+            return res
+        else:
+            # print('============================self.env.user.id===============================', self.env.user.id)
+            print('============================dispatch_id.current_user_id===============================',
+                  res.dispatch_id.current_user_id.id)
+            directory = self.env['muk_dms.directory'].sudo().search([('name', '=', 'Incoming Files')], limit=1)
+            vals['directory'] = directory.id
+            vals['responsible_user_id'] = res.dispatch_id.current_user_id.id
+            vals['last_owner_id'] = res.dispatch_id.current_user_id.id
+            vals['current_owner_id'] = res.dispatch_id.current_user_id.id
+            seq = self.env['ir.sequence'].next_by_code('muk_dms.file')
+            date = datetime.now().date()
+            sequence = str(date.strftime('%Y%m%d')) + '/' + str(seq)
+            res.letter_number = sequence
+            current_employee = self.env['hr.employee'].search([('user_id', '=', self.current_owner_id.id)], limit=1)
+            enclosure_details = str(res.sender_enclosures) + ' *****' + str(res.name)
+            data = {
+                'document_type': res.document_type,
+                'name': int(seq),
+                'enclosure_details': enclosure_details,
+                'user_id': current_employee.user_id.id,
+                'attachment[]': res.content
+            }
+            print('==============================name=============================', int(seq))
+            print('==============================enclosure_details=============================', enclosure_details)
+            print('==============================user_id=============================', current_employee.user_id.id)
+            # print('==============================res.content=============================', res.content)
+            req = requests.post('http://103.92.47.152/STPI/www/web-service/add-letter/', data=data,
+                                json=None)
+            try:
+                print('=====================================================', req)
+                pastebin_url = req.text
+                print('===========================pastebin_url==========================', pastebin_url)
+                dictionary = json.loads(pastebin_url)
+                res.php_letter_id = str(dictionary["response"]["letterData"]["id"])
+            except Exception as e:
+                print('=============Error==========', e)
+            current_employee = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+            self.env['file.tracker.report'].create({
+                'name': str(res.name),
+                'number': str(res.letter_number),
+                'type': 'Correspondence',
+                'created_by': str(current_employee.user_id.name),
+                'created_by_dept': str(current_employee.department_id.name),
+                'created_by_jobpos': str(current_employee.job_id.name),
+                'created_by_branch': str(current_employee.branch_id.name),
+                'create_date': datetime.now().date(),
+                'action_taken': 'correspondence_created',
+                'remarks': res.sender_remarks,
+                'details': "Correspondence created on {}".format(datetime.now().date())
+            })
+            if self._context.get('smart_office_incoming_letter', False):
+                self.env['muk.letter.tracker'].create(dict(
+                    type='create',
+                    # from_id=False,
+                    to_id=self.env.user.id,
+                    letter_id=res.id
+                ))
+                res.directory.doc_file_preview = res.content
+            return res
 
 
     # Letter Information

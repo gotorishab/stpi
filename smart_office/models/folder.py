@@ -61,6 +61,9 @@ class FolderMaster(models.Model):
     @api.model
     def create(self, vals):
         res = super(FolderMaster, self).create(vals)
+        print('============================self.env.user.id===============================', self.env.user.id)
+        print('============================current_owner_id===============================', self.current_owner_id.id)
+
         vals['last_owner_id'] = self.env.user.id
         vals['current_owner_id'] = self.env.user.id
         res.current_owner_id = self.env.user.id

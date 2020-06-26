@@ -113,7 +113,8 @@ class DispatchDocument(models.Model):
         directory = self.env['muk_dms.directory'].sudo().search([('name', '=', 'Incoming Files')], limit=1)
         print('============my usr id======================',self.current_user_id.id)
         mp = self.env['muk_dms.file'].create({
-            'name': str(self.print_heading) + str(self.folder_id.folder_name) + '.pdf',
+            'dispatch_id': self.id,
+            'name': str(self.print_heading) + '-' + str(self.folder_id.folder_name) + '-' + str(self.name) + '.pdf',
             'content': b64_pdf,
             'directory': directory.id,
             'write_uid': self.current_user_id.id,
