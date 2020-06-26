@@ -35,15 +35,16 @@ class AddLetter(models.Model):
     @api.model
     def create(self, vals):
         print('============================self.env.user.id===============================',self.env.user.id)
+        print('============================current_owner_id===============================',self.current_owner_id.id)
         directory = self.env['muk_dms.directory'].sudo().search([('name', '=', 'Incoming Files')], limit=1)
         vals['directory'] = directory.id
         # if self._context.get('smart_office_incoming_letter', False):
         #     vals['directory'] = self.env.ref('smart_office.smart_office_directory').id
-        if not self.responsible_user_id:
+        if self.responsible_user_id == False:
             vals['responsible_user_id'] = self.env.user.id
-        if not self.last_owner_id:
+        if self.last_owner_id == False:
             vals['last_owner_id'] = self.env.user.id
-        if not self.current_owner_id:
+        if self.current_owner_id == False:
             vals['current_owner_id'] = self.env.user.id
         # if 'code' not in vals or vals['code'] == _('New'):
         #     vals['name'] = self.env['ir.sequence'].next_by_code('muk.dms.letter') or _('New')
