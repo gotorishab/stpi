@@ -103,8 +103,21 @@ class DispatchDocument(models.Model):
     @api.multi
     def print_dispatch_document(self):
         self.sudo().action_get_attachment()
+        self.sudo().action_create_correspondence()
         return self.env.ref('smart_office.dispatch_document_status_print').report_action(self)
 
+
+    def action_create_correspondence(self):
+        pdf = self.env.ref('smart_office.dispatch_document_status_print').render_qweb_pdf(self.ids)
+        b64_pdf = base64.b64encode(pdf[0])
+        name = "My Attachment"
+        directory = self.env['muk_dms.directory'].sudo().search([('name', '=', 'Incoming Files')], limit=1)
+        self.env['muk_dms.file'].create({
+            'name': name + '.pdf',
+            'content': b64_pdf,
+            'directory': directory.id,
+            'sender_enclosures': 'Enclosure Details',
+        })
 
     def action_get_attachment(self):
         pdf = self.env.ref('smart_office.dispatch_document_status_print').render_qweb_pdf(self.ids)
