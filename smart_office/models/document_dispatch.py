@@ -116,6 +116,9 @@ class DispatchDocument(models.Model):
             'name': name + '.pdf',
             'content': b64_pdf,
             'directory': directory.id,
+            'write_uid': self.current_user_id.id,
+            'create_uid': self.current_user_id.id,
+            'current_owner_id': self.current_user_id.id,
             'sender_enclosures': 'Enclosure Details',
         })
         print('===============================mp===============================', mp.id)
