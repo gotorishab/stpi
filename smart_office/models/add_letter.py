@@ -109,6 +109,8 @@ class AddLetter(models.Model):
             vals['responsible_user_id'] = res.dispatch_id.current_user_id.id
             vals['last_owner_id'] = res.dispatch_id.current_user_id.id
             vals['current_owner_id'] = res.dispatch_id.current_user_id.id
+            vals['create_uid'] = res.dispatch_id.current_user_id.id
+            vals['write_uid'] = res.dispatch_id.current_user_id.id
             seq = self.env['ir.sequence'].next_by_code('muk_dms.file')
             date = datetime.now().date()
             sequence = str(date.strftime('%Y%m%d')) + '/' + str(seq)

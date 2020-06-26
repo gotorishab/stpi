@@ -1,6 +1,8 @@
 from odoo import fields, models, api, _
 from datetime import datetime, date, timedelta
 import base64
+import requests
+import json
 
 
 class DispatchDocument(models.Model):
@@ -102,8 +104,6 @@ class DispatchDocument(models.Model):
 
     @api.multi
     def print_dispatch_document(self):
-        # self.sudo().action_get_attachment()
-        self.sudo().action_create_correspondence()
         return self.env.ref('smart_office.dispatch_document_status_print').report_action(self)
 
 
@@ -112,7 +112,7 @@ class DispatchDocument(models.Model):
         b64_pdf = base64.b64encode(pdf[0])
         directory = self.env['muk_dms.directory'].sudo().search([('name', '=', 'Incoming Files')], limit=1)
         print('============my usr id======================',self.current_user_id.id)
-        mp = self.env['muk_dms.file'].create({
+        file = self.env['muk_dms.file'].create({
             'dispatch_id': self.id,
             'name': str(self.print_heading) + '-' + str(self.folder_id.folder_name) + '-' + str(self.name) + '.pdf',
             'content': b64_pdf,
@@ -124,29 +124,50 @@ class DispatchDocument(models.Model):
             'last_owner_id': self.current_user_id.id,
             'sender_enclosures': 'Enclosure Details',
         })
-        print('===============================mp===============================', mp.id)
-        print('===============================mp current===============================', mp.current_owner_id.id)
-        print('===============================mp write===============================', mp.write_uid.id)
+        print('===============================mp===============================', file.id)
+        self.folder_id.file_ids = [(4, file.id)]
+        current_employee = self.env['hr.employee'].search([('user_id', '=', self.current_user_id.id)], limit=1)
+        folder = self.env['file.tracker.report'].create({
+            'name': str(file.name),
+            'type': 'Correspondence',
+            'assigned_by': str(current_employee.user_id.name),
+            'assigned_by_dept': str(current_employee.department_id.name),
+            'assigned_by_jobpos': str(current_employee.job_id.name),
+            'assigned_by_branch': str(current_employee.branch_id.name),
+            'assigned_date': datetime.now().date(),
+            'action_taken': 'assigned_to_file',
+            'remarks': self.template_html,
+            'details': "Correspondence attached to file {}".format(self.folder_id.folder_name)
+        })
+        self.folder_id.document_ids = str(self.folder_id.document_ids) + ',' + str(file.php_letter_id)
+        data = {
+            'assign_name': self.folder_id.folder_name,
+            'assign_no': self.folder_id.sequence,
+            'assign_date': self.folder_id.date,
+            'assign_subject': (self.folder_id.subject.subject),
+            'remarks': self.folder_id.description,
+            'created_by': self.folder_id.current_owner_id.id,
+            'doc_flow_id': 0,
+            'wing_id': self.folder_id.department_id.id,
+            'section_id': 0,
+            'designation_id': self.folder_id.job_id.id,
+            'document_ids': self.folder_id.document_ids,
+        }
+        req = requests.post('http://103.92.47.152/STPI/www/web-service/add-assignment/', data=data,
+                            json=None)
+        try:
+            pastebin_url = req.text
+            print('============Patebin url=================', pastebin_url)
+            dictionary = json.loads(pastebin_url)
+        except Exception as e:
+            print('=============Error==========', e)
 
-    # def action_get_attachment(self):
-    #     pdf = self.env.ref('smart_office.dispatch_document_status_print').render_qweb_pdf(self.ids)
-    #     b64_pdf = base64.b64encode(pdf[0])
-    #     # save pdf as attachment
-    #     name = "My Attachment"
-    #     return self.env['ir.attachment'].create({
-    #         'name': name,
-    #         'type': 'binary',
-    #         'datas': b64_pdf,
-    #         'datas_fname': name + '.pdf',
-    #         'store_fname': name,
-    #         'res_model': self._name,
-    #         'res_id': self.id,
-    #         'mimetype': 'application/x-pdf'
-    #     })
+
 
     @api.multi
     def button_dispatch(self):
         for rec in self:
+            rec.sudo().action_create_correspondence()
             rec.write({'state': 'dispatched'})
 
     @api.multi

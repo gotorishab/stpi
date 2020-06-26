@@ -20,6 +20,7 @@ class AddReference(models.TransientModel):
             current_employee = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
             for file in self.cooespondence_ids:
                 file.folder_id = self.folder_id.id
+                self.folder_id.file_ids = [(4, file.id)]
                 letter_id.append(file.id)
                 self.env['file.tracker.report'].create({
                     'name': str(file.name),
