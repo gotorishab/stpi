@@ -35,7 +35,7 @@ class AddLetter(models.Model):
     @api.model
     def create(self, vals):
         res = super(AddLetter, self).create(vals)
-        if res.dispatch_id != True:
+        if not res.dispatch_id:
             print('============================self.env.user.id===============================',self.env.user.id)
             print('============================current_owner_id===============================',self.current_owner_id.id)
             directory = self.env['muk_dms.directory'].sudo().search([('name', '=', 'Incoming Files')], limit=1)
