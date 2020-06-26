@@ -39,9 +39,12 @@ class AddLetter(models.Model):
         vals['directory'] = directory.id
         # if self._context.get('smart_office_incoming_letter', False):
         #     vals['directory'] = self.env.ref('smart_office.smart_office_directory').id
-        vals['responsible_user_id'] = self.env.user.id
-        vals['last_owner_id'] = self.env.user.id
-        vals['current_owner_id'] = self.env.user.id
+        if not self.responsible_user_id:
+            vals['responsible_user_id'] = self.env.user.id
+        if not self.last_owner_id:
+            vals['last_owner_id'] = self.env.user.id
+        if not self.current_owner_id:
+            vals['current_owner_id'] = self.env.user.id
         # if 'code' not in vals or vals['code'] == _('New'):
         #     vals['name'] = self.env['ir.sequence'].next_by_code('muk.dms.letter') or _('New')
         res = super(AddLetter, self).create(vals)
@@ -49,7 +52,7 @@ class AddLetter(models.Model):
         date = datetime.now().date()
         sequence = str(date.strftime('%Y%m%d')) + '/' + str(seq)
         res.letter_number = sequence
-        current_employee = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+        current_employee = self.env['hr.employee'].search([('user_id', '=', self.current_owner_id.id)], limit=1)
         enclosure_details = str(res.sender_enclosures) + ' *****' + str(res.name)
         data = {
             'document_type': res.document_type,

@@ -118,6 +118,7 @@ class DispatchDocument(models.Model):
             'directory': directory.id,
             'write_uid': self.current_user_id.id,
             'create_uid': self.current_user_id.id,
+            'responsible_user_id': self.current_user_id.id,
             'current_owner_id': self.current_user_id.id,
             'last_owner_id': self.current_user_id.id,
             'sender_enclosures': 'Enclosure Details',
