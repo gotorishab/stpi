@@ -39,24 +39,21 @@ class AddLetter(models.Model):
         res.content_binary = res.content
         if not res.dispatch_id:
             print('============================self.env.user.id===============================',self.env.user.id)
-            print('============================current_owner_id===============================',self.current_owner_id.id)
+            print('============================current_owner_id===============================',self.env.user.id)
             directory = self.env['muk_dms.directory'].sudo().search([('name', '=', 'Incoming Files')], limit=1)
             vals['directory'] = directory.id
             # if self._context.get('smart_office_incoming_letter', False):
             #     vals['directory'] = self.env.ref('smart_office.smart_office_directory').id
-            if self.responsible_user_id == False:
-                vals['responsible_user_id'] = self.env.user.id
-            if self.last_owner_id == False:
-                vals['last_owner_id'] = self.env.user.id
-            if self.current_owner_id == False:
-                vals['current_owner_id'] = self.env.user.id
+            vals['responsible_user_id'] = self.env.user.id
+            vals['last_owner_id'] = self.env.user.id
+            vals['current_owner_id'] = self.env.user.id
             # if 'code' not in vals or vals['code'] == _('New'):
             #     vals['name'] = self.env['ir.sequence'].next_by_code('muk.dms.letter') or _('New')
             seq = self.env['ir.sequence'].next_by_code('muk_dms.file')
             date = datetime.now().date()
             sequence = str(date.strftime('%Y%m%d')) + '/' + str(seq)
             res.letter_number = sequence
-            current_employee = self.env['hr.employee'].search([('user_id', '=', self.current_owner_id.id)], limit=1)
+            current_employee = self.env['hr.employee'].search([('user_id', '=', self.env.user.id)], limit=1)
             enclosure_details = str(res.sender_enclosures) + ' *****' + str(res.name)
             data = {
                 'document_type': res.document_type,
