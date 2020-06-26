@@ -101,6 +101,9 @@ class DispatchDocument(models.Model):
 
     @api.multi
     def print_dispatch_document(self):
+        a = self.env.ref('smart_office.dispatch_document_status_print').report_action(self)
+        print('================a==================', a)
+        # print('============================================,self.env.ref('smart_office.dispatch_document_status_print').report_action(self))
         return self.env.ref('smart_office.dispatch_document_status_print').report_action(self)
 
 
