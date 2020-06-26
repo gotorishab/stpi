@@ -113,7 +113,7 @@ class AddLetter(models.Model):
             date = datetime.now().date()
             sequence = str(date.strftime('%Y%m%d')) + '/' + str(seq)
             res.letter_number = sequence
-            current_employee = self.env['hr.employee'].search([('user_id', '=', self.current_owner_id.id)], limit=1)
+            current_employee = self.env['hr.employee'].search([('user_id', '=', res.dispatch_id.current_user_id.id)], limit=1)
             enclosure_details = str(res.sender_enclosures) + ' *****' + str(res.name)
             data = {
                 'document_type': res.document_type,
