@@ -35,13 +35,14 @@ class AddReference(models.TransientModel):
                 letter_id.append(letter.id)
             dis_name = self.env['dispatch.document'].sudo().search([('folder_id', '=', self.folder_id.id)])
             count = 0
-            max = -1
+            max = 0
             for r in dis_name:
                 if r.name > max:
                     max = r.name
             name = int(max) + 1
             dd = self.env['dispatch.document'].create({
                 'name': name,
+                'print_heading': self.print_heading,
                 'basic_version': name,
                 'dispatch_mode': self.dispatch_mode,
                 'template_html': self.template_html,
