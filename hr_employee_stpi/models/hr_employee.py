@@ -147,38 +147,39 @@ class HrEmployee(models.Model):
     #             raise ValidationError(_("Please enter correct phone number."
     #                                             "It must be of 10 digits"))
 
-    @api.constrains('personal_email')
-    def _check_personal_mail_val(self):
-        for employee in self:
-            regex = '^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'
-            if not (re.search(regex, employee.personal_email)):
-                raise ValidationError(_('Please enter correct Personal Mail Address.'))
-
-
-
-    @api.constrains('work_email')
-    def _check_work_mail_val(self):
-        for employee in self:
-            regex = '^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'
-            if not (re.search(regex, employee.work_email)):
-                raise ValidationError(_('Please enter correct Work Mail Address.'))
-
+    # @api.constrains('personal_email')
+    # def _check_personal_mail_val(self):
+    #     for employee in self:
+    #         regex = '^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'
+    #         if not (re.search(regex, employee.personal_email)):
+    #             raise ValidationError(_('Please enter correct Personal Mail Address.'))
+    #
+    #
+    #
+    # @api.constrains('work_email')
+    # def _check_work_mail_val(self):
+    #     for employee in self:
+    #         regex = '^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'
+    #         if not (re.search(regex, employee.work_email)):
+    #             raise ValidationError(_('Please enter correct Work Mail Address.'))
+    #
 
     @api.onchange('branch_id')
     @api.constrains('branch_id')
     def get_partner_from_branch(self):
         for rec in self:
-            rec.address_id = rec.branch_id.partner_id.id
+            if rec.branch_id.partner_id:
+                rec.address_id = rec.branch_id.partner_id.id
 
-    @api.constrains('name')
-    @api.onchange('name')
-    def _check_name_validation(self):
-        for rec in self:
-            if rec.name:
-                for e in rec.name:
-                    if not(e.isalpha() or e == ' '):
-                        raise ValidationError(_("Please enter correct Name."))
-
+    # @api.constrains('name')
+    # @api.onchange('name')
+    # def _check_name_validation(self):
+    #     for rec in self:
+    #         if rec.name:
+    #             for e in rec.name:
+    #                 if not(e.isalpha() or e == ' '):
+    #                     raise ValidationError(_("Please enter correct Name."))
+    #
 
 
     # added by sangita
