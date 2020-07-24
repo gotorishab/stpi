@@ -15,6 +15,10 @@ class IdentifyIdSeq(models.Model):
 class HrEmployee(models.Model):
     _inherit = 'hr.employee'
 
+    name = fields.Char(string="Employee Name", store=True, readonly=False, tracking=True)
+    user_id = fields.Many2one('res.users', 'User', store=True, readonly=False)
+    active = fields.Boolean('Active', default=True, store=True, readonly=False)
+
 
     #header
     employee_type = fields.Selection([('regular','Regular Employee'),
