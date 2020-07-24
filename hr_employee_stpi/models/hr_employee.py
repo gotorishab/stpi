@@ -84,6 +84,7 @@ class HrEmployee(models.Model):
     height = fields.Float('Height (in CMs)',track_visibility='always')
     weight = fields.Float('Weight (in KGs)',track_visibility='always')
     blood_group = fields.Selection([('a+','A+'),
+                                    ('a1+','A1+'),
                                      ('a-','A-'),
                                      ('b+','B+'),
                                      ('b-','B-'),
