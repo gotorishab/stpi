@@ -446,8 +446,8 @@ class HrLeaveType(models.Model):
                                                                                                'notes':'As Per Leave Policy'
                                                                                                })
                                                 print("allocationnnnnnnnnnnnn",allocate_leave)
-                                                # allocate_leave.sudo().action_approve()
-                                                # print("truuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu")
+                                                allocate_leave.sudo().action_approve()
+                                                print("truuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu")
                                                 if allocate_leave:
                                                     leave_bal_id = self.env['hr.employee.leave.info'].sudo().create({
                                                                                                             'hr_employee_id':employee.id,
@@ -457,6 +457,11 @@ class HrLeaveType(models.Model):
                                                                                                             'no_of_days':line.no_pf_leaves_credit
                                                                                                         })
                                                     # print("truuuuuuuuuuuuuuuuuuuallocate_leaveuuuuuuuuuuuuuuuuuuuuuuuuuu", allocate_leave)
+                                        else:
+                                            raise ValidationError(
+                                                _('Not allowed'))
+
+
                                 else:
                                     print('============3====================')
                                                     
