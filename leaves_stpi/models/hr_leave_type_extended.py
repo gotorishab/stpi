@@ -379,15 +379,15 @@ class HrLeaveType(models.Model):
                                                                                ('state','=',emp_stages.tech_name),
 #                                                                                ('active','=',True),
                                                                                ])
-#                                 print("444444447----------------",employee_ids)
+                                print("444444447----------------",employee_ids)
                             elif leave.gende == 'transgender':
                                 employee_ids = self.env['hr.employee'].search([('employee_type','=',service_leave.tech_name),
                                                                                ('state','=',emp_stages.tech_name),
                                                                                ('active','=',True)
                                                                                ])
-#                                 print("44444444444444444444444444444444",employee_ids)
+                                print("44444444444444444444444444444444",employee_ids)
                             for employee in employee_ids:
-#                                 print("@@@@@@@@@@@@@@@@@@@@@@@@",employee)
+                                print("@@@@@@@@@@@@@@@@@@@@@@@@",employee)
                                 if employee and not employee.leave_balance_id:
                                     print('========1==============')
                                     allocate_leave = self.env['hr.leave.allocation'].create({'holiday_status_id': leave.id,
