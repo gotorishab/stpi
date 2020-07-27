@@ -8,7 +8,6 @@ from odoo import models, fields, api,_
 class EmployeeDocument(models.Model):
     _inherit = 'hr.employee.document'
 
-
     name = fields.Many2one('hr.employee.document.master', string='Document Name')
 
     @api.onchange('name')

@@ -10,7 +10,7 @@
     'maintainer': 'Dexciss Technology ',
     'website': "https://www.dexciss.com",
     'version': '12.0.4',
-    'depends': ['base','hr'],
+    'depends': ['base','hr','oh_employee_documents_expiry'],
     'data': [
         'security/ir.model.access.csv',
         # 'data/relative_type_demo.xml',
