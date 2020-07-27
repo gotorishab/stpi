@@ -432,10 +432,11 @@ class HrLeaveType(models.Model):
                                             credit_policy.day
                                         ))
                                         res = self.env.cr.fetchall()
+                                        print('---------fetchall-----------', res)
 #                                         print("??????????????RESSSSSSSSSSSSSSSSSSSSS",res,today.day,today.strftime("%B"),credit_policy.day,credit_policy.month)
                                         if not res:
                                             if today.day == credit_policy.day and today.strftime("%B") == credit_policy.month:
-                                                # print("#############################################")
+                                                print("#############################################")
                                                 allocate_leave = self.env['hr.leave.allocation'].sudo().create({'holiday_status_id': leave.id,
                                                                                                'holiday_type': 'employee',
                                                                                                'employee_id': employee.id,
@@ -444,7 +445,7 @@ class HrLeaveType(models.Model):
                                                                                                'name':'System Leave Allocation',
                                                                                                'notes':'As Per Leave Policy'
                                                                                                })
-                                                # print("allocationnnnnnnnnnnnn",allocate_leave)
+                                                print("allocationnnnnnnnnnnnn",allocate_leave)
                                                 # allocate_leave.sudo().action_approve()
                                                 # print("truuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu")
                                                 if allocate_leave:
