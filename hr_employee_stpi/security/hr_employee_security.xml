@@ -17,8 +17,8 @@
     </record>
 
     <record id="hr_employee_self_group" model="res.groups">
-        <field name="name">Manager</field>
-        <field name="category_id" ref="module_hr_declaration_employee"/>
+        <field name="name">Self</field>
+        <field name="category_id" ref="module_hr_employee_stpi"/>
     </record>
 
 
