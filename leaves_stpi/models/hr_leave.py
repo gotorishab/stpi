@@ -96,7 +96,8 @@ class HrLeave(models.Model):
     @api.model
     def create(self, vals):
         res = super(HrLeave, self).create(vals)
-
+        created_date = datetime.now().date()
+        res.pending_since = created_date.strftime('%Y-%m-%d')
         if res.holiday_status_id and res.employee_id:
             lst1 = []
             lst2 = []
