@@ -1,4 +1,6 @@
 from odoo import models, fields, api,_
+from odoo.exceptions import AccessError, UserError
+
 
 class HrLeaveAllocation(models.Model):
     _inherit = 'hr.leave.allocation'
@@ -32,3 +34,18 @@ class HrLeaveAllocation(models.Model):
         "\nThe status is 'To Approve', when leave request is confirmed by user." +
         "\nThe status is 'Refused', when leave request is refused by manager." +
         "\nThe status is 'Approved', when leave request is approved by manager.")
+
+
+    @api.multi
+    def action_approve(self):
+        # if validation_type == 'both': this method is the first approval approval
+        # if validation_type != 'both': this method calls action_validate() below
+        if any(holiday.state != 'confirm' for holiday in self):
+            raise UserError(_('Leave request must be confirmed ("To Approve") in order to approve it.'))
+
+        current_employee = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+
+        self.filtered(lambda hol: hol.validation_type == 'both').write({'state': 'validate1', 'first_approver_id': current_employee.id})
+        self.filtered(lambda hol: not hol.validation_type == 'both').action_validate()
+        self.activity_update()
+        return True

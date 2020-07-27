@@ -389,7 +389,7 @@ class HrLeaveType(models.Model):
                             for employee in employee_ids:
 #                                 print("@@@@@@@@@@@@@@@@@@@@@@@@",employee)
                                 if employee and not employee.leave_balance_id:
-                                    print('========1==============')
+                                    # print('========1==============')
                                     allocate_leave = self.env['hr.leave.allocation'].create({'holiday_status_id': leave.id,
                                                                                    'holiday_type': 'employee',
                                                                                    'employee_id': employee.id,
@@ -398,9 +398,9 @@ class HrLeaveType(models.Model):
                                                                                    'name':'System Leave Allocation',
                                                                                    'notes':'As Per Leave Policy'
                                                                                    })
-                                    print("allocationnnnnnnnnnnnn111111111111111",allocate_leave)
+                                    # print("allocationnnnnnnnnnnnn111111111111111",allocate_leave)
                                     # allocate_leave.sudo().action_approve()
-                                    print("allocationnnnnnnnnnnnn111111111111111arrpoved")
+                                    # print("allocationnnnnnnnnnnnn111111111111111arrpoved")
                                     
                                     if allocate_leave:
                                         leave_bal_id = self.env['hr.employee.leave.info'].create({
@@ -410,7 +410,7 @@ class HrLeaveType(models.Model):
                                                                                                 'leave_info':'credit',
                                                                                                 'no_of_days':line.no_pf_leaves_credit
                                                                                             })
-                                        print("allocationnnnnnnnnnnnn111111111111111arrpoved----------al", leave_bal_id)
+                                        # print("allocationnnnnnnnnnnnn111111111111111arrpoved----------al", leave_bal_id)
                                 elif employee and employee.leave_balance_id:
                                     for credit_policy in leave.creadit_policy_id:
                                         SQL = """
@@ -434,7 +434,7 @@ class HrLeaveType(models.Model):
 #                                         print("??????????????RESSSSSSSSSSSSSSSSSSSSS",res,today.day,today.strftime("%B"),credit_policy.day,credit_policy.month)
                                         if not res:
                                             if today.day == credit_policy.day and today.strftime("%B") == credit_policy.month:
-                                                print("#############################################")
+                                                # print("#############################################")
                                                 allocate_leave = self.env['hr.leave.allocation'].sudo().create({'holiday_status_id': leave.id,
                                                                                                'holiday_type': 'employee',
                                                                                                'employee_id': employee.id,
@@ -443,9 +443,9 @@ class HrLeaveType(models.Model):
                                                                                                'name':'System Leave Allocation',
                                                                                                'notes':'As Per Leave Policy'
                                                                                                })
-                                                print("allocationnnnnnnnnnnnn",allocate_leave)
-                                                allocate_leave.sudo().action_approve()
-                                                print("truuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu")
+                                                # print("allocationnnnnnnnnnnnn",allocate_leave)
+                                                # allocate_leave.sudo().action_approve()
+                                                # print("truuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu")
                                                 if allocate_leave:
                                                     leave_bal_id = self.env['hr.employee.leave.info'].sudo().create({
                                                                                                             'hr_employee_id':employee.id,
@@ -454,7 +454,7 @@ class HrLeaveType(models.Model):
                                                                                                             'leave_info':'credit',
                                                                                                             'no_of_days':line.no_pf_leaves_credit
                                                                                                         })
-                                                    print("truuuuuuuuuuuuuuuuuuuallocate_leaveuuuuuuuuuuuuuuuuuuuuuuuuuu", allocate_leave)
+                                                    # print("truuuuuuuuuuuuuuuuuuuallocate_leaveuuuuuuuuuuuuuuuuuuuuuuuuuu", allocate_leave)
                                                     
                                                     
     def cron_allocate_leave(self):
