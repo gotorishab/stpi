@@ -48,7 +48,7 @@
         <field name="inherit_id" ref="hr.view_employee_form"/>
         <field name="arch" type="xml">
             <xpath expr="//page[@name='public']" position="before">
-                <page name="public" string="Resumé">
+                <page name="public" string="Resumé" groups="hr.group_hr_manager">
                     <div class="row">
                         <div class="col-lg-8 o_group_resume">
                             <!-- This field uses a custom tree view rendered by the 'hr_resume' widget.
