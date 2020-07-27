@@ -7,4 +7,20 @@
        <field name="groups" eval="[(4,ref('base.group_user'))]"/>
 
     </record>
+
+
+
+    <record model="ir.module.category" id="module_hr_employee_stpi">
+        <field name="name">HR Employee</field>
+        <field name="description">Help You For HR Employee</field>
+        <field name="sequence">20</field>
+    </record>
+
+    <record id="hr_employee_self_group" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="category_id" ref="module_hr_declaration_employee"/>
+    </record>
+
+
+
 </odoo>
