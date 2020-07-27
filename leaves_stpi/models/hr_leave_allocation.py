@@ -44,6 +44,7 @@ class HrLeaveAllocation(models.Model):
             raise UserError(_('Leave request must be confirmed ("To Approve") in order to approve it.'))
 
         current_employee = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+        print('=================user_id=================', self.env.uid)
         print('==================================', current_employee.name)
 
         self.filtered(lambda hol: hol.validation_type == 'both').write({'state': 'validate1', 'first_approver_id': current_employee.id})
