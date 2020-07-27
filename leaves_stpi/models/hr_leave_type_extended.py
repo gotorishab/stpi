@@ -399,7 +399,7 @@ class HrLeaveType(models.Model):
                                                                                    'notes':'As Per Leave Policy'
                                                                                    })
                                     print("allocationnnnnnnnnnnnn111111111111111",allocate_leave)
-                                    allocate_leave.sudo().action_approve()
+                                    # allocate_leave.sudo().action_approve()
                                     print("allocationnnnnnnnnnnnn111111111111111arrpoved")
                                     
                                     if allocate_leave:
