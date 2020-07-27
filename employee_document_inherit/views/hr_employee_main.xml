@@ -32,7 +32,7 @@
             id="hr_doc_master_sub_menu"
             name="Document master"
             action="hr_doc_master_action"
-            parent="hr_doc_master_menu"
+            parent="hr_doc_emo_menu"
             />
 
     </data>
