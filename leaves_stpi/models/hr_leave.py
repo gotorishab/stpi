@@ -97,6 +97,7 @@ class HrLeave(models.Model):
     def create(self, vals):
         res = super(HrLeave, self).create(vals)
         created_date = datetime.now().date()
+        res.manager_designation_id = res.employee_id.parent_id.job_id
         res.pending_since = created_date.strftime('%Y-%m-%d')
         if res.holiday_status_id and res.employee_id:
             lst1 = []
