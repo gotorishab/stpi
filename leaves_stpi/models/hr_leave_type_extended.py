@@ -432,7 +432,7 @@ class HrLeaveType(models.Model):
                                         if not res:
                                             if today.day == credit_policy.day and today.strftime("%B") == credit_policy.month:
 #                                                 print("#############################################")
-                                                allocate_leave = self.env['hr.leave.allocation'].create({'holiday_status_id': leave.id,
+                                                allocate_leave = self.env['hr.leave.allocation'].sudo().create({'holiday_status_id': leave.id,
                                                                                                'holiday_type': 'employee',
                                                                                                'employee_id': employee.id,
                                                                                                'number_of_days_display':line.no_pf_leaves_credit,
@@ -444,7 +444,7 @@ class HrLeaveType(models.Model):
                                                 allocate_leave.sudo().action_approve()
                                                 
                                                 if allocate_leave:
-                                                    leave_bal_id = self.env['hr.employee.leave.info'].create({
+                                                    leave_bal_id = self.env['hr.employee.leave.info'].sudo().create({
                                                                                                             'hr_employee_id':employee.id,
                                                                                                             'holiday_status_id':leave.id,
                                                                                                             'date':date.today(),
