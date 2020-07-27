@@ -412,6 +412,7 @@ class HrLeaveType(models.Model):
                                                                                             })
                                         print("allocationnnnnnnnnnnnn111111111111111arrpoved----------al", leave_bal_id)
                                 elif employee and employee.leave_balance_id:
+                                    print('========2==============')
                                     for credit_policy in leave.creadit_policy_id:
                                         SQL = """
                                                    
@@ -455,7 +456,8 @@ class HrLeaveType(models.Model):
                                                                                                             'no_of_days':line.no_pf_leaves_credit
                                                                                                         })
                                                     # print("truuuuuuuuuuuuuuuuuuuallocate_leaveuuuuuuuuuuuuuuuuuuuuuuuuuu", allocate_leave)
-                                                    
+                                else:
+                                    print('============3====================')
                                                     
     def cron_allocate_leave(self):
         
