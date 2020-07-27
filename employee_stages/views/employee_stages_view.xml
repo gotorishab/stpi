@@ -50,7 +50,7 @@
                 <!--<field name="gratuity_check_no" attrs="{'invisible':[('state','!=','retired')]}"/>-->
             <!--</xpath>-->
             <page name="hr_settings" position="after">
-                <page name="stage_history" string="Status History">
+                <page name="stage_history" string="Status History" groups="hr.group_hr_manager">
                     <field name="stages_history">
                         <tree create="false" edit="false" delete="false">
                             <field name="designation_id"/>

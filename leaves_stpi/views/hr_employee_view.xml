@@ -7,7 +7,7 @@
         <field name="arch" type="xml">
         
             <xpath expr="//notebook/page[@name='hr_settings']" position="after">
-                <page name="leave_info" string="Leave Use">
+                <page name="leave_info" string="Leave Use" groups="hr.group_hr_manager">
                     <field name="leave_balance_id" readonly="1">
                         <tree string="Leave Info">
                             <field name="holiday_status_id"/>
