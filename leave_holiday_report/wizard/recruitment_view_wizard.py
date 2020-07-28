@@ -45,7 +45,7 @@ class WizardLateComing(models.TransientModel):
                 lines.unlink()
             dr_b = self.env['resource.calendar.leaves'].search([('calendar_id.branch_id', 'in', rec.branch_ids.ids)])
             for emp in dr_b:
-                print('========================================================',emp.date)
+                # print('========================================================',emp.date)
             # for emp in rec.employee_id.resource_calendar_id.global_leave_ids:
                 if rec.from_date and emp.date and rec.to_date and rec.from_date <= emp.date <= rec.to_date:
                     month = ''
