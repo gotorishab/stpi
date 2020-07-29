@@ -32,7 +32,7 @@
 
 
     <menuitem id="employee_action_selection_wizard_view" name="Employees action" action="employee_action_selection_action_call"
-            parent="hr.menu_hr_root" sequence="26"/>
+            parent="hr.menu_hr_root" sequence="1"/>
 
 
     </data>
