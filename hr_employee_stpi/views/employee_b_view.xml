@@ -60,9 +60,5 @@
                                    'smart_office': 'smart_office'}</field>
         </record>
 
-        <menuitem id="menuitem_add_Employee_docs"
-                  parent="hr.menu_hr_root"
-                  action="action_view_add_Employee_doc"
-                  name="Employee Directory"/>
     </data>
 </odoo>
