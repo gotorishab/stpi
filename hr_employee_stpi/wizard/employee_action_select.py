@@ -19,7 +19,7 @@ class EmployeeActionSelection(models.TransientModel):
             return {
                 'name': 'My Profile',
                 'view_type': 'form',
-                'view_mode': 'tree,form',
+                'view_mode': 'kanban,tree,form',
                 'res_model': 'hr.employee',
                 'type': 'ir.actions.act_window',
                 'target': 'current',
@@ -38,7 +38,7 @@ class EmployeeActionSelection(models.TransientModel):
             return {
                 'name': 'Subordinates Profile',
                 'view_type': 'form',
-                'view_mode': 'tree,form',
+                'view_mode': 'kanban,tree,form',
                 'res_model': 'hr.employee',
                 'type': 'ir.actions.act_window',
                 'target': 'current',
@@ -57,7 +57,7 @@ class EmployeeActionSelection(models.TransientModel):
             return {
                 'name': 'Employees Directory(Branch)',
                 'view_type': 'form',
-                'view_mode': 'tree,form',
+                'view_mode': 'kanban,tree,form',
                 'res_model': 'hr.employee',
                 'type': 'ir.actions.act_window',
                 'target': 'current',
@@ -75,7 +75,7 @@ class EmployeeActionSelection(models.TransientModel):
             return {
                 'name': 'Employees Directory',
                 'view_type': 'form',
-                'view_mode': 'tree,form',
+                'view_mode': 'kanban,tree,form',
                 'res_model': 'hr.employee',
                 'type': 'ir.actions.act_window',
                 'target': 'current',
