@@ -78,7 +78,7 @@ class EmployeeActionSelection(models.TransientModel):
                 'view_mode': 'tree,form',
                 'res_model': 'hr.employee',
                 'view_id': False,
-                'views': [(self.env.ref('account.invoice_tree').id, 'tree'),
+                'views': [(self.env.ref('hr_employee_stpi.view_add_employee_doc_tree').id, 'tree'),
                           (self.env.ref('hr_employee_stpi.view_add_Employee_doc_form').id, 'form')],
                 'type': 'ir.actions.act_window'
             }
