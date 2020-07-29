@@ -134,9 +134,6 @@
                 <xpath expr="//page[@name='hr_settings']" position="attributes">
                         <attribute name="invisible">1</attribute>
                 </xpath>
-                <xpath expr="//page[@name='leave_info']" position="attributes">
-                        <attribute name="invisible">1</attribute>
-                </xpath>
                 <xpath expr="//page[@name='personal_information']" position="attributes">
                         <attribute name="invisible">1</attribute>
                 </xpath>
