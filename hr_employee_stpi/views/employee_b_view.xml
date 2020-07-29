@@ -55,16 +55,15 @@
             <field name="res_model">hr.employee</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
-            <field name="domain">[('user_id','=','uid')]</field>
             <field name="context">{'form_view_ref': 'hr_employee_stpi.view_add_Employee_doc_form',
                                    'tree_view_ref': 'hr_employee_stpi.view_add_employee_doc_tree',
                                    'smart_office': 'smart_office'}</field>
         </record>
 
-        <menuitem id="menuitem_add_Employee_docs"
-                  parent="hr.menu_hr_root"
-                  action="action_view_add_Employee_doc"
-                  sequence="1"
-                  name="Employee Directory"/>
+<!--        <menuitem id="menuitem_add_Employee_docs"-->
+<!--                  parent="hr.menu_hr_root"-->
+<!--                  action="action_view_add_Employee_doc"-->
+<!--                  sequence="1"-->
+<!--                  name="Employee Directory"/>-->
     </data>
 </odoo>
