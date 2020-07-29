@@ -33,7 +33,7 @@ class EmployeeTourClaim(models.Model):
 
     employee_id = fields.Many2one('hr.employee', string='Requested By', default=_default_employee,track_visibility='always')
     designation = fields.Many2one('hr.job', string="Designation", compute='compute_des_dep',track_visibility='always')
-    branch_id = fields.Many2one('res.branch', 'Branch', compute='compute_des_dep',track_visibility='always')
+    branch_id = fields.Many2one('res.branch', 'Branch', compute='compute_des_dep',track_visibility='always', store=True)
     department = fields.Many2one('hr.department', string="Department", compute='compute_des_dep', store=True,track_visibility='always')
     tour_request_id = fields.Many2one('tour.request', string='Select Tour', store=True,track_visibility='always')
     detail_of_journey = fields.One2many('tour.claim.journey','employee_journey',track_visibility='always')

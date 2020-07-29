@@ -11,13 +11,45 @@
                     <form string="Add Employee">
                         <sheet>
                         <div id="o_employee_container"><div id="o_employee_main">
-                        <field name="image" widget="image" class="oe_avatar" options="{&quot;preview_image&quot;:&quot;image_medium&quot;}"/>
+                        <field name="image" readonly="1" widget="image" class="oe_avatar" options="{&quot;preview_image&quot;:&quot;image_medium&quot;}"/>
                         <div class="oe_title">
                             <label for="name" class="oe_edit_only"/>
+                            <h2 modifiers="{}">
+                                <field name="salutation" readonly="1"/>
+                            </h2>
                             <h1>
-                                <field name="name" placeholder="Employee's Name" required="True"/>
+                                <field name="name" readonly="1"/>
                             </h1>
                         </div>
+                            <field name="category_ids" readonly="1"/>
+                        <group>
+                            <group>
+                                <field name="employee_type" readonly="1"/>
+                                <field name="identify_id" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="recruitment_type"/>
+                            </group>
+                        </group>
+                            <notebook>
+                            <page name="public" string="Work Information">
+                                <group>
+                                    <group string="Contact Information">
+                                        <field name="work_location"/>
+                                        <field name="work_email" readonly="1"/>
+                                        <field name="mobile_phone" readonly="1"/>
+                                        <field name="work_phone" readonly="1"/>
+                                    </group>
+                                    <group string="Position">
+                                        <field name="department_id"/>
+                                        <field name="job_id"/>
+                                        <field name="job_title"/>
+                                        <field name="branch_id"/>
+                                        <field name="parent_id"/>
+                                    </group>
+                                </group>
+                            </page>
+                            </notebook>
                         </div>
                         </div>
                         </sheet>
