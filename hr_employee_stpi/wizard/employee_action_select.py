@@ -76,7 +76,7 @@ class EmployeeActionSelection(models.TransientModel):
             value = {
                 'domain': str([('id', 'in', my_ids)]),
                 'view_type': 'form',
-                'view_mode': 'tree, form',
+                'view_mode': 'tree',
                 'res_model': 'hr.employee',
                 'view_id': False,
                 'views': [(form_view and form_view.id or False, 'form'),
