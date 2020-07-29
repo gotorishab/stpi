@@ -13,7 +13,7 @@
                         <button string="My Profile" name="show_my_profile" type="object" class="btn-primary"/>
                         <button string="Subordinates Profile" name="show_subordinates_profile" type="object" class="btn-primary"/>
                         <button string="Employee Directory(Own Branch)" name="employee_directory_branch" type="object" class="btn-primary"/>
-                        <button string="Employee Directory(All)" name="employee_directory_all" type="object" class="btn-primary"/>
+                        <button string="Employee Directory(All)" name="employee_directory_all" type="object" class="btn-primary" groups="hr.group_hr_manager"/>
                         <button string="Cancel" class="btn-secondary" special="cancel"/>
                     </footer>
                 </form>
@@ -31,7 +31,7 @@
         </record>
 
 
-    <menuitem id="employee_action_selection_wizard_view" name="Employees action" action="employee_action_selection_action_call"
+    <menuitem id="employee_action_selection_wizard_view" name="Employee Directory" action="employee_action_selection_action_call"
             parent="hr.menu_hr_root" sequence="1"/>
 
 
