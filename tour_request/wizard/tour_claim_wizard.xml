@@ -21,11 +21,11 @@
                         <field name="tour_sequence" readonly="1"/>
                          <field name="from_l" readonly="1"/>
                         <field name="departure_date" readonly="1"/>
-                        <field name='departure_time' readonly="1"/>
+                        <field name='departure_time'  widget="float_time" readonly="1"/>
                         <field name="to_l" readonly="1"/>
                          <field name="travel_mode" readonly="1"/>
                         <field name="arrival_date" readonly="1"/>
-                        <field name='arrival_time' readonly='1' />
+                        <field name='arrival_time'  widget="float_time" readonly='1' />
                          <field name="mode_detail" readonly="1"/>
                         <field name="travel_entitled" readonly="1"/>
                         <field name="boarding" readonly="1"/>

@@ -42,10 +42,10 @@
                                         <field name="employee_journey" invisible="1"/>
                                          <field name="from_l" readonly="1"/>
                                         <field name="departure_date" readonly="1"/>
-                                        <field name='departure_time' readonly="1"/>
+                                        <field name='departure_time' readonly="1" widget="float_time"/>
                                         <field name="to_l" readonly="1"/>
                                         <field name="arrival_date" readonly="1"/>
-                                        <field name='arrival_time' readonly='1' />
+                                        <field name='arrival_time' readonly='1' widget="float_time"/>
                                         <field name='arranged_by' attrs="{'readonly':[('state','not in',('draft', 'rejected'))],'required':[('state','=','draft')]}"/>
                                         <field name="state" invisible="1"/>
                                         <field name="amount_claimed" sum="Total Amount" attrs="{'required':[('arranged_by','=','self')],'invisible':[('arranged_by','!=','self')]}"/>
