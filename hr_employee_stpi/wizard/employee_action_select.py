@@ -62,15 +62,26 @@ class EmployeeActionSelection(models.TransientModel):
             for emp in employee:
                 my_ids.append(emp.id)
             print('==================my_ids========================', my_ids)
+            # return {
+            #     'name': 'Employees Directory(Branch)',
+            #     'view_type': 'form',
+            #     'view_mode': 'kanban,tree,form',
+            #     'res_model': 'hr.employee',
+            #     'type': 'ir.actions.act_window',
+            #     'target': 'current',
+            #     'domain': [('id', 'in', my_ids)],
+            #     }
             return {
+                'domain': [('id', 'in', my_ids)],
                 'name': 'Employees Directory(Branch)',
                 'view_type': 'form',
-                'view_mode': 'kanban,tree,form',
+                'view_mode': 'tree,form',
                 'res_model': 'hr.employee',
-                'type': 'ir.actions.act_window',
-                'target': 'current',
-                'domain': [('id', 'in', my_ids)],
-                }
+                'view_id': False,
+                'views': [(self.env.ref('account.invoice_tree').id, 'tree'),
+                          (self.env.ref('hr_employee_stpi.view_add_Employee_doc_form').id, 'form')],
+                'type': 'ir.actions.act_window'
+            }
             # form_view = self.env.ref('hr.view_employee_form')
             # tree_view = self.env.ref('hr_employee_stpi.hr_employee_branch_view_tree')
             # value = {
