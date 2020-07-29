@@ -12,19 +12,36 @@ class EmployeeActionSelection(models.TransientModel):
     def show_my_profile(self):
         if self:
             my_ids = []
-            check_leave = self.env['hr.employee'].sudo().search([('user_id', '=', self.env.user.id)], limit=1)
-            for emp in check_leave:
+            employee = self.env['hr.employee'].sudo().search([('user_id', '=', self.env.user.id)], limit=1)
+            for emp in employee:
                 my_ids.append(emp.id)
             print('==================my_ids========================', my_ids)
-            return {
-                'name': 'My Profile',
+            # return {
+            #     'name': 'My Profile',
+            #     'view_type': 'form',
+            #     'view_mode': 'kanban,tree,form',
+            #     'res_model': 'hr.employee',
+            #     'type': 'ir.actions.act_window',
+            #     'target': 'current',
+            #     'domain': [('id', 'in', my_ids)],
+            #     }
+            form_view = self.env.ref('hr.view_employee_form')
+            tree_view = self.env.ref('hr.view_employee_tree')
+            value = {
+                'domain': str([('id', 'in', my_ids)]),
                 'view_type': 'form',
-                'view_mode': 'kanban,tree,form',
+                'view_mode': 'tree, form',
                 'res_model': 'hr.employee',
+                'view_id': False,
+                'views': [(form_view and form_view.id or False, 'form'),
+                          (tree_view and tree_view.id or False, 'tree')],
                 'type': 'ir.actions.act_window',
+                'res_id': employee.id,
                 'target': 'current',
-                'domain': [('id', 'in', my_ids)],
-                }
+                'nodestroy': True
+            }
+            return value
+
 
 
     def show_subordinates_profile(self):
