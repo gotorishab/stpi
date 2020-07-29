@@ -28,24 +28,24 @@
                                 <field name="identify_id" readonly="1"/>
                             </group>
                             <group>
-                                <field name="recruitment_type"/>
+                                <field name="recruitment_type" readonly="1"/>
                             </group>
                         </group>
                             <notebook>
                             <page name="public" string="Work Information">
                                 <group>
                                     <group string="Contact Information">
-                                        <field name="work_location"/>
+                                        <field name="work_location" readonly="1"/>
                                         <field name="work_email" readonly="1"/>
                                         <field name="mobile_phone" readonly="1"/>
                                         <field name="work_phone" readonly="1"/>
                                     </group>
                                     <group string="Position">
-                                        <field name="department_id"/>
-                                        <field name="job_id"/>
-                                        <field name="job_title"/>
-                                        <field name="branch_id"/>
-                                        <field name="parent_id"/>
+                                        <field name="department_id" readonly="1"/>
+                                        <field name="job_id" readonly="1"/>
+                                        <field name="job_title" readonly="1"/>
+                                        <field name="branch_id" readonly="1"/>
+                                        <field name="parent_id" readonly="1"/>
                                     </group>
                                 </group>
                             </page>
