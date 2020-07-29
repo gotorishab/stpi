@@ -78,9 +78,9 @@ class EmployeeActionSelection(models.TransientModel):
                 'view_type': 'form',
                 'view_mode': 'tree, form',
                 'res_model': 'hr.employee',
-                'view_id': tree_view.id,
-                # 'views': [(form_view and form_view.id or False, 'form'),
-                #           (tree_view and tree_view.id or False, 'tree')],
+                'view_id': False,
+                'views': [(form_view and form_view.id or False, 'form'),
+                          (tree_view and tree_view.id or False, 'tree')],
                 'type': 'ir.actions.act_window',
                 'target': 'current',
                 'nodestroy': True
