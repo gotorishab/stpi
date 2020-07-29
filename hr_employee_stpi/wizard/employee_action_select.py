@@ -62,30 +62,30 @@ class EmployeeActionSelection(models.TransientModel):
             for emp in employee:
                 my_ids.append(emp.id)
             print('==================my_ids========================', my_ids)
-            # return {
-            #     'name': 'Employees Directory(Branch)',
-            #     'view_type': 'form',
-            #     'view_mode': 'kanban,tree,form',
-            #     'res_model': 'hr.employee',
-            #     'type': 'ir.actions.act_window',
-            #     'target': 'current',
-            #     'domain': [('id', 'in', my_ids)],
-            #     }
-            form_view = self.env.ref('hr.view_employee_form')
-            tree_view = self.env.ref('hr_employee_stpi.hr_employee_branch_view_tree')
-            value = {
-                'domain': str([('id', 'in', my_ids)]),
+            return {
+                'name': 'Employees Directory(Branch)',
                 'view_type': 'form',
-                'view_mode': 'tree',
+                'view_mode': 'kanban,tree,form',
                 'res_model': 'hr.employee',
-                'view_id': False,
-                'views': [(form_view and form_view.id or False, 'form'),
-                          (tree_view and tree_view.id or False, 'tree')],
                 'type': 'ir.actions.act_window',
                 'target': 'current',
-                'nodestroy': True
-            }
-            return value
+                'domain': [('id', 'in', my_ids)],
+                }
+            # form_view = self.env.ref('hr.view_employee_form')
+            # tree_view = self.env.ref('hr_employee_stpi.hr_employee_branch_view_tree')
+            # value = {
+            #     'domain': str([('id', 'in', my_ids)]),
+            #     'view_type': 'form',
+            #     'view_mode': 'tree',
+            #     'res_model': 'hr.employee',
+            #     'view_id': False,
+            #     'views': [(form_view and form_view.id or False, 'form'),
+            #               (tree_view and tree_view.id or False, 'tree')],
+            #     'type': 'ir.actions.act_window',
+            #     'target': 'current',
+            #     'nodestroy': True
+            # }
+            # return value
 
 
     def employee_directory_all(self):
