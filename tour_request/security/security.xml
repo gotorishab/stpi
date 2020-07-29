@@ -19,12 +19,12 @@
         <field name="global" eval="True"/>
     </record>
 
-    <record id="tour_manager_record_rule" model="ir.rule">
-        <field name="name">Tour Request Manager</field>
-        <field name="model_id" ref="tour_request.model_tour_request"/>
-        <field name="domain_force">['|', ('branch_id','=',False), ('branch_id','in',[g.id for g in user.branch_ids])]</field>
-        <field name="groups" eval="[(4, ref('tour_request.group_tour_request_approvere'))]"/>
-    </record>
+<!--    <record id="tour_manager_record_rule" model="ir.rule">-->
+<!--        <field name="name">Tour Request Manager</field>-->
+<!--        <field name="model_id" ref="tour_request.model_tour_request"/>-->
+<!--        <field name="domain_force">['|', ('branch_id','=',False), ('branch_id','in',[g.id for g in user.branch_ids])]</field>-->
+<!--        <field name="groups" eval="[(4, ref('tour_request.group_tour_request_approvere'))]"/>-->
+<!--    </record>-->
 
     <record id="tour_record_rule" model="ir.rule">
         <field name="name">Tour Request Own</field>
@@ -61,18 +61,18 @@
             <field name="global" eval="True"/>
         </record>
 
-        <record id="tour_claim_rule_manager" model="ir.rule">
-            <field name="name">Tour Claim Manager</field>
-            <field name="model_id" ref="tour_request.model_employee_tour_claim"/>
-            <field name="domain_force">['|', ('branch_id','=',False), ('branch_id','in',[g.id for g in user.branch_ids])]</field>
-            <field name="groups" eval="[(4, ref('tour_request.group_tour_claim_approvere'))]"/>
-        </record>
-        <record id="tour_claim_rule_finance" model="ir.rule">
-            <field name="name">Tour Claim Finance</field>
-            <field name="model_id" ref="tour_request.model_employee_tour_claim"/>
-            <field name="domain_force">['|', ('branch_id','=',False), ('branch_id','in',[g.id for g in user.branch_ids])]</field>
-            <field name="groups" eval="[(4, ref('tour_request.group_tour_claim_finance'))]"/>
-        </record>
+<!--        <record id="tour_claim_rule_manager" model="ir.rule">-->
+<!--            <field name="name">Tour Claim Manager</field>-->
+<!--            <field name="model_id" ref="tour_request.model_employee_tour_claim"/>-->
+<!--            <field name="domain_force">['|', ('branch_id','=',False), ('branch_id','in',[g.id for g in user.branch_ids])]</field>-->
+<!--            <field name="groups" eval="[(4, ref('tour_request.group_tour_claim_approvere'))]"/>-->
+<!--        </record>-->
+<!--        <record id="tour_claim_rule_finance" model="ir.rule">-->
+<!--            <field name="name">Tour Claim Finance</field>-->
+<!--            <field name="model_id" ref="tour_request.model_employee_tour_claim"/>-->
+<!--            <field name="domain_force">['|', ('branch_id','=',False), ('branch_id','in',[g.id for g in user.branch_ids])]</field>-->
+<!--            <field name="groups" eval="[(4, ref('tour_request.group_tour_claim_finance'))]"/>-->
+<!--        </record>-->
 
         <record id="tour_claim_rule" model="ir.rule">
             <field name="name">Tour Claim Own</field>

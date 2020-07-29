@@ -22,7 +22,7 @@ class EmployeeTourClaim(models.Model):
             record.advance_requested = record.tour_request_id.advance_requested
             for line in record.detail_of_journey_lodging:
                 if line:
-                    no_of_days = (line.to_date - line.from_date).days
+                    no_of_days = (line.to_date - line.from_date).days + 1
                     total_claimed += ((line.daily_lodging_charge + line.daily_boarding_charge + line.daily_boarding_lodginf_charge)*no_of_days)
             for line in record.detail_of_journey:
                 if line:

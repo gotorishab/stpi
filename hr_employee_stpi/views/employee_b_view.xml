@@ -10,19 +10,16 @@
                 <xpath expr="//form" position="replace">
                     <form string="Add Employee">
                         <sheet>
-                            <group col="2">
-                                <group>
-                                    <field name="name" colspan="2" readonly="1"/>
-                                    <field colspan="2" name="department_id"/>
-                                    <field name="job_id" colspan="2"/>
-                                </group>
-                                <group>
-                                    <field colspan="2" name="birthday" required="1"/>
-                                </group>
-                            </group>
-                            <group>
-                                <field name="work_email"/>
-                            </group>
+                        <div id="o_employee_container"><div id="o_employee_main">
+                        <field name="image" widget="image" class="oe_avatar" options="{&quot;preview_image&quot;:&quot;image_medium&quot;}"/>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name" placeholder="Employee's Name" required="True"/>
+                            </h1>
+                        </div>
+                        </div>
+                        </div>
                         </sheet>
                     </form>
                 </xpath>

@@ -26,7 +26,7 @@
             </field>
         </record>
 
-        <record id="action_tour_claim_confirm" model="ir.actions.act_window">
+        <record id="action_employee_tour_claim_confirm" model="ir.actions.act_window">
             <field name="name">Your request will be processed through below mentioned approval steps</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">employee.tour.claim.confirm</field>

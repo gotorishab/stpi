@@ -12,7 +12,7 @@
                     <button name="button_approved" string="Approve" class="oe_highlight" type="object" states="submitted" groups="tour_request.group_tour_claim_approvere"/>
                      <button name="button_reset_to_draft" string="Revert" type="object" states="submitted"/>
                     <button name="button_reject" string="Reject" type="object" states="submitted"/>
-                    <button name="button_pay" string="Paid" type="object" class="oe_highlight" states="approved" groups="tour_request.group_tour_claim_finance"/>
+                    <button name="button_pay" string="Pay" type="object" class="oe_highlight" states="approved" groups="tour_request.group_tour_claim_finance"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,submitted,approved" />
                 </header>
                 <sheet>
