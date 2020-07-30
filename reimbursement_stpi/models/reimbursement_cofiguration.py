@@ -93,6 +93,7 @@ class ReimbursementConfiguration(models.Model):
         ('quarterly', 'Newspaper Reimbursements'),
     ], string='Reimbursement Type')
     pay_level_ids = fields.Many2many('hr.payslip.paylevel', string='Pay Level')
+    job_ids = fields.Many2many('hr.job', string='Functional Designation')
     group_ids = fields.Many2many('res.groups', string='Groups')
     branch_id = fields.Many2one('res.branch', string='Branch', store=True)
     full = fields.Boolean('Full')
