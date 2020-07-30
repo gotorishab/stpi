@@ -27,7 +27,7 @@ class Reimbursement(models.Model):
             rec.date_range = False
             if rec.name:
                 gr_id = self.env['reimbursement.configuration'].search(
-                    [('name', '=', rec.name), ('group_ids.users', '=', rec.env.user.id), ('branch_id', '=', rec.branch_id.id)], order='name desc', limit=1)
+                    [('name', '=', rec.name), ('pay_level_ids', '=', rec.employee_id.job_id.pay_level_id.id), ('branch_id', '=', rec.branch_id.id)], order='name desc', limit=1)
                 return {'domain': {'date_range': [('type_id', '=', gr_id.date_range_type.id),('date_end', '<=', datetime.now().date())]}}
 
 
@@ -128,7 +128,7 @@ class Reimbursement(models.Model):
     @api.depends('claimed_amount')
     def compute_net_amount(self):
         for rec in self:
-            gr_id = self.env['reimbursement.configuration'].search([('name', '=', rec.name),('branch_id', '=', rec.branch_id.id),('group_ids.users','=',self.env.user.id)],order='name desc', limit=1)
+            gr_id = self.env['reimbursement.configuration'].search([('name', '=', rec.name),('branch_id', '=', rec.branch_id.id),('pay_level_ids', '=', rec.employee_id.job_id.pay_level_id.id)],order='name desc', limit=1)
             if gr_id:
                 if int(rec.claimed_amount) > int(gr_id.allowed) and gr_id.full == False:
                     rec.net_amount = gr_id.allowed
@@ -174,7 +174,7 @@ class Reimbursement(models.Model):
                         "Amount must be greater than zero")
                 else:
                     gr_id = self.env['reimbursement.configuration'].search(
-                        [('name', '=', rec.name),('branch_id', '=', rec.branch_id.id), ('group_ids.users', '=', self.env.user.id)],
+                        [('name', '=', rec.name),('branch_id', '=', rec.branch_id.id), ('pay_level_ids', '=', rec.employee_id.job_id.pay_level_id.id)],
                         order='name desc',
                         limit=1)
                     if gr_id.open == False:
