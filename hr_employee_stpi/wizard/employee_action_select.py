@@ -82,7 +82,7 @@ class EmployeeActionSelection(models.TransientModel):
             employee = self.env['hr.employee'].sudo().search([])
             for emp in employee:
                 my_ids.append(emp.id)
-            print('==================my_ids========================', my_ids)
+            # print('==================my_ids========================', my_ids)
             return {
                 'name': 'Employees Directory',
                 'view_type': 'form',
