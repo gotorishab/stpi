@@ -11,7 +11,7 @@ class EmployeeLtcClaim(models.Model):
     def _default_employee(self):
         return self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
 
-    employee_id = fields.Many2one('hr.employee', string='Employee', default=_default_employee,track_visibility='always')
+    employee_id = fields.Many2one('hr.employee', string='Requested By', default=_default_employee,track_visibility='always')
     branch_id = fields.Many2one('res.branch', string='Branch', store=True)
     job_id = fields.Many2one('hr.job', string='Functional Designation', store=True)
     department_id = fields.Many2one('hr.department', string='Department', store=True)

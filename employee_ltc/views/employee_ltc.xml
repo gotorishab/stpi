@@ -307,8 +307,9 @@
         <field name="model">employee.ltc.claim</field>
         <field name="arch" type="xml">
             <tree string="LTC">
-                <field name="amount_claimed"/>
-                <field name="ltc_availed_for"/>
+                <field name="employee_id"/>
+                <field name="branch_id"/>
+                <field name="ltc_availed_for_m2o"/>
                 <field name="leave_period"/>
                 <field name="place_of_visit"/>
                 <field name="state"/>
