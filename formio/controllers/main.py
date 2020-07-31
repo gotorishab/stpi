@@ -12,7 +12,8 @@ from ..models.formio_builder import \
     STATE_CURRENT as BUILDER_STATE_CURRENT, STATE_OBSOLETE as BUILDER_STATE_OBSOLETE
 
 from ..models.formio_form import \
-    STATE_DRAFT as FORM_STATE_DRAFT, STATE_COMPLETE as FORM_STATE_COMPLETE, STATE_CANCEL as FORM_STATE_CANCEL
+    STATE_PENDING as FORM_STATE_PENDING, STATE_DRAFT as FORM_STATE_DRAFT, \
+    STATE_COMPLETE as FORM_STATE_COMPLETE, STATE_CANCEL as FORM_STATE_CANCEL
 
 _logger = logging.getLogger(__name__)
 
@@ -54,7 +55,7 @@ class FormioController(http.Controller):
     def builder_schema(self, builder_id, **kwargs):
         if not request.env.user.has_group('formio.group_formio_admin'):
             return
-        
+
         builder = request.env['formio.builder'].browse(builder_id)
         if builder and builder.schema:
             return builder.schema
@@ -65,17 +66,17 @@ class FormioController(http.Controller):
     def builder_save(self, builder, **post):
         if not request.env.user.has_group('formio.group_formio_admin'):
             return
-        
+
         if not 'builder_id' in post or int(post['builder_id']) != builder.id:
             return
-        
+
         schema = json.dumps(post['schema'])
         builder.write({'schema': schema})
 
-    def _get_form(self, uuid, mode):
-        return request.env['formio.form'].get_form(uuid, mode)
+    ##################
+    # Form - user auth
+    ##################
 
-    # Form
     @http.route('/formio/form/<string:uuid>/root', type='http', auth='user', website=True)
     def form_root(self, uuid, **kwargs):
         form = self._get_form(uuid, 'read')
@@ -126,49 +127,6 @@ class FormioController(http.Controller):
         else:
             return {}
 
-    def _prepare_builder_options(self, builder):
-        options = {}
-
-        if builder.state in [BUILDER_STATE_CURRENT, BUILDER_STATE_OBSOLETE]:
-            options['readOnly'] = True
-        return options
-
-    def _prepare_form_options(self, form):
-        options = {}
-        i18n = {}
-        context = request.env.context
-        Lang  = request.env['res.lang']
-
-        if form.state in [FORM_STATE_COMPLETE, FORM_STATE_CANCEL]:
-            options['readOnly'] = True
-
-            if form.builder_id.view_as_html:
-                options['renderMode'] = 'html'
-                options['viewAsHtml'] = True # backwards compatible (version < 4.x)?
-
-        lang = Lang._lang_get(request.env.user.lang)
-        options['language'] = lang.iso_code
-
-        # Formio GUI/API translations
-        if form.builder_id.formio_version_id.translations:
-            for trans in form.builder_id.formio_version_id.translations:
-                if trans.lang_id.iso_code not in i18n:
-                    i18n[trans.lang_id.iso_code] = {trans.property: trans.value}
-                else:
-                    i18n[trans.lang_id.iso_code][trans.property] = trans.value
-
-        # Form Builder translations (labels etc).
-        # These could override the former GUI/API translations, but
-        # that's how the Javascript API works.
-        for trans in form.builder_id.translations:
-            if trans.lang_id.iso_code not in i18n:
-                i18n[trans.lang_id.iso_code] = {trans.source: trans.value}
-            else:
-                i18n[trans.lang_id.iso_code][trans.source] = trans.value
-            options['i18n'] = i18n
-
-        return options
-
     @http.route('/formio/form/<string:uuid>/options', type='json', auth='user', website=True)
     def form_options(self, uuid, **kwargs):
         form = self._get_form(uuid, 'read')
@@ -181,10 +139,17 @@ class FormioController(http.Controller):
     @http.route('/formio/form/<string:uuid>/submission', type='json', auth='user', website=True)
     def form_submission(self, uuid, **kwargs):
         form = self._get_form(uuid, 'read')
+
+        # Submission data
         if form and form.submission_data:
-            return form.submission_data
+            submission_data = json.loads(form.submission_data)
         else:
-            return {}
+            submission_data = {}
+
+        # ETL Odoo data
+        etl_odoo_data = form.sudo()._etl_odoo_data()
+        submission_data.update(etl_odoo_data)
+        return json.dumps(submission_data)
 
     @http.route('/formio/form/<string:uuid>/submit', type='json', auth="user", methods=['POST'], website=True)
     def form_submit(self, uuid, **post):
@@ -194,7 +159,7 @@ class FormioController(http.Controller):
         if not form:
             # TODO raise or set exception (in JSON resonse) ?
             return
-        
+
         vals = {
             'submission_data': json.dumps(post['data']),
             'submission_user_id': request.env.user.id,
@@ -207,6 +172,160 @@ class FormioController(http.Controller):
             vals['state'] = FORM_STATE_COMPLETE
 
         form.write(vals)
+
+    ####################
+    # Form - public auth
+    ####################
+
+    @http.route('/formio/public/form/<string:uuid>/root', type='http', auth='public', website=True)
+    def public_form_root(self, uuid, **kwargs):
+        form = self._get_public_form(uuid)
+        if not form:
+            msg = 'Form UUID %s' % uuid
+            return request.not_found(msg)
+
+        ## TODO languages ##
+        #
+        # Needed to update language
+        # context = request.env.context.copy()
+        # context.update({'lang': request.env.user.lang})
+        # request.env.context = context
+
+        # # Get active languages used in Builder translations.
+        # query = """
+        #     SELECT
+        #       DISTINCT(fbt.lang_id) AS lang_id
+        #     FROM
+        #       formio_builder_translation AS fbt
+        #       INNER JOIN res_lang AS l ON l.id = fbt.lang_id
+        #     WHERE
+        #       fbt.builder_id = {builder_id}
+        #       AND l.active = True
+        # """.format(builder_id=form.builder_id.id)
+
+        # request.env.cr.execute(query)
+        # builder_lang_ids = [r[0] for r in request.env.cr.fetchall()]
+
+        # # Always include english (en_US).
+        # domain = ['|', ('id', 'in', builder_lang_ids), ('code', 'in', [request.env.user.lang, 'en_US'])]
+        # languages = request.env['res.lang'].with_context(active_test=False).search(domain, order='name asc')
+        # languages = languages.filtered(lambda r: r.id in builder_lang_ids or r.code == 'en_US')
+
+        values = {
+            'languages': [], # initialize, otherwise template/view crashes.
+            'form': form,
+            'formio_css_assets': form.builder_id.formio_css_assets,
+            'formio_js_assets': form.builder_id.formio_js_assets,
+        }
+        # if len(languages) > 1:
+        #     values['languages'] = languages
+        return request.render('formio.formio_form_embed', values)
+
+    @http.route('/formio/public/form/<string:uuid>/schema', type='json', auth='public', website=True)
+    def public_form_schema(self, uuid, **kwargs):
+        form = self._get_public_form(uuid)
+        if form and form.builder_id.schema:
+            return form.builder_id.schema
+        else:
+            return {}
+
+    @http.route('/formio/public/form/<string:uuid>/options', type='json', auth='public', website=True)
+    def public_form_options(self, uuid, **kwargs):
+        form = self._get_public_form(uuid)
+        if form:
+            options = self._prepare_form_options(form)
+        else:
+            options = {}
+        options['embedded'] = True
+        return json.dumps(options)
+
+    @http.route('/formio/public/form/<string:uuid>/submission', type='json', auth='public', website=True)
+    def public_form_submission(self, uuid, **kwargs):
+        form = self._get_public_form(uuid)
+
+        # Submission data
+        if form and form.submission_data:
+            submission_data = json.loads(form.submission_data)
+        else:
+            submission_data = {}
+
+        # ETL Odoo data
+        etl_odoo_data = form.sudo()._etl_odoo_data()
+        submission_data.update(etl_odoo_data)
+
+        return json.dumps(submission_data)
+
+    @http.route('/formio/public/form/<string:uuid>/submit', type='json', auth="public", methods=['POST'], website=True)
+    def public_form_submit(self, uuid, **post):
+        values = {}
+        """ POST with ID instead of uuid, to get the model object right away """
+        # print(">>>>>>>>>>>>>>>>>>>json.dequemps(post['data'])", json.dumps(post['data']))
+        form = self._get_public_form(uuid)
+        if not form:
+            # TODO raise or set exception (in JSON resonse) ?
+            return
+
+        vals = {
+            'submission_data': json.dumps(post['data']),
+            'submission_user_id': request.env.user.id,
+            'submission_date': fields.Datetime.now(),
+        }
+        res = json.loads(json.dumps(post['data']))
+        for i in res:
+            if i == 'advertisementNo':
+                values.update({'advertisement_id': res[i]['id']})
+            if i == 'category_id':
+                values.update({'category_id': res[i]['id']})
+            if i == 'religion_id':
+                values.update({'religion_id': res[i]['id']})
+            if i == 'title':
+                values.update({'title': res[i]['id']})
+            if i == 'job_id':
+                values.update({'job_id': res[i]['id']})
+            if i == 'aadhar_no':
+                values.update({'aadhar_no': res[i]})
+            if i == 'pan_no':
+                values.update({'pan_no': res[i]})
+            if i == 'personal_email':
+                values.update({'personal_email': res[i]})
+            if i == 'modeOfrecruitment':
+                values.update({'recruitment_type': res[i]['id']})
+            if i == 'employee_type':
+                values.update({'employee_type': res[i]})
+            if i == 'blood_group':
+                values.update({'blood_group': res[i]})
+            if i == 'uploadImage':
+                upload_image = res[i]
+            if i == 'applicantName':
+                values.update({'name': res[i]})
+            if i == 'applicantName1':
+                fnmae = res[i]
+            if i == 'applicantName2':
+                mname = res[i]
+            if i == 'dob':
+                values.update({'dob': res[i]['id']})
+            if i == 'gender':
+                values.update({'gende': res[i]})
+        stage_id = request.env['hr.recruitment.stage'].search([('sequence', '=', 1)], limit=1)
+        branch_id = request.env['res.branch'].search([('id', '=', 1)], limit=1)
+        struct_id = request.env['hr.payroll.structure'].search([('id', '=', 1)], limit=1)
+        pay_level_id = request.env['hr.payslip.paylevel'].search([], limit=1)
+        values.update({'stage_id': stage_id.id,
+                'branch_id': branch_id.id,
+                'struct_id': struct_id.id,
+                'pay_level_id': pay_level_id.id
+                })
+        create_applicant = request.env['hr.applicant'].sudo().create(values)
+        if post['data'].get('saveDraft') and not post['data'].get('submit'):
+            vals['state'] = FORM_STATE_DRAFT
+        else:
+            vals['state'] = FORM_STATE_COMPLETE
+
+        form.write(vals)
+
+    ########################
+    # Form - fetch Odoo data
+    ########################
 
     @http.route('/formio/form/<string:uuid>/data', type='http', auth='user', website=True)
     def form_data(self, uuid, **kwargs):
@@ -226,7 +345,7 @@ class FormioController(http.Controller):
         form = self._get_form(uuid, 'read')
         if not form:
             return
-        
+
         args = request.httprequest.args
 
         model = args.get('model')
@@ -310,3 +429,34 @@ class FormioController(http.Controller):
             return data
         except Exception as e:
             _logger.error("Exception: %s" % e)
+
+    def _prepare_builder_options(self, builder):
+        options = {}
+
+        if builder.state in [BUILDER_STATE_CURRENT, BUILDER_STATE_OBSOLETE]:
+            options['readOnly'] = True
+        return options
+
+    def _prepare_form_options(self, form):
+        options = {}
+        context = request.env.context
+        Lang  = request.env['res.lang']
+
+        if form.state in [FORM_STATE_COMPLETE, FORM_STATE_CANCEL]:
+            options['readOnly'] = True
+
+            if form.builder_id.view_as_html:
+                options['renderMode'] = 'html'
+                options['viewAsHtml'] = True # backwards compatible (version < 4.x)?
+
+        lang = Lang._lang_get(request.env.user.lang)
+        if lang:
+            options['language'] = lang.iso_code[:2]
+            options['i18n'] = form.i18n_translations()
+        return options
+
+    def _get_form(self, uuid, mode):
+        return request.env['formio.form'].get_form(uuid, mode)
+
+    def _get_public_form(self, uuid):
+        return request.env['formio.form'].get_public_form(uuid)
