@@ -32,10 +32,10 @@
                             <td class="text-left"><strong>Whether Wife/Husband is employed and if so, Whether Entitled to LTC</strong></td>
                             <td class="text-left"><span t-field="o.partner_working"/></td>
                         </tr>
-                        <tr>
-                            <td class="text-left"><strong>Present Address</strong></td>
-                            <td class="text-left"><span t-field="o.employee_id.address_home_id"/></td>
-                        </tr>
+<!--                        <tr>-->
+<!--                            <td class="text-left"><strong>Present Address</strong></td>-->
+<!--                            <td class="text-left"><span t-field="o.employee_id.address_home_id"/></td>-->
+<!--                        </tr>-->
                         <tr>
                             <td class="text-left"><strong>Place of Travel"</strong></td>
                             <td class="text-left"><span t-field="o.place_of_trvel"/></td>
