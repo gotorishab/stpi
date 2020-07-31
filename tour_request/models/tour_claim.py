@@ -27,7 +27,11 @@ class EmployeeTourClaim(models.Model):
             for line in record.detail_of_journey:
                 if line:
                     total_cl_journey += line.amount_claimed
+            print('================', total_claimed)
+            print('================', record.other_details)
+            print('================', total_cl_journey)
             record.total_claimed_amount = total_claimed + record.other_details + total_cl_journey
+            print('================', record.total_claimed_amount)
             record.balance_left = record.total_claimed_amount - record.advance_requested - record.amount_paid
 
 
