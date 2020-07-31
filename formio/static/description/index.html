@@ -1,11 +1,11 @@
 <section class="oe_container">
   <div class="oe_row oe_spaced">
     <h2 class="oe_slogan" style="color:#875A7B;"><b>Form.io</b> - <small style="color:#875A7B;"><em> Form Builder & Forms</em><small></h2>
-    <h3 class="oe_slogan">Powerful Form Building and Rendering with the <b>Form.io</b> GUI (Javascript client)</h3>
+    <h3 class="oe_slogan">Powerful Form Building and Deployment with the <b>Form.io</b> GUI (JavaScript client)</h3>
   </div>
 </section>
 
-<section class="oe_container">
+<section class="oe_container mt-4">
   <div class="oe_row oe_spaced">
     <div class="oe_span6">
       <div class="alert alert-info" style="padding:8px;font-weight:300;font-size:20px;">
@@ -47,6 +47,10 @@
 	    <i class="fa fa-check-square-o text-primary"></i>
             Provide <strong>Form-fields with data from Odoo</strong>. For example: a selection/dropdown field where choices are Odoo Products, filtered by some product-category.
 	  </li>
+          <li>
+	    <i class="fa fa-check-square-o text-primary"></i>
+            <strong>Open source</strong>, so contributions are welcome.
+          </li>
 	</ul>
       </div>
     </div>
@@ -56,8 +60,8 @@
     </div>
   </div>
   <div class="oe_row oe_centeralign mb16">
-    <h4>Visit the Demo</h4>
-    <a href="https://odoo12-b4a887d572e9.victhorious.com/web/login" target="_blank" class="oe_button oe_big">Demo</a>
+    <h4>Visit the online Demo (Odoo Community v13)</h4>
+    <a href="https://demo13.novacode.nl/web/login" target="_blank" class="oe_button oe_big">Demo</a>
     <p class="mt8"><strong>Users</strong> (Email / Password)</p>
     <ul>
       <li>demo / demo</li>
@@ -115,7 +119,127 @@
 
 <section class="oe_container oe_dark">
   <div class="oe_row oe_spaced">
-    <h2 class="oe_slogan" style="color:#875A7B;">Changelog</h2>
+    <h2 class="oe_slogan" style="color:#875A7B;">Releases</h2>
+    <h4 class="oe_mb16">4.2</h4>
+    <ul>
+      <li>
+        In the <strong>create Form (form-view)</strong> by default provide only Form Builders <strong>without Resource-model</strong> in the <strong>Form Builder drop-down field</strong>.<br/>
+        Specific modules extend this (domain) filter to add appropriate Form Builders related to the (active) Resource-model - e.g. formio_sale, formio_stock.
+      </li>
+    </ul>
+    <h4 class="oe_mb16">4.1</h4>
+    <ul>
+      <li>
+        Improvement: ETL Odoo (resource) data into Form, requires to bypass access control on the target/resource model.<br/>
+        (Use <code>sudo</code> here).
+      </li>
+    </ul>
+    <h4 class="oe_mb16">4.0</h4>
+    <ul>
+      <li>
+        Basic setup to deploy/share <strong>public Forms</strong>, by a setting (checkbox) in Form Builder.
+      </li>
+      <li>
+        Implement <strong>sequence field</strong> in <strong>Form</strong>. Usefull when storing and listing forms in an ordered way.
+      </li>
+      <li>
+        New setting (in Form Builder) which instructs the <strong>Form</strong> whether to <strong>show/hide</strong> the <strong>UUID</strong> in Form footer.
+      </li>
+      <li>
+        <strong>Store</strong> those <strong>show/hide</strong> setting fields in the <strong>Form</strong>, instead of joining its relational Builder value (in readonly mode).
+      </li>
+      <li>
+        <strong>Improvements in tree/list and form views</strong> regarding Form and Builder.
+      </li>
+    </ul>
+    <h4 class="oe_mb16">3.7</h4>
+    <ul>
+      <li>
+        New setting (in Form Builder) which instructs the Form whether to <strong>show/hide</strong> the <strong>Title</strong>.
+      </li>
+      <li>
+        Moved the Form Title from the main HTML-document into the embedded document (iframe).<br/>
+        This improves the embedded Form experience.
+      </li>
+    </ul>
+    <h4 class="oe_mb16">3.6</h4>
+    <ul>
+      <li>
+        New settings (in Form Builder) which instructs the Form whether to <strong>show/hide</strong> some metadata: <strong>Assigned user, Submission user &amp; date, ID, State</strong>.<br/>
+        The default is to show all these metadata fields (for backwards compatibility and no data migration needed).
+      </li>
+      <li>
+        Import formio.js version 3.x assets and bootstrap (CSS) instead of CDN.
+      </li>
+      <li>
+        Fix silly Javascript bug: <code>_.extend</code> (underscore.js ain't loaded here). Use jQuery extend.
+      </li>
+      <li>
+        Add help text regarding issue with (Formio.js) and <code>view_as_html</code> setting <a href="https://github.com/formio/formio.js/issues/1545" target="_blank">select component rendering error in viewAsHtml model #1545</a>
+      </li>
+    </ul>
+    <h4 class="oe_mb16">3.5</h4>
+    <ul>
+      <li>Add formio.js <strong><a href="https://github.com/formio/formio.js/releases/tag/v4.9.26" target="_blank">v4.9.26</a></strong> assets.</li>
+      <li>User in group <em>"Form.io Admin</em> can edit the Form it's submission data, for a new Form (if ain't stored).
+    </ul>
+    <h4 class="oe_mb16">3.4</h4>
+    <ul>
+      <li>
+        Don't override provided vals in <code>formio.form</code> function <code>_prepare_create_vals()</code>.
+      </li>
+    </ul>
+    <h4 class="oe_mb16">3.3</h4>
+    <ul>
+      <li>
+        New feature: ETL Odoo (resource) data into Form.<br/>
+        Supported fields:
+        <ul>
+          <li>Scalar fields e.g. Char, Text, Integer, Boolean, Date, Datetime</li>
+          <li>Many2one field (load it's leaf/scalar field)</li>
+          <li>One2many field, supported by Form.io Datagrid component</li>
+        </ul>
+        (documention and examples shall be added soon)
+      </li>
+    </ul>
+    <h4 class="oe_mb16">3.2</h4>
+    <ul>
+      <li>
+        Optional configuration to allow specific User Group(s) to force update of a <strong>Form state</strong> field (draft, complete, cancel) e.g. by buttons.
+        Feature request: <a href="https://github.com/novacode-nl/odoo-formio/issues/36" target="_blank">https://github.com/novacode-nl/odoo-formio/issues/36</a>
+      </li>
+    </ul>
+    <h4 class="oe_mb16">3.1</h4>
+    <ul>
+      <li>
+        Fix portal iframe (height) resizing issue.<br/>
+        Issue report: <a href="https://github.com/novacode-nl/odoo-formio/issues/35" target="_blank">https://github.com/novacode-nl/odoo-formio/issues/35</a>
+      </li>
+    </ul>
+    <h4 class="oe_mb16">3.0</h4>
+    <ul>
+      <li>
+        Changed the way <strong>Resource Fields</strong> are determined and stored. Not by dependent/computed fields anymore, which caused all kind of troubles.<br/>
+        Affected fields: <code>res_name</code>, <code>res_info</code>, <code>res_act_window_url</code> and <code>res_partner_id</code>.<br/>
+        <strong>!! CAUTION, BEFORE UPGRADE: Test first and be sure all Forms data (regarding these fields) has been migrated properly.</strong>
+      </li>
+    </ul>
+    <h4 class="oe_mb16">2.3</h4>
+    <ul>
+      <li>Form Builder layout improvements: full width, remove horizontal scrollbar.</li>
+    </ul>
+    <h4 class="oe_mb16">2.2</h4>
+    <ul>
+      <li>
+        Fix (workaround) to solve form height-resizing issues.<br/>
+        Issue report: <a href="https://github.com/novacode-nl/odoo-formio/issues/20" target="_blank">https://github.com/novacode-nl/odoo-formio/issues/20</a>
+      </li>
+    </ul>
+    <h4 class="oe_mb16">2.1</h4>
+    <ul>
+      <li>Add formio.js <strong><a href="https://github.com/formio/formio.js/releases/tag/v4.9.23" target="_blank">v4.9.23</a></strong> assets.</li>
+      <li>Remove formio.js "latest" version (CDN URLs). Requests from CDN caused time-outs.</li>
+    </ul>
     <h4 class="oe_mb16">2.0</h4>
     <ul>
       <li>

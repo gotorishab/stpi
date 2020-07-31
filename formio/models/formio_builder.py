@@ -41,7 +41,7 @@ class Builder(models.Model):
         'formio.version', string='Form.io Version', required=True,
         track_visibility='onchange',
         help="""Loads the specific Form.io Javascript API/libraries version (sourcecode: \https://github.com/formio/formio.js)""")
-    formio_version_name = fields.Char(related='formio_version_id.name')
+    formio_version_name = fields.Char(related='formio_version_id.name', string='Form.io version')
     formio_css_assets = fields.One2many(related='formio_version_id.css_assets', string='Form.io CSS')
     formio_js_assets = fields.One2many(related='formio_version_id.js_assets', string='Form.io Javascript')
     res_model_id = fields.Many2one(
@@ -71,10 +71,20 @@ class Builder(models.Model):
     user_id = fields.Many2one('res.users', string='Assigned user', track_visibility='onchange')
     forms = fields.One2many('formio.form', 'builder_id', string='Forms')
     portal = fields.Boolean("Portal", track_visibility='onchange', help="Form is accessible by assigned portal user")
-    view_as_html = fields.Boolean("View as HTML", track_visibility='onchange', help="View submission as a HTML view instead of disabled webform.")
-    wizard = fields.Boolean("Wizard", track_visibility='onchange')
     portal_submit_done_url = fields.Char()
+    public = fields.Boolean("Public", track_visibility='onchange', help="Form is public accessible (e.g. used in Shop checkout, Events registration")
+    view_as_html = fields.Boolean("View as HTML", track_visibility='onchange', help="View submission as a HTML view instead of disabled webform.")
+    show_form_title = fields.Boolean("Show Form Title", track_visibility='onchange', help="Show Form Title in the Form header.", default=True)
+    show_form_id = fields.Boolean("Show Form ID", track_visibility='onchange', help="Show Form ID in the Form header.", default=True)
+    show_form_uuid = fields.Boolean("Show Form UUID", track_visibility='onchange', help="Show Form UUID in the Form.", default=True)
+    show_form_state = fields.Boolean("Show Form State", track_visibility='onchange', help="Show the state in the Form header.", default=True)
+    show_form_user_metadata = fields.Boolean("Show User Metadata", track_visibility='onchange', help="Show submission and assigned user metadata in the Form header.", default=True)
+    wizard = fields.Boolean("Wizard", track_visibility='onchange')
     translations = fields.One2many('formio.builder.translation', 'builder_id', string='Translations')
+    allow_force_update_state_group_ids = fields.Many2many(
+        'res.groups', string='Allow groups to force update State',
+        help="User groups allowed to manually force an update of the Form state."
+             "If no groups are specified it's allowed for every user.")
 
     def _states_selection(self):
         return STATES
@@ -142,13 +152,13 @@ class Builder(models.Model):
                 del schema['display']
                 self.schema = json.dumps(schema)
 
-    @api.one
     @api.depends('formio_res_model_id')
     def _compute_res_model_id(self):
-        if self.formio_res_model_id:
-            self.res_model_id = self.formio_res_model_id.ir_model_id.id
-        else:
-            self.res_model_id = False
+        for r in self:
+            if r.formio_res_model_id:
+                r.res_model_id = r.formio_res_model_id.ir_model_id.id
+            else:
+                r.res_model_id = False
 
     @api.depends('title', 'name', 'version', 'state')
     def _compute_display_fields(self):
@@ -223,6 +233,7 @@ class Builder(models.Model):
         alter["parent_id"] = self.id
         alter["state"] = STATE_DRAFT
         alter["version"] = builder.version + 1
+        alter["version_comment"] = _('Write comment about version %s ...') % alter["version"]
 
         res = super(Builder, self).copy(alter)
         return res

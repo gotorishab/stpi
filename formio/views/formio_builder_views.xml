@@ -10,14 +10,15 @@ See LICENSE file for full licensing details. -->
             <tree string="Form Builders">
                 <field name="title"/>
                 <field name="name"/>
-                <field name="state"/>
                 <field name="version"/>
-                <field name="parent_id"/>
+                <field name="state"/>
+                <field name="formio_res_model_id"/>
+                <field name="portal"/>
+                <field name="public"/>
                 <field name="formio_version_id"/>
                 <field name="user_id"/>
+                <field name="parent_id"/>
                 <field name="write_date"/>
-                <field name="portal"/>
-                <field name="formio_res_model_id"/>
                 <field name="forms"/>
             </tree>
         </field>
@@ -83,21 +84,35 @@ See LICENSE file for full licensing details. -->
                     </group>
                     <notebook>
                         <page string="Settings" name="settings">
-                            <group>
-                                <group name="form_settings" string="Form.io">
-                                    <field name="formio_version_id" placeholder="Select latest version only to try new form components." attrs="{'readonly': [('state', '!=', 'DRAFT')]}"/>
+                            <group name="settings">
+                                <group name="formio_settings" string="Form.io">
+                                    <field name="formio_version_id" attrs="{'readonly': [('state', '!=', 'DRAFT')]}"/>
                                     <field name="wizard" groups="formio.group_formio_admin" attrs="{'readonly': [('state', '!=', 'DRAFT')]}"/>
                                     <field name="view_as_html" groups="formio.group_formio_admin"/>
                                 </group>
+                                <group name="form_settings" string="Form Appearance">
+                                    <field name="show_form_title" string="Show Title" groups="formio.group_formio_admin" attrs="{'readonly': [('state', '!=', 'DRAFT')]}"/>
+                                    <field name="show_form_state" string="Show State" groups="formio.group_formio_admin" attrs="{'readonly': [('state', '!=', 'DRAFT')]}"/>
+                                    <field name="show_form_user_metadata" groups="formio.group_formio_admin" attrs="{'readonly': [('state', '!=', 'DRAFT')]}"/>
+                                    <field name="show_form_id" string="Show ID" groups="formio.group_formio_admin" attrs="{'readonly': [('state', '!=', 'DRAFT')]}"/>
+                                    <field name="show_form_uuid" string="Show UUID" groups="formio.group_formio_admin" attrs="{'readonly': [('state', '!=', 'DRAFT')]}"/>
+                                </group>
                                 <group name="integration_settings" string="Integration">
-                                    <field name="portal" groups="formio.group_formio_admin"/>
                                     <field name="formio_res_model_id" groups="formio.group_formio_admin"
                                            attrs="{'readonly': [('state', '!=', 'DRAFT')]}"
                                            edit="false" create="false" quick_create="false"
                                            options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"/>
                                 </group>
+                                <group name="access_settings" string="Access">
+                                    <field name="portal" groups="formio.group_formio_admin"/>
+                                    <field name="public" string="Public (e.g. website)" groups="formio.group_formio_admin"/>
+                                </group>
                                 <field name="description" placeholder="Description..." groups="formio.group_formio_admin"/>
                             </group>
+                            <div class="mb-3 text-muted">
+                                <i class="fa fa-info-circle" title="info"/><strong> View as HTML</strong> setting (still) doesn't work since version 4.x<br/>
+                                For more info see Formio.js GitHub issue: <a href="https://github.com/formio/formio.js/issues/1545" target="_blank">select component rendering error in viewAsHtml model #1545</a>
+                            </div>
                         </page>
                         <page string="Resource Settings" name="res_model_settings" attrs="{'invisible': [('formio_res_model_id', '=', False)]}"/>
                         <page string="Portal Settings" name="portal_settings" attrs="{'invisible': [('portal', '=', False)]}">
@@ -119,6 +134,14 @@ See LICENSE file for full licensing details. -->
                         </page>
                         <page string="Schema" name="schema" groups="formio.group_formio_admin">
                             <field name="schema" attrs="{'readonly': [('state', '!=', 'DRAFT')]}"/>
+                        </page>
+                        <page string="Forms Permissions" name="forms_permissions" groups="formio.group_formio_admin">
+                            <div class="mb-3 text-muted">
+                                <i class="fa fa-info-circle" title="info"/> Specific permissions on Forms
+                            </div>
+                            <group>
+                                <field name="allow_force_update_state_group_ids" />
+                            </group>
                         </page>
                         <page string="Forms" name="forms" groups="formio.group_formio_admin">
                             <field name="forms"/>

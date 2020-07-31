@@ -8,7 +8,7 @@ import requests
 import uuid
 
 from odoo import api, fields, models, _
-from odoo.exceptions import AccessError
+from odoo.exceptions import AccessError, UserError
 
 from ..utils import get_field_selection_label
 
@@ -51,31 +51,46 @@ class Form(models.Model):
     res_model = fields.Char(related='res_model_id.model', readonly=True, string='Resource Model Name')
     res_id = fields.Integer("Record ID", ondelete='restrict',
         help="Database ID of the record in res_model to which this applies")
-    res_act_window_url = fields.Char(compute='_compute_res_fields', readonly=True)
-    res_name = fields.Char(compute='_compute_res_fields', string='Resource Name', store=True)
-    res_info = fields.Char(compute='_compute_res_fields', string='Resource Info', readonly=True)
-    res_partner_id = fields.Many2one('res.partner', compute='_compute_res_fields', store=True, readonly=True, string='Resource Partner')
+    res_act_window_url = fields.Char(readonly=True)
+    res_name = fields.Char(string='Record  Name', readonly=True)
+    res_partner_id = fields.Many2one('res.partner', readonly=True, string='Resource Partner')
     user_id = fields.Many2one(
         'res.users', string='Assigned user',
         index=True, track_visibility='onchange')
     assigned_partner_id = fields.Many2one('res.partner', related='user_id.partner_id', string='Assigned Partner')
-    assigned_partner_name = fields.Char(related='assigned_partner_id.name')
+    assigned_partner_name = fields.Char(related='assigned_partner_id.name', string='Assigned Partner Name')
     invitation_mail_template_id = fields.Many2one(
         'mail.template', 'Invitation Mail',
         domain=[('model', '=', 'formio.form')],
         help="This e-mail template will be sent on user assignment. Leave empty to send nothing.")
-    submission_data = fields.Text('Data', default=False, readonly=True)
+    submission_data = fields.Text('Data', default=False)
     submission_user_id = fields.Many2one(
         'res.users', string='Submission User', readonly=True,
         help='User who submitted the form.')
     submission_partner_id = fields.Many2one('res.partner', related='submission_user_id.partner_id', string='Submission Partner')
-    submission_partner_name = fields.Char(related='submission_partner_id.name')
+    submission_partner_name = fields.Char(related='submission_partner_id.name', string='Submission Partner Name')
     submission_date = fields.Datetime(
         string='Submission Date', readonly=True, track_visibility='onchange',
         help='Datetime when the form was last submitted.')
+    sequence = fields.Integer(help="Usefull when storing and listing forms in an ordered way")
     portal = fields.Boolean("Portal", related='builder_id.portal', readonly=True, help="Form is accessible by assigned portal user")
     portal_submit_done_url = fields.Char(related='builder_id.portal_submit_done_url')
+    public = fields.Boolean("Public", related='builder_id.public', readonly=True, help="Form is public")
+    show_title = fields.Boolean("Show Title")
+    show_state = fields.Boolean("Show State")
+    show_id = fields.Boolean("Show ID")
+    show_uuid = fields.Boolean("Show UUID")
+    show_user_metadata = fields.Boolean("Show User Metadata")
     allow_unlink = fields.Boolean("Allow delete", compute='_compute_access')
+    allow_force_update_state = fields.Boolean("Allow force update State", compute='_compute_access')
+    readonly_submission_data = fields.Boolean("Data is readonly", compute='_compute_access')
+
+    @api.model
+    def default_get(self, fields):
+        result = super(Form, self).default_get(fields)
+        # XXX Override (ORM) default value 0 (zero) for Integer field.
+        result['res_id'] = False
+        return result
 
     @api.model
     def create(self, vals):
@@ -84,6 +99,19 @@ class Form(models.Model):
         return res
 
     def _prepare_create_vals(self, vals):
+        builder = self._get_builder_from_id(vals.get('builder_id'))
+
+        vals['show_title'] = builder.show_form_title
+        vals['show_state'] = builder.show_form_state
+        vals['show_id'] = builder.show_form_id
+        vals['show_uuid'] = builder.show_form_uuid
+        vals['show_user_metadata'] = builder.show_form_user_metadata
+
+        if not vals.get('res_id'):
+            vals['res_id'] = self._context.get('active_id')
+
+        if not vals.get('res_name'):
+            vals['res_name'] = builder.res_model_id.name
         return vals
 
     def _get_builder_from_id(self, builder_id):
@@ -103,12 +131,29 @@ class Form(models.Model):
                 r.kanban_group_state = 'D'
 
     def _compute_access(self):
-        for r in self:
-            unlink_form = self.get_form(r.uuid, 'unlink')
+        user_groups = self.env.user.groups_id
+        for form in self:
+            # allow_unlink
+            unlink_form = self.get_form(form.uuid, 'unlink')
             if unlink_form:
-                r.allow_unlink = True
+                form.allow_unlink = True
             else:
-                r.allow_unlink = False
+                form.allow_unlink = False
+
+            # allow_state_update
+            if self.env.user.has_group('formio.group_formio_admin'):
+                form.allow_force_update_state = True
+            elif form.builder_id.allow_force_update_state_group_ids and \
+                 (user_groups & form.builder_id.allow_force_update_state_group_ids):
+                form.allow_force_update_state = True
+            else:
+                form.allow_force_update_state = False
+
+            # readonly_submission_data
+            if self.env.user.has_group('formio.group_formio_admin'):
+                form.readonly_submission_data = False
+            else:
+                form.readonly_submission_data = True
 
     @api.depends('state')
     def _compute_display_fields(self):
@@ -159,6 +204,9 @@ class Form(models.Model):
     @api.multi
     def action_draft(self):
         self.ensure_one()
+        if not self.allow_force_update_state:
+            raise UserError(_("You're not allowed to (force) update the Form into Draft state."))
+
         vals = {'state': STATE_DRAFT}
         submission_data = self._decode_data(self.submission_data)
         if 'submit' in submission_data:
@@ -170,11 +218,15 @@ class Form(models.Model):
     @api.multi
     def action_complete(self):
         self.ensure_one()
+        if not self.allow_force_update_state:
+            raise UserError(_("You're not allowed to (force) update the Form into Complete state."))
         self.write({'state': STATE_COMPLETE})
 
     @api.multi
     def action_cancel(self):
         self.ensure_one()
+        if not self.allow_force_update_state:
+            raise UserError(_("You're not allowed to (force) update the Form into Cancel state."))
         self.write({'state': STATE_CANCEL})
 
     @api.multi
@@ -210,7 +262,13 @@ class Form(models.Model):
 
     @api.onchange('builder_id')
     def _onchange_builder_domain(self):
-        res = {}
+        domain = [
+            ('state', '=', BUILDER_STATE_CURRENT),
+            ('res_model_id', '=', False),
+        ]
+        res = {
+            'domain': {'builder_id': domain}
+        }
         return res
 
     @api.onchange('builder_id')
@@ -218,6 +276,11 @@ class Form(models.Model):
         if not self.env.user.has_group('formio.group_formio_user_all_forms'):
             self.user_id = self.env.user.id
         self.title = self.builder_id.title
+        self.show_title = self.builder_id.show_form_title
+        self.show_state = self.builder_id.show_form_state
+        self.show_id = self.builder_id.show_form_id
+        self.show_uuid = self.builder_id.show_form_uuid
+        self.show_user_metadata = self.builder_id.show_form_user_metadata
 
     @api.onchange('portal')
     def _onchange_portal(self):
@@ -263,10 +326,6 @@ class Form(models.Model):
                 action=action.id)
             r.act_window_url = url
 
-    @api.depends('res_id')
-    def _compute_res_fields(self):
-        pass
-        
     @api.multi
     def action_open_res_act_window(self):
         return {
@@ -278,7 +337,7 @@ class Form(models.Model):
 
     @api.model
     def get_form(self, uuid, mode):
-        """ Verifies access to form and return form or False (if no access). """
+        """ Verifies access to form and return form or False. """
 
         if not self.env['formio.form'].check_access_rights(mode, False):
             return False
@@ -295,6 +354,43 @@ class Form(models.Model):
             if not form or form.builder_id.portal is False or form.user_id.id != self.env.user.id:
                 return False
         return form
+
+    @api.model
+    def get_public_form(self, uuid):
+        """ Verifies public (e.g. website) access to form and return form or False. """
+
+        # TODO when to assign and check the public user?
+        # (user_id = self.env.ref('base.public_user'))
+        domain = [
+            ('uuid', '=', uuid),
+            ('builder_id.public', '=', True),
+        ]
+        form = self.sudo().search(domain, limit=1)
+        if form:
+            return form
+        else:
+            return False
+
+    def _etl_odoo_data(self):
+        return {}
+
+    def i18n_translations(self):
+        i18n = {}
+        # Formio GUI/API translations
+        for trans in self.builder_id.formio_version_id.translations:
+            if trans.lang_id.iso_code not in i18n:
+                i18n[trans.lang_id.iso_code[:2]] = {trans.property: trans.value}
+            else:
+                i18n[trans.lang_id.iso_code[:2]][trans.property] = trans.value
+        # Form Builder translations (labels etc).
+        # These could override the former GUI/API translations, but
+        # that's how the Javascript API works.
+        for trans in self.builder_id.translations:
+            if trans.lang_id.iso_code not in i18n:
+                i18n[trans.lang_id.iso_code[:2]] = {trans.source: trans.value}
+            else:
+                i18n[trans.lang_id.iso_code[:2]][trans.source] = trans.value
+        return i18n
 
 
 class IrAttachment(models.Model):

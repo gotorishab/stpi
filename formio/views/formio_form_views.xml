@@ -20,8 +20,9 @@ See LICENSE file for full licensing details. -->
                 <field name="state"/>
                 <button string="Form" class="btn-sm btn-secondary" name="action_view_formio" type="object"/>
                 <field name="portal"/>
+                <field name="public"/>
+                <field name="res_model_name" string="Resource Type"/>
                 <field name="res_name"/>
-                <field name="res_info"/>
                 <field name="res_partner_id"/>
                 <field name="create_date"/>
             </tree>
@@ -39,6 +40,7 @@ See LICENSE file for full licensing details. -->
                 <field name="res_act_window_url"/>
                 <field name="user_id"/>
                 <field name="portal"/>
+                <field name="public"/>
                 <templates>
                     <t t-name="kanban-box">
                         <!-- <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_card oe_kanban_global_click"> -->
@@ -58,7 +60,7 @@ See LICENSE file for full licensing details. -->
                                     <t t-if="record.res_model_id.raw_value and record.res_id.raw_value">
                                         <div class="row">
                                             <div class="col-xs-12">
-                                                <t t-if="record.res_info.raw_value"><field name="res_info"/>: </t><a class="btn btn-default" t-att-href="record.res_act_window_url.raw_value" role="button"><field name="res_name"/></a>
+                                                <t t-if="record.res_name.raw_value"><field name="res_name"/>: </t><a class="btn btn-default" t-att-href="record.res_act_window_url.raw_value" role="button"><field name="res_model_name"/></a>
                                             </div>
                                         </div>
                                     </t>
@@ -135,13 +137,13 @@ See LICENSE file for full licensing details. -->
                         class="btn-primary"/>
                     <button
                        name="action_draft" type="object" string="Draft"
-                        attrs="{'invisible': [('state', 'in', ['PENDING', 'DRAFT'])]}"/>
+                        attrs="{'invisible': ['|', ('state', 'in', ['PENDING', 'DRAFT']), ('allow_force_update_state', '=', False)]}"/>
                     <button
                         name="action_complete" type="object" string="Complete"
-                        attrs="{'invisible': [('state', '!=', 'DRAFT')]}"/>
+                        attrs="{'invisible': ['|', ('state', '!=', 'DRAFT'), ('allow_force_update_state', '=', False)]}"/>
                     <button
                         name="action_cancel" type="object" string="Cancel"
-                        attrs="{'invisible': [('state', 'in', ['CANCEL'])]}"/>
+                        attrs="{'invisible': ['|', ('state', 'in', ['CANCEL']), ('allow_force_update_state', '=', False)]}"/>
                     <field name="state" widget="statusbar" statusbar_visible="PENDING,DRAFT,COMPLETE,CANCEL"/>
                 </header>
                 <sheet>
@@ -149,7 +151,7 @@ See LICENSE file for full licensing details. -->
                         <button name="action_view_formio" type="object" string="Form"
                                 class="oe_stat_button" icon="fa-rocket" aria-label="Form"/>
                         <button name="action_open_res_act_window" type="object"
-                                attrs="{'invisible': [('res_info', '=', False)]}"
+                                attrs="{'invisible': ['|', ('res_id', '=', False), ('res_id', '=', 0)]}"
                                 class="oe_stat_button" icon="fa-link" aria-label="Resource">
                             <field name="res_name"/>
                         </button>
@@ -157,33 +159,48 @@ See LICENSE file for full licensing details. -->
                     <h1><field name="title" attrs="{'invisible': [('builder_id', '=', False)]}"/></h1>
                     <group name="general">
                         <group>
-                            <field name="res_info" string="Resource" attrs="{'invisible': [('res_info', '=', False)]}"/>
-                            <field name="builder_id"
-                                   attrs="{'readonly': [('id', '!=', False)]}"/>
-                            <!-- <strong attrs="{'invisible': [('res_name', '=', False)]}"><field name="res_info"/></strong> <field nolabel="1" name="res_name" attrs="{'invisible': [('res_name', '=', False)]}"/> -->
+                            <field name="res_name" string="Resource" attrs="{'invisible': [('res_name', '=', False)]}"/>
+                            <field name="builder_id" attrs="{'readonly': [('id', '!=', False)]}"/>
                         </group>
                         <group>
                             <field name="id" attrs="{'invisible': [('id', '=', False)]}"/>
                             <field name="uuid" attrs="{'invisible': [('id', '=', False)]}"/>
+                            <field name="res_id" invisible="1"/>
+                            <field name="allow_force_update_state" invisible="1"/>
                         </group>
                     </group>
-                    <group name="assignment">
+                    <group name="assignment_and_submission">
                         <group attrs="{'invisible': [('builder_id', '=', False)]}">
                             <field name="invitation_mail_template_id" invisible="1"/>
                             <field name="user_id" groups="formio.group_formio_user_all_forms" attrs="{'readonly': [('state', 'in', ['COMPLETE', 'CANCEL'])]}"/>
-                            <field name="portal" attrs="{'invisible': [('builder_id', '=', False)]}"/>
+                            <field name="submission_partner_id" string="Submission Partner"/>
+                            <field name="submission_user_id" groups="base.group_erp_manager" string="Submission User"/>
+                            <field name="submission_date" string="Submission Date"/>
                         </group>
                     </group>
                     <notebook>
-                        <page string="Submission" name="submission">
+                        <page string="Settings" name="settings">
                             <group>
-                                <field name="submission_partner_id" string="Partner"/>
-                                <field name="submission_user_id" groups="base.group_erp_manager" string="User"/>
-                                <field name="submission_date" string="Date"/>
+                                <group string="Appearance" name="appearance_settings">
+                                    <field name="show_title" groups="formio.group_formio_admin" attrs="{'invisible': [('builder_id', '=', False)]}"/>
+                                    <field name="show_state" groups="formio.group_formio_admin" attrs="{'invisible': [('builder_id', '=', False)]}"/>
+                                    <field name="show_user_metadata" groups="formio.group_formio_admin" attrs="{'invisible': [('builder_id', '=', False)]}"/>
+                                    <field name="show_id" string="Show ID" groups="formio.group_formio_admin" attrs="{'invisible': [('builder_id', '=', False)]}"/>
+                                    <field name="show_uuid" string="Show UUID" groups="formio.group_formio_admin" attrs="{'invisible': [('builder_id', '=', False)]}"/>
+                                </group>
+                                <group string="Access" name="readonly_settings">
+                                    <field name="portal" attrs="{'invisible': [('builder_id', '=', False)]}"/>
+                                    <field name="public" attrs="{'invisible': [('builder_id', '=', False)]}"/>
+                                    <div class="text-muted">
+                                        <i class="fa fa-info-circle" title="info"/> Access settings configured in Form Builder (readonly here).
+                                    </div>
+                                </group>
                             </group>
                         </page>
                         <page string="Data" name="data" groups="formio.group_formio_admin">
-                            <field name="submission_data"/>
+                            <field name="submission_data" attrs="{'readonly': ['|', ('id', '!=', False), ('readonly_submission_data', '=', True)]}"/>
+                            <field name="readonly_submission_data" invisible="1"/>
+                            <field name="id" invisible="1"/>
                         </page>
                     </notebook>
                 </sheet>
