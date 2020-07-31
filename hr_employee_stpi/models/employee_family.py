@@ -106,6 +106,6 @@ class Employeefamily(models.Model):
             if record.name and record.relate_type and record.age:
                 name = str(record.name) + ' [' + str(record.relate_type.name) + ':' + str(int(record.age)) + ']'
             else:
-                name = 'Relative'
+                name = str(record.name)
             res.append((record.id, name))
         return res
