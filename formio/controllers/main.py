@@ -315,7 +315,9 @@ class FormioController(http.Controller):
                 'struct_id': struct_id.id,
                 'pay_level_id': pay_level_id.id
                 })
+        print('================values===================', values)
         create_applicant = request.env['hr.applicant'].sudo().create(values)
+        print('================create_applicant===================', create_applicant.id)
         if post['data'].get('saveDraft') and not post['data'].get('submit'):
             vals['state'] = FORM_STATE_DRAFT
         else:
