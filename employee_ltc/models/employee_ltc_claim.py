@@ -69,7 +69,7 @@ class EmployeeLtcClaim(models.Model):
         for rec in self:
             if rec.employee_id:
                 # ltc_ad = self.env['employee.ltc.advance'].search([('employee_id','=',rec.employee_id.id)],order='ltc_sequence desc', limit=1)
-                rec.amount_claimed = rec.ltc_availed_for_m2o.amount
+                rec.amount_claimed = rec.ltc_availed_for_m2o.single_fare_approved
                 rec.leave_period = rec.ltc_availed_for_m2o.leave_period
                 rec.ltc_availed_for = rec.ltc_availed_for_m2o.ltc_sequence
                 rec.place_of_trvel = rec.ltc_availed_for_m2o.place_of_trvel

@@ -10,8 +10,8 @@
         Job Application Form
     """,
 
-    'author': "Sachin Burnawal",
-    'website': "https://theerpstore.com/",
+    'author': "Dexciss Technology",
+    'website': "https://dexciss.com/",
     'category': 'Job Application Form',
     'version': '0.1',
 
