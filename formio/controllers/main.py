@@ -258,6 +258,7 @@ class FormioController(http.Controller):
     @http.route('/formio/public/form/<string:uuid>/submit', type='json', auth="public", methods=['POST'], website=True)
     def public_form_submit(self, uuid, **post):
         values = {}
+        print('================values initial===================', values)
         """ POST with ID instead of uuid, to get the model object right away """
         # print(">>>>>>>>>>>>>>>>>>>json.dequemps(post['data'])", json.dumps(post['data']))
         form = self._get_public_form(uuid)
@@ -270,7 +271,9 @@ class FormioController(http.Controller):
             'submission_user_id': request.env.user.id,
             'submission_date': fields.Datetime.now(),
         }
+        print('================vals===================', vals)
         res = json.loads(json.dumps(post['data']))
+        print('================res===================', res)
         for i in res:
             if i == 'advertisementNo':
                 values.update({'advertisement_id': res[i]['id']})
@@ -306,6 +309,7 @@ class FormioController(http.Controller):
                 values.update({'dob': res[i]['id']})
             if i == 'gender':
                 values.update({'gende': res[i]})
+        print('================values after if===================', values)
         stage_id = request.env['hr.recruitment.stage'].search([('sequence', '=', 1)], limit=1)
         branch_id = request.env['res.branch'].search([('id', '=', 1)], limit=1)
         struct_id = request.env['hr.payroll.structure'].search([('id', '=', 1)], limit=1)
