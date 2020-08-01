@@ -540,29 +540,31 @@ class HRApplicant(models.Model):
 
 
     def get_total_match_religion_data(self):
-        
-        if self.religion_id:
-            emp_ids = self.env['hr.employee'].search([('religion','=',self.religion_id.id),('job_id','=',self.job_id.id)])
-            employee_ids = self.env['hr.employee'].search([])
-            for s in self:
-                religion = len(emp_ids)
-                emp = len(employee_ids)
-                s.get_total_match_religion = round(religion/emp*100)
+        pass
+        #
+        # if self.religion_id:
+        #     emp_ids = self.env['hr.employee'].search([('religion','=',self.religion_id.id),('job_id','=',self.job_id.id)])
+        #     employee_ids = self.env['hr.employee'].search([])
+        #     for s in self:
+        #         religion = len(emp_ids)
+        #         emp = len(employee_ids)
+        #         s.get_total_match_religion = round(religion/emp*100)
 
     def get_total_match_category_data(self):
-        
-        if self.category_id:
-            emp_ids = self.env['hr.employee'].search([('category','=',self.category_id.id),('job_id','=',self.job_id.id)])
-            employee_ids = self.env['hr.employee'].search([])
-            for s in self:
-                category = len(emp_ids)
-                emp = len(employee_ids)
-                s.get_total_match_category = round(category/emp*100)
+        pass
+        #
+        # if self.category_id:
+        #     emp_ids = self.env['hr.employee'].search([('category','=',self.category_id.id),('job_id','=',self.job_id.id)])
+        #     employee_ids = self.env['hr.employee'].search([])
+        #     for s in self:
+        #         category = len(emp_ids)
+        #         emp = len(employee_ids)
+        #         s.get_total_match_category = round(category/emp*100)
         
     def get_santioned_position_emp(self):
+        pass
 #         emp_count_san = 0.0
-        for s in self:
-            pass
+#         for s in self:
 #             for line in s.job_id.budget_id:
 # #                 print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
 #                 s.santioned_position = line.employee_count
