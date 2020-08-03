@@ -20,6 +20,11 @@ class HrLeave(models.Model):
                                       ('contractual_with_agency', 'Contractual with Agency'),
                                       ('contractual_with_stpi', 'Contractual with STPI')], string='Employment Type',
                                      )
+    
+    commuted_leave_selection = fields.Selection([('Yes', 'Yes'),
+                                      ('No', 'No'),
+                                      ], string='Employment Type',
+                                     )
     gender = fields.Selection([('male', 'Male'),
                                ('female', 'Female'),
                                ('transgender', 'Both')
@@ -393,9 +398,11 @@ class HrLeave(models.Model):
 
         if self.holiday_status_id:
             if self.holiday_status_id.commuted == True:
+                self.commuted_leave_selection = 'Yes'
                 self.commuted = True
                 self.commuted_leave = 'Commuted Leaves'
             else:
+                self.commuted_leave_selection = 'No'
                 self.commuted = False
 
         if self.holiday_status_id and self.number_of_days_display:
