@@ -412,6 +412,16 @@ class HrLeave(models.Model):
             else:
                 self.holiday_half_pay = False
 
+
+
+    @api.constrains('commuted_leave_selection')
+    @api.onchange('commuted_leave_selection')
+    def get_validate_on_commuted_leave_selection(self):
+        if self.holiday_status_id:
+            if self.commuted_leave_selection == 'Yes':
+                self.commuted_leave = 'Commuted Leaves'
+
+
     @api.constrains('state', 'number_of_days', 'holiday_status_id')
     def _check_holidays(self):
         for holiday in self:
