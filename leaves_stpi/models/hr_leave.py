@@ -396,14 +396,14 @@ class HrLeave(models.Model):
             else:
                 self.attachement = False
 
-        # if self.holiday_status_id:
-        #     if self.holiday_status_id.commuted == True:
-        #         self.commuted_leave_selection = 'Yes'
-        #         self.commuted = True
-        #         self.commuted_leave = 'Commuted Leaves'
-        #     else:
-        #         self.commuted_leave_selection = 'No'
-        #         self.commuted = False
+        if self.holiday_status_id:
+            if self.holiday_status_id.commuted == True:
+                # self.commuted_leave_selection = 'Yes'
+                self.commuted = True
+                # self.commuted_leave = 'Commuted Leaves'
+            else:
+                # self.commuted_leave_selection = 'No'
+                self.commuted = False
 
         if self.holiday_status_id and self.number_of_days_display:
             if self.holiday_status_id.leave_type == 'Half Pay Leave':
