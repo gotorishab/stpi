@@ -223,6 +223,8 @@ class HrLeave(models.Model):
                     raise ValidationError(_(
                         'You are not allowed to take leave'))
 
+            if self.commuted_leave_selection == 'Yes':
+
 
 
         return res
@@ -420,6 +422,7 @@ class HrLeave(models.Model):
         if self.holiday_status_id:
             if self.commuted_leave_selection == 'Yes':
                 self.commuted_leave = 'Commuted Leaves'
+                self.no_of_days_display_half = self.number_of_days_display
 
 
     @api.constrains('state', 'number_of_days', 'holiday_status_id')
