@@ -58,7 +58,7 @@
                 <field name="ltc"/>
                 <field name="commuted_leave" attrs="{'invisible':[('commuted','!=',True)]}" readonly="1"/>
                 <field name="attachement" invisible="1"/>
-                <field name="commuted_leave_selection"/>
+                <field name="commuted_leave_selection" attrs="{'invisible':[('holiday_status_id.commuted','!=',True)]}"/>
                 <field name="commuted" attrs="{'invisible':[('commuted','!=',True)]}"/>
                 <field name="attachement_proof" attrs="{'invisible': [('attachement','!=',True),('commuted','!=',True)],'required': [('attachement','=',True)]}"/>
                 <field name="employee_type" invisible="1"/>
