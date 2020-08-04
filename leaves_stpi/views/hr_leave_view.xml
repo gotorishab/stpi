@@ -58,9 +58,9 @@
                 <field name="ltc"/>
                 <field name="commuted" invisible="1"/>
                 <field name="commuted_leave_selection" attrs="{'invisible':[('commuted','!=',True)]}"/>
-                <field name="commuted_leave" readonly="1"/>
+                <field name="commuted_leave" attrs="{'invisible':[('commuted_leave_selection','!=','Yes')]}"/>
                 <field name="attachement" invisible="1"/>
-                <field name="attachement_proof" attrs="{'invisible': [('attachement','!=',True),('commuted','!=',True)],'required': [('attachement','=',True)]}"/>
+                <field name="attachement_proof" attrs="{'invisible': [('attachement','!=',True),('commuted_leave_selection','!=','Yes')],'required': [('attachement','=',True)]}"/>
                 <field name="employee_type" invisible="1"/>
                 <!-- <field name="branch_id"/> -->
                 <field name="employee_state" invisible="1"/>
