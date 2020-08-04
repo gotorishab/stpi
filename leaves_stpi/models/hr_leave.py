@@ -223,10 +223,6 @@ class HrLeave(models.Model):
                     raise ValidationError(_(
                         'You are not allowed to take leave'))
 
-            if self.commuted_leave_selection == 'Yes':
-
-
-
         return res
 
     @api.constrains('request_date_from', 'request_date_to', 'employee_id')
