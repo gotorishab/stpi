@@ -78,9 +78,9 @@
                 <attribute name="attrs">{'invisible':[('holiday_half_pay','=',True)]}</attribute>
             </xpath>
             
-            <xpath expr="//field[@name='holiday_status_id']" position="attributes">
-                <attribute name="attrs">{'invisible':[('commuted','=',True)]}</attribute>
-            </xpath>
+<!--            <xpath expr="//field[@name='holiday_status_id']" position="attributes">-->
+<!--                <attribute name="attrs">{'invisible':[('commuted','=',True)]}</attribute>-->
+<!--            </xpath>-->
             
             <xpath expr="//label[@for='number_of_days_display']" position="attributes">
                 <attribute name="attrs">{'invisible':[('holiday_half_pay','=',True)]}</attribute>
