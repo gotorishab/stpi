@@ -9,5 +9,9 @@ class PfInterestDisbursement(models.Model):
     branch_id = fields.Many2many('res.branch')
     from_date = fields.Date('From Date')
     to_date = fields.Date('To Date')
-    interest_rate = fields.Float('Interest Rate')
+    interest_rate = fields.Float('Interest Rate')\
 
+
+    @api.multi
+    def button_submit(self):
+        pass

@@ -22,7 +22,11 @@
         <field name="name">pf.interest.disbursement.form</field>
         <field name="model">pf.interest.disbursement</field>
         <field name="arch" type="xml">
-            <form string="PF Employee">
+            <form string="PF Intereest Disbursement">
+                <header>
+                    <button name="button_submit" string="Submit" class="oe_highlight" type="object"/>
+<!--                    <field name="state" widget="statusbar" statusbar_visible="draft,to_approve,approved,rejected" />-->
+                </header>
                 <sheet>
                     <group>
                         <group>
