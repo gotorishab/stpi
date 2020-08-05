@@ -211,9 +211,9 @@ class PfEmployee(models.Model):
             for emp in search_id:
                 count += 1
                 print('===================2==============================')
-        if count > 1:
-            print('===================3==============================')
-            raise ValidationError("You are not apply for more thn one")
+            if count > 1:
+                print('===================3==============================')
+                raise ValidationError("You are not apply for more thn one")
         print('===================4==============================')
 
     @api.multi
