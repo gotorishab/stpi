@@ -188,7 +188,15 @@ class PfEmployee(models.Model):
                 for details in pf_employee_obj:
                     sum += details.amount
             rec.amount = sum
-            
+
+
+
+
+    @api.multi
+    def button_transfer_pf(self):
+        pass
+       
+
     @api.depends('pf_details_ids')
     def _compute_amount(self):
         for rec in self:
