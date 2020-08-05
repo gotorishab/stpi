@@ -7,7 +7,8 @@ class ResCompanies(models.Model):
 
 
 class ResCompanyInterest(models.Model):
-    _inherit = 'res.company.pf.interest'
+    _name = 'res.company.pf.interest'
+    _description = 'PF'
 
     company_id = fields.Many2one('res.company')
     from_date = fields.Date('From Date')
