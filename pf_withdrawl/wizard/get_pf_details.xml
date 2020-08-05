@@ -22,7 +22,7 @@
 
     <act_window id="action_get_pf_wizs_confirm"
             multi="True"
-            key2="client_action_multi" name="Cheque Requests"
+            key2="client_action_multi" name="Get PF Details"
                 res_model="pf.withdrawal.get" src_model="pf.employee"
             view_mode="form" target="new" view_type="form"/>
     </data>
