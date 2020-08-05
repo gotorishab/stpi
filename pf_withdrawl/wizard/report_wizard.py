@@ -62,9 +62,8 @@ class WizardLateComing(models.TransientModel):
             from_date = rec.from_date = rec.ledger_for_year.date_start
             to_date = rec.to_date = rec.ledger_for_year.date_end
             X = 0.00
-            pf_advance = self.env['pf.widthdrawl'].search(
-                [('employee_id', '=', rec.employee_id.id),
-                 ('state', '=', 'approved')], limit=1)
+            pf_advance = self.env['hr.employee'].search(
+                [('id', '=', rec.employee_id.id)], limit=1)
             print('---------------pf advance================',pf_advance)
             for p in pf_advance:
                 X = p.interest

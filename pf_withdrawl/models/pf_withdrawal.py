@@ -101,6 +101,14 @@ class PfWidthdrawl(models.Model):
             res.append((record.id, name))
         return res
 
+    @api.multi
+    def unlink(self):
+        for pf in self:
+            if pf.state not in ('draft'):
+                raise UserError(
+                    'You cannot delete a PF which is not in draft or cancelled state')
+        return super(PfWidthdrawl, self).unlink()
+
 
 #     @api.constrains('rule')
 #     @api.onchange('rule')
@@ -197,8 +205,8 @@ class PfEmployee(models.Model):
             # rec.advance_amount = sum1
             rec.advance_left = rec.amount - rec.advance_amount
 
-    #
-    #
+
+
     # @api.model
     # def create(self, values):
     #     res = super(PfEmployee, self).create(values)
