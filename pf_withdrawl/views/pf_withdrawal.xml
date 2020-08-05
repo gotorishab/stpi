@@ -225,13 +225,14 @@
         <field name="arch" type="xml">
             <form string="PF Employee">
                 <header>
-                    <button name="button_transfer_pf" string="Submit" class="oe_highlight" type="object"/>
+                    <button name="button_transfer_pf" string="Transfer PF" class="oe_highlight" type="object"/>
 <!--                    <field name="state" widget="statusbar" statusbar_visible="draft,to_approve,approved,rejected" />-->
                 </header>
                 <sheet>
                     <group>
                         <group>
                             <field name="employee_id" readonly="1"/>
+                            <field name="pf_start_data"/>
                         </group>
                         <group>
                             <field name="amount"/>

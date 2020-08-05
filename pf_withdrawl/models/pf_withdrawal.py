@@ -172,6 +172,7 @@ class PfEmployee(models.Model):
     def _default_employee(self):
         return self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
 
+    pf_start_data = fields.Date('PF Start Date')
     employee_id=fields.Many2one('hr.employee', string="Request By", default=_default_employee)
     advance_amount = fields.Float('Advance Amount Taken')
     advance_left = fields.Float('Amount Left', compute='_compute_amount')
@@ -195,7 +196,7 @@ class PfEmployee(models.Model):
     @api.multi
     def button_transfer_pf(self):
         pass
-       
+
 
     @api.depends('pf_details_ids')
     def _compute_amount(self):
