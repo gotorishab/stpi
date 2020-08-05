@@ -11,4 +11,15 @@
             </field>
     </record>
 
+        <record model="ir.ui.view" id="hr_employee_interest_eve_inherit">
+        <field name="name">hr.employee.form</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+              <xpath expr="//field[@name='parent_id']" position="after">
+                  <field name="interest"/>
+              </xpath>
+            </field>
+    </record>
+
 </odoo>
