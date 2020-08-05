@@ -1,0 +1,74 @@
+<odoo>
+
+
+
+
+      <!-- HR employee pf widthdrawl Employee -->
+    <record id="hr_pf_interest_disbursement_tree_view" model="ir.ui.view">
+        <field name="name">pf.interest.disbursement.tree</field>
+        <field name="model">pf.interest.disbursement</field>
+        <field name="arch" type="xml">
+            <tree string="PF Widthdrawl">
+                <field name="branch_id"/>
+                <field name="from_date"/>
+                <field name="to_date"/>
+                <field name="interest_rate"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- HR employee pf widthdrawl Employee -->
+    <record id="hr_pf_interest_disbursement_form_view" model="ir.ui.view">
+        <field name="name">pf.interest.disbursement.form</field>
+        <field name="model">pf.interest.disbursement</field>
+        <field name="arch" type="xml">
+            <form string="PF Employee">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="branch_id"/>
+                            <field name="from_date"/>
+                        </group>
+                        <group>
+                            <field name="to_date"/>
+                            <field name="interest_rate" readonly="1"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+
+
+         <record id="action_hr_pf_interest_disbursement" model="ir.actions.act_window">
+        <field name="name">PF Interest Disbursement</field>
+        <field name="res_model">pf.interest.disbursement</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+     </record>
+
+
+
+
+    <menuitem id ="pf_withdrawl_menu_configuration_menu_id"
+                  name = "Configuration"
+                  parent="pf_withdrawl_menu"
+                  sequence="3"
+                  />
+
+
+        <menuitem id="hr_pf_interest_disbursement"
+                    name="PF Interest Disbursement"
+                    parent="pf_withdrawl_menu_configuration_menu_id"
+                    action="action_hr_pf_interest_disbursement"
+                    sequence="1"
+                    />
+
+</odoo>
+
