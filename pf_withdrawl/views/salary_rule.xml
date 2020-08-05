@@ -10,16 +10,19 @@
               </xpath>
             </field>
     </record>
-
-        <record model="ir.ui.view" id="hr_employee_interest_eve_inherit">
-        <field name="name">hr.employee.form</field>
-        <field name="model">hr.employee</field>
-        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <record model="ir.ui.view" id="res_company_pf_inherit">
+        <field name="name">res.company.form</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
             <field name="arch" type="xml">
-              <xpath expr="//field[@name='parent_id']" position="after">
-                  <field name="interest"/>
+              <xpath expr="//notebook" position="inside">
+                  <page string="PF Interest" name="pf_int">
+                      <field name="pf_table"/>
+                  </page>
               </xpath>
             </field>
     </record>
+
+
 
 </odoo>
