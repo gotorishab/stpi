@@ -153,12 +153,12 @@ class WizardLateComing(models.TransientModel):
                     'ledger_for_year': rec.ledger_for_year.id,
                     'branch_id': rec.employee_id.branch_id.id,
                     'month': str(month),
-                    'epmloyee_contribution': str(emp),
-                    'voluntary_contribution': str(volun),
-                    'employer_contribution': str(emplyr),
-                    'interest_employee_voluntary': str(employee_interest),
-                    'interest_employer': str(employer_contribution),
-                    'total': str(total),
+                    'epmloyee_contribution': str(round(emp)),
+                    'voluntary_contribution': str(round(volun)),
+                    'employer_contribution': str(round(emplyr)),
+                    'interest_employee_voluntary': str(round(employee_interest)),
+                    'interest_employer': str(round(employer_contribution)),
+                    'total': str(round(total)),
                 })
                 from_date = from_date + relativedelta(months=1)
                 print('================creation lines================', cr_lines)
