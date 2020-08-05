@@ -203,13 +203,18 @@ class PfEmployee(models.Model):
     def create(self, values):
         res = super(PfEmployee, self).create(values)
         count = 0
+        print('=================================================')
         search_id = self.env['pf.employee'].search(
             [('employee_id', '=', res.employee_id.id)])
-        for emp in search_id:
-            count += 1
+        print('======================1===========================')
+        if search_id:
+            for emp in search_id:
+                count += 1
+                print('===================2==============================')
         if count > 1:
+            print('===================3==============================')
             raise ValidationError("You are not apply for more thn one")
-
+        print('===================4==============================')
 
     @api.multi
     def get_pf_details(self):

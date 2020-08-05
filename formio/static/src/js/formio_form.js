@@ -60,6 +60,7 @@ $(document).ready(function() {
                     form.on('submitDone', function(submission) {
                         if (submission.state == 'submitted' && !options.hasOwnProperty('embedded') && !options['embedded']) {
                             window.parent.postMessage('formioSubmitDone', base_url);
+                            alert('======Test=======')
                         }
                         window.location.reload();
                     });
