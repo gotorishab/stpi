@@ -32,6 +32,8 @@
                 <field name="to_date"/>
                 <field name="week_list"/>
                 <button type="object" name="assign_weekends" string="Assign"  colspan="2"/>
+                <button type="object" name="delete_all" string="Delete All"  colspan="2"/>
+                <button type="object" name="delete_all_and_assign_weekends" string="Delete all and assign"  colspan="2"/>
                 </group>
                 </xpath>
             

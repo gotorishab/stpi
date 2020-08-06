@@ -91,6 +91,55 @@ class ResourceCalendar(models.Model):
                 # if count > 1:
                 #     raise ValidationError("Holiday must be unique")
 
+    @api.multi
+    def delete_all(self):
+        for rec in self:
+            rec.global_leave_ids.unlink()
+
+    @api.multi
+    def delete_all_and_assign_weekends(self):
+        for rec in self:
+            rec.global_leave_ids.unlink()
+            if not (rec.from_date and rec.to_date and rec.week_list):
+                raise ValidationError(
+                    _("Please enter all the required fields, from date, to date and Weekday"))
+            else:
+                excluded = [int(rec.week_list)]
+                global_leave_ids = []
+                if int(rec.week_list) == 1:
+                    week_day = 'Monday'
+                elif int(rec.week_list) == 2:
+                    week_day = 'Tuesday'
+                elif int(rec.week_list) == 3:
+                    week_day = 'Wednesday'
+                elif int(rec.week_list) == 4:
+                    week_day = 'Thursday'
+                elif int(rec.week_list) == 5:
+                    week_day = 'Friday'
+                elif int(rec.week_list) == 6:
+                    week_day = 'Saturday'
+                elif int(rec.week_list) == 7:
+                    week_day = 'Sunday'
+                else:
+                    week_day = ''
+                a = time()
+                b = time(23, 56, 56)
+                fdate = rec.from_date
+                while fdate <= rec.to_date:
+                    if fdate.isoweekday() in excluded:
+                        entered_date = datetime.strptime(str(fdate), '%Y-%m-%d')
+                        date_from = entered_date - timedelta(hours=5, minutes=30, seconds=00)
+                        date_to = entered_date + timedelta(hours=18, minutes=28, seconds=58)
+                        global_leave_ids.append((0, 0, {
+                            'calendar_id': rec.id,
+                            'name': week_day,
+                            'date': fdate,
+                            'date_from': date_from,
+                            'date_to': date_to,
+                        }))
+                    fdate += relativedelta(days=1)
+                rec.global_leave_ids = a = global_leave_ids
+
 
     @api.multi
     def allow_public_holiday_on_caledar(self):
