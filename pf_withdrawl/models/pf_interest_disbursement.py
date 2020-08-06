@@ -128,7 +128,7 @@ class PfInterestDisbursement(models.Model):
                     pf_details_ids.append((0, 0, {
                         'pf_details_id': line.id,
                         'employee_id': line.employee_id.id,
-                        'type': ' Deposit',
+                        'type': 'Deposit',
                         'pf_code': 'CEPF + VCPF',
                         'description': 'Interest on CEPF and VCPF',
                         'date': datetime.now().date(),
