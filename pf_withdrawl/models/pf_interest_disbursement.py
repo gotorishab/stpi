@@ -131,7 +131,7 @@ class PfInterestDisbursement(models.Model):
                         'employee_id': line.employee_id.id,
                         'type': 'Deposit',
                         'pf_code': 'CEPF + VCPF',
-                        'description': 'Interest on CEPF and VCPF',
+                        'description': 'Interest on CEPF and VCPF - {}'.format(month),
                         'date': datetime.now().date(),
                         'amount': round(employee_interest),
                         'reference': 'Interest deposit on {}'.format(datetime.now().date()),
