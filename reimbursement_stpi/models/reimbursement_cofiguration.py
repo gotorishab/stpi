@@ -18,7 +18,7 @@ class Reimbursement(models.Model):
     date_related_month = fields.Date(string='Date related month')
     present_days = fields.Integer('Present Days')
     no_of_days = fields.Integer('Number of Days')
-    no_of_days_related = fields.Float('Number of Days', related='no_of_days')
+    no_of_days_related = fields.Integer('Number of Days', related='no_of_days')
 
 
     @api.onchange('month','year')
