@@ -23,6 +23,14 @@ class ResourceCalendar(models.Model):
         ('6', 'Saturday'),
         ('7', 'Sunday')
     ], string='Weekday')
+
+    assign_holiday_action_perform = fields.Selection([('assign_weekends', 'Assign to existing list'),
+                                                 ('delete_all_existing_list', 'Delete the existing list'),
+                                                 ('delete_all_existing_list_and_assign_weekends', 'Delete existing and assign'),
+                                                 ], string='Action performed', default='delete_all_existing_list_and_assign_weekends',
+                                                )
+
+
     #
     #
     #
@@ -92,12 +100,26 @@ class ResourceCalendar(models.Model):
                 #     raise ValidationError("Holiday must be unique")
 
     @api.multi
-    def delete_all(self):
+    def perform_ah_action(self):
+        for rec in self:
+            if rec.assign_holiday_action_perform == 'assign_weekends':
+                rec.assign_weekends()
+            elif rec.assign_holiday_action_perform == 'delete_all_existing_list':
+                rec.delete_all_existing_list()
+            elif rec.assign_holiday_action_perform == 'delete_all_existing_list_and_assign_weekends':
+                rec.delete_all_existing_list_and_assign_weekends()
+            else:
+                pass
+
+
+
+    @api.multi
+    def delete_all_existing_list(self):
         for rec in self:
             rec.global_leave_ids.unlink()
 
     @api.multi
-    def delete_all_and_assign_weekends(self):
+    def delete_all_existing_list_and_assign_weekends(self):
         for rec in self:
             rec.global_leave_ids.unlink()
             if not (rec.from_date and rec.to_date and rec.week_list):

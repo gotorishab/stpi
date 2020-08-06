@@ -31,9 +31,11 @@
                 <field name="from_date"/>
                 <field name="to_date"/>
                 <field name="week_list"/>
-                <button type="object" name="assign_weekends" string="Assign to existing list"  colspan="2"/>
-                <button type="object" name="delete_all" string="Delete the existing list"  colspan="2"/>
-                <button type="object" name="delete_all_and_assign_weekends" string="Delete existing and assign"  colspan="2"/>
+                <field name="assign_holiday_action_perform"/>
+                <button type="object" name="perform_ah_action" string="Perform Action"  colspan="2"/>
+                <button type="object" name="assign_weekends" string="Assign to existing list"  colspan="2" invisible="1"/>
+                <button type="object" name="delete_all_existing_list" string="Delete the existing list"  colspan="2" invisible="1"/>
+                <button type="object" name="delete_all_existing_list_and_assign_weekends" string="Delete existing and assign"  colspan="2" invisible="1"/>
                 </group>
                 </xpath>
             
