@@ -41,11 +41,13 @@ class PfInterestDisbursement(models.Model):
                         for line in com.pf_table:
                             if line.from_date >= rec.from_date and line.to_date <= rec.to_date:
                                 x = line.interest_rate
-            print('===============from date===================', x)
+            print('===============X===================', x)
             from_date = rec.from_date
             to_date = rec.to_date
 
             pf_emp = self.env['pf.employee'].search([('employee_id.branch_id', 'in', rec.branch_id.ids)])
+            print('===============pf_emp===================', pf_emp)
+            print('===============rec.branch_id.ids===================', rec.branch_id.ids)
             for line in pf_emp:
                 while from_date < rec.to_date:
                     print('===============from date===================', from_date)
