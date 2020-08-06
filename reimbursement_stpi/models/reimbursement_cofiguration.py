@@ -16,8 +16,8 @@ class Reimbursement(models.Model):
                               ('05', 'May'), ('06', 'June'), ('07', 'July'), ('08', 'August'), ('09', 'September'),
                               ('10', 'October'), ('11', 'November'), ('12', 'December')], string='Month')
     date_related_month = fields.Date(string='Date related month')
-    present_days = fields.Float('Present Days')
-    no_of_days = fields.Float('Number of Days')
+    present_days = fields.Integer('Present Days')
+    no_of_days = fields.Integer('Number of Days')
     no_of_days_related = fields.Float('Number of Days', related='no_of_days')
 
 
