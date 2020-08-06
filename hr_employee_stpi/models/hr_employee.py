@@ -152,12 +152,29 @@ class HrEmployee(models.Model):
     #             raise ValidationError(_("Please enter correct phone number."
     #                                             "It must be of 10 digits"))
 
-    # @api.constrains('personal_email')
-    # def _check_personal_mail_val(self):
-    #     for employee in self:
-    #         regex = '^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'
-    #         if not (re.search(regex, employee.personal_email)):
-    #             raise ValidationError(_('Please enter correct Personal Mail Address.'))
+
+    @api.constrains('personal_email')
+    def check_unique_personal_email(self):
+        for rec in self:
+            count = 0
+            emp_id = self.env['hr.employee'].sudo().search(
+                [('personal_email', '=', rec.personal_email)])
+            for e in emp_id:
+                count += 1
+            if count > 1:
+                raise ValidationError("The Personal Email must be unique")
+
+    @api.constrains('work_email')
+    def check_unique_work_email(self):
+        for rec in self:
+            count = 0
+            emp_id = self.env['hr.employee'].sudo().search(
+                [('work_email', '=', rec.work_email)])
+            for e in emp_id:
+                count += 1
+            if count > 1:
+                raise ValidationError("The Work Email must be unique")
+
     #
     #
     #
