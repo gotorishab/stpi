@@ -1,4 +1,5 @@
 from odoo import models, fields, api,_
+from datetime import datetime, date
 
 
 class PfInterestDisbursement(models.Model):
@@ -28,3 +29,18 @@ class PfInterestDisbursement(models.Model):
     @api.multi
     def button_submit(self):
         pass
+        # for rec in self:
+        #     pf_details_ids = []
+        #     pf_emp = self.env['pf.employee'].search([('employee_id.branch_id', 'in', rec.branch_id.ids)])
+        #     for line in pf_emp:
+        #         pf_details_ids.append((0, 0, {
+        #             'pf_details_id': rec.id,
+        #             'employee_id': line.employee_id.id,
+        #             'type': 'Deposit',
+        #             'pf_code': line.code,
+        #             'description': line.name,
+        #             'date': datetime.now().date(),
+        #             'amount': line.total,
+        #             'reference': line.slip_id.number,
+        #         }))
+        #         line.pf_details_ids = a = pf_details_ids
