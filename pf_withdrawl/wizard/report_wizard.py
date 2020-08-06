@@ -60,11 +60,18 @@ class WizardLateComing(models.TransientModel):
             company = self.env['res.company'].search([('id', '=', self.env.user.company_id.id)], limit=1)
             print('=============company===============', company)
             if company:
+                print('=============True1===============')
                 for com in company:
+                    print('=============True2===============')
                     if rec.ledger_for_year and rec.branch_id:
+                        print('=============True3===============')
                         for line in com.pf_table:
+                            print('=============True4===============')
                             if line.from_date >= rec.ledger_for_year.date_start and line.to_date <= rec.ledger_for_year.date_end:
+                                print('=============True5===============')
                                 X = line.interest_rate
+                                print('=============Interest rate===============',X)
+
             print('=============X===============', X)
             dr = self.env['pf.ledger.report'].search([('employee_id', '=', rec.employee_id.id),('ledger_for_year', '=', rec.ledger_for_year.id)])
             for lines in dr:
