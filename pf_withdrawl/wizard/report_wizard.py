@@ -56,17 +56,24 @@ class WizardLateComing(models.TransientModel):
     @api.multi
     def confirm_report(self):
         for rec in self:
+            company = self.env['res.company'].search([('id', '=', self.env.user.company_id.id)], limit=1)
+            if company:
+                for com in company:
+                    if rec.from_date and rec.to_date and rec.branch_id:
+                        for line in com.pf_table:
+                            if line.from_date >= rec.from_date and line.to_date <= rec.to_date:
+                                X = line.interest_rate
             dr = self.env['pf.ledger.report'].search([('employee_id', '=', rec.employee_id.id),('ledger_for_year', '=', rec.ledger_for_year.id)])
             for lines in dr:
                 lines.unlink()
             from_date = rec.from_date = rec.ledger_for_year.date_start
             to_date = rec.to_date = rec.ledger_for_year.date_end
             X = 0.00
-            pf_advance = self.env['hr.employee'].search(
-                [('id', '=', rec.employee_id.id)], limit=1)
-            print('---------------pf advance================',pf_advance)
-            for p in pf_advance:
-                X = p.interest
+            # pf_advance = self.env['hr.employee'].search(
+            #     [('id', '=', rec.employee_id.id)], limit=1)
+            # print('---------------pf advance================',pf_advance)
+            # for p in pf_advance:
+            #     X = p.interest
             print('===============from date initial===================', from_date)
             print('===============To date initial===================', rec.to_date)
             while from_date < rec.to_date:

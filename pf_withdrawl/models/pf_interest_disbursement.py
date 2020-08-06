@@ -6,10 +6,10 @@ class PfInterestDisbursement(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = 'pf.interest.disbursement'
 
-    branch_id = fields.Many2many('res.branch')
-    from_date = fields.Date('From Date')
-    to_date = fields.Date('To Date')
-    interest_rate = fields.Float('Interest Rate')
+    branch_id = fields.Many2many('res.branch', track_visibility='always')
+    from_date = fields.Date('From Date', track_visibility='always')
+    to_date = fields.Date('To Date', track_visibility='always')
+    interest_rate = fields.Float('Interest Rate', track_visibility='always')
 
 
     @api.constrains('from_date','to_date','branch_id')
