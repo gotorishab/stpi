@@ -223,6 +223,9 @@ class HrLeave(models.Model):
                     raise ValidationError(_(
                         'You are not allowed to take leave'))
 
+            if self.holiday_status_id.leave_type == 'Half Pay Leave':
+                res.number_of_days_display = res.no_of_days_display_half
+
         return res
 
     @api.constrains('request_date_from', 'request_date_to', 'employee_id')
@@ -421,6 +424,7 @@ class HrLeave(models.Model):
                 self.no_of_days_display_half = self.number_of_days_display * 2
             else:
                 self.no_of_days_display_half = self.number_of_days_display
+
 
 
 
