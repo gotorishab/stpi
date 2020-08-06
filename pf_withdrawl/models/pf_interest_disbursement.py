@@ -29,7 +29,6 @@ class PfInterestDisbursement(models.Model):
 
     @api.multi
     def button_submit(self):
-        pass
         for rec in self:
             pf_details_ids = []
             employee_interest = 0
