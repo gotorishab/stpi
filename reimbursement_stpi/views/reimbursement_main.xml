@@ -10,6 +10,9 @@
                 <field name="reimbursement_sequence"/>
                 <field name="employee_id"/>
                 <field name="name"/>
+                <field name="working_days"/>
+                <field name="claimed_amount"/>
+                <field name="net_amount"/>
                 <field name="state"/>
                 <field name="__last_update"/>
                 <field name="write_uid"/>
