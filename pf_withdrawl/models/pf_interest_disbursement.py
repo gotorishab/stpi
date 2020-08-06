@@ -31,6 +31,7 @@ class PfInterestDisbursement(models.Model):
     def button_submit(self):
         for rec in self:
             pf_details_ids = []
+            pf_details_ids_cepf = []
             employee_interest = 0
             company = self.env['res.company'].search([('id', '=', self.env.user.company_id.id)], limit=1)
             if company:
@@ -135,5 +136,16 @@ class PfInterestDisbursement(models.Model):
                         'amount': round(employee_interest),
                         'reference': 'Interest deposit on {}'.format(datetime.now().date()),
                     }))
+                    pf_details_ids_cepf.append((0, 0, {
+                        'pf_details_id': line.id,
+                        'employee_id': line.employee_id.id,
+                        'type': 'Deposit',
+                        'pf_code': 'CEPF',
+                        'description': 'Interest on CEPF',
+                        'date': datetime.now().date(),
+                        'amount': round(employer_contribution),
+                        'reference': 'Interest deposit on {}'.format(datetime.now().date()),
+                    }))
                     from_date = from_date + relativedelta(months=1)
                 line.pf_details_ids = pf_details_ids
+                line.pf_details_ids = pf_details_ids_cepf
