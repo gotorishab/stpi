@@ -44,6 +44,7 @@ class ResourceCalendar(models.Model):
     @api.multi
     def assign_weekends(self):
         for rec in self:
+
             if not (rec.from_date and rec.to_date and rec.week_list):
                 raise ValidationError(
                     _("Please enter all the required fields, from date, to date and Weekday"))
@@ -82,7 +83,7 @@ class ResourceCalendar(models.Model):
                             'date_to': date_to,
                         }))
                     fdate += relativedelta(days=1)
-                rec.global_leave_ids = a = global_leave_ids
+                rec.global_leave_ids = [(6, 0, global_leave_ids)]
                 # count = 0
                 # emp_id = self.env['resource.calendar.leaves'].search(
                 #     [('date', '=', a.date), ('name', '=', a.name), ('calendar_id', '=', rec.calendar_id.id)])
