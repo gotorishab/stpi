@@ -89,7 +89,7 @@ class PfWidthdrawl(models.Model):
         res.name = sequence
 
         contract_obj = self.env['hr.contract'].search([('employee_id', '=', res.employee_id.id)], limit=1)
-        maximum_allowed = contract_obj.wage * res.pf_type.months
+        maximum_allowed = contract_obj.updated_basic * res.pf_type.months
         if res.advance_amount > maximum_allowed:
             raise ValidationError("You are not able to  take advance amount more than %s" % maximum_allowed)
         return res
@@ -155,7 +155,7 @@ class PfWidthdrawl(models.Model):
             contract_obj = self.env['hr.contract'].search([('employee_id', '=', self.employee_id.id)], limit=1)
             if contract_obj:
                 for contract in contract_obj:
-                    rec.present_pay = contract.wage
+                    rec.present_pay = contract.updated_basic
 
     @api.constrains('advance_amount')
     @api.onchange('advance_amount')
