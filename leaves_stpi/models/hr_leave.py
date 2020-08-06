@@ -227,6 +227,8 @@ class HrLeave(models.Model):
                 res.number_of_days_display = res.no_of_days_display_half
             if res.holiday_status_id:
                 if res.holiday_status_id.sandwich_rule == True:
+                    print('====================================================TTTTTTTTTTT')
+                    res.number_of_days = (res.request_date_to - res.request_date_from).days + 1
                     res.number_of_days_display = (res.request_date_to - res.request_date_from).days + 1
 
         return res
