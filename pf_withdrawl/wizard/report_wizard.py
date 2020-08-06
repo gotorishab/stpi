@@ -56,12 +56,12 @@ class WizardLateComing(models.TransientModel):
     @api.multi
     def confirm_report(self):
         for rec in self:
-            X = 0.00
+            X = 6.00
             company = self.env['res.company'].search([('id', '=', self.env.user.company_id.id)], limit=1)
             print('=============company===============', company)
             if company:
                 for com in company:
-                    if rec.from_date and rec.to_date and rec.branch_id:
+                    if rec.ledger_for_year and rec.branch_id:
                         for line in com.pf_table:
                             if line.from_date >= rec.ledger_for_year.date_start and line.to_date <= rec.ledger_for_year.date_end:
                                 X = line.interest_rate
