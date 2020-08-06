@@ -58,6 +58,7 @@ class WizardLateComing(models.TransientModel):
         for rec in self:
             X = 0.00
             company = self.env['res.company'].search([('id', '=', self.env.user.company_id.id)], limit=1)
+            print('=============company===============', company)
             if company:
                 for com in company:
                     if rec.from_date and rec.to_date and rec.branch_id:
