@@ -42,13 +42,12 @@ class PfInterestDisbursement(models.Model):
                             if line.from_date >= rec.from_date and line.to_date <= rec.to_date:
                                 x = line.interest_rate
             print('===============X===================', x)
-            from_date = rec.from_date
-            to_date = rec.to_date
-
             pf_emp = self.env['pf.employee'].search([('employee_id.branch_id', 'in', rec.branch_id.ids)])
             print('===============pf_emp===================', pf_emp)
             print('===============rec.branch_id.ids===================', rec.branch_id.ids)
             for line in pf_emp:
+                from_date = rec.from_date
+                to_date = rec.to_date
                 print('==============count========================')
                 print('==============line.employee_id.id========================',line.employee_id.name)
                 while from_date < rec.to_date:
@@ -130,6 +129,7 @@ class PfInterestDisbursement(models.Model):
                         employee_interest = 0
                         employer_contribution = 0
                     total = emp + volun + emplyr + employee_interest + employer_contribution
+                    print('==================amount===================', round(employee_interest))
                     pf_details_ids.append((0, 0, {
                         'pf_details_id': line.id,
                         'employee_id': line.employee_id.id,
