@@ -87,6 +87,11 @@ class PfWidthdrawl(models.Model):
         seq = self.env['ir.sequence'].next_by_code('pf.widthdrawl')
         sequence = 'PF Withdrawal - ' + str(seq)
         res.name = sequence
+
+        contract_obj = self.env['hr.contract'].search([('employee_id', '=', res.employee_id.id)], limit=1)
+        maximum_allowed = contract_obj.wage * res.pf_type.months
+        if res.advance_amount > maximum_allowed:
+            raise ValidationError("You are not able to  take advance amount more than %s" % maximum_allowed)
         return res
 
     @api.multi

@@ -9,4 +9,5 @@ class PfType(models.Model):
 
     name = fields.Char(string="PF Type",track_visibility='always')
     purpose = fields.Text(string="Purpose",track_visibility='always')
+    months = fields.Integer(string='Months')
     attachment_document = fields.Text(string="Attachment Document",track_visibility='always')
