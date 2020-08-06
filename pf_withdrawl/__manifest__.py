@@ -19,6 +19,7 @@
         'views/salary_rule.xml',
         'views/pf_type_view.xml',
         'views/pf_configuration.xml',
+        'views/res_companies.xml',
 	],
 	'images': [],
 	'license': 'AGPL-3',
