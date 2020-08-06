@@ -73,9 +73,9 @@ class PfInterestDisbursement(models.Model):
                             volun += ln.total
                         elif ln.salary_rule_id.pf_eve_type == 'employer':
                             emplyr += ln.total
-                    print('==================Employee===================', emp)
-                    print('==================Voluntary===================', volun)
-                    print('==================Employer===================', emplyr)
+                    # print('==================Employee===================', emp)
+                    # print('==================Voluntary===================', volun)
+                    # print('==================Employer===================', emplyr)
                     if str(from_date.month) == '1':
                         month = 'January'
                         employee_interest = (((emp + volun) * x) * 3) / 12
