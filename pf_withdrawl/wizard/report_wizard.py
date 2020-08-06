@@ -64,6 +64,7 @@ class WizardLateComing(models.TransientModel):
                         for line in com.pf_table:
                             if line.from_date >= rec.from_date and line.to_date <= rec.to_date:
                                 X = line.interest_rate
+            print('=============X===============', X)
             dr = self.env['pf.ledger.report'].search([('employee_id', '=', rec.employee_id.id),('ledger_for_year', '=', rec.ledger_for_year.id)])
             for lines in dr:
                 lines.unlink()
