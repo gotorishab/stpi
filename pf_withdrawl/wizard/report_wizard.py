@@ -56,6 +56,7 @@ class WizardLateComing(models.TransientModel):
     @api.multi
     def confirm_report(self):
         for rec in self:
+            X = 0.00
             company = self.env['res.company'].search([('id', '=', self.env.user.company_id.id)], limit=1)
             if company:
                 for com in company:
@@ -68,7 +69,6 @@ class WizardLateComing(models.TransientModel):
                 lines.unlink()
             from_date = rec.from_date = rec.ledger_for_year.date_start
             to_date = rec.to_date = rec.ledger_for_year.date_end
-            X = 0.00
             # pf_advance = self.env['hr.employee'].search(
             #     [('id', '=', rec.employee_id.id)], limit=1)
             # print('---------------pf advance================',pf_advance)

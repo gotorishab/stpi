@@ -30,6 +30,7 @@ class PfInterestDisbursement(models.Model):
     @api.multi
     def button_submit(self):
         for rec in self:
+            X = 0.00
             pf_details_ids = []
             pf_details_ids_cepf = []
             employee_interest = 0
@@ -43,7 +44,6 @@ class PfInterestDisbursement(models.Model):
 
             from_date = rec.from_date
             to_date = rec.to_date
-            X = 0.00
 
             pf_emp = self.env['pf.employee'].search([('employee_id.branch_id', 'in', rec.branch_id.ids)])
             for line in pf_emp:
