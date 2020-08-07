@@ -15,6 +15,7 @@
         'views/pf_withdrawal.xml',
         'wizard/get_pf_details.xml',
         'wizard/report_wizard.xml',
+        'wizard/transfer_pf.xml',
         'views/report.xml',
         'views/salary_rule.xml',
         'views/pf_type_view.xml',

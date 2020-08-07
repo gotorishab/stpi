@@ -9,6 +9,10 @@
                 <field name="purpose"/>
                 <field name="attachment_document"/>
                 <field name="months"/>
+                <field name="voluntarily_contri"/>
+                <field name="employee_contri"/>
+                <field name="employer_contri"/>
+                <field name="min_years"/>
             </tree>
         </field>
     </record>
@@ -23,10 +27,14 @@
                         <group>
                             <field name="name"/>
                             <field name="purpose"/>
-                        </group>
-                        <group>
                             <field name="attachment_document"/>
                             <field name="months"/>
+                        </group>
+                        <group>
+                            <field name="voluntarily_contri"/>
+                            <field name="employee_contri"/>
+                            <field name="employer_contri"/>
+                            <field name="min_years"/>
                         </group>
                     </group>
                 </sheet>
