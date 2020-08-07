@@ -1,7 +1,7 @@
 from odoo import models, fields, api,_
 from datetime import datetime, date
 from dateutil.relativedelta import relativedelta
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError,UserError
 
 
 
@@ -54,6 +54,16 @@ class PfInterestDisbursement(models.Model):
     #                     for line in com.pf_table:
     #                         if line.from_date >= rec.date_range.date_start and line.to_date <= rec.date_range.date_end:
     #                             rec.interest_rate = line.interest_rate
+
+
+
+    @api.multi
+    def unlink(self):
+        for pf in self:
+            if pf.state not in ('draft'):
+                raise UserError(
+                    'You cannot delete a PF Interest Disbursement which is not in draft state')
+        return super(PfInterestDisbursement, self).unlink()
 
 
     @api.multi
