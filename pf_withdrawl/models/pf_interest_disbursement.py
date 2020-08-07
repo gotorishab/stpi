@@ -25,8 +25,8 @@ class PfInterestDisbursement(models.Model):
     @api.constrains('branch_id','date_range')
     def check_existing_branch_sr(self):
         for rec in self:
-            rec.from_date = rec.ledger_for_year.date_start
-            rec.to_date = rec.ledger_for_year.date_end
+            rec.from_date = rec.date_range.date_start
+            rec.to_date = rec.date_range.date_end
             comp_model = self.env['pf.interest.disbursement'].search([('branch_id', 'in', rec.branch_id.ids),('date_range', '=', rec.date_range.id)])
             if comp_model:
                 raise ValidationError(
@@ -40,8 +40,8 @@ class PfInterestDisbursement(models.Model):
         for rec in self:
             company = self.env['res.company'].search([('id', '=', self.env.user.company_id.id)], limit=1)
             if company:
-                rec.from_date = rec.ledger_for_year.date_start
-                rec.to_date = rec.ledger_for_year.date_end
+                rec.from_date = rec.date_range.date_start
+                rec.to_date = rec.date_range.date_end
                 for com in company:
                     if rec.from_date and rec.to_date and rec.branch_id:
                         for line in com.pf_table:
