@@ -27,7 +27,7 @@ class PfInterestDisbursement(models.Model):
         for rec in self:
             rec.from_date = rec.date_range.date_start
             rec.to_date = rec.date_range.date_end
-            comp_model = self.env['pf.interest.disbursement'].search([('branch_id', 'in', rec.branch_id.ids),('date_range', '=', rec.date_range.id)])
+            comp_model = self.env['pf.interest.disbursement'].search([('branch_id', 'in', rec.branch_id.ids),('date_range', '=', rec.date_range.id),('state', '=', 'submitted')])
             if comp_model:
                 raise ValidationError(
                     _('Already Submitted'))
