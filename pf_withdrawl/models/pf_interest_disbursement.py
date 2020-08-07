@@ -31,22 +31,29 @@ class PfInterestDisbursement(models.Model):
             if comp_model:
                 raise ValidationError(
                     _('Already Submitted'))
-
-
-
-    @api.constrains('from_date','to_date','branch_id','date_range')
-    @api.onchange('from_date','to_date','branch_id','date_range')
-    def onchange_date_branch_gi(self):
-        for rec in self:
             company = self.env['res.company'].search([('id', '=', self.env.user.company_id.id)], limit=1)
             if company:
-                rec.from_date = rec.date_range.date_start
-                rec.to_date = rec.date_range.date_end
                 for com in company:
-                    if rec.from_date and rec.to_date and rec.branch_id:
+                    if rec.date_range.date_start and rec.date_range.date_end and rec.branch_id:
                         for line in com.pf_table:
-                            if line.from_date >= rec.from_date and line.to_date <= rec.to_date:
+                            if line.from_date >= rec.date_range.date_start and line.to_date <= rec.date_range.date_end:
                                 rec.interest_rate = line.interest_rate
+
+
+
+    # @api.constrains('from_date','to_date','branch_id','date_range')
+    # @api.onchange('from_date','to_date','branch_id','date_range')
+    # def onchange_date_branch_gi(self):
+    #     for rec in self:
+    #         company = self.env['res.company'].search([('id', '=', self.env.user.company_id.id)], limit=1)
+    #         if company:
+    #             rec.date_range.date_start = rec.date_range.date_start
+    #             rec.date_range.date_end = rec.date_range.date_end
+    #             for com in company:
+    #                 if rec.date_range.date_start and rec.date_range.date_end and rec.branch_id:
+    #                     for line in com.pf_table:
+    #                         if line.from_date >= rec.date_range.date_start and line.to_date <= rec.date_range.date_end:
+    #                             rec.interest_rate = line.interest_rate
 
 
     @api.multi
@@ -59,22 +66,22 @@ class PfInterestDisbursement(models.Model):
             company = self.env['res.company'].search([('id', '=', self.env.user.company_id.id)], limit=1)
             if company:
                 for com in company:
-                    if rec.from_date and rec.to_date and rec.branch_id:
+                    if rec.date_range.date_start and rec.date_range.date_end and rec.branch_id:
                         for line in com.pf_table:
-                            if line.from_date >= rec.from_date and line.to_date <= rec.to_date:
+                            if line.from_date >= rec.date_range.date_start and line.to_date <= rec.date_range.date_end:
                                 x = line.interest_rate
             print('===============X===================', x)
             pf_emp = self.env['pf.employee'].search([('employee_id.branch_id', 'in', rec.branch_id.ids)])
             print('===============pf_emp===================', pf_emp)
             print('===============rec.branch_id.ids===================', rec.branch_id.ids)
             for line in pf_emp:
-                from_date = rec.from_date
-                to_date = rec.to_date
+                from_date = rec.date_range.date_start
+                to_date = rec.date_range.date_end
                 print('==============count========================')
                 print('==============line.employee_id.id========================',line.employee_id.name)
-                while from_date < rec.to_date:
+                while from_date < rec.date_range.date_end:
                     print('===============from date===================', from_date)
-                    print('===============To date===================', rec.to_date)
+                    print('===============To date===================', rec.date_range.date_end)
                     pay_rules = self.env['hr.payslip.line'].search(
                         [('slip_id.employee_id', '=', line.employee_id.id),
                          ('slip_id.state', '=', 'done'),
