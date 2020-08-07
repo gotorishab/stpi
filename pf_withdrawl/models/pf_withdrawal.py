@@ -166,6 +166,10 @@ class PfWidthdrawl(models.Model):
                 for empbal in max_balance:
                     if rec.advance_amount > empbal.amount:
                         raise ValidationError("You aare not able to  take advance amount more than %s"%empbal.amount +"/-")
+                    if empbal.pf_start_data and rec.pf_type.min_years:
+                        if rec.date <= (empbal.pf_start_data + relativedelta(years=rec.pf_type.min_years)):
+                            raise ValidationError(
+                                "You are not able to withdraw PF before %s" % empbal.pf_start_data + relativedelta(years=rec.pf_type.min_years))
 
 
 class PfEmployee(models.Model):

@@ -1,6 +1,8 @@
 from odoo import models, fields, api,_
 from datetime import datetime, date
 from dateutil.relativedelta import relativedelta
+from odoo.exceptions import ValidationError
+
 
 
 class PfInterestDisbursement(models.Model):
@@ -9,17 +11,37 @@ class PfInterestDisbursement(models.Model):
     _description = 'pf.interest.disbursement'
 
     branch_id = fields.Many2many('res.branch', track_visibility='always')
+    date_range = fields.Many2one('date.range', string='Ledger for the year')
     from_date = fields.Date('From Date', track_visibility='always')
     to_date = fields.Date('To Date', track_visibility='always')
     interest_rate = fields.Float('Interest Rate', track_visibility='always')
+    state = fields.Selection(
+        [('draft', 'Draft'), ('submitted', 'Submitted')
+         ], required=True, default='draft',string="Status",track_visibility='always',)
 
 
-    @api.constrains('from_date','to_date','branch_id')
-    @api.onchange('from_date','to_date','branch_id')
+
+    @api.onchange('branch_id','date_range')
+    @api.constrains('branch_id','date_range')
+    def check_existing_branch_sr(self):
+        for rec in self:
+            rec.from_date = rec.ledger_for_year.date_start
+            rec.to_date = rec.ledger_for_year.date_end
+            comp_model = self.env['pf.interest.disbursement'].search([('branch_id', 'in', rec.branch_id.ids),('date_range', '=', rec.date_range.id)])
+            if comp_model:
+                raise ValidationError(
+                    _('Already Submitted'))
+
+
+
+    @api.constrains('from_date','to_date','branch_id','date_range')
+    @api.onchange('from_date','to_date','branch_id','date_range')
     def onchange_date_branch_gi(self):
         for rec in self:
             company = self.env['res.company'].search([('id', '=', self.env.user.company_id.id)], limit=1)
             if company:
+                rec.from_date = rec.ledger_for_year.date_start
+                rec.to_date = rec.ledger_for_year.date_end
                 for com in company:
                     if rec.from_date and rec.to_date and rec.branch_id:
                         for line in com.pf_table:
@@ -153,3 +175,4 @@ class PfInterestDisbursement(models.Model):
                     from_date = from_date + relativedelta(months=1)
                 line.pf_details_ids = pf_details_ids
                 line.pf_details_ids = pf_details_ids_cepf
+            rec.write({'state': 'submitted'})
