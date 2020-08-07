@@ -19,7 +19,19 @@ class PfTransfer(models.Model):
 
     @api.multi
     def confirm_button(self):
-        pass
+        pf_details_ids = []
+        for line in self.employee_pf_details:
+            pf_details_ids.append((0, 0, {
+                'pf_details_id': self.employee_pf.id,
+                'employee_id': self.employee_pf.employee_id.id,
+                'type': line.type,
+                'pf_code': line.pf_code,
+                'description': line.description,
+                'date': line.date,
+                'amount': line.amount,
+                'reference': line.reference,
+            }))
+        self.employee_pf.pf_details_ids = pf_details_ids
 
 
 
@@ -29,7 +41,6 @@ class PFTransferDetails(models.Model):
     _description = 'Employee PF Transfer Details'
 
     wizard_emp_transfer = fields.Many2one('employee.pf.transfer.wizard')
-    pf_details_id = fields.Many2one('pf.employee', string="Employee")
     employee_id = fields.Many2one('hr.employee')
     date = fields.Date('Date')
     type = fields.Selection([
