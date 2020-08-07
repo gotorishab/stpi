@@ -8,3 +8,4 @@ access_pf_ledger_report,pf.ledger.report,model_pf_ledger_report,base.group_user,
 access_res_company_pf_interest,res.company.pf.interest,model_res_company_pf_interest,base.group_user,1,1,1,1
 access_pf_interest_disbursement,pf.interest.disbursement,model_pf_interest_disbursement,base.group_user,1,1,1,1
 access_employee_pf_transfer_details,employee.pf.transfer.details,model_employee_pf_transfer_details,base.group_user,1,1,1,1
+access_employee_pf_transfer_wizard,employee.pf.transfer.wizard,model_employee_pf_transfer_wizard,base.group_user,1,1,1,1

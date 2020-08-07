@@ -8,15 +8,15 @@
                 <form string="Transfer PF">
                     <group>
                         <field name="employee_pf" invisible="1"/>
-                        <field name="transfer_details">
-                        <tree editable="bottom">
-                            <field name="date" required="1"/>
-                            <field name="type" required="1"/>
-                            <field name="pf_code" required="1"/>
-                            <field name="description" required="1"/>
-                            <field name="amount" required="1" sum="Total"/>
-                            <field name="reference" required="1"/>
-                        </tree>
+                        <field name="employee_pf_details">
+                            <tree editable="bottom">
+                                <field name="date" required="1"/>
+                                <field name="type" required="1"/>
+                                <field name="pf_code" required="1"/>
+                                <field name="description" required="1"/>
+                                <field name="amount" required="1" sum="Total"/>
+                                <field name="reference" required="1"/>
+                            </tree>
                         </field>
                     </group>
                     <footer>

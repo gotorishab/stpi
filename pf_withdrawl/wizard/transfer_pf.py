@@ -3,7 +3,7 @@ from odoo import api, fields, models, _
 from odoo.exceptions import UserError
 
 
-class PfTransfer(models.TransientModel):
+class PfTransfer(models.Model):
     """
     This wizard will confirm the all the selected draft invoices
     """
