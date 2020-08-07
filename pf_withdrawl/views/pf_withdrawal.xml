@@ -227,7 +227,6 @@
                 <header>
                     <button name="%(button_transfer_pf_button_wizard_action_view)d" string="Transfer PF" type="action" context = "{'default_employee_pf': id}"/>
 <!--                    <button name="button_transfer_pf" string="Transfer PF" class="oe_highlight" type="object" invisible="1"/>-->
-                    <field name="state" widget="statusbar" statusbar_visible="draft,to_approve,approved,rejected" />
                 </header>
                 <sheet>
                     <group>
