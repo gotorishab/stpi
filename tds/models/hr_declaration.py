@@ -185,7 +185,7 @@ class HrDeclaration(models.Model):
     date = fields.Date(string="Date", default=fields.Date.today(), readonly=True, track_visibility='always')
     rent_paid_ids = fields.One2many('rent.paid', 'rent_paid_id', string='Rent Paid')
     rent_paid = fields.Float(string='Rent Paid')
-    birthday = fields.Date('Birthday')
+    # birthday = fields.Date('Birthday')
     rent_paid_attach_files = fields.Boolean(string='Attach Files?')
     pan_card = fields.Binary(string = 'Attach Pan Card')
     owner_address = fields.Char(string='Address of the owner')
