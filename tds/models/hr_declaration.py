@@ -185,7 +185,7 @@ class HrDeclaration(models.Model):
     date = fields.Date(string="Date", default=fields.Date.today(), readonly=True, track_visibility='always')
     rent_paid_ids = fields.One2many('rent.paid', 'rent_paid_id', string='Rent Paid')
     rent_paid = fields.Float(string='Rent Paid')
-
+    birthday = fields.Date('Birthday')
     rent_paid_attach_files = fields.Boolean(string='Attach Files?')
     pan_card = fields.Binary(string = 'Attach Pan Card')
     owner_address = fields.Char(string='Address of the owner')
@@ -408,6 +408,8 @@ class HrDeclaration(models.Model):
             sum = 0
             dstart = rec.date_range.date_start
             dend = rec.date_range.date_end
+
+
             proll =  self.env['hr.payslip.line'].sudo().search([('slip_id.employee_id', '=', rec.employee_id.id),
                                                          ('slip_id.state', '=', 'done'),
                                                          ('salary_rule_id.taxable_percentage', '>', 0),
@@ -418,8 +420,9 @@ class HrDeclaration(models.Model):
             rec.tax_salary_final = round(sum) + rec.income_after_house_property + rec.income_after_other_sources
             # rec.income_after_rebate = rec.tax_salary_final - rec.net_allowed_rebate
             age = 0
-            if rec.employee_id.birthday:
-                age = ((datetime.now().date() - rec.employee_id.birthday).days) / 365
+            # my_emp = self.env['hr.employee'].sudo().search([('id', '=', rec.employee_id.id)], limit=1)
+            # for emp in my_emp:
+            #     age = ((datetime.now().date() - emp.birthday).days) / 365
 
             # inc_tax_slab =  self.env['income.tax.slab'].sudo().search([('salary_from', '<=', rec.tax_salary_final),
             #                                                     ('salary_to', '>=', rec.tax_salary_final),
