@@ -41,7 +41,7 @@ class FileWizard(models.Model):
         if self.user.id == False:
             raise UserError(_("%s is not configured to owned this file") % self.employee.name)
         else:
-            if self.defid.current_owner_id.id == self.env.user.id:
+            if self.defid.current_owner_id == self.env.user.id:
                 current_employee  = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
                 sec_own = []
                 previous_owner = []
@@ -86,7 +86,7 @@ class FileWizard(models.Model):
                     'details': 'Correspondence Forwarded'
                 })
             else:
-                self.defid.current_owner_id.id = self.env.user.id
+                self.defid.current_owner_id = self.env.user.id
                 self.confirm_button()
                 # raise ValidationError("You are not able to forward this file, as you are not the Primary owner of this file")
         return {
