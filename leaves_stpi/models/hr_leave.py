@@ -234,8 +234,8 @@ class HrLeave(models.Model):
                     self.commuted_leave = 'Commuted Leaves'
                     self.no_of_days_display_half = self.number_of_days_display * 2
                     self.number_of_days_display = self.number_of_days_display * 2
-                else:
-                    self.no_of_days_display_half = self.number_of_days_display
+                # else:
+                #     self.no_of_days_display_half = self.number_of_days_display
         return res
 
     @api.constrains('request_date_from', 'request_date_to', 'employee_id')

@@ -66,7 +66,7 @@ class AddLetter(models.Model):
             print('==============================enclosure_details=============================', enclosure_details)
             print('==============================user_id=============================', current_employee.user_id.id)
             # print('==============================res.content=============================', res.content)
-            req = requests.post('http://103.92.47.152/STPI/www/web-service/add-letter/', data=data,
+            req = requests.post('http://206.189.129.190/STPI/www/web-service/add-letter/', data=data,
                                 json=None)
             try:
                 print('=====================================================', req)
@@ -127,7 +127,7 @@ class AddLetter(models.Model):
             print('==============================enclosure_details=============================', enclosure_details)
             print('==============================user_id=============================', current_employee.user_id.id)
             # print('==============================res.content=============================', res.content)
-            req = requests.post('http://103.92.47.152/STPI/www/web-service/add-letter/', data=data,
+            req = requests.post('http://206.189.129.190/STPI/www/web-service/add-letter/', data=data,
                                 json=None)
             try:
                 print('=====================================================', req)
