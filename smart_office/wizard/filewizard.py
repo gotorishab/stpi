@@ -37,64 +37,64 @@ class FileWizard(models.Model):
 
 
     def confirm_button(self):
-        for rec in self:
-            if rec.user.id == False:
-                raise UserError(_("%s is not configured to owned this file") % rec.employee.name)
+        # for rec in self:
+        if self.user.id == False:
+            raise UserError(_("%s is not configured to owned this file") % self.employee.name)
+        else:
+            if self.defid.current_owner_id.id == self.env.user.id:
+                current_employee  = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+                sec_own = []
+                previous_owner = []
+                previous_owner.append(self.defid.current_owner_id.id)
+                transfer_to_emp = self.env['hr.employee'].search([('user_id', '=', self.user.id)], limit=1)
+                self.defid.previous_owner_emp = [(4, transfer_to_emp.id)]
+
+                # self.defid.previous_owner = [(6, 0, previous_owner)]
+
+                self.defid.last_owner_id = self.defid.current_owner_id.id
+                self.defid.current_owner_id = self.user.id
+                self.defid.responsible_user_id = self.user.id
+                for line in self.sec_own_ids:
+                    self.defid.sec_owner = [(4, line.employee.user_id.id)]
+                    self.defid.previous_owner = [(4, line.employee.user_id.id)]
+                    sec_own.append(line.employee.user_id.id)
+                # self.defid.sec_owner = [(6,0,sec_own)]
+                self.env['file.tracking.information'].create({
+                    'create_let_id': self.defid.id,
+                    'forwarded_date': datetime.now().date(),
+                    'forwarded_to_user': self.user.id,
+                    'forwarded_to_dept': self.department.id,
+                    'job_pos': self.jobposition.id,
+                    'forwarded_by':self.env.uid,
+                    'remarks':self.remarks
+                })
+                self.env['file.tracker.report'].create({
+                    'name': str(self.defid.name),
+                    'number': str(self.defid.letter_number),
+                    'type': 'Correspondence',
+                    'forwarded_by': str(current_employee.user_id.name),
+                    'forwarded_by_dept': str(current_employee.department_id.name),
+                    'forwarded_by_jobpos': str(current_employee.job_id.name),
+                    'forwarded_by_branch': str(current_employee.branch_id.name),
+                    'forwarded_date': datetime.now().date(),
+                    'forwarded_to_user': str(self.user.name),
+                    'forwarded_to_dept': str(self.department.name),
+                    'job_pos': str(self.jobposition.name),
+                    'forwarded_to_branch': str(self.user.branch_id.name),
+                    'action_taken': 'correspondence_forwarded',
+                    'remarks': self.remarks,
+                    'details': 'Correspondence Forwarded'
+                })
             else:
-                if rec.defid.current_owner_id.id == rec.env.user.id:
-                    current_employee  = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
-                    sec_own = []
-                    previous_owner = []
-                    previous_owner.append(rec.defid.current_owner_id.id)
-                    transfer_to_emp = self.env['hr.employee'].search([('user_id', '=', rec.user.id)], limit=1)
-                    rec.defid.previous_owner_emp = [(4, transfer_to_emp.id)]
-
-                    # rec.defid.previous_owner = [(6, 0, previous_owner)]
-
-                    rec.defid.last_owner_id = rec.defid.current_owner_id.id
-                    rec.defid.current_owner_id = rec.user.id
-                    rec.defid.responsible_user_id = rec.user.id
-                    for line in rec.sec_own_ids:
-                        rec.defid.sec_owner = [(4, line.employee.user_id.id)]
-                        rec.defid.previous_owner = [(4, line.employee.user_id.id)]
-                        sec_own.append(line.employee.user_id.id)
-                    # rec.defid.sec_owner = [(6,0,sec_own)]
-                    self.env['file.tracking.information'].create({
-                        'create_let_id': rec.defid.id,
-                        'forwarded_date': datetime.now().date(),
-                        'forwarded_to_user': rec.user.id,
-                        'forwarded_to_dept': rec.department.id,
-                        'job_pos': rec.jobposition.id,
-                        'forwarded_by':rec.env.uid,
-                        'remarks':rec.remarks
-                    })
-                    self.env['file.tracker.report'].create({
-                        'name': str(rec.defid.name),
-                        'number': str(rec.defid.letter_number),
-                        'type': 'Correspondence',
-                        'forwarded_by': str(current_employee.user_id.name),
-                        'forwarded_by_dept': str(current_employee.department_id.name),
-                        'forwarded_by_jobpos': str(current_employee.job_id.name),
-                        'forwarded_by_branch': str(current_employee.branch_id.name),
-                        'forwarded_date': datetime.now().date(),
-                        'forwarded_to_user': str(rec.user.name),
-                        'forwarded_to_dept': str(rec.department.name),
-                        'job_pos': str(rec.jobposition.name),
-                        'forwarded_to_branch': str(rec.user.branch_id.name),
-                        'action_taken': 'correspondence_forwarded',
-                        'remarks': rec.remarks,
-                        'details': 'Correspondence Forwarded'
-                    })
-                else:
-                    raise ValidationError("You are not able to forward this file, as you are not the Primary owner of this file")
-            return {
-                'name': 'Incoming correspondence',
-                'view_type': 'form',
-                'view_mode': 'kanban,tree,graph,pivot,form',
-                'res_model': 'muk_dms.file',
-                'type': 'ir.actions.act_window',
-                'target': 'current',
-            }
+                raise ValidationError("You are not able to forward this file, as you are not the Primary owner of this file")
+        return {
+            'name': 'Incoming correspondence',
+            'view_type': 'form',
+            'view_mode': 'kanban,tree,graph,pivot,form',
+            'res_model': 'muk_dms.file',
+            'type': 'ir.actions.act_window',
+            'target': 'current',
+        }
 
 
 
