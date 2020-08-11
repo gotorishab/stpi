@@ -41,7 +41,10 @@ class FileWizard(models.Model):
         if self.user.id == False:
             raise UserError(_("%s is not configured to owned this file") % self.employee.name)
         else:
+            print('================defid.current_owner_id========================',self.defid.current_owner_id)
+            print('================self.env.user.id========================',self.env.user.id)
             if self.defid.current_owner_id == self.env.user.id:
+                print('================True========================')
                 current_employee  = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
                 sec_own = []
                 previous_owner = []
