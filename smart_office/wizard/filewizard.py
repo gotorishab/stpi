@@ -86,9 +86,9 @@ class FileWizard(models.Model):
                     'details': 'Correspondence Forwarded'
                 })
             else:
-                self.defid.current_owner_id = self.env.user.id
-                self.confirm_button()
-                # raise ValidationError("You are not able to forward this file, as you are not the Primary owner of this file")
+                # self.defid.current_owner_id = self.env.user.id
+                # self.confirm_button()
+                raise ValidationError("You are not able to forward this file, as you are not the Primary owner of this file")
         return {
             'name': 'Incoming correspondence',
             'view_type': 'form',
