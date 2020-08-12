@@ -12,6 +12,7 @@ class AddLetter(models.Model):
 
     current_owner_id = fields.Many2one('res.users', 'Current Owner')
     last_owner_id = fields.Many2one('res.users', 'Last Owner')
+
     sec_owner_one = fields.Many2one('res.users', 'Secondary Owner 1')
     sec_owner_two = fields.Many2one('res.users', 'Secondary Owner 2')
     sec_owner_three = fields.Many2one('res.users', 'Secondary Owner 3')
@@ -47,6 +48,11 @@ class AddLetter(models.Model):
             vals['responsible_user_id'] = self.env.user.id
             vals['last_owner_id'] = self.env.user.id
             vals['current_owner_id'] = self.env.user.id
+            res.last_owner_id = self.env.user.id
+            res.current_owner_id = self.env.user.id
+            print('============================res.last_owner_id===============================', res.last_owner_id)
+            print('============================res.current_owner_id===============================', res.current_owner_id)
+
             # if 'code' not in vals or vals['code'] == _('New'):
             #     vals['name'] = self.env['ir.sequence'].next_by_code('muk.dms.letter') or _('New')
             seq = self.env['ir.sequence'].next_by_code('muk_dms.file')
