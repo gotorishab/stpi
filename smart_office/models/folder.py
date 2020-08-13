@@ -157,13 +157,15 @@ class FolderMaster(models.Model):
                 print('==================================current employee==========================',
                       res.current_owner_id.name)
                 print('==================================current employee id==========================',
-                      current_employee.id)
+                      res.current_owner_id.id)
                 print('==================================current employee job id==========================',
-                      current_employee.job_id.name)
+                      res.current_owner_id.job_id.name)
                 print('==================================current employee department_id id==========================',
-                      current_employee.department_id.name)
+                      res.current_owner_id.department_id.name)
                 print('==================================current employee branch id==========================',
-                      current_employee.branch_id.name)
+                      res.current_owner_id.branch_id.name)
+                print('==================================current employee user id==========================',
+                      res.current_owner_id.user_id.name)
                 return (status, response)
             except Exception as e:
                 print('=============Error==========',e)
