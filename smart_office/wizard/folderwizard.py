@@ -94,7 +94,6 @@ class FileWizard(models.Model):
                     except Exception as e:
                         print('=============Error==========', e)
 
-
                     f_details = ""
                     if file_count == 0:
                         f_details = "File forwarded with no correspondence"
