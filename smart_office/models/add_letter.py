@@ -126,6 +126,12 @@ class AddLetter(models.Model):
             vals['current_owner_id'] = res.dispatch_id.current_user_id.id
             vals['create_uid'] = res.dispatch_id.current_user_id.id
             vals['write_uid'] = res.dispatch_id.current_user_id.id
+            res.directory = directory.id
+            res.responsible_user_id = res.dispatch_id.current_user_id.id
+            res.last_owner_id = res.dispatch_id.current_user_id.id
+            res.current_owner_id = res.dispatch_id.current_user_id.id
+            res.create_uid = res.dispatch_id.current_user_id.id
+            res.write_uid = res.dispatch_id.current_user_id.id
             seq = self.env['ir.sequence'].next_by_code('muk_dms.file')
             date = datetime.now().date()
             sequence = str(date.strftime('%Y%m%d')) + '/' + str(seq)
@@ -175,7 +181,7 @@ class AddLetter(models.Model):
                     letter_id=res.id
                 ))
                 res.directory.doc_file_preview = res.content
-            current_employee = self.env['hr.employee'].search([('user_id', '=', self.current_owner_id)], limit=1)
+            current_employee = self.env['hr.employee'].search([('user_id', '=', res.current_owner_id)], limit=1)
             print('==================================current employee==========================', current_employee.name)
             print('==================================current employee id==========================', current_employee.id)
             print('==================================current employee job id==========================', current_employee.job_id.name)
