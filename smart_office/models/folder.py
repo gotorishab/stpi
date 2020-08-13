@@ -176,6 +176,7 @@ class FolderMaster(models.Model):
     def deal_with_file(self):
         for rec in self:
             rec.iframe_dashboard = str(rec.notesheet_url) + str('?type=STPI&user_id=') + str(rec.env.user.id)
+            print('================================================', rec.iframe_dashboard)
             if rec.iframe_dashboard:
                 rec.write({'state': 'in_progress'})
                 total_iframe = rec.iframe_dashboard.replace('800', '100%').replace('"600"', '"100%"').replace(
