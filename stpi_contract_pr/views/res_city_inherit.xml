@@ -8,6 +8,7 @@
                 <xpath expr = "//field[@name='state_id']" position="after">
                     <field name = "metro"/>
                     <field name = "employee_hra_cat"/>
+                    <field name = "city_tier"/>
                 </xpath>
             </field>
         </record>

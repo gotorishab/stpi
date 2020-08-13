@@ -49,21 +49,32 @@ class InheritContractss(models.Model):
         help="End date of the trial period (if there is one).")
 
 
-    city_id = fields.Many2one('res.city', string='City', related='employee_id.address_home_id.city_id', store=True)
 
+    city_id = fields.Many2one('res.city', string='City', store=True)
 
     employee_hra_cat = fields.Selection([('x', 'X'),
                                      ('y', 'Y'),
                                      ('z', 'Z'),
-                                    ],string='HRA Category', related='employee_id.address_home_id.city_id.employee_hra_cat', store=True)
+                                    ],string='HRA Category', compute='_compute_hra_tier', store=True)
     city_tier = fields.Selection([('a', 'A'),
                                      ('a1', 'A1'),
                                      ('other', 'Other'),
-                                    ],string='City Tier')
+                                    ],string='City Tier', compute='_compute_hra_tier', store=True)
+
+
     misc_deduction = fields.Monetary(string="Misc. Deducation")
     license_dee = fields.Monetary(string=" License Fee")
 
 
+
+
+    @api.multi
+    @api.depends('employee_id')
+    def _compute_hra_tier(self):
+        for rec in self:
+            rec.city_id = rec.employee_id.branch_id.city_id.id
+            rec.employee_hra_cat = rec.employee_id.branch_id.city_id.employee_hra_cat
+            rec.city_tier = rec.employee_id.branch_id.city_id.city_tier
 
     @api.multi
     @api.depends('wage','da')
@@ -71,21 +82,21 @@ class InheritContractss(models.Model):
         for rec in self:
             rec.updated_basic = rec.wage * (1 + rec.da/100)
 
-
-    @api.constrains('employee_id')
-    @api.onchange('employee_id')
-    def _get_add_city(self):
-        for rec in self:
-            # if rec.employee_id:
-            #     rec.employee_type = rec.employee_id.employee_type
-            #     rec.mode_of_promotion = rec.employee_id.mode_of_promotion
-            if rec.city_id.name:
-                if rec.city_id.name == 'Hyderabad' or rec.city_id.name == 'Delhi' or rec.city_id.name == 'Banglore' or rec.city_id.name == 'Mumbai' or rec.city_id.name == 'Chennai' or rec.city_id.name == 'Kolkata':
-                    rec.city_tier = 'a1'
-                elif rec.city_id.name == 'Ahmedabad' or rec.city_id.name == 'Surat' or rec.city_id.name == 'Kanpur' or rec.city_id.name == 'Patna' or rec.city_id.name == 'Kochi' or rec.city_id.name == 'Indore' or rec.city_id.name == 'Nagpur' or rec.city_id.name == 'Pune' or rec.city_id.name == 'Lucknow':
-                    rec.city_tier = 'a'
-                else:
-                    rec.city_tier = 'other'
+    #
+    # @api.constrains('employee_id')
+    # @api.onchange('employee_id')
+    # def _get_add_city(self):
+    #     for rec in self:
+    #         # if rec.employee_id:
+    #         #     rec.employee_type = rec.employee_id.employee_type
+    #         #     rec.mode_of_promotion = rec.employee_id.mode_of_promotion
+    #         if rec.city_id.name:
+    #             if rec.city_id.name == 'Hyderabad' or rec.city_id.name == 'Delhi' or rec.city_id.name == 'Banglore' or rec.city_id.name == 'Mumbai' or rec.city_id.name == 'Chennai' or rec.city_id.name == 'Kolkata':
+    #                 rec.city_tier = 'a1'
+    #             elif rec.city_id.name == 'Ahmedabad' or rec.city_id.name == 'Surat' or rec.city_id.name == 'Kanpur' or rec.city_id.name == 'Patna' or rec.city_id.name == 'Kochi' or rec.city_id.name == 'Indore' or rec.city_id.name == 'Nagpur' or rec.city_id.name == 'Pune' or rec.city_id.name == 'Lucknow':
+    #                 rec.city_tier = 'a'
+    #             else:
+    #                 rec.city_tier = 'other'
 
 
     # @api.constrains('pay_level')
