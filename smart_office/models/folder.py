@@ -155,7 +155,7 @@ class FolderMaster(models.Model):
                 else:
                     response = req.json()
                 print('==================================current employee==========================',
-                      current_employee.name)
+                      res.current_owner_id.name)
                 print('==================================current employee id==========================',
                       current_employee.id)
                 print('==================================current employee job id==========================',
