@@ -122,7 +122,7 @@ class DispatchDocument(models.Model):
             'responsible_user_id': self.current_user_id.id,
             'current_owner_id': self.current_user_id.id,
             'last_owner_id': self.current_user_id.id,
-            'sender_enclosures': 'Enclosure Details',
+            'sender_enclosures': "Enclosure Details" + ' *****' + str(self.print_heading) + '-' + str(self.folder_id.folder_name) + '-' + str(self.name) + '.pdf'
         })
         print('===============================mp===============================', file.id)
         self.folder_id.file_ids = [(4, file.id)]
