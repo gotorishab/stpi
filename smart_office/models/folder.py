@@ -68,6 +68,9 @@ class FolderMaster(models.Model):
         vals['current_owner_id'] = self.env.user.id
         res.current_owner_id = self.env.user.id
         res.last_owner_id = self.env.user.id
+        print('============================self.env.user.id new===============================', self.env.user.id)
+        print('============================current_owner_id new===============================', self.current_owner_id.id)
+
         name = ''
         count = 0
         current_employee = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
@@ -151,18 +154,20 @@ class FolderMaster(models.Model):
                     response = False
                 else:
                     response = req.json()
+                print('==================================current employee==========================',
+                      current_employee.name)
+                print('==================================current employee id==========================',
+                      current_employee.id)
+                print('==================================current employee job id==========================',
+                      current_employee.job_id.name)
+                print('==================================current employee department_id id==========================',
+                      current_employee.department_id.name)
+                print('==================================current employee branch id==========================',
+                      current_employee.branch_id.name)
                 return (status, response)
             except Exception as e:
                 print('=============Error==========',e)
-            print('==================================current employee==========================', current_employee.name)
-            print('==================================current employee id==========================',
-                  current_employee.id)
-            print('==================================current employee job id==========================',
-                  current_employee.job_id.name)
-            print('==================================current employee department_id id==========================',
-                  current_employee.department_id.name)
-            print('==================================current employee branch id==========================',
-                  current_employee.branch_id.name)
+
 
     @api.multi
     def deal_with_file(self):
