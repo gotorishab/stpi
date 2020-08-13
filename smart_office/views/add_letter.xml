@@ -12,7 +12,7 @@
                     <field name="sec_owner_two" invisible="1"/>
                     <field name="sec_owner_three" invisible="1"/>
                     <field name="sec_owner" readonly="1" widget="many2many_tags"/>
-                    <field name="previous_owner" readonly="1" widget="many2many_tags"/>
+                    <field name="previous_owner" invisible="1" widget="many2many_tags"/>
                     <field name="previous_owner_emp" readonly="1" widget="many2many_tags"/>
                     <field name="content_binary"/>
                 </field>

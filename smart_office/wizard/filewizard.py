@@ -44,26 +44,29 @@ class FileWizard(models.Model):
                 print('================defid========================',res.defid.name)
                 print('================defid.current_owner_id========================',res.defid.current_owner_id)
                 print('================res.env.user.id========================',res.env.user.id)
-                
+
                 if res.defid.current_owner_id.id == res.env.user.id:
-
                     print('================True========================')
-                    current_employee  = res.env['hr.employee'].search([('user_id', '=', res.env.uid)], limit=1)
-                    sec_own = []
-                    previous_owner = []
-                    previous_owner.append(res.defid.current_owner_id.id)
-                    transfer_to_emp = res.env['hr.employee'].search([('user_id', '=', res.user.id)], limit=1)
+                    current_employee  = res.env['hr.employee'].search([('user_id', '=', res.defid.current_owner_id.id)], limit=1)
+                    print('================current_employee========================', current_employee)
+                    # sec_own = []
+                    # previous_owner = []
+                    #
+                    # previous_owner.append(res.defid.current_owner_id.id)
+                    # Previous owner append
+                    transfer_to_emp = res.env['hr.employee'].search([('user_id', '=', res.defid.current_owner_id.id)], limit=1)
                     res.defid.previous_owner_emp = [(4, transfer_to_emp.id)]
-
-                    # res.defid.previous_owner = [(6, 0, previous_owner)]
-
+                    # Last owner id created
                     res.defid.last_owner_id = res.defid.current_owner_id.id
+                    # Current Owner id created
                     res.defid.current_owner_id = res.user.id
                     res.defid.responsible_user_id = res.user.id
+                    # Secondary Owner id created
                     for line in res.sec_own_ids:
                         res.defid.sec_owner = [(4, line.employee.user_id.id)]
+                        # Extra line
                         res.defid.previous_owner = [(4, line.employee.user_id.id)]
-                        sec_own.append(line.employee.user_id.id)
+                        # sec_own.append(line.employee.user_id.id)
                     # res.defid.sec_owner = [(6,0,sec_own)]
                     res.env['file.tracking.information'].create({
                         'create_let_id': res.defid.id,
