@@ -154,18 +154,19 @@ class FolderMaster(models.Model):
                     response = False
                 else:
                     response = req.json()
+                current_employee = self.env['hr.employee'].search([('user_id', '=', res.current_owner_id.id)], limit=1)
                 print('==================================current employee==========================',
-                      res.current_owner_id.name)
+                      current_employee.name)
                 print('==================================current employee id==========================',
-                      res.current_owner_id.id)
+                      current_employee.id)
                 print('==================================current employee job id==========================',
-                      res.current_owner_id.job_id.name)
+                      current_employee.job_id.name)
                 print('==================================current employee department_id id==========================',
-                      res.current_owner_id.department_id.name)
+                      current_employee.department_id.name)
                 print('==================================current employee branch id==========================',
-                      res.current_owner_id.branch_id.name)
+                      current_employee.branch_id.name)
                 print('==================================current employee user id==========================',
-                      res.current_owner_id.user_id.name)
+                      current_employee.user_id.name)
                 return (status, response)
             except Exception as e:
                 print('=============Error==========',e)
