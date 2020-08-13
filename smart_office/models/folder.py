@@ -174,36 +174,37 @@ class FolderMaster(models.Model):
 
     @api.multi
     def deal_with_file(self):
-        self.iframe_dashboard = str(self.notesheet_url) + str('?type=STPI&user_id=') + str(self.env.user.id)
-        if self.iframe_dashboard:
-            self.write({'state': 'in_progress'})
-            total_iframe = self.iframe_dashboard.replace('800', '100%').replace('"600"', '"100%"').replace(
-                'allowtransparency', '')
-            file_ids = self.env['see.file'].sudo().search([])
-            for id in file_ids:
-                id.unlink()
-            html = '''
-                    <html>
-                    <body>
-                    <iframe marginheight="0" marginwidth="0" frameborder = "0" 
-                    src="{0}" width="100%" height="1000"/>
-                    </body>
-                    </html>
-                    '''.format(total_iframe)
-            self.env['see.file'].sudo().create({
-                "my_url":self.iframe_dashboard,
-                "my_url_text":html
-            })
-            return  {
-                'name': 'Notesheet',
-                'view_type': 'form',
-                'view_mode': 'kanban',
-                'res_model': 'see.file',
-                'type': 'ir.actions.act_window',
-                'view_id': self.env.ref('smart_office.see_file_view1_kanban').id
-            }
-        else:
-            raise UserError(_('URL not defined'))
+        for rec in self:
+            rec.iframe_dashboard = str(rec.notesheet_url) + str('?type=STPI&user_id=') + str(rec.env.user.id)
+            if rec.iframe_dashboard:
+                rec.write({'state': 'in_progress'})
+                total_iframe = rec.iframe_dashboard.replace('800', '100%').replace('"600"', '"100%"').replace(
+                    'allowtransparency', '')
+                file_ids = rec.env['see.file'].sudo().search([])
+                for id in file_ids:
+                    id.unlink()
+                html = '''
+                        <html>
+                        <body>
+                        <iframe marginheight="0" marginwidth="0" frameborder = "0" 
+                        src="{0}" width="100%" height="1000"/>
+                        </body>
+                        </html>
+                        '''.format(total_iframe)
+                rec.env['see.file'].sudo().create({
+                    "my_url":rec.iframe_dashboard,
+                    "my_url_text":html
+                })
+                return  {
+                    'name': 'Notesheet',
+                    'view_type': 'form',
+                    'view_mode': 'kanban',
+                    'res_model': 'see.file',
+                    'type': 'ir.actions.act_window',
+                    'view_id': self.env.ref('smart_office.see_file_view1_kanban').id
+                }
+            else:
+                raise UserError(_('URL not defined'))
 
 
     @api.multi
