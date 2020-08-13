@@ -50,16 +50,16 @@ class InheritContractss(models.Model):
 
 
 
-    city_id = fields.Many2one('res.city', string='City', store=True)
+    city_id = fields.Many2one('res.city', string='City', store=True, compute='compute_hra_tier')
 
     employee_hra_cat = fields.Selection([('x', 'X'),
                                      ('y', 'Y'),
                                      ('z', 'Z'),
-                                    ],string='HRA Category', compute='_compute_hra_tier', store=True)
+                                    ],string='HRA Category', compute='compute_hra_tier', store=True)
     city_tier = fields.Selection([('a', 'A'),
                                      ('a1', 'A1'),
                                      ('other', 'Other'),
-                                    ],string='City Tier', compute='_compute_hra_tier', store=True)
+                                    ],string='City Tier', compute='compute_hra_tier', store=True)
 
 
     misc_deduction = fields.Monetary(string="Misc. Deducation")
@@ -70,7 +70,7 @@ class InheritContractss(models.Model):
 
     @api.multi
     @api.depends('employee_id')
-    def _compute_hra_tier(self):
+    def compute_hra_tier(self):
         for rec in self:
             rec.city_id = rec.employee_id.branch_id.city_id.id
             rec.employee_hra_cat = rec.employee_id.branch_id.city_id.employee_hra_cat
