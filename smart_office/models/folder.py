@@ -154,7 +154,15 @@ class FolderMaster(models.Model):
                 return (status, response)
             except Exception as e:
                 print('=============Error==========',e)
-
+            print('==================================current employee==========================', current_employee.name)
+            print('==================================current employee id==========================',
+                  current_employee.id)
+            print('==================================current employee job id==========================',
+                  current_employee.job_id.name)
+            print('==================================current employee department_id id==========================',
+                  current_employee.department_id.name)
+            print('==================================current employee branch id==========================',
+                  current_employee.branch_id.name)
 
     @api.multi
     def deal_with_file(self):

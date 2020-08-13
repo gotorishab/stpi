@@ -165,6 +165,12 @@ class AddLetter(models.Model):
                     letter_id=res.id
                 ))
                 res.directory.doc_file_preview = res.content
+            current_employee = self.env['hr.employee'].search([('user_id', '=', self.current_owner_id)], limit=1)
+            print('==================================current employee==========================', current_employee.name)
+            print('==================================current employee id==========================', current_employee.id)
+            print('==================================current employee job id==========================', current_employee.job_id.name)
+            print('==================================current employee department_id id==========================', current_employee.department_id.name)
+            print('==================================current employee branch id==========================', current_employee.branch_id.name)
             return res
 
 
