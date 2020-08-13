@@ -36,7 +36,6 @@ class AddLetter(models.Model):
     @api.model
     def create(self, vals):
         res = super(AddLetter, self).create(vals)
-        # print('==============================res.content=============================', res.content)
         res.content_binary = res.content
         if not res.dispatch_id:
             print('============================self.env.user.id===============================',self.env.user.id)
