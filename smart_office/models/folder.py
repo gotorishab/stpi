@@ -69,7 +69,7 @@ class FolderMaster(models.Model):
         res.current_owner_id = self.env.user.id
         res.last_owner_id = self.env.user.id
         print('============================self.env.user.id new===============================', self.env.user.id)
-        print('============================current_owner_id new===============================', self.current_owner_id.id)
+        print('============================current_owner_id new===============================', res.current_owner_id.id)
 
         name = ''
         count = 0
