@@ -104,4 +104,6 @@ class FileTracker(models.Model):
                                      ('assigned_to_file', 'Assigned To File'),
                                      ('file_closed', 'File Closed'),
                                      ('file_repoened', 'File Reopened'),
+                                     ('correspondence_send_bank', 'Correspondence Sent Back'),
+                                     ('file_send_bank', 'File Sent Back'),
                                      ], string='Action Taken')

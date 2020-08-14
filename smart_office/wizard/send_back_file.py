@@ -39,7 +39,7 @@ class PullInto(models.TransientModel):
                 'send_bank_to_dept': str(previous_file_employee.department_id.name),
                 'send_bank_to_job_pos': str(previous_file_employee.job_id.name),
                 'send_bank_to_branch': str(previous_file_employee.branch_id.name),
-                'action_taken': 'correspondence_send_bank',
+                'action_taken': 'file_send_bank',
                 'remarks': self.remarks,
                 'details': details
             })
