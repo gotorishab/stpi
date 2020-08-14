@@ -14,7 +14,7 @@ class PullInto(models.TransientModel):
 
 
     @api.multi
-    def pull_intos_action_button(self):
+    def send_banks_action_button(self):
         context = dict(self._context or {})
         active_ids = context.get('active_ids', []) or []
         previous_owner = []
