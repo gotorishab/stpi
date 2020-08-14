@@ -196,14 +196,16 @@ class FolderMaster(models.Model):
                     "my_url":rec.iframe_dashboard,
                     "my_url_text":html
                 })
-                return  {
+                response =  {
                     'name': 'Notesheet',
                     'view_type': 'form',
                     'view_mode': 'kanban',
                     'res_model': 'see.file',
                     'type': 'ir.actions.act_window',
+                    'headers': 'X-Frame-Options : DENY',
                     'view_id': self.env.ref('smart_office.see_file_view1_kanban').id
                 }
+                return response
             else:
                 raise UserError(_('URL not defined'))
 
