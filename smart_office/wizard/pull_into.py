@@ -64,8 +64,8 @@ class PullInto(models.TransientModel):
             })
             file.previous_owner_emp = [(4, transfer_to_emp.id)]
             file.last_owner_id = file.current_owner_id.id
-            file.current_owner_id = self.employee.user_id
-            file.responsible_user_id = self.employee.user_id
+            file.current_owner_id = self.employee.user_id.id
+            file.responsible_user_id = self.employee.user_id.id
 
             # file.sec_owner = []
             # file.previous_owner = [(4,file.last_owner_id.id)]
