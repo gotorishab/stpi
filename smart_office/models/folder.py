@@ -202,7 +202,8 @@ class FolderMaster(models.Model):
                     'view_mode': 'kanban',
                     'res_model': 'see.file',
                     'type': 'ir.actions.act_window',
-                    'X-Frame-Options': 'DENY',
+                    # 'X-Frame-Options': 'DENY',
+                    'header_remove': 'X-Frame-Options',
                     'view_id': self.env.ref('smart_office.see_file_view1_kanban').id
                 }
                 return response
