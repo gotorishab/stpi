@@ -12,6 +12,16 @@
                 </xpath>
             </field>
         </record>
+        <record model="ir.ui.view" id="res_branch_city_form_inherit">
+            <field name="name">res.branch.inherit</field>
+            <field name="model">res.branch</field>
+            <field name="inherit_id" ref="base_branch_company.view_res_branch_form"/>
+            <field name="arch" type="xml">
+                <xpath expr = "//field[@name='city']" position="after">
+                    <field name = "city_id"/>
+                </xpath>
+            </field>
+        </record>
     </data>
 </odoo>
 

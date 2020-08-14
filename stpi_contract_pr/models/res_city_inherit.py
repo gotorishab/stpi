@@ -3,7 +3,6 @@ from odoo import fields, models, api, _
 
 class InheritResCity(models.Model):
     _inherit = 'res.city'
-    _description = 'Res City'
 
     metro = fields.Boolean('Metro City?')
     city_tier = fields.Selection([('a', 'A'),
@@ -14,3 +13,8 @@ class InheritResCity(models.Model):
                                          ('y', 'Y'),
                                          ('z', 'Z'),
                                          ], string='HRA Category')
+
+class InheritResBranch(models.Model):
+    _inherit = 'res.branch'
+
+    city_id = fields.Many2one('res.city', string='City')
