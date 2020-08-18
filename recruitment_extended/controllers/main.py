@@ -16,9 +16,11 @@ class Maincontroller(Website):
         # if not request.session.uid:
         #     return request.redirect('/web/login')
         print('========================================================1==========================')
-
         request.env.cr.autocommit(False)
         try:
+            title = request.env['res.partner.title'].sudo().search([])
+            religion_id = request.env['employee.religion'].sudo().search([])
+            category_id = request.env['employee.category'].sudo().search([])
             od = {}
             qw = {}
             for key in sorted(kw):
@@ -76,7 +78,11 @@ class Maincontroller(Website):
                 'name': kw.get('partner_name'),
                 # partner_name=kw.get('partner_name'),
                 # categ_ids=[(6, 0, [self.env.ref('hr_recruitment.tag_applicant_sales').id])],
+                'title': kw.get('title'),
+                'religion_id': kw.get('religion_id'),
+                'category_id': kw.get('category_id'),
                 'email_from': kw.get('email_from'),
+                'personal_email': kw.get('email_from'),
                 'date_of_birth': kw.get('dob'),
                 'place_of_birth': kw.get('pob'),
                 'pan_no': kw.get('pan_no'),

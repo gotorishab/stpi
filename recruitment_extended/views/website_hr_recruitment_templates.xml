@@ -36,6 +36,16 @@
                             <!--data-model_name="hr.applicant" data-success_page="/job-thank-you"-->
                             <!--t-att-data-form_field_department_id="job and job.department_id.id or False"-->
                             <!--t-att-data-form_field_job_id="job and job.id or False">-->
+                            <div class="col-lg-2 col-md-2">
+                                        <select class="form-control o_website_form_input" name="title" style="    position: absolute;    right: 100px;    width: 72%;">
+<!--                                            <option value="">Select</option>-->
+                                            <t t-foreach="title" t-as="tit">
+                                                <option name="tit.id" t-att-value="tit.id">
+                                                    <t t-esc="tit.name"/>
+                                                </option>
+                                            </t>
+                                        </select>
+                                    </div>
                             <div class="form-group row form-field o_website_form_required_custom">
                                 <div class="col-lg-3 col-md-4 text-right">
                                     <label class="col-form-label" for="partner_name">Full Name</label>
@@ -131,6 +141,31 @@
                                            required=""/>
                                 </div>
                             </div>
+
+
+                            <div class="col-lg-2 col-md-2">
+                                        <select class="form-control o_website_form_input" name="religion_id" style="    position: absolute;    right: 100px;    width: 72%;">
+<!--                                            <option value="">Select</option>-->
+                                            <t t-foreach="religion_id" t-as="religion">
+                                                <option name="religion.id" t-att-value="religion.id">
+                                                    <t t-esc="religion.name"/>
+                                                </option>
+                                            </t>
+                                        </select>
+                                    </div>
+
+
+                            <div class="col-lg-2 col-md-2">
+                                        <select class="form-control o_website_form_input" name="category_id" style="    position: absolute;    right: 100px;    width: 72%;">
+<!--                                            <option value="">Select</option>-->
+                                            <t t-foreach="category_id" t-as="category">
+                                                <option name="category.id" t-att-value="category.id">
+                                                    <t t-esc="category.name"/>
+                                                </option>
+                                            </t>
+                                        </select>
+                                    </div>
+
 
                             <div class="form-group row form-field o_website_form_required_custom">
                                 <table id="educational_details" style="width: 74%; margin-left: 95px;"
