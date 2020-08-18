@@ -69,6 +69,7 @@ class Maincontroller(Website):
                         'reasons':'' if not reasons else kw.get(reasons[0]),
                     }))
             stage_id = request.env['hr.recruitment.stage'].search([('sequence', '=', 1)], limit=1)
+            print('========================================================Tr==========================')
             request.env['hr.applicant'].sudo().create({
                 'name': kw.get('partner_name'),
                 # partner_name=kw.get('partner_name'),
