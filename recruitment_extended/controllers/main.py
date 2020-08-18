@@ -79,6 +79,8 @@ class Maincontroller(Website):
                 'email_from': kw.get('email_from'),
                 'date_of_birth': kw.get('dob'),
                 'place_of_birth': kw.get('pob'),
+                'pan_no': kw.get('pan_no'),
+                'aadhar_no': kw.get('aadhar_no'),
                 'partner_phone': kw.get('partner_phone'),
                 'partner_mobile': kw.get('partner_phone_per'),
                 'education_ids': education_ids,
