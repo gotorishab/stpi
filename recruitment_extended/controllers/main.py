@@ -15,6 +15,8 @@ class Maincontroller(Website):
     def create_hr_applicant_data_form(self, **kw):
         # if not request.session.uid:
         #     return request.redirect('/web/login')
+        print('========================================================1==========================')
+
         request.env.cr.autocommit(False)
         try:
             od = {}
