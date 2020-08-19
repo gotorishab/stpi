@@ -19,7 +19,6 @@
 
     'data': [
         'views/website_hr_recruitment_templates.xml',
-        'views/hr_applicant.xml',
     ],
     'demo': [
     ],

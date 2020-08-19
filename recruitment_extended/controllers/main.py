@@ -74,11 +74,11 @@ class Maincontroller(Website):
             print('========================================================kw==========================',kw)
             request.env['hr.applicant'].sudo().create({
                 'name': kw.get('partner_name'),
-                # partner_name=kw.get('partner_name'),
+                # partner_name=kw.get('padate_of_birthrtner_name'),
                 # categ_ids=[(6, 0, [self.env.ref('hr_recruitment.tag_applicant_sales').id])],
                 'email_from': kw.get('email_from'),
                 'personal_email': kw.get('email_from'),
-                'date_of_birth': kw.get('dob'),
+                'dob': kw.get('dob'),
                 'place_of_birth': kw.get('pob'),
                 'pan_no': kw.get('pan_no'),
                 'aadhar_no': kw.get('aadhar_no'),
