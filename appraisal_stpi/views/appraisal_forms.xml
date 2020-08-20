@@ -43,7 +43,7 @@
                             <field name="pay_level_id" readonly="1"/>
                             <field name="pay_level" readonly="1"/>
                             <field name="template_id" readonly="1" required="1"/>
-                            <field name="overall_grade" state="completed"/>
+                            <field name="overall_grade" attrs="{'invisible':[('state','not in',('completed'))]}"/>
                         </group>
                     </group>
                     <notebook>
