@@ -25,4 +25,17 @@
        <field name="global" eval="True"/>
     </record>
 
+   <record id="appraisal_approving_auth_record_rule" model="ir.rule">
+        <field name="name">Appraisal Approving Auth</field>
+        <field name="model_id" ref="model_appraisal_main"/>
+       <field name="domain_force">['|', ('employee_id.user_id', '=', user.id), ('employee_id.appraisal_approving_officer.user_id', '=', user.id)]</field>
+       <field name="groups" eval="[(4,ref('appraisal_stpi.group_line_manager_appraisal'))]"/>
+    </record>
+   <record id="appraisal_reviewing_auth_record_rule" model="ir.rule">
+        <field name="name">Appraisal Reviewing Auth</field>
+        <field name="model_id" ref="model_appraisal_main"/>
+       <field name="domain_force">['|', ('employee_id.user_id', '=', user.id), ('employee_id.appraisal_approving_officer.user_id', '=', user.id)]</field>
+       <field name="groups" eval="[(4,ref('appraisal_stpi.group_hod_appraisal'))]"/>
+    </record>
+
 </odoo>

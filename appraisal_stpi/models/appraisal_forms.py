@@ -94,6 +94,8 @@ class AppraisalForms(models.Model):
             rec.kpia_ids = kpi_kpa
 
 
+
+
     @api.model
     def create(self, vals):
         kpi_kpa = []
@@ -127,26 +129,36 @@ class AppraisalForms(models.Model):
     def button_self_reviewed(self):
         for rec in self:
             rec.write({'state': 'self_review'})
+            for line in rec.kpia_ids:
+                line.write({'state': 'self_review'})
 
     @api.multi
     def button_line_manager_reviewed(self):
         for rec in self:
             rec.write({'state': 'line_manager_review'})
+            for line in rec.kpia_ids:
+                line.write({'state': 'line_manager_review'})
 
     @api.multi
     def button_hod_reviewed(self):
         for rec in self:
             rec.write({'state': 'hod_review'})
+            for line in rec.kpia_ids:
+                line.write({'state': 'hod_review'})
 
     @api.multi
     def button_completed(self):
         for rec in self:
             rec.write({'state': 'completed'})
+            for line in rec.kpia_ids:
+                line.write({'state': 'completed'})
 
     @api.multi
     def button_reject(self):
         for rec in self:
             rec.write({'state': 'rejected'})
+            for line in rec.kpia_ids:
+                line.write({'state': 'rejected'})
 
 
 class KPIForm(models.Model):
@@ -177,6 +189,11 @@ class KPIForm(models.Model):
                                    ('8', '8'),
                                    ('9', '9'),
                                    ('10', '10'),], 'Reviewing Authority')
+    state = fields.Selection(
+        [('draft', 'Draft'), ('self_review', 'Self Reviewed'), ('line_manager_review', 'Line Manager Reviewed'),
+         ('hod_review', 'HOD Reviewed'), ('completed', 'Completed'), ('rejected', 'Rejected')
+         ], required=True, default='draft', string='Status')
+
     reviewing_auth_user = fields.Many2one('res.users')
 
 
