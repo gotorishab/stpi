@@ -37,6 +37,23 @@ class HRApplicant(models.Model):
     gender = fields.Selection(
         [('male', 'Male'), ('female', 'Female'), ('other', 'Other')],
         string='Gender')
+    penalty_awarded = fields.Selection(
+        [('yes', 'Yes'), ('no', 'No')],
+        string='Any Penalty awarded during the last 10 years')
+    penalty_awarded = fields.Selection(
+        [('yes', 'Yes'), ('no', 'No')],
+        string='Any Penalty awarded during the last 10 years')
+    action_can_know = fields.Selection(
+        [('yes', 'Yes'), ('no', 'No')],
+        string='Any action or inquiry is going on as far as candidate knowledge')
+    criminal_pending = fields.Selection(
+        [('yes', 'Yes'), ('no', 'No')],
+        string='Any criminal/ vigilance case is pending or contemplated')
+    relative_terms_css = fields.Selection(
+        [('yes', 'Yes'), ('no', 'No')],
+        string='Any relative defined in terms of CCS')
+    achievements_app = fields.Text('Achievements')
+    achievements_app = fields.Text('Additional Information')
     gende = fields.Selection([
         ('male', 'Male'),
         ('female', 'Female'),
