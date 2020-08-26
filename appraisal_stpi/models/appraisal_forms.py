@@ -80,18 +80,18 @@ class AppraisalForms(models.Model):
             #     }))
             # rec.kpia_ids = kpi_kpa
 
-    @api.constrains('template_id')
-    @api.onchange('template_id')
-    def get_template_details_details(self):
-        for rec in self:
-            kpi_kpa = []
-            for i in rec.template_id.kpi_kpa_ids:
-                kpi_kpa.append((0, 0, {
-                    'kpia_id': rec.id,
-                    'kpi': i.kpi,
-                    'kra': i.kra,
-                }))
-            rec.kpia_ids = kpi_kpa
+    # @api.constrains('template_id')
+    # @api.onchange('template_id')
+    # def get_template_details_details(self):
+    #     for rec in self:
+    #         kpi_kpa = []
+    #         for i in rec.template_id.kpi_kpa_ids:
+    #             kpi_kpa.append((0, 0, {
+    #                 'kpia_id': rec.id,
+    #                 'kpi': i.kpi,
+    #                 'kra': i.kra,
+    #             }))
+    #         rec.kpia_ids = kpi_kpa
 
 
 
@@ -192,7 +192,7 @@ class KPIForm(models.Model):
     state = fields.Selection(
         [('draft', 'Draft'), ('self_review', 'Self Reviewed'), ('line_manager_review', 'Line Manager Reviewed'),
          ('hod_review', 'HOD Reviewed'), ('completed', 'Completed'), ('rejected', 'Rejected')
-         ], default='draft', string='Status')
+         ],default='draft', string='Status')
 
     reviewing_auth_user = fields.Many2one('res.users')
 
