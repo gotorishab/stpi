@@ -32,7 +32,7 @@
                     <group>
                         <group>
                             <field name="employee_id" readonly="1"/>
-                            <field name="abap_period" options="{'no_create_edit': True, 'no_create': True}" required="1" domain="[('type_id.name', '=', 'Calendar Year')]"/>
+                            <field name="abap_period"  attrs="{'invisible':[('state','not in',('draft'))]}" options="{'no_create_edit': True, 'no_create': True}" required="1" domain="[('type_id.name', '=', 'Calendar Year')]"/>
                             <field name="branch_id" readonly="1"/>
                             <field name="category_id" readonly="1"/>
 <!--                            <field name="dob" readonly="1"/>-->
