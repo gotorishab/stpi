@@ -52,6 +52,7 @@
       <menuitem id="menu_appraisal_configuration_id"
                 name="Configuration"
                 parent="menu_appraisal_main"
+                groups="base.group_no_one"/>
       />
 
       <menuitem id="menu_appraisal_template_id"
