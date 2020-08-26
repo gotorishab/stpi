@@ -97,7 +97,7 @@
                                 <field name="overall_rate_num" class="oe_subtotal_footer_separator"/>
                             </group>
                         </page>
-                        <page string="GENERAL" attrs="{'invisible':[('state','not in',('draft'))]}">
+                        <page string="GENERAL" attrs="{'invisible':[('state','in',('draft'))]}">
                             <separator string="Please comment on the officer’s accessibility to the public and responsiveness to their needs)."/>
                             <newline/>
                             <field name="comment_oa" nolabel="1"/>
@@ -136,7 +136,7 @@
                             <br />
                             <br />
                         </page>
-                        <page string="Remarks of the reviewing officer" attrs="{'invisible':[('state','not in',('draft','self_review'))]}">
+                        <page string="Remarks of the reviewing officer" attrs="{'invisible':[('state','in',('draft','self_review'))]}">
                             <separator string="Length of service under the Reviewing Officer"/>
                             <field name="len_rev" nolabel="1"/>
                             <newline/>

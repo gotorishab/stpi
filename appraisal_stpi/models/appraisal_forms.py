@@ -99,7 +99,18 @@ class AppraisalForms(models.Model):
     @api.model
     def create(self, vals):
         kpi_kpa = []
+        count = 0
         res =super(AppraisalForms, self).create(vals)
+        search_id = self.env['appraisal.main'].search(
+            [('abap_period', '=', res.abap_period.id)])
+        if search_id:
+            for emp in search_id:
+                if emp:
+                    raise ValidationError(_('Appraisal already made of {name} for ABAP period {abap}').format(
+                        name=res.employee_id.name,abap=res.abap.name))
+        if res.template_id != True:
+            raise ValidationError(_('Please select Template of {name}').format(
+            name=res.employee_id.name))
         sequence = ''
         seq = self.env['ir.sequence'].next_by_code('appraisal.main')
         sequence = str(res.employee_id.name) + ' - Appraisal - ' + str(seq)
