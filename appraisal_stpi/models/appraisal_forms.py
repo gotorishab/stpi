@@ -102,7 +102,7 @@ class AppraisalForms(models.Model):
         count = 0
         res =super(AppraisalForms, self).create(vals)
         search_id = self.env['appraisal.main'].search(
-            [('abap_period', '=', res.abap_period.id)])
+            [('abap_period', '=', res.abap_period.id),('employee_id', '=', res.employee_id.id)])
         if search_id:
             for emp in search_id:
                 if emp:
