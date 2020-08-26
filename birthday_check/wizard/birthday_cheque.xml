@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_birthday_cheque_wizard" model="ir.ui.view">
+            <field name="name">birthday.cheque.wizard</field>
+            <field name="model">birthday.cheque.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Employees">
+                    <p class="oe_grey">
+                        Select any action.
+                    </p>
+                    <footer>
+                        <button string="Current Month" name="button_current_month" type="object" class="btn-primary"/>
+                        <button string="Previous Month" name="button_previous_month" type="object" class="btn-primary"/>
+                        <button string="Next Month" name="button_next_month" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="birthday_cheque_action_call" model="ir.actions.act_window">
+            <field name="name">Employees</field>
+            <field name="res_model">birthday.cheque.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="view_id" ref="view_birthday_cheque_wizard"/>
+        </record>
+
+
+    <menuitem id="birthday_cheque_wizard_view" name="Employee Birthday" action="birthday_cheque_action_call"
+            parent="birthday_check.menu_birthday_cheque" sequence="1"/>
+
+
+    </data>
+</odoo>

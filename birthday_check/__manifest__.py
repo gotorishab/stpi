@@ -18,6 +18,7 @@
         'views/menuitems.xml',
         'wizard/cheque_request_wizard.xml',
         'wizard/cheque_request_action_wizard.xml',
+        'wizard/birthday_cheque.xml',
 	],
 	'images': [],
 	'license': 'AGPL-3',

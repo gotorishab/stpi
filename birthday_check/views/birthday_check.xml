@@ -9,9 +9,9 @@
                 <field name="is_previous_month"/>
                 <field name="is_current_month"/>
                 <field name="is_next_month"/>
-                <filter name="is_current_month" string="Current Month"  domain="[('is_current_month','=',True)]"/>
-                <filter string = "Previous month" name = "previous_month" domain = "[('is_previous_month','=', True)]"/>
-                <filter string = "Next month" name = "next_month" domain = "[('is_next_month','=', True)]"/>
+                <filter name="is_current_month" string="Current Month"  domain="[('is_current_month','=',True),('is_previous_month','!=', True),('is_next_month','!=', True)]"/>
+                <filter string = "Previous month" name = "previous_month" domain = "[('is_previous_month','=', True),('is_current_month','!=', True),('is_next_month','!=', True)]"/>
+                <filter string = "Next month" name = "next_month" domain = "[('is_next_month','=', True),('is_current_month','!=', True),('is_previous_month','!=', True)]"/>
             </field>
           </field>
         </record>
