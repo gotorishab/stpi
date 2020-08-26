@@ -107,7 +107,7 @@ class AppraisalForms(models.Model):
             for emp in search_id:
                 if emp:
                     raise ValidationError(_('Appraisal already made of {name} for ABAP period {abap}').format(
-                        name=res.employee_id.name,abap=res.abap.name))
+                        name=res.employee_id.name,abap=res.abap_period.name))
         if res.template_id != True:
             raise ValidationError(_('Please select Template of {name}').format(
             name=res.employee_id.name))
