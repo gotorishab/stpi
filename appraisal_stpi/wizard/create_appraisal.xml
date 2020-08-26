@@ -37,7 +37,7 @@
 
 
     <menuitem id="hr_menu_create_appraisal_id" name="Create Appraisals" action="appraisal_stpi.create_appraisal_wizard_action"
-            parent="appraisal_stpi.menu_appraisal_main" sequence="99"/>
+            parent="appraisal_stpi.menu_appraisal_main" groups="appraisal_stpi.group_manager_appraisal" sequence="99"/>
 
 
     </data>
