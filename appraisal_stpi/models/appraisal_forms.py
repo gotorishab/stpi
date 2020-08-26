@@ -106,7 +106,9 @@ class AppraisalForms(models.Model):
         if search_id:
             for emp in search_id:
                 if emp:
+                    print('===================emp=========================', emp.id)
                     count+=1
+        print('===================count=========================', count)
         if count > 1:
             raise ValidationError(_('Appraisal already made of {name} for ABAP period {abap}').format(
                 name=res.employee_id.name,abap=res.abap_period.name))
