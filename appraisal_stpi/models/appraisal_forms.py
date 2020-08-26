@@ -192,7 +192,7 @@ class KPIForm(models.Model):
     state = fields.Selection(
         [('draft', 'Draft'), ('self_review', 'Self Reviewed'), ('line_manager_review', 'Line Manager Reviewed'),
          ('hod_review', 'HOD Reviewed'), ('completed', 'Completed'), ('rejected', 'Rejected')
-         ], required=True, default='draft', string='Status')
+         ], default='draft', string='Status')
 
     reviewing_auth_user = fields.Many2one('res.users')
 
