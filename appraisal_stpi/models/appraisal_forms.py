@@ -112,10 +112,10 @@ class AppraisalForms(models.Model):
         if count > 1:
             raise ValidationError(_('Appraisal already made of {name} for ABAP period {abap}').format(
                 name=res.employee_id.name,abap=res.abap_period.name))
-        emp_contract = self.env['hr.contract'].search(
-            [('employee_id', '=', res.employee_id.id), ('state', '=', 'open')], limit=1)
-        res.template_id = emp_contract.pay_level_id.template_id.id
-        if res.template_id != True:
+        # emp_contract = self.env['hr.contract'].search(
+        #     [('employee_id', '=', res.employee_id.id), ('state', '=', 'open')], limit=1)
+        # res.template_id = emp_contract.pay_level_id.template_id.id
+        if not res.template_id.id:
             raise ValidationError(_('Please select Template of {name}').format(
             name=res.employee_id.name))
         sequence = ''
