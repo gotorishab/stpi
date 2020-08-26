@@ -304,11 +304,13 @@
                   name = "Line Manager Reviewed"
                   parent ="menu_appraisal_id"
                   action ="appraisal_menu_line_manager_action"
+              groups="appraisal_stpi.group_line_manager_appraisal"
                   />
     <menuitem id = "appraisal_approved_hod_menu_id"
                   name = "HoD Reviewed"
                   parent ="menu_appraisal_id"
                   action ="appraisal_menu_hod_approved_action"
+               groups="appraisal_stpi.group_hod_appraisal"
                   />
     <menuitem id = "appraisal_completed_menu_id"
                   name = "Completed"
@@ -325,6 +327,7 @@
       <menuitem id="menu_appraisal_reporting_id"
                 name="Reporting"
                 parent="menu_appraisal_main"
+                groups="appraisal_stpi.group_manager_appraisal"
       />
 
       <menuitem id="menu_appraisal_employee_id"
