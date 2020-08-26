@@ -16,7 +16,7 @@ class BirthdayChequeRequest(models.TransientModel):
             my_ids = []
             employee = self.env['hr.employee'].sudo().search(
                 [('birthday', '>=', datetime.datetime.now().replace(day=1)),
-                 ('birthday', '<', datetime.datetime.now().replace(day=1) + relativedelta(months=1))], limit=1)
+                 ('birthday', '<', datetime.datetime.now().replace(day=1) + relativedelta(months=1))])
             for emp in employee:
                 my_ids.append(emp.id)
             print('==================my_ids========================', my_ids)
@@ -39,7 +39,7 @@ class BirthdayChequeRequest(models.TransientModel):
             my_ids = []
             employee = self.env['hr.employee'].sudo().search(
                 [('birthday', '>=', datetime.datetime.now().replace(day=1) - relativedelta(months=1)),
-                 ('birthday', '<', datetime.datetime.now().replace(day=1))], limit=1)
+                 ('birthday', '<', datetime.datetime.now().replace(day=1))])
             for emp in employee:
                 my_ids.append(emp.id)
             print('==================my_ids========================', my_ids)
@@ -63,7 +63,7 @@ class BirthdayChequeRequest(models.TransientModel):
             my_ids = []
             employee = self.env['hr.employee'].sudo().search(
                 [('birthday', '>=', datetime.datetime.now().replace(day=1) + relativedelta(months=1)),
-                 ('birthday', '<', datetime.datetime.now().replace(day=1) + relativedelta(months=2))], limit=1)
+                 ('birthday', '<', datetime.datetime.now().replace(day=1) + relativedelta(months=2))])
             for emp in employee:
                 my_ids.append(emp.id)
             print('==================my_ids========================', my_ids)
