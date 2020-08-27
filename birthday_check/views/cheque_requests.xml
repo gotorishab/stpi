@@ -45,7 +45,7 @@
                     <field name="state"/>
                     <!--<button name = "change_stage" type = "object" string = "Change stage" icon = "fa-files-o" attrs="{'invisible':[('state','in',('approved','rejected))]}"/>-->
                     <button name = "button_to_approve" type = "object" string = "Send for approval" icon = "fa-forward" attrs="{'invisible':[('state','not in',('draft'))]}" groups="birthday_check.group_user_birthday"/>
-                    <button name = "button_reset_to_draft" type = "object" string = "Reset to Draft" icon = "fa-undo" attrs="{'invisible':[('state','not in',('to_approve'))]}" groups="birthday_check.group_user_birthday"/>
+                    <button name = "button_reset_to_draft" type = "object" string = "Reset to Draft" icon = "fa-undo" invisible="1"/>
                     <button name = "button_approved" type = "object" string = "Approve" icon = "fa-thumbs-o-up" attrs="{'invisible':[('state','not in',('to_approve'))]}" groups="birthday_check.group_approvar_birthday"/>
                     <button name = "button_reject" type = "object" string = "Reject" icon = "fa-ban" attrs="{'invisible':[('state','not in',('to_approve'))]}" groups="birthday_check.group_approvar_birthday"/>
                  </tree>

@@ -4,7 +4,7 @@
         <menuitem name="Birthdays"
               id="menu_birthday_cheque" parent="hr.menu_hr_root"
               sequence="25"/>
-    
+
 
         <menuitem name="Cheque Request"
               id="cheque_requests_id" parent="menu_birthday_cheque"
