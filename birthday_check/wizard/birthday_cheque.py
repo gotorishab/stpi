@@ -24,11 +24,10 @@ class BirthdayChequeRequest(models.TransientModel):
                 'domain': [('id', 'in', my_ids)],
                 'name': 'Employees - Current Month Birthday',
                 'view_type': 'form',
-                'view_mode': 'kanban,tree,form',
+                'view_mode': 'tree,form',
                 'res_model': 'hr.employee',
                 'view_id': False,
-                'views': [(self.env.ref('hr.hr_kanban_view_employees').id, 'kanban'),
-                          (self.env.ref('birthday_check.hr_employee_birthday_tree2').id, 'tree'),
+                'views': [(self.env.ref('birthday_check.hr_employee_birthday_tree2').id, 'tree'),
                           (self.env.ref('hr_employee_stpi.view_add_Employee_doc_form').id, 'form')],
                 'type': 'ir.actions.act_window'
             }
@@ -47,11 +46,10 @@ class BirthdayChequeRequest(models.TransientModel):
                 'domain': [('id', 'in', my_ids)],
                 'name': 'Employees - Previous Month Birthday',
                 'view_type': 'form',
-                'view_mode': 'kanban,tree,form',
+                'view_mode': 'tree,form',
                 'res_model': 'hr.employee',
                 'view_id': False,
-                'views': [(self.env.ref('hr.hr_kanban_view_employees').id, 'kanban'),
-                          (self.env.ref('birthday_check.hr_employee_birthday_tree2').id, 'tree'),
+                'views': [(self.env.ref('birthday_check.hr_employee_birthday_tree2').id, 'tree'),
                           (self.env.ref('hr_employee_stpi.view_add_Employee_doc_form').id, 'form')],
                 'type': 'ir.actions.act_window'
             }
@@ -71,11 +69,10 @@ class BirthdayChequeRequest(models.TransientModel):
                 'domain': [('id', 'in', my_ids)],
                 'name': 'Employees - Next Month Birthday',
                 'view_type': 'form',
-                'view_mode': 'kanban,tree,form',
+                'view_mode': 'tree,form',
                 'res_model': 'hr.employee',
                 'view_id': False,
-                'views': [(self.env.ref('hr.hr_kanban_view_employees').id, 'kanban'),
-                          (self.env.ref('birthday_check.hr_employee_birthday_tree2').id, 'tree'),
+                'views': [(self.env.ref('birthday_check.hr_employee_birthday_tree2').id, 'tree'),
                           (self.env.ref('hr_employee_stpi.view_add_Employee_doc_form').id, 'form')],
                 'type': 'ir.actions.act_window'
             }
