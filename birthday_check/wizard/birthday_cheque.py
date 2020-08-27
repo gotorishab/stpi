@@ -14,11 +14,10 @@ class BirthdayChequeRequest(models.TransientModel):
     def button_current_month(self):
         if self:
             my_ids = []
-            employee = self.env['hr.employee'].sudo().search(
-                [('birthday.strftime("%m")', '=', datetime.datetime.now().strftime("%m"))])
+            employee = self.env['hr.employee'].sudo().search([])
             for emp in employee:
-                # if (datetime.datetime.now().replace(day=1) <= emp.birthday) and (datetime.datetime.now().replace(day=1) + relativedelta(months=1) > emp.birthday):
-                my_ids.append(emp.id)
+                if emp.birthday.strftime("%m") == datetime.datetime.now().strftime("%m"):
+                    my_ids.append(emp.id)
             print('==================my_ids========================', my_ids)
             return {
                 'domain': [('id', 'in', my_ids)],
@@ -37,11 +36,10 @@ class BirthdayChequeRequest(models.TransientModel):
     def button_previous_month(self):
         if self:
             my_ids = []
-            employee = self.env['hr.employee'].sudo().search(
-                [('birthday', '>=', datetime.datetime.now().replace(day=1) - relativedelta(months=1)),
-                 ('birthday', '<', datetime.datetime.now().replace(day=1))])
+            employee = self.env['hr.employee'].sudo().search([])
             for emp in employee:
-                my_ids.append(emp.id)
+                if (datetime.datetime.now().replace(day=1) - relativedelta(months=1)).strftime("%m") == datetime.datetime.now().strftime("%m"):
+                    my_ids.append(emp.id)
             print('==================my_ids========================', my_ids)
             return {
                 'domain': [('id', 'in', my_ids)],
@@ -61,15 +59,14 @@ class BirthdayChequeRequest(models.TransientModel):
     def button_next_month(self):
         if self:
             my_ids = []
-            employee = self.env['hr.employee'].sudo().search(
-                [('birthday', '>=', datetime.datetime.now().replace(day=1) + relativedelta(months=1)),
-                 ('birthday', '<', datetime.datetime.now().replace(day=1) + relativedelta(months=2))])
+            employee = self.env['hr.employee'].sudo().search([])
             for emp in employee:
-                my_ids.append(emp.id)
+                if (datetime.datetime.now().replace(day=1)+ relativedelta(months=1)).strftime("%m") == datetime.datetime.now().strftime("%m"):
+                    my_ids.append(emp.id)
             print('==================my_ids========================', my_ids)
             return {
                 'domain': [('id', 'in', my_ids)],
-                'name': 'Employees - Current Month Birthday',
+                'name': 'Employees - Next Month Birthday',
                 'view_type': 'form',
                 'view_mode': 'kanban,tree,form',
                 'res_model': 'hr.employee',
