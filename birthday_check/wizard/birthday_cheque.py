@@ -14,12 +14,12 @@ class BirthdayChequeRequest(models.TransientModel):
     def button_current_month(self):
         if self:
             my_ids = []
-            print(datetime.datetime.now().replace(day=1))
-            print(datetime.datetime.now().replace(day=1) + relativedelta(months=1))
+            print(datetime.date(datetime.now()).replace(day=1))
+            print(datetime.date(datetime.now()).replace(day=1) + relativedelta(months=1))
             employee = self.env['hr.employee'].sudo().search([])
             for emp in employee:
                 print('==================birthday==============')
-                if (datetime.datetime.now().replace(day=1) <= emp.birthday) and (datetime.datetime.now().replace(day=1) + relativedelta(months=1) > emp.birthday):
+                if (datetime.date(datetime.now()).replace(day=1) <= emp.birthday) and (datetime.date(datetime.now()).replace(day=1) + relativedelta(months=1) > emp.birthday):
                     my_ids.append(emp.id)
             print('==================my_ids========================', my_ids)
             return {
@@ -40,8 +40,8 @@ class BirthdayChequeRequest(models.TransientModel):
         if self:
             my_ids = []
             employee = self.env['hr.employee'].sudo().search(
-                [('birthday', '>=', datetime.datetime.now().replace(day=1) - relativedelta(months=1)),
-                 ('birthday', '<', datetime.datetime.now().replace(day=1))])
+                [('birthday', '>=', datetime.date(datetime.now()).replace(day=1) - relativedelta(months=1)),
+                 ('birthday', '<', datetime.date(datetime.now()).replace(day=1))])
             for emp in employee:
                 my_ids.append(emp.id)
             print('==================my_ids========================', my_ids)
@@ -64,8 +64,8 @@ class BirthdayChequeRequest(models.TransientModel):
         if self:
             my_ids = []
             employee = self.env['hr.employee'].sudo().search(
-                [('birthday', '>=', datetime.datetime.now().replace(day=1) + relativedelta(months=1)),
-                 ('birthday', '<', datetime.datetime.now().replace(day=1) + relativedelta(months=2))])
+                [('birthday', '>=', datetime.date(datetime.now()).replace(day=1) + relativedelta(months=1)),
+                 ('birthday', '<', datetime.date(datetime.now()).replace(day=1) + relativedelta(months=2))])
             for emp in employee:
                 my_ids.append(emp.id)
             print('==================my_ids========================', my_ids)
