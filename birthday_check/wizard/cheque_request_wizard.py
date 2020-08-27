@@ -32,4 +32,5 @@ class AccountInvoiceConfirm(models.TransientModel):
                         'state': 'draft',
                     }
                 )
+                cheque_request.sudo().button_to_approve()
                 employee.cheque_requested = 'yes'
