@@ -40,7 +40,7 @@ class BirthdayChequeRequest(models.TransientModel):
             employee = self.env['hr.employee'].sudo().search([])
             for emp in employee:
                 if emp.birthday:
-                    if (datetime.datetime.now().replace(day=1) - relativedelta(months=1)).strftime("%m") == datetime.datetime.now().strftime("%m"):
+                    if (datetime.datetime.now().replace(day=15) - relativedelta(months=1)).strftime("%m") == emp.birthday.strftime("%m"):
                         my_ids.append(emp.id)
             print('==================my_ids========================', my_ids)
             return {
@@ -64,7 +64,7 @@ class BirthdayChequeRequest(models.TransientModel):
             employee = self.env['hr.employee'].sudo().search([])
             for emp in employee:
                 if emp.birthday:
-                    if (datetime.datetime.now().replace(day=1)+ relativedelta(months=1)).strftime("%m") == datetime.datetime.now().strftime("%m"):
+                    if (datetime.datetime.now().replace(day=15)+ relativedelta(months=1)).strftime("%m") == emp.birthday.strftime("%m"):
                         my_ids.append(emp.id)
             print('==================my_ids========================', my_ids)
             return {
