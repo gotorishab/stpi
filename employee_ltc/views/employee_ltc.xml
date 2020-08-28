@@ -264,7 +264,7 @@
                             </field>
                             <separator string="Details of Journey(s) performed"/>
                             <field name="detail_of_journey" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                            <separator string="Particulars of journey(s) for which higher class of accomodation that the on to which the Govt. Servent is not entitled, was used:"/>
+                            <separator string="Particulars of journey(s) for which higher class of accomodation that the on to which the Govt. Servant is not entitled, was used:"/>
                             <field name="detail_of_journey_gov" attrs="{'readonly': [('state', '!=', 'draft')]}">
                                 <tree create="0" edit="0">
                                     <field name="relate_to_ltc" invisible="1"/>

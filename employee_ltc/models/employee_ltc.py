@@ -13,7 +13,7 @@ class EmployeeLtcAdvance(models.Model):
 
     @api.onchange('block_year')
     def change_slect_leave(self):
-        return {'domain': {'slect_leave': [('ltc', '=', True),('employee_id', '=', self.employee_id.id),('request_date_from', '>=', self.block_year.date_start),('request_date_to', '<=', self.block_year.date_end)
+        return {'domain': {'slect_leave': [('ltc', '=', True),('state', '!=', 'validate'),('employee_id', '=', self.employee_id.id),('request_date_from', '>=', self.block_year.date_start),('request_date_to', '<=', self.block_year.date_end)
             ]}}
 
     ltc_sequence = fields.Char('LTC number',track_visibility='always')
@@ -33,7 +33,7 @@ class EmployeeLtcAdvance(models.Model):
     depart_date=fields.Date('Departue Date',track_visibility='always')
     arrival_date=fields.Date('Arrival Date',track_visibility='always')
     advance_ammount=fields.Char('Advance Amount Required',track_visibility='always')
-    single_fare=fields.Float('Single Train Fare/ Bus fare from the office to Place of Visit by Shortest Route',track_visibility='always')
+    single_fare=fields.Float('Single Train Fair/ Bus Fair from the office to Place of Visit by Shortest Route',track_visibility='always')
     single_fare_approved=fields.Float('Approved Amount',track_visibility='always')
     attach_file = fields.Binary('Attach a File',track_visibility='always')
     all_particulars_verified=fields.Selection([('yes', 'Yes'), ('no', 'No')], default='yes', string='All particulars verified?', track_visibility='always')
