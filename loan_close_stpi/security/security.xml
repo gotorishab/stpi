@@ -10,16 +10,16 @@
     </record>
 
     <record id="ir_rule_loan_close_self_security" model="ir.rule">
-        <field name="model_id" ref="model_hr_loan"/>
+        <field name="model_id" ref="model_hr_loan_close"/>
         <field name="domain_force">[('employee_id.user_id','=',user.id)]</field>
-        <field name="name">	Loan Close User</field>
+        <field name="name">Loan Close User</field>
         <field name="groups" eval="[(4, ref('base.group_user'))]"/>
     </record>
 
     <record id="ir_rule_loan_close_allowed_self_security" model="ir.rule">
-        <field name="model_id" ref="model_hr_loan"/>
+        <field name="model_id" ref="model_hr_loan_close"/>
         <field name="domain_force">['|',  ('employee_id.branch_id','=','False'), ('employee_id.branch_id.id','in',[g.id for g in user.branch_ids])]</field>
-        <field name="name">	Allowed Loan User</field>
+        <field name="name">Allowed Loan User</field>
         <field name="groups" eval="[(4, ref('ohrms_loan.group_loan_approver'))]"/>
     </record>
 
