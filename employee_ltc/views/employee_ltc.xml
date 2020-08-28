@@ -33,6 +33,7 @@
                            <field name="advance_ammount" attrs="{'readonly': [('state', '!=', 'draft')],'required': [('state', '=', 'draft')]}"/>
                         </group>
                         <group>
+                            <field name="dates_of_journey" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                             <field name="single_fare" attrs="{'readonly': [('state', '!=', 'draft')],'required': [('state', '=', 'draft')]}"/>
                             <field name="attach_file" attrs="{'invisible': [('single_fare', '=', False)],'readonly': [('state', '!=', 'draft')]}"/>
                             <field name="single_fare_approved" attrs="{'invisible': [('state', '=', 'draft')]}" groups="employee_ltc.group_ltc_manager"/>

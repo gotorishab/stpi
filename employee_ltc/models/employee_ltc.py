@@ -21,6 +21,7 @@ class EmployeeLtcAdvance(models.Model):
     branch_id = fields.Many2one('res.branch', string='Branch', store=True)
     job_id = fields.Many2one('hr.job', string='Functional Designation', store=True)
     department_id = fields.Many2one('hr.department', string='Department', store=True)
+    dates_of_journey = fields.Many2one('date.range', string='Dates of Journey', store=True)
     date = fields.Date(string="Requested Date", default=datetime.now().date(),track_visibility='always')
     place_of_trvel=fields.Selection([('hometown', 'Hometown'), ('india', 'Anywhere in India'), ('conversion', 'Conversion of Hometown')], default='hometown', string='Place of Travel',track_visibility='always')
     hometown_address = fields.Char(string='Address',track_visibility='always')
