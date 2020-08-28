@@ -37,6 +37,7 @@
     ],
     'data': [
         'security/ir.model.access.csv',
+        'security/security.xml',
         'views/loan_close.xml'
     ],
     'demo': [],
