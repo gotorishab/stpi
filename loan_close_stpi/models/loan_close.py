@@ -32,6 +32,7 @@ class LoanClose(models.Model):
     # payment_account_id = fields.Many2one('account.account', string="Payment Account")
     unpaid_loan_lines = fields.One2many('hr.loan.line.unpaid','un_loan_id', string="Loan Line", index=True)
     remarks = fields.Char(string='Remarks')
+    document_proof = fields.Binary('Document')
     state = fields.Selection(
         [('draft', 'Draft'), ('submitted', 'Waiting for Approval'), ('approved', 'Approved'), ('rejected', 'Rejected'),
          ('paid', 'Paid')

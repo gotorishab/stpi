@@ -169,8 +169,14 @@ class EmployeeTourClaim(models.Model):
     @api.model
     def create(self, vals):
         res =super(EmployeeTourClaim, self).create(vals)
-        tdat_id = res.tour_request_id.employee_journey[0]
-        tdat = tdat_id.arrival_date
+        count = 0
+        for line in res.tour_request_id.employee_journey:
+            count+=1
+        if count>0:
+            tdat_id = res.tour_request_id.employee_journey[0]
+            tdat = tdat_id.arrival_date
+        else:
+            tdat = datetime.now().date()
         for fd in res.tour_request_id.employee_journey:
             if fd.arrival_date >= tdat:
                 tdat = fd.arrival_date

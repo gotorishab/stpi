@@ -122,7 +122,7 @@ class HrLoan(models.Model):
             if rec.calculate_bool == True:
                 raise ValidationError(_("You are not allowed to change the date"))
             else:
-                if rec.approve_date > rec.dis_date:
+                if rec.approve_date >= rec.dis_date:
                     raise ValidationError(_("Disbursement Date must be less than Approve Date"))
             # rec.calculate_bool = False
 
