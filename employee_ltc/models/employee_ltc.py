@@ -315,7 +315,7 @@ class BlockYear(models.Model):
     @api.model
     def create(self, vals):
         res =super(BlockYear, self).create(vals)
-        search_id = self.env['block.year'].search([])
+        search_id = self.env['block.year'].search([('id','!=',res.id)])
         for emp in search_id:
             print('=================================ids==========================',emp.name)
             if (emp.date_start <= res.date_start <= emp.date_end) or (emp.date_start <= res.date_end <= emp.date_end):
