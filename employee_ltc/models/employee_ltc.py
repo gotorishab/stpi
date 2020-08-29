@@ -312,7 +312,7 @@ class BlockYear(models.Model):
     date_start = fields.Date('From Date')
     date_end = fields.Date('To Date')
 
-
+    @api.model
     def create(self, vals):
         res =super(BlockYear, self).create(vals)
         search_id = self.env['block.year'].search([])
