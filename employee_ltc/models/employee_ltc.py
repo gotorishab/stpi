@@ -328,7 +328,7 @@ class BlockYear(models.Model):
                     raise ValidationError("This Block Year is already applied for this duration, please correct the dates")
             else:
                 raise ValidationError("This Block Year is already applied for this duration, please correct the dates")
-
+        return res
 
 class FamilyDetails(models.Model):
     _name = 'family.details.ltc'
