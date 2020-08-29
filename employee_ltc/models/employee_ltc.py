@@ -317,8 +317,9 @@ class BlockYear(models.Model):
         res =super(BlockYear, self).create(vals)
         search_id = self.env['block.year'].search([])
         for emp in search_id:
+            print('=================================ids==========================',emp.name)
             if (emp.date_start <= res.date_start <= emp.date_end) or (emp.date_start <= res.date_end <= emp.date_end):
-                raise ValidationError("This Block Year is already applied for this duration, please correct the dates")
+                raise ValidationError(_('Block year already created of this date. Please correct the date. Already created is {name}').format(name=emp.name))
         return res
 
 class FamilyDetails(models.Model):
