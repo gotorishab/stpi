@@ -16,20 +16,54 @@
     </record>
 
 
-   <record id="ltc_advance_record_rule" model="ir.rule">
-        <field name="name">LTC Advance</field>
+
+
+    <record id="ir_rule_ltc_global_security" model="ir.rule">
         <field name="model_id" ref="model_employee_ltc_advance"/>
-       <field name="domain_force">['|', ('branch_id','=',False), ('branch_id','in',[g.id for g in user.branch_ids])]</field>
-       <field name="groups" eval="[(4,ref('base.group_user'))]"/>
-   </record>
+        <field name="domain_force">['|', ('employee_id.branch_id','=',False), ('employee_id.branch_id.id','in',[g.id for g in user.branch_ids])] </field>
+        <field name="name">LTC Advance</field>
+        <field name="global" eval="True"/>
+    </record>
+
+    <record id="ir_rule_ltc_self_security" model="ir.rule">
+        <field name="model_id" ref="model_employee_ltc_advance"/>
+        <field name="domain_force">['|', ('employee_id.user_id', '=', user.id), ('employee_id.parent_id.user_id', '=', user.id)]</field>
+        <field name="name">LTC Request Self or Subordinates only</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+    </record>
 
 
-   <record id="ltc_claim_record_rule" model="ir.rule">
-        <field name="name">LTC Claim</field>
+    <record id="ir_rule_ltc_allowed_self_security" model="ir.rule">
+        <field name="model_id" ref="model_employee_ltc_advance"/>
+        <field name="domain_force">['|',  ('employee_id.branch_id','=','False'), ('employee_id.branch_id.id','in',[g.id for g in user.branch_ids])]</field>
+        <field name="name">LTC Branch Rule</field>
+        <field name="groups" eval="[(4, ref('employee_ltc.group_ltc_manager'))]"/>
+    </record>
+
+
+
+
+    <record id="ir_rule_ltc_claim_global_security" model="ir.rule">
         <field name="model_id" ref="model_employee_ltc_claim"/>
-       <field name="domain_force">['|', ('branch_id','=',False), ('branch_id','in',[g.id for g in user.branch_ids])]</field>
-       <field name="groups" eval="[(4,ref('base.group_user'))]"/>
-   </record>
+        <field name="domain_force">['|', ('employee_id.branch_id','=',False), ('employee_id.branch_id.id','in',[g.id for g in user.branch_ids])] </field>
+        <field name="name">LTC Claim</field>
+        <field name="global" eval="True"/>
+    </record>
+
+    <record id="ir_rule_ltc_claim_self_security" model="ir.rule">
+        <field name="model_id" ref="model_employee_ltc_claim"/>
+        <field name="domain_force">['|', ('employee_id.user_id', '=', user.id), ('employee_id.parent_id.user_id', '=', user.id)]</field>
+        <field name="name">LTC Claim Request Self or Subordinates only</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+
+    <record id="ir_rule_ltc_claim_allowed_self_security" model="ir.rule">
+        <field name="model_id" ref="model_employee_ltc_claim"/>
+        <field name="domain_force">['|',  ('employee_id.branch_id','=','False'), ('employee_id.branch_id.id','in',[g.id for g in user.branch_ids])]</field>
+        <field name="name">LTC Claim Branch Rule</field>
+        <field name="groups" eval="[(4, ref('employee_ltc.group_ltc_manage'))]"/>
+    </record>
 
 
 
