@@ -62,7 +62,7 @@
         <field name="model_id" ref="model_employee_ltc_claim"/>
         <field name="domain_force">['|',  ('employee_id.branch_id','=','False'), ('employee_id.branch_id.id','in',[g.id for g in user.branch_ids])]</field>
         <field name="name">LTC Claim Branch Rule</field>
-        <field name="groups" eval="[(4, ref('employee_ltc.group_ltc_manage'))]"/>
+        <field name="groups" eval="[(4, ref('employee_ltc.group_ltc_manager'))]"/>
     </record>
 
 
