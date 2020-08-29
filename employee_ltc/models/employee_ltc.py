@@ -317,16 +317,7 @@ class BlockYear(models.Model):
         res =super(BlockYear, self).create(vals)
         search_id = self.env['block.year'].search([])
         for emp in search_id:
-            if res.date_start <= emp.date_start or res.date_start >= emp.date_end:
-                if res.date_end <= emp.date_start or res.date_end >= emp.date_end:
-                    if not (res.date_start <= emp.date_start and res.date_end >= emp.date_end):
-                        index = True
-                    else:
-                        raise ValidationError(
-                            "This Block Year is already applied for this duration, please correct the dates")
-                else:
-                    raise ValidationError("This Block Year is already applied for this duration, please correct the dates")
-            else:
+            if (emp.date_start <= res.date_start <= emp.date_end) or (emp.date_start <= res.date_end <= emp.date_end):
                 raise ValidationError("This Block Year is already applied for this duration, please correct the dates")
         return res
 
