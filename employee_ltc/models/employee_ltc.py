@@ -313,6 +313,23 @@ class BlockYear(models.Model):
     date_end = fields.Date('To Date')
 
 
+    def create(self, vals):
+        res =super(BlockYear, self).create(vals)
+        search_id = self.env['block.year'].search([])
+        for emp in search_id:
+            if res.date_start <= emp.date_start or res.date_start >= emp.date_end:
+                if res.date_end <= emp.date_start or res.date_end >= emp.date_end:
+                    if not (res.date_start <= emp.date_start and res.date_end >= emp.date_end):
+                        index = True
+                    else:
+                        raise ValidationError(
+                            "This Block Year is already applied for this duration, please correct the dates")
+                else:
+                    raise ValidationError("This Block Year is already applied for this duration, please correct the dates")
+            else:
+                raise ValidationError("This Block Year is already applied for this duration, please correct the dates")
+
+
 class FamilyDetails(models.Model):
     _name = 'family.details.ltc'
     _description = "LTC Family Details"
