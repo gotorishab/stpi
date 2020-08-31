@@ -138,6 +138,20 @@ class EmployeeLtcAdvance(models.Model):
     @api.multi
     def button_approved(self):
         for res in self:
+            val_id = self.env['hr.leave.type'].search([
+                    ('leave_type', '=', 'Earned Leave')
+                ], limit=1)
+            allocate_leave = self.env['hr.leave.allocation'].create({'holiday_status_id': val_id.id,
+                                                                     'holiday_type': 'employee',
+                                                                     'employee_id': res.employee_id.id,
+                                                                     'number_of_days_display':(-1) * res.no_of_days,
+                                                                     'number_of_days': (-1) * res.no_of_days,
+                                                                     'name': 'Against LTC',
+                                                                     'notes': 'As Per Leave Policy'
+                                                                     })
+            print("allocationnnnnnnnnnnnn111111111111111", allocate_leave)
+            allocate_leave.sudo().action_approve()
+
             if res.are_you_coming == True:
                 create_ledger_self = self.env['ledger.ltc'].create(
                     {
