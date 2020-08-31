@@ -300,10 +300,6 @@ class EmployeeLtcAdvance(models.Model):
                                     _('Employee will allow minimum 0 days'))
 
 
-
-
-
-
 class BlockYear(models.Model):
     _name = 'block.year'
     _description = "Block Year"
@@ -317,7 +313,6 @@ class BlockYear(models.Model):
         res =super(BlockYear, self).create(vals)
         search_id = self.env['block.year'].search([('id','!=',res.id)])
         for emp in search_id:
-            print('=================================ids==========================',emp.name)
             if (emp.date_start <= res.date_start <= emp.date_end) or (emp.date_start <= res.date_end <= emp.date_end):
                 raise ValidationError(_('Block year already created of this date. Please correct the date. Already created is {name}').format(name=emp.name))
         return res

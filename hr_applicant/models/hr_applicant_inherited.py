@@ -37,23 +37,6 @@ class HRApplicant(models.Model):
     gender = fields.Selection(
         [('male', 'Male'), ('female', 'Female'), ('other', 'Other')],
         string='Gender')
-    penalty_awarded = fields.Selection(
-        [('yes', 'Yes'), ('no', 'No')],
-        string='Any Penalty awarded during the last 10 years')
-    penalty_awarded = fields.Selection(
-        [('yes', 'Yes'), ('no', 'No')],
-        string='Any Penalty awarded during the last 10 years')
-    action_can_know = fields.Selection(
-        [('yes', 'Yes'), ('no', 'No')],
-        string='Any action or inquiry is going on as far as candidate knowledge')
-    criminal_pending = fields.Selection(
-        [('yes', 'Yes'), ('no', 'No')],
-        string='Any criminal/ vigilance case is pending or contemplated')
-    relative_terms_css = fields.Selection(
-        [('yes', 'Yes'), ('no', 'No')],
-        string='Any relative defined in terms of CCS')
-    achievements_app = fields.Text('Achievements')
-    achievements_app = fields.Text('Additional Information')
     gende = fields.Selection([
         ('male', 'Male'),
         ('female', 'Female'),
@@ -110,6 +93,23 @@ class HRApplicant(models.Model):
     bank_name = fields.Char(string='Bank Name')
     bank_account_number = fields.Char(string='Bank Account number')
     ifsc_code = fields.Char(string='IFSC Code')
+    # penalty_awarded = fields.Selection(
+    #     [('yes', 'Yes'), ('no', 'No')],
+    #     string='Any Penalty awarded during the last 10 years')
+    # penalty_awarded = fields.Selection(
+    #     [('yes', 'Yes'), ('no', 'No')],
+    #     string='Any Penalty awarded during the last 10 years')
+    # action_can_know = fields.Selection(
+    #     [('yes', 'Yes'), ('no', 'No')],
+    #     string='Any action or inquiry is going on as far as candidate knowledge')
+    # criminal_pending = fields.Selection(
+    #     [('yes', 'Yes'), ('no', 'No')],
+    #     string='Any criminal/ vigilance case is pending or contemplated')
+    # relative_terms_css = fields.Selection(
+    #     [('yes', 'Yes'), ('no', 'No')],
+    #     string='Any relative defined in terms of CCS')
+    # achievements_app = fields.Text('Achievements')
+    # achievements_app = fields.Text('Additional Information')
 
 
     bank_account_id = fields.Many2one(
@@ -309,12 +309,12 @@ class HRApplicant(models.Model):
                 raise ValidationError("Date of Joining should always be greater then equals to Office Order Date")
 
 
-    @api.constrains('pan_no')
-    @api.onchange('pan_no')
-    def _check_pan_number(self):
-        for rec in self:
-            if rec.pan_no and not re.match(r'^[A-Za-z]{5}[0-9]{4}[A-Za-z]$', str(rec.pan_no)):
-                raise ValidationError(_("Please enter correct PAN number."))
+    # @api.constrains('pan_no')
+    # @api.onchange('pan_no')
+    # def _check_pan_number(self):
+    #     for rec in self:
+    #         if rec.pan_no and not re.match(r'^[A-Za-z]{5}[0-9]{4}[A-Za-z]$', str(rec.pan_no)):
+    #             raise ValidationError(_("Please enter correct PAN number."))
 
 
 
@@ -478,7 +478,7 @@ class HRApplicant(models.Model):
                             'struct_id': self.struct_id.id,
                             'date_start': datetime.now().date(),
                             'employee_type': self.employee_type,
-                            
+
                             'wage': self.salary_proposed,
                         }
                     )
@@ -577,7 +577,7 @@ class HRApplicant(models.Model):
         #         category = len(emp_ids)
         #         emp = len(employee_ids)
         #         s.get_total_match_category = round(category/emp*100)
-        
+
     def get_santioned_position_emp(self):
         pass
 #         emp_count_san = 0.0
@@ -588,10 +588,10 @@ class HRApplicant(models.Model):
 # #                 print("???????????????????????????????",s.santioned_position)
 #             s.cur_no_of_emp = s.job_id.no_of_employee
 # #             print("==============================",s.cur_no_of_emp)
-                
+
     @api.multi
     def get_religion_from_job_position(self):
-        
+
         return{
             'name': _('Religion'),
             'view_type': 'form',
@@ -599,15 +599,15 @@ class HRApplicant(models.Model):
             'res_model': 'hr.employee',
             'src_model' : 'hr.applicant',
             'type': 'ir.actions.act_window',
-            'context': { 
+            'context': {
                         'search_default_job_id': self.job_id.id,
                         'group_by':'religion'},
             'search_view_id' : self.env.ref('hr.view_employee_tree').id
-            }    
- 
+            }
+
     @api.multi
     def get_category_from_job_position(self):
-        
+
         return{
             'name': _('Category'),
             'view_type': 'form',
@@ -615,11 +615,11 @@ class HRApplicant(models.Model):
             'res_model': 'hr.employee',
             'src_model' : 'hr.applicant',
             'type': 'ir.actions.act_window',
-            'context': { 
+            'context': {
                         'search_default_job_id': self.job_id.id,
                         'group_by':'category'},
             'search_view_id' : self.env.ref('hr.view_employee_tree').id
-            }  
+            }
 
 
 
