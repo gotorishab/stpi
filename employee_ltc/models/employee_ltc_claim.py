@@ -36,7 +36,7 @@ class EmployeeLtcClaim(models.Model):
     department_id = fields.Many2one('hr.department', string='Department', store=True)
     currency_id = fields.Many2one('res.currency', string='Currency',
                                   default=lambda self: self.env.user.company_id.currency_id)
-    amount_claimed = fields.Char('Advance Withdrawn', compute='_compute_fetch_ltc_details',track_visibility='always')
+    # amount_claimed = fields.Char('Advance Withdrawn')
     place_of_trvel=fields.Selection([('hometown', 'Hometown'), ('india', 'Anywhere in India'), ('conversion', 'Conversion of Hometown')], default='hometown', string='Place of Travel',track_visibility='always', compute='_compute_fetch_ltc_details')
     ltc_availed_for_m2o = fields.Many2one('employee.ltc.advance','LTC availed for',track_visibility='always')
     ltc_availed_for = fields.Char('LTC availed for', compute='_compute_fetch_ltc_details',track_visibility='always')
@@ -92,7 +92,7 @@ class EmployeeLtcClaim(models.Model):
         for rec in self:
             if rec.employee_id:
                 # ltc_ad = self.env['employee.ltc.advance'].search([('employee_id','=',rec.employee_id.id)],order='ltc_sequence desc', limit=1)
-                rec.amount_claimed = rec.ltc_availed_for_m2o.amount
+                # rec.amount_claimed = rec.ltc_availed_for_m2o.amount
                 rec.leave_period = rec.ltc_availed_for_m2o.leave_period
                 rec.ltc_availed_for = rec.ltc_availed_for_m2o.ltc_sequence
                 rec.place_of_trvel = rec.ltc_availed_for_m2o.place_of_trvel
