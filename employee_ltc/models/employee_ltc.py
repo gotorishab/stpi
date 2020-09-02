@@ -122,6 +122,25 @@ class EmployeeLtcAdvance(models.Model):
                 line.total_leaves = str(sum)
                 line.left_leaves = float(line.total_leaves) - line.no_of_days
 
+
+    @api.onchange('no_of_days')
+    @api.constrains('no_of_days')
+    def get_amount_onchange_days(self):
+        for line in self:
+            if line.no_of_days:
+                sum = 0
+                # leave_my = self.env['hr.leave.report'].search([('employee_id', '=', line.employee_id.id)])
+                # total_basic = self.env['monthly.salary.structure'].search([('employee_id','=',line.employee_id.id),('name', '=', 'Basic Salary')],order='employee_id desc', limit=1)
+                total_wage = self.env['hr.contract'].search([('employee_id','=',line.employee_id.id),('state','=','open'),('date_start', '<=', line.date),('date_end', '>=', line.date)], limit=1)
+                if total_wage:
+                    print('=======================================Updated basic=====================')
+                    line.total_basic_salary = total_wage.updated_basic
+                    total_basic_ltc = total_wage.updated_basic
+                    line.amount = (((float(total_basic_ltc)/30)*float(line.no_of_days)))
+                print('=======================================Updated basic amount=====================',line.total_basic_salary)
+                print('=======================================Updated basic amount=====================',line.amount)
+
+
     @api.multi
     def button_to_approve(self):
         for rec in self:
