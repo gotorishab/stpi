@@ -110,9 +110,9 @@ class EmployeeLtcAdvance(models.Model):
                 # total_basic = self.env['monthly.salary.structure'].search([('employee_id','=',line.employee_id.id),('name', '=', 'Basic Salary')],order='employee_id desc', limit=1)
                 total_wage = self.env['hr.contract'].search([('employee_id','=',line.employee_id.id),('state','=','open'),('date_start', '<=', line.date),('date_end', '>=', line.date)], limit=1)
                 if total_wage:
-                    line.total_basic_salary = total_wage.wage
-                    total_basic_ltc = total_wage.wage
-                    line.amount = (((float(total_basic_ltc))*float(line.no_of_days))/30)
+                    line.total_basic_salary = total_wage.updated_basic
+                    total_basic_ltc = total_wage.updated_basic
+                    line.amount = (((float(total_basic_ltc)/30)*float(line.no_of_days)))
                 for i in leave_my:
                     sum += i.number_of_days
                 line.total_leaves = str(sum)
