@@ -12,7 +12,7 @@ class EmployeeLtcClaim(models.Model):
         return self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
 
     @api.multi
-    @api.depends('tour_request_id')
+    @api.depends('ltc_availed_for_m2o')
     def _compute_approved_amount(self):
         total_claimed = 0.0
         fair_paid = 0
