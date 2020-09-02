@@ -11,6 +11,25 @@ class EmployeeLtcClaim(models.Model):
     def _default_employee(self):
         return self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
 
+    @api.multi
+    @api.depends('tour_request_id')
+    def _compute_approved_amount(self):
+        total_claimed = 0.0
+        fair_paid = 0
+        total_cl_journey = 0.0
+        for record in self:
+            for line in record.detail_of_journey:
+                if line:
+                    fair_paid += int(line.fair_paid)
+            for line in record.detail_of_journey_gov:
+                if line:
+                    fair_paid += int(line.fair_paid)
+            record.total_claimed_amount = fair_paid
+            record.advance_requested = int(record.ltc_availed_for_m2o.amount)
+            record.balance_left = record.total_claimed_amount - record.advance_requested - record.amount_paid
+
+
+
     employee_id = fields.Many2one('hr.employee', string='Requested By', default=_default_employee,track_visibility='always')
     branch_id = fields.Many2one('res.branch', string='Branch', store=True)
     job_id = fields.Many2one('hr.job', string='Functional Designation', store=True)
@@ -28,6 +47,10 @@ class EmployeeLtcClaim(models.Model):
     detail_of_journey_gov = fields.One2many('employee.ltc.journey.gov','relate_to_ltc', string='Details of Journey',track_visibility='always')
     detail_of_journey_train = fields.One2many('employee.ltc.journey.train','relate_to_ltc', string='Details of Journey',track_visibility='always')
     remarks = fields.Char(string='Remarks')
+    total_claimed_amount = fields.Float('Total Claimed Amount', compute='_compute_approved_amount')
+    advance_requested = fields.Float('Advance Requested', compute='_compute_approved_amount')
+    amount_paid = fields.Float('Amount Paid')
+    balance_left = fields.Float('Balance Left', compute='_compute_approved_amount')
     state = fields.Selection(
         [('draft', 'Draft'), ('to_approve', 'To Approve'), ('approved', 'Approved'), ('rejected', 'Rejected')
          ], required=True, default='draft',track_visibility='always', string='Status')
@@ -136,7 +159,7 @@ class JourneyDetails(models.Model):
     distance = fields.Char('Distance(in Kms.)')
     travel_mode = fields.Many2one('travel.mode.ltc', string='Mode of Travel')
     ticket_no = fields.Char('Ticket Number')
-    fair_paid = fields.Char('Fair')
+    fair_paid = fields.Float('Fair')
     ticket_attach = fields.Binary('Attach Ticket')
 
 
@@ -149,7 +172,7 @@ class JourneyDetailsGov(models.Model):
     travel_mode = fields.Many2one('travel.mode.ltc', string='Mode of Travel')
     from_l = fields.Many2one('res.city', string='From City')
     to_l = fields.Many2one('res.city', string='To City')
-    fair_paid = fields.Char('Fair')
+    fair_paid = fields.Float('Fair')
 
 class JourneyDetailsconnected(models.Model):
     _name = 'employee.ltc.journey.train'
