@@ -7,7 +7,7 @@ from odoo.exceptions import ValidationError, UserError
 class PfWidthdrawl(models.Model):
     _name = "pf.widthdrawl"
     _inherit = ['mail.thread', 'mail.activity.mixin']
-    _description = "PF Widthdrawl"
+    _description = "PF"
     # _rec_name = 'employee_id'
 
 
@@ -175,7 +175,7 @@ class PfWidthdrawl(models.Model):
 class PfEmployee(models.Model):
     _name = "pf.employee"
     _inherit = ['mail.thread', 'mail.activity.mixin']
-    _description = "PF Widthdrawl Employee"
+    _description = "PF Employee"
     _rec_name = 'employee_id'
 
     def _default_employee(self):

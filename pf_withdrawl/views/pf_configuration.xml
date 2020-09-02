@@ -8,7 +8,7 @@
         <field name="name">pf.interest.disbursement.tree</field>
         <field name="model">pf.interest.disbursement</field>
         <field name="arch" type="xml">
-            <tree string="PF Widthdrawl">
+            <tree string="PF">
                 <field name="branch_id"/>
                 <field name="from_date"/>
                 <field name="to_date"/>

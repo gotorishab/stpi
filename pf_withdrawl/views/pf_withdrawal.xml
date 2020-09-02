@@ -6,7 +6,7 @@
         <field name="name">pf.widthdrawl.tree</field>
         <field name="model">pf.widthdrawl</field>
         <field name="arch" type="xml">
-            <tree string="PF Widthdrawl">
+            <tree string="PF">
                 <field name="name"/>
                 <field name="employee_id"/>
                 <field name="advance_amount" />
@@ -22,7 +22,7 @@
         <field name="name">pf.widthdrawl.tree.create.hide</field>
         <field name="model">pf.widthdrawl</field>
         <field name="arch" type="xml">
-            <tree string="PF Widthdrawl" create='false'>
+            <tree string="PF" create='false'>
                 <field name="name"/>
                 <field name="employee_id"/>
                 <field name="advance_amount" />
@@ -39,7 +39,7 @@
         <field name="name">pf.widthdrawl.form</field>
         <field name="model">pf.widthdrawl</field>
         <field name="arch" type="xml">
-            <form string="PF Widthdrawl">
+            <form string="PF">
                 <header>
                     <button name="button_to_approve" string="Send for Approval" class="oe_highlight" type="object" states="draft" groups="pf_withdrawl.group_pf_withdraw_user"/>
                      <button name="button_reset_to_draft" string="Reset to draft" type="object" states="to_approve" groups="pf_withdrawl.group_pf_withdraw_user"/>
@@ -99,7 +99,7 @@
 
     <!-- HR employee pf widthdrawl action New view-->
      <record id="action_hr_pf_widthdrawl" model="ir.actions.act_window">
-        <field name="name">PF Widthdrawl - New</field>
+        <field name="name">PF - New</field>
         <field name="res_model">pf.widthdrawl</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
@@ -109,7 +109,7 @@
 
     <!-- HR employee pf widthdrawl action To Approve view-->
     <record id="action_pf_widthdrawl_waiting_approval" model="ir.actions.act_window">
-        <field name="name">PF Widthdrawl - To Approve</field>
+        <field name="name">PF - To Approve</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">pf.widthdrawl</field>
         <field name="view_type">form</field>
@@ -120,7 +120,7 @@
     
     <!-- HR employee pf widthdrawl action Approved view-->
     <record id="action_pf_widthdrawl_waiting_approved" model="ir.actions.act_window">
-        <field name="name">PF Widthdrawl - Approved</field>
+        <field name="name">PF - Approved</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">pf.widthdrawl</field>
         <field name="view_type">form</field>
@@ -131,7 +131,7 @@
     
     <!-- HR employee pf widthdrawl action Rejected view-->
     <record id="action_pf_widthdrawl_waiting_rejected" model="ir.actions.act_window">
-        <field name="name">PF Widthdrawl - Rejected</field>
+        <field name="name">PF - Rejected</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">pf.widthdrawl</field>
         <field name="view_type">form</field>
@@ -142,7 +142,7 @@
     
     <!--PF Withdrwal by employee-->
     <record id="groupby_employee_action_employee" model="ir.actions.act_window">
-        <field name="name">PF Widthdrawl - By Employee</field>
+        <field name="name">PF - By Employee</field>
         <field name="res_model">pf.widthdrawl</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
@@ -166,7 +166,7 @@
     
     <!--pf.widthdrawl request by branch-->
     <record id="groupby_branch_action_employee" model="ir.actions.act_window">
-        <field name="name">Pf Widthdrawl - By Branch</field>
+        <field name="name">Pf - By Branch</field>
         <field name="res_model">pf.widthdrawl</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
@@ -178,7 +178,7 @@
     
     <!--pf.widthdrawl request by status-->
     <record id="groupby_status_action_employee" model="ir.actions.act_window">
-        <field name="name">PF Widthdrawl - By Status</field>
+        <field name="name">PF - By Status</field>
         <field name="res_model">pf.widthdrawl</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
@@ -189,7 +189,7 @@
     
     <!--pf.widthdrawl request by all-->
     <record id="groupby_all_action_employee" model="ir.actions.act_window">
-        <field name="name">PF Widthdrawl - By All</field>
+        <field name="name">PF - By All</field>
         <field name="res_model">pf.widthdrawl</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
@@ -212,7 +212,7 @@
         <field name="name">pf.employee.tree</field>
         <field name="model">pf.employee</field>
         <field name="arch" type="xml">
-            <tree string="PF Widthdrawl">
+            <tree string="PF">
                 <field name="employee_id"/>
             </tree>
         </field>
