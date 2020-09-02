@@ -45,7 +45,7 @@ class EmployeeLtcAdvance(models.Model):
     el_encashment=fields.Selection([('yes', 'Yes'), ('no', 'No')], default='no', string='Require EL Encashment',track_visibility='always')
     no_of_days = fields.Float('No. of days', default='10',track_visibility='always')
     amount = fields.Float(string='Amount', compute='_compute_amount',track_visibility='always')
-    total_basic_salary = fields.Char(string='Total Basic',track_visibility='always')
+    total_basic_salary = fields.Float(string='Total Basic',track_visibility='always')
     state = fields.Selection([('draft', 'Draft'), ('to_approve', 'To Approve'), ('approved', 'Approved'), ('rejected', 'Rejected')
                                ], required=True, default='draft',track_visibility='always', string='Status')
 
