@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 {
-	'name': 'Pf Withdrawal',
+	'name': 'Pf',
 	'version': '12.0.0.0.1',
-	'summary': 'PF Withdrawal',
+	'summary': 'PF',
 	'category': 'Tools',
 	'author': 'Dexciss Technologies Pvt Ltd(@ RGupta and Sangita)',
 	'maintainer': 'dexciss Techno Solutions',

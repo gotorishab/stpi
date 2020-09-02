@@ -6,4 +6,4 @@ class HrSalaryRule(models.Model):
 
     pf_eve_type = fields.Selection(
         [('employee', 'employee'), ('voluntary', 'To voluntary'), ('employer', 'employer')
-         ],string="PF Type")
+         ],string="PF Withdrawal Type")

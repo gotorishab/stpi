@@ -26,7 +26,7 @@ class PfWidthdrawl(models.Model):
     rule=fields.Selection([('A','23(1)(A)'),
                            ('B','23(1)(B)'),
                            ('E','23(1)(E)')],string="Rules",track_visibility='always',)
-    pf_type = fields.Many2one('pf.type',string="PF Type",track_visibility='always')
+    pf_type = fields.Many2one('pf.type',string="PF Withdrawal Type",track_visibility='always')
 #     purpose=fields.Selection([('a','Purchase of dwelling sight/flat/ construction of house/ renovation of house'),
 #                               ('b','Repayment of loans'),
 #                               ('e','For marriage and Education')],
@@ -85,7 +85,7 @@ class PfWidthdrawl(models.Model):
         res =super(PfWidthdrawl, self).create(vals)
         sequence = ''
         seq = self.env['ir.sequence'].next_by_code('pf.widthdrawl')
-        sequence = 'PF Withdrawal - ' + str(seq)
+        sequence = 'PF - ' + str(seq)
         res.name = sequence
 
         contract_obj = self.env['hr.contract'].search([('employee_id', '=', res.employee_id.id)], limit=1)
@@ -102,7 +102,7 @@ class PfWidthdrawl(models.Model):
             if record.name:
                 name = record.name
             else:
-                name = 'PF Withdrawal'
+                name = 'PF'
             res.append((record.id, name))
         return res
 

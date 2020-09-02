@@ -4,12 +4,12 @@ class PfType(models.Model):
 
     _name="pf.type"
     _inherit = ['mail.thread', 'mail.activity.mixin']
-    _description = "PF Type"
+    _description = "PF Withdrawal Type"
 
 
-    name = fields.Char(string="PF Type",track_visibility='always')
+    name = fields.Char(string="PF Withdrawal Type",track_visibility='always')
     purpose = fields.Text(string="Purpose",track_visibility='always')
-    months = fields.Integer(string='Months')
+    months = fields.Integer(string='Month (Basic+DA)')
     voluntarily_contri = fields.Boolean('Volunteerly')
     employee_contri = fields.Boolean('Employee')
     employer_contri = fields.Boolean('Employer')

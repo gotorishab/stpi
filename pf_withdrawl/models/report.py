@@ -16,7 +16,7 @@ class LateComingReport(models.Model):
     # name = fields.Char(string="Holiday")
     # date = fields.Date(string="Date")
     ledger_for_year = fields.Many2one('date.range', string='Ledger for the year')
-    month = fields.Char(string='Month')
+    month = fields.Char(string='Month (Basic+DA)')
     epmloyee_contribution = fields.Char('Employee (A)')
     voluntary_contribution = fields.Char('Voluntary (B)')
     employer_contribution = fields.Char('Employer (C)')

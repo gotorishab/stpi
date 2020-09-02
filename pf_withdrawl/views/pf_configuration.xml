@@ -72,6 +72,7 @@
                     name="PF Interest Disbursement"
                     parent="pf_withdrawl_menu_configuration_menu_id"
                     action="action_hr_pf_interest_disbursement"
+                    groups="pf_withdrawl.group_pf_withdraw_approver"
                     sequence="1"
                     />
 

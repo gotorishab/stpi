@@ -9,7 +9,7 @@ class PfGet(models.TransientModel):
     """
 
     _name = "pf.withdrawal.get"
-    _description = "PF Withdrawal"
+    _description = "PF"
 
 
 

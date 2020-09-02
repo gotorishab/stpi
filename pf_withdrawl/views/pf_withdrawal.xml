@@ -84,7 +84,7 @@
         <field name="name">pf.widthdrawl.search</field>
         <field name="model">pf.widthdrawl</field>
         <field name="arch" type="xml">
-           <search string="PF withdrawal">
+           <search string="PF">
                 <filter string="PF Withdrwal" name="pf_withdrawl" domain="[('employee_id.user_id.id', '=', uid)]" />
                 <field name="employee_id" string="Employee"/>
                 <field name="branch_id" string="Branch"/>
@@ -154,7 +154,7 @@
     
     <!--pf.widthdrawl request by department-->
     <record id="groupby_department_action_employee" model="ir.actions.act_window">
-        <field name="name">PF withdrawal - By Department</field>
+        <field name="name">PF - By Department</field>
         <field name="res_model">pf.widthdrawl</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
@@ -290,7 +290,7 @@
             <field name="name">pf.employee.details.pivot</field>
             <field name="model">pf.employee.details</field>
             <field name="arch" type="xml">
-                <pivot string="PF Withdrawal Analysis">
+                <pivot string="PF Analysis">
                     <field name="employee_id" type="row"/>
                     <field name="date" type="row"/>
                     <field name="type" type="col"/>
@@ -310,13 +310,13 @@
 
      
     <menuitem id = "pf_withdrawl_menu"
-                  name = "PF withdrawal"
+                  name = "PF"
                   web_icon="pf_withdrawl,static/description/icon.png"
                   sequence="5"
                   />
                   
         <menuitem id ="pf_withdrawl_menu_id" 
-                    name="PF withdrawal"
+                    name="PF"
                     parent="pf_withdrawl_menu" 
                     sequence="1"
                   />
@@ -355,35 +355,35 @@
                     />
                   
         <menuitem id ="pf_withdrawl_employee_id" 
-                name="PF withdrawal by Employee"
+                name="PF by Employee"
                 parent="pf_withdrawl_menu_report_menu_id" 
                 sequence="7"
                 action="groupby_employee_action_employee"/>
         
         <menuitem id ="pf_withdrawl_by_department" 
                     action="groupby_department_action_employee"
-                    name="PF withdrawal By Department"
+                    name="PF By Department"
                     sequence="3"
                     parent="pf_withdrawl_menu_report_menu_id" 
                   />
         
         <menuitem id ="pf_withdrawl_by_branch" 
                     action="groupby_branch_action_employee"
-                    name="PF withdrawal By Branch"
+                    name="PF By Branch"
                     sequence="4"  
                     parent="pf_withdrawl_menu_report_menu_id" 
                   />
         
         <menuitem id ="pf_withdrawl_by_status" 
                     action="groupby_status_action_employee"
-                    name="PF withdrawal By Status"
+                    name="PF By Status"
                     sequence="5"  
                     parent="pf_withdrawl_menu_report_menu_id" 
                   />
                   
         <menuitem id ="pf_withdrawl_by_all" 
                     action="groupby_all_action_employee"
-                    name="PF withdrawal By All"
+                    name="PF By All"
                     sequence="6"  
                     parent="pf_withdrawl_menu_report_menu_id" 
                   />

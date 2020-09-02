@@ -4,7 +4,7 @@
         <field name="name">pf.type.tree</field>
         <field name="model">pf.type</field>
         <field name="arch" type="xml">
-            <tree string="PF Type">
+            <tree string="PF Withdrawal Type">
                 <field name="name"/>
                 <field name="purpose"/>
                 <field name="attachment_document"/>
@@ -21,7 +21,7 @@
         <field name="name">pf.type.form</field>
         <field name="model">pf.type</field>
         <field name="arch" type="xml">
-            <form string="PF Type">
+            <form string="PF Withdrawal Type">
                 <sheet>
                     <group>
                         <group>
@@ -49,7 +49,7 @@
 
 
     <record id="action_hr_pf_type" model="ir.actions.act_window">
-        <field name="name">PF Type</field>
+        <field name="name">PF Withdrawal Type</field>
         <field name="res_model">pf.type</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
@@ -57,7 +57,7 @@
 
     <menuitem id ="pf_type_menuitem" 
             action="action_hr_pf_type"
-            name="PF Type"
+            name="PF Withdrawal Type"
             sequence="2"
             parent="pf_withdrawl.pf_withdrawl_menu_configuration_menu_id"
           />
