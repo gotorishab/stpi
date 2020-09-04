@@ -16,7 +16,7 @@
         # 'views/reimbursement.xml',
         'views/reimbursement_main.xml',
         'views/reimbursement_attendence.xml',
-		# 'wizard/multi_approve.xml'
+		'wizard/multi_approve.xml'
 	],
 	'images': [],
 	'license': 'AGPL-3',
