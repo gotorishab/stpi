@@ -221,7 +221,7 @@ class Reimbursement(models.Model):
         res =super(Reimbursement, self).create(vals)
         search_id = self.env['reimbursement'].search(
             [('employee_id', '=', res.employee_id.id), ('name', '=', res.name), ('date_range', '=', res.date_range.id),
-             ('state', 'not in', ['rejected'])])
+             ('state', '!=', 'rejected')])
         for emp in search_id:
             if res.name != 'briefcase':
                 if emp:
