@@ -216,17 +216,17 @@ class Reimbursement(models.Model):
     @api.model
     def create(self, vals):
         res =super(Reimbursement, self).create(vals)
-        reimbursement_count = self.env['reimbursement'].search_count(
-            [('employee_id', '=', vals['employee_id']), ('name', '=', vals['name']), ('date_range', '=', vals['date_range']),
+        reimbursement_count = self.env['reimbursement'].search(
+            [('employee_id', '=', res.employee_id.id), ('name', '=', res.name), ('date_range', '=', res.date_range.id),
              ])
         if reimbursement_count:
-            raise ValidationError(_("The employee has already a pending installment"))
+            raise ValidationError(_("The employee has already applied for Reimbursement"))
         else:
             sequence = ''
             seq = self.env['ir.sequence'].next_by_code('reimbursement')
             sequence = 'REIMBURSEMENT - ' + str(seq)
             res.reimbursement_sequence = sequence
-            return res
+        return res
 
     @api.multi
     @api.depends('reimbursement_sequence')
