@@ -168,7 +168,7 @@ class Reimbursement(models.Model):
                             else:
                                 raise ValidationError("This reimbursement is already applied for this duration, please correct the dates")
                         else:
-                            raise ValidationError("This reimbursement is already applied for this d7uration, please correct the dates")
+                            raise ValidationError("This reimbursement is already applied for this duration, please correct the dates")
                     else:
                         raise ValidationError("This reimbursement is already applied for this duration, please correct the dates")
             else:
@@ -216,11 +216,17 @@ class Reimbursement(models.Model):
     @api.model
     def create(self, vals):
         res =super(Reimbursement, self).create(vals)
-        sequence = ''
-        seq = self.env['ir.sequence'].next_by_code('reimbursement')
-        sequence = 'REIMBURSEMENT - ' + str(seq)
-        res.reimbursement_sequence = sequence
-        return res
+        reimbursement_count = self.env['reimbursement'].search_count(
+            [('employee_id', '=', vals['employee_id']), ('name', '=', vals['name']), ('date_range', '=', vals['date_range']),
+             ])
+        if reimbursement_count:
+            raise ValidationError(_("The employee has already a pending installment"))
+        else:
+            sequence = ''
+            seq = self.env['ir.sequence'].next_by_code('reimbursement')
+            sequence = 'REIMBURSEMENT - ' + str(seq)
+            res.reimbursement_sequence = sequence
+            return res
 
     @api.multi
     @api.depends('reimbursement_sequence')
