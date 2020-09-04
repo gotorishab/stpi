@@ -27,11 +27,11 @@ class WizardLateComing(models.TransientModel):
     #     year_end = date(epoch_year, 3, 31)
     #     return year_end
 
-    @api.onchange('ledger_for_year')
-    def get_dates(self):
-        for rec in self:
-            rec.from_date = rec.ledger_for_year.date_start
-            rec.to_date = rec.ledger_for_year.date_end
+    # @api.onchange('ledger_for_year')
+    # def get_dates(self):
+    #     for rec in self:
+    #         rec.from_date = rec.ledger_for_year.date_start
+    #         rec.to_date = rec.ledger_for_year.date_end
 
     @api.onchange('employee_id')
     def get_branch_job(self):
@@ -46,6 +46,7 @@ class WizardLateComing(models.TransientModel):
     report_of = fields.Selection([('pf_ledger','PF Ledger'),
                                   ],string="Report On", default='pf_ledger')
     employee_id = fields.Many2one('hr.employee','Requested By', default=_default_employee)
+    interest_rate = fields.Float('Interest Rate')
     ledger_for_year = fields.Many2one('date.range', string='Ledger for the year')
     from_date = fields.Date(string='From Date')
     to_date = fields.Date(string='To Date')
@@ -53,23 +54,40 @@ class WizardLateComing(models.TransientModel):
     job_id = fields.Many2one('hr.job', string='Functional Designation')
 
 
+
+
+    @api.onchange('branch_id','ledger_for_year')
+    @api.constrains('branch_id','ledger_for_year')
+    def check_existing_branch_sr(self):
+        self.from_date = self.ledger_for_year.date_start
+        self.to_date = self.ledger_for_year.date_end
+        company = self.env['res.company'].search([('id', '=', self.env.user.company_id.id)], limit=1)
+        if company:
+            for com in company:
+                if self.ledger_for_year.date_start and self.ledger_for_year.date_end and self.branch_id:
+                    for line in com.pf_table:
+                        if line.from_date >= self.ledger_for_year.date_start and line.to_date <= self.ledger_for_year.date_end:
+                            self.interest_rate = line.interest_rate
+
+
+
     @api.multi
     def confirm_report(self):
         for rec in self:
-            X = 0.06
-            company = self.env['res.company'].search([('id', '=', self.env.user.company_id.id)], limit=1)
-            print('=============company===============', company)
-            if company:
-                print('=============True1===============')
-                for com in company:
-                    print('=============True2===============')
-                    for line in com.pf_table:
-                        print('=============True3===============')
-                        if line.from_date >= rec.ledger_for_year.date_start and line.to_date <= rec.ledger_for_year.date_end:
-                            print('=============True4===============')
-                            X = line.interest_rate
-                            print('=============Interest rate===============',X)
-
+            # X = 0.00
+            # company = self.env['res.company'].search([('id', '=', self.env.user.company_id.id)], limit=1)
+            # print('=============company===============', company)
+            # if company:
+            #     print('=============True1===============')
+            #     for com in company:
+            #         print('=============True2===============')
+            #         for line in com.pf_table:
+            #             print('=============True3===============')
+            #             if line.from_date >= rec.ledger_for_year.date_start and line.to_date <= rec.ledger_for_year.date_end:
+            #                 print('=============True4===============')
+            X = rec.interest_rate
+            # print('=============Interest rate===============',X)
+            #
             print('=============X===============', X)
             dr = self.env['pf.ledger.report'].search([('employee_id', '=', rec.employee_id.id),('ledger_for_year', '=', rec.ledger_for_year.id)])
             for lines in dr:
@@ -83,7 +101,7 @@ class WizardLateComing(models.TransientModel):
             #     X = p.interest
             print('===============from date initial===================', from_date)
             print('===============To date initial===================', rec.to_date)
-            while from_date < rec.to_date:
+            while from_date < to_date:
                 print('===============from date===================',from_date)
                 print('===============To date===================',rec.to_date)
                 pay_rules = self.env['hr.payslip.line'].search(

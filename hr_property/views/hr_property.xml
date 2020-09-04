@@ -43,6 +43,7 @@
                         <group>
                             <field name="department"/>
                             <field name="present_pay"/>
+                            <field name="date_range"/>
                         </group>
                     </group>
                     <notebook>

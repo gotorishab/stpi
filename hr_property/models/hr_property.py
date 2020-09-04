@@ -17,7 +17,7 @@ class HrProperty(models.Model):
     department = fields.Many2one('hr.department', string="Department", compute='compute_des_dep', store=True,track_visibility='always')
     branch_id = fields.Many2one('res.branch', string="Branch", compute='compute_des_dep', store=True,track_visibility='always')
     present_pay=fields.Float(string="Present Pay", compute='_compute_present_pay',track_visibility='always')
-
+    date_range = fields.Many2one('date.range',string='Date Range')
     dist_name = fields.Char(string="Name of the Distt. Subdivision, Tehsil & Vill. In which the property is situated.",track_visibility='onchange')
     house_build = fields.Char(string="Housing and Building",track_visibility='onchange')
     other_lands = fields.Char(string="Other Lands",track_visibility='onchange')

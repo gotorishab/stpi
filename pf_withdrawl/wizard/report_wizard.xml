@@ -23,7 +23,7 @@
                         <field name="job_id" readonly="1"/>
                     </group>
                     <group>
-                        <field name="ledger_for_year" required="1"/>
+                        <field name="ledger_for_year" required="1" domain="[('type_id.name', '=', 'Fiscal Year')]"/>
                         <field name="from_date" readonly="1"/>
                         <field name="to_date" readonly="1"/>
                     </group>

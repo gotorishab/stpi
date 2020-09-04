@@ -73,13 +73,13 @@ class PfInterestDisbursement(models.Model):
             pf_details_ids = []
             pf_details_ids_cepf = []
             employee_interest = 0
-            company = self.env['res.company'].search([('id', '=', self.env.user.company_id.id)], limit=1)
-            if company:
-                for com in company:
-                    if rec.date_range.date_start and rec.date_range.date_end and rec.branch_id:
-                        for line in com.pf_table:
-                            if line.from_date >= rec.date_range.date_start and line.to_date <= rec.date_range.date_end:
-                                x = line.interest_rate
+            # company = self.env['res.company'].search([('id', '=', self.env.user.company_id.id)], limit=1)
+            # if company:
+            #     for com in company:
+            #         if rec.date_range.date_start and rec.date_range.date_end and rec.branch_id:
+            #             for line in com.pf_table:
+            #                 if line.from_date >= rec.date_range.date_start and line.to_date <= rec.date_range.date_end:
+            x = rec.interest_rate
             print('===============X===================', x)
             pf_emp = self.env['pf.employee'].search([('employee_id.branch_id', 'in', rec.branch_id.ids)])
             print('===============pf_emp===================', pf_emp)
@@ -89,7 +89,7 @@ class PfInterestDisbursement(models.Model):
                 to_date = rec.date_range.date_end
                 print('==============count========================')
                 print('==============line.employee_id.id========================',line.employee_id.name)
-                while from_date < rec.date_range.date_end:
+                while from_date < to_date:
                     print('===============from date===================', from_date)
                     print('===============To date===================', rec.date_range.date_end)
                     pay_rules = self.env['hr.payslip.line'].search(

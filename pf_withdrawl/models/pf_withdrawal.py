@@ -87,11 +87,15 @@ class PfWidthdrawl(models.Model):
         seq = self.env['ir.sequence'].next_by_code('pf.widthdrawl')
         sequence = 'PF - ' + str(seq)
         res.name = sequence
-
         contract_obj = self.env['hr.contract'].search([('employee_id', '=', res.employee_id.id)], limit=1)
         maximum_allowed = contract_obj.updated_basic * res.pf_type.months
         if res.advance_amount > maximum_allowed:
             raise ValidationError("You are not able to  take advance amount more than %s" % maximum_allowed)
+        pf_count = self.env['pf.widthdrawl'].search_count(
+            [('employee_id', '=', vals['employee_id']), ('state', '!=', 'approved'),
+             ])
+        if pf_count:
+            raise ValidationError(_("The employee has already a PF pending"))
         return res
 
     @api.multi
