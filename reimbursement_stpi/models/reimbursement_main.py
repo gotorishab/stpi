@@ -157,20 +157,23 @@ class Reimbursement(models.Model):
     @api.multi
     def button_submit(self):
         for rec in self:
-            search_id = self.env['reimbursement'].search([('employee_id', '=', rec.employee_id.id), ('name', '=', rec.name), ('state', 'not in', ['rejected'])])
+            search_id = self.env['reimbursement'].search([('employee_id', '=', rec.employee_id.id), ('name', '=', rec.name), ('date_range', '=', rec.date_range.id), ('state', 'not in', ['rejected'])])
             index = False
             for emp in search_id:
                 if rec.name != 'briefcase':
-                    if rec.date_range.date_start <= emp.date_range.date_start or rec.date_range.date_start >= emp.date_range.date_end:
-                        if rec.date_range.date_end <= emp.date_range.date_start or rec.date_range.date_end >= emp.date_range.date_end:
-                            if not (rec.date_range.date_start <= emp.date_range.date_start and rec.date_range.date_end >= emp.date_range.date_end):
-                                index = True
-                            else:
-                                raise ValidationError("This reimbursement is already applied for this duration, please correct the dates")
-                        else:
-                            raise ValidationError("This reimbursement is already applied for this duration, please correct the dates")
-                    else:
+                    if emp:
                         raise ValidationError("This reimbursement is already applied for this duration, please correct the dates")
+
+                    # if rec.date_range.date_start <= emp.date_range.date_start or rec.date_range.date_start >= emp.date_range.date_end:
+                    #     if rec.date_range.date_end <= emp.date_range.date_start or rec.date_range.date_end >= emp.date_range.date_end:
+                    #         if not (rec.date_range.date_start <= emp.date_range.date_start and rec.date_range.date_end >= emp.date_range.date_end):
+                    #             index = True
+                    #         else:
+                    #             raise ValidationError("This reimbursement is already applied for this duration, please correct the dates")
+                    #     else:
+                    #         raise ValidationError("This reimbursement is already applied for this duration, please correct the dates")
+                    # else:
+                    #     raise ValidationError("This reimbursement is already applied for this duration, please correct the dates")
             else:
                 index = True
             if index == True:
