@@ -6,4 +6,4 @@ class InheritEmployee(models.Model):
     _inherit = 'hr.employee'
 
     appraisal_reporting_officer = fields.Many2one('hr.employee', string='Appraisal Reporting Officer')
-    appraisal_approving_officer = fields.Many2one('hr.employee', string='Appraisal Approving Officer')
+    appraisal_approving_officer = fields.Many2one('hr.employee', string='Appraisal Reviewing Officer')
