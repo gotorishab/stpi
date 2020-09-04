@@ -157,7 +157,7 @@ class Reimbursement(models.Model):
     @api.multi
     def button_submit(self):
         for rec in self:
-            search_id = self.env['reimbursement'].search([('employee_id', '=', rec.employee_id.id), ('name', '=', rec.name), ('state', 'not in', ['draft','rejected'])])
+            search_id = self.env['reimbursement'].search([('employee_id', '=', rec.employee_id.id), ('name', '=', rec.name), ('state', 'not in', ['rejected'])])
             index = False
             for emp in search_id:
                 if rec.name != 'briefcase':
