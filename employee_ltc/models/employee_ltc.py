@@ -116,7 +116,6 @@ class EmployeeLtcAdvance(models.Model):
                     line.amount = (((float(total_basic_ltc)/30)*float(line.no_of_days)))
                     print('=======================================Updated basic amount=====================',line.total_basic_salary)
                     print('=======================================Updated basic amount=====================',line.amount)
-
                 for i in leave_my:
                     sum += i.number_of_days
                 line.total_leaves = str(sum)
@@ -131,7 +130,7 @@ class EmployeeLtcAdvance(models.Model):
                 sum = 0
                 # leave_my = self.env['hr.leave.report'].search([('employee_id', '=', line.employee_id.id)])
                 # total_basic = self.env['monthly.salary.structure'].search([('employee_id','=',line.employee_id.id),('name', '=', 'Basic Salary')],order='employee_id desc', limit=1)
-                total_wage = self.env['hr.contract'].search([('employee_id','=',line.employee_id.id),('state','=','open'),('date_start', '<=', line.date),('date_end', '>=', line.date)], limit=1)
+                total_wage = self.env['hr.contract'].search([('employee_id','=',line.employee_id.id),('state','=','open'),('date_start', '<=', line.date)], limit=1)
                 if total_wage:
                     print('=======================================Updated basic=====================')
                     line.total_basic_salary = total_wage.updated_basic
@@ -161,19 +160,20 @@ class EmployeeLtcAdvance(models.Model):
     @api.multi
     def button_approved(self):
         for res in self:
-            # val_id = self.env['hr.leave.type'].search([
-            #         ('leave_type', '=', 'Earned Leave')
-            #     ], limit=1)
-            # allocate_leave = self.env['hr.leave.allocation'].create({'holiday_status_id': val_id.id,
-            #                                                          'holiday_type': 'employee',
-            #                                                          'employee_id': res.employee_id.id,
-            #                                                          'number_of_days_display':(-1) * res.no_of_days,
-            #                                                          'number_of_days': (-1) * res.no_of_days,
-            #                                                          'name': 'Against LTC',
-            #                                                          'notes': 'As Per Leave Policy'
-            #                                                          })
-            # print("allocationnnnnnnnnnnnn111111111111111", allocate_leave)
-            # allocate_leave.sudo().action_approve()
+            if res.el_encashment == 'yes':
+                val_id = self.env['hr.leave.type'].search([
+                        ('leave_type', '=', 'Earned Leave')
+                    ], limit=1)
+                allocate_leave = self.env['hr.leave.allocation'].create({'holiday_status_id': val_id.id,
+                                                                         'holiday_type': 'employee',
+                                                                         'employee_id': res.employee_id.id,
+                                                                         'number_of_days_display':(-1) * res.no_of_days,
+                                                                         'number_of_days': (-1) * res.no_of_days,
+                                                                         'name': 'Against LTC',
+                                                                         'notes': 'As Per Leave Policy'
+                                                                         })
+                print("allocationnnnnnnnnnnnn111111111111111", allocate_leave)
+                allocate_leave.sudo().action_approve()
 
             if res.are_you_coming == True:
                 create_ledger_self = self.env['ledger.ltc'].create(
