@@ -11,7 +11,7 @@ class EmployeeLtcAdvance(models.Model):
     def _default_employee(self):
         return self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
 
-    @api.onchange('block_year')
+    @api.onchange('block_year','slect_leave')
     def change_slect_leave(self):
         return {'domain': {'slect_leave': [('ltc', '=', True),('state', '!=', 'validate'),('employee_id', '=', self.employee_id.id),('request_date_from', '>=', self.block_year.date_start),('request_date_to', '<=', self.block_year.date_end)
             ]}}
@@ -108,7 +108,7 @@ class EmployeeLtcAdvance(models.Model):
                 sum = 0
                 leave_my = self.env['hr.leave.report'].search([('employee_id', '=', line.employee_id.id)])
                 # total_basic = self.env['monthly.salary.structure'].search([('employee_id','=',line.employee_id.id),('name', '=', 'Basic Salary')],order='employee_id desc', limit=1)
-                total_wage = self.env['hr.contract'].search([('employee_id','=',line.employee_id.id),('state','=','open'),('date_start', '<=', line.date),('date_end', '>=', line.date)], limit=1)
+                total_wage = self.env['hr.contract'].search([('employee_id','=',line.employee_id.id),('state','=','open'),('date_start', '<=', line.date)], limit=1)
                 if total_wage:
                     print('=======================================Updated basic=====================')
                     line.total_basic_salary = total_wage.updated_basic

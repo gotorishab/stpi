@@ -11,7 +11,7 @@ from dateutil.relativedelta import relativedelta
 
 class HrLeave(models.Model):
     _inherit = 'hr.leave'
-    _description = 'HR Leave Changes For STPI'
+    _description = 'Leaves'
 
     attachement = fields.Boolean(string="attachment")
     attachement_proof = fields.Binary(string="Attachment Proof")

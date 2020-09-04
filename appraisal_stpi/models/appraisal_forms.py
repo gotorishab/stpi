@@ -40,11 +40,11 @@ class AppraisalForms(models.Model):
     dis_mod = fields.Text('Dis Mod', track_visibility='always')
     pen_pic_rev = fields.Text('Pen Picture of review officer', track_visibility='always')
     overall_rate_num = fields.Integer('Overall Rate', compute='compue_overal_rate', track_visibility='always')
-    overall_grade = fields.Char('Grade', compute='compue_overal_rate', track_visibility='always')
+    overall_grade = fields.Char('Grade', compute='compue_overal_rate')
     kpia_ids = fields.One2many('appraisal.kpi','kpia_id', string='KPIA IDS', track_visibility='always')
     app_ids = fields.One2many('targets.achievement','app_id', string='Targets/Achievement', track_visibility='always')
-    state = fields.Selection([('draft', 'Draft'), ('self_review', 'Self Reviewed'), ('line_manager_review', 'Line Manager Reviewed'),
-                              ('hod_review', 'HOD Reviewed'), ('completed', 'Completed'), ('rejected', 'Rejected')
+    state = fields.Selection([('draft', 'Draft'), ('self_review', 'Self Reviewed'), ('line_manager_review', 'Reporting Authority Reviewed'),
+                              ('hod_review', 'Reviewing Authority Reviewed'), ('completed', 'Completed'), ('rejected', 'Rejected')
                               ], required=True, default='draft', track_visibility='always', string='Status')
 
 
@@ -205,8 +205,8 @@ class KPIForm(models.Model):
                                    ('9', '9'),
                                    ('10', '10'),], 'Reviewing Authority')
     state = fields.Selection(
-        [('draft', 'Draft'), ('self_review', 'Self Reviewed'), ('line_manager_review', 'Line Manager Reviewed'),
-         ('hod_review', 'HOD Reviewed'), ('completed', 'Completed'), ('rejected', 'Rejected')
+        [('draft', 'Draft'), ('self_review', 'Self Reviewed'), ('line_manager_review', 'Reporting Authority Reviewed'),
+         ('hod_review', 'Reviewing Authority Reviewed'), ('completed', 'Completed'), ('rejected', 'Rejected')
          ],default='draft', string='Status')
 
     reviewing_auth_user = fields.Many2one('res.users')

@@ -13,7 +13,7 @@
             <field name="name">Leave Branch</field>
             <field name="model_id" ref="leaves_stpi.model_hr_leave"/>
             <field name="domain_force">['|',  ('branch_id','=',user.default_branch_id.id), ('branch_id','in',[g.id for g in user.branch_ids])]</field>
-            <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+            <field name="global" eval="True"/>
         </record>
 
         <record id="make_invisible" model="res.groups">

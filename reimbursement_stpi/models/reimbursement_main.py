@@ -160,7 +160,7 @@ class Reimbursement(models.Model):
             search_id = self.env['reimbursement'].search([('employee_id', '=', rec.employee_id.id), ('name', '=', rec.name), ('date_range', '=', rec.date_range.id), ('state', '!=', 'rejected')])
             index = False
             for emp in search_id:
-                if rec.name != 'briefcase':
+                if rec.name != 'briefcase' or rec.name != 'medical':
                     if emp:
                         raise ValidationError("This reimbursement is already applied for this duration, please correct the dates")
 
@@ -223,7 +223,7 @@ class Reimbursement(models.Model):
             [('employee_id', '=', res.employee_id.id), ('name', '=', res.name), ('date_range', '=', res.date_range.id),
              ('state', '!=', 'rejected')])
         for emp in search_id:
-            if res.name != 'briefcase':
+            if res.name != 'briefcase' or res.name != 'medical':
                 if emp:
                     raise ValidationError(
                         "This reimbursement is already applied for this duration, please correct the dates")
