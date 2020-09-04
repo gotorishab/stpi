@@ -21,7 +21,7 @@
         <field name="arch" type="xml">
             <form string="HR appraisal">
                 <header>
-                    <button name="button_self_reviewed" string="Reviewed(Self)" class="oe_highlight" type="object" state="draft"/>
+                    <button name="button_self_reviewed" string="Reviewed(Self)" class="oe_highlight" type="object" states="draft"/>
                      <button name="button_line_manager_reviewed" string="Reviewed(Line Manager)" class="oe_highlight" type="object" states="self_review" groups="appraisal_stpi.group_line_manager_appraisal"/>
                     <button name="button_hod_reviewed" string="Reviewed(HoD Reviewed)" class="oe_highlight" type="object" states="line_manager_review" groups="appraisal_stpi.group_hod_appraisal"/>
                     <button name="button_completed" string="Reviewed(Complete)" class="oe_highlight" type="object" states="hod_review" groups="appraisal_stpi.group_manager_appraisal"/>
