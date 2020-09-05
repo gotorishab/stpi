@@ -209,7 +209,7 @@ class KPIForm(models.Model):
          ('reviewing_authority_review', 'Reviewing Authority Reviewed'), ('completed', 'Completed'), ('rejected', 'Rejected')
          ],default='draft', string='Status')
 
-    reviewing_auth_user = fields.Many2one('res.users', compute='get_user_name')
+    reviewing_auth_user = fields.Many2one('res.users', compute='get_user_name', store=True)
 
 
 
