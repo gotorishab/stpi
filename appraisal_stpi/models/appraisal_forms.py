@@ -163,6 +163,16 @@ class AppraisalForms(models.Model):
             rec.write({'state': 'reporting_authority_review'})
             for line in rec.kpia_ids:
                 line.write({'state': 'reporting_authority_review'})
+            return {
+                'name': 'My Appraisal - Self Reviewed',
+                'view_type': 'form',
+                'view_mode': 'tree',
+                'res_model': 'appraisal.main',
+                'type': 'ir.actions.act_window',
+                'target': 'current',
+                'view_id': self.env.ref('hr_applicant.view_employee_relative_tree').id,
+                'domain': [('state','=','self_review')],
+                }
 
     @api.multi
     def button_reviewing_authority_reviewed(self):
@@ -170,6 +180,17 @@ class AppraisalForms(models.Model):
             rec.write({'state': 'reviewing_authority_review'})
             for line in rec.kpia_ids:
                 line.write({'state': 'reviewing_authority_review'})
+                line.write({'reviewing_auth_user': rec.env.uid})
+            return {
+                'name': 'My Appraisal - Reporting Authority Reviewed',
+                'view_type': 'form',
+                'view_mode': 'tree',
+                'res_model': 'appraisal.main',
+                'type': 'ir.actions.act_window',
+                'target': 'current',
+                'view_id': self.env.ref('hr_applicant.view_employee_relative_tree').id,
+                'domain': [('state','=','reporting_authority_review')],
+                }
 
     @api.multi
     def button_completed(self):
@@ -182,6 +203,16 @@ class AppraisalForms(models.Model):
             rec.write({'state': 'completed'})
             for line in rec.kpia_ids:
                 line.write({'state': 'completed'})
+            return {
+                'name': 'My Appraisal - Reviewing Authority Reviewed',
+                'view_type': 'form',
+                'view_mode': 'tree',
+                'res_model': 'appraisal.main',
+                'type': 'ir.actions.act_window',
+                'target': 'current',
+                'view_id': self.env.ref('hr_applicant.view_employee_relative_tree').id,
+                'domain': [('state','=','reviewing_authority_review')],
+                }
 
     @api.multi
     def button_reject(self):
@@ -226,14 +257,14 @@ class KPIForm(models.Model):
          ('reviewing_authority_review', 'Reviewing Authority Reviewed'), ('completed', 'Completed'), ('rejected', 'Rejected')
          ],default='draft', string='Status')
 
-    reviewing_auth_user = fields.Many2one('res.users', compute='get_user_name', store=True)
+    reviewing_auth_user = fields.Many2one('res.users', store=True)
 
 
-
-    @api.depends('reviewing_auth')
-    def get_user_name(self):
-        for rec in self:
-            rec.reviewing_auth_user = rec.env.uid
+    #
+    # @api.depends('reviewing_auth')
+    # def get_user_name(self):
+    #     for rec in self:
+    #         rec.reviewing_auth_user = rec.env.uid
 
 
 
