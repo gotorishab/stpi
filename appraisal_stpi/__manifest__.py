@@ -12,6 +12,7 @@
 	'data': [
 		'security/ir.model.access.csv',
 		'security/security.xml',
+        'views/hr_employee.xml',
         'views/appraisal_forms.xml',
         'views/appraisal_template.xml',
         'views/overall_rate.xml',
