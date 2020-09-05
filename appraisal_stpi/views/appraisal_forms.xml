@@ -47,7 +47,7 @@
                         </group>
                     </group>
                     <notebook>
-                        <page string = "Officer Reported" attrs="{'readonly':[('state','not in',('draft'))]}">
+                        <page string = "Officer Reported" attrs="{'readonly':[('state','!=','draft')]}">
 <!--                            <group>-->
                                 <separator string="Brief description of duties"/>
                                 <newline/>
@@ -97,7 +97,7 @@
                                 <field name="overall_rate_num" class="oe_subtotal_footer_separator"/>
                             </group>
                         </page>
-                        <page string="GENERAL" attrs="{'invisible':[('state','in',('draft'))],'readonly':[('state','not in',('self_review'))]}">
+                        <page string="GENERAL" attrs="{'invisible':[('state','in',('draft'))],'readonly':[('state','!=','self_review')]}">
                             <separator string="Please comment on the officer’s accessibility to the public and responsiveness to their needs)."/>
                             <newline/>
                             <field name="comment_oa" nolabel="1"/>
@@ -136,7 +136,7 @@
                             <br />
                             <br />
                         </page>
-                        <page string="Remarks of the reviewing officer" attrs="{'invisible':[('state','in',('draft','self_review'))],'readonly':[('state','not in',('reporting_authority_review'))]}">
+                        <page string="Remarks of the reviewing officer" attrs="{'invisible':[('state','in',('draft','self_review'))],'readonly':[('state','!=','reporting_authority_review')]}">
                             <separator string="Length of service under the Reviewing Officer"/>
                             <field name="len_rev" nolabel="1"/>
                             <newline/>
