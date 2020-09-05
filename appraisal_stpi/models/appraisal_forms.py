@@ -40,7 +40,7 @@ class AppraisalForms(models.Model):
     dis_mod = fields.Text('Dis Mod', track_visibility='always')
     pen_pic_rev = fields.Text('Pen Picture of review officer', track_visibility='always')
     overall_rate_num = fields.Integer('Overall Rate', compute='compue_overal_rate', track_visibility='always')
-    overall_grade = fields.Char('Grade', compute='compue_overal_rate')
+    overall_grade = fields.Char('Grade')
     kpia_ids = fields.One2many('appraisal.kpi','kpia_id', string='KPIA IDS', track_visibility='always')
     app_ids = fields.One2many('targets.achievement','app_id', string='Targets/Achievement', track_visibility='always')
     state = fields.Selection([('draft', 'Draft'), ('self_review', 'Self Reviewed'), ('reporting_authority_review', 'Reporting Authority Reviewed'),
@@ -209,11 +209,11 @@ class KPIForm(models.Model):
          ('reviewing_authority_review', 'Reviewing Authority Reviewed'), ('completed', 'Completed'), ('rejected', 'Rejected')
          ],default='draft', string='Status')
 
-    reviewing_auth_user = fields.Many2one('res.users')
+    reviewing_auth_user = fields.Many2one('res.users', compute='get_user_name')
 
 
 
-    @api.onchange('reviewing_auth')
+    @api.depends('reviewing_auth')
     def get_user_name(self):
         for rec in self:
             rec.reviewing_auth_user = rec.env.uid
