@@ -47,22 +47,22 @@
                         </group>
                     </group>
                     <notebook>
-                        <page string = "Officer Reported" attrs="{'readonly':[('state','!=','draft')]}">
+                        <page string = "Officer Reported">
 <!--                            <group>-->
                                 <separator string="Brief description of duties"/>
                                 <newline/>
-                                <field name="duties_description" nolabel="1"/>
+                                <field name="duties_description" nolabel="1" attrs="{'readonly':[('state','!=','draft')]}"/>
                                 <newline/>
                                 <br />
                                 <br />
                                 <br />
                                 <separator string="Please  specify  targets/objectives/goals  (in  quantitative  or  other  terms)  of  work  you  set  for  yourself or that were set for you, eight to ten items of work in the order of priority and your achievement against each target. (Example: Annual Action Plan for your Division)"/>
                                 <newline/>
-                                <field name="app_ids" nolabel="1">
+                                <field name="app_ids" nolabel="1" attrs="{'readonly':[('state','!=','draft')]}">
                                     <tree editable="bottom">
                                         <field name="app_id" invisible="1"/>
-                                        <field name="targets"/>
-                                        <field name="achievements"/>
+                                        <field name="targets" required="1"/>
+                                        <field name="achievements" required="1"/>
                                     </tree>
                                 </field>
                                 <newline/>
@@ -71,14 +71,14 @@
                                 <br />
                                 <separator string="Please  state  briefly,  the  shortfalls  with  reference  to  the  targets/objective/goals  referred  to  in  item  2.  Please  specify  constraints,  if  any, in achieving the targets."/>
                             <newline/>
-                            <field name="sortfalls" nolabel="1"/>
+                            <field name="sortfalls" nolabel="1" attrs="{'readonly':[('state','!=','draft')]}"/>
                                 <newline/>
                                 <br />
                                 <br />
                                 <br />
                                 <separator string="Please  state  whether  the  annual  return  on  Immovable  property  for  the  preceding  calendar  year  was  filed  within  the  prescribed  date  i.e  31st  January  of  the  year  following  the  calendar  year. If not, the date of filling the return should be given"/>
                             <newline/>
-                            <field name="immovatable_property" nolabel="1"/>
+                            <field name="immovatable_property" nolabel="1" attrs="{'readonly':[('state','!=','draft')]}"/>
 <!--                            </group>-->
                         </page>
                         <page string = "KPI/KRA">
@@ -97,24 +97,24 @@
                                 <field name="overall_rate_num" class="oe_subtotal_footer_separator"/>
                             </group>
                         </page>
-                        <page string="GENERAL" attrs="{'invisible':[('state','in',('draft'))],'readonly':[('state','!=','self_review')]}">
+                        <page string="GENERAL" attrs="{'invisible':[('state','in',('draft'))]}">
                             <separator string="Please comment on the officer’s accessibility to the public and responsiveness to their needs)."/>
                             <newline/>
-                            <field name="comment_oa" nolabel="1"/>
+                            <field name="comment_oa" nolabel="1" attrs="{'readonly':[('state','!=','self_review')]}"/>
                             <newline/>
                             <br />
                             <br />
                             <br />
                             <separator string="Please  give  recommendations  for  training  with  a  view  to  further  improving  the  effectiveness and capabilities of the officers)."/>
                             <newline/>
-                            <field name="train_gen" nolabel="1"/>
+                            <field name="train_gen" nolabel="1" attrs="{'readonly':[('state','!=','self_review')]}"/>
                             <newline/>
                             <br />
                             <br />
                             <br />
                             <separator string="State of Health"/>
                             <newline/>
-                            <field name="soh" nolabel="1"/>
+                            <field name="soh" nolabel="1" attrs="{'readonly':[('state','!=','self_review')]}"/>
                             <newline/>
                             <br />
                             <br />
@@ -123,22 +123,22 @@
                             <newline/>
                             <separator string="(Please comment on the integrity of the officer)"/>
                             <newline/>
-                            <field name="inte_general" nolabel="1"/>
+                            <field name="inte_general" nolabel="1" attrs="{'readonly':[('state','!=','self_review')]}"/>
                             <newline/>
                             <br />
                             <br />
                             <br />
                             <separator string="Pen picture by Reporting Officer (in about 100 words) on the  overall  qualities  of  the  officer  including  area  of  strengths  and  lesser  strength,  extraordinary  achievement, significant failures (ref: A and B  of Part –3) and attitude towards weaker sections. "/>
                             <newline/>
-                            <field name="pen_picture" nolabel="1"/>
+                            <field name="pen_picture" nolabel="1" attrs="{'readonly':[('state','!=','self_review')]}"/>
                             <newline/>
                             <br />
                             <br />
                             <br />
                         </page>
-                        <page string="Remarks of the reviewing officer" attrs="{'invisible':[('state','in',('draft','self_review'))],'readonly':[('state','!=','reporting_authority_review')]}">
+                        <page string="Remarks of the reviewing officer" attrs="{'invisible':[('state','in',('draft','self_review'))]}">
                             <separator string="Length of service under the Reviewing Officer"/>
-                            <field name="len_rev" nolabel="1"/>
+                            <field name="len_rev" nolabel="1" attrs="{'readonly':[('state','!=','reporting_authority_review')]}"/>
                             <newline/>
                             <br />
                             <br />
@@ -147,21 +147,21 @@
                             <newline/>
                             <separator string="in  case  you  do  not  agree  with  any  of  the  numerical  assessment  of  attributes  please  record  your  assessment  in    the  column  provided  for  you  in  that  section  and  initial your entries."/>
                             <newline/>
-                            <field name="ag_no" nolabel="1" widget="radio"/>
+                            <field name="ag_no" nolabel="1" widget="radio" attrs="{'readonly':[('state','!=','reporting_authority_review')]}"/>
                             <newline/>
                             <br />
                             <br />
                             <br />
                             <separator string="In case of disagreement,  please specify the reasons.  Is there anything you wish to modify or add? "/>
                             <newline/>
-                            <field name="dis_mod" nolabel="1"/>
+                            <field name="dis_mod" nolabel="1" attrs="{'readonly':[('state','!=','reporting_authority_review')]}"/>
                             <newline/>
                             <br />
                             <br />
                             <br />
                             <separator string="Pen picture by Reviewing Officer. Please comment (in about 100 words) on the overall qualities  of  the  officer  including  area  of  strengths  and  lesser  strength  and  his  attitude  towards  weaker sections."/>
                             <newline/>
-                            <field name="pen_pic_rev" nolabel="1"/>
+                            <field name="pen_pic_rev" nolabel="1" attrs="{'readonly':[('state','!=','reporting_authority_review')]}"/>
                             <newline/>
                             <br />
                             <br />
