@@ -54,7 +54,7 @@ class AppraisalForms(models.Model):
             for line in rec.kpia_ids:
                 avg = (int(line.reporting_auth) + int(line.reviewing_auth))/2
                 rec.overall_rate_num = int(avg)
-            over_rate = self.env['overall.rate'].search([('from_int', '<=', rec.overall_rate_num), ('to_int', '>=', rec.overall_rate_num)], limit=1)
+            over_rate = self.env['overall.rate'].sudo().search([('from_int', '<=', rec.overall_rate_num), ('to_int', '>=', rec.overall_rate_num)], limit=1)
             rec.overall_grade = over_rate.name
 
 
@@ -164,6 +164,11 @@ class AppraisalForms(models.Model):
     @api.multi
     def button_completed(self):
         for rec in self:
+            for line in rec.kpia_ids:
+                avg = (int(line.reporting_auth) + int(line.reviewing_auth))/2
+                rec.overall_rate_num = int(avg)
+            over_rate = self.env['overall.rate'].sudo().search([('from_int', '<=', rec.overall_rate_num), ('to_int', '>=', rec.overall_rate_num)], limit=1)
+            rec.overall_grade = over_rate.name
             rec.write({'state': 'completed'})
             for line in rec.kpia_ids:
                 line.write({'state': 'completed'})
