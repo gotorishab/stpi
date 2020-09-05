@@ -90,7 +90,7 @@
                                     <field name="kpi" readonly="1"/>
                                     <field name="reporting_auth" attrs="{'readonly':[('state','not in',('self_review'))]}"/>
                                     <field name="reviewing_auth" attrs="{'readonly':[('state','not in',('reporting_authority_review'))]}"/>
-                                    <field name="reviewing_auth_user"/>
+                                    <field name="reviewing_auth_user" attrs="{'invisible':[('state','not in',('completed'))]}"/>
                                 </tree>
                             </field>
                             <group class="oe_subtotal_footer oe_right" colspan="2" >
