@@ -146,6 +146,16 @@ class AppraisalForms(models.Model):
             rec.write({'state': 'self_review'})
             for line in rec.kpia_ids:
                 line.write({'state': 'self_review'})
+            return {
+                'name': 'My Appraisal - Draft',
+                'view_type': 'form',
+                'view_mode': 'tree',
+                'res_model': 'appraisal.main',
+                'type': 'ir.actions.act_window',
+                'target': 'current',
+                'view_id': self.env.ref('hr_applicant.view_employee_relative_tree').id,
+                'domain': [('state','=','draft')],
+                }
 
     @api.multi
     def button_reporting_authority_reviewed(self):
@@ -199,6 +209,8 @@ class KPIForm(models.Model):
                                    ('9', '9'),
                                    ('10', '10'),
                                        ], 'Reporting Authority')
+    weightage = fields.Float()
+    score = fields.Float()
     reviewing_auth = fields.Selection([('1', '1'),
                                    ('2', '2'),
                                    ('3', '3'),
