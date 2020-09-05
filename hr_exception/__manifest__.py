@@ -11,7 +11,7 @@
  'website': 'http://www.Dexciss.com',
  'depends': ['hr_employee_requisition', 'base_exception_and_approval', 'ohrms_loan', 'tour_request','birthday_check','hr_payroll',
              'hr_employee_transfer','employee_vehicle_request','reimbursement_stpi','hr_holidays','employee_ltc','pf_withdrawl','tds',
-             'employee_profile_stpi','hr_property','loan_close_stpi','appraisal_stpi'],
+             'employee_profile_stpi','hr_property','loan_close_stpi'],
  'license': 'AGPL-3',
 'description':"""
                 updated by smehata 23/08/19 add Loan Exception
@@ -41,7 +41,7 @@
             'view/hr_payslip_batch_view.xml',
             'view/hr_property.xml',
             'view/loan_close.xml',
-            'view/appraisal1.xml',
+            # 'view/appraisal1.xml',
             'wizard/hr_loan_wizard_view.xml',
             'wizard/employee_requisition_wizard_view.xml',
             'wizard/tour_request_wizard_view.xml',
@@ -61,7 +61,7 @@
             'wizard/hr_payslip_batch_wizard_view.xml',
             'wizard/hr_property_wizard_view.xml',
             'wizard/loan_close_wizard_view.xml',
-            'wizard/appraisal1_wizard_view.xml',
+            # 'wizard/appraisal1_wizard_view.xml',
  ],
  'images': [],
  'installable': True,
