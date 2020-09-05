@@ -43,8 +43,8 @@ class AppraisalForms(models.Model):
     overall_grade = fields.Char('Grade', compute='compue_overal_rate')
     kpia_ids = fields.One2many('appraisal.kpi','kpia_id', string='KPIA IDS', track_visibility='always')
     app_ids = fields.One2many('targets.achievement','app_id', string='Targets/Achievement', track_visibility='always')
-    state = fields.Selection([('draft', 'Draft'), ('self_review', 'Self Reviewed'), ('line_manager_review', 'Reporting Authority Reviewed'),
-                              ('hod_review', 'Reviewing Authority Reviewed'), ('completed', 'Completed'), ('rejected', 'Rejected')
+    state = fields.Selection([('draft', 'Draft'), ('self_review', 'Self Reviewed'), ('reporting_authority_review', 'Reporting Authority Reviewed'),
+                              ('reviewing_authority_review', 'Reviewing Authority Reviewed'), ('completed', 'Completed'), ('rejected', 'Rejected')
                               ], required=True, default='draft', track_visibility='always', string='Status')
 
 
@@ -53,7 +53,7 @@ class AppraisalForms(models.Model):
         for rec in self:
             for line in rec.kpia_ids:
                 avg = (int(line.reporting_auth) + int(line.reviewing_auth))/2
-                rec.overall_rate_num = 0
+                rec.overall_rate_num = int(avg)
             over_rate = self.env['overall.rate'].search([('from_int', '<=', rec.overall_rate_num), ('to_int', '>=', rec.overall_rate_num)], limit=1)
             rec.overall_grade = over_rate.name
 
@@ -148,18 +148,18 @@ class AppraisalForms(models.Model):
                 line.write({'state': 'self_review'})
 
     @api.multi
-    def button_line_manager_reviewed(self):
+    def button_reporting_authority_reviewed(self):
         for rec in self:
-            rec.write({'state': 'line_manager_review'})
+            rec.write({'state': 'reporting_authority_review'})
             for line in rec.kpia_ids:
-                line.write({'state': 'line_manager_review'})
+                line.write({'state': 'reporting_authority_review'})
 
     @api.multi
-    def button_hod_reviewed(self):
+    def button_reviewing_authority_reviewed(self):
         for rec in self:
-            rec.write({'state': 'hod_review'})
+            rec.write({'state': 'reviewing_authority_review'})
             for line in rec.kpia_ids:
-                line.write({'state': 'hod_review'})
+                line.write({'state': 'reviewing_authority_review'})
 
     @api.multi
     def button_completed(self):
@@ -205,8 +205,8 @@ class KPIForm(models.Model):
                                    ('9', '9'),
                                    ('10', '10'),], 'Reviewing Authority')
     state = fields.Selection(
-        [('draft', 'Draft'), ('self_review', 'Self Reviewed'), ('line_manager_review', 'Reporting Authority Reviewed'),
-         ('hod_review', 'Reviewing Authority Reviewed'), ('completed', 'Completed'), ('rejected', 'Rejected')
+        [('draft', 'Draft'), ('self_review', 'Self Reviewed'), ('reporting_authority_review', 'Reporting Authority Reviewed'),
+         ('reviewing_authority_review', 'Reviewing Authority Reviewed'), ('completed', 'Completed'), ('rejected', 'Rejected')
          ],default='draft', string='Status')
 
     reviewing_auth_user = fields.Many2one('res.users')

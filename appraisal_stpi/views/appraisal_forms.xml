@@ -21,12 +21,12 @@
         <field name="arch" type="xml">
             <form string="HR appraisal">
                 <header>
-                    <button name="button_self_reviewed" string="Reviewed(Self)" class="oe_highlight" type="object" states="draft"/>
-                     <button name="button_line_manager_reviewed" string="Reviewed(Line Manager)" class="oe_highlight" type="object" states="self_review" groups="appraisal_stpi.group_line_manager_appraisal"/>
-                    <button name="button_hod_reviewed" string="Reviewed(HoD Reviewed)" class="oe_highlight" type="object" states="line_manager_review" groups="appraisal_stpi.group_hod_appraisal"/>
-                    <button name="button_completed" string="Reviewed(Complete)" class="oe_highlight" type="object" states="hod_review" groups="appraisal_stpi.group_manager_appraisal"/>
-                    <button name="button_reject" string="Reject" type="object" attrs="{'invisible':[('state','in',('draft'))]}"/>
-                    <field name="state" widget="statusbar" statusbar_visible="draft,self_review,line_manager_review,hod_review,completed" />
+                    <button name="button_self_reviewed" string="Reviewed" class="oe_highlight" type="object" states="draft"/>
+                     <button name="button_reporting_authority_reviewed" string="Reviewed" class="oe_highlight" type="object" states="self_review" groups="appraisal_stpi.group_reporting_authority_appraisal"/>
+                    <button name="button_reviewing_authority_reviewed" string="Reviewed" class="oe_highlight" type="object" states="reporting_authority_review" groups="appraisal_stpi.group_reviewing_authority_appraisal"/>
+                    <button name="button_completed" string="Publish" class="oe_highlight" type="object" states="reviewing_authority_review" groups="appraisal_stpi.group_manager_appraisal"/>
+                    <button name="button_reject" string="Reject" type="object" attrs="{'invisible':[('state','in',('draft','completed'))]}"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,self_review,reporting_authority_review,reviewing_authority_review,completed" />
                 </header>
                 <sheet>
                     <group>
@@ -89,7 +89,7 @@
                                     <field name="kra" readonly="1"/>
                                     <field name="kpi" readonly="1"/>
                                     <field name="reporting_auth" attrs="{'readonly':[('state','not in',('self_review'))]}"/>
-                                    <field name="reviewing_auth" attrs="{'readonly':[('state','not in',('line_manager_review'))]}"/>
+                                    <field name="reviewing_auth" attrs="{'readonly':[('state','not in',('reporting_authority_review'))]}"/>
                                     <field name="reviewing_auth_user" readonly="1"/>
                                 </tree>
                             </field>
@@ -219,20 +219,20 @@
 
 
     <!--============Action view of Appraisal============-->
-    <record id="appraisal_menu_line_manager_action" model="ir.actions.act_window">
+    <record id="appraisal_menu_reporting_authority_action" model="ir.actions.act_window">
         <field name="name">Appraisal</field>
         <field name="res_model">appraisal.main</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
-        <field name="domain">[('state','=','line_manager_review')]</field>
+        <field name="domain">[('state','=','reporting_authority_review')]</field>
     </record>
     <!--============Action view of Appraisal============-->
-    <record id="appraisal_menu_hod_approved_action" model="ir.actions.act_window">
+    <record id="appraisal_menu_reviewing_authority_approved_action" model="ir.actions.act_window">
         <field name="name">Appraisal</field>
         <field name="res_model">appraisal.main</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
-        <field name="domain">[('state','=','hod_review')]</field>
+        <field name="domain">[('state','=','reviewing_authority_review')]</field>
     </record>
 
     <!--============Action view of Appraisal============-->
@@ -299,18 +299,20 @@
                   name = "Self Review Reviewed"
                   parent ="menu_appraisal_id"
                   action ="appraisal_menu_self_review_action"
+                  groups="appraisal_stpi.group_reporting_authority_appraisal"
                   />
     <menuitem id = "appraisal_approved_menu_id"
                   name = "Reporting Authority Reviewed"
                   parent ="menu_appraisal_id"
-                  action ="appraisal_menu_line_manager_action"
-              groups="appraisal_stpi.group_line_manager_appraisal"
+                  action ="appraisal_menu_reporting_authority_action"
+                  groups="appraisal_stpi.group_reviewing_authority_appraisal"
+
                   />
-    <menuitem id = "appraisal_approved_hod_menu_id"
+    <menuitem id = "appraisal_approved_reviewing_authority_menu_id"
                   name = "Reviewing Authority Reviewed"
                   parent ="menu_appraisal_id"
-                  action ="appraisal_menu_hod_approved_action"
-               groups="appraisal_stpi.group_hod_appraisal"
+                  action ="appraisal_menu_reviewing_authority_approved_action"
+                  groups="appraisal_stpi.group_manager_appraisal"
                   />
     <menuitem id = "appraisal_completed_menu_id"
                   name = "Completed"
