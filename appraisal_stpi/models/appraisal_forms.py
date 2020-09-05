@@ -15,14 +15,14 @@ class AppraisalForms(models.Model):
     employee_id = fields.Many2one('hr.employee', string='Requested By', default=_default_employee, track_visibility='always')
     appraisal_sequence = fields.Char(string='Appraisal Sequence', track_visibility='always')
     abap_period = fields.Many2one('date.range', string='APAR Period', track_visibility='always')
-    branch_id = fields.Many2one('res.branch', string='Branch', store=True, track_visibility='always')
-    category_id = fields.Many2one('employee.category', string='Category', track_visibility='always')
-    dob = fields.Date(string='Date of Birth', track_visibility='always')
-    job_id = fields.Many2one('hr.job', string='Functional Designation', track_visibility='always')
-    struct_id = fields.Many2one('hr.payroll.structure', string='Salary Structure', track_visibility='always')
-    pay_level_id = fields.Many2one('hr.payslip.paylevel', string='Pay Level', track_visibility='always')
-    pay_level = fields.Many2one('payslip.pay.level', string='Pay Band', track_visibility='always')
-    template_id = fields.Many2one('appraisal.template', track_visibility='always')
+    branch_id = fields.Many2one('res.branch', string='Branch', compute='get_basic_details', store=True, track_visibility='always')
+    category_id = fields.Many2one('employee.category', string='Category', compute='get_basic_details', track_visibility='always')
+    dob = fields.Date(string='Date of Birth', compute='get_basic_details', track_visibility='always')
+    job_id = fields.Many2one('hr.job', string='Functional Designation', compute='get_basic_details', track_visibility='always')
+    struct_id = fields.Many2one('hr.payroll.structure', string='Salary Structure', compute='get_basic_details', track_visibility='always')
+    pay_level_id = fields.Many2one('hr.payslip.paylevel', string='Pay Level', compute='get_basic_details', track_visibility='always')
+    pay_level = fields.Many2one('payslip.pay.level', string='Pay Band', compute='get_basic_details', track_visibility='always')
+    template_id = fields.Many2one('appraisal.template', track_visibility='always', compute='get_basic_details')
     duties_description = fields.Text(string='Duties Description', track_visibility='always')
     targets = fields.Text(string='Targets', track_visibility='always')
     achievement = fields.Text(string='achievement', track_visibility='always')
@@ -58,16 +58,15 @@ class AppraisalForms(models.Model):
             rec.overall_grade = over_rate.name
 
 
-    # @api.multi
-    @api.constrains('employee_id')
-    @api.onchange('employee_id')
+    @api.multi
+    @api.depends('employee_id')
     def get_basic_details(self):
         for rec in self:
             rec.category_id = rec.employee_id.category.id
             # rec.dob = rec.employee_id.birthday
             rec.job_id = rec.employee_id.job_id.id
             rec.branch_id = rec.employee_id.branch_id.id
-            emp_contract = self.env['hr.contract'].search([('employee_id', '=', rec.employee_id.id), ('state', '=', 'open')], limit=1)
+            emp_contract = self.env['hr.contract'].sudo().search([('employee_id', '=', rec.employee_id.id), ('state', '=', 'open')], limit=1)
             rec.struct_id = emp_contract.struct_id.id
             rec.pay_level_id = emp_contract.pay_level_id.id
             rec.template_id = emp_contract.pay_level_id.template_id.id
