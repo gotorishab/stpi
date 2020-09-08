@@ -11,6 +11,8 @@ class PfType(models.Model):
     purpose = fields.Text(string="Purpose",track_visibility='always')
     months = fields.Integer(string='Month (Basic+DA)')
     voluntarily_contri = fields.Boolean('Volunteerly')
+    cepf_vcpf = fields.Boolean('CEPF + VCPF')
+    cpf = fields.Boolean('CPF')
     employee_contri = fields.Boolean('Employee')
     employer_contri = fields.Boolean('Employer')
     min_years = fields.Integer(string='Minimum age(Years)')

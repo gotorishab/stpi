@@ -9,9 +9,11 @@
                 <field name="purpose"/>
                 <field name="attachment_document"/>
                 <field name="months"/>
-                <field name="voluntarily_contri"/>
-                <field name="employee_contri"/>
-                <field name="employer_contri"/>
+                <field name="cepf_vcpf"/>
+                <field name="cpf"/>
+                <field name="voluntarily_contri" invisible="1"/>
+                <field name="employee_contri" invisible="1"/>
+                <field name="employer_contri" invisible="1"/>
                 <field name="min_years"/>
             </tree>
         </field>
@@ -31,9 +33,11 @@
                             <field name="months"/>
                         </group>
                         <group>
-                            <field name="voluntarily_contri"/>
-                            <field name="employee_contri"/>
-                            <field name="employer_contri"/>
+                            <field name="cepf_vcpf"/>
+                            <field name="cpf"/>
+                            <field name="voluntarily_contri" invisible="1"/>
+                            <field name="employee_contri" invisible="1"/>
+                            <field name="employer_contri" invisible="1"/>
                             <field name="min_years"/>
                         </group>
                     </group>

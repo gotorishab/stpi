@@ -27,7 +27,7 @@ class InheritContractss(models.Model):
     xnohra = fields.Boolean(string='Rent Recovery?')
     pf_deduction = fields.Boolean(string='PF Deduction')
     transport_deduction = fields.Boolean(string='Transport Deduction')
-    updated_basic = fields.Float(string='Updated Basic', compute='_compute_updated_basic_f_da')
+    updated_basic = fields.Float(string='Basic + DA', compute='_compute_updated_basic_f_da')
 
     pay_level_id = fields.Many2one('hr.payslip.paylevel', string='Pay Level')
     pay_level = fields.Many2one('payslip.pay.level', string='Pay Band')

@@ -23,6 +23,8 @@ class PfWidthdrawl(models.Model):
     center=fields.Char(string="Work Location",track_visibility='always',)
     present_pay=fields.Float(string="Present Pay", compute='_compute_present_pay')
     bank_account_number=fields.Char(string="Bank Account",track_visibility='always',)
+    cepf_vcpf = fields.Boolean('CEPF + VCPF')
+    cpf = fields.Boolean('CPF')
     rule=fields.Selection([('A','23(1)(A)'),
                            ('B','23(1)(B)'),
                            ('E','23(1)(E)')],string="Rules",track_visibility='always',)
