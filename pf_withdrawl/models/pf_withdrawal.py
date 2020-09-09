@@ -82,9 +82,8 @@ class PfWidthdrawl(models.Model):
                         amt = 0
             if rec.advance_amount > amt:
                 raise ValidationError("You are not able to  take advance amount more than %s" % amt)
-
-            # if rec.pf_type.min_years < rec.employee_id.birthday:
-            #     raise ValidationError("You are not able to  take advance amount more than %s" % amt)
+            if rec.pf_type.min_years < (rec.employee_id.birthday - datetime.now().date()).days:
+                raise ValidationError("You are not able to  apply as minimum age for PF should be atlest %s" % rec.pf_type.min_years)
 
     @api.multi
     def button_reject(self):
