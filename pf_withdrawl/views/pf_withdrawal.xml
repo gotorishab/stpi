@@ -233,6 +233,8 @@
                         <group>
                             <field name="employee_id" readonly="1"/>
                             <field name="pf_start_data"/>
+                            <field name="cepf_vcpf"/>
+                            <field name="cpf"/>
                         </group>
                         <group>
                             <field name="amount"/>

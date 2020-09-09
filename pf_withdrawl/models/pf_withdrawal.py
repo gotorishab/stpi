@@ -192,6 +192,8 @@ class PfEmployee(models.Model):
     advance_amount = fields.Float('Advance Amount Taken')
     advance_left = fields.Float('Amount Left', compute='_compute_amount')
     amount = fields.Float('Amount', compute='_compute_amount')
+    cepf_vcpf = fields.Boolean('CEPF + VCPF')
+    cpf = fields.Boolean('CPF')
     pf_details_ids=fields.One2many('pf.employee.details', 'pf_details_id', string="Employee")
     currency_id = fields.Many2one('res.currency', string='Currency',
                               default=lambda self: self.env.user.company_id.currency_id)
