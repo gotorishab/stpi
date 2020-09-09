@@ -243,7 +243,7 @@ class PfEmployee(models.Model):
             cpf = 0.00
             for details in rec.pf_details_ids:
                 sum += details.amount
-                if details.pf_code == 'CEPF+VCPF':
+                if details.pf_code == 'CEPF + VCPF':
                     cv += details.amount
                 if details.pf_code == 'CPF':
                     cpf += details.amount
