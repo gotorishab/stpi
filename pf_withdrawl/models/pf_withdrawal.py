@@ -12,7 +12,7 @@ class PfWidthdrawl(models.Model):
 
 
     def _default_employee(self):
-        return self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+        return self.env['hr.employee'].sudo().search([('user_id', '=', self.env.uid)], limit=1)
 
     name = fields.Char(string='Name')
     date = fields.Date(string="Requested Date", default=fields.Date.today())
@@ -61,16 +61,31 @@ class PfWidthdrawl(models.Model):
     def button_approved(self):
         for rec in self:
             rec.write({'state': 'approved'})
-            pf_balance = self.env['pf.employee'].search([('employee_id', '=', rec.employee_id.id)],limit=1)
+            pf_balance = self.env['pf.employee'].sudo().search([('employee_id', '=', rec.employee_id.id)],limit=1)
             #         print("////////////////////////",pf_balance)
             if pf_balance:
                 pf_balance.get_pf_details()
             pf_withd = []
-            pf_employee = self.env['pf.employee'].search([('employee_id','=',rec.employee_id.id)])
+            amt = 0
+            pf_employee = self.env['pf.employee'].sudo().search([('employee_id','=',rec.employee_id.id)])
             if pf_employee:
                 for pf_emp in pf_employee:
                     pf_emp.amount = pf_emp.amount - self.advance_amount
                     pf_emp.pf_withdrwal_amount = pf_emp.amount
+                    if rec.pf_type.cepf_vcpf == True and rec.pf_type.cpf == True:
+                        amt = pf_emp.cepf_vcpf + pf_emp.cpf
+                    elif rec.pf_type.cepf_vcpf == True and rec.pf_type.cpf == False:
+                        amt = pf_emp.cepf_vcpf
+                    elif rec.pf_type.cepf_vcpf == False and rec.pf_type.cpf == True:
+                        amt = pf_emp.cpf
+                    elif rec.pf_type.cepf_vcpf == False and rec.pf_type.cpf == False:
+                        amt = 0
+            if rec.advance_amount > amt:
+                raise ValidationError("You are not able to  take advance amount more than %s" % amt)
+
+            # if rec.pf_type.min_years < rec.employee_id.birthday:
+            #     raise ValidationError("You are not able to  take advance amount more than %s" % amt)
+
     @api.multi
     def button_reject(self):
         for rec in self:
@@ -89,11 +104,11 @@ class PfWidthdrawl(models.Model):
         seq = self.env['ir.sequence'].next_by_code('pf.widthdrawl')
         sequence = 'PF - ' + str(seq)
         res.name = sequence
-        contract_obj = self.env['hr.contract'].search([('employee_id', '=', res.employee_id.id)], limit=1)
+        contract_obj = self.env['hr.contract'].sudo().search([('employee_id', '=', res.employee_id.id)], limit=1)
         maximum_allowed = contract_obj.updated_basic * res.pf_type.months
         if res.advance_amount > maximum_allowed:
             raise ValidationError("You are not able to  take advance amount more than %s" % maximum_allowed)
-        pf_count = self.env['pf.widthdrawl'].search_count(
+        pf_count = self.env['pf.widthdrawl'].sudo().search_count(
             [('employee_id', '=', vals['employee_id']), ('state', '!=', 'approved'),
              ])
         if pf_count:
@@ -158,7 +173,7 @@ class PfWidthdrawl(models.Model):
     @api.depends('employee_id')
     def _compute_present_pay(self):
         for rec in self:
-            contract_obj = self.env['hr.contract'].search([('employee_id', '=', self.employee_id.id)], limit=1)
+            contract_obj = self.env['hr.contract'].sudo().search([('employee_id', '=', self.employee_id.id)], limit=1)
             if contract_obj:
                 for contract in contract_obj:
                     rec.present_pay = contract.updated_basic
@@ -167,7 +182,7 @@ class PfWidthdrawl(models.Model):
     @api.onchange('advance_amount')
     def _onchange_advance_amount(self):
         for rec in self:
-            max_balance = self.env['pf.employee'].search([('employee_id', '=', self.employee_id.id)], limit=1)
+            max_balance = self.env['pf.employee'].sudo().search([('employee_id', '=', self.employee_id.id)], limit=1)
             if max_balance:
                 for empbal in max_balance:
                     if rec.advance_amount > empbal.amount:
@@ -185,30 +200,35 @@ class PfEmployee(models.Model):
     _rec_name = 'employee_id'
 
     def _default_employee(self):
-        return self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+        return self.env['hr.employee'].sudo().search([('user_id', '=', self.env.uid)], limit=1)
 
     pf_start_data = fields.Date('PF Start Date')
     employee_id=fields.Many2one('hr.employee', string="Request By", default=_default_employee)
+    branch_id = fields.Many2one('res.branch',string="Branch",track_visibility='onchange')
     advance_amount = fields.Float('Advance Amount Taken')
     advance_left = fields.Float('Amount Left', compute='_compute_amount')
     amount = fields.Float('Amount', compute='_compute_amount')
-    cepf_vcpf = fields.Boolean('CEPF + VCPF')
-    cpf = fields.Boolean('CPF')
+    cepf_vcpf = fields.Float('CEPF + VCPF', compute='_compute_amount')
+    cpf = fields.Float('CPF', compute='_compute_amount')
     pf_details_ids=fields.One2many('pf.employee.details', 'pf_details_id', string="Employee")
     currency_id = fields.Many2one('res.currency', string='Currency',
                               default=lambda self: self.env.user.company_id.currency_id)
-    @api.depends('employee_id')
-    def _compute_amount(self):
+    # @api.depends('employee_id')
+    # def _compute_amount(self):
+    #     for rec in self:
+    #         sum = 0.00
+    #         pf_employee_obj = self.env['pf.employee.details'].search([('pf_details_id', '=', rec.id)])
+    #         if pf_employee_obj:
+    #             for details in pf_employee_obj:
+    #                 sum += details.amount
+    #         rec.amount = sum
+
+
+    @api.constrains('employee_id')
+    @api.onchange('employee_id')
+    def _onchange_basic_detailsss(self):
         for rec in self:
-            sum = 0.00
-            pf_employee_obj = self.env['pf.employee.details'].search([('pf_details_id', '=', rec.id)])
-            if pf_employee_obj:
-                for details in pf_employee_obj:
-                    sum += details.amount
-            rec.amount = sum
-
-
-
+            rec.branch_id = rec.employee_id.branch_id.id
 
     @api.multi
     def button_transfer_pf(self):
@@ -220,9 +240,17 @@ class PfEmployee(models.Model):
         for rec in self:
             sum = 0.00
             sum1 = 0.00
+            cv = 0.00
+            cpf = 0.00
             for details in rec.pf_details_ids:
                 sum += details.amount
-            pf_advance = self.env['pf.widthdrawl'].search(
+                if details.pf_code == 'CEPF+VCPF':
+                    cv += details.amount
+                if details.pf_code == 'CPF':
+                    cpf += details.amount
+            rec.cepf_vcpf = cv
+            rec.cpf = cpf
+            pf_advance = self.env['pf.widthdrawl'].sudo().search(
                 [('employee_id', '=', rec.employee_id.id),
                  ('state', '=', 'approved')], limit=1)
             for ad in pf_advance:
@@ -258,7 +286,7 @@ class PfEmployee(models.Model):
             advance_amount = 0.00
             rec.pf_details_ids.unlink()
             if rec.employee_id:
-                pay_rules = self.env['hr.payslip.line'].search(
+                pay_rules = self.env['hr.payslip.line'].sudo().search(
                     [('slip_id.employee_id', '=', rec.employee_id.id),
                      ('slip_id.state', '=', 'done'),
                      ('salary_rule_id.pf_register', '=', True),
@@ -275,7 +303,7 @@ class PfEmployee(models.Model):
                             'amount': i.total,
                             'reference': i.slip_id.number,
                         }))
-                pf_advance = self.env['pf.widthdrawl'].search(
+                pf_advance = self.env['pf.widthdrawl'].sudo().search(
                     [('employee_id', '=', rec.employee_id.id),
                      ('state', '=', 'approved')])
                 if pf_advance:

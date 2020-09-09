@@ -20,19 +20,65 @@
         </record>
 
 
-   <record id="pf_withdraw_user_record_rule" model="ir.rule">
+
+
+
+
+
+   <record id="pf_branch_record_rule" model="ir.rule">
+        <field name="name">PF</field>
+        <field name="model_id" ref="model_pf_widthdrawl"/>
+       <field name="domain_force">['|', ('branch_id','=',False), ('branch_id','in',[g.id for g in user.branch_ids])]</field>
+       <field name="global" eval="True"/>
+    </record>
+
+
+   <record id="pf_user_record_rule" model="ir.rule">
        <field name="name">PF Withdraw User</field>
        <field name="model_id" ref="model_pf_widthdrawl"/>
        <field name="domain_force">[('employee_id.user_id', '=', user.id)]</field>
        <field name="groups" eval="[(4,ref('pf_withdrawl.group_pf_withdraw_user'))]"/>
     </record>
 
-   <record id="pf_withdraw_approver_record_rule" model="ir.rule">
-        <field name="name">PF Withdraw Approver</field>
+
+       <record id="pf_manager_record_rule" model="ir.rule">
+        <field name="name">PF Manager</field>
         <field name="model_id" ref="model_pf_widthdrawl"/>
-        <field name="domain_force">[(1,'=',1)]</field>
-        <field name="groups" eval="[(4,ref('pf_withdrawl.group_pf_withdraw_approver'))]"/>
+       <field name="domain_force">['|', ('branch_id','=',False), ('branch_id','in',[g.id for g in user.branch_ids])]</field>
+      <field name="groups" eval="[(4,ref('pf_withdrawl.group_pf_withdraw_approver'))]"/>
+   </record>
+
+
+
+
+
+
+   <record id="pf_employeebranch_record_rule" model="ir.rule">
+        <field name="name">PF Employee</field>
+        <field name="model_id" ref="model_pf.employee"/>
+       <field name="domain_force">['|', ('branch_id','=',False), ('branch_id','in',[g.id for g in user.branch_ids])]</field>
+       <field name="global" eval="True"/>
     </record>
+
+
+   <record id="pf_employeeuser_record_rule" model="ir.rule">
+       <field name="name">PF Employee User</field>
+       <field name="model_id" ref="model_pf"/>
+       <field name="domain_force">[('employee_id.user_id', '=', user.id)]</field>
+       <field name="groups" eval="[(4,ref('pf_withdrawl.group_pf_withdraw_approver'))]"/>
+    </record>
+
+
+       <record id="pf_employeemanager_record_rule" model="ir.rule">
+        <field name="name">PF Employee Manager</field>
+        <field name="model_id" ref="model_pf"/>
+       <field name="domain_force">['|', ('branch_id','=',False), ('branch_id','in',[g.id for g in user.branch_ids])]</field>
+      <field name="groups" eval="[(4,ref('pf_withdrawl.group_pf_withdraw_approver'))]"/>
+   </record>
+
+
+
+
 
     </data>
 </odoo>
