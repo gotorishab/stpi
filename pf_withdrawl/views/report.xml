@@ -5,8 +5,7 @@
         <field name="name">PF Ledger Report</field>
         <field name="model">pf.ledger.report</field>
         <field name="arch" type="xml">
-            <tree create="0" delete="0">
-<!--                <field name="employee_id" invisible="1"/>-->
+            <tree editable="bottom">
                 <field name="employee_id"/>
                 <field name="branch_id"/>
                 <field name="ledger_for_year"/>
