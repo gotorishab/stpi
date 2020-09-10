@@ -29,6 +29,7 @@ class PfWidthdrawl(models.Model):
                            ('B','23(1)(B)'),
                            ('E','23(1)(E)')],string="Rules",track_visibility='always',)
     pf_type = fields.Many2one('pf.type',string="PF Withdrawal Type",track_visibility='always')
+    maximum_withdrawal = fields.Float(string='Eligible Amount')
 #     purpose=fields.Selection([('a','Purchase of dwelling sight/flat/ construction of house/ renovation of house'),
 #                               ('b','Repayment of loans'),
 #                               ('e','For marriage and Education')],
@@ -51,6 +52,34 @@ class PfWidthdrawl(models.Model):
         [('draft', 'Draft'), ('to_approve', 'To Approve'), ('approved', 'Approved'), ('rejected', 'Rejected')
          ], required=True, default='draft',string="Status",track_visibility='always',)
 
+
+    @api.onchange('pf_type')
+    @api.constrains('pf_type')
+    def onchange_pf_type(self):
+        for rec in self:
+            pf_employee = self.env['pf.employee'].sudo().search([('employee_id', '=', rec.employee_id.id)])
+            amt = 0.00
+            max_all = 0.00
+            maximum_allowed = 0.00
+            if pf_employee:
+                for pf_emp in pf_employee:
+                    pf_emp.amount = pf_emp.amount - self.advance_amount
+                    pf_emp.pf_withdrwal_amount = pf_emp.amount
+                    if rec.pf_type.cepf_vcpf == True and rec.pf_type.cpf == True:
+                        max_all = pf_emp.cepf_vcpf + pf_emp.cpf
+                    elif rec.pf_type.cepf_vcpf == True and rec.pf_type.cpf == False:
+                        max_all = pf_emp.cepf_vcpf
+                    elif rec.pf_type.cepf_vcpf == False and rec.pf_type.cpf == True:
+                        max_all = pf_emp.cpf
+                    elif rec.pf_type.cepf_vcpf == False and rec.pf_type.cpf == False:
+                        max_all = 0
+            contract_obj = self.env['hr.contract'].sudo().search([('employee_id', '=', rec.employee_id.id)], limit=1)
+            maximum_allowed = contract_obj.updated_basic * rec.pf_type.months
+            if max_all < maximum_allowed:
+                amt = max_all
+            else:
+                amt = maximum_allowed
+            rec.maximum_withdrawal = amt
 
     @api.multi
     def button_to_approve(self):
@@ -81,7 +110,7 @@ class PfWidthdrawl(models.Model):
                     elif rec.pf_type.cepf_vcpf == False and rec.pf_type.cpf == False:
                         amt = 0
             if rec.advance_amount > amt:
-                raise ValidationError("You are not able to  take advance amount more than %s" % amt)
+                raise ValidationError("You are not able to  take advance amount more than %s" % rec.maximum_withdrawal)
             if rec.pf_type.min_years < (rec.employee_id.birthday - datetime.now().date()).days:
                 raise ValidationError("You are not able to  apply as minimum age for PF should be atlest %s" % rec.pf_type.min_years)
 
@@ -106,7 +135,7 @@ class PfWidthdrawl(models.Model):
         contract_obj = self.env['hr.contract'].sudo().search([('employee_id', '=', res.employee_id.id)], limit=1)
         maximum_allowed = contract_obj.updated_basic * res.pf_type.months
         if res.advance_amount > maximum_allowed:
-            raise ValidationError("You are not able to  take advance amount more than %s" % maximum_allowed)
+            raise ValidationError("You are not able to  take advance amount more than %s" % res.maximum_withdrawal)
         pf_count = self.env['pf.widthdrawl'].sudo().search(
             [('employee_id', '=', res.employee_id.id), ('state', '!=', 'approved'), ('id', '!=', res.id),
              ])
@@ -243,12 +272,19 @@ class PfEmployee(models.Model):
             cpf = 0.00
             for details in rec.pf_details_ids:
                 sum += details.amount
-                if details.pf_code == 'CEPF + VCPF':
-                    cv += details.amount
+                if details.pf_code == 'CEPF + VCPF' or details.pf_code == 'VCPF' or details.pf_code == 'CEPF':
+                    if details.type == 'Deposit':
+                        cv += details.amount
+                    elif details.type == 'Withdrawal':
+                        cv -= details.amount
                 if details.pf_code == 'CPF':
-                    cpf += details.amount
+                    if details.type == 'Deposit':
+                        cpf += details.amount
+                    elif details.type == 'Withdrawal':
+                        cpf -= details.amount
             rec.cepf_vcpf = cv
             rec.cpf = cpf
+
             pf_advance = self.env['pf.widthdrawl'].sudo().search(
                 [('employee_id', '=', rec.employee_id.id),
                  ('state', '=', 'approved')], limit=1)

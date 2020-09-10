@@ -63,6 +63,7 @@
                         <group>
                             <field name="rule" invisible="1"/>
                             <field name="pf_type" widget="selection"/>
+                            <field name="maximum_withdrawal"/>
                             <field name="branch_id"/>
                             <field name="purpose" readonly="True"/>
                             <field name="attachment_document" readonly="True"/>
