@@ -53,8 +53,8 @@ class PfWidthdrawl(models.Model):
          ], required=True, default='draft',string="Status",track_visibility='always',)
 
 
-    @api.onchange('pf_type')
-    @api.constrains('pf_type')
+    @api.onchange('pf_type','employee_id')
+    @api.constrains('pf_type','employee_id')
     def onchange_pf_type(self):
         for rec in self:
             pf_employee = self.env['pf.employee'].sudo().search([('employee_id', '=', rec.employee_id.id)])
