@@ -58,6 +58,7 @@ class PfWidthdrawl(models.Model):
     def onchange_pf_type(self):
         for rec in self:
             pf_employee = self.env['pf.employee'].sudo().search([('employee_id', '=', rec.employee_id.id)])
+            print('============================================pf employee=================')
             amt = 0.00
             max_all = 0.00
             maximum_allowed = 0.00
@@ -94,23 +95,22 @@ class PfWidthdrawl(models.Model):
             #         print("////////////////////////",pf_balance)
             if pf_balance:
                 pf_balance.get_pf_details()
-            pf_withd = []
-            amt = 0
-            pf_employee = self.env['pf.employee'].sudo().search([('employee_id','=',rec.employee_id.id)])
-            if pf_employee:
-                for pf_emp in pf_employee:
-                    pf_emp.amount = pf_emp.amount - self.advance_amount
-                    pf_emp.pf_withdrwal_amount = pf_emp.amount
-                    if rec.pf_type.cepf_vcpf == True and rec.pf_type.cpf == True:
-                        amt = pf_emp.cepf_vcpf + pf_emp.cpf
-                    elif rec.pf_type.cepf_vcpf == True and rec.pf_type.cpf == False:
-                        amt = pf_emp.cepf_vcpf
-                    elif rec.pf_type.cepf_vcpf == False and rec.pf_type.cpf == True:
-                        amt = pf_emp.cpf
-                    elif rec.pf_type.cepf_vcpf == False and rec.pf_type.cpf == False:
-                        amt = 0
-            if rec.advance_amount > amt:
-                raise ValidationError("You are not able to  take advance amount more than %s" % rec.maximum_withdrawal)
+            # amt = 0
+            # pf_employee = self.env['pf.employee'].sudo().search([('employee_id','=',rec.employee_id.id)])
+            # if pf_employee:
+            #     for pf_emp in pf_employee:
+            #         pf_emp.amount = pf_emp.amount - self.advance_amount
+            #         pf_emp.pf_withdrwal_amount = pf_emp.amount
+            #         if rec.pf_type.cepf_vcpf == True and rec.pf_type.cpf == True:
+            #             amt = pf_emp.cepf_vcpf + pf_emp.cpf
+            #         elif rec.pf_type.cepf_vcpf == True and rec.pf_type.cpf == False:
+            #             amt = pf_emp.cepf_vcpf
+            #         elif rec.pf_type.cepf_vcpf == False and rec.pf_type.cpf == True:
+            #             amt = pf_emp.cpf
+            #         elif rec.pf_type.cepf_vcpf == False and rec.pf_type.cpf == False:
+            #             amt = 0
+            # if rec.advance_amount > rec.maximum_withdrawal:
+            #     raise ValidationError("You are not able to  take advance amount more than %s" % rec.maximum_withdrawal)
             if rec.pf_type.min_years < (rec.employee_id.birthday - datetime.now().date()).days:
                 raise ValidationError("You are not able to  apply as minimum age for PF should be atlest %s" % rec.pf_type.min_years)
 
@@ -132,9 +132,12 @@ class PfWidthdrawl(models.Model):
         seq = self.env['ir.sequence'].next_by_code('pf.widthdrawl')
         sequence = 'PF - ' + str(seq)
         res.name = sequence
-        contract_obj = self.env['hr.contract'].sudo().search([('employee_id', '=', res.employee_id.id)], limit=1)
-        maximum_allowed = contract_obj.updated_basic * res.pf_type.months
-        if res.advance_amount > maximum_allowed:
+        # contract_obj = self.env['hr.contract'].sudo().search([('employee_id', '=', res.employee_id.id)], limit=1)
+        # maximum_allowed = contract_obj.updated_basic * res.pf_type.months
+        if res.pf_type.min_years < (res.employee_id.birthday - datetime.now().date()).days:
+            raise ValidationError(
+                "You are not able to  apply as minimum age for PF should be atlest %s" % res.pf_type.min_years)
+        if res.advance_amount > res.maximum_withdrawal:
             raise ValidationError("You are not able to  take advance amount more than %s" % res.maximum_withdrawal)
         pf_count = self.env['pf.widthdrawl'].sudo().search(
             [('employee_id', '=', res.employee_id.id), ('state', '!=', 'approved'), ('id', '!=', res.id),
