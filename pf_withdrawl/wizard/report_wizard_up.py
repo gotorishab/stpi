@@ -67,7 +67,6 @@ class WizardLateComing(models.TransientModel):
                      ('date', '<=', rec.ledger_for_year.date_end)
                      ])
             print('=============lines===============',pay_rules)
-
             emp = 0
             volun = 0
             emplyr = 0

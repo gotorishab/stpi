@@ -11,12 +11,12 @@
                 <field name="branch_id"/>
                 <field name="ledger_for_year"/>
                 <field name="month"/>
-                <field name="epmloyee_contribution"/>
-                <field name="voluntary_contribution"/>
-                <field name="employer_contribution"/>
-                <field name="interest_employee_voluntary"/>
-                <field name="interest_employer"/>
-                <field name="total"/>
+                <field name="epmloyee_contribution" sum="Sum"/>
+                <field name="voluntary_contribution" sum="Sum"/>
+                <field name="employer_contribution" sum="Sum"/>
+                <field name="interest_employee_voluntary" sum="Sum"/>
+                <field name="interest_employer" sum="Sum"/>
+                <field name="total" sum="Sum"/>
             </tree>
         </field>
     </record>

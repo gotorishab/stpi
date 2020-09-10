@@ -73,7 +73,7 @@ class PfWidthdrawl(models.Model):
                     elif rec.pf_type.cepf_vcpf == False and rec.pf_type.cpf == True:
                         max_all = pf_emp.cpf
                     elif rec.pf_type.cepf_vcpf == False and rec.pf_type.cpf == False:
-                        max_all = 0
+                        max_all = pf_emp.cepf_vcpf + pf_emp.cpf
             contract_obj = self.env['hr.contract'].sudo().search([('employee_id', '=', rec.employee_id.id)], limit=1)
             maximum_allowed = contract_obj.updated_basic * rec.pf_type.months
             if max_all < maximum_allowed:
@@ -94,7 +94,7 @@ class PfWidthdrawl(models.Model):
             pf_balance = self.env['pf.employee'].sudo().search([('employee_id', '=', rec.employee_id.id)],limit=1)
             #         print("////////////////////////",pf_balance)
             if pf_balance:
-                pf_balance.get_pf_details()
+                pf_balance.sudo().get_pf_details()
             # amt = 0
             # pf_employee = self.env['pf.employee'].sudo().search([('employee_id','=',rec.employee_id.id)])
             # if pf_employee:
@@ -136,14 +136,14 @@ class PfWidthdrawl(models.Model):
         # maximum_allowed = contract_obj.updated_basic * res.pf_type.months
         if res.pf_type.min_years < (res.employee_id.birthday - datetime.now().date()).days:
             raise ValidationError(
-                "You are not able to  apply as minimum age for PF should be atlest %s" % res.pf_type.min_years)
+                "You are not able to  apply as minimum age for PF should be atleast %s" % res.pf_type.min_years)
         if res.advance_amount > res.maximum_withdrawal:
             raise ValidationError("You are not able to  take advance amount more than %s" % res.maximum_withdrawal)
         pf_count = self.env['pf.widthdrawl'].sudo().search(
             [('employee_id', '=', res.employee_id.id), ('state', '!=', 'approved'), ('id', '!=', res.id),
              ])
         if pf_count:
-            raise ValidationError(_("The employee has already a PF pending"))
+            raise ValidationError(_("You already have a PF request in a pending request, either cancel or process that request"))
         return res
 
     @api.multi
