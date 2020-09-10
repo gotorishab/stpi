@@ -14,14 +14,14 @@ class PfWidthdrawl(models.Model):
     def _default_employee(self):
         return self.env['hr.employee'].sudo().search([('user_id', '=', self.env.uid)], limit=1)
 
-    name = fields.Char(string='Name')
+    name = fields.Char(string='Name',track_visibility='always')
     date = fields.Date(string="Requested Date", default=fields.Date.today())
     employee_id=fields.Many2one('hr.employee', string="Request By", default=_default_employee,track_visibility='always',)
     advance_amount=fields.Float(string="Advance Amount",track_visibility='always',)
     interest=fields.Float(string="Interest",track_visibility='always',)
     designation=fields.Many2one('hr.job', string="Designation",track_visibility='always',)
     center=fields.Char(string="Work Location",track_visibility='always',)
-    present_pay=fields.Float(string="Present Pay", compute='_compute_present_pay')
+    present_pay=fields.Float(string="Present Pay", compute='_compute_present_pay',track_visibility='always')
     bank_account_number=fields.Char(string="Bank Account",track_visibility='always',)
     cepf_vcpf = fields.Boolean('CEPF + VCPF')
     cpf = fields.Boolean('CPF')
@@ -29,7 +29,7 @@ class PfWidthdrawl(models.Model):
                            ('B','23(1)(B)'),
                            ('E','23(1)(E)')],string="Rules",track_visibility='always',)
     pf_type = fields.Many2one('pf.type',string="PF Withdrawal Type",track_visibility='always')
-    maximum_withdrawal = fields.Float(string='Eligible Amount')
+    maximum_withdrawal = fields.Float(string='Eligible Amount',track_visibility='always')
 #     purpose=fields.Selection([('a','Purchase of dwelling sight/flat/ construction of house/ renovation of house'),
 #                               ('b','Repayment of loans'),
 #                               ('e','For marriage and Education')],
@@ -233,15 +233,15 @@ class PfEmployee(models.Model):
     def _default_employee(self):
         return self.env['hr.employee'].sudo().search([('user_id', '=', self.env.uid)], limit=1)
 
-    pf_start_data = fields.Date('PF Start Date')
-    employee_id=fields.Many2one('hr.employee', string="Request By", default=_default_employee)
+    pf_start_data = fields.Date('PF Start Date',track_visibility='always')
+    employee_id=fields.Many2one('hr.employee', string="Request By", default=_default_employee,track_visibility='always')
     branch_id = fields.Many2one('res.branch',string="Branch",track_visibility='onchange')
-    advance_amount = fields.Float('Advance Amount Taken')
-    advance_left = fields.Float('Amount Left', compute='_compute_amount')
-    amount = fields.Float('Amount', compute='_compute_amount')
-    cepf_vcpf = fields.Float('CEPF + VCPF', compute='_compute_amount')
-    cpf = fields.Float('CPF', compute='_compute_amount')
-    pf_details_ids=fields.One2many('pf.employee.details', 'pf_details_id', string="Employee")
+    advance_amount = fields.Float('Advance Amount Taken',track_visibility='always')
+    advance_left = fields.Float('Amount Left', compute='_compute_amount',track_visibility='always')
+    amount = fields.Float('Amount', compute='_compute_amount',track_visibility='always')
+    cepf_vcpf = fields.Float('CEPF + VCPF', compute='_compute_amount',track_visibility='always')
+    cpf = fields.Float('CPF', compute='_compute_amount',track_visibility='always')
+    pf_details_ids=fields.One2many('pf.employee.details', 'pf_details_id', string="Employee",track_visibility='always')
     currency_id = fields.Many2one('res.currency', string='Currency',
                               default=lambda self: self.env.user.company_id.currency_id)
     # @api.depends('employee_id')
