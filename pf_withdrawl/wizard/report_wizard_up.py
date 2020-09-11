@@ -68,9 +68,9 @@ class WizardLateComing(models.TransientModel):
             total = 0.00
             for ln in pay_rules_old:
                 if ln.type == 'Deposit':
-                    total += ln.total
+                    total += ln.amount
                 else:
-                    total -= ln.total
+                    total -= ln.amount
             cr_lines = self.env['pf.ledger.report'].create({
                 'employee_id': rec.employee_id.id,
                 'ledger_for_year': rec.ledger_for_year.id,
@@ -105,19 +105,19 @@ class WizardLateComing(models.TransientModel):
                     employer_contribution = (((emplyr) * X) * 3) / 12
                     if ln.pf_code == 'CPF':
                         if ln.type == 'Deposit':
-                            emp += ln.total
+                            emp += ln.amount
                         else:
-                            emp -= ln.total
+                            emp -= ln.amount
                     elif ln.pf_code == 'VCPF':
                         if ln.type == 'Deposit':
-                            volun += ln.total
+                            volun += ln.amount
                         else:
-                            volun -= ln.total
+                            volun -= ln.amount
                     elif ln.pf_code == 'CEPF':
                         if ln.type == 'Deposit':
-                            emplyr += ln.total
+                            emplyr += ln.amount
                         else:
-                            emplyr -= ln.total
+                            emplyr -= ln.amount
             total = emp + volun + emplyr + employee_interest + employer_contribution
             cr_lines = self.env['pf.ledger.report'].create({
                     'employee_id': rec.employee_id.id,
@@ -150,19 +150,19 @@ class WizardLateComing(models.TransientModel):
                     employer_contribution = (((emplyr) * X) * 2) / 12
                     if ln.pf_code == 'CPF':
                         if ln.type == 'Deposit':
-                            emp += ln.total
+                            emp += ln.amount
                         else:
-                            emp -= ln.total
+                            emp -= ln.amount
                     elif ln.pf_code == 'VCPF':
                         if ln.type == 'Deposit':
-                            volun += ln.total
+                            volun += ln.amount
                         else:
-                            volun -= ln.total
+                            volun -= ln.amount
                     elif ln.pf_code == 'CEPF':
                         if ln.type == 'Deposit':
-                            emplyr += ln.total
+                            emplyr += ln.amount
                         else:
-                            emplyr -= ln.total
+                            emplyr -= ln.amount
             total = emp + volun + emplyr + employee_interest + employer_contribution
             cr_lines = self.env['pf.ledger.report'].create({
                     'employee_id': rec.employee_id.id,
@@ -195,19 +195,19 @@ class WizardLateComing(models.TransientModel):
                     employer_contribution = (((emplyr) * X) * 1) / 12
                     if ln.pf_code == 'CPF':
                         if ln.type == 'Deposit':
-                            emp += ln.total
+                            emp += ln.amount
                         else:
-                            emp -= ln.total
+                            emp -= ln.amount
                     elif ln.pf_code == 'VCPF':
                         if ln.type == 'Deposit':
-                            volun += ln.total
+                            volun += ln.amount
                         else:
-                            volun -= ln.total
+                            volun -= ln.amount
                     elif ln.pf_code == 'CEPF':
                         if ln.type == 'Deposit':
-                            emplyr += ln.total
+                            emplyr += ln.amount
                         else:
-                            emplyr -= ln.total
+                            emplyr -= ln.amount
             total = emp + volun + emplyr + employee_interest + employer_contribution
             cr_lines = self.env['pf.ledger.report'].create({
                     'employee_id': rec.employee_id.id,
@@ -240,19 +240,19 @@ class WizardLateComing(models.TransientModel):
                     employer_contribution = (((emplyr) * X) * 12) / 12
                     if ln.pf_code == 'CPF':
                         if ln.type == 'Deposit':
-                            emp += ln.total
+                            emp += ln.amount
                         else:
-                            emp -= ln.total
+                            emp -= ln.amount
                     elif ln.pf_code == 'VCPF':
                         if ln.type == 'Deposit':
-                            volun += ln.total
+                            volun += ln.amount
                         else:
-                            volun -= ln.total
+                            volun -= ln.amount
                     elif ln.pf_code == 'CEPF':
                         if ln.type == 'Deposit':
-                            emplyr += ln.total
+                            emplyr += ln.amount
                         else:
-                            emplyr -= ln.total
+                            emplyr -= ln.amount
             total = emp + volun + emplyr + employee_interest + employer_contribution
             cr_lines = self.env['pf.ledger.report'].create({
                     'employee_id': rec.employee_id.id,
@@ -285,19 +285,19 @@ class WizardLateComing(models.TransientModel):
                     employer_contribution = (((emplyr) * X) * 11) / 12
                     if ln.pf_code == 'CPF':
                         if ln.type == 'Deposit':
-                            emp += ln.total
+                            emp += ln.amount
                         else:
-                            emp -= ln.total
+                            emp -= ln.amount
                     elif ln.pf_code == 'VCPF':
                         if ln.type == 'Deposit':
-                            volun += ln.total
+                            volun += ln.amount
                         else:
-                            volun -= ln.total
+                            volun -= ln.amount
                     elif ln.pf_code == 'CEPF':
                         if ln.type == 'Deposit':
-                            emplyr += ln.total
+                            emplyr += ln.amount
                         else:
-                            emplyr -= ln.total
+                            emplyr -= ln.amount
             total = emp + volun + emplyr + employee_interest + employer_contribution
             cr_lines = self.env['pf.ledger.report'].create({
                     'employee_id': rec.employee_id.id,
@@ -330,19 +330,19 @@ class WizardLateComing(models.TransientModel):
                     employer_contribution = (((emplyr) * X) * 10) / 12
                     if ln.pf_code == 'CPF':
                         if ln.type == 'Deposit':
-                            emp += ln.total
+                            emp += ln.amount
                         else:
-                            emp -= ln.total
+                            emp -= ln.amount
                     elif ln.pf_code == 'VCPF':
                         if ln.type == 'Deposit':
-                            volun += ln.total
+                            volun += ln.amount
                         else:
-                            volun -= ln.total
+                            volun -= ln.amount
                     elif ln.pf_code == 'CEPF':
                         if ln.type == 'Deposit':
-                            emplyr += ln.total
+                            emplyr += ln.amount
                         else:
-                            emplyr -= ln.total
+                            emplyr -= ln.amount
             total = emp + volun + emplyr + employee_interest + employer_contribution
             cr_lines = self.env['pf.ledger.report'].create({
                     'employee_id': rec.employee_id.id,
@@ -375,19 +375,19 @@ class WizardLateComing(models.TransientModel):
                     employer_contribution = (((emplyr) * X) * 9) / 12
                     if ln.pf_code == 'CPF':
                         if ln.type == 'Deposit':
-                            emp += ln.total
+                            emp += ln.amount
                         else:
-                            emp -= ln.total
+                            emp -= ln.amount
                     elif ln.pf_code == 'VCPF':
                         if ln.type == 'Deposit':
-                            volun += ln.total
+                            volun += ln.amount
                         else:
-                            volun -= ln.total
+                            volun -= ln.amount
                     elif ln.pf_code == 'CEPF':
                         if ln.type == 'Deposit':
-                            emplyr += ln.total
+                            emplyr += ln.amount
                         else:
-                            emplyr -= ln.total
+                            emplyr -= ln.amount
             total = emp + volun + emplyr + employee_interest + employer_contribution
             cr_lines = self.env['pf.ledger.report'].create({
                     'employee_id': rec.employee_id.id,
@@ -420,19 +420,19 @@ class WizardLateComing(models.TransientModel):
                     employer_contribution = (((emplyr) * X) * 8) / 12
                     if ln.pf_code == 'CPF':
                         if ln.type == 'Deposit':
-                            emp += ln.total
+                            emp += ln.amount
                         else:
-                            emp -= ln.total
+                            emp -= ln.amount
                     elif ln.pf_code == 'VCPF':
                         if ln.type == 'Deposit':
-                            volun += ln.total
+                            volun += ln.amount
                         else:
-                            volun -= ln.total
+                            volun -= ln.amount
                     elif ln.pf_code == 'CEPF':
                         if ln.type == 'Deposit':
-                            emplyr += ln.total
+                            emplyr += ln.amount
                         else:
-                            emplyr -= ln.total
+                            emplyr -= ln.amount
             total = emp + volun + emplyr + employee_interest + employer_contribution
             cr_lines = self.env['pf.ledger.report'].create({
                     'employee_id': rec.employee_id.id,
@@ -465,19 +465,19 @@ class WizardLateComing(models.TransientModel):
                     employer_contribution = (((emplyr) * X) * 7) / 12
                     if ln.pf_code == 'CPF':
                         if ln.type == 'Deposit':
-                            emp += ln.total
+                            emp += ln.amount
                         else:
-                            emp -= ln.total
+                            emp -= ln.amount
                     elif ln.pf_code == 'VCPF':
                         if ln.type == 'Deposit':
-                            volun += ln.total
+                            volun += ln.amount
                         else:
-                            volun -= ln.total
+                            volun -= ln.amount
                     elif ln.pf_code == 'CEPF':
                         if ln.type == 'Deposit':
-                            emplyr += ln.total
+                            emplyr += ln.amount
                         else:
-                            emplyr -= ln.total
+                            emplyr -= ln.amount
             total = emp + volun + emplyr + employee_interest + employer_contribution
             cr_lines = self.env['pf.ledger.report'].create({
                     'employee_id': rec.employee_id.id,
@@ -510,19 +510,19 @@ class WizardLateComing(models.TransientModel):
                     employer_contribution = (((emplyr) * X) * 6) / 12
                     if ln.pf_code == 'CPF':
                         if ln.type == 'Deposit':
-                            emp += ln.total
+                            emp += ln.amount
                         else:
-                            emp -= ln.total
+                            emp -= ln.amount
                     elif ln.pf_code == 'VCPF':
                         if ln.type == 'Deposit':
-                            volun += ln.total
+                            volun += ln.amount
                         else:
-                            volun -= ln.total
+                            volun -= ln.amount
                     elif ln.pf_code == 'CEPF':
                         if ln.type == 'Deposit':
-                            emplyr += ln.total
+                            emplyr += ln.amount
                         else:
-                            emplyr -= ln.total
+                            emplyr -= ln.amount
             total = emp + volun + emplyr + employee_interest + employer_contribution
             cr_lines = self.env['pf.ledger.report'].create({
                     'employee_id': rec.employee_id.id,
@@ -555,19 +555,19 @@ class WizardLateComing(models.TransientModel):
                     employer_contribution = (((emplyr) * X) * 5) / 12
                     if ln.pf_code == 'CPF':
                         if ln.type == 'Deposit':
-                            emp += ln.total
+                            emp += ln.amount
                         else:
-                            emp -= ln.total
+                            emp -= ln.amount
                     elif ln.pf_code == 'VCPF':
                         if ln.type == 'Deposit':
-                            volun += ln.total
+                            volun += ln.amount
                         else:
-                            volun -= ln.total
+                            volun -= ln.amount
                     elif ln.pf_code == 'CEPF':
                         if ln.type == 'Deposit':
-                            emplyr += ln.total
+                            emplyr += ln.amount
                         else:
-                            emplyr -= ln.total
+                            emplyr -= ln.amount
             total = emp + volun + emplyr + employee_interest + employer_contribution
             cr_lines = self.env['pf.ledger.report'].create({
                     'employee_id': rec.employee_id.id,
@@ -600,19 +600,19 @@ class WizardLateComing(models.TransientModel):
                     employer_contribution = (((emplyr) * X) * 4) / 12
                     if ln.pf_code == 'CPF':
                         if ln.type == 'Deposit':
-                            emp += ln.total
+                            emp += ln.amount
                         else:
-                            emp -= ln.total
+                            emp -= ln.amount
                     elif ln.pf_code == 'VCPF':
                         if ln.type == 'Deposit':
-                            volun += ln.total
+                            volun += ln.amount
                         else:
-                            volun -= ln.total
+                            volun -= ln.amount
                     elif ln.pf_code == 'CEPF':
                         if ln.type == 'Deposit':
-                            emplyr += ln.total
+                            emplyr += ln.amount
                         else:
-                            emplyr -= ln.total
+                            emplyr -= ln.amount
             total = emp + volun + emplyr + employee_interest + employer_contribution
             cr_lines = self.env['pf.ledger.report'].create({
                     'employee_id': rec.employee_id.id,
