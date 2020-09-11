@@ -97,7 +97,7 @@ class WizardLateComing(models.TransientModel):
             emplyr = 0
             employee_interest = 0
             employer_contribution = 0
-            month = ' '
+            month = 'January'
             for ln in pay_rules:
                 if str(ln.date.month) == '1':
                     month = 'January'
@@ -142,7 +142,7 @@ class WizardLateComing(models.TransientModel):
             emplyr = 0
             employee_interest = 0
             employer_contribution = 0
-            month = ' '
+            month = 'February'
             for ln in pay_rules:
                 if str(ln.date.month) == '2':
                     month = 'February'
@@ -187,7 +187,7 @@ class WizardLateComing(models.TransientModel):
             emplyr = 0
             employee_interest = 0
             employer_contribution = 0
-            month = ' '
+            month = 'March'
             for ln in pay_rules:
                 if str(ln.date.month) == '3':
                     month = 'March'
@@ -232,7 +232,7 @@ class WizardLateComing(models.TransientModel):
             emplyr = 0
             employee_interest = 0
             employer_contribution = 0
-            month = ' '
+            month = 'April'
             for ln in pay_rules:
                 if str(ln.date.month) == '4':
                     month = 'April'
@@ -277,7 +277,7 @@ class WizardLateComing(models.TransientModel):
             emplyr = 0
             employee_interest = 0
             employer_contribution = 0
-            month = ' '
+            month = 'May'
             for ln in pay_rules:
                 if str(ln.date.month) == '5':
                     month = 'May'
@@ -322,7 +322,7 @@ class WizardLateComing(models.TransientModel):
             emplyr = 0
             employee_interest = 0
             employer_contribution = 0
-            month = ' '
+            month = 'June'
             for ln in pay_rules:
                 if str(ln.date.month) == '6':
                     month = 'June'
@@ -367,7 +367,7 @@ class WizardLateComing(models.TransientModel):
             emplyr = 0
             employee_interest = 0
             employer_contribution = 0
-            month = ' '
+            month = 'July'
             for ln in pay_rules:
                 if str(ln.date.month) == '7':
                     month = 'July'
@@ -412,7 +412,7 @@ class WizardLateComing(models.TransientModel):
             emplyr = 0
             employee_interest = 0
             employer_contribution = 0
-            month = ' '
+            month = 'August'
             for ln in pay_rules:
                 if str(ln.date.month) == '8':
                     month = 'August'
@@ -457,7 +457,7 @@ class WizardLateComing(models.TransientModel):
             emplyr = 0
             employee_interest = 0
             employer_contribution = 0
-            month = ' '
+            month = 'September'
             for ln in pay_rules:
                 if str(ln.date.month) == '9':
                     month = 'September'
@@ -502,7 +502,7 @@ class WizardLateComing(models.TransientModel):
             emplyr = 0
             employee_interest = 0
             employer_contribution = 0
-            month = ' '
+            month = 'October'
             for ln in pay_rules:
                 if str(ln.date.month) == '10':
                     month = 'October'
@@ -547,7 +547,7 @@ class WizardLateComing(models.TransientModel):
             emplyr = 0
             employee_interest = 0
             employer_contribution = 0
-            month = ' '
+            month = 'November'
             for ln in pay_rules:
                 if str(ln.date.month) == '11':
                     month = 'November'
@@ -592,7 +592,7 @@ class WizardLateComing(models.TransientModel):
             emplyr = 0
             employee_interest = 0
             employer_contribution = 0
-            month = ' '
+            month = 'December'
             for ln in pay_rules:
                 if str(ln.date.month) == '12':
                     month = 'December'
