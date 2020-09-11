@@ -119,7 +119,7 @@ class WizardLateComing(models.TransientModel):
                         else:
                             emplyr -= ln.amount
             total = emp + volun + emplyr + employee_interest + employer_contribution
-            cr_lines = self.env['pf.ledger.report'].create({
+            jan = self.env['pf.ledger.report'].create({
                     'employee_id': rec.employee_id.id,
                     'ledger_for_year': rec.ledger_for_year.id,
                     'branch_id': rec.employee_id.branch_id.id,
@@ -131,7 +131,7 @@ class WizardLateComing(models.TransientModel):
                     'interest_employer': str(round(employer_contribution)),
                     'total': str(round(total)),
                 })
-            print('================creation lines================', cr_lines)
+            #print('================creation lines================', cr_lines)
             
             
 
@@ -164,7 +164,7 @@ class WizardLateComing(models.TransientModel):
                         else:
                             emplyr -= ln.amount
             total = emp + volun + emplyr + employee_interest + employer_contribution
-            cr_lines = self.env['pf.ledger.report'].create({
+            feb = self.env['pf.ledger.report'].create({
                     'employee_id': rec.employee_id.id,
                     'ledger_for_year': rec.ledger_for_year.id,
                     'branch_id': rec.employee_id.branch_id.id,
@@ -176,7 +176,7 @@ class WizardLateComing(models.TransientModel):
                     'interest_employer': str(round(employer_contribution)),
                     'total': str(round(total)),
                 })
-            print('================creation lines================', cr_lines)
+            #print('================creation lines================', cr_lines)
             
             
 
@@ -209,7 +209,7 @@ class WizardLateComing(models.TransientModel):
                         else:
                             emplyr -= ln.amount
             total = emp + volun + emplyr + employee_interest + employer_contribution
-            cr_lines = self.env['pf.ledger.report'].create({
+            mar = self.env['pf.ledger.report'].create({
                     'employee_id': rec.employee_id.id,
                     'ledger_for_year': rec.ledger_for_year.id,
                     'branch_id': rec.employee_id.branch_id.id,
@@ -221,7 +221,7 @@ class WizardLateComing(models.TransientModel):
                     'interest_employer': str(round(employer_contribution)),
                     'total': str(round(total)),
                 })
-            print('================creation lines================', cr_lines)
+            #print('================creation lines================', cr_lines)
             
             
 
@@ -254,7 +254,7 @@ class WizardLateComing(models.TransientModel):
                         else:
                             emplyr -= ln.amount
             total = emp + volun + emplyr + employee_interest + employer_contribution
-            cr_lines = self.env['pf.ledger.report'].create({
+            apr = self.env['pf.ledger.report'].create({
                     'employee_id': rec.employee_id.id,
                     'ledger_for_year': rec.ledger_for_year.id,
                     'branch_id': rec.employee_id.branch_id.id,
@@ -266,7 +266,7 @@ class WizardLateComing(models.TransientModel):
                     'interest_employer': str(round(employer_contribution)),
                     'total': str(round(total)),
                 })
-            print('================creation lines================', cr_lines)
+            #print('================creation lines================', cr_lines)
             
             
 
@@ -299,7 +299,7 @@ class WizardLateComing(models.TransientModel):
                         else:
                             emplyr -= ln.amount
             total = emp + volun + emplyr + employee_interest + employer_contribution
-            cr_lines = self.env['pf.ledger.report'].create({
+            may = self.env['pf.ledger.report'].create({
                     'employee_id': rec.employee_id.id,
                     'ledger_for_year': rec.ledger_for_year.id,
                     'branch_id': rec.employee_id.branch_id.id,
@@ -311,7 +311,7 @@ class WizardLateComing(models.TransientModel):
                     'interest_employer': str(round(employer_contribution)),
                     'total': str(round(total)),
                 })
-            print('================creation lines================', cr_lines)
+            #print('================creation lines================', cr_lines)
             
             
 
@@ -344,7 +344,7 @@ class WizardLateComing(models.TransientModel):
                         else:
                             emplyr -= ln.amount
             total = emp + volun + emplyr + employee_interest + employer_contribution
-            cr_lines = self.env['pf.ledger.report'].create({
+            jun = self.env['pf.ledger.report'].create({
                     'employee_id': rec.employee_id.id,
                     'ledger_for_year': rec.ledger_for_year.id,
                     'branch_id': rec.employee_id.branch_id.id,
@@ -356,7 +356,7 @@ class WizardLateComing(models.TransientModel):
                     'interest_employer': str(round(employer_contribution)),
                     'total': str(round(total)),
                 })
-            print('================creation lines================', cr_lines)
+            #print('================creation lines================', cr_lines)
             
             
 
@@ -389,7 +389,7 @@ class WizardLateComing(models.TransientModel):
                         else:
                             emplyr -= ln.amount
             total = emp + volun + emplyr + employee_interest + employer_contribution
-            cr_lines = self.env['pf.ledger.report'].create({
+            jul = self.env['pf.ledger.report'].create({
                     'employee_id': rec.employee_id.id,
                     'ledger_for_year': rec.ledger_for_year.id,
                     'branch_id': rec.employee_id.branch_id.id,
@@ -401,7 +401,7 @@ class WizardLateComing(models.TransientModel):
                     'interest_employer': str(round(employer_contribution)),
                     'total': str(round(total)),
                 })
-            print('================creation lines================', cr_lines)
+            #print('================creation lines================', cr_lines)
             
             
 
@@ -434,7 +434,7 @@ class WizardLateComing(models.TransientModel):
                         else:
                             emplyr -= ln.amount
             total = emp + volun + emplyr + employee_interest + employer_contribution
-            cr_lines = self.env['pf.ledger.report'].create({
+            aug = self.env['pf.ledger.report'].create({
                     'employee_id': rec.employee_id.id,
                     'ledger_for_year': rec.ledger_for_year.id,
                     'branch_id': rec.employee_id.branch_id.id,
@@ -446,7 +446,7 @@ class WizardLateComing(models.TransientModel):
                     'interest_employer': str(round(employer_contribution)),
                     'total': str(round(total)),
                 })
-            print('================creation lines================', cr_lines)
+            #print('================creation lines================', cr_lines)
             
             
 
@@ -479,7 +479,7 @@ class WizardLateComing(models.TransientModel):
                         else:
                             emplyr -= ln.amount
             total = emp + volun + emplyr + employee_interest + employer_contribution
-            cr_lines = self.env['pf.ledger.report'].create({
+            sept = self.env['pf.ledger.report'].create({
                     'employee_id': rec.employee_id.id,
                     'ledger_for_year': rec.ledger_for_year.id,
                     'branch_id': rec.employee_id.branch_id.id,
@@ -491,7 +491,7 @@ class WizardLateComing(models.TransientModel):
                     'interest_employer': str(round(employer_contribution)),
                     'total': str(round(total)),
                 })
-            print('================creation lines================', cr_lines)
+            #print('================creation lines================', cr_lines)
             
             
 
@@ -524,7 +524,7 @@ class WizardLateComing(models.TransientModel):
                         else:
                             emplyr -= ln.amount
             total = emp + volun + emplyr + employee_interest + employer_contribution
-            cr_lines = self.env['pf.ledger.report'].create({
+            oct = self.env['pf.ledger.report'].create({
                     'employee_id': rec.employee_id.id,
                     'ledger_for_year': rec.ledger_for_year.id,
                     'branch_id': rec.employee_id.branch_id.id,
@@ -536,7 +536,7 @@ class WizardLateComing(models.TransientModel):
                     'interest_employer': str(round(employer_contribution)),
                     'total': str(round(total)),
                 })
-            print('================creation lines================', cr_lines)
+            #print('================creation lines================', cr_lines)
             
             
 
@@ -569,7 +569,7 @@ class WizardLateComing(models.TransientModel):
                         else:
                             emplyr -= ln.amount
             total = emp + volun + emplyr + employee_interest + employer_contribution
-            cr_lines = self.env['pf.ledger.report'].create({
+            nov = self.env['pf.ledger.report'].create({
                     'employee_id': rec.employee_id.id,
                     'ledger_for_year': rec.ledger_for_year.id,
                     'branch_id': rec.employee_id.branch_id.id,
@@ -581,10 +581,8 @@ class WizardLateComing(models.TransientModel):
                     'interest_employer': str(round(employer_contribution)),
                     'total': str(round(total)),
                 })
-            print('================creation lines================', cr_lines)
+            #print('================creation lines================', cr_lines)
             
-            
-
             
             
             emp = 0
@@ -614,7 +612,7 @@ class WizardLateComing(models.TransientModel):
                         else:
                             emplyr -= ln.amount
             total = emp + volun + emplyr + employee_interest + employer_contribution
-            cr_lines = self.env['pf.ledger.report'].create({
+            dec = self.env['pf.ledger.report'].create({
                     'employee_id': rec.employee_id.id,
                     'ledger_for_year': rec.ledger_for_year.id,
                     'branch_id': rec.employee_id.branch_id.id,
@@ -626,79 +624,22 @@ class WizardLateComing(models.TransientModel):
                     'interest_employer': str(round(employer_contribution)),
                     'total': str(round(total)),
                 })
-            print('================creation lines================', cr_lines)
+            #print('================creation lines================', cr_lines)
             
-            
+            clos_bal = self.env['pf.ledger.report'].create({
+                    'employee_id': rec.employee_id.id,
+                    'ledger_for_year': rec.ledger_for_year.id,
+                    'branch_id': rec.employee_id.branch_id.id,
+                    'month': 'Closing',
+                    'epmloyee_contribution': str(int(jan.epmloyee_contribution) + int(feb.epmloyee_contribution) + int(mar.epmloyee_contribution) + int(apr.epmloyee_contribution) + int(may.epmloyee_contribution) + int(jun.epmloyee_contribution) + int(jul.epmloyee_contribution) + int(aug.epmloyee_contribution) + int(sept.epmloyee_contribution) + int(oct.epmloyee_contribution) + int(nov.epmloyee_contribution) + int(dec.epmloyee_contribution)),
+                    'voluntary_contribution': str(int(jan.voluntary_contribution) + int(feb.voluntary_contribution) + int(mar.voluntary_contribution) + int(apr.voluntary_contribution) + int(may.voluntary_contribution) + int(jun.voluntary_contribution) + int(jul.voluntary_contribution) + int(aug.voluntary_contribution) + int(sept.voluntary_contribution) + int(oct.voluntary_contribution) + int(nov.voluntary_contribution) + int(dec.voluntary_contribution)),
+                    'employer_contribution': str(int(jan.employer_contribution) + int(feb.employer_contribution) + int(mar.employer_contribution) + int(apr.employer_contribution) + int(may.employer_contribution) + int(jun.employer_contribution) + int(jul.employer_contribution) + int(aug.employer_contribution) + int(sept.employer_contribution) + int(oct.employer_contribution) + int(nov.employer_contribution) + int(dec.employer_contribution)),
+                    'interest_employee_voluntary': str(int(jan.interest_employee_voluntary) + int(feb.interest_employee_voluntary) + int(mar.interest_employee_voluntary) + int(apr.interest_employee_voluntary) + int(may.interest_employee_voluntary) + int(jun.interest_employee_voluntary) + int(jul.interest_employee_voluntary) + int(aug.interest_employee_voluntary) + int(sept.interest_employee_voluntary) + int(oct.interest_employee_voluntary) + int(nov.interest_employee_voluntary) + int(dec.interest_employee_voluntary)),
+                    'interest_employer': str(int(jan.interest_employer) + int(feb.interest_employer) + int(mar.interest_employer) + int(apr.interest_employer) + int(may.interest_employer) + int(jun.interest_employer) + int(jul.interest_employer) + int(aug.interest_employer) + int(sept.interest_employer) + int(oct.interest_employer) + int(nov.interest_employer) + int(dec.interest_employer)),
+                    'total': str(int(jan.total) + int(feb.total) + int(mar.total) + int(apr.total) + int(may.total) + int(jun.total) + int(jul.total) + int(aug.total) + int(sept.total) + int(oct.total) + int(nov.total) + int(dec.total)),
+                })
+            #print('================creation lines================', cr_lines)
 
-            #     print('==================Employee===================',emp)
-            #     print('==================Voluntary===================',volun)
-            #     print('==================Employer===================',emplyr)
-            #     if str(ln.date.month) == '1':
-            #         month = 'January'
-            #         employee_interest = (((emp + volun) * X) * 3) / 12
-            #         employer_contribution = (((emplyr) * X) * 3) / 12
-            #     elif str(ln.date.month) == '2':
-            #         month = 'February'
-            #         employee_interest = (((emp + volun) * X) * 2) / 12
-            #         employer_contribution = (((emplyr) * X) * 2) / 12
-            #     elif str(ln.date.month) == '3':
-            #         month = 'March'
-            #         employee_interest = (((emp + volun) * X) * 1) / 12
-            #         employer_contribution = (((emplyr) * X) * 1) / 12
-            #     elif str(ln.date.month) == '4':
-            #         month = 'April'
-            #         employee_interest = (((emp + volun) * X) * 12) / 12
-            #         employer_contribution = (((emplyr) * X) * 12) / 12
-            #     elif str(ln.date.month) == '5':
-            #         month = 'May'
-            #         employee_interest = (((emp + volun) * X) * 11) / 12
-            #         employer_contribution = (((emplyr) * X) * 11) / 12
-            #     elif str(ln.date.month) == '6':
-            #         month = 'June'
-            #         employee_interest = (((emp + volun) * X) * 10) / 12
-            #         employer_contribution = (((emplyr) * X) * 10) / 12
-            #     elif str(ln.date.month) == '7':
-            #         month = 'July'
-            #         employee_interest = (((emp + volun) * X) * 9) / 12
-            #         employer_contribution = (((emplyr) * X) * 9) / 12
-            #     elif str(ln.date.month) == '8':
-            #         month = 'August'
-            #         employee_interest = (((emp + volun) * X) * 8) / 12
-            #         employer_contribution = (((emplyr) * X) * 8) / 12
-            #     elif str(ln.date.month) == '9':
-            #         month = 'September'
-            #         employee_interest = (((emp + volun) * X) * 7) / 12
-            #         employer_contribution = (((emplyr) * X) * 7) / 12
-            #     elif str(ln.date.month) == '10':
-            #         month = 'October'
-            #         employee_interest = (((emp + volun) * X) * 6) / 12
-            #         employer_contribution = (((emplyr) * X) * 6) / 12
-            #     elif str(ln.date.month) == '11':
-            #         month = 'November'
-            #         employee_interest = (((emp + volun) * X) * 5) / 12
-            #         employer_contribution = (((emplyr) * X) * 5) / 12
-            #     elif str(ln.date.month) == '12':
-            #         month = 'December'
-            #         employee_interest = (((emp + volun) * X) * 4) / 12
-            #         employer_contribution = (((emplyr) * X) * 4) / 12
-            #     else:
-            #         month = ''
-            #         employee_interest = 0
-            #         employer_contribution = 0
-            #     total = emp + volun + emplyr + employee_interest + employer_contribution
-            #     cr_lines = self.env['pf.ledger.report'].create({
-            #         'employee_id': rec.employee_id.id,
-            #         'ledger_for_year': rec.ledger_for_year.id,
-            #         'branch_id': rec.employee_id.branch_id.id,
-            #         'month': str(month),
-            #         'epmloyee_contribution': str(round(emp)),
-            #         'voluntary_contribution': str(round(volun)),
-            #         'employer_contribution': str(round(emplyr)),
-            #         'interest_employee_voluntary': str(round(employee_interest)),
-            #         'interest_employer': str(round(employer_contribution)),
-            #         'total': str(round(total)),
-            #     })
-            #     print('================creation lines================', cr_lines)
             return {
                 'name': 'PF Ledger',
                 'view_type': 'form',
@@ -708,122 +649,3 @@ class WizardLateComing(models.TransientModel):
                 'target': 'current',
                 'domain': [('employee_id', '=', rec.employee_id.id),('ledger_for_year', '=', rec.ledger_for_year.id)]
             }
-
-
-    #
-    # @api.multi
-    # def confirm_report(self):
-    #     for rec in self:
-    #         dr = self.env['pf.ledger.report'].search([('branch_id', 'in', rec.branch_ids.ids)])
-    #         for lines in dr:
-    #             lines.unlink()
-    #         dr_b = self.env['resource.calendar.leaves'].search([('calendar_id.branch_id', 'in', rec.branch_ids.ids)])
-    #         for emp in dr_b:
-    #             print('========================================================',emp.date)
-    #         # for emp in rec.employee_id.resource_calendar_id.global_leave_ids:
-    #             if rec.from_date and rec.to_date and rec.from_date <= emp.date <= rec.to_date:
-    #                 month = ''
-    #                 if str(emp.date.month) == '1':
-    #                     month = 'January'
-    #                 elif str(emp.date.month) == '2':
-    #                     month = 'February'
-    #                 elif str(emp.date.month) == '3':
-    #                     month = 'March'
-    #                 elif str(emp.date.month) == '4':
-    #                     month = 'April'
-    #                 elif str(emp.date.month) == '5':
-    #                     month = 'May'
-    #                 elif str(emp.date.month) == '6':
-    #                     month = 'June'
-    #                 elif str(emp.date.month) == '7':
-    #                     month = 'July'
-    #                 elif str(emp.date.month) == '8':
-    #                     month = 'August'
-    #                 elif str(emp.date.month) == '9':
-    #                     month = 'September'
-    #                 elif str(emp.date.month) == '10':
-    #                     month = 'October'
-    #                 elif str(emp.date.month) == '11':
-    #                     month = 'November'
-    #                 elif str(emp.date.month) == '12':
-    #                     month = 'December'
-    #                 else:
-    #                     month = ''
-    #                 cr = self.env['pf.ledger.report'].create({
-    #                     'name': emp.name,
-    #                     'date': emp.date,
-    #                     'branch_id': emp.calendar_id.branch_id.id,
-    #                     'holiday_id': emp.calendar_id.id,
-    #                     'month': month,
-    #                 })
-    #
-    #     return {
-    #         'name': 'Leave Holiday Report',
-    #         'view_type': 'form',
-    #         'view_mode': 'tree',
-    #         'res_model': 'pf.ledger.report',
-    #         'type': 'ir.actions.act_window',
-    #         'target': 'current',
-    #         'domain': [('branch_id', '=', self.branch_ids.ids)],
-    #         'context': {
-    #                         'name': 'Sunday',
-    #                     }
-    #         }
-    #
-
-    #
-    # @api.multi
-    # def confirm_existing_report(self):
-    #     for rec in self:
-    #         dr = self.env['pf.ledger.report'].search([('branch_id', 'in', rec.branch_ids.ids)])
-    #         for lines in dr:
-    #             lines.unlink()
-    #         emp_ids = self.env['hr.employee'].search([('branch_id', 'in', rec.branch_ids.ids)])
-    #         for employees in emp_ids:
-    #             for emp in employees.resource_calendar_id.global_leave_ids:
-    #                 if rec.from_date <= emp.date <= rec.to_date:
-    #                     month = ''
-    #                     if str(emp.date.month) == '1':
-    #                         month = 'January'
-    #                     elif str(emp.date.month) == '2':
-    #                         month = 'February'
-    #                     elif str(emp.date.month) == '3':
-    #                         month = 'March'
-    #                     elif str(emp.date.month) == '4':
-    #                         month = 'April'
-    #                     elif str(emp.date.month) == '5':
-    #                         month = 'May'
-    #                     elif str(emp.date.month) == '6':
-    #                         month = 'June'
-    #                     elif str(emp.date.month) == '7':
-    #                         month = 'July'
-    #                     elif str(emp.date.month) == '8':
-    #                         month = 'August'
-    #                     elif str(emp.date.month) == '9':
-    #                         month = 'September'
-    #                     elif str(emp.date.month) == '10':
-    #                         month = 'October'
-    #                     elif str(emp.date.month) == '11':
-    #                         month = 'November'
-    #                     elif str(emp.date.month) == '12':
-    #                         month = 'December'
-    #                     else:
-    #                         month = ''
-    #                     cr = self.env['pf.ledger.report'].create({
-    #                         'employee_id': rec.employee_id.id,
-    #                         'name': emp.name,
-    #                         'date': emp.date,
-    #                         'branch_id': emp.calendar_id.branch_id.id,
-    #                         'holiday_id': emp.calendar_id.id,
-    #                         'month': month,
-    #                     })
-    #
-    #     return {
-    #         'name': 'Leave Holiday Report',
-    #         'view_type': 'form',
-    #         'view_mode': 'tree',
-    #         'res_model': 'pf.ledger.report',
-    #         'type': 'ir.actions.act_window',
-    #         'target': 'current',
-    #         'domain': [('branch_id', 'in', self.branch_ids.ids)],
-    #     }
