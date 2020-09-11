@@ -67,10 +67,10 @@ class WizardLateComing(models.TransientModel):
                      ])
             total = 0.00
             for ln in pay_rules_old:
-                if ln.salary_rule_id.pf_eve_type == 'employee':
-                    if ln.type == 'Deposit':
-                        total += ln.total
-
+                if ln.type == 'Deposit':
+                    total += ln.total
+                else:
+                    total -= ln.total
             cr_lines = self.env['pf.ledger.report'].create({
                 'employee_id': rec.employee_id.id,
                 'ledger_for_year': rec.ledger_for_year.id,
@@ -84,15 +84,14 @@ class WizardLateComing(models.TransientModel):
                 'total': str(round(total)),
             })
 
+
+
             pay_rules = self.env['pf.employee.details'].search(
                     [('pf_details_id.employee_id', '=', rec.employee_id.id),
                      ('date', '>=', rec.ledger_for_year.date_start),
                      ('date', '<=', rec.ledger_for_year.date_end)
                      ])
             print('=============lines===============',pay_rules)
-            
-            
-            
             emp = 0
             volun = 0
             emplyr = 0
@@ -109,12 +108,12 @@ class WizardLateComing(models.TransientModel):
                             emp += ln.total
                         else:
                             emp -= ln.total
-                    elif ln.salary_rule_id.pf_eve_type == 'VCPF':
+                    elif ln.pf_code == 'VCPF':
                         if ln.type == 'Deposit':
                             volun += ln.total
                         else:
                             volun -= ln.total
-                    elif ln.salary_rule_id.pf_eve_type == 'CEPF':
+                    elif ln.pf_code == 'CEPF':
                         if ln.type == 'Deposit':
                             emplyr += ln.total
                         else:
@@ -154,12 +153,12 @@ class WizardLateComing(models.TransientModel):
                             emp += ln.total
                         else:
                             emp -= ln.total
-                    elif ln.salary_rule_id.pf_eve_type == 'VCPF':
+                    elif ln.pf_code == 'VCPF':
                         if ln.type == 'Deposit':
                             volun += ln.total
                         else:
                             volun -= ln.total
-                    elif ln.salary_rule_id.pf_eve_type == 'CEPF':
+                    elif ln.pf_code == 'CEPF':
                         if ln.type == 'Deposit':
                             emplyr += ln.total
                         else:
@@ -199,12 +198,12 @@ class WizardLateComing(models.TransientModel):
                             emp += ln.total
                         else:
                             emp -= ln.total
-                    elif ln.salary_rule_id.pf_eve_type == 'VCPF':
+                    elif ln.pf_code == 'VCPF':
                         if ln.type == 'Deposit':
                             volun += ln.total
                         else:
                             volun -= ln.total
-                    elif ln.salary_rule_id.pf_eve_type == 'CEPF':
+                    elif ln.pf_code == 'CEPF':
                         if ln.type == 'Deposit':
                             emplyr += ln.total
                         else:
@@ -244,12 +243,12 @@ class WizardLateComing(models.TransientModel):
                             emp += ln.total
                         else:
                             emp -= ln.total
-                    elif ln.salary_rule_id.pf_eve_type == 'VCPF':
+                    elif ln.pf_code == 'VCPF':
                         if ln.type == 'Deposit':
                             volun += ln.total
                         else:
                             volun -= ln.total
-                    elif ln.salary_rule_id.pf_eve_type == 'CEPF':
+                    elif ln.pf_code == 'CEPF':
                         if ln.type == 'Deposit':
                             emplyr += ln.total
                         else:
@@ -289,12 +288,12 @@ class WizardLateComing(models.TransientModel):
                             emp += ln.total
                         else:
                             emp -= ln.total
-                    elif ln.salary_rule_id.pf_eve_type == 'VCPF':
+                    elif ln.pf_code == 'VCPF':
                         if ln.type == 'Deposit':
                             volun += ln.total
                         else:
                             volun -= ln.total
-                    elif ln.salary_rule_id.pf_eve_type == 'CEPF':
+                    elif ln.pf_code == 'CEPF':
                         if ln.type == 'Deposit':
                             emplyr += ln.total
                         else:
@@ -334,12 +333,12 @@ class WizardLateComing(models.TransientModel):
                             emp += ln.total
                         else:
                             emp -= ln.total
-                    elif ln.salary_rule_id.pf_eve_type == 'VCPF':
+                    elif ln.pf_code == 'VCPF':
                         if ln.type == 'Deposit':
                             volun += ln.total
                         else:
                             volun -= ln.total
-                    elif ln.salary_rule_id.pf_eve_type == 'CEPF':
+                    elif ln.pf_code == 'CEPF':
                         if ln.type == 'Deposit':
                             emplyr += ln.total
                         else:
@@ -379,12 +378,12 @@ class WizardLateComing(models.TransientModel):
                             emp += ln.total
                         else:
                             emp -= ln.total
-                    elif ln.salary_rule_id.pf_eve_type == 'VCPF':
+                    elif ln.pf_code == 'VCPF':
                         if ln.type == 'Deposit':
                             volun += ln.total
                         else:
                             volun -= ln.total
-                    elif ln.salary_rule_id.pf_eve_type == 'CEPF':
+                    elif ln.pf_code == 'CEPF':
                         if ln.type == 'Deposit':
                             emplyr += ln.total
                         else:
@@ -424,12 +423,12 @@ class WizardLateComing(models.TransientModel):
                             emp += ln.total
                         else:
                             emp -= ln.total
-                    elif ln.salary_rule_id.pf_eve_type == 'VCPF':
+                    elif ln.pf_code == 'VCPF':
                         if ln.type == 'Deposit':
                             volun += ln.total
                         else:
                             volun -= ln.total
-                    elif ln.salary_rule_id.pf_eve_type == 'CEPF':
+                    elif ln.pf_code == 'CEPF':
                         if ln.type == 'Deposit':
                             emplyr += ln.total
                         else:
@@ -469,12 +468,12 @@ class WizardLateComing(models.TransientModel):
                             emp += ln.total
                         else:
                             emp -= ln.total
-                    elif ln.salary_rule_id.pf_eve_type == 'VCPF':
+                    elif ln.pf_code == 'VCPF':
                         if ln.type == 'Deposit':
                             volun += ln.total
                         else:
                             volun -= ln.total
-                    elif ln.salary_rule_id.pf_eve_type == 'CEPF':
+                    elif ln.pf_code == 'CEPF':
                         if ln.type == 'Deposit':
                             emplyr += ln.total
                         else:
@@ -514,12 +513,12 @@ class WizardLateComing(models.TransientModel):
                             emp += ln.total
                         else:
                             emp -= ln.total
-                    elif ln.salary_rule_id.pf_eve_type == 'VCPF':
+                    elif ln.pf_code == 'VCPF':
                         if ln.type == 'Deposit':
                             volun += ln.total
                         else:
                             volun -= ln.total
-                    elif ln.salary_rule_id.pf_eve_type == 'CEPF':
+                    elif ln.pf_code == 'CEPF':
                         if ln.type == 'Deposit':
                             emplyr += ln.total
                         else:
@@ -559,12 +558,12 @@ class WizardLateComing(models.TransientModel):
                             emp += ln.total
                         else:
                             emp -= ln.total
-                    elif ln.salary_rule_id.pf_eve_type == 'VCPF':
+                    elif ln.pf_code == 'VCPF':
                         if ln.type == 'Deposit':
                             volun += ln.total
                         else:
                             volun -= ln.total
-                    elif ln.salary_rule_id.pf_eve_type == 'CEPF':
+                    elif ln.pf_code == 'CEPF':
                         if ln.type == 'Deposit':
                             emplyr += ln.total
                         else:
@@ -604,12 +603,12 @@ class WizardLateComing(models.TransientModel):
                             emp += ln.total
                         else:
                             emp -= ln.total
-                    elif ln.salary_rule_id.pf_eve_type == 'VCPF':
+                    elif ln.pf_code == 'VCPF':
                         if ln.type == 'Deposit':
                             volun += ln.total
                         else:
                             volun -= ln.total
-                    elif ln.salary_rule_id.pf_eve_type == 'CEPF':
+                    elif ln.pf_code == 'CEPF':
                         if ln.type == 'Deposit':
                             emplyr += ln.total
                         else:
