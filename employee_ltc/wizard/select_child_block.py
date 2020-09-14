@@ -1,7 +1,7 @@
 from odoo import api, fields, models,_
 
 
-class Reason_wizard(models.TransientModel):
+class ChildBlock(models.TransientModel):
     _name = 'child.bl.wiz'
     _description = 'Child BY wizard'
 
