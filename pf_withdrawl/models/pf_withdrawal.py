@@ -16,7 +16,7 @@ class PfWidthdrawl(models.Model):
 
     name = fields.Char(string='Name',track_visibility='always')
     date = fields.Date(string="Requested Date", default=fields.Date.today())
-    employee_id=fields.Many2one('hr.employee', string="Request By", default=_default_employee,track_visibility='always',)
+    employee_id=fields.Many2one('hr.employee', string="Request By", default=_default_employee,track_visibility='always', store=True)
     advance_amount=fields.Float(string="Advance Amount",track_visibility='always',)
     interest=fields.Float(string="Interest",track_visibility='always',)
     designation=fields.Many2one('hr.job', string="Designation",track_visibility='always',)
@@ -27,7 +27,7 @@ class PfWidthdrawl(models.Model):
     cpf = fields.Boolean('CPF')
     rule=fields.Selection([('A','23(1)(A)'),
                            ('B','23(1)(B)'),
-                           ('E','23(1)(E)')],string="Rules",track_visibility='always',)
+                           ('E','23(1)(E)')],string="Rules",track_visibility='always', store=True)
     pf_type = fields.Many2one('pf.type',string="PF Withdrawal Type",track_visibility='always')
     maximum_withdrawal = fields.Float(string='Eligible Amount',track_visibility='always')
 #     purpose=fields.Selection([('a','Purchase of dwelling sight/flat/ construction of house/ renovation of house'),
@@ -45,8 +45,8 @@ class PfWidthdrawl(models.Model):
     attachment_document = fields.Text(string="Attachment Document",track_visibility='always',related="pf_type.attachment_document")
 #     attachment_ids=fields.Many2many('abc.ab',string="Attachment")
     attachment_ids = fields.Many2many('ir.attachment', string='Files',track_visibility='always')
-    branch_id = fields.Many2one('res.branch',string="Branch",track_visibility='onchange')
-    department_id = fields.Many2one('hr.department','Department',track_visibility='onchange')
+    branch_id = fields.Many2one('res.branch',string="Branch",track_visibility='onchange', store=True)
+    department_id = fields.Many2one('hr.department','Department',track_visibility='onchange', store=True)
     
     state = fields.Selection(
         [('draft', 'Draft'), ('to_approve', 'To Approve'), ('approved', 'Approved'), ('rejected', 'Rejected')
