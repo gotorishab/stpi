@@ -13,7 +13,7 @@ class EmployeeLtcAdvance(models.Model):
 
     @api.onchange('block_year','slect_leave')
     def change_slect_leave(self):
-        return {'domain': {'slect_leave': [('ltc', '=', True),('state', '!=', 'validate'),('employee_id', '=', self.employee_id.id),('request_date_from', '>=', self.block_year.date_start),('request_date_to', '<=', self.block_year.date_end)
+        return {'domain': {'slect_leave': [('ltc', '=', True),('ltc_apply_done', '=', False),('state', '!=', 'validate'),('employee_id', '=', self.employee_id.id),('request_date_from', '>=', self.block_year.date_start),('request_date_to', '<=', self.block_year.date_end)
             ]}}
 
 
@@ -234,6 +234,7 @@ class EmployeeLtcAdvance(models.Model):
         seq = self.env['ir.sequence'].next_by_code('employee.ltc.advance')
         sequence = 'LTC' + seq
         res.ltc_sequence = sequence
+        res.slect_leave.ltc_apply_done = True
         pp = datetime.now().date() - relativedelta(years=4)
         if res.are_you_coming == True:
             val_ids = self.env['ledger.ltc'].search([

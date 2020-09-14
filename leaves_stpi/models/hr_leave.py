@@ -67,6 +67,7 @@ class HrLeave(models.Model):
     countpre = fields.Float(string='CountPre')
     countpost = fields.Float(string='CountPost')
     ltc = fields.Boolean(string='For LTC?')
+    ltc_apply_done = fields.Boolean(string='LTC Taken')
     no_of_days_display_half = fields.Float(string="Duartion Half")
     holiday_half_pay = fields.Boolean(string="Half Pay Holiday")
     pre_post_leaves_ids = fields.One2many('hr.leave.pre.post', 'pre_post_leave', string='Leaves', readonly=True)
