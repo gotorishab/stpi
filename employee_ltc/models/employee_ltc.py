@@ -16,23 +16,23 @@ class EmployeeLtcAdvance(models.Model):
         return {'domain': {'slect_leave': [('ltc', '=', True),('ltc_apply_done', '=', False),('state', '!=', 'validate'),('employee_id', '=', self.employee_id.id),('request_date_from', '>=', self.block_year.date_start),('request_date_to', '<=', self.block_year.date_end)
             ]}}
 
-
-    @api.onchange('block_year')
-    def open_child_block_year_wiz(self):
-        for rec in self:
-            return {
-                'name': 'Child Block Year',
-                'view_type': 'form',
-                'view_mode': 'tree',
-                'res_model': 'child.bl.wiz',
-                'type': 'ir.actions.act_window',
-                'target': 'new',
-                'view_id': self.env.ref('employee_ltc.child_block_year_wizard_form_view').id,
-                'context': {
-                    'default_block_year': rec.block_year.id,
-                    'default_ltc_id': rec.id
-                }
-                }
+    #
+    # @api.onchange('block_year')
+    # def open_child_block_year_wiz(self):
+    #     for rec in self:
+    #         return {
+    #             'name': 'Child Block Year',
+    #             'view_type': 'form',
+    #             'view_mode': 'tree',
+    #             'res_model': 'child.bl.wiz',
+    #             'type': 'ir.actions.act_window',
+    #             'target': 'new',
+    #             'view_id': self.env.ref('employee_ltc.child_block_year_wizard_form_view').id,
+    #             'context': {
+    #                 'default_block_year': rec.block_year.id,
+    #                 'default_ltc_id': rec.id
+    #             }
+    #             }
 
     ltc_sequence = fields.Char('LTC number',track_visibility='always')
     employee_id = fields.Many2one('hr.employee', string='Requested By', default=_default_employee,track_visibility='always')
