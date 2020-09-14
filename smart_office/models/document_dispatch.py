@@ -153,7 +153,7 @@ class DispatchDocument(models.Model):
             'designation_id': self.folder_id.job_id.id,
             'document_ids': self.folder_id.document_ids,
         }
-        req = requests.post('http://206.189.129.190/STPI/www/web-service/add-assignment/', data=data,
+        req = requests.post('http://103.92.47.152/STPI/www/web-service/add-assignment/', data=data,
                             json=None)
         try:
             pastebin_url = req.text

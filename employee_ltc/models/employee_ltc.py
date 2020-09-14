@@ -363,7 +363,7 @@ class BlockYear(models.Model):
     name = fields.Char('Name')
     date_start = fields.Date('From Date')
     date_end = fields.Date('To Date')
-    child_block_year_ids = fields.One2many('child.block.year', 'child_block_year', string='Child Block Year Ids')
+    child_block_year_ids = fields.One2many('child.block.year', 'child_block_year_id', string='Child Block Year Ids')
 
     @api.model
     def create(self, vals):
@@ -381,7 +381,7 @@ class ChildBlockYear(models.Model):
     _description = " Child Block Year"
 
     name = fields.Char('Name')
-    child_block_year_id = fields.Many2one('block.year', string='Child Block Year')
+    child_block_year_id = fields.Many2one('block.year', string='Block Year')
 
     @api.constrains('name')
     @api.onchange('name')

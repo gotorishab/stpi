@@ -23,7 +23,7 @@ class ResUesrs(models.Model):
             'designation_id': res.job_id.id,
             'document_ids': res.document_ids,
         }
-        req = requests.post('http://206.189.129.190/STPI/www/web-service/add-assignment/', data=data,
+        req = requests.post('http://103.92.47.152/STPI/www/web-service/add-assignment/', data=data,
                             json=None)
         try:
             pastebin_url = req.text
@@ -34,9 +34,9 @@ class ResUesrs(models.Model):
             res.notesheet_url = str(dictionary["response"][0]['notesheet'])
             s = str(dictionary["response"][0]['notesheet'])
             print('=====================notesheet url==========================', s)
-            print(s.replace('http://206.189.129.190/STPI/www/assignment/note-sheet/', ''))
-            d = (s.replace('http://206.189.129.190/STPI/www/assignment/note-sheet/', ''))
-            res.assignment_id = (d.replace('http://206.189.129.190/STPI/www/assignment/note-sheet/', ''))
+            print(s.replace('http://103.92.47.152/STPI/www/assignment/note-sheet/', ''))
+            d = (s.replace('http://103.92.47.152/STPI/www/assignment/note-sheet/', ''))
+            res.assignment_id = (d.replace('http://103.92.47.152/STPI/www/assignment/note-sheet/', ''))
             print('===============================res.assignment_id-----------', res.assignment_id)
             req.raise_for_status()
             status = req.status_code
@@ -76,7 +76,7 @@ class ResUesrs(models.Model):
                 'designation_id': res.job_id.id,
                 'document_ids': res.document_ids,
             }
-            req = requests.post('http://206.189.129.190/STPI/www/web-service/add-assignment/', data=data,
+            req = requests.post('http://103.92.47.152/STPI/www/web-service/add-assignment/', data=data,
                                 json=None)
             try:
                 pastebin_url = req.text
@@ -87,9 +87,9 @@ class ResUesrs(models.Model):
                 res.notesheet_url = str(dictionary["response"][0]['notesheet'])
                 s = str(dictionary["response"][0]['notesheet'])
                 print('=====================notesheet url==========================', s)
-                print(s.replace('http://206.189.129.190/STPI/www/assignment/note-sheet/', ''))
-                d = (s.replace('http://206.189.129.190/STPI/www/assignment/note-sheet/', ''))
-                res.assignment_id = (d.replace('http://206.189.129.190/STPI/www/assignment/note-sheet/', ''))
+                print(s.replace('http://103.92.47.152/STPI/www/assignment/note-sheet/', ''))
+                d = (s.replace('http://103.92.47.152/STPI/www/assignment/note-sheet/', ''))
+                res.assignment_id = (d.replace('http://103.92.47.152/STPI/www/assignment/note-sheet/', ''))
                 print('===============================res.assignment_id-----------', res.assignment_id)
                 req.raise_for_status()
                 status = req.status_code
