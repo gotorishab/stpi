@@ -24,7 +24,7 @@ class EmployeeLtcAdvance(models.Model):
                 'name': 'Child Block Year',
                 'view_type': 'form',
                 'view_mode': 'tree',
-                'res_model': 'Child.block.year.wizard',
+                'res_model': 'child.bl.wiz',
                 'type': 'ir.actions.act_window',
                 'target': 'new',
                 'view_id': self.env.ref('employee_ltc.child_block_year_wizard_form_view').id,

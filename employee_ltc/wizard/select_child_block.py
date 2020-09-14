@@ -2,7 +2,8 @@ from odoo import api, fields, models,_
 
 
 class Reason_wizard(models.TransientModel):
-    _name = 'Child.block.year.wizard'
+    _name = 'child.bl.wiz'
+    _description = 'Child BY wizard'
 
     ltc_id=fields.Many2one('employee.ltc.advance', 'LTC')
     block_year=fields.Many2one('block.year', 'Block year')

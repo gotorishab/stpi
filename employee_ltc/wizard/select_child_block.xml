@@ -2,8 +2,8 @@
 <odoo>
     <data>
         <record id="child_block_year_wizard_form_view" model="ir.ui.view">
-            <field name="name">Child.block.year.wizard</field>
-            <field name="model">Child.block.year.wizard</field>
+            <field name="name">child.bl.wiz</field>
+            <field name="model">child.bl.wiz</field>
             <field name="arch" type="xml">
                 <form string="Child Block Year" version="7.0">
                     <group>
@@ -29,7 +29,7 @@
         <record id="child_block_year_wizard_action_view" model="ir.actions.act_window">
             <field name="name">Child Block Year</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="res_model">Child.block.year.wizard</field>
+            <field name="res_model">child.bl.wiz</field>
             <field name="view_type">form</field>
             <field name="view_mode">form</field>
             <field name="view_id" ref="child_block_year_wizard_form_view"/>
