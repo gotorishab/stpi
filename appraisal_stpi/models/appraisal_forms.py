@@ -210,7 +210,7 @@ class AppraisalForms(models.Model):
                 'res_model': 'appraisal.main',
                 'type': 'ir.actions.act_window',
                 'target': 'current',
-                'view_id': self.env.ref('hr_applicant.view_employee_relative_tree').id,
+                'view_id': self.env.ref('appraisal_stpi.hr_appraisal_main_tree_view').id,
                 'domain': [('state','=','reviewing_authority_review')],
                 }
 
