@@ -268,6 +268,11 @@ class EmployeeLtcAdvance(models.Model):
             else:
                 res.single_fare_approved = 0
             if res.employee_id.date_of_join and (res.employee_id.date_of_join + relativedelta(years=1)) <= datetime.now().date():
+                rep_ids = self.env['ledger.ltc'].search([
+                    ('ltc_id', '=', res.id),
+                ])
+                for line in rep_ids:
+                    line.sudo().write({'state': 'to_approve'})
                 res.write({'state': 'to_approve'})
             else:
                 raise ValidationError(
