@@ -181,6 +181,8 @@ class EmployeeLtcAdvance(models.Model):
     @api.multi
     def button_approved(self):
         for res in self:
+            res.write({'state': 'approved'})
+
             # if res.el_encashment == 'yes':
             #     val_id = self.env['hr.leave.type'].search([
             #             ('leave_type', '=', 'Earned Leave')
@@ -195,31 +197,30 @@ class EmployeeLtcAdvance(models.Model):
             #                                                              })
             #     print("allocationnnnnnnnnnnnn111111111111111", allocate_leave)
             #     allocate_leave.sudo().action_approve()
-            if res.are_you_coming == True:
-                create_ledger_self = self.env['ledger.ltc'].create(
-                    {
-                        'employee_id': res.employee_id.id,
-                        'relative_name': res.employee_id.name,
-                        'relation': 'Self',
-                        'block_year': res.block_year.id,
-                        'child_block_year': res.child_block_year.id,
-                        'ltc_date': datetime.now().date(),
-                        'place_of_trvel': res.place_of_trvel,
-                    }
-                )
-            for relative in res.relative_ids:
-                create_ledger_family = self.env['ledger.ltc'].create(
-                    {
-                        'employee_id': res.employee_id.id,
-                        'relative_name': relative.name.name,
-                        'relation': relative.name.relate_type.name,
-                        'block_year': res.block_year.id,
-                        'child_block_year': res.child_block_year.id,
-                        'ltc_date': datetime.now().date(),
-                        'place_of_trvel': res.place_of_trvel,
-                    }
-                )
-            res.write({'state': 'approved'})
+            # if res.are_you_coming == True:
+            #     create_ledger_self = self.env['ledger.ltc'].create(
+            #         {
+            #             'employee_id': res.employee_id.id,
+            #             'relative_name': res.employee_id.name,
+            #             'relation': 'Self',
+            #             'block_year': res.block_year.id,
+            #             'child_block_year': res.child_block_year.id,
+            #             'ltc_date': datetime.now().date(),
+            #             'place_of_trvel': res.place_of_trvel,
+            #         }
+            #     )
+            # for relative in res.relative_ids:
+            #     create_ledger_family = self.env['ledger.ltc'].create(
+            #         {
+            #             'employee_id': res.employee_id.id,
+            #             'relative_name': relative.name.name,
+            #             'relation': relative.name.relate_type.name,
+            #             'block_year': res.block_year.id,
+            #             'child_block_year': res.child_block_year.id,
+            #             'ltc_date': datetime.now().date(),
+            #             'place_of_trvel': res.place_of_trvel,
+            #         }
+            #     )
 
     @api.multi
     def button_reject(self):
@@ -245,6 +246,30 @@ class EmployeeLtcAdvance(models.Model):
             if count <= 0:
                 raise ValidationError(
                     _('You are not allowed to take LTC as you have not selected any Relative or self'))
+        if res.are_you_coming == True:
+            create_ledger_self = self.env['ledger.ltc'].create(
+                {
+                    'employee_id': res.employee_id.id,
+                    'relative_name': res.employee_id.name,
+                    'relation': 'Self',
+                    'block_year': res.block_year.id,
+                    'child_block_year': res.child_block_year.id,
+                    'ltc_date': datetime.now().date(),
+                    'place_of_trvel': res.place_of_trvel,
+                }
+            )
+        for relative in res.relative_ids:
+            create_ledger_family = self.env['ledger.ltc'].create(
+                {
+                    'employee_id': res.employee_id.id,
+                    'relative_name': relative.name.name,
+                    'relation': relative.name.relate_type.name,
+                    'block_year': res.block_year.id,
+                    'child_block_year': res.child_block_year.id,
+                    'ltc_date': datetime.now().date(),
+                    'place_of_trvel': res.place_of_trvel,
+                }
+            )
         if res.are_you_coming == True:
             if res.slect_leave:
                 res.slect_leave.ltc_apply_done = True
