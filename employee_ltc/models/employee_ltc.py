@@ -1,5 +1,5 @@
 from odoo import api, fields, models, _
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError, UserError
 from dateutil.relativedelta import relativedelta
 from datetime import datetime, date
 
@@ -9,7 +9,7 @@ class EmployeeLtcAdvance(models.Model):
     _description='Advance Request'
 
     def _default_employee(self):
-        return self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+        return self.env['hr.employee'].sudo().search([('user_id', '=', self.env.uid)], limit=1)
 
     @api.onchange('block_year','slect_leave')
     def change_slect_leave(self):
@@ -101,6 +101,22 @@ class EmployeeLtcAdvance(models.Model):
                 line.hometown_address = ''
 
 
+
+    @api.multi
+    def unlink(self):
+        for loan in self:
+            if loan.state not in ('draft', 'cancel'):
+                raise UserError(
+                    'You cannot delete a LTC which is not in draft or cancelled state')
+            else:
+                rep_ids = self.env['ledger.ltc'].sudo().search([
+                    ('ltc_id', '=', loan.id),
+                ])
+                for line in rep_ids:
+                    line.sudo().unlink()
+        return super(EmployeeLtcAdvance, self).unlink()
+
+
     @api.onchange('slect_leave')
     # @api.constrains('slect_leave')
     def onchange_get_leave_details(self):
@@ -127,9 +143,9 @@ class EmployeeLtcAdvance(models.Model):
         for line in self:
             if line.no_of_days:
                 sum = 0
-                leave_my = self.env['hr.leave.report'].search([('employee_id', '=', line.employee_id.id)])
-                # total_basic = self.env['monthly.salary.structure'].search([('employee_id','=',line.employee_id.id),('name', '=', 'Basic Salary')],order='employee_id desc', limit=1)
-                total_wage = self.env['hr.contract'].search([('employee_id','=',line.employee_id.id),('state','=','open'),('date_start', '<=', line.date)], limit=1)
+                leave_my = self.env['hr.leave.report'].sudo().search([('employee_id', '=', line.employee_id.id)])
+                # total_basic = self.env['monthly.salary.structure'].sudo().search([('employee_id','=',line.employee_id.id),('name', '=', 'Basic Salary')],order='employee_id desc', limit=1)
+                total_wage = self.env['hr.contract'].sudo().search([('employee_id','=',line.employee_id.id),('state','=','open'),('date_start', '<=', line.date)], limit=1)
                 if total_wage:
                     print('=======================================Updated basic=====================')
                     line.total_basic_salary = total_wage.updated_basic
@@ -149,9 +165,9 @@ class EmployeeLtcAdvance(models.Model):
         for line in self:
             if line.no_of_days:
                 sum = 0
-                # leave_my = self.env['hr.leave.report'].search([('employee_id', '=', line.employee_id.id)])
-                # total_basic = self.env['monthly.salary.structure'].search([('employee_id','=',line.employee_id.id),('name', '=', 'Basic Salary')],order='employee_id desc', limit=1)
-                total_wage = self.env['hr.contract'].search([('employee_id','=',line.employee_id.id),('state','=','open'),('date_start', '<=', line.date)], limit=1)
+                # leave_my = self.env['hr.leave.report'].sudo().search([('employee_id', '=', line.employee_id.id)])
+                # total_basic = self.env['monthly.salary.structure'].sudo().search([('employee_id','=',line.employee_id.id),('name', '=', 'Basic Salary')],order='employee_id desc', limit=1)
+                total_wage = self.env['hr.contract'].sudo().search([('employee_id','=',line.employee_id.id),('state','=','open'),('date_start', '<=', line.date)], limit=1)
                 if total_wage:
                     print('=======================================Updated basic=====================')
                     line.total_basic_salary = total_wage.updated_basic
@@ -168,7 +184,7 @@ class EmployeeLtcAdvance(models.Model):
             # if res.are_you_coming == True:
             #     if res.slect_leave:
             #         res.slect_leave.ltc_apply_done = True
-            #     val_ids = self.env['ledger.ltc'].search([
+            #     val_ids = self.env['ledger.ltc'].sudo().search([
             #         ('employee_id', '=', res.employee_id.id),
             #         ('relative_name', '=', res.employee_id.name),
             #         ('ltc_date', '>=', pp),
@@ -216,7 +232,7 @@ class EmployeeLtcAdvance(models.Model):
             #                     _(
             #                         'You are not allowed to take LTC for this block year as you are able to take Hometown LTC, twice in 4 years'))
             # for lines in res.relative_ids:
-            #     rel_ids = self.env['ledger.ltc'].search([
+            #     rel_ids = self.env['ledger.ltc'].sudo().search([
             #         ('employee_id', '=', res.employee_id.id),
             #         ('relative_name', '=', lines.name.name),
             #         ('ltc_date', '>=', pp),
@@ -268,7 +284,7 @@ class EmployeeLtcAdvance(models.Model):
             else:
                 res.single_fare_approved = 0
             if res.employee_id.date_of_join and (res.employee_id.date_of_join + relativedelta(years=1)) <= datetime.now().date():
-                rep_ids = self.env['ledger.ltc'].search([
+                rep_ids = self.env['ledger.ltc'].sudo().search([
                     ('ltc_id', '=', res.id),
                 ])
                 for line in rep_ids:
@@ -285,7 +301,7 @@ class EmployeeLtcAdvance(models.Model):
     @api.multi
     def button_approved(self):
         for res in self:
-            rep_ids = self.env['ledger.ltc'].search([
+            rep_ids = self.env['ledger.ltc'].sudo().search([
                 ('ltc_id', '=', res.id),
             ])
             for line in rep_ids:
@@ -293,10 +309,10 @@ class EmployeeLtcAdvance(models.Model):
             res.write({'state': 'approved'})
 
             # if res.el_encashment == 'yes':
-            #     val_id = self.env['hr.leave.type'].search([
+            #     val_id = self.env['hr.leave.type'].sudo().search([
             #             ('leave_type', '=', 'Earned Leave')
             #         ], limit=1)
-            #     allocate_leave = self.env['hr.leave.allocation'].create({'holiday_status_id': val_id.id,
+            #     allocate_leave = self.env['hr.leave.allocation'].sudo().create(({'holiday_status_id': val_id.id,
             #                                                              'holiday_type': 'employee',
             #                                                              'employee_id': res.employee_id.id,
             #                                                              'number_of_days_display':(-1) * res.no_of_days,
@@ -307,7 +323,7 @@ class EmployeeLtcAdvance(models.Model):
             #     print("allocationnnnnnnnnnnnn111111111111111", allocate_leave)
             #     allocate_leave.sudo().action_approve()
             # if res.are_you_coming == True:
-            #     create_ledger_self = self.env['ledger.ltc'].create(
+            #     create_ledger_self = self.env['ledger.ltc'].sudo().create((
             #         {
             #             'employee_id': res.employee_id.id,
             #             'relative_name': res.employee_id.name,
@@ -319,7 +335,7 @@ class EmployeeLtcAdvance(models.Model):
             #         }
             #     )
             # for relative in res.relative_ids:
-            #     create_ledger_family = self.env['ledger.ltc'].create(
+            #     create_ledger_family = self.env['ledger.ltc'].sudo().create((
             #         {
             #             'employee_id': res.employee_id.id,
             #             'relative_name': relative.name.name,
@@ -334,7 +350,7 @@ class EmployeeLtcAdvance(models.Model):
     @api.multi
     def button_reject(self):
         for rec in self:
-            rep_ids = self.env['ledger.ltc'].search([
+            rep_ids = self.env['ledger.ltc'].sudo().search([
                 ('ltc_id', '=', rec.id),
             ])
             for line in rep_ids:
@@ -344,7 +360,7 @@ class EmployeeLtcAdvance(models.Model):
     @api.multi
     def button_reset_to_draft(self):
         for rec in self:
-            rep_ids = self.env['ledger.ltc'].search([
+            rep_ids = self.env['ledger.ltc'].sudo().search([
                 ('ltc_id', '=', rec.id),
             ])
             for line in rep_ids:
@@ -369,7 +385,7 @@ class EmployeeLtcAdvance(models.Model):
                 raise ValidationError(
                     _('You are not allowed to take LTC as you have not selected any Relative or self'))
         if res.are_you_coming == True:
-            create_ledger_self = self.env['ledger.ltc'].create(
+            create_ledger_self = self.env['ledger.ltc'].sudo().create((
                 {
                     'ltc_id': res.id,
                     'employee_id': res.employee_id.id,
@@ -383,7 +399,7 @@ class EmployeeLtcAdvance(models.Model):
                 }
             )
         for relative in res.relative_ids:
-            create_ledger_family = self.env['ledger.ltc'].create(
+            create_ledger_family = self.env['ledger.ltc'].sudo().create((
                 {
                     'ltc_id': res.id,
                     'employee_id': res.employee_id.id,
@@ -398,7 +414,7 @@ class EmployeeLtcAdvance(models.Model):
         if res.are_you_coming == True:
             if res.slect_leave:
                 res.slect_leave.ltc_apply_done = True
-            val_ids = self.env['ledger.ltc'].search([
+            val_ids = self.env['ledger.ltc'].sudo().search([
                 ('employee_id', '=', res.employee_id.id),
                 ('relative_name', '=', res.employee_id.name),
                 ('ltc_date', '>=', pp),
@@ -451,7 +467,7 @@ class EmployeeLtcAdvance(models.Model):
                                 _(
                                     'You are not allowed to take LTC for this block year as you are able to take Hometown LTC, twice in 4 years'))
         for lines in res.relative_ids:
-            rel_ids = self.env['ledger.ltc'].search([
+            rel_ids = self.env['ledger.ltc'].sudo().search([
                 ('employee_id', '=', res.employee_id.id),
                 ('relative_name', '=', lines.name.name),
                 ('ltc_date', '>=', pp),
@@ -542,7 +558,7 @@ class BlockYear(models.Model):
     @api.model
     def create(self, vals):
         res =super(BlockYear, self).create(vals)
-        search_id = self.env['block.year'].search([('id','!=',res.id)])
+        search_id = self.env['block.year'].sudo().search([('id','!=',res.id)])
         for emp in search_id:
             if (emp.date_start <= res.date_start <= emp.date_end) or (emp.date_start <= res.date_end <= emp.date_end):
                 raise ValidationError(_('Block year already created of this date. Please correct the date. Already created is {name}').format(name=emp.name))
@@ -595,7 +611,7 @@ class FamilyDetails(models.Model):
     def check_relative(self):
         for rec in self:
             count = 0
-            emp_id = self.env['family.details.ltc'].search(
+            emp_id = self.env['family.details.ltc'].sudo().search(
                 [('name', '=', rec.name.id), ('relative_id', '=', rec.relative_id.id)])
             for e in emp_id:
                 count += 1
