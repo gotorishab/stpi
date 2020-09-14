@@ -16,12 +16,29 @@ class EmployeeLtcAdvance(models.Model):
         return {'domain': {'slect_leave': [('ltc', '=', True),('state', '!=', 'validate'),('employee_id', '=', self.employee_id.id),('request_date_from', '>=', self.block_year.date_start),('request_date_to', '<=', self.block_year.date_end)
             ]}}
 
+
+    @api.onchange('block_year')
+    def open_child_block_year_wiz(self):
+        for rec in self:
+            return {
+                'name': 'Child Block Year',
+                'view_type': 'form',
+                'view_mode': 'tree',
+                'res_model': 'Child.block.year.wizard',
+                'type': 'ir.actions.act_window',
+                'target': 'new',
+                'view_id': self.env.ref('employee_ltc.child_block_year_wizard_form_view').id,
+                'context': {
+                    'default_block_year': rec.block_year.id,
+                    'default_ltc_id': rec.id
+                }
+                }
+
     ltc_sequence = fields.Char('LTC number',track_visibility='always')
     employee_id = fields.Many2one('hr.employee', string='Requested By', default=_default_employee,track_visibility='always')
     branch_id = fields.Many2one('res.branch', string='Branch', store=True)
     job_id = fields.Many2one('hr.job', string='Functional Designation', store=True)
     department_id = fields.Many2one('hr.department', string='Department', store=True)
-    dates_of_journey = fields.Many2one('date.range', string='Dates of Journey', store=True)
     date = fields.Date(string="Requested Date", default=datetime.now().date(),track_visibility='always')
     place_of_trvel=fields.Selection([('hometown', 'Hometown'), ('india', 'Anywhere in India'), ('conversion', 'Conversion of Hometown')], default='hometown', string='Place of Travel',track_visibility='always')
     hometown_address = fields.Char(string='Address',track_visibility='always')
@@ -45,6 +62,7 @@ class EmployeeLtcAdvance(models.Model):
     el_encashment=fields.Selection([('yes', 'Yes'), ('no', 'No')], default='no', string='Require EL Encashment',track_visibility='always')
     no_of_days = fields.Float('No. of days', default='10',track_visibility='always')
     amount = fields.Float(string='Amount', compute='_compute_amount',track_visibility='always')
+    child_block_year=fields.Many2one('child.block.year', 'Child Block year')
     total_basic_salary = fields.Float(string='Total Basic',track_visibility='always')
     state = fields.Selection([('draft', 'Draft'), ('to_approve', 'To Approve'), ('approved', 'Approved'), ('rejected', 'Rejected')
                                ], required=True, default='draft',track_visibility='always', string='Status')
@@ -160,21 +178,20 @@ class EmployeeLtcAdvance(models.Model):
     @api.multi
     def button_approved(self):
         for res in self:
-            if res.el_encashment == 'yes':
-                val_id = self.env['hr.leave.type'].search([
-                        ('leave_type', '=', 'Earned Leave')
-                    ], limit=1)
-                allocate_leave = self.env['hr.leave.allocation'].create({'holiday_status_id': val_id.id,
-                                                                         'holiday_type': 'employee',
-                                                                         'employee_id': res.employee_id.id,
-                                                                         'number_of_days_display':(-1) * res.no_of_days,
-                                                                         'number_of_days': (-1) * res.no_of_days,
-                                                                         'name': 'Against LTC',
-                                                                         'notes': 'As Per Leave Policy'
-                                                                         })
-                print("allocationnnnnnnnnnnnn111111111111111", allocate_leave)
-                allocate_leave.sudo().action_approve()
-
+            # if res.el_encashment == 'yes':
+            #     val_id = self.env['hr.leave.type'].search([
+            #             ('leave_type', '=', 'Earned Leave')
+            #         ], limit=1)
+            #     allocate_leave = self.env['hr.leave.allocation'].create({'holiday_status_id': val_id.id,
+            #                                                              'holiday_type': 'employee',
+            #                                                              'employee_id': res.employee_id.id,
+            #                                                              'number_of_days_display':(-1) * res.no_of_days,
+            #                                                              'number_of_days': (-1) * res.no_of_days,
+            #                                                              'name': 'Against LTC',
+            #                                                              'notes': 'As Per Leave Policy'
+            #                                                              })
+            #     print("allocationnnnnnnnnnnnn111111111111111", allocate_leave)
+            #     allocate_leave.sudo().action_approve()
             if res.are_you_coming == True:
                 create_ledger_self = self.env['ledger.ltc'].create(
                     {
@@ -182,6 +199,7 @@ class EmployeeLtcAdvance(models.Model):
                         'relative_name': res.employee_id.name,
                         'relation': 'Self',
                         'block_year': res.block_year.id,
+                        'child_block_year': res.child_block_year.id,
                         'ltc_date': datetime.now().date(),
                         'place_of_trvel': res.place_of_trvel,
                     }
@@ -193,6 +211,7 @@ class EmployeeLtcAdvance(models.Model):
                         'relative_name': relative.name.name,
                         'relation': relative.name.relate_type.name,
                         'block_year': res.block_year.id,
+                        'child_block_year': res.child_block_year.id,
                         'ltc_date': datetime.now().date(),
                         'place_of_trvel': res.place_of_trvel,
                     }
@@ -226,10 +245,10 @@ class EmployeeLtcAdvance(models.Model):
                 count_india = 0
                 count_home = 0
                 for ltc_pre in val_ids:
-                    if ltc_pre.place_of_trvel == res.place_of_trvel and ltc_pre.block_year == res.block_year:
+                    if ltc_pre.place_of_trvel == res.place_of_trvel and ltc_pre.block_year == res.block_year and ltc_pre.child_block_year == res.child_block_year:
                             raise ValidationError(
                                 _('You are not allowed to take LTC for this block year'))
-                    if ltc_pre.block_year == res.block_year:
+                    if ltc_pre.block_year == res.block_year and ltc_pre.child_block_year == res.child_block_year:
                             raise ValidationError(
                                 _('You are not allowed to take LTC for this block year, as you have already applied for this block year'))
                     if ltc_pre.place_of_trvel == 'india':
@@ -248,7 +267,7 @@ class EmployeeLtcAdvance(models.Model):
                 count_total = 0
                 count_india = 0
                 for ltc_pre in val_ids:
-                    if ltc_pre.place_of_trvel == res.place_of_trvel and ltc_pre.block_year == res.block_year:
+                    if ltc_pre.place_of_trvel == res.place_of_trvel and ltc_pre.block_year == res.block_year and ltc_pre.child_block_year == res.child_block_year:
                             raise ValidationError(
                                 _('You are not allowed to take LTC for this block year'))
                     if ltc_pre.place_of_trvel == 'india':
@@ -276,7 +295,7 @@ class EmployeeLtcAdvance(models.Model):
                     if ltc_pre.place_of_trvel == res.place_of_trvel and ltc_pre.block_year == res.block_year:
                             raise ValidationError(
                                 _('You are not allowed to take LTC for this block year'))
-                    if ltc_pre.block_year == res.block_year:
+                    if ltc_pre.block_year == res.block_year and ltc_pre.child_block_year == res.child_block_year:
                             raise ValidationError(
                                 _('You are not allowed to take LTC for this block year, as you have already applied for this block year'))
                     if ltc_pre.place_of_trvel == 'india':
@@ -295,7 +314,7 @@ class EmployeeLtcAdvance(models.Model):
                 count_total = 0
                 count_india = 0
                 for ltc_pre in rel_ids:
-                    if res.place_of_trvel == ltc_pre.place_of_trvel and res.block_year == ltc_pre.block_year:
+                    if res.place_of_trvel == ltc_pre.place_of_trvel and res.block_year == ltc_pre.block_year and res.child_block_year == ltc_pre.child_block_year:
                         raise ValidationError(
                             _('You are not allowed to take LTC for this block year'))
                     if ltc_pre.place_of_trvel == 'india':
@@ -344,6 +363,7 @@ class BlockYear(models.Model):
     name = fields.Char('Name')
     date_start = fields.Date('From Date')
     date_end = fields.Date('To Date')
+    child_block_year_ids = fields.One2many('child.block.year', 'child_block_year', string='Child Block Year Ids')
 
     @api.model
     def create(self, vals):
@@ -353,6 +373,27 @@ class BlockYear(models.Model):
             if (emp.date_start <= res.date_start <= emp.date_end) or (emp.date_start <= res.date_end <= emp.date_end):
                 raise ValidationError(_('Block year already created of this date. Please correct the date. Already created is {name}').format(name=emp.name))
         return res
+
+
+
+class ChildBlockYear(models.Model):
+    _name = 'child.block.year'
+    _description = " Child Block Year"
+
+    name = fields.Char('Name')
+    child_block_year_id = fields.Many2one('block.year', string='Child Block Year')
+
+    @api.constrains('name')
+    @api.onchange('name')
+    def validate_onchange(self):
+        for rec in self:
+            if rec.name:
+                for e in rec.name:
+                    if not e.isdigit():
+                        raise ValidationError(_("Please enter correct Name, it must be numeric..."))
+                if len(rec.name) != 4:
+                    raise ValidationError(_("Please enter correct Name, it must be of 4 digits..."))
+
 
 class FamilyDetails(models.Model):
     _name = 'family.details.ltc'
@@ -397,5 +438,6 @@ class LtcLedger(models.Model):
     relative_name = fields.Char(string='Relative Name')
     relation = fields.Char(string='Relative')
     block_year = fields.Many2one('block.year', string='Block year')
+    child_block_year=fields.Many2one('child.block.year', 'Child Block year')
     ltc_date = fields.Date(string='LTC Date')
     place_of_trvel=fields.Selection([('hometown', 'Hometown'), ('india', 'Anywhere in India'), ('conversion', 'Conversion of Hometown')], default='hometown', string='LTC Type')

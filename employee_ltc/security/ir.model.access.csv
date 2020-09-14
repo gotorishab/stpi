@@ -9,3 +9,4 @@ access_ledger_ltc,ledger.ltc,model_ledger_ltc,base.group_user,1,1,1,1
 access_travel_mode_ltc,travel.mode.ltc,model_travel_mode_ltc,base.group_user,1,1,1,1
 access_employee_ltc_journey_gov,employee.ltc.journey.gov,model_employee_ltc_journey_gov,base.group_user,1,1,1,1
 access_employee_ltc_journey_train,employee.ltc.journey.train,model_employee_ltc_journey_train,base.group_user,1,1,1,1
+access_child_block_year,child.block.year,model_child_block_year,base.group_user,1,1,1,1
