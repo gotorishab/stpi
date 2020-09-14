@@ -163,17 +163,116 @@ class EmployeeLtcAdvance(models.Model):
 
     @api.multi
     def button_to_approve(self):
-        for rec in self:
-            if rec.single_fare:
-                rec.single_fare_approved = ((rec.single_fare)*90)/100
+        for res in self:
+            pp = datetime.now().date() - relativedelta(years=4)
+            if res.are_you_coming == True:
+                if res.slect_leave:
+                    res.slect_leave.ltc_apply_done = True
+                val_ids = self.env['ledger.ltc'].search([
+                    ('employee_id', '=', res.employee_id.id),
+                    ('relative_name', '=', res.employee_id.name),
+                    ('ltc_date', '>=', pp),
+                ])
+                if res.employee_id.date_of_join + relativedelta(year=8) >= datetime.now().date():
+                    count_india = 0
+                    count_home = 0
+                    for ltc_pre in val_ids:
+                        if ltc_pre.place_of_trvel == res.place_of_trvel and ltc_pre.block_year == res.block_year and ltc_pre.child_block_year == res.child_block_year:
+                            raise ValidationError(
+                                _('You are not allowed to take LTC for this block year'))
+                        if ltc_pre.block_year == res.block_year and ltc_pre.child_block_year == res.child_block_year:
+                            raise ValidationError(
+                                _(
+                                    'You are not allowed to take LTC for this block year, as you have already applied for this block year'))
+                        if ltc_pre.place_of_trvel == 'india':
+                            count_india += 1
+                        if res.place_of_trvel == 'india' and count_india > 1:
+                            raise ValidationError(
+                                _(
+                                    'You are not allowed to take LTC for this block year as you are able to take Anywhere in India LTC, once in 4 years'))
+                        if ltc_pre.place_of_trvel == 'hometown':
+                            count_home += 1
+                        if res.place_of_trvel == 'hometown' and count_home > 4:
+                            raise ValidationError(
+                                _(
+                                    'You are not allowed to take LTC for this block year as you are able to take Hometown LTC, maximum of 4 times in 4 years'))
+                else:
+                    count_total = 0
+                    count_india = 0
+                    for ltc_pre in val_ids:
+                        if ltc_pre.place_of_trvel == res.place_of_trvel and ltc_pre.block_year == res.block_year and ltc_pre.child_block_year == res.child_block_year:
+                            raise ValidationError(
+                                _('You are not allowed to take LTC for this block year'))
+                        if ltc_pre.place_of_trvel == 'india':
+                            count_india += 1
+                        if res.place_of_trvel == 'india' and count_india > 1:
+                            raise ValidationError(
+                                _(
+                                    'You are not allowed to take LTC for this block year as you are able to take Anywhere in India LTC, once in 4 years'))
+                        if ltc_pre.place_of_trvel == 'hometown':
+                            count_india += 1
+                        if res.place_of_trvel == 'hometown' and count_india > 2:
+                            raise ValidationError(
+                                _(
+                                    'You are not allowed to take LTC for this block year as you are able to take Hometown LTC, twice in 4 years'))
+            for lines in res.relative_ids:
+                rel_ids = self.env['ledger.ltc'].search([
+                    ('employee_id', '=', res.employee_id.id),
+                    ('relative_name', '=', lines.name.name),
+                    ('ltc_date', '>=', pp),
+                ])
+                if res.employee_id.date_of_join + relativedelta(year=8) >= datetime.now().date():
+                    count_india = 0
+                    count_home = 0
+                    for ltc_pre in rel_ids:
+                        if ltc_pre.place_of_trvel == res.place_of_trvel and ltc_pre.block_year == res.block_year:
+                            raise ValidationError(
+                                _('You are not allowed to take LTC for this block year'))
+                        if ltc_pre.block_year == res.block_year and ltc_pre.child_block_year == res.child_block_year:
+                            raise ValidationError(
+                                _(
+                                    'You are not allowed to take LTC for this block year, as you have already applied for this block year'))
+                        if ltc_pre.place_of_trvel == 'india':
+                            count_india += 1
+                        if res.place_of_trvel == 'india' and count_india > 1:
+                            raise ValidationError(
+                                _(
+                                    'You are not allowed to take LTC for this block year as you are able to take Anywhere in India LTC, once in 4 years'))
+                        if ltc_pre.place_of_trvel == 'hometown':
+                            count_home += 1
+                        if res.place_of_trvel == 'hometown' and count_home > 4:
+                            raise ValidationError(
+                                _(
+                                    'You are not allowed to take LTC for this block year as you are able to take Hometown LTC, maximum of 4 times in 4 years'))
+                else:
+                    count_total = 0
+                    count_india = 0
+                    for ltc_pre in rel_ids:
+                        if res.place_of_trvel == ltc_pre.place_of_trvel and res.block_year == ltc_pre.block_year and res.child_block_year == ltc_pre.child_block_year:
+                            raise ValidationError(
+                                _('You are not allowed to take LTC for this block year'))
+                        if ltc_pre.place_of_trvel == 'india':
+                            count_india += 1
+                        if res.place_of_trvel == 'india' and count_india > 1:
+                            raise ValidationError(
+                                _(
+                                    'You are not allowed to take LTC for this block year as you are able to take Anywhere in India LTC, once in 4 years'))
+                        if ltc_pre.place_of_trvel == 'hometown':
+                            count_india += 1
+                        if res.place_of_trvel == 'hometown' and count_india > 2:
+                            raise ValidationError(
+                                _(
+                                    'You are not allowed to take LTC for this block year as you are able to take Hometown LTC, twice in 4 years'))
+            if res.single_fare:
+                res.single_fare_approved = ((res.single_fare)*90)/100
             else:
-                rec.single_fare_approved = 0
-            if rec.employee_id.date_of_join and (rec.employee_id.date_of_join + relativedelta(years=1)) <= datetime.now().date():
-                rec.write({'state': 'to_approve'})
+                res.single_fare_approved = 0
+            if res.employee_id.date_of_join and (res.employee_id.date_of_join + relativedelta(years=1)) <= datetime.now().date():
+                res.write({'state': 'to_approve'})
             else:
                 raise ValidationError(
                     _('You are not eligible to take LTC, You have to complete atleast 1 year'))
-            if rec.hometown_address == '':
+            if res.hometown_address == '':
                 raise ValidationError(
                     _('You are not allowed to submit. Please enter hometwon address'))
 
@@ -238,7 +337,10 @@ class EmployeeLtcAdvance(models.Model):
         seq = self.env['ir.sequence'].next_by_code('employee.ltc.advance')
         sequence = 'LTC' + seq
         res.ltc_sequence = sequence
-        pp = datetime.now().date() - relativedelta(years=4)
+        # pp = datetime.now().date() - relativedelta(years=4)
+        if res.are_you_coming == True:
+            if res.slect_leave:
+                res.slect_leave.ltc_apply_done = True
         count = 0
         if res.are_you_coming == False:
             for rel in res.relative_ids:
@@ -249,6 +351,7 @@ class EmployeeLtcAdvance(models.Model):
         if res.are_you_coming == True:
             create_ledger_self = self.env['ledger.ltc'].create(
                 {
+                    'ltc_id': res.id,
                     'employee_id': res.employee_id.id,
                     'relative_name': res.employee_id.name,
                     'relation': 'Self',
@@ -261,6 +364,7 @@ class EmployeeLtcAdvance(models.Model):
         for relative in res.relative_ids:
             create_ledger_family = self.env['ledger.ltc'].create(
                 {
+                    'ltc_id': res.id,
                     'employee_id': res.employee_id.id,
                     'relative_name': relative.name.name,
                     'relation': relative.name.relate_type.name,
@@ -270,102 +374,102 @@ class EmployeeLtcAdvance(models.Model):
                     'place_of_trvel': res.place_of_trvel,
                 }
             )
-        if res.are_you_coming == True:
-            if res.slect_leave:
-                res.slect_leave.ltc_apply_done = True
-            val_ids = self.env['ledger.ltc'].search([
-                ('employee_id', '=', res.employee_id.id),
-                ('relative_name', '=', res.employee_id.name),
-                ('ltc_date', '>=', pp),
-            ])
-            if res.employee_id.date_of_join + relativedelta(year=8) >= datetime.now().date():
-                count_india = 0
-                count_home = 0
-                for ltc_pre in val_ids:
-                    if ltc_pre.place_of_trvel == res.place_of_trvel and ltc_pre.block_year == res.block_year and ltc_pre.child_block_year == res.child_block_year:
-                            raise ValidationError(
-                                _('You are not allowed to take LTC for this block year'))
-                    if ltc_pre.block_year == res.block_year and ltc_pre.child_block_year == res.child_block_year:
-                            raise ValidationError(
-                                _('You are not allowed to take LTC for this block year, as you have already applied for this block year'))
-                    if ltc_pre.place_of_trvel == 'india':
-                        count_india += 1
-                    if res.place_of_trvel == 'india' and count_india > 1:
-                        raise ValidationError(
-                            _(
-                                'You are not allowed to take LTC for this block year as you are able to take Anywhere in India LTC, once in 4 years'))
-                    if ltc_pre.place_of_trvel == 'hometown':
-                        count_home += 1
-                    if res.place_of_trvel == 'hometown' and count_home > 4 :
-                        raise ValidationError(
-                            _(
-                                'You are not allowed to take LTC for this block year as you are able to take Hometown LTC, maximum of 4 times in 4 years'))
-            else:
-                count_total = 0
-                count_india = 0
-                for ltc_pre in val_ids:
-                    if ltc_pre.place_of_trvel == res.place_of_trvel and ltc_pre.block_year == res.block_year and ltc_pre.child_block_year == res.child_block_year:
-                            raise ValidationError(
-                                _('You are not allowed to take LTC for this block year'))
-                    if ltc_pre.place_of_trvel == 'india':
-                        count_india += 1
-                    if res.place_of_trvel == 'india' and count_india > 1 :
-                        raise ValidationError(
-                            _(
-                                'You are not allowed to take LTC for this block year as you are able to take Anywhere in India LTC, once in 4 years'))
-                    if ltc_pre.place_of_trvel == 'hometown':
-                                count_india += 1
-                    if res.place_of_trvel == 'hometown' and count_india > 2:
-                        raise ValidationError(
-                            _(
-                                'You are not allowed to take LTC for this block year as you are able to take Hometown LTC, twice in 4 years'))
-        for lines in res.relative_ids:
-            rel_ids = self.env['ledger.ltc'].search([
-                ('employee_id', '=', res.employee_id.id),
-                ('relative_name', '=', lines.name.name),
-                ('ltc_date', '>=', pp),
-            ])
-            if res.employee_id.date_of_join + relativedelta(year=8) >= datetime.now().date():
-                count_india = 0
-                count_home = 0
-                for ltc_pre in rel_ids:
-                    if ltc_pre.place_of_trvel == res.place_of_trvel and ltc_pre.block_year == res.block_year:
-                            raise ValidationError(
-                                _('You are not allowed to take LTC for this block year'))
-                    if ltc_pre.block_year == res.block_year and ltc_pre.child_block_year == res.child_block_year:
-                            raise ValidationError(
-                                _('You are not allowed to take LTC for this block year, as you have already applied for this block year'))
-                    if ltc_pre.place_of_trvel == 'india':
-                        count_india += 1
-                    if res.place_of_trvel == 'india' and count_india > 1:
-                        raise ValidationError(
-                            _(
-                                'You are not allowed to take LTC for this block year as you are able to take Anywhere in India LTC, once in 4 years'))
-                    if ltc_pre.place_of_trvel == 'hometown':
-                        count_home += 1
-                    if res.place_of_trvel == 'hometown' and count_home > 4:
-                        raise ValidationError(
-                            _(
-                                'You are not allowed to take LTC for this block year as you are able to take Hometown LTC, maximum of 4 times in 4 years'))
-            else:
-                count_total = 0
-                count_india = 0
-                for ltc_pre in rel_ids:
-                    if res.place_of_trvel == ltc_pre.place_of_trvel and res.block_year == ltc_pre.block_year and res.child_block_year == ltc_pre.child_block_year:
-                        raise ValidationError(
-                            _('You are not allowed to take LTC for this block year'))
-                    if ltc_pre.place_of_trvel == 'india':
-                        count_india += 1
-                    if res.place_of_trvel == 'india' and count_india > 1:
-                        raise ValidationError(
-                            _(
-                                'You are not allowed to take LTC for this block year as you are able to take Anywhere in India LTC, once in 4 years'))
-                    if ltc_pre.place_of_trvel == 'hometown':
-                        count_india += 1
-                    if res.place_of_trvel == 'hometown' and count_india > 2:
-                        raise ValidationError(
-                            _(
-                                'You are not allowed to take LTC for this block year as you are able to take Hometown LTC, twice in 4 years'))
+        # if res.are_you_coming == True:
+        #     if res.slect_leave:
+        #         res.slect_leave.ltc_apply_done = True
+        #     val_ids = self.env['ledger.ltc'].search([
+        #         ('employee_id', '=', res.employee_id.id),
+        #         ('relative_name', '=', res.employee_id.name),
+        #         ('ltc_date', '>=', pp),
+        #     ])
+        #     if res.employee_id.date_of_join + relativedelta(year=8) >= datetime.now().date():
+        #         count_india = 0
+        #         count_home = 0
+        #         for ltc_pre in val_ids:
+        #             if ltc_pre.place_of_trvel == res.place_of_trvel and ltc_pre.block_year == res.block_year and ltc_pre.child_block_year == res.child_block_year:
+        #                     raise ValidationError(
+        #                         _('You are not allowed to take LTC for this block year'))
+        #             if ltc_pre.block_year == res.block_year and ltc_pre.child_block_year == res.child_block_year:
+        #                     raise ValidationError(
+        #                         _('You are not allowed to take LTC for this block year, as you have already applied for this block year'))
+        #             if ltc_pre.place_of_trvel == 'india':
+        #                 count_india += 1
+        #             if res.place_of_trvel == 'india' and count_india > 1:
+        #                 raise ValidationError(
+        #                     _(
+        #                         'You are not allowed to take LTC for this block year as you are able to take Anywhere in India LTC, once in 4 years'))
+        #             if ltc_pre.place_of_trvel == 'hometown':
+        #                 count_home += 1
+        #             if res.place_of_trvel == 'hometown' and count_home > 4 :
+        #                 raise ValidationError(
+        #                     _(
+        #                         'You are not allowed to take LTC for this block year as you are able to take Hometown LTC, maximum of 4 times in 4 years'))
+        #     else:
+        #         count_total = 0
+        #         count_india = 0
+        #         for ltc_pre in val_ids:
+        #             if ltc_pre.place_of_trvel == res.place_of_trvel and ltc_pre.block_year == res.block_year and ltc_pre.child_block_year == res.child_block_year:
+        #                     raise ValidationError(
+        #                         _('You are not allowed to take LTC for this block year'))
+        #             if ltc_pre.place_of_trvel == 'india':
+        #                 count_india += 1
+        #             if res.place_of_trvel == 'india' and count_india > 1 :
+        #                 raise ValidationError(
+        #                     _(
+        #                         'You are not allowed to take LTC for this block year as you are able to take Anywhere in India LTC, once in 4 years'))
+        #             if ltc_pre.place_of_trvel == 'hometown':
+        #                         count_india += 1
+        #             if res.place_of_trvel == 'hometown' and count_india > 2:
+        #                 raise ValidationError(
+        #                     _(
+        #                         'You are not allowed to take LTC for this block year as you are able to take Hometown LTC, twice in 4 years'))
+        # for lines in res.relative_ids:
+        #     rel_ids = self.env['ledger.ltc'].search([
+        #         ('employee_id', '=', res.employee_id.id),
+        #         ('relative_name', '=', lines.name.name),
+        #         ('ltc_date', '>=', pp),
+        #     ])
+        #     if res.employee_id.date_of_join + relativedelta(year=8) >= datetime.now().date():
+        #         count_india = 0
+        #         count_home = 0
+        #         for ltc_pre in rel_ids:
+        #             if ltc_pre.place_of_trvel == res.place_of_trvel and ltc_pre.block_year == res.block_year:
+        #                     raise ValidationError(
+        #                         _('You are not allowed to take LTC for this block year'))
+        #             if ltc_pre.block_year == res.block_year and ltc_pre.child_block_year == res.child_block_year:
+        #                     raise ValidationError(
+        #                         _('You are not allowed to take LTC for this block year, as you have already applied for this block year'))
+        #             if ltc_pre.place_of_trvel == 'india':
+        #                 count_india += 1
+        #             if res.place_of_trvel == 'india' and count_india > 1:
+        #                 raise ValidationError(
+        #                     _(
+        #                         'You are not allowed to take LTC for this block year as you are able to take Anywhere in India LTC, once in 4 years'))
+        #             if ltc_pre.place_of_trvel == 'hometown':
+        #                 count_home += 1
+        #             if res.place_of_trvel == 'hometown' and count_home > 4:
+        #                 raise ValidationError(
+        #                     _(
+        #                         'You are not allowed to take LTC for this block year as you are able to take Hometown LTC, maximum of 4 times in 4 years'))
+        #     else:
+        #         count_total = 0
+        #         count_india = 0
+        #         for ltc_pre in rel_ids:
+        #             if res.place_of_trvel == ltc_pre.place_of_trvel and res.block_year == ltc_pre.block_year and res.child_block_year == ltc_pre.child_block_year:
+        #                 raise ValidationError(
+        #                     _('You are not allowed to take LTC for this block year'))
+        #             if ltc_pre.place_of_trvel == 'india':
+        #                 count_india += 1
+        #             if res.place_of_trvel == 'india' and count_india > 1:
+        #                 raise ValidationError(
+        #                     _(
+        #                         'You are not allowed to take LTC for this block year as you are able to take Anywhere in India LTC, once in 4 years'))
+        #             if ltc_pre.place_of_trvel == 'hometown':
+        #                 count_india += 1
+        #             if res.place_of_trvel == 'hometown' and count_india > 2:
+        #                 raise ValidationError(
+        #                     _(
+        #                         'You are not allowed to take LTC for this block year as you are able to take Hometown LTC, twice in 4 years'))
         return res
 
     @api.multi
@@ -471,6 +575,7 @@ class LtcLedger(models.Model):
     _name = 'ledger.ltc'
     _description = "LTC Ledger"
 
+    ltc_id = fields.Many2one('employee.ltc.advance', string='LTC')
     employee_id = fields.Many2one('hr.employee', string='Requested By')
     relative_name = fields.Char(string='Relative Name')
     relation = fields.Char(string='Relative')
