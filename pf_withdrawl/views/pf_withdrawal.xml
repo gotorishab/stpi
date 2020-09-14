@@ -361,7 +361,9 @@
                 name="PF by Employee"
                 parent="pf_withdrawl_menu_report_menu_id" 
                 sequence="7"
-                action="groupby_employee_action_employee"/>
+                action="groupby_employee_action_employee"
+                invisible="1"
+        />
         
         <menuitem id ="pf_withdrawl_by_department" 
                     action="groupby_department_action_employee"
