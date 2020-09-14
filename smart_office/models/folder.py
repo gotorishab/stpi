@@ -179,7 +179,7 @@ class FolderMaster(models.Model):
             print('================================================', rec.iframe_dashboard)
             if rec.iframe_dashboard:
                 rec.write({'state': 'in_progress'})
-                total_i36frame = rec.iframe_dashboard.replace('800', '100%').replace('"600"', '"100%"').replace(
+                total_iframe = rec.iframe_dashboard.replace('800', '100%').replace('"600"', '"100%"').replace(
                     'allowtransparency', '')
                 file_ids = rec.env['see.file'].sudo().search([])
                 for id in file_ids:
