@@ -402,7 +402,7 @@ class EmployeeLtcAdvance(models.Model):
                 count_india = 0
                 count_home = 0
                 for ltc_pre in val_ids:
-                    if ltc_pre.ltc_id != res.id:
+                    if ltc_pre.ltc_id.id != res.id:
                         print('===============ledger id 1========================', ltc_pre.ltc_id)
                         print('===============My id 1========================', res.id)
                         if ltc_pre.place_of_trvel == res.place_of_trvel and ltc_pre.block_year == res.block_year and ltc_pre.child_block_year == res.child_block_year:
@@ -427,7 +427,7 @@ class EmployeeLtcAdvance(models.Model):
                 count_total = 0
                 count_india = 0
                 for ltc_pre in val_ids:
-                    if ltc_pre.ltc_id != res.id:
+                    if ltc_pre.ltc_id.id != res.id:
                         print('===============ledger id 2========================', ltc_pre.ltc_id)
                         print('===============My id 2========================', res.id)
                         if ltc_pre.place_of_trvel == res.place_of_trvel and ltc_pre.block_year == res.block_year and ltc_pre.child_block_year == res.child_block_year:
@@ -455,7 +455,7 @@ class EmployeeLtcAdvance(models.Model):
                 count_india = 0
                 count_home = 0
                 for ltc_pre in rel_ids:
-                    if ltc_pre.ltc_id != res.id:
+                    if ltc_pre.ltc_id.id != res.id:
                         print('===============ledger id 3========================', ltc_pre.ltc_id)
                         print('===============My id 3========================', res.id)
                         if ltc_pre.place_of_trvel == res.place_of_trvel and ltc_pre.block_year == res.block_year and ltc_pre.child_block_year == res.child_block_year:
@@ -480,7 +480,7 @@ class EmployeeLtcAdvance(models.Model):
                 count_total = 0
                 count_india = 0
                 for ltc_pre in rel_ids:
-                    if ltc_pre.ltc_id != res.id:
+                    if ltc_pre.ltc_id.id != res.id:
                         print('===============ledger id 4========================', ltc_pre.ltc_id)
                         print('===============My id 4========================', res.id)
                         if res.place_of_trvel == ltc_pre.place_of_trvel and res.block_year == ltc_pre.block_year and res.child_block_year == ltc_pre.child_block_year:
