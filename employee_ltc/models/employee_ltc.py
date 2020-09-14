@@ -13,8 +13,11 @@ class EmployeeLtcAdvance(models.Model):
 
     @api.onchange('block_year','slect_leave')
     def change_slect_leave(self):
-        return {'domain': {'slect_leave': [('ltc', '=', True),('ltc_apply_done', '=', False),('state', '!=', 'validate'),('employee_id', '=', self.employee_id.id),('request_date_from', '>=', self.block_year.date_start),('request_date_to', '<=', self.block_year.date_end)
-            ]}}
+        return {'domain':
+                    {
+                        'slect_leave': [('ltc', '=', True),('ltc_apply_done', '=', False),('state', '!=', 'validate'),('employee_id', '=', self.employee_id.id),('request_date_from', '>=', self.block_year.date_start),('request_date_to', '<=', self.block_year.date_end)],
+                        'child_block_year': [('child_block_year_id', '=', self.block_year.id)]
+                           }}
 
     #
     # @api.onchange('block_year')
