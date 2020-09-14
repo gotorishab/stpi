@@ -7,7 +7,7 @@ class ChildBlock(models.TransientModel):
 
     ltc_id=fields.Many2one('employee.ltc.advance', 'LTC')
     block_year=fields.Many2one('block.year', 'Block year')
-    child_block_year=fields.Many2one('child.block.year', 'Child Block year')
+    child_block_year=fields.Many2one('child.block.year', 'Availing LTC for year')
 
 
     def button_confirm(self):

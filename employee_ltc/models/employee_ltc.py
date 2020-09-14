@@ -24,7 +24,7 @@ class EmployeeLtcAdvance(models.Model):
     # def open_child_block_year_wiz(self):
     #     for rec in self:
     #         return {
-    #             'name': 'Child Block Year',
+    #             'name': 'Availing LTC for year',
     #             'view_type': 'form',
     #             'view_mode': 'tree',
     #             'res_model': 'child.bl.wiz',
@@ -65,7 +65,7 @@ class EmployeeLtcAdvance(models.Model):
     el_encashment=fields.Selection([('yes', 'Yes'), ('no', 'No')], default='no', string='Require EL Encashment',track_visibility='always')
     no_of_days = fields.Float('No. of days', default='10',track_visibility='always')
     amount = fields.Float(string='Amount', compute='_compute_amount',track_visibility='always')
-    child_block_year=fields.Many2one('child.block.year', 'Child Block year')
+    child_block_year=fields.Many2one('child.block.year', 'Availing LTC for year')
     total_basic_salary = fields.Float(string='Total Basic',track_visibility='always')
     state = fields.Selection([('draft', 'Draft'), ('to_approve', 'To Approve'), ('approved', 'Approved'), ('rejected', 'Rejected')
                                ], required=True, default='draft',track_visibility='always', string='Status')
@@ -237,9 +237,17 @@ class EmployeeLtcAdvance(models.Model):
         seq = self.env['ir.sequence'].next_by_code('employee.ltc.advance')
         sequence = 'LTC' + seq
         res.ltc_sequence = sequence
-        res.slect_leave.ltc_apply_done = True
         pp = datetime.now().date() - relativedelta(years=4)
+        count = 0
+        if res.are_you_coming == False:
+            for rel in res.relative_ids:
+                count += 1
+            if count <= 0:
+                raise ValidationError(
+                    _('You are not allowed to take LTC as you have not selected any Relative or self'))
         if res.are_you_coming == True:
+            if res.slect_leave:
+                res.slect_leave.ltc_apply_done = True
             val_ids = self.env['ledger.ltc'].search([
                 ('employee_id', '=', res.employee_id.id),
                 ('relative_name', '=', res.employee_id.name),
@@ -367,7 +375,7 @@ class BlockYear(models.Model):
     name = fields.Char('Name')
     date_start = fields.Date('From Date')
     date_end = fields.Date('To Date')
-    child_block_year_ids = fields.One2many('child.block.year', 'child_block_year_id', string='Child Block Year Ids')
+    child_block_year_ids = fields.One2many('child.block.year', 'child_block_year_id', string='Availing LTC for year Ids')
 
     @api.model
     def create(self, vals):
@@ -382,7 +390,7 @@ class BlockYear(models.Model):
 
 class ChildBlockYear(models.Model):
     _name = 'child.block.year'
-    _description = " Child Block Year"
+    _description = " Availing LTC for year"
 
     name = fields.Char('Name')
     child_block_year_id = fields.Many2one('block.year', string='Block Year')
@@ -442,6 +450,6 @@ class LtcLedger(models.Model):
     relative_name = fields.Char(string='Relative Name')
     relation = fields.Char(string='Relative')
     block_year = fields.Many2one('block.year', string='Block year')
-    child_block_year=fields.Many2one('child.block.year', 'Child Block year')
+    child_block_year=fields.Many2one('child.block.year', 'Availing LTC for year')
     ltc_date = fields.Date(string='LTC Date')
     place_of_trvel=fields.Selection([('hometown', 'Hometown'), ('india', 'Anywhere in India'), ('conversion', 'Conversion of Hometown')], default='hometown', string='LTC Type')
