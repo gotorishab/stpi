@@ -280,6 +280,11 @@ class EmployeeLtcAdvance(models.Model):
     @api.multi
     def button_approved(self):
         for res in self:
+            rep_ids = self.env['ledger.ltc'].search([
+                ('ltc_id', '=', res.id),
+            ])
+            for line in rep_ids:
+                line.sudo().write({'state': 'approved'})
             res.write({'state': 'approved'})
 
             # if res.el_encashment == 'yes':
@@ -324,11 +329,21 @@ class EmployeeLtcAdvance(models.Model):
     @api.multi
     def button_reject(self):
         for rec in self:
+            rep_ids = self.env['ledger.ltc'].search([
+                ('ltc_id', '=', rec.id),
+            ])
+            for line in rep_ids:
+                line.sudo().unlink()
             rec.write({'state': 'rejected'})
 
     @api.multi
     def button_reset_to_draft(self):
         for rec in self:
+            rep_ids = self.env['ledger.ltc'].search([
+                ('ltc_id', '=', rec.id),
+            ])
+            for line in rep_ids:
+                line.sudo().write({'state': 'draft'})
             rec.write({'state': 'draft'})
 
     @api.model
@@ -359,6 +374,7 @@ class EmployeeLtcAdvance(models.Model):
                     'child_block_year': res.child_block_year.id,
                     'ltc_date': datetime.now().date(),
                     'place_of_trvel': res.place_of_trvel,
+                    'state': 'draft',
                 }
             )
         for relative in res.relative_ids:
@@ -371,7 +387,7 @@ class EmployeeLtcAdvance(models.Model):
                     'block_year': res.block_year.id,
                     'child_block_year': res.child_block_year.id,
                     'ltc_date': datetime.now().date(),
-                    'place_of_trvel': res.place_of_trvel,
+                    'state': 'draft',
                 }
             )
         if res.are_you_coming == True:
@@ -587,3 +603,7 @@ class LtcLedger(models.Model):
     child_block_year=fields.Many2one('child.block.year', 'Availing LTC for year')
     ltc_date = fields.Date(string='LTC Date')
     place_of_trvel=fields.Selection([('hometown', 'Hometown'), ('india', 'Anywhere in India'), ('conversion', 'Conversion of Hometown')], default='hometown', string='LTC Type')
+    state = fields.Selection(
+        [('draft', 'Draft'), ('to_approve', 'To Approve'), ('approved', 'Approved'), ('rejected', 'Rejected')
+         ], string='Status')
+
