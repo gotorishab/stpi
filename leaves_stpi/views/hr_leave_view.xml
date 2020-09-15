@@ -53,6 +53,9 @@
             <xpath expr="//form/header/button[@name='action_refuse']" position="replace">
                 <button string="Cancel" name="action_refuse"  type="object" attrs="{'invisible': ['|', ('can_approve', '=', False), ('state', 'not in', ('confirm','validate','validate1'))]}"/>
             </xpath>
+            <xpath expr="//label[@for='request_unit_half']" position="attributes">
+                <attribute name= "string">First Half</attribute>
+            </xpath>
             
             <field name="holiday_status_id" position="after">
                 <field name="ltc"/>

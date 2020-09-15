@@ -59,7 +59,7 @@ class HrLeave(models.Model):
     days_between_last_leave = fields.Float(string="Days Between Last Leave", readonly=True)
     are_days_weekend = fields.Boolean(string="Are Days Weekend", readonly=True)
     allow_request_unit_half_2 = fields.Boolean(string='Allow Half Day')
-    request_unit_half_2 = fields.Boolean(string="Half Day")
+    request_unit_half_2 = fields.Boolean(string="Second Falf")
     request_date_from_period_2 = fields.Selection([
         ('am', 'Morning'),
         ('pm', 'Afternoon')],
