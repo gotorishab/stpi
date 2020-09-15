@@ -12,7 +12,7 @@ from pytz import utc
 class WizardLateComing(models.TransientModel):
     _name = 'pf.ledger.wizard'
     _description = 'PF Ledger'
-    
+
 
     # def _default_employee(self):
     #     return self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
@@ -74,31 +74,14 @@ class WizardLateComing(models.TransientModel):
     @api.multi
     def confirm_report(self):
         for rec in self:
-            # X = 0.00
-            # company = self.env['res.company'].search([('id', '=', self.env.user.company_id.id)], limit=1)
-            # print('=============company===============', company)
-            # if company:
-            #     print('=============True1===============')
-            #     for com in company:
-            #         print('=============True2===============')
-            #         for line in com.pf_table:
-            #             print('=============True3===============')
-            #             if line.from_date >= rec.ledger_for_year.date_start and line.to_date <= rec.ledger_for_year.date_end:
-            #                 print('=============True4===============')
             X = rec.interest_rate
-            # print('=============Interest rate===============',X)
-            #
             print('=============X===============', X)
             dr = self.env['pf.ledger.report'].search([('employee_id', '=', rec.employee_id.id),('ledger_for_year', '=', rec.ledger_for_year.id)])
             for lines in dr:
                 lines.unlink()
             from_date = rec.from_date = rec.ledger_for_year.date_start
             to_date = rec.to_date = rec.ledger_for_year.date_end
-            # pf_advance = self.env['hr.employee'].search(
-            #     [('id', '=', rec.employee_id.id)], limit=1)
-            # print('---------------pf advance================',pf_advance)
-            # for p in pf_advance:
-            #     X = p.interest
+
             print('===============from date initial===================', from_date)
             print('===============To date initial===================', rec.to_date)
             while from_date < to_date:

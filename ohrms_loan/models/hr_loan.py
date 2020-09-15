@@ -106,7 +106,7 @@ class HrLoan(models.Model):
 
     @api.model
     def create(self, values):
-        loan_count = self.env['hr.loan'].search_count([('employee_id', '=', values['employee_id']), ('state', '=', 'approve'),
+        loan_count = self.env['hr.loan'].search_count([('employee_id', '=', values['employee_id']),
                                                        ('balance_amount', '!=', 0)])
         if loan_count:
             raise ValidationError(_("The employee has already a pending installment"))

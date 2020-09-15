@@ -7,7 +7,7 @@ from dateutil.relativedelta import relativedelta
 
 class LateComingReport(models.Model):
     _name="pf.ledger.report"
-    _description="Resource Leave Report"
+    _description="PF Ledger Report"
 
 
     employee_id = fields.Many2one('hr.employee',string="Employee")

@@ -80,5 +80,35 @@
 
 
 
+
+
+
+   <record id="pf_ledger_reportbranch_record_rule" model="ir.rule">
+        <field name="name">PF Ledger Report</field>
+        <field name="model_id" ref="model_pf_ledger_report"/>
+       <field name="domain_force">['|', ('branch_id','=',False), ('branch_id','in',[g.id for g in user.branch_ids])]</field>
+       <field name="global" eval="True"/>
+    </record>
+
+
+   <record id="pf_ledger_reportuser_record_rule" model="ir.rule">
+       <field name="name">PF Ledger Report User</field>
+       <field name="model_id" ref="model_pf_ledger_report"/>
+       <field name="domain_force">[('employee_id.user_id', '=', user.id)]</field>
+       <field name="groups" eval="[(4,ref('pf_withdrawl.group_pf_withdraw_user'))]"/>
+    </record>
+
+
+       <record id="pf_ledger_reportmanager_record_rule" model="ir.rule">
+        <field name="name">PF Ledger Report Manager</field>
+        <field name="model_id" ref="model_pf_ledger_report"/>
+       <field name="domain_force">['|', ('branch_id','=',False), ('branch_id','in',[g.id for g in user.branch_ids])]</field>
+      <field name="groups" eval="[(4,ref('pf_withdrawl.group_pf_withdraw_approver'))]"/>
+   </record>
+
+
+
+
+
     </data>
 </odoo>
