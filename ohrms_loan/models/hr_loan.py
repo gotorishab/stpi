@@ -107,9 +107,9 @@ class HrLoan(models.Model):
     @api.model
     def create(self, values):
         loan_count = self.env['hr.loan'].search_count([('employee_id', '=', values['employee_id']),
-                                                       ('balance_amount', '!=', 0)])
+                                                       ])
         if loan_count:
-            raise ValidationError(_("The employee has already a pending installment"))
+            raise ValidationError(_("You are not allowed to save this loan"))
         else:
             values['name'] = self.env['ir.sequence'].get('hr.loan.seq') or ' '
             res = super(HrLoan, self).create(values)
@@ -122,7 +122,7 @@ class HrLoan(models.Model):
             if rec.calculate_bool == True:
                 raise ValidationError(_("You are not allowed to change the date"))
             else:
-                if rec.approve_date >= rec.dis_date:
+                if rec.approve_date >= rec.dis_date and rec.state == 'approve':
                     raise ValidationError(_("Disbursement Date must be less than Approve Date"))
             # rec.calculate_bool = False
 
