@@ -225,10 +225,10 @@ class HrLeave(models.Model):
             #         raise ValidationError(_(
             #             'You are not allowed to take leave'))
 
-
-            for line in res.employee_id.resource_calendar_id.global_leave_ids:
-                if res.request_date_from == line.date and res.request_date_to == line.date and line.holiday_type == 'rh' and line.rh_leave_type == res.holiday_status_id:
-                    res.is_rh = True
+            if res.employee_id.resource_calendar_id.rh_leave_type == res.holiday_status_id:
+                for line in res.employee_id.resource_calendar_id.global_leave_ids:
+                    if res.request_date_from == line.date and res.request_date_to == line.date and line.holiday_type == 'rh':
+                        res.is_rh = True
 
             if res.is_rh == True:
                 count = 0

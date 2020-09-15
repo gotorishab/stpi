@@ -24,6 +24,8 @@ class ResourceCalendar(models.Model):
         ('7', 'Sunday')
     ], string='Weekday')
 
+    rh_leave_type=fields.Many2one('hr.leave.type', string='RH Leave Type')
+
     assign_holiday_action_perform = fields.Selection([('assign_weekends', 'Assign to existing list'),
                                                  ('delete_all_existing_list', 'Delete the existing list'),
                                                  ('delete_all_existing_list_and_assign_weekends', 'Delete existing and assign'),
