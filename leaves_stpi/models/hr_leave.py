@@ -227,21 +227,22 @@ class HrLeave(models.Model):
 
 
             for line in res.employee_id.resource_calendar_id.global_leave_ids:
-                if res.request_date_from == line.date and res.request_date_to == line.date and line.holiday_type == 'rh':
+                if res.request_date_from == line.date and res.request_date_to == line.date and line.holiday_type == 'rh' and line.rh_leave_type == res.holiday_status_id:
                     res.is_rh = True
 
-            count = 0
-            leave_ids = self.env['hr.leave'].search([('employee_id', '=', res.employee_id.id),
-                                                     ('request_date_from', '>=', (date.today().year, 1, 1)),
-                                                     ('request_date_to', '<=', (date.today().year, 12, 31)),
-                                                     ('is_rh', '=', True),
-                                                     ('state', 'not in', ['cancel', 'refuse'])],
-                                                    order="request_date_to desc")
-            for leaves in leave_ids:
-                count += 1
-            if count > res.employee_id.resource_calendar_id.max_allowed_rh and res.is_rh == True:
-                raise ValidationError(_(
-                    'You are not allowed to take leave as maximum allowed RH should be {name}'.format(name=res.employee_id.resource_calendar_id.max_allowed_rh)))
+            if res.is_rh == True:
+                count = 0
+                leave_ids = self.env['hr.leave'].search([('employee_id', '=', res.employee_id.id),
+                                                         ('request_date_from', '>=', (date.today().year, 1, 1)),
+                                                         ('request_date_to', '<=', (date.today().year, 12, 31)),
+                                                         ('is_rh', '=', True),
+                                                         ('state', 'not in', ['cancel', 'refuse'])],
+                                                        order="request_date_to desc")
+                for leaves in leave_ids:
+                    count += 1
+                if count > res.employee_id.resource_calendar_id.max_allowed_rh:
+                    raise ValidationError(_(
+                        'You are not allowed to take leave as maximum allowed RH should be {name}'.format(name=res.employee_id.resource_calendar_id.max_allowed_rh)))
 
 
             if res.holiday_status_id.leave_type == 'Half Pay Leave':

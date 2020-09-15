@@ -13,6 +13,7 @@
 		'security/ir.model.access.csv',
 		'security/pf_withdrawal_security.xml',
 		'wizard/transfer_pf.xml',
+		'wizard/multi_approve.xml',
         'views/pf_withdrawal.xml',
         'wizard/get_pf_details.xml',
         'wizard/report_wizard.xml',
