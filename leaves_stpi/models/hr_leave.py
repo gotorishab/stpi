@@ -47,6 +47,7 @@ class HrLeave(models.Model):
     from_date = fields.Date(string="From Date", readonly=True)
     to_date = fields.Date(string="To Date", readonly=True)
     no_of_days_leave = fields.Float(string="No of Days Leave", readonly=True)
+    is_rh = fields.Boolean(string='Is RH?')
     status = fields.Selection([('draft', 'To Submit'),
                                ('cancel', 'Cancelled'),
                                ('confirm', 'To Approve'),
@@ -183,46 +184,65 @@ class HrLeave(models.Model):
                                 raise ValidationError(_('Leave Type is not allowed to be clubbed with  %s ') % (
                                     pr_po.leave_type_id.name))
 
+            # count = 0
+            # leave_ids = self.env['hr.leave'].search([('employee_id', '=', res.employee_id.id),
+            #                                          ('request_date_from', '>=', (date.today().year, 1, 1)),
+            #                                          ('request_date_to', '<=', (date.today().year, 12, 31)),
+            #                                          ('holiday_status_id.leave_type', '=', 'Restricted Leave'),
+            #                                          ('state', 'not in', ['cancel', 'refuse'])],
+            #                                         order="request_date_to desc")
+            # for leaves in leave_ids:
+            #     count += 1
+            # if count > res.employee_id.resource_calendar_id.max_allowed_rh and res.holiday_status_id.leave_type == 'Restricted Leave':
+            #     raise ValidationError(_(
+            #         'You are not allowed to take leave'))
+            # count1 = 0
+            # leave_ids1 = self.env['hr.leave'].search([('employee_id', '=', res.employee_id.id),
+            #                                          ('request_date_from', '>=', (date.today().year, 1, 1)),
+            #                                          ('request_date_to', '<=', (date.today().year, 12, 31)),
+            #                                          ('holiday_status_id.leave_type', '=', 'Gestured Leave'),
+            #                                          ('state', 'not in', ['cancel', 'refuse'])],
+            #                                         order="request_date_to desc")
+            # for leaves in leave_ids1:
+            #     count1 += 1
+            # if count1 > res.employee_id.resource_calendar_id.max_allowed_rh and res.holiday_status_id.leave_type == 'Gestured Leave':
+            #     raise ValidationError(_(
+            #         'You are not allowed to take leave'))
+            # rh_dates=[]
+            # if res.holiday_status_id.leave_type == 'Restricted Leave':
+            #     for allow_comb in res.employee_id.resource_calendar_id.global_leave_ids:
+            #         if allow_comb.restricted_holiday == True:
+            #             rh_dates.append(allow_comb.date)
+            #     if not(res.request_date_from in rh_dates and res.request_date_to in rh_dates):
+            #         raise ValidationError(_(
+            #             'You are not allowed to take leave'))
+            # gh_dates=[]
+            # if res.holiday_status_id.leave_type == 'Gestured Leave':
+            #     for allow_comb in res.employee_id.resource_calendar_id.global_leave_ids:
+            #         if allow_comb.gestured_holiday == True:
+            #             gh_dates.append(allow_comb.date)
+            #     if not(res.request_date_from in gh_dates and res.request_date_to in gh_dates):
+            #         raise ValidationError(_(
+            #             'You are not allowed to take leave'))
+
+
+            for line in res.employee_id.resource_calendar_id.global_leave_ids:
+                if res.request_date_from == line.date and res.request_date_to == line.date and line.holiday_type == 'rh':
+                    res.is_rh = True
+
             count = 0
             leave_ids = self.env['hr.leave'].search([('employee_id', '=', res.employee_id.id),
                                                      ('request_date_from', '>=', (date.today().year, 1, 1)),
                                                      ('request_date_to', '<=', (date.today().year, 12, 31)),
-                                                     ('holiday_status_id.leave_type', '=', 'Restricted Leave'),
+                                                     ('is_rh', '=', True),
                                                      ('state', 'not in', ['cancel', 'refuse'])],
                                                     order="request_date_to desc")
             for leaves in leave_ids:
                 count += 1
-            if count > res.employee_id.resource_calendar_id.max_allowed_rh and res.holiday_status_id.leave_type == 'Restricted Leave':
+            if count > res.employee_id.resource_calendar_id.max_allowed_rh and res.is_rh == True:
                 raise ValidationError(_(
-                    'You are not allowed to take leave'))
-            count1 = 0
-            leave_ids1 = self.env['hr.leave'].search([('employee_id', '=', res.employee_id.id),
-                                                     ('request_date_from', '>=', (date.today().year, 1, 1)),
-                                                     ('request_date_to', '<=', (date.today().year, 12, 31)),
-                                                     ('holiday_status_id.leave_type', '=', 'Gestured Leave'),
-                                                     ('state', 'not in', ['cancel', 'refuse'])],
-                                                    order="request_date_to desc")
-            for leaves in leave_ids1:
-                count1 += 1
-            if count1 > res.employee_id.resource_calendar_id.max_allowed_rh and res.holiday_status_id.leave_type == 'Gestured Leave':
-                raise ValidationError(_(
-                    'You are not allowed to take leave'))
-            rh_dates=[]
-            if res.holiday_status_id.leave_type == 'Restricted Leave':
-                for allow_comb in res.employee_id.resource_calendar_id.global_leave_ids:
-                    if allow_comb.restricted_holiday == True:
-                        rh_dates.append(allow_comb.date)
-                if not(res.request_date_from in rh_dates and res.request_date_to in rh_dates):
-                    raise ValidationError(_(
-                        'You are not allowed to take leave'))
-            gh_dates=[]
-            if res.holiday_status_id.leave_type == 'Gestured Leave':
-                for allow_comb in res.employee_id.resource_calendar_id.global_leave_ids:
-                    if allow_comb.gestured_holiday == True:
-                        gh_dates.append(allow_comb.date)
-                if not(res.request_date_from in gh_dates and res.request_date_to in gh_dates):
-                    raise ValidationError(_(
-                        'You are not allowed to take leave'))
+                    'You are not allowed to take leave as maximum allowed RH should be {name}'.format(name=res.employee_id.resource_calendar_id.max_allowed_rh)))
+
 
             if res.holiday_status_id.leave_type == 'Half Pay Leave':
                 res.number_of_days_display = res.no_of_days_display_half

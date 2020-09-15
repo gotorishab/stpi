@@ -181,7 +181,7 @@ class ResourceCalendarLeaves(models.Model):
                                      )
     restricted_holiday = fields.Boolean(string='Restricted Holiday')
     gestured_holiday = fields.Boolean(string='Gestured Holiday')
-    rh_leave_type=fields.Many2one('hr.leave', string='RH Leave Type')
+    rh_leave_type=fields.Many2one('hr.leave.type', string='RH Leave Type')
 
     @api.onchange('holiday_type')
     @api.constrains('holiday_type')
