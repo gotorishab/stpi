@@ -8,9 +8,9 @@
             <form string="Loan Close">
                 <header>
                     <button name="button_submit" string="Submit" class="oe_highlight" type="object" states="draft"/>
-                    <button name="button_approved" string="Approve" class="oe_highlight" type="object" states="submitted"/>
+                    <button name="button_approved" string="Approve" class="oe_highlight" type="object" states="submitted" groups="ohrms_loan.group_loan_approver"/>
                      <button name="button_reset_to_draft" string="Revert" type="object" states="submitted"/>
-                    <button name="button_reject" string="Reject" type="object" states="submitted"/>
+                    <button name="button_reject" string="Reject" type="object" states="submitted" groups="ohrms_loan.group_loan_approver"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,submitted,approved" />
                 </header>
                 <sheet>
