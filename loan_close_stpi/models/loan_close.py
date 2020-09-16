@@ -1,5 +1,5 @@
 from odoo import api, fields, models, _
-from odoo.exceptions import UserError
+from odoo.exceptions import ValidationError, UserError
 
 class LoanClose(models.Model):
     _name = 'hr.loan.close'
@@ -54,6 +54,17 @@ class LoanClose(models.Model):
             record.name = str(name)
         return res
 
+
+
+
+    @api.model
+    def create(self, values):
+        res = super(LoanClose, self).create(values)
+        loan_count = self.env['hr.loan.close'].search_count([('employee_id', '=', res.employee_id.id),('state', '!=', 'paid')
+                                                       ])
+        if loan_count:
+            raise ValidationError(_("You are not allowed to save this loan Close Application"))
+        return res
 
 
     @api.multi
