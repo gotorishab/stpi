@@ -89,7 +89,7 @@ class InheritContractss(models.Model):
     def create(self, vals):
         res =super(InheritContractss, self).create(vals)
         pf_count = self.env['hr.contract'].sudo().search(
-            [('employee_id', '=', res.employee_id.id), ('state', '!=', 'cancel'),
+            [('employee_id', '=', res.employee_id.id), ('state', '!=', 'cancel'), ('id', '!=', res.id),
              ])
         if pf_count:
             raise ValidationError(_("You already have a contract created"))
