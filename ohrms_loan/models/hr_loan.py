@@ -106,7 +106,7 @@ class HrLoan(models.Model):
 
     @api.model
     def create(self, values):
-        loan_count = self.env['hr.loan'].search_count([('employee_id', '=', values['employee_id']),
+        loan_count = self.env['hr.loan'].search_count([('employee_id', '=', values['employee_id']),('balance_amount', '!=', 0)
                                                        ])
         if loan_count:
             raise ValidationError(_("You are not allowed to save this loan"))
