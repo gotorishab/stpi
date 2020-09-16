@@ -298,23 +298,15 @@ class PfEmployee(models.Model):
             rec.advance_left = rec.amount - rec.advance_amount
 
 
-
-    # @api.model
-    # def create(self, values):
-    #     res = super(PfEmployee, self).create(values)
-    #     count = 0
-    #     print('=================================================')
-    #     search_id = self.env['pf.employee'].search(
-    #         [('employee_id', '=', res.employee_id.id)])
-    #     print('======================1===========================')
-    #     if search_id:
-    #         for emp in search_id:
-    #             count += 1
-    #             print('===================2==============================')
-    #         if count > 1:
-    #             print('===================3==============================')
-    #             raise ValidationError("You are not apply for more thn one")
-    #     print('===================4==============================')
+    @api.model
+    def create(self, vals):
+        res =super(PfEmployee, self).create(vals)
+        pf_count = self.env['pf.employee'].sudo().search(
+            [('employee_id', '=', res.employee_id.id), ('id', '!=', res.id),
+             ])
+        if pf_count:
+            raise ValidationError(_("You already have a PF Employee creadted"))
+        return res
 
 
     @api.multi
