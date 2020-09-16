@@ -18,7 +18,7 @@
                     </group>
                     <group>
                         <field name="report_of" readonly="1"/>
-                        <field name="employee_id" required=""/>
+                        <field name="employee_id" readonly=""/>
                         <field name="branch_id" readonly="1"/>
                         <field name="job_id" readonly="1"/>
                     </group>
