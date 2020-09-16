@@ -1,6 +1,7 @@
 from odoo import fields, models, api, _
 from datetime import datetime, timedelta, date
 from dateutil.relativedelta import relativedelta
+from odoo.exceptions import ValidationError, UserError
 
 class InheritContractss(models.Model):
     _inherit = 'hr.contract'
@@ -81,6 +82,19 @@ class InheritContractss(models.Model):
     def _compute_updated_basic_f_da(self):
         for rec in self:
             rec.updated_basic = rec.wage * (1 + rec.da/100)
+
+
+
+    @api.model
+    def create(self, vals):
+        res =super(InheritContractss, self).create(vals)
+        pf_count = self.env['hr.contract'].sudo().search(
+            [('employee_id', '=', res.employee_id.id), ('state', '!=', 'cancel'),
+             ])
+        if pf_count:
+            raise ValidationError(_("You already have a contract created"))
+        return res
+
 
     #
     # @api.constrains('employee_id')
