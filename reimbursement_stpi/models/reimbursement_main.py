@@ -28,9 +28,11 @@ class Reimbursement(models.Model):
             if rec.name:
                 gr_id = self.env['reimbursement.configuration'].search(
                     [('name', '=', rec.name), ('pay_level_ids', '=', rec.employee_id.job_id.pay_level_id.id), ('branch_id', '=', rec.branch_id.id),('job_ids', '=', rec.employee_id.job_id.id),('employee_type', '=', rec.employee_id.employee_type)], order='name desc', limit=1)
+                print('==========================reimb=================================', gr_id.id)
                 if not gr_id:
                     gr_id = self.env['reimbursement.configuration'].search(
                     [('name', '=', rec.name), ('pay_level_ids', '=', rec.employee_id.job_id.pay_level_id.id), ('branch_id', '=', rec.branch_id.id)], order='name desc', limit=1)
+                print('==========================reimb=================================', gr_id.id)
                 return {'domain': {'date_range': [('type_id', '=', gr_id.date_range_type.id),('date_end', '<=', datetime.now().date())]}}
 
 
@@ -94,7 +96,7 @@ class Reimbursement(models.Model):
 
     @api.constrains('name','employee_id','date_range')
     @api.onchange('name','employee_id','date_range')
-    def onchange_name_employee_date(self):
+    def onchng_name_emp_date(self):
         for rec in self:
             if rec.employee_id and rec.name == 'lunch':
                 count = 0
