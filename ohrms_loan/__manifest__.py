@@ -52,6 +52,7 @@
         'views/hr_loan_seq.xml',
         'data/salary_rule_loan.xml',
         'wizard/reason_wizard.xml',
+        'wizard/multi_approve.xml',
         'views/hr_loan.xml',
         'views/hr_payroll.xml',
         'views/loan_view.xml',

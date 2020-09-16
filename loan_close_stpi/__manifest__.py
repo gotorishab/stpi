@@ -38,6 +38,7 @@
     'data': [
         'security/ir.model.access.csv',
         'security/security.xml',
+        'wizard/multi_approve.xml',
         'views/loan_close.xml'
     ],
     'demo': [],
