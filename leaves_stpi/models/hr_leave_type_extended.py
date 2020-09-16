@@ -47,6 +47,7 @@ class HrLeaveType(models.Model):
                                 ],string="Leave Type",required=True)
     leave_per_year = fields.Integer(string="Leave Per Year",readonly=True)
     carried_forward = fields.Boolean(string="Carried Forward")
+    half_pay_allowed = fields.Boolean(string="Half Pay Allowed")
     leave_month = fields.Selection([('January','January'),
                                     ('February','February'),
                                     ('March','March'),

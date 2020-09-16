@@ -96,7 +96,7 @@
             
             <xpath expr="//field[@name='request_unit_half']" position="after">
                 <label for="request_unit_half_2"
-                    attrs="{'readonly': [('state', 'not in', ('draft', 'confirm'))],'invisible':[('allow_request_unit_half_2','=',True)]}"/>
+                    attrs="{'readonly': [('state', 'not in', ('draft', 'confirm'))],'invisible':[('allow_request_unit_half_2','=',True),('holiday_status_id.half_pay_allowed','=',False)]}"/>
                 <field name="request_unit_half_2" attrs="{'invisible':[('allow_request_unit_half_2','=',True)]}"/>
             </xpath>
             

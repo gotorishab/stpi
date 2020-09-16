@@ -35,6 +35,7 @@
                 <field name="leave_per_year"/>
                 <field name="allow_service_leave" widget="many2many_tags"/>
                 <field name="use_balance_from_id" invisible="1"/>
+                <field name="half_pay_allowed"/>
                 <field name="allow_emp_stage" widget="many2many_tags"/>
                 <field name="gende"/>
                 
