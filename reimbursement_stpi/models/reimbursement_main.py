@@ -135,7 +135,7 @@ class Reimbursement(models.Model):
                 else:
                     days = (rec.date_range.date_end - rec.date_range.date_start)
                 if float(count) > float(days):
-                    raise UserError(
+                    raise ValidationError(
                         "You can claim for %s" % rec.name + ", maximum of  %s" % (days+1) + " days")
 
 
