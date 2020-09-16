@@ -221,17 +221,16 @@ class Reimbursement(models.Model):
         res =super(Reimbursement, self).create(vals)
         search_id = self.env['reimbursement'].search(
             [('employee_id', '=', res.employee_id.id), ('name', '=', res.name), ('date_range', '=', res.date_range.id),
-             ('state', '!=', 'rejected')])
-        for emp in search_id:
-            if res.name != 'briefcase' or res.name != 'medical':
+             ('state', '!=', 'rejected'),('id', '!=', res.id)])
+        sequence = ''
+        seq = self.env['ir.sequence'].next_by_code('reimbursement')
+        sequence = 'REIMBURSEMENT - ' + str(seq)
+        res.reimbursement_sequence = sequence
+        if res.name != 'briefcase' or res.name != 'medical':
+            for emp in search_id:
                 if emp:
                     raise ValidationError(
                         "This reimbursement is already applied for this duration, please correct the dates")
-        else:
-            sequence = ''
-            seq = self.env['ir.sequence'].next_by_code('reimbursement')
-            sequence = 'REIMBURSEMENT - ' + str(seq)
-            res.reimbursement_sequence = sequence
         return res
 
     @api.multi
