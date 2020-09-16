@@ -6,13 +6,13 @@ class ExceptionRule(models.Model):
     _inherit = 'exception.rule'
 
     rule_group = fields.Selection(
-        selection_add=[('hr_loan', 'Hr Loan'),
+        selection_add=[('hr_loan_close', 'Hr Loan Close'),
                        ],
     )
     model = fields.Selection(
         selection_add=[
             ('hr.loan.close', 'Hr Loan Close'),
-            ('hr.loan.line.unpaid', 'HR Loan Line Unpaid'),
+            # ('hr.loan.line.unpaid', 'HR Loan Line Unpaid'),
         ])
 
 class HrLoan(models.Model):
@@ -21,7 +21,7 @@ class HrLoan(models.Model):
     _order = 'main_exception_id asc'
 
     rule_group = fields.Selection(
-        selection_add=[('hr_loan', 'Hr Loan')],
+        selection_add=[('hr_loan_close', 'Hr Loan Close')],
         default='hr_loan',
     )
 
@@ -30,16 +30,16 @@ class HrLoan(models.Model):
         order_set = self.search([('state', '=', 'submitted')])
         order_set.test_exceptions()
         return True
-
-    @api.constrains('ignore_exception','unpaid_loan_lines','state')
-    def sale_check_exception(self):
-        if self.state == 'approve':
-            self._check_exception()
-
-    @api.onchange('unpaid_loan_lines')
-    def onchange_ignore_exception(self):
-        if self.state == 'approve':
-            self.ignore_exception = False
+    #
+    # @api.constrains('ignore_exception','unpaid_loan_lines','state')
+    # def sale_check_exception(self):
+    #     if self.state == 'approved':
+    #         self._check_exception()
+    #
+    # @api.onchange('unpaid_loan_lines')
+    # def onchange_ignore_exception(self):
+    #     if self.state == 'approved':
+    #         self.ignore_exception = False
 
     @api.multi
     def action_cancel(self):
@@ -59,10 +59,10 @@ class HrLoan(models.Model):
         if exception:
             raise UserError(_('Do not allow Pending Approval Loan for Refuse.'))
         return super(HrLoan, self).button_reject()
-
-    def _hr_loan_get_lines(self):
-        self.ensure_one()
-        return self.unpaid_loan_lines
+    #
+    # def _hr_loan_get_lines(self):
+    #     self.ensure_one()
+    #     return self.unpaid_loan_lines
 
     @api.multi
     def button_approved(self):
@@ -78,15 +78,15 @@ class HrLoan(models.Model):
         action = self.env.ref('hr_exception.action_hr_loan_close_confirm')
         return action
 
-class HrLoanLine(models.Model):
-    _inherit = ['hr.loan.line.unpaid', 'base.exception']
-    _name = 'hr.loan.line.unpaid'
-    _order = 'main_exception_id asc'
-
-    rule_group = fields.Selection(
-        selection_add=[('hr_loan_line_unpaid', 'HR Loan Line Unpaid')],
-        default='hr_loan_line_unpaid',
-    )
+# class HrLoanLine(models.Model):
+#     _inherit = ['hr.loan.line.unpaid', 'base.exception']
+#     _name = 'hr.loan.line.unpaid'
+#     _order = 'main_exception_id asc'
+#
+#     rule_group = fields.Selection(
+#         selection_add=[('hr_loan_line_unpaid', 'HR Loan Line Unpaid')],
+#         default='hr_loan_line_unpaid',
+#     )
 
 class Approvalslist(models.Model):
     _inherit = "approvals.list"

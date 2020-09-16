@@ -6,8 +6,8 @@
                   <field name="view_type">form</field>
                   <field name="view_mode">tree,form</field>
                   <field name="view_id" ref="base_exception_and_approval.view_exception_rule_tree"/>
-                  <field name="domain">[('rule_group', '=', 'hr_loan')]</field>
-                  <field name="context">{'active_test': False, 'default_rule_group' : 'hr_loan'}</field>
+                  <field name="domain">[('rule_group', '=', 'hr_loan_close')]</field>
+                  <field name="context">{'active_test': False, 'default_rule_group' : 'hr_loan_close'}</field>
               </record>
 <!--        <menuitem-->
 <!--                id="menu_hr_loan_parent"-->
