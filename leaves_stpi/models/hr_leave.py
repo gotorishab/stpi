@@ -48,6 +48,7 @@ class HrLeave(models.Model):
     to_date = fields.Date(string="To Date", readonly=True)
     no_of_days_leave = fields.Float(string="No of Days Leave", readonly=True)
     is_rh = fields.Boolean(string='Is RH?')
+    half_pay_allowed = fields.Boolean(string="Half Pay Allowed")
     status = fields.Selection([('draft', 'To Submit'),
                                ('cancel', 'Cancelled'),
                                ('confirm', 'To Approve'),
@@ -419,6 +420,8 @@ class HrLeave(models.Model):
     def get_validate_on_holiday_status_id(self):
 
         if self.holiday_status_id:
+            if self.holiday_status_id.half_pay_allowed == True:
+                self.half_pay_allowed = True
             if self.holiday_status_id.maximum_allow_leave != 0:
                 if self.holiday_status_id.maximum_allow_leave < self.number_of_days_display:
                     raise ValidationError(_('You are not allow more then leave present'))
