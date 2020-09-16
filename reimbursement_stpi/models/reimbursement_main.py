@@ -28,11 +28,11 @@ class Reimbursement(models.Model):
             if rec.name:
                 gr_id = self.env['reimbursement.configuration'].search(
                     [('name', '=', rec.name), ('pay_level_ids', '=', rec.employee_id.job_id.pay_level_id.id), ('branch_id', '=', rec.branch_id.id),('job_ids', '=', rec.employee_id.job_id.id),('employee_type', '=', rec.employee_id.employee_type)], order='name desc', limit=1)
-                print('==========================reimb=================================', gr_id.id)
+                # print('==========================reimb=================================', gr_id.id)
                 if not gr_id:
                     gr_id = self.env['reimbursement.configuration'].search(
                     [('name', '=', rec.name), ('pay_level_ids', '=', rec.employee_id.job_id.pay_level_id.id), ('branch_id', '=', rec.branch_id.id)], order='name desc', limit=1)
-                print('==========================reimb=================================', gr_id.id)
+                # print('==========================reimb=================================', gr_id.id)
                 return {'domain': {'date_range': [('type_id', '=', gr_id.date_range_type.id),('date_end', '<=', datetime.now().date())]}}
 
 
@@ -92,7 +92,16 @@ class Reimbursement(models.Model):
         for rec in self:
             rec.claimed_amount = 0
             rec.net_amount = 0
-
+            count = 0
+            serch_id = self.env['reimbursement.attendence'].search(
+                [('employee_id', '=', rec.employee_id.id), ('date_related_month', '>=', rec.date_range.date_start),
+                 ('date_related_month', '<', rec.date_range.date_end)])
+            for i in serch_id:
+                count += i.present_days
+            rec.amount_lunch = 75
+            rec.working_days = count
+            rec.claimed_amount = float(count * 75)
+            rec.lunch_tds_amt = float(count * 50)
 
     @api.constrains('name','employee_id','date_range')
     @api.onchange('name','employee_id','date_range')
@@ -100,13 +109,13 @@ class Reimbursement(models.Model):
         for rec in self:
             if rec.employee_id and rec.name == 'lunch':
                 count = 0
-                serch_id = self.env['reimbursement.attendence'].search([('employee_id', '=', rec.employee_id.id),('date_related_month', '>=', rec.date_range.date_start),('date_related_month', '<', rec.date_range.date_end)])
-                for i in serch_id:
-                    count += i.present_days
+                # serch_id = self.env['reimbursement.attendence'].search([('employee_id', '=', rec.employee_id.id),('date_related_month', '>=', rec.date_range.date_start),('date_related_month', '<', rec.date_range.date_end)])
+                # for i in serch_id:
+                #     count += i.present_days
                 rec.amount_lunch = 75
-                rec.working_days = count
-                rec.claimed_amount = float(count * 75)
-                rec.lunch_tds_amt = float(count * 50)
+                # rec.working_days = count
+                rec.claimed_amount = float(rec.working_days * 75)
+                rec.lunch_tds_amt = float(rec.working_days * 50)
             elif rec.employee_id and rec.name == 'telephone':
                 rec.mobile_no = rec.employee_id.mobile_phone
 
