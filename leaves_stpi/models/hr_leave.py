@@ -418,10 +418,10 @@ class HrLeave(models.Model):
     @api.constrains('date_from', 'date_to', 'holiday_status_id')
     @api.onchange('date_from', 'date_to', 'holiday_status_id')
     def get_validate_on_holiday_status_id(self):
-
         if self.holiday_status_id:
             if self.holiday_status_id.half_pay_allowed == True:
                 self.half_pay_allowed = True
+            print('===========================half_pay_allowed====================================', self.half_pay_allowed)
             if self.holiday_status_id.maximum_allow_leave != 0:
                 if self.holiday_status_id.maximum_allow_leave < self.number_of_days_display:
                     raise ValidationError(_('You are not allow more then leave present'))
