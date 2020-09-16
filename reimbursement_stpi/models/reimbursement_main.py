@@ -107,16 +107,17 @@ class Reimbursement(models.Model):
     @api.onchange('name','employee_id','date_range')
     def onchng_name_emp_date(self):
         for rec in self:
-            if rec.employee_id and rec.name == 'lunch':
-                count = 0
+            # if rec.employee_id and rec.name == 'lunch':
+            #     pass
+                # count = 0
                 # serch_id = self.env['reimbursement.attendence'].search([('employee_id', '=', rec.employee_id.id),('date_related_month', '>=', rec.date_range.date_start),('date_related_month', '<', rec.date_range.date_end)])
                 # for i in serch_id:
                 #     count += i.present_days
-                rec.amount_lunch = 75
+                # rec.amount_lunch = 75
                 # rec.working_days = count
-                rec.claimed_amount = float(rec.working_days * 75)
-                rec.lunch_tds_amt = float(rec.working_days * 50)
-            elif rec.employee_id and rec.name == 'telephone':
+                # rec.claimed_amount = float(rec.working_days * 75)
+                # rec.lunch_tds_amt = float(rec.working_days * 50)
+            if rec.employee_id and rec.name == 'telephone':
                 rec.mobile_no = rec.employee_id.mobile_phone
 
 
