@@ -3,7 +3,7 @@ from odoo.exceptions import UserError
 
 
 class HrPayrollAdvices(models.Model):
-    _name='hr.payroll.advice'
+    _inherit='hr.payroll.advice'
 
 
     @api.multi
@@ -78,7 +78,7 @@ class HrPayrollAdviceLine(models.Model):
     '''
     Bank Advice Lines
     '''
-    _name = 'hr.payroll.advice.line'
+    _inherit = 'hr.payroll.advice.line'
     _description = 'Bank Advice Lines'
 
 
