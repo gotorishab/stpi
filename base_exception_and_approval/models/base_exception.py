@@ -333,8 +333,7 @@ class Approvalslist(models.Model):
     def create(self, vals):
         if vals:
             vals.update({
-                'name': self.env['ir.sequence'].get('approvals.list'),
-                'branch_id': self.resource_ref.branch_id.id
+                'name': self.env['ir.sequence'].get('approvals.list')
             })
             if self.resource_ref:
                 vals.update({
