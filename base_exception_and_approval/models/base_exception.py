@@ -334,7 +334,7 @@ class Approvalslist(models.Model):
         if vals:
             vals.update({
                 'name': self.env['ir.sequence'].get('approvals.list'),
-                'branch_id': self.model_id.branch_id.id
+                'branch_id': self.resource_ref.branch_id.id
             })
         result = super(Approvalslist, self).create(vals)
         return result
