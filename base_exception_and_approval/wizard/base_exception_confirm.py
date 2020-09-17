@@ -44,6 +44,8 @@ class ExceptionRuleConfirm(models.AbstractModel):
         model = self.env['ir.model'].search([('model','=',self.related_model_id._name)])
 
         reference = self.related_model_id._name + ',' + str(self.related_model_id.id)
+        # if self.related_model_id.branch_id.id:
+        branch_id = self.related_model_id.branch_id.id
         if self.related_model_id.approved == True:
             raise UserError('Approval Already in process')
         
@@ -52,6 +54,7 @@ class ExceptionRuleConfirm(models.AbstractModel):
             for group in exception.group_approval_ids:
                 x = self.env['approvals.list'].create({
                     'resource_ref': reference,
+                    'branch_id': branch_id,
                     'user_id': self.env.user.id,
                     'test_int': self.id,
                     'date': datetime.datetime.now().date(),
