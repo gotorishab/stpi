@@ -323,7 +323,7 @@ class JourneyLodgingBoarding(models.Model):
         for rec in self:
             no_of_days = 0.00
             if rec.from_date and rec.to_date:
-                no_of_days = (rec.to_date - rec.from_date).days
+                no_of_days = (rec.to_date - rec.from_date).days + 1
             rec.total_amount_paid = (rec.daily_lodging_charge + rec.daily_boarding_charge + rec.daily_boarding_lodginf_charge) * no_of_days
 
     employee_journey = fields.Many2one('employee.tour.claim', string='Tour Claim')
@@ -356,7 +356,7 @@ class JourneyLodgingBoarding(models.Model):
         for rec in self:
             no_of_days = 0.00
             if rec.from_date and rec.to_date:
-                no_of_days = (rec.to_date - rec.from_date).days
+                no_of_days = (rec.to_date - rec.from_date).days + 1
             rec.no_of_days = no_of_days
 
     @api.onchange('claiming_separately')
