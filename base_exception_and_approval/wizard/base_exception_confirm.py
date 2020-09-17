@@ -44,8 +44,9 @@ class ExceptionRuleConfirm(models.AbstractModel):
         model = self.env['ir.model'].search([('model','=',self.related_model_id._name)])
 
         reference = self.related_model_id._name + ',' + str(self.related_model_id.id)
-        # if self.related_model_id.branch_id.id:
-        branch_id = self.related_model_id.branch_id.id
+        branch_id = self.env['res.branch'].sudo().search([], limit=1)
+        if self.related_model_id.branch_id.id:
+            branch_id = self.related_model_id.branch_id.id
         if self.related_model_id.approved == True:
             raise UserError('Approval Already in process')
         
