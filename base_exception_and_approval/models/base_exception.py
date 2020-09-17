@@ -345,6 +345,7 @@ class Approvalslist(models.Model):
     name =fields.Char(string="Name")
     model_id = fields.Many2one('ir.model', string='Approval Record')
     model_name =fields.Char(related="model_id.name",string='Model')
+    branch_id = fields.Many2one('res.branch',string="Branch", store=True)
     date = fields.Date(string='Requesting Date')
     user_id = fields.Many2one('res.users', string='Requesting User')
     rule_id = fields.Many2one('exception.rule', string='Approval Matrix')
