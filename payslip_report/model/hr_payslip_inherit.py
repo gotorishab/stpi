@@ -13,12 +13,10 @@ class HrPayslip(models.Model):
         res = super(HrPayslip, self).create(vals)
         payslip_ids = self.env['hr.payslip'].search([('employee_id','=',res.employee_id.id),
                                                      ('date_from','=',res.date_from),
-                                                     ('date_to','=',res.date_to),
-                                                     ('state','=','done')
+                                                     ('date_to','=',res.date_to)
                                                      ])
-#         print("????????????????????????????",payslip_ids)
         if payslip_ids:
-            raise ValidationError(_('You are Not Create Same Employee Payslip from Current Month'))
+            raise ValidationError(_('You are Not allowed to create multiple payslips for same Employee - Month combination'))
         else:
             return res
 
