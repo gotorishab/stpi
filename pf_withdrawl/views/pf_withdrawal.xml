@@ -64,7 +64,7 @@
                             <field name="rule" invisible="1"/>
                             <field name="pf_type" widget="selection" attrs="{'readonly':[('state','!=','draft')]}"/>
                             <field name="maximum_withdrawal" readonly="1"/>
-                            <field name="branch_id"/>
+                            <field name="branch_id" attrs="{'readonly':[('state','!=','draft')]}"/>
                             <field name="purpose" readonly="True"/>
                             <field name="attachment_document" readonly="True"/>
                             <field name="attachment_ids" widget="many2many_binary" string="Attachment" colspan="2" attrs="{'readonly':[('state','!=','draft')]}"/>
