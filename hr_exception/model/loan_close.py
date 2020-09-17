@@ -22,7 +22,7 @@ class HrLoan(models.Model):
 
     rule_group = fields.Selection(
         selection_add=[('hr_loan_close', 'Hr Loan Close')],
-        default='hr_loan',
+        default='hr_loan_close',
     )
 
     @api.model
