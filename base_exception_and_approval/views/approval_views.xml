@@ -46,7 +46,6 @@
                             - <field name="resource_ref" class="oe_inline"  readonly="1"/>
                         </div>
                         <field name="day_approval" readonly="1" invisible="1"/>
-                        <field name="naam" readonly="1"/>
                         <field name="branch_id" readonly="1"/>
                         <field name="approval_deadline" readonly="1"/>
                         <field name="rule_id" readonly="1"/>

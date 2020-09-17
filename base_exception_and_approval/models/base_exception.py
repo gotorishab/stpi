@@ -356,7 +356,6 @@ class Approvalslist(models.Model):
 
 
     name =fields.Char(string="Name")
-    naam =fields.Char(string="Naam")
     model_id = fields.Many2one('ir.model', string='Approval Record')
     model_name =fields.Char(related="model_id.name",string='Model')
     branch_id = fields.Many2one('res.branch',string="Branch", store=True)
