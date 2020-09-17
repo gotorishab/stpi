@@ -335,8 +335,10 @@ class Approvalslist(models.Model):
             vals.update({
                 'name': self.env['ir.sequence'].get('approvals.list')
             })
-            print('=============================', self.resource_ref._name +','+ str(self.resource_ref.id))
-            print('=============type================', type(self.resource_ref._name +','+ str(self.resource_ref.id)))
+            k = self.env['approvals.list'].search(
+                [('resource_ref', '=', self.resource_ref._name + ',' + str(self.resource_ref.id))])
+            print('=============================', k)
+            print('=============type================', type(k.id))
             # if self.resource_ref:
             #     vals.update({
             #         'branch_id': self.resource_ref.branch_id.id
