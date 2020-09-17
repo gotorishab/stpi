@@ -7,10 +7,6 @@ class HrPayrollAdvices(models.Model):
 
 
     @api.multi
-    def generate_wiz(self):
-        pass
-
-    @api.multi
     def compute_advice(self):
         """
         Advice - Create Advice lines in Payment Advice and
@@ -22,7 +18,7 @@ class HrPayrollAdvices(models.Model):
                 old_lines.unlink()
             payslips = self.env['hr.payslip'].search([('date_from', '<=', advice.date), ('date_to', '>=', advice.date), ('state', '=', 'done')])
             for slip in payslips:
-                if not slip.employee_id.bank_account_id and not slip.employee_id.bank_account_id.acc_number:
+                if not slip.employee_id.bank_account_number:
                     raise UserError(_('Please define bank account for the %s employee') % (slip.employee_id.name,))
                 payslip_line = self.env['hr.payslip.line'].search([('slip_id', '=', slip.id), ('code', '=', 'NET')], limit=1)
                 if payslip_line:
@@ -59,7 +55,7 @@ class HrPayslipRun(models.Model):
             for slip in run.slip_ids:
                 # TODO is it necessary to interleave the calls ?
                 slip.action_payslip_done()
-                if not slip.employee_id.bank_account_id or not slip.employee_id.bank_account_id.acc_number:
+                if not slip.employee_id.bank_account_number:
                     raise UserError(_('Please define bank account for the %s employee') % (slip.employee_id.name))
                 payslip_line = self.env['hr.payslip.line'].search([('slip_id', '=', slip.id), ('code', '=', 'NET')], limit=1)
                 if payslip_line:
