@@ -88,7 +88,6 @@ class EmployeeTourClaim(models.Model):
 
 
     @api.onchange('tour_request_id')
-    @api.constrains('tour_request_id')
     def get_journey_details_tour(self,working_list=None):
         for rec in self:
             detail_of_journey = []
