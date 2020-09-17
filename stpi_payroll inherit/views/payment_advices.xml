@@ -5,20 +5,8 @@
             <field name="model">hr.payroll.advice</field>
             <field name="inherit_id" ref="l10n_in_hr_payroll.view_hr_bank_advice_form"/>
             <field name="arch" type="xml">
-                <xpath expr = "//field[@name='state_id']" position="after">
-                    <field name = "metro"/>
-                    <field name = "employee_hra_cat"/>
-                    <field name = "city_tier"/>
-                </xpath>
-            </field>
-        </record>
-        <record model="ir.ui.view" id="res_branch_city_form_inherit">
-            <field name="name">res.branch.inherit</field>
-            <field name="model">res.branch</field>
-            <field name="inherit_id" ref="base_branch_company.view_res_branch_form"/>
-            <field name="arch" type="xml">
-                <xpath expr = "//field[@name='city']" position="after">
-                    <field name = "city_id"/>
+                <xpath expr = "//button[@name='compute_advice']" position="after">
+                    <button name="generate_wiz" string="Generate Advice" states="draft" type="object"/>
                 </xpath>
             </field>
         </record>

@@ -6,6 +6,9 @@ class HrPayrollAdvices(models.Model):
     _name='hr.payroll.advice'
 
 
+    @api.multi
+    def generate_wiz(self):
+        pass
 
     @api.multi
     def compute_advice(self):
