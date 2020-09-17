@@ -12,7 +12,7 @@
     'version': '12.0.4',
     'depends': ['base','hr','hr_contract','hr_payroll','l10n_in_hr_payroll'],
     'data': [
-        # 'views/payment_advices.xml',
+        'views/payment_advices.xml',
     ],
 
     # 'demo': [
