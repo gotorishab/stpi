@@ -60,7 +60,7 @@ class LoanClose(models.Model):
     @api.model
     def create(self, values):
         res = super(LoanClose, self).create(values)
-        loan_count = self.env['hr.loan.close'].search_count([('employee_id', '=', res.employee_id.id),('state', '!=', 'approved'),('id', '!=', res.id)
+        loan_count = self.env['hr.loan.close'].search_count([('employee_id', '=', res.employee_id.id),('state', '!=', 'approved'),('loan_id', '=', res.loan_id.id),('id', '!=', res.id)
                                                        ])
         if loan_count:
             raise ValidationError(_("You are not allowed to save this loan Close Application"))
