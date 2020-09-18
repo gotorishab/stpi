@@ -6,7 +6,7 @@
             <field name="inherit_id" ref="l10n_in_hr_payroll.view_hr_bank_advice_form"/>
             <field name="arch" type="xml">
                 <xpath expr = "//button[@name='compute_advice']" position="after">
-                    <button name="%(action_hr_payment_batches_generate)d" type="action" states="draft" string="Generate Payslips" class="oe_highlight"/>
+                    <button name="%(action_hr_payment_batches_generate)d" type="action" states="draft" string="Generate Payment Batches" class="oe_highlight" context = "{'default_advice': id}"/>
 
                 </xpath>
             </field>
