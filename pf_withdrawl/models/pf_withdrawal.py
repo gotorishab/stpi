@@ -138,6 +138,7 @@ class PfWidthdrawl(models.Model):
                             'amount': rec.advance_amount,
                             'reference': rec.name,
                         }))
+                    print('==========================================', pf_details_ids)
                     i.pf_details_ids = pf_details_ids
 
     @api.multi
