@@ -257,8 +257,8 @@
                             </field>
                             <button type="object" name="get_pf_details" string="Get PF Details"  colspan="2"
                                 class="oe_stat_button"
-                                icon="fa-clock-o"/>
-                                <div class="oe_clear" invisible="1"/>
+                                icon="fa-clock-o" invisible="1"/>
+                                <div class="oe_clear"/>
                             <div class="oe_clear"/>
                             <group class="oe_subtotal_footer oe_right" colspan="2" >
                                 <field name="currency_id" options="{'no_create': True}" invisible="1 "/>
