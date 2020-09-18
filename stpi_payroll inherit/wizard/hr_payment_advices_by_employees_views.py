@@ -10,7 +10,7 @@ class HrPayslipEmployees(models.TransientModel):
     _description = 'Generate Payment Advices for all selected employees'
 
     employee_ids = fields.Many2many('hr.employee', string='Employees')
-    advice = fields.Many2many('hr.payroll.advice', string='Advice ID')
+    advice = fields.Many2one('hr.payroll.advice', string='Advice ID')
 
     @api.multi
     def compute_sheet(self):
