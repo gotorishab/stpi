@@ -91,28 +91,54 @@ class PfWidthdrawl(models.Model):
     def button_approved(self):
         for rec in self:
             rec.write({'state': 'approved'})
+            pf_details_ids = []
             pf_balance = self.env['pf.employee'].sudo().search([('employee_id', '=', rec.employee_id.id)],limit=1)
-            #         print("////////////////////////",pf_balance)
             if pf_balance:
-                pf_balance.sudo().get_pf_details()
-            # amt = 0
-            # pf_employee = self.env['pf.employee'].sudo().search([('employee_id','=',rec.employee_id.id)])
-            # if pf_employee:
-            #     for pf_emp in pf_employee:
-            #         pf_emp.amount = pf_emp.amount - self.advance_amount
-            #         pf_emp.pf_withdrwal_amount = pf_emp.amount
-            #         if rec.pf_type.cepf_vcpf == True and rec.pf_type.cpf == True:
-            #             amt = pf_emp.cepf_vcpf + pf_emp.cpf
-            #         elif rec.pf_type.cepf_vcpf == True and rec.pf_type.cpf == False:
-            #             amt = pf_emp.cepf_vcpf
-            #         elif rec.pf_type.cepf_vcpf == False and rec.pf_type.cpf == True:
-            #             amt = pf_emp.cpf
-            #         elif rec.pf_type.cepf_vcpf == False and rec.pf_type.cpf == False:
-            #             amt = 0
-            # if rec.advance_amount > rec.maximum_withdrawal:
-            #     raise ValidationError("You are not able to  take advance amount more than %s" % rec.maximum_withdrawal)
-            if rec.pf_type.min_years < (rec.employee_id.birthday - datetime.now().date()).days:
-                raise ValidationError("You are not able to  apply as minimum age for PF should be atlest %s" % rec.pf_type.min_years)
+                for i in pf_balance:
+                    if (rec.pf_type.cepf_vcpf == True and rec.pf_type.cpf == True) or (rec.pf_type.cepf_vcpf == False and rec.pf_type.cpf == False):
+                        pf_details_ids.append((0, 0, {
+                            'pf_details_id': i.id,
+                            'employee_id': i.employee_id.id,
+                            'type': 'Withdrawal',
+                            'pf_code': 'CPF',
+                            'description': rec.pf_type.name / 2,
+                            'date': rec.date,
+                            'amount': rec.advance_amount,
+                            'reference': rec.name,
+                        }))
+                        pf_details_ids.append((0, 0, {
+                            'pf_details_id': i.id,
+                            'employee_id': i.employee_id.id,
+                            'type': 'Withdrawal',
+                            'pf_code': 'CEPF + VCPF',
+                            'description': rec.pf_type.name / 2,
+                            'date': rec.date,
+                            'amount': rec.advance_amount,
+                            'reference': rec.name,
+                        }))
+                    elif rec.pf_type.cepf_vcpf == True and rec.pf_type.cpf == False:
+                        pf_details_ids.append((0, 0, {
+                            'pf_details_id': i.id,
+                            'employee_id': i.employee_id.id,
+                            'type': 'Withdrawal',
+                            'pf_code': 'CEPF + VCPF',
+                            'description': rec.pf_type.name / 2,
+                            'date': rec.date,
+                            'amount': rec.advance_amount,
+                            'reference': rec.name,
+                        }))
+                    elif rec.pf_type.cepf_vcpf == False and rec.pf_type.cpf == True:
+                        pf_details_ids.append((0, 0, {
+                            'pf_details_id': i.id,
+                            'employee_id': i.employee_id.id,
+                            'type': 'Withdrawal',
+                            'pf_code': 'CPF',
+                            'description': rec.pf_type.name / 2,
+                            'date': rec.date,
+                            'amount': rec.advance_amount,
+                            'reference': rec.name,
+                        }))
+                    i.pf_details_ids = pf_details_ids
 
     @api.multi
     def button_reject(self):
@@ -167,28 +193,6 @@ class PfWidthdrawl(models.Model):
         return super(PfWidthdrawl, self).unlink()
 
 
-#     @api.constrains('rule')
-#     @api.onchange('rule')
-#     def _onchange_rule(self):
-#         for e in self:
-#             if e.rule == 'A':
-#                 e.purpose = 'a'
-#             elif e.rule == 'B':
-#                 e.purpose = 'b'
-#             elif e.rule == 'E':
-#                 e.purpose = 'e'
-
-#     @api.constrains('purpose')
-#     @api.onchange('purpose')
-#     def _onchange_purpose(self):
-#         for e in self:
-#             if e.purpose== 'a':
-#                 e.attachment_document='ai'
-#             elif e.purpose=='b':
-#                 e.attachment_document='bi'
-#             elif e.purpose=='e':
-#                 e.attachment_document='ei'
-
 
     @api.constrains('employee_id')
     @api.onchange('employee_id')
@@ -236,7 +240,7 @@ class PfEmployee(models.Model):
     pf_start_data = fields.Date('PF Start Date',track_visibility='always')
     employee_id=fields.Many2one('hr.employee', string="Request By", default=_default_employee,track_visibility='always')
     branch_id = fields.Many2one('res.branch',string="Branch",track_visibility='onchange')
-    advance_amount = fields.Float('Advance Amount Taken',track_visibility='always')
+    advance_amount = fields.Float('Advance Amount Taken', compute='_compute_amount', track_visibility='always')
     advance_left = fields.Float('Amount Left', compute='_compute_amount',track_visibility='always')
     amount = fields.Float('Amount', compute='_compute_amount',track_visibility='always')
     cepf_vcpf = fields.Float('CEPF + VCPF', compute='_compute_amount',track_visibility='always')
@@ -244,15 +248,6 @@ class PfEmployee(models.Model):
     pf_details_ids=fields.One2many('pf.employee.details', 'pf_details_id', string="Employee",track_visibility='always')
     currency_id = fields.Many2one('res.currency', string='Currency',
                               default=lambda self: self.env.user.company_id.currency_id)
-    # @api.depends('employee_id')
-    # def _compute_amount(self):
-    #     for rec in self:
-    #         sum = 0.00
-    #         pf_employee_obj = self.env['pf.employee.details'].search([('pf_details_id', '=', rec.id)])
-    #         if pf_employee_obj:
-    #             for details in pf_employee_obj:
-    #                 sum += details.amount
-    #         rec.amount = sum
 
 
     @api.constrains('employee_id')
@@ -273,6 +268,7 @@ class PfEmployee(models.Model):
             sum1 = 0.00
             cv = 0.00
             cpf = 0.00
+            advance_amount = 0.00
             for details in rec.pf_details_ids:
                 sum += details.amount
                 if details.pf_code == 'CEPF + VCPF' or details.pf_code == 'VCPF' or details.pf_code == 'CEPF':
@@ -296,6 +292,10 @@ class PfEmployee(models.Model):
             rec.amount = sum
             # rec.advance_amount = sum1
             rec.advance_left = rec.amount - rec.advance_amount
+            for lines in rec.pf_details_ids:
+                if lines.type == 'Withdrawal':
+                    advance_amount += lines.amount
+            rec.advance_amount = advance_amount
 
 
     @api.model

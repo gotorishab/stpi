@@ -12,7 +12,7 @@
                 <field name="month"/>
                 <field name="epmloyee_contribution" sum="epmloyee_contribution"/>
                 <field name="voluntary_contribution" sum="voluntary_contribution"/>
-                <field name="employer_contribution" sum="employer_contribution"/>
+<!--                <field name="employer_contribution" sum="employer_contribution"/>-->
                 <field name="interest_employee_voluntary" sum="interest_employee_voluntary"/>
                 <field name="interest_employer" sum="interest_employer"/>
                 <field name="total" sum="total"/>

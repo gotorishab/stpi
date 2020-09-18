@@ -103,24 +103,25 @@ class WizardLateComing(models.TransientModel):
             for ln in pay_rules:
                 if str(ln.date.month) == '1':
                     month = 'January'
-                    employee_interest = (((emp + volun) * X) * 3) / 12
-                    employer_contribution = (((emplyr) * X) * 3) / 12
                     if ln.pf_code == 'CPF':
                         if ln.type == 'Deposit':
                             emp += ln.amount
                         else:
                             emp -= ln.amount
-                    elif ln.pf_code == 'VCPF':
+                    elif ln.pf_code == 'VCPF' or ln.pf_code == 'CEPF' or ln.pf_code == 'CEPF + VCPF':
                         if ln.type == 'Deposit':
                             volun += ln.amount
                         else:
                             volun -= ln.amount
-                    elif ln.pf_code == 'CEPF':
-                        if ln.type == 'Deposit':
-                            emplyr += ln.amount
-                        else:
-                            emplyr -= ln.amount
-            total = emp + volun + emplyr + employee_interest + employer_contribution
+                    # elif ln.pf_code == 'CEPF':
+                    #     if ln.type == 'Deposit':
+                    #         emplyr += ln.amount
+                    #     else:
+                    #         emplyr -= ln.amount
+
+            employee_interest = (((emp) * X) * 3) / 12
+            employer_contribution = (((volun) * X) * 3) / 12
+            total = emp + volun + employee_interest + employer_contribution
             jan = self.env['pf.ledger.report'].create({
                     'employee_id': rec.employee_id.id,
                     'ledger_for_year': rec.ledger_for_year.id,
@@ -137,8 +138,6 @@ class WizardLateComing(models.TransientModel):
             
             
 
-            
-            
             emp = 0
             volun = 0
             emplyr = 0
@@ -148,24 +147,25 @@ class WizardLateComing(models.TransientModel):
             for ln in pay_rules:
                 if str(ln.date.month) == '2':
                     month = 'February'
-                    employee_interest = (((emp + volun) * X) * 2) / 12
-                    employer_contribution = (((emplyr) * X) * 2) / 12
                     if ln.pf_code == 'CPF':
                         if ln.type == 'Deposit':
                             emp += ln.amount
                         else:
                             emp -= ln.amount
-                    elif ln.pf_code == 'VCPF':
+                    elif ln.pf_code == 'VCPF' or ln.pf_code == 'CEPF' or ln.pf_code == 'CEPF + VCPF':
                         if ln.type == 'Deposit':
                             volun += ln.amount
                         else:
                             volun -= ln.amount
-                    elif ln.pf_code == 'CEPF':
-                        if ln.type == 'Deposit':
-                            emplyr += ln.amount
-                        else:
-                            emplyr -= ln.amount
-            total = emp + volun + emplyr + employee_interest + employer_contribution
+                    # elif ln.pf_code == 'CEPF':
+                    #     if ln.type == 'Deposit':
+                    #         emplyr += ln.amount
+                    #     else:
+                    #         emplyr -= ln.amount
+
+            employee_interest = (((emp) * X) * 2) / 12
+            employer_contribution = (((volun) * X) * 2) / 12
+            total = emp + volun + employee_interest + employer_contribution
             feb = self.env['pf.ledger.report'].create({
                     'employee_id': rec.employee_id.id,
                     'ledger_for_year': rec.ledger_for_year.id,
@@ -193,24 +193,26 @@ class WizardLateComing(models.TransientModel):
             for ln in pay_rules:
                 if str(ln.date.month) == '3':
                     month = 'March'
-                    employee_interest = (((emp + volun) * X) * 1) / 12
-                    employer_contribution = (((emplyr) * X) * 1) / 12
+                    
                     if ln.pf_code == 'CPF':
                         if ln.type == 'Deposit':
                             emp += ln.amount
                         else:
                             emp -= ln.amount
-                    elif ln.pf_code == 'VCPF':
+                    elif ln.pf_code == 'VCPF' or ln.pf_code == 'CEPF' or ln.pf_code == 'CEPF + VCPF':
                         if ln.type == 'Deposit':
                             volun += ln.amount
                         else:
                             volun -= ln.amount
-                    elif ln.pf_code == 'CEPF':
-                        if ln.type == 'Deposit':
-                            emplyr += ln.amount
-                        else:
-                            emplyr -= ln.amount
-            total = emp + volun + emplyr + employee_interest + employer_contribution
+                    # elif ln.pf_code == 'CEPF':
+                    #     if ln.type == 'Deposit':
+                    #         emplyr += ln.amount
+                    #     else:
+                    #         emplyr -= ln.amount
+
+            employee_interest = (((emp) * X) * 1) / 12
+            employer_contribution = (((volun) * X) * 1) / 12
+            total = emp + volun + employee_interest + employer_contribution
             mar = self.env['pf.ledger.report'].create({
                     'employee_id': rec.employee_id.id,
                     'ledger_for_year': rec.ledger_for_year.id,
@@ -238,24 +240,25 @@ class WizardLateComing(models.TransientModel):
             for ln in pay_rules:
                 if str(ln.date.month) == '4':
                     month = 'April'
-                    employee_interest = (((emp + volun) * X) * 12) / 12
-                    employer_contribution = (((emplyr) * X) * 12) / 12
                     if ln.pf_code == 'CPF':
                         if ln.type == 'Deposit':
                             emp += ln.amount
                         else:
                             emp -= ln.amount
-                    elif ln.pf_code == 'VCPF':
+                    elif ln.pf_code == 'VCPF' or ln.pf_code == 'CEPF' or ln.pf_code == 'CEPF + VCPF':
                         if ln.type == 'Deposit':
                             volun += ln.amount
                         else:
                             volun -= ln.amount
-                    elif ln.pf_code == 'CEPF':
-                        if ln.type == 'Deposit':
-                            emplyr += ln.amount
-                        else:
-                            emplyr -= ln.amount
-            total = emp + volun + emplyr + employee_interest + employer_contribution
+                    # elif ln.pf_code == 'CEPF':
+                    #     if ln.type == 'Deposit':
+                    #         emplyr += ln.amount
+                    #     else:
+                    #         emplyr -= ln.amount
+
+            employee_interest = (((emp) * X) * 12) / 12
+            employer_contribution = (((volun) * X) * 12) / 12
+            total = emp + volun + employee_interest + employer_contribution
             apr = self.env['pf.ledger.report'].create({
                     'employee_id': rec.employee_id.id,
                     'ledger_for_year': rec.ledger_for_year.id,
@@ -283,24 +286,26 @@ class WizardLateComing(models.TransientModel):
             for ln in pay_rules:
                 if str(ln.date.month) == '5':
                     month = 'May'
-                    employee_interest = (((emp + volun) * X) * 11) / 12
-                    employer_contribution = (((emplyr) * X) * 11) / 12
                     if ln.pf_code == 'CPF':
                         if ln.type == 'Deposit':
                             emp += ln.amount
                         else:
                             emp -= ln.amount
-                    elif ln.pf_code == 'VCPF':
+                    elif ln.pf_code == 'VCPF' or ln.pf_code == 'CEPF' or ln.pf_code == 'CEPF + VCPF':
                         if ln.type == 'Deposit':
                             volun += ln.amount
                         else:
                             volun -= ln.amount
-                    elif ln.pf_code == 'CEPF':
-                        if ln.type == 'Deposit':
-                            emplyr += ln.amount
-                        else:
-                            emplyr -= ln.amount
-            total = emp + volun + emplyr + employee_interest + employer_contribution
+
+                    # elif ln.pf_code == 'CEPF':
+                    #     if ln.type == 'Deposit':
+                    #         emplyr += ln.amount
+                    #     else:
+                    #         emplyr -= ln.amount
+
+            employee_interest = (((emp) * X) * 11) / 12
+            employer_contribution = (((volun) * X) * 11) / 12
+            total = emp + volun + employee_interest + employer_contribution
             may = self.env['pf.ledger.report'].create({
                     'employee_id': rec.employee_id.id,
                     'ledger_for_year': rec.ledger_for_year.id,
@@ -328,24 +333,26 @@ class WizardLateComing(models.TransientModel):
             for ln in pay_rules:
                 if str(ln.date.month) == '6':
                     month = 'June'
-                    employee_interest = (((emp + volun) * X) * 10) / 12
-                    employer_contribution = (((emplyr) * X) * 10) / 12
+
                     if ln.pf_code == 'CPF':
                         if ln.type == 'Deposit':
                             emp += ln.amount
                         else:
                             emp -= ln.amount
-                    elif ln.pf_code == 'VCPF':
+                    elif ln.pf_code == 'VCPF' or ln.pf_code == 'CEPF' or ln.pf_code == 'CEPF + VCPF':
                         if ln.type == 'Deposit':
                             volun += ln.amount
                         else:
                             volun -= ln.amount
-                    elif ln.pf_code == 'CEPF':
-                        if ln.type == 'Deposit':
-                            emplyr += ln.amount
-                        else:
-                            emplyr -= ln.amount
-            total = emp + volun + emplyr + employee_interest + employer_contribution
+                    # elif ln.pf_code == 'CEPF':
+                    #     if ln.type == 'Deposit':
+                    #         emplyr += ln.amount
+                    #     else:
+                    #         emplyr -= ln.amount
+
+            employee_interest = (((emp) * X) * 10) / 12
+            employer_contribution = (((volun) * X) * 10) / 12
+            total = emp + volun + employee_interest + employer_contribution
             jun = self.env['pf.ledger.report'].create({
                     'employee_id': rec.employee_id.id,
                     'ledger_for_year': rec.ledger_for_year.id,
@@ -373,24 +380,25 @@ class WizardLateComing(models.TransientModel):
             for ln in pay_rules:
                 if str(ln.date.month) == '7':
                     month = 'July'
-                    employee_interest = (((emp + volun) * X) * 9) / 12
-                    employer_contribution = (((emplyr) * X) * 9) / 12
                     if ln.pf_code == 'CPF':
                         if ln.type == 'Deposit':
                             emp += ln.amount
                         else:
                             emp -= ln.amount
-                    elif ln.pf_code == 'VCPF':
+                    elif ln.pf_code == 'VCPF' or ln.pf_code == 'CEPF' or ln.pf_code == 'CEPF + VCPF':
                         if ln.type == 'Deposit':
                             volun += ln.amount
                         else:
                             volun -= ln.amount
-                    elif ln.pf_code == 'CEPF':
-                        if ln.type == 'Deposit':
-                            emplyr += ln.amount
-                        else:
-                            emplyr -= ln.amount
-            total = emp + volun + emplyr + employee_interest + employer_contribution
+                    # elif ln.pf_code == 'CEPF':
+                    #     if ln.type == 'Deposit':
+                    #         emplyr += ln.amount
+                    #     else:
+                    #         emplyr -= ln.amount
+
+            employee_interest = (((emp) * X) * 9) / 12
+            employer_contribution = (((volun) * X) * 9) / 12
+            total = emp + volun + employee_interest + employer_contribution
             jul = self.env['pf.ledger.report'].create({
                     'employee_id': rec.employee_id.id,
                     'ledger_for_year': rec.ledger_for_year.id,
@@ -418,24 +426,25 @@ class WizardLateComing(models.TransientModel):
             for ln in pay_rules:
                 if str(ln.date.month) == '8':
                     month = 'August'
-                    employee_interest = (((emp + volun) * X) * 8) / 12
-                    employer_contribution = (((emplyr) * X) * 8) / 12
                     if ln.pf_code == 'CPF':
                         if ln.type == 'Deposit':
                             emp += ln.amount
                         else:
                             emp -= ln.amount
-                    elif ln.pf_code == 'VCPF':
+                    elif ln.pf_code == 'VCPF' or ln.pf_code == 'CEPF' or ln.pf_code == 'CEPF + VCPF':
                         if ln.type == 'Deposit':
                             volun += ln.amount
                         else:
                             volun -= ln.amount
-                    elif ln.pf_code == 'CEPF':
-                        if ln.type == 'Deposit':
-                            emplyr += ln.amount
-                        else:
-                            emplyr -= ln.amount
-            total = emp + volun + emplyr + employee_interest + employer_contribution
+                    # elif ln.pf_code == 'CEPF':
+                    #     if ln.type == 'Deposit':
+                    #         emplyr += ln.amount
+                    #     else:
+                    #         emplyr -= ln.amount
+
+            employee_interest = (((emp) * X) * 8) / 12
+            employer_contribution = (((volun) * X) * 8) / 12
+            total = emp + volun + employee_interest + employer_contribution
             aug = self.env['pf.ledger.report'].create({
                     'employee_id': rec.employee_id.id,
                     'ledger_for_year': rec.ledger_for_year.id,
@@ -463,24 +472,25 @@ class WizardLateComing(models.TransientModel):
             for ln in pay_rules:
                 if str(ln.date.month) == '9':
                     month = 'September'
-                    employee_interest = (((emp + volun) * X) * 7) / 12
-                    employer_contribution = (((emplyr) * X) * 7) / 12
                     if ln.pf_code == 'CPF':
                         if ln.type == 'Deposit':
                             emp += ln.amount
                         else:
                             emp -= ln.amount
-                    elif ln.pf_code == 'VCPF':
+                    elif ln.pf_code == 'VCPF' or ln.pf_code == 'CEPF' or ln.pf_code == 'CEPF + VCPF':
                         if ln.type == 'Deposit':
                             volun += ln.amount
                         else:
                             volun -= ln.amount
-                    elif ln.pf_code == 'CEPF':
-                        if ln.type == 'Deposit':
-                            emplyr += ln.amount
-                        else:
-                            emplyr -= ln.amount
-            total = emp + volun + emplyr + employee_interest + employer_contribution
+                    # elif ln.pf_code == 'CEPF':
+                    #     if ln.type == 'Deposit':
+                    #         emplyr += ln.amount
+                    #     else:
+                    #         emplyr -= ln.amount
+
+            employee_interest = (((emp) * X) * 7) / 12
+            employer_contribution = (((volun) * X) * 7) / 12
+            total = emp + volun + employee_interest + employer_contribution
             sept = self.env['pf.ledger.report'].create({
                     'employee_id': rec.employee_id.id,
                     'ledger_for_year': rec.ledger_for_year.id,
@@ -508,24 +518,25 @@ class WizardLateComing(models.TransientModel):
             for ln in pay_rules:
                 if str(ln.date.month) == '10':
                     month = 'October'
-                    employee_interest = (((emp + volun) * X) * 6) / 12
-                    employer_contribution = (((emplyr) * X) * 6) / 12
                     if ln.pf_code == 'CPF':
                         if ln.type == 'Deposit':
                             emp += ln.amount
                         else:
                             emp -= ln.amount
-                    elif ln.pf_code == 'VCPF':
+                    elif ln.pf_code == 'VCPF' or ln.pf_code == 'CEPF' or ln.pf_code == 'CEPF + VCPF':
                         if ln.type == 'Deposit':
                             volun += ln.amount
                         else:
                             volun -= ln.amount
-                    elif ln.pf_code == 'CEPF':
-                        if ln.type == 'Deposit':
-                            emplyr += ln.amount
-                        else:
-                            emplyr -= ln.amount
-            total = emp + volun + emplyr + employee_interest + employer_contribution
+                    # elif ln.pf_code == 'CEPF':
+                    #     if ln.type == 'Deposit':
+                    #         emplyr += ln.amount
+                    #     else:
+                    #         emplyr -= ln.amount
+
+            employee_interest = (((emp) * X) * 6) / 12
+            employer_contribution = (((volun) * X) * 6) / 12
+            total = emp + volun + employee_interest + employer_contribution
             oct = self.env['pf.ledger.report'].create({
                     'employee_id': rec.employee_id.id,
                     'ledger_for_year': rec.ledger_for_year.id,
@@ -553,24 +564,25 @@ class WizardLateComing(models.TransientModel):
             for ln in pay_rules:
                 if str(ln.date.month) == '11':
                     month = 'November'
-                    employee_interest = (((emp + volun) * X) * 5) / 12
-                    employer_contribution = (((emplyr) * X) * 5) / 12
                     if ln.pf_code == 'CPF':
                         if ln.type == 'Deposit':
                             emp += ln.amount
                         else:
                             emp -= ln.amount
-                    elif ln.pf_code == 'VCPF':
+                    elif ln.pf_code == 'VCPF' or ln.pf_code == 'CEPF' or ln.pf_code == 'CEPF + VCPF':
                         if ln.type == 'Deposit':
                             volun += ln.amount
                         else:
                             volun -= ln.amount
-                    elif ln.pf_code == 'CEPF':
-                        if ln.type == 'Deposit':
-                            emplyr += ln.amount
-                        else:
-                            emplyr -= ln.amount
-            total = emp + volun + emplyr + employee_interest + employer_contribution
+                    # elif ln.pf_code == 'CEPF':
+                    #     if ln.type == 'Deposit':
+                    #         emplyr += ln.amount
+                    #     else:
+                    #         emplyr -= ln.amount
+
+            employee_interest = (((emp) * X) * 5) / 12
+            employer_contribution = (((volun) * X) * 5) / 12
+            total = emp + volun + employee_interest + employer_contribution
             nov = self.env['pf.ledger.report'].create({
                     'employee_id': rec.employee_id.id,
                     'ledger_for_year': rec.ledger_for_year.id,
@@ -596,24 +608,25 @@ class WizardLateComing(models.TransientModel):
             for ln in pay_rules:
                 if str(ln.date.month) == '12':
                     month = 'December'
-                    employee_interest = (((emp + volun) * X) * 4) / 12
-                    employer_contribution = (((emplyr) * X) * 4) / 12
                     if ln.pf_code == 'CPF':
                         if ln.type == 'Deposit':
                             emp += ln.amount
                         else:
                             emp -= ln.amount
-                    elif ln.pf_code == 'VCPF':
+                    elif ln.pf_code == 'VCPF' or ln.pf_code == 'CEPF' or ln.pf_code == 'CEPF + VCPF':
                         if ln.type == 'Deposit':
                             volun += ln.amount
                         else:
                             volun -= ln.amount
-                    elif ln.pf_code == 'CEPF':
-                        if ln.type == 'Deposit':
-                            emplyr += ln.amount
-                        else:
-                            emplyr -= ln.amount
-            total = emp + volun + emplyr + employee_interest + employer_contribution
+                    # elif ln.pf_code == 'CEPF':
+                    #     if ln.type == 'Deposit':
+                    #         emplyr += ln.amount
+                    #     else:
+                    #         emplyr -= ln.amount
+
+            employee_interest = (((emp) * X) * 4) / 12
+            employer_contribution = (((volun) * X) * 4) / 12
+            total = emp + volun + employee_interest + employer_contribution
             dec = self.env['pf.ledger.report'].create({
                     'employee_id': rec.employee_id.id,
                     'ledger_for_year': rec.ledger_for_year.id,
