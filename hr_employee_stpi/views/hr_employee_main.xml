@@ -184,8 +184,8 @@
 
                             <group string="Birth">
                                 <field name="birthday"/>
-                                <field name="place_of_birth" groups="hr.group_hr_user"/>
-                                <field name="country_of_birth" groups="hr.group_hr_user"/>
+                                <field name="place_of_birth"/>
+                                <field name="country_of_birth"/>
                             </group>
                             <group string="Religion">
                                 <field name="religion" required="True" options="{'no_create_edit': True}"/>
