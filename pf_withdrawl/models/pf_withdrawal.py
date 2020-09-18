@@ -101,9 +101,9 @@ class PfWidthdrawl(models.Model):
                             'employee_id': i.employee_id.id,
                             'type': 'Withdrawal',
                             'pf_code': 'CPF',
-                            'description': rec.pf_type.name / 2,
+                            'description': rec.pf_type.name,
                             'date': rec.date,
-                            'amount': rec.advance_amount,
+                            'amount': rec.advance_amount / 2,
                             'reference': rec.name,
                         }))
                         pf_details_ids.append((0, 0, {
@@ -111,9 +111,9 @@ class PfWidthdrawl(models.Model):
                             'employee_id': i.employee_id.id,
                             'type': 'Withdrawal',
                             'pf_code': 'CEPF + VCPF',
-                            'description': rec.pf_type.name / 2,
+                            'description': rec.pf_type.name,
                             'date': rec.date,
-                            'amount': rec.advance_amount,
+                            'amount': rec.advance_amount / 2,
                             'reference': rec.name,
                         }))
                     elif rec.pf_type.cepf_vcpf == True and rec.pf_type.cpf == False:
@@ -122,7 +122,7 @@ class PfWidthdrawl(models.Model):
                             'employee_id': i.employee_id.id,
                             'type': 'Withdrawal',
                             'pf_code': 'CEPF + VCPF',
-                            'description': rec.pf_type.name / 2,
+                            'description': rec.pf_type.name,
                             'date': rec.date,
                             'amount': rec.advance_amount,
                             'reference': rec.name,
@@ -133,7 +133,7 @@ class PfWidthdrawl(models.Model):
                             'employee_id': i.employee_id.id,
                             'type': 'Withdrawal',
                             'pf_code': 'CPF',
-                            'description': rec.pf_type.name / 2,
+                            'description': rec.pf_type.name,
                             'date': rec.date,
                             'amount': rec.advance_amount,
                             'reference': rec.name,
