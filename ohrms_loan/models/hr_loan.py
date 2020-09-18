@@ -57,12 +57,20 @@ class HrLoan(models.Model):
 #             self.total_paid_amount = total_paid
 
 
+    @api.depends('employee_id')
+    def compute_des_dep(self):
+        for rec in self:
+            rec.branch_id = rec.employee_id.branch_id.id
+
+
+
     name = fields.Char(string="Loan Name", default="Loan Request", readonly=True)
     date = fields.Date(string="Requested Date", default=fields.Date.today(), readonly=True)
     employee_id = fields.Many2one('hr.employee', string="Requested By")
     employee_id_related = fields.Many2one('hr.employee', related="employee_id", string="Requested By")
     department_id = fields.Many2one('hr.department', related="employee_id.department_id", readonly=True,
                                     string="Department", store=True)
+    branch_id= fields.Many2one('res.branch', string="Branch", compute='compute_des_dep', store=True)
     type_id =fields.Many2one('loan.type',string="Type")
     installment = fields.Integer(string="No Of Installments", default= 0)
     approve_date = fields.Date(string="Approve Date")
@@ -103,6 +111,7 @@ class HrLoan(models.Model):
         ('refuse', 'Refused'),
         ('cancel', 'Canceled'),
     ], string="Status", default='draft', track_visibility='onchange', copy=False, )
+
 
     @api.model
     def create(self, values):
