@@ -93,6 +93,7 @@ class ReimbursementConfiguration(models.Model):
         ('quarterly', 'Newspaper Reimbursements'),
     ], string='Reimbursement Type')
     pay_level_ids = fields.Many2many('hr.payslip.paylevel', string='Pay Level')
+    grade_pay = fields.Char(string='Grade Pay')
     employee_type = fields.Selection([('regular', 'Regular Employee'),
                                       ('contractual_with_agency', 'Contractual with Agency'),
                                       ('contractual_with_stpi', 'Contractual with STPI')], string='Employment Type',
@@ -107,6 +108,13 @@ class ReimbursementConfiguration(models.Model):
     max_submit = fields.Integer(string='Should apply in Days')
 
     open = fields.Boolean('Open')
+
+    # @api.model
+    # def create(self, vals):
+    #     res = super(ReimbursementConfiguration, self).create(vals)
+    #     for line in res.pay_level_ids:
+    #
+
 
     @api.constrains('full')
     @api.onchange('full')
