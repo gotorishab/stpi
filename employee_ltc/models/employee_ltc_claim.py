@@ -25,7 +25,7 @@ class EmployeeLtcClaim(models.Model):
                 if line:
                     fair_paid += int(line.fair_paid)
             record.total_claimed_amount = fair_paid
-            record.advance_requested = int(record.ltc_availed_for_m2o.amount)
+            record.advance_requested = round(record.ltc_availed_for_m2o.single_fare_approved)
             record.balance_left = record.total_claimed_amount - record.advance_requested - record.amount_paid
 
 
