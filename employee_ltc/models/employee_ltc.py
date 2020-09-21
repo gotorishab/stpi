@@ -456,6 +456,10 @@ class EmployeeLtcAdvance(models.Model):
                         if ltc_pre.place_of_trvel == res.place_of_trvel and ltc_pre.block_year == res.block_year and ltc_pre.child_block_year == res.child_block_year:
                                 raise ValidationError(
                                     _('You are not allowed to take LTC for this block year'))
+                        if ltc_pre.block_year == res.block_year and ltc_pre.child_block_year == res.child_block_year:
+                                raise ValidationError(
+                                    _(
+                                        'You are not allowed to take LTC for this block year, as you have already applied for this block year'))
                         if ltc_pre.place_of_trvel == 'india':
                             count_india += 1
                         if res.place_of_trvel == 'india' and count_india > 1 :
@@ -509,6 +513,10 @@ class EmployeeLtcAdvance(models.Model):
                         if res.place_of_trvel == ltc_pre.place_of_trvel and res.block_year == ltc_pre.block_year and res.child_block_year == ltc_pre.child_block_year:
                             raise ValidationError(
                                 _('You are not allowed to take LTC for this block year'))
+                        if res.block_year == ltc_pre.block_year and res.child_block_year == ltc_pre.child_block_year:
+                            raise ValidationError(
+                                _(
+                                    'You are not allowed to take LTC for this block year, as you have already applied for this block year'))
                         if ltc_pre.place_of_trvel == 'india':
                             count_india += 1
                         if res.place_of_trvel == 'india' and count_india > 1:
