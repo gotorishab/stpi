@@ -110,16 +110,16 @@ class ReimbursementConfiguration(models.Model):
     open = fields.Boolean('Open')
 
 
-    #
-    # @api.model
-    # def create(self, vals):
-    #     res = super(ReimbursementConfiguration, self).create(vals)
-    #     lst = []
-    #     for line in res.pay_level_ids:
-    #         lst.append(line.grade_pay)
-    #     listToStr = ' '.join([str(elem) for elem in lst])
-    #     res.grade_pay = str(listToStr)
-    #
+
+    @api.model
+    def create(self, vals):
+        res = super(ReimbursementConfiguration, self).create(vals)
+        lst = []
+        for line in res.pay_level_ids.ids:
+            lst.append(line.grade_pay)
+        listToStr = ' '.join([str(elem) for elem in lst])
+        res.grade_pay = str(listToStr)
+
 
 
 
