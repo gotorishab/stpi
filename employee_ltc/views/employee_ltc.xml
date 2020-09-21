@@ -36,7 +36,7 @@
                         <group>
                             <field name="single_fare" attrs="{'readonly': [('state', '!=', 'draft')],'required': [('state', '=', 'draft')]}"/>
                             <field name="attach_file" attrs="{'invisible': [('single_fare', '=', False)],'readonly': [('state', '!=', 'draft')]}"/>
-                            <field name="single_fare_approved" attrs="{'invisible': [('state', '=', 'draft')]}" groups="employee_ltc.group_ltc_manager"/>
+                            <field name="single_fare_approved" attrs="{'invisible': [('state', '=', 'draft')]}"/>
                             <field name="partner_working" attrs="{'readonly': [('state', '!=', 'draft')],'required': [('state', '=', 'draft')]}"/>
                             <field name="mode_of_travel" attrs="{'readonly': [('state', '!=', 'draft')],'required': [('state', '=', 'draft')]}"/>
                             <field name="el_encashment" attrs="{'readonly': [('state', '!=', 'draft')],'required': [('state', '=', 'draft')]}"/>

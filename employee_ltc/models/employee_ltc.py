@@ -389,6 +389,7 @@ class EmployeeLtcAdvance(models.Model):
                 {
                     'ltc_id': res.id,
                     'employee_id': res.employee_id.id,
+                    'branch_id': res.branch_id.id,
                     'relative_name': res.employee_id.name,
                     'relation': 'Self',
                     'block_year': res.block_year.id,
@@ -403,6 +404,7 @@ class EmployeeLtcAdvance(models.Model):
                 {
                     'ltc_id': res.id,
                     'employee_id': res.employee_id.id,
+                    'branch_id': res.branch_id.id,
                     'relative_name': relative.name.name,
                     'relation': relative.name.relate_type.name,
                     'block_year': res.block_year.id,
@@ -573,16 +575,16 @@ class ChildBlockYear(models.Model):
     name = fields.Char('Name')
     child_block_year_id = fields.Many2one('block.year', string='Block Year')
 
-    @api.constrains('name')
-    @api.onchange('name')
-    def validate_onchange(self):
-        for rec in self:
-            if rec.name:
-                for e in rec.name:
-                    if not e.isdigit():
-                        raise ValidationError(_("Please enter correct Name, it must be numeric..."))
-                if len(rec.name) != 4:
-                    raise ValidationError(_("Please enter correct Name, it must be of 4 digits..."))
+    # @api.constrains('name')
+    # @api.onchange('name')
+    # def validate_onchange(self):
+    #     for rec in self:
+    #         if rec.name:
+    #             for e in rec.name:
+    #                 if not e.isdigit():
+    #                     raise ValidationError(_("Please enter correct Name, it must be numeric..."))
+    #             if len(rec.name) != 4:
+    #                 raise ValidationError(_("Please enter correct Name, it must be of 4 digits..."))
 
 
 class FamilyDetails(models.Model):
@@ -626,6 +628,7 @@ class LtcLedger(models.Model):
 
     ltc_id = fields.Many2one('employee.ltc.advance', string='LTC')
     employee_id = fields.Many2one('hr.employee', string='Requested By')
+    branch_id = fields.Many2one('res.branch', string='Branch', store=True)
     relative_name = fields.Char(string='Relative Name')
     relation = fields.Char(string='Relative')
     block_year = fields.Many2one('block.year', string='Block year')
