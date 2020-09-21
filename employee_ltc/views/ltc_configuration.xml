@@ -92,8 +92,9 @@
                 />
 
     <menuitem name="LTC Ledger"
-                id="menu_ltc_ledger_id" parent="menu_ltc_configuration"
-                 action="ltc_ledger_action_id"
+              id="menu_ltc_ledger_id" parent="menu_ltc"
+              action="ltc_ledger_action_id"
+              sequence="99"
                  />
     <menuitem name="Block Year"
                 id="menu_ltc_block_year_id" parent="menu_ltc_configuration"
