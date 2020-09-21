@@ -20,7 +20,7 @@ class HrEmployee(models.Model):
             'type': 'ir.actions.act_window',
             'target': 'new',
             'context': {
-                'default_employee_id': self.id,
+                # 'default_employee_id': self.id,
                 'default_res_model': self._name,
                 'default_res_id': self.id,
                 'default_name': self.name,
