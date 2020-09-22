@@ -89,7 +89,7 @@ class FolderMaster(models.Model):
             [('create_date', '>=', fy.date_start), ('create_date', '<=', fy.date_end), ('department_id', '=', current_employee.department_id.id), ('branch_id', '=', current_employee.branch_id.id), ('subject', '=', res.subject.id)])
         for file in files:
             count += 1
-        name = (res.subject.code) + '(' + str(count) + ')/' + str(d_id) + '/' + str(sur_usr) + '/' + str(
+        name = str(res.subject.code) + '(' + str(count) + ')/' + str(d_id) + '/' + str(sur_usr) + '/' + str(
                 fy.name)
         res.number = str(name)
         self.env['file.tracker.report'].create({
