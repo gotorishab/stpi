@@ -127,13 +127,14 @@ class FileWizard(models.Model):
                         file.last_owner_id = rec.env.user.id
                         file.responsible_user_id = rec.env.user.id
                         file.current_owner_id = rec.user.id
+                        file.previous_owner = [(4, rec.env.user.id)]
                         for line in rec.sec_own_ids:
                             sec_own.append(line.employee.user_id.id)
                         file.sec_owner = [(6, 0, sec_own)]
 
-                        previous_owner.append(rec.env.user.id)
-
-                        file.previous_owner = [(6, 0, previous_owner)]
+                        # previous_owner.append(rec.env.user.id)
+                        #
+                        # file.previous_owner = [(6, 0, previous_owner)]
 
                         self.env['file.tracking.information'].create({
                             'create_let_id': file.id,
