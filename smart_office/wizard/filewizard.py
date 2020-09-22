@@ -33,8 +33,8 @@ class FileWizard(models.Model):
             elif rec.jobposition.id and rec.department.id:
                 return {'domain': {'employee': [('job_id', '=', rec.jobposition.id),('department_id', '=', rec.department.id)]}}
             else:
-                return True
-                # return {'domain': {'employee': ['|', ('job_id', '=', rec.jobposition.id),('department_id', '=', rec.department.id)]}}
+                # return True
+                return {'domain': {'employee': ['|', ('job_id', '=', rec.jobposition.id),('department_id', '=', rec.department.id)]}}
 
 
     def confirm_button(self):
