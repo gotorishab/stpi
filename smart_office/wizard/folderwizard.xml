@@ -8,8 +8,8 @@
                 <form string="Letter information">
                         <group>
                             <group>
-                                <field name = "department" options="{'no_create_edit': True, 'no_create': True}" required="1"/>
-                                <field name = "jobposition" options="{'no_create_edit': True, 'no_create': True}" required="1"/>
+                                <field name = "department" options="{'no_create_edit': True, 'no_create': True}"/>
+                                <field name = "jobposition" options="{'no_create_edit': True, 'no_create': True}"/>
                             </group>
                             <group>
                                  <field name = "employee" options="{'no_create_edit': True, 'no_create': True}" required="1"/>
