@@ -2,7 +2,7 @@ from odoo import fields, models, api, _
 from datetime import datetime, date, timedelta
 import requests
 import json
-from odoo.exceptions import UserError, chValidationError
+from odoo.exceptions import UserError, ValidationError
 
 
 class FolderMaster(models.Model):
