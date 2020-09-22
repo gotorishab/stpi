@@ -18,7 +18,7 @@ class IncomingLetterWizard(models.TransientModel):
             for file in files:
                 if srch_id in file.sec_owner.ids or srch_id == file.current_owner_id.id:
                     print('=====================first=======================', file.name)
-                    if file.folder_id == False:
+                    if not file.folder_id:
                         print('=====================second=======================', file.name)
                         my_id.append(file.id)
 
@@ -40,7 +40,7 @@ class IncomingLetterWizard(models.TransientModel):
             for file in files:
                 if srch_id in file.sec_owner.ids or srch_id == file.current_owner_id.id:
                     print('=====================first=======================', file.name)
-                    if file.folder_id == True:
+                    if file.folder_id:
                         print('=====================second=======================', file.name)
                         my_id.append(file.id)
 
