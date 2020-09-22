@@ -54,6 +54,7 @@ class DispatchDocument(models.Model):
             dd = self.env['dispatch.document'].create({
                 'name': name + 0.001,
                 'basic_version': int(rec.name),
+                'print_heading': rec.print_heading,
                 'previousversion': rec.id,
                 'dispatch_mode': rec.dispatch_mode,
                 'template_html': rec.template_html,

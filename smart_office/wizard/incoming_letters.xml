@@ -11,6 +11,7 @@
                     </p>
                     <footer>
                         <button string="Incoming Correspondence" name="show_incoming_letter" type="object" class="btn-primary"/>
+                        <button string="Incoming Correspondence with File" name="show_incoming_letter_with_file" type="object" class="btn-primary"/>
                         <button string="Subordinates Incoming Correspondence" name="show_incoming_sec_letter" type="object" class="btn-primary"/>
                         <button string="Cancel" class="btn-secondary" special="cancel"/>
                     </footer>

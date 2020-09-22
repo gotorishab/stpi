@@ -181,7 +181,7 @@
 <!--                            </tree>-->
 <!--                        </field>-->
 <!--                    </page>-->
-                    <page string="Coorespondance Tracking Information" name="file_track">
+                    <page string="Coorespondance Tracking Information" name="file_track" invisible="1">
                         <field name="file_track_ids" readonly = "1"/>
                     </page>
                 </page>
@@ -315,7 +315,9 @@
                     <field name="letter_type"/>
                     <field name="sender_ministry"/>
                     <field name="sender_department"/>
+                    <field name="last_owner_id"/>
                     <field name="current_owner_id"/>
+                    <field name="sec_owner"/>
                 </field>
                 <xpath expr = "//field[@name='actions']" position="attributes">
                     <attribute name="invisible">1</attribute>

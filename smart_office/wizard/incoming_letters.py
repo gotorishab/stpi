@@ -18,7 +18,29 @@ class IncomingLetterWizard(models.TransientModel):
             for file in files:
                 if srch_id in file.sec_owner.ids or srch_id == file.current_owner_id.id:
                     print('=====================first=======================', file.name)
-                    if file.folder_id != True:
+                    if file.folder_id == False:
+                        print('=====================second=======================', file.name)
+                        my_id.append(file.id)
+
+            return {
+                'name': 'Incoming Correspondence',
+                'view_type': 'form',
+                'view_mode': 'kanban,tree,graph,pivot,form',
+                'res_model': 'muk_dms.file',
+                'type': 'ir.actions.act_window',
+                'target': 'current',
+                'create': False,
+                'domain': [('id', 'in', my_id)],
+                }
+    def show_incoming_letter_with_file(self):
+        if self:
+            my_id = []
+            files = self.env['muk_dms.file'].search([])
+            srch_id = self.env.user.id
+            for file in files:
+                if srch_id in file.sec_owner.ids or srch_id == file.current_owner_id.id:
+                    print('=====================first=======================', file.name)
+                    if file.folder_id == True:
                         print('=====================second=======================', file.name)
                         my_id.append(file.id)
 
