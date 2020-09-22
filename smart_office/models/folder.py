@@ -2,7 +2,8 @@ from odoo import fields, models, api, _
 from datetime import datetime, date, timedelta
 import requests
 import json
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+
 
 class FolderMaster(models.Model):
     _name = 'folder.master'
@@ -79,6 +80,8 @@ class FolderMaster(models.Model):
         res.job_id = current_employee.job_id.id
         sur_usr = current_employee.branch_id.name
         d_id = current_employee.department_id.stpi_doc_id
+        if d_id == False:
+            raise ValidationError(_('current_employee.department_id.stpi_doc_id is not available of the file!'))
         fy = self.env['date.range'].search(
             [('type_id.name', '=', 'Fiscal Year'), ('date_start', '<=', datetime.now().date()),
              ('date_end', '>=', datetime.now().date())], limit=1)
