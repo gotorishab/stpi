@@ -7,7 +7,7 @@
                 <form string="File">
                     <header>
                         <button name="button_ready_for_dispatch" string="Request Approval" class="oe_highlight" type="object" states="draft"/>
-                        <button name="button_dispatch" string="Dispatch" class="oe_highlight" type="object" states="ready_for_dispatched"/>
+                        <button name="button_dispatch" string="Dispatch" class="oe_highlight" type="object" states="ready_for_dispatched" groups="smart_office.outward_dispatch_smart_office"/>
                         <button name="print_dispatch_document" string="Print Details" type="object" states="dispatched" class="oe_highlight"/>
                         <button name="button_reset_to_draft" string="Reopen" class="oe_highlight" type="object" states="ready_for_dispatched"/>
                         <field name="state" widget="statusbar" statusbar_visible="draft,ready_for_dispatched,dispatched"/>
@@ -77,7 +77,7 @@
                     <button name="%(edit_doc_dispatch_button_wizard_action_view)d" states="draft" string="Edit Doc" icon="fa-pencil" type="action" context = "{'default_doc_dispatch': id, 'default_select_template': select_template, 'default_template_html': template_html}"/>
 <!--                    <button name="%(edit_doc_dispatch_mode_button_wizard_action_view)d" states="draft,ready_for_dispatched" string="Edit Dispatch Mode" icon="fa-paper-plane-o" type="action" context = "{'default_doc_dispatch': id, 'default_dispatch_mode': dispatch_mode}"/>-->
                     <button name="button_ready_for_dispatch" string="Request Approval" type="object" states="draft"/>
-                    <button name="button_dispatch" string="Approve" type="object" states="ready_for_dispatched"/>
+                    <button name="button_dispatch" string="Approve" type="object" states="ready_for_dispatched" groups="smart_office.outward_dispatch_smart_office"/>
                 </tree>
             </field>
      </record>

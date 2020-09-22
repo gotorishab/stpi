@@ -16,7 +16,7 @@ class OutgoingfileWizard(models.TransientModel):
             files = self.env['folder.master'].search([])
             srch_id = self.env.user.id
             for file in files:
-                if srch_id in file.previous_owner.ids:
+                if srch_id in file.previous_owner:
                     my_id.append(file.id)
             return {
                 'name': 'Outgoing Files',
