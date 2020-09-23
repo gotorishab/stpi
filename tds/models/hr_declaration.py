@@ -749,7 +749,7 @@ class HrDeclaration(models.Model):
         res = super(HrDeclaration, self).create(values)
         search_id = self.env['hr.declaration'].search(
             [('employee_id', '=', res.employee_id.id),
-             ('state', 'not in', ['draft', 'rejected'])])
+             ('state', '!=', 'rejected')])
         for emp in search_id:
             if res.date_range.date_start <= emp.date_range.date_start or res.date_range.date_start >= emp.date_range.date_end:
                 if res.date_range.date_end <= emp.date_range.date_start or res.date_range.date_end >= emp.date_range.date_end:

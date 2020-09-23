@@ -98,10 +98,11 @@ class Reimbursement(models.Model):
                  ('date_related_month', '<', rec.date_range.date_end)])
             for i in serch_id:
                 count += i.present_days
-            rec.amount_lunch = 75
-            rec.working_days = count
-            rec.claimed_amount = float(count * 75)
-            rec.lunch_tds_amt = float(count * 50)
+            if rec.employee_id and rec.name == 'lunch':
+                rec.amount_lunch = 75
+                rec.working_days = count
+                rec.claimed_amount = float(count * 75)
+                rec.lunch_tds_amt = float(count * 50)
 
     @api.constrains('name','employee_id','date_range')
     @api.onchange('name','employee_id','date_range')
@@ -119,6 +120,7 @@ class Reimbursement(models.Model):
                 # rec.lunch_tds_amt = float(rec.working_days * 50)
             if rec.employee_id and rec.name == 'telephone':
                 rec.mobile_no = rec.employee_id.mobile_phone
+
 
 
     @api.constrains('working_days')
@@ -153,6 +155,15 @@ class Reimbursement(models.Model):
                     rec.net_amount = int(rec.claimed_amount)
             else:
                 rec.net_amount = int(rec.claimed_amount)
+            if rec.employee_id and rec.name == 'medical':
+                total_wage = self.env['hr.contract'].sudo().search(
+                    [('employee_id', '=', rec.employee_id.id), ('state', '=', 'open'),
+                     ], limit=1)
+                if total_wage:
+                    if int(rec.claimed_amount) > int(total_wage.updated_basic):
+                        rec.net_amount = total_wage.updated_basic
+                    else:
+                        rec.net_amount = int(rec.claimed_amount)
 
 
 
