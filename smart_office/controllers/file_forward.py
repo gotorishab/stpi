@@ -77,6 +77,8 @@ class FileForwardData(http.Controller):
         loaded_r = json.dumps(dict(response=str(letter_det)))
         return loaded_r
 
+
+
     @http.route(['/lettercall'], type='http', auth='public', csrf=False, methods=['POST'])
     def get_letter_call_details(self, letter_id=None, **kwargs):
         letter_det = []
@@ -116,3 +118,30 @@ class FileForwardData(http.Controller):
             foward_det.append(vals)
         data = {'status': 200, 'response': foward_det, 'message': 'Success'}
         return data
+
+
+
+    @http.route(['/create_repo'], type='http', auth='public', csrf=False, methods=['POST'])
+    def create_rep_n(self, letter_id=None, **kwargs):
+        letter_det = []
+        if letter_id:
+            letter_details_data = request.env['file.tracker.report'].sudo().create({
+                        'number': str(letter_id),
+                    })
+            if letter_details_data:
+                for rec in letter_details_data:
+                    vals = {
+                        'id': rec.id,
+                        'number': rec.number,
+                    }
+                    letter_det.append(vals)
+                loaded_r = json.dumps(dict(response=str(letter_det)))
+                return loaded_r
+            else:
+                message = "File not found"
+                loaded_r = json.dumps(dict(response=str(message)))
+                return loaded_r
+        else:
+            message = "Please pass the ID"
+            loaded_r = json.dumps(dict(response=str(message)))
+            return loaded_r
