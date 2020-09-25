@@ -160,8 +160,8 @@ class Reimbursement(models.Model):
                     [('employee_id', '=', rec.employee_id.id), ('state', '=', 'open'),
                      ], limit=1)
                 if total_wage:
-                    if int(rec.claimed_amount) > int(total_wage.updated_basic):
-                        rec.net_amount = total_wage.updated_basic
+                    if int(rec.claimed_amount) > int(total_wage.updated_basic)/4:
+                        rec.net_amount = float(total_wage.updated_basic)/4
                     else:
                         rec.net_amount = int(rec.claimed_amount)
 
