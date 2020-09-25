@@ -93,13 +93,12 @@ class ResourceCalendar(models.Model):
                         }))
                     fdate += relativedelta(days=1)
                 rec.global_leave_ids = a = global_leave_ids
-                # count = 0
-                # emp_id = self.env['resource.calendar.leaves'].search(
-                #     [('date', '=', a.date), ('name', '=', a.name), ('calendar_id', '=', rec.calendar_id.id)])
-                # for e in emp_id:
-                #     count += 1
-                # if count > 1:
-                #     raise ValidationError("Holiday must be unique")
+
+            for line in rec.global_leave_ids:
+                for inter in rec.global_leave_ids:
+                    if (line.date == inter.date) and (line.id != inter.id):
+                        inter.sudo().unlink()
+                        
 
     @api.multi
     def perform_ah_action(self):

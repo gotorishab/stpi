@@ -82,7 +82,6 @@ class WizardLateComing(models.TransientModel):
                         'month': month,
                     })
                     my_id.append(cr.id)
-
             return {
                 'name': 'Leave Holiday Report',
                 'view_type': 'form',
