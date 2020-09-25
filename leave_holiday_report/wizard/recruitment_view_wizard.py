@@ -40,13 +40,12 @@ class WizardLateComing(models.TransientModel):
     @api.multi
     def confirm_report(self):
         for rec in self:
+            my_id = []
             dr = self.env['resource.calendar.leaves.report'].search([('branch_id', 'in', rec.branch_ids.ids)])
             for lines in dr:
                 lines.unlink()
             dr_b = self.env['resource.calendar.leaves'].search([('calendar_id.branch_id', 'in', rec.branch_ids.ids)])
             for emp in dr_b:
-                # print('========================================================',emp.date)
-            # for emp in rec.employee_id.resource_calendar_id.global_leave_ids:
                 if rec.from_date and emp.date and rec.to_date and rec.from_date <= emp.date <= rec.to_date:
                     month = ''
                     if str(emp.date.month) == '1':
@@ -82,6 +81,7 @@ class WizardLateComing(models.TransientModel):
                         'holiday_id': emp.calendar_id.id,
                         'month': month,
                     })
+                    my_id.append(cr.id)
 
             return {
                 'name': 'Leave Holiday Report',
@@ -90,10 +90,13 @@ class WizardLateComing(models.TransientModel):
                 'res_model': 'resource.calendar.leaves.report',
                 'type': 'ir.actions.act_window',
                 'target': 'current',
-                'domain': [('branch_id', 'in', rec.branch_ids.ids)],
-                'context': {
-                                'name': 'Sunday',
-                            }
+                'domain': [
+                    # ('branch_id', 'in', rec.branch_ids.ids),
+                    ('id', 'in', my_id),
+                ],
+                # 'context': {
+                #                 'name': 'Sunday',
+                #             }
                 }
 
 

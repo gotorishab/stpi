@@ -78,11 +78,11 @@ class WizardLateComing(models.TransientModel):
                 'ledger_for_year': rec.ledger_for_year.id,
                 'branch_id': rec.employee_id.branch_id.id,
                 'month': 'Opening',
-                'epmloyee_contribution': ' ',
-                'voluntary_contribution': ' ',
-                'employer_contribution': ' ',
-                'interest_employee_voluntary': ' ',
-                'interest_employer': ' ',
+                'epmloyee_contribution': '0',
+                'voluntary_contribution': '0',
+                'employer_contribution': '0',
+                'interest_employee_voluntary': '0',
+                'interest_employer': '0',
                 'total': str(round(total)),
             })
 
