@@ -103,7 +103,7 @@ class ResourceCalendar(models.Model):
                         }))
                     fdate += relativedelta(days=1)
                 rec.global_leave_ids = a = global_leave_ids
-            rec.sudo().check_unique_aholidays()
+            # rec.sudo().check_unique_aholidays()
 
             # for line in rec.global_leave_ids:
             #     for inter in rec.global_leave_ids:
