@@ -521,6 +521,7 @@ class EmployeeAddress(models.Model):
             if rec.count >2:
                 raise ValidationError("You cannot change Homettown address more than 2 times")
 
+
     @api.constrains('address_type','employee_id')
     def check_unique_add(self):
         for rec in self:
