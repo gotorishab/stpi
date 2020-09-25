@@ -91,7 +91,7 @@ class WizardLateComing(models.TransientModel):
                 'type': 'ir.actions.act_window',
                 'target': 'current',
                 'domain': [
-                    # ('branch_id', 'in', rec.branch_ids.ids),
+                    ('branch_id', 'in', rec.branch_ids.ids),
                     ('id', 'in', my_id),
                 ],
                 # 'context': {
