@@ -13,6 +13,9 @@ class LateComingReport(models.Model):
     # employee_id = fields.Many2one('hr.employee',string="Employee")
     branch_id = fields.Many2one('res.branch',string="Branch", store=True)
     holiday_id = fields.Many2one('resource.calendar',string="Holiday Calendar")
+    holiday_type = fields.Selection([('rh', 'RH'),
+                                     ('gh', 'GH')], string='Holiday Type',
+                                    )
     name = fields.Char(string="Holiday")
     date = fields.Date(string="Date")
     month = fields.Char(string='Month')

@@ -12,6 +12,7 @@
                 <field name="name"/>
                 <field name="date"/>
                 <field name="month"/>
+                <field name="holiday_type"/>
             </tree>
         </field>
     </record>

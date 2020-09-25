@@ -80,6 +80,7 @@ class WizardLateComing(models.TransientModel):
                         'branch_id': emp.calendar_id.branch_id.id,
                         'holiday_id': emp.calendar_id.id,
                         'month': month,
+                        'holiday_type': emp.holiday_type,
                     })
                     my_id.append(cr.id)
             return {
