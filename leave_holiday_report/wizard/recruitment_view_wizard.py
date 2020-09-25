@@ -83,18 +83,18 @@ class WizardLateComing(models.TransientModel):
                         'month': month,
                     })
 
-        return {
-            'name': 'Leave Holiday Report',
-            'view_type': 'form',
-            'view_mode': 'tree',
-            'res_model': 'resource.calendar.leaves.report',
-            'type': 'ir.actions.act_window',
-            'target': 'current',
-            'domain': [('branch_id', '=', self.branch_ids.ids)],
-            'context': {
-                            'name': 'Sunday',
-                        }
-            }
+            return {
+                'name': 'Leave Holiday Report',
+                'view_type': 'form',
+                'view_mode': 'tree',
+                'res_model': 'resource.calendar.leaves.report',
+                'type': 'ir.actions.act_window',
+                'target': 'current',
+                'domain': [('branch_id', 'in', rec.branch_ids.ids)],
+                'context': {
+                                'name': 'Sunday',
+                            }
+                }
 
 
     #

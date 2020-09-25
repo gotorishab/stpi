@@ -424,7 +424,7 @@ class HrLeave(models.Model):
             print('===========================half_pay_allowed====================================', self.half_pay_allowed)
             if self.holiday_status_id.maximum_allow_leave != 0:
                 if self.holiday_status_id.maximum_allow_leave < self.number_of_days_display:
-                    raise ValidationError(_('You are not allow more then leave present'))
+                    raise ValidationError(_('Crossing allowed limit'))
 
         if self.holiday_status_id:
             if self.holiday_status_id.cerificate == True:

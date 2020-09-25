@@ -165,6 +165,24 @@ class Reimbursement(models.Model):
                     else:
                         rec.net_amount = int(rec.claimed_amount)
 
+            elif rec.employee_id and rec.name == 'tuition_fee':
+                child_id = self.env['employee.relative'].sudo().search(
+                    [('employee_id', '=', rec.employee_id.id)])
+                count = 0
+                for cc in child_id:
+                    if cc.relate_type_name == 'Son' or cc.relate_type_name == 'Daughter':
+                        if cc.tuition:
+                            count += 1
+                if count > 2:
+                    mult = 2
+                else:
+                    mult = count
+                if int(rec.claimed_amount) > 2250 * int(mult):
+                    rec.net_amount = 2250 * int(mult)
+                else:
+                    rec.net_amount = int(rec.claimed_amount)
+
+
 
 
     @api.multi
