@@ -52,6 +52,16 @@ class ResourceCalendar(models.Model):
 
 
     @api.multi
+    def check_unique_aholidays(self):
+        for rec in self:
+            for line in rec.global_leave_ids:
+                for inter in rec.global_leave_ids:
+                    if (line.date == inter.date) and (line.id != inter.id) and (line.name == inter.name) and (line.calendar_id == inter.calendar_id):
+                        inter.sudo().unlink()
+
+
+
+    @api.multi
     def assign_weekends(self):
         for rec in self:
             if not (rec.from_date and rec.to_date and rec.week_list):
@@ -93,12 +103,13 @@ class ResourceCalendar(models.Model):
                         }))
                     fdate += relativedelta(days=1)
                 rec.global_leave_ids = a = global_leave_ids
+            rec.sudo().check_unique_aholidays()
 
             # for line in rec.global_leave_ids:
             #     for inter in rec.global_leave_ids:
             #         if (line.date == inter.date) and (line.id != inter.id):
             #             inter.sudo().unlink()
-            #             
+            #
 
     @api.multi
     def perform_ah_action(self):
