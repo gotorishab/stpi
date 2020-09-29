@@ -25,6 +25,54 @@
                 </tree>
             </field>
         </record>
+        
+        
+    <!--==========Search view of Employee Indent Advance Status==========-->
+     <record id="view_issue_request_status_filter_report" model="ir.ui.view">
+        <field name="name">issue.request.search</field>
+        <field name="model">issue.request</field>
+        <field name="arch" type="xml">
+            <search string="Search for Indent Request">
+                <field name="indent_sequence"/>
+                <group expand="0" string="Group By">
+                   <filter name="group_category" string="State" context="{'group_by':'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+        
+        
+    <!--============Action view of Employee Indent Advance To Approve============-->
+    <record id="employeeissue_request_action_to_approve" model="ir.actions.act_window">
+        <field name="name">Indent Request</field>
+        <field name="res_model">issue.request</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree</field>
+        <field name="search_view_id" ref="view_issue_request_status_filter_report"/>
+        <field name="domain">[('state','=','to_approve')]</field>
+    </record>
+
+
+    <!--============Action view of Employee Indent Advance Approved============-->
+    <record id="employeeissue_request_action_approved" model="ir.actions.act_window">
+        <field name="name">Indent Request</field>
+        <field name="res_model">issue.request</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree</field>
+        <field name="search_view_id" ref="view_issue_request_status_filter_report"/>
+        <field name="domain">[('state','=','approved')]</field>
+    </record>
+
+
+    <!--============Action view of Employee Indent Advance Rejected============-->
+    <record id="employeeissue_request_action_rejected" model="ir.actions.act_window">
+        <field name="name">Indent Request</field>
+        <field name="res_model">issue.request</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree</field>
+        <field name="search_view_id" ref="view_issue_request_status_filter_report"/>
+        <field name="domain">[('state','=','rejected')]</field>
+    </record>
 
         <!--vehicle request by all-->
         <record id="issue_request_action_id" model="ir.actions.act_window">
@@ -38,9 +86,27 @@
 
     <menuitem name="Issue Request"
               id="menu_issue_request_id" parent="menu_Indent"
-              action="issue_request_action_id"
               groups="indent_stpi.group_Indent_store_manager"
                  />
+
+    <menuitem name="All"
+              id="menu_issue_request_id" parent="menu_issue_request_id"
+              action="issue_request_action_id"
+                 />
+
+        <menuitem name="To Approve"
+                id="menu_issue_request_apply_to_approve" parent="menu_issue_request_id"
+                 action="employeeissue_request_action_to_approve"
+                 />
+    <menuitem name="Approved"
+                id="menu_issue_request_apply_approved" parent="menu_issue_request_id"
+                 action="employeeissue_request_action_approved"
+                 />
+    <menuitem name="Rejected"
+                id="menu_issue_request_apply_rejected" parent="menu_issue_request_id"
+                 action="employeeissue_request_action_rejected"
+                 />
+
 
 
     </data>
