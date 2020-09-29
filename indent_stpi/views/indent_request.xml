@@ -193,7 +193,7 @@
     <!--=Menu Item of Indent menu snd their submenu=-->
     <menuitem name="Indent"
               id="menu_Indent"
-              web_icon="employee_Indent,static/description/icon.png"
+              web_icon="indent_stpi,static/description/icon.png"
               sequence="21"/>
     
     <menuitem name="Indent Request"
