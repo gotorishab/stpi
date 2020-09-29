@@ -22,7 +22,7 @@
         'views/issue_request.xml',
         'views/stock_log_book.xml',
         'wizard/multi_approve.xml',
-        'wizard/stock_item.xml',
+        'views/stock_item.xml',
         # 'report/ltc_report.xml',
 
 
