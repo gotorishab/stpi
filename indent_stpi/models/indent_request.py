@@ -76,6 +76,13 @@ class EmployeeIndentAdvance(models.Model):
         seq = self.env['ir.sequence'].next_by_code('indent.request')
         sequence = 'IR' + seq
         res.indent_sequence = sequence
+        search_id = self.env['indent.request'].search(
+            [('employee_id', '=', res.employee_id.id),
+             ('state', 'not in', ['approved','rejected']), ('id', '!=', res.id)])
+        for emp in search_id:
+            if emp:
+                raise ValidationError(
+                    "One of the Indent Request is already in process.")
         return res
 
     @api.multi
