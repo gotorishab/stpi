@@ -49,7 +49,15 @@
     <record id="ir_rule_Indent_request_global_security" model="ir.rule">
         <field name="model_id" ref="model_issue_request"/>
         <field name="domain_force">['|', ('employee_id.branch_id','=',False), ('employee_id.branch_id.id','in',[g.id for g in user.branch_ids])] </field>
-        <field name="name">Issue Request</field>
+        <field name="name">Indent Issue Request</field>
+        <field name="global" eval="True"/>
+    </record>
+
+
+    <record id="ir_rule_Indent_stock_global_security" model="ir.rule">
+        <field name="model_id" ref="model_indent_stock"/>
+        <field name="domain_force">['|', ('branch_id','=',False), ('branch_id.id','in',[g.id for g in user.branch_ids])] </field>
+        <field name="name">Indent Stock</field>
         <field name="global" eval="True"/>
     </record>
 

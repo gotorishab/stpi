@@ -12,7 +12,7 @@ class EmployeeIndentAdvance(models.Model):
         return self.env['hr.employee'].sudo().search([('user_id', '=', self.env.uid)], limit=1)
 
     indent_sequence = fields.Char('Indent number',track_visibility='always')
-    employee_id = fields.Many2one('hr.employee', string='Requested By', default=_default_employee,track_visibility='always')
+    employee_id = fields.Many2one('hr.employee', string='Requested By', default=_default_employee ,track_visibility='always')
     branch_id = fields.Many2one('res.branch', string='Branch', store=True)
     job_id = fields.Many2one('hr.job', string='Functional Designation', store=True)
     department_id = fields.Many2one('hr.department', string='Department', store=True)

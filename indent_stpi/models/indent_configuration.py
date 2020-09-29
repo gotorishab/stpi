@@ -7,8 +7,14 @@ class IndentStock(models.Model):
     _name = 'indent.stock'
     _description = "Indent Stock"
 
+
+    def _default_branch_id(self):
+        emp = self.env['hr.employee'].sudo().search([('user_id', '=', self.env.uid)], limit=1)
+        return emp.branch_id.id
+
+
     name = fields.Char('Name')
-    branch_id = fields.Many2one('res.branch', string='Branch', store=True)
+    branch_id = fields.Many2one('res.branch', string='Branch', default=_default_branch_id, store=True)
     child_indent_stocks = fields.One2many('child.indent.stock', 'child_indent_stock', string='Availing Indent for year Ids')
 
 
