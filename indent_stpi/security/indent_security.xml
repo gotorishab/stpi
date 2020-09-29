@@ -67,6 +67,33 @@
         <field name="global" eval="True"/>
     </record>
 
+
+
+    <record id="ir_rule_stock_log_book_global_security" model="ir.rule">
+        <field name="model_id" ref="model_stock_log_book"/>
+        <field name="domain_force">['|', ('employee_id.branch_id','=',False), ('employee_id.branch_id.id','in',[g.id for g in user.branch_ids])] </field>
+        <field name="name">Indent Request</field>
+        <field name="global" eval="True"/>
+    </record>
+
+    <record id="ir_rule_stock_log_book_self_security" model="ir.rule">
+        <field name="model_id" ref="model_stock_log_book"/>
+        <field name="domain_force">['|', ('employee_id.user_id', '=', user.id), ('employee_id.parent_id.user_id', '=', user.id)]</field>
+        <field name="name">Indent Request Self or Subordinates only</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+
+    <record id="ir_rule_stock_log_book_allowed_self_security" model="ir.rule">
+        <field name="model_id" ref="model_stock_log_book"/>
+        <field name="domain_force">['|',  ('employee_id.branch_id','=','False'), ('employee_id.branch_id.id','in',[g.id for g in user.branch_ids])]</field>
+        <field name="name">Indent Branch Rule</field>
+        <field name="groups" eval="[(4, ref('indent_stpi.group_Indent_request_manager'))]"/>
+    </record>
+
+
+
+
 <!--    <record id="ir_rule_Indent_ledger_self_security" model="ir.rule">-->
 <!--        <field name="model_id" ref="model_issue_request"/>-->
 <!--        <field name="domain_force">['|', ('employee_id.user_id', '=', user.id), ('employee_id.parent_id.user_id', '=', user.id)]</field>-->
