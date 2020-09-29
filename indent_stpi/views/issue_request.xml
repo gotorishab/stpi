@@ -83,6 +83,7 @@
             <field name="res_model">issue.request</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree</field>
+            <field name="domain">[('indent_type','=','grn')]</field>
         </record>
 
 
