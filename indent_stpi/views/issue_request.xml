@@ -83,7 +83,7 @@
             <field name="res_model">issue.request</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree</field>
-            <field name="domain">[('indent_type','=','grn')]</field>
+            <field name="domain">[('indent_type','=','issue')]</field>
         </record>
 
 
@@ -157,6 +157,7 @@
         <field name="search_view_id" ref="view_issue_grn_request_status_filter_report"/>
         <field name="domain">[('state','=','rejected'),('indent_type','=','grn')]</field>
     </record>
+
 
     <menuitem name="GRN Request"
               id="menu_grn_request_id" parent="menu_Indent"

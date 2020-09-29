@@ -156,7 +156,7 @@
 
 <!--===============Action view of Employee Indent Advance Status=================-->
     <record id="menu_Indent_reporting_request_status_action" model="ir.actions.act_window">
-        <field name="name">Indent Request</field>
+        <field name="name">Indent/GRN  - Status</field>
         <field name="res_model">indent.request</field>
         <!--<field name="view_type">form</field>-->
         <field name="view_mode">tree,form,search</field>
@@ -166,7 +166,7 @@
 
 <!--===============Action view of Employee Indent Advance Department=================-->
     <record id="menu_Indent_reporting_request_department_action" model="ir.actions.act_window">
-        <field name="name">Indent Request</field>
+        <field name="name">Indent/GRN Request</field>
         <field name="res_model">indent.request</field>
         <!--<field name="view_type">form</field>-->
         <field name="view_mode">tree,form,search</field>
@@ -176,7 +176,7 @@
 
 <!--===============Action view of Employee Indent Advance Job=================-->
     <record id="menu_Indent_reporting_request_job_action" model="ir.actions.act_window">
-        <field name="name">Indent Request</field>
+        <field name="name">Indent/GRN - Functional Designation</field>
         <field name="res_model">indent.request</field>
         <!--<field name="view_type">form</field>-->
         <field name="view_mode">tree,form,search</field>
@@ -186,11 +186,20 @@
 
 <!--===============Action view of Employee Indent Advance Branch=================-->
     <record id="menu_Indent_reporting_request_branch_action" model="ir.actions.act_window">
-        <field name="name">Indent Request</field>
+        <field name="name">Indent/GRN - Branch</field>
         <field name="res_model">indent.request</field>
         <!--<field name="view_type">form</field>-->
         <field name="view_mode">tree,form,search</field>
         <field name="context">{'group_by': 'branch_id'}</field>
+    </record>
+
+<!--===============Action view of Employee Indent Advance Branch=================-->
+    <record id="menu_Indent_reporting_request_type_action" model="ir.actions.act_window">
+        <field name="name">Indent/GRN - Type</field>
+        <field name="res_model">indent.request</field>
+        <!--<field name="view_type">form</field>-->
+        <field name="view_mode">tree,form,search</field>
+        <field name="context">{'group_by': 'indent_type'}</field>
     </record>
 
 
@@ -248,9 +257,13 @@
                 id="menu_Indent_reporting_request_job" parent="menu_Indent_reporting_request"
                  action="menu_Indent_reporting_request_job_action"
                  />
+    <menuitem name="Indent by Type"
+                id="menu_Indent_reporting_request_job" parent="menu_Indent_reporting_request"
+                 action="menu_Indent_reporting_request_job_action"
+                 />
     <menuitem name="Indent by Branch"
-                id="menu_Indent_reporting_request_branch" parent="menu_Indent_reporting_request"
-                 action="menu_Indent_reporting_request_branch_action"
+                id="menu_Indent_reporting_request_type" parent="menu_Indent_reporting_request"
+                 action="menu_Indent_reporting_request_type_action"
                  />
 
 
