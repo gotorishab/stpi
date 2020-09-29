@@ -21,6 +21,10 @@ class IndentLedger(models.Model):
     requested_date = fields.Date('Requested Date')
     approved_date = fields.Date('Approved Date', default=fields.Date.today())
 
+
+    indent_type = fields.Selection([('issue', 'Issue'), ('grn', 'GRN')
+                               ],track_visibility='always', string='Type')
+
     indent_state = fields.Selection(
         [('draft', 'Draft'), ('to_approve', 'To Approve'), ('approved', 'Approved'), ('rejected', 'Rejected')
          ], string='Indent Status')

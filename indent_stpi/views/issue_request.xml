@@ -11,6 +11,7 @@
                     <field name="Indent_id" readonly="1"/>
                     <field name="employee_id" readonly="1"/>
                     <field name="branch_id" readonly="1"/>
+                    <field name="indent_type" readonly="1"/>
                     <field name="item_category_id" readonly="1"/>
                     <field name="item_id" readonly="1"/>
                     <field name="specification" readonly="1"/>

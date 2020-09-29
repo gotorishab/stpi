@@ -20,7 +20,7 @@ class EmployeeIndentAdvance(models.Model):
     item_ids = fields.One2many('indent.request.items','request_id', string='Relatives')
    
     indent_type = fields.Selection([('issue', 'Issue'), ('grn', 'GRN')
-                               ], required=True,track_visibility='always', string='Type')
+                               ],track_visibility='always', string='Type')
 
     state = fields.Selection([('draft', 'Draft'), ('to_approve', 'To Approve'), ('approved', 'Approved'), ('rejected', 'Rejected')
                                ], required=True, default='draft',track_visibility='always', string='Status')
@@ -57,6 +57,7 @@ class EmployeeIndentAdvance(models.Model):
                         'requested_quantity': item.requested_quantity,
                         'requested_date': item.requested_date,
                         'indent_state': res.state,
+                        'indent_type': res.indent_type,
                         'state': 'to_approve',
                     }
                 )
