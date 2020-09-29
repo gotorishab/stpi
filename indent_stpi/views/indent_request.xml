@@ -68,6 +68,7 @@
                 <field name="branch_id" readonly="1"/>
                 <field name="job_id" readonly="1"/>
                 <field name="department_id" readonly="1"/>
+                <field name="indent_type" readonly="1"/>
                 <field name="state"/>
             </tree>
         </field>
