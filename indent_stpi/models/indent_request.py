@@ -16,7 +16,7 @@ class EmployeeIndentAdvance(models.Model):
     branch_id = fields.Many2one('res.branch', string='Branch', store=True)
     job_id = fields.Many2one('hr.job', string='Functional Designation', store=True)
     department_id = fields.Many2one('hr.department', string='Department', store=True)
-   
+    requested_date = fields.Date('Requested Date', default=fields.Date.today())
     item_ids = fields.One2many('indent.request.items','request_id', string='Relatives')
    
     indent_type = fields.Selection([('issue', 'Issue'), ('grn', 'GRN')
@@ -53,6 +53,7 @@ class EmployeeIndentAdvance(models.Model):
                         'Indent_item_id': item.id,
                         'item_category_id': item.item_category_id.id,
                         'item_id': item.item_id.id,
+                        'serial_bool': item.item_id.serial_bool,
                         'specification': item.specification,
                         'requested_quantity': item.requested_quantity,
                         'requested_date': item.requested_date,
@@ -117,9 +118,9 @@ class FamilyDetails(models.Model):
     item_category_id = fields.Many2one('indent.stock', string='Item Category')
     item_id = fields.Many2one('child.indent.stock', string='Item')
     specification = fields.Text('Specifications')
-    requested_quantity = fields.Integer('Requested Quantity')
-    approved_quantity = fields.Integer('Approved Quantity')
-    requested_date = fields.Date('Requested Date', default=fields.Date.today())
+    requested_quantity = fields.Integer('Qty.')
+    approved_quantity = fields.Integer('Approved Qty.')
+    requested_date = fields.Date('Required Date', default=fields.Date.today())
     approved_date = fields.Date('Approved Date')
 
 

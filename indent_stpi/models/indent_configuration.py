@@ -29,7 +29,7 @@ class ChildIndentStock(models.Model):
     # opening_quantity = fields.Integer('Opening Quantity')
     # remaining_quantity = fields.Integer('Remaining Quantity')
     child_indent_stock = fields.Many2one('indent.stock', string='Item Master')
-    serial_number = fields.Boolean(string='Serial Number')
+    serial_bool = fields.Boolean(string='Serial Number')
     issue = fields.Integer('Issue')
     received = fields.Integer('Received')
     balance = fields.Integer('Balance')

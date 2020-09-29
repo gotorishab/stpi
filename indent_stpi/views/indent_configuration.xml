@@ -37,7 +37,7 @@
                                     <field name="child_indent_stock" invisible="1"/>
                                     <field name="name" required="1"/>
                                     <field name="specification" required="1"/>
-                                    <field name="serial_number"/>
+                                    <field name="serial_bool"/>
                                     <field name="issue" readonly="1"/>
                                     <field name="received" readonly="1"/>
                                     <field name="balance" readonly="1"/>

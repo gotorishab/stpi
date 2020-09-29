@@ -16,6 +16,8 @@ class IndentLedger(models.Model):
     item_category_id = fields.Many2one('indent.stock', string='Item Category')
     item_id = fields.Many2one('child.indent.stock', string='Item')
     specification = fields.Text('Specifications')
+    serial_bool = fields.Boolean(string='Serial Number')
+    serial_number = fields.Char(string='Serial Number')
     requested_quantity = fields.Integer('Requested Quantity')
     approved_quantity = fields.Integer('Approved Quantity')
     requested_date = fields.Date('Requested Date')
