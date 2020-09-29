@@ -14,7 +14,7 @@
     'depends': ['base','hr'],
     'data': [
         'security/ir.model.access.csv',
-        # 'security/ltc_security.xml',
+        'security/indent_security.xml',
         # 'wizard/select_child_block.xml',
         # 'data/ltc_mode_demo_data.xml',
         'views/indent_request.xml',
