@@ -54,7 +54,7 @@ class EmployeeIndentAdvance(models.Model):
                         'requested_quantity': item.requested_quantity,
                         'requested_date': item.requested_date,
                         'indent_state': res.state,
-                        'to_approve': 'to_approve',
+                        'state': 'to_approve',
                     }
                 )
 
