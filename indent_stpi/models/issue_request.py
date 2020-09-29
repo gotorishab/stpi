@@ -9,7 +9,7 @@ class IndentLedger(models.Model):
     _name = 'issue.request'
     _description = "Issue Request"
 
-    Indent_id = fields.Many2one('indent.request', string='Indent')
+    Indent_id = fields.Many2one('indent.request', string='Indent/GRN')
     Indent_item_id = fields.Many2one('indent.request.items', string='Indent Item')
     employee_id = fields.Many2one('hr.employee', string='Requested By')
     branch_id = fields.Many2one('res.branch', string='Branch', store=True)

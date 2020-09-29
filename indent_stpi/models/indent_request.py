@@ -3,6 +3,10 @@ from odoo.exceptions import ValidationError, UserError
 from dateutil.relativedelta import relativedelta
 from datetime import datetime, date
 
+class GrnNumber(models.Model):
+    _name = 'grn.seqid'
+    _description = "GRN Seqid"
+
 class EmployeeIndentAdvance(models.Model):
     _name = 'indent.request'
     _inherit = ['mail.thread', 'mail.activity.mixin']
@@ -11,13 +15,13 @@ class EmployeeIndentAdvance(models.Model):
     def _default_employee(self):
         return self.env['hr.employee'].sudo().search([('user_id', '=', self.env.uid)], limit=1)
 
-    indent_sequence = fields.Char('Indent number',track_visibility='always')
-    employee_id = fields.Many2one('hr.employee', string='Requested By', default=_default_employee ,track_visibility='always')
+    indent_sequence = fields.Char('Indent/GRN number',track_visibility='always')
+    employee_id = fields.Many2one('hr.employee', string='Requested/Received By', default=_default_employee ,track_visibility='always')
     branch_id = fields.Many2one('res.branch', string='Branch', store=True)
     job_id = fields.Many2one('hr.job', string='Functional Designation', store=True)
     department_id = fields.Many2one('hr.department', string='Department', store=True)
-    requested_date = fields.Date('Requested Date', default=fields.Date.today())
-    item_ids = fields.One2many('indent.request.items','request_id', string='Relatives')
+    requested_date = fields.Date('Requested/Received Date', default=fields.Date.today())
+    item_ids = fields.One2many('indent.request.items','request_id', string='Items')
     indent_type = fields.Selection([('issue', 'Issue'), ('grn', 'GRN')
                                ],track_visibility='always', string='Type')
 
@@ -78,9 +82,14 @@ class EmployeeIndentAdvance(models.Model):
     @api.model
     def create(self, vals):
         res =super(EmployeeIndentAdvance, self).create(vals)
-        seq = self.env['ir.sequence'].next_by_code('indent.request')
-        sequence = 'IR' + seq
+        if res.indent_type == 'issue':
+            seq = self.env['ir.sequence'].next_by_code('indent.request')
+            sequence = 'IR' + str(seq)
+        else:
+            seq = self.env['ir.sequence'].next_by_code('grn.seqid')
+            sequence = 'GRN' + str(seq)
         res.indent_sequence = sequence
+
         search_id = self.env['indent.request'].search(
             [('employee_id', '=', res.employee_id.id),
              ('state', 'not in', ['approved','rejected']), ('id', '!=', res.id)])
@@ -109,20 +118,22 @@ class FamilyDetails(models.Model):
     _description = "Indent Item Details"
 
 
-    @api.onchange('item_category_id')
-    def change_item_category_id(self):
-        return {'domain': {'item_id': [('child_indent_stock', '=', self.item_category_id.id)
-            ]}}
+    # @api.onchange('item_category_id')
+    # def change_item_category_id(self):
+    #     return {'domain': {'item_id': [('child_indent_stock', '=', self.item_category_id.id)
+    #         ]}}
 
-    request_id = fields.Many2one('indent.request', string='Relative ID')
+    request_id = fields.Many2one('indent.request', string='Item ID')
     item_category_id = fields.Many2one('indent.stock', string='Item Category')
     item_id = fields.Many2one('child.indent.stock', string='Item')
     specification = fields.Text('Specifications')
     requested_quantity = fields.Integer('Qty.')
     approved_quantity = fields.Integer('Approved Qty.')
     issue_approved = fields.Boolean('Issue approved')
-    requested_date = fields.Date('Required Date', default=fields.Date.today())
+    requested_date = fields.Date('Required/Received Date', default=fields.Date.today())
     approved_date = fields.Date('Approved Date')
+    indent_type = fields.Selection([('issue', 'Issue'), ('grn', 'GRN')
+                               ],track_visibility='always', string='Type', related="request_id.indent_type")
 
 
     @api.onchange('item_id')

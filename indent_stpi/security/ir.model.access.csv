@@ -5,3 +5,4 @@ access_indent_stock,indent.stock,model_indent_stock,base.group_user,1,1,1,1
 access_issue_request,issue.request,model_issue_request,base.group_user,1,1,1,1
 access_child_indent_stock,child.indent.stock,model_child_indent_stock,base.group_user,1,1,1,1
 access_stock_log_book,stock.log.book,model_stock_log_book,base.group_user,1,1,1,1
+access_grn_seqid,grn.seqid,model_grn_seqid,base.group_user,1,1,1,1
