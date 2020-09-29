@@ -52,7 +52,8 @@ class EmployeeIndentAdvance(models.Model):
                         'specification': item.specification,
                         'requested_quantity': item.requested_quantity,
                         'requested_date': item.requested_date,
-                        'state': res.state,
+                        'indent_state': res.state,
+                        'to_approve': 'to_approve',
                     }
                 )
 
@@ -110,3 +111,8 @@ class FamilyDetails(models.Model):
     approved_date = fields.Integer('Approved Date')
 
 
+    @api.onchange('item_id')
+    @api.constrains('item_id')
+    def change_item_category_id(self):
+        for rec in self:
+            rec.specification = rec.item_id.specification

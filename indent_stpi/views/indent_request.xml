@@ -18,6 +18,8 @@
                             <field name="indent_sequence" readonly="True"/>
                             <field name="employee_id" readonly="1" required="1"/>
                             <field name="branch_id" readonly="1"/>
+                        </group>
+                        <group>
                             <field name="job_id" readonly="1"/>
                             <field name="department_id" readonly="1"/>
                         </group>
