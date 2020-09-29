@@ -2,9 +2,9 @@
     <data>
 
 
-      <record id="reimbursement_ar_action_confirm_view" model="ir.ui.view">
-            <field name="name">reimbursement.approve.reject.form</field>
-            <field name="model">reimbursement.approve.reject</field>
+      <record id="issuestock_action_confirm_view" model="ir.ui.view">
+            <field name="name">issuestock.approve.form</field>
+            <field name="model">issuestock.approve</field>
             <field name="arch" type="xml">
                 <form string="Approve/Reject?">
                     <p class="oe_grey">
@@ -14,8 +14,8 @@
                         </ul>
                     </p>
                     <footer>
-                        <button string="Approve" name="reimbursement_ar_action_button" type="object" default_focus="1" class="btn-primary"/>
-                        <button string="Reject" name="reimbursement_ar_action_reject_button" type="object" default_focus="1" class="btn-primary"/>
+                        <button string="Approve" name="issuestock_approve_action_button" type="object" default_focus="1" class="btn-primary"/>
+                        <button string="Reject" name="issuestock_reject_action_button" type="object" default_focus="1" class="btn-primary"/>
                         <button string="Cancel" class="btn-secondary" special="cancel"/>
                     </footer>
                 </form>
@@ -24,10 +24,10 @@
 
 
 
-    <act_window id="action_reimbursement_ar_action_confirm"
+    <act_window id="action_issuestock_action_confirm"
             multi="True"
             key2="client_action_multi" name="Approve/Reject"
-                res_model="reimbursement.approve.reject" src_model="reimbursement"
+                res_model="issuestock.approve" src_model="issue.request"
             view_mode="form" target="new" view_type="form"/>
     </data>
 </odoo>
