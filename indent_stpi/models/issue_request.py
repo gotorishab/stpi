@@ -76,6 +76,7 @@ class IndentLedger(models.Model):
                 search_id = self.env['indent.request.items'].sudo().search([('id', '=', res.Indent_item_id.id)],limit=1)
                 for sr in search_id:
                     sr.write({
+                        'issue_approved': True,
                         'approved_quantity': res.approved_quantity,
                         'approved_date': res.approved_date
                     })

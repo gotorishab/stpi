@@ -38,8 +38,9 @@
                                     <field name="specification" readonly="1"/>
                                     <field name="requested_quantity" required="1"/>
                                     <field name="requested_date" required="1"/>
-                                    <field name="approved_quantity" readonly="1"/>
-                                    <field name="approved_date" readonly="1"/>
+                                    <field name="issue_approved" invisible="1"/>
+                                    <field name="approved_quantity" attrs="{'invisible': [('issue_approved', '=', False)],'readonly': [('issue_approved', '!=', False)]}"/>
+                                    <field name="approved_date" attrs="{'invisible': [('issue_approved', '=', False)],'readonly': [('issue_approved', '!=', False)]}"/>
                                 </tree>
                             </field>
                         </page>

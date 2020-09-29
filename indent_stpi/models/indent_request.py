@@ -18,7 +18,6 @@ class EmployeeIndentAdvance(models.Model):
     department_id = fields.Many2one('hr.department', string='Department', store=True)
     requested_date = fields.Date('Requested Date', default=fields.Date.today())
     item_ids = fields.One2many('indent.request.items','request_id', string='Relatives')
-   
     indent_type = fields.Selection([('issue', 'Issue'), ('grn', 'GRN')
                                ],track_visibility='always', string='Type')
 
@@ -120,6 +119,7 @@ class FamilyDetails(models.Model):
     specification = fields.Text('Specifications')
     requested_quantity = fields.Integer('Qty.')
     approved_quantity = fields.Integer('Approved Qty.')
+    issue_approved = fields.Boolean('Issue approved')
     requested_date = fields.Date('Required Date', default=fields.Date.today())
     approved_date = fields.Date('Approved Date')
 
