@@ -303,7 +303,7 @@
 
 
     <menuitem name="GRN"
-                id="menu_grn_Indent_request_apply_grn" parent="menu_Indent"
+                id="menu_grn_Indent_request" parent="menu_Indent"
                  />
 
 
