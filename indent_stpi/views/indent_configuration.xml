@@ -8,7 +8,7 @@
             <field name="name">indent.stock.tree</field>
             <field name="model">indent.stock</field>
             <field name="arch" type="xml">
-                <tree string="Indent Stock">
+                <tree string="Item Master">
                     <field name="name" required="1"/>
                     <field name="branch_id" required="1"/>
                 </tree>
@@ -20,7 +20,7 @@
             <field name="name">indent.stock.form</field>
             <field name="model">indent.stock</field>
             <field name="arch" type="xml">
-                <form string="Child Indent Stock">
+                <form string="Items">
                     <sheet>
                         <group>
                             <group>
@@ -31,14 +31,16 @@
                             </group>
                         </group>
                         <notebook>
-                        <page string="Child Indent Stock">
+                        <page string="Items">
                             <field name="child_indent_stocks">
                                 <tree editable="bottom">
                                     <field name="child_indent_stock" invisible="1"/>
                                     <field name="name" required="1"/>
                                     <field name="specification" required="1"/>
-                                    <field name="opening_quantity" required="1"/>
-                                    <field name="remaining_quantity" required="1"/>
+                                    <field name="serial_number"/>
+                                    <field name="issue" readonly="1"/>
+                                    <field name="received" readonly="1"/>
+                                    <field name="balance" readonly="1"/>
                                 </tree>
                             </field>
                         </page>
@@ -48,9 +50,9 @@
             </field>
         </record>
 
-        <!--Indent Indent Stock Action-->
+        <!--Indent Item Master Action-->
         <record id="Indent_configuration_action_id" model="ir.actions.act_window">
-            <field name="name">Indent Stock</field>
+            <field name="name">Item Master</field>
             <field name="res_model">indent.stock</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
@@ -65,7 +67,7 @@
                 groups="indent_stpi.group_Indent_store_manager"
                 />
 
-    <menuitem name="Indent Stock"
+    <menuitem name="Item Master"
                 id="menu_Indent_configuration_id" parent="menu_Indent_configuration"
                  action="Indent_configuration_action_id"
                  />

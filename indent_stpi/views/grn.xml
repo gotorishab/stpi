@@ -1,8 +1,8 @@
 <odoo>
     <!--==========Form view of Employee Indent Advance==========-->
     <record id="employeeIndent_request_form_view" model="ir.ui.view">
-        <field name="name">indent.request.form</field>
-        <field name="model">indent.request</field>
+        <field name="name">grn.form</field>
+        <field name="model">grn</field>
         <field name="arch" type="xml">
             <form string="Indent">
                 <header>
@@ -22,7 +22,6 @@
                         <group>
                             <field name="job_id" readonly="1"/>
                             <field name="department_id" readonly="1"/>
-                            <field name="indent_type" readonly="1"/>
                         </group>
                         <group>
                         </group>
@@ -57,8 +56,8 @@
 
     <!--==========Tree view of Employee Indent Advance==========-->
     <record id="employeeIndent_request_tree_view" model="ir.ui.view">
-        <field name="name">indent.request.tree</field>
-        <field name="model">indent.request</field>
+        <field name="name">grn.tree</field>
+        <field name="model">grn</field>
         <field name="arch" type="xml">
             <tree string="Indent">
                 <field name="indent_sequence"/>
@@ -74,10 +73,10 @@
 
     <!--==========Search view of Employee Indent Advance Status==========-->
      <record id="view_Indent_request_status_filter_report" model="ir.ui.view">
-        <field name="name">indent.request.search</field>
-        <field name="model">indent.request</field>
+        <field name="name">grn.search</field>
+        <field name="model">grn</field>
         <field name="arch" type="xml">
-            <search string="Search for Indent Request">
+            <search string="Search for GRN">
                 <field name="indent_sequence"/>
                 <group expand="0" string="Group By">
                    <filter name="group_category" string="State" context="{'group_by':'state'}"/>
@@ -89,35 +88,34 @@
      <!--=====Sequence of Employee Indent Advance=====-->
      <record id="seq_indent_sequence" model="ir.sequence">
         <field name="name">Indent sequence</field>
-        <field name="code">indent.request</field>
+        <field name="code">grn</field>
         <field name="padding">3</field>
         <field name="company_id" eval="False"/>
      </record>
 
     <!--===============Action view of Employee Indent Advance===============-->
     <record id="hremployeeIndent_request_action" model="ir.actions.act_window">
-        <field name="name">Indent Request</field>
-        <field name="res_model">indent.request</field>
+        <field name="name">GRN</field>
+        <field name="res_model">grn</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form,search</field>
     </record>
 
     <!--============Action view of Employee Indent Advance Draft============-->
     <record id="employeeIndent_request_action_draft" model="ir.actions.act_window">
-        <field name="name">Indent Request</field>
-        <field name="res_model">indent.request</field>
+        <field name="name">GRN</field>
+        <field name="res_model">grn</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
 <!--        <field name="context">{'search_default_my_tour': 1}</field>-->
         <field name="search_view_id" ref="view_Indent_request_status_filter_report"/>
-        <field name="context">{'default_indent_type': 'issue'}</field>
         <field name="domain">[('state','=','draft')]</field>
     </record>
 
     <!--============Action view of Employee Indent Advance To Approve============-->
     <record id="employeeIndent_request_action_to_approve" model="ir.actions.act_window">
-        <field name="name">Indent Request</field>
-        <field name="res_model">indent.request</field>
+        <field name="name">GRN</field>
+        <field name="res_model">grn</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
 <!--        <field name="context">{'search_default_my_tour': 1}</field>-->
@@ -128,8 +126,8 @@
 
     <!--============Action view of Employee Indent Advance Approved============-->
     <record id="employeeIndent_request_action_approved" model="ir.actions.act_window">
-        <field name="name">Indent Request</field>
-        <field name="res_model">indent.request</field>
+        <field name="name">GRN</field>
+        <field name="res_model">grn</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
 <!--        <field name="context">{'search_default_my_tour': 1}</field>-->
@@ -140,8 +138,8 @@
 
     <!--============Action view of Employee Indent Advance Rejected============-->
     <record id="employeeIndent_request_action_rejected" model="ir.actions.act_window">
-        <field name="name">Indent Request</field>
-        <field name="res_model">indent.request</field>
+        <field name="name">GRN</field>
+        <field name="res_model">grn</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
 <!--        <field name="context">{'search_default_my_tour': 1}</field>-->
@@ -149,22 +147,12 @@
         <field name="domain">[('state','=','rejected')]</field>
     </record>
 
-    <!--============Action view of Employee Indent Advance Rejected============-->
-    <record id="employeeIndent_request_action_grn" model="ir.actions.act_window">
-        <field name="name">Indent Request</field>
-        <field name="res_model">indent.request</field>
-        <field name="view_type">form</field>
-        <field name="view_mode">tree,form</field>
-        <field name="context">{'default_indent_type': 'grn'}</field>
-        <field name="search_view_id" ref="view_Indent_request_status_filter_report"/>
-    </record>
-
 
 
 <!--===============Action view of Employee Indent Advance Status=================-->
     <record id="menu_Indent_reporting_request_status_action" model="ir.actions.act_window">
-        <field name="name">Indent Request</field>
-        <field name="res_model">indent.request</field>
+        <field name="name">GRN</field>
+        <field name="res_model">grn</field>
         <!--<field name="view_type">form</field>-->
         <field name="view_mode">tree,form,search</field>
         <field name="context">{'group_by': 'state'}</field>
@@ -173,8 +161,8 @@
 
 <!--===============Action view of Employee Indent Advance Department=================-->
     <record id="menu_Indent_reporting_request_department_action" model="ir.actions.act_window">
-        <field name="name">Indent Request</field>
-        <field name="res_model">indent.request</field>
+        <field name="name">GRN</field>
+        <field name="res_model">grn</field>
         <!--<field name="view_type">form</field>-->
         <field name="view_mode">tree,form,search</field>
         <field name="context">{'group_by': 'department_id'}</field>
@@ -183,8 +171,8 @@
 
 <!--===============Action view of Employee Indent Advance Job=================-->
     <record id="menu_Indent_reporting_request_job_action" model="ir.actions.act_window">
-        <field name="name">Indent Request</field>
-        <field name="res_model">indent.request</field>
+        <field name="name">GRN</field>
+        <field name="res_model">grn</field>
         <!--<field name="view_type">form</field>-->
         <field name="view_mode">tree,form,search</field>
         <field name="context">{'group_by': 'job_id'}</field>
@@ -193,8 +181,8 @@
 
 <!--===============Action view of Employee Indent Advance Branch=================-->
     <record id="menu_Indent_reporting_request_branch_action" model="ir.actions.act_window">
-        <field name="name">Indent Request</field>
-        <field name="res_model">indent.request</field>
+        <field name="name">GRN</field>
+        <field name="res_model">grn</field>
         <!--<field name="view_type">form</field>-->
         <field name="view_mode">tree,form,search</field>
         <field name="context">{'group_by': 'branch_id'}</field>
@@ -208,7 +196,7 @@
               web_icon="indent_stpi,static/description/icon.png"
               sequence="21"/>
     
-    <menuitem name="Indent Request"
+    <menuitem name="GRN"
                 id="menu_Indent_request" parent="menu_Indent"
                 />
 
@@ -229,16 +217,11 @@
                  action="employeeIndent_request_action_rejected"
                  />
 
-    <menuitem name="GRN"
-                id="menu_Indent_request_apply_grn" parent="menu_Indent"
-                 action="employeeIndent_request_action_grn"
-                 />
-
     <menuitem name="Reporting"
             id="menu_Indent_reporting" parent="menu_Indent"
             />
 
-    <menuitem name="Indent Request"
+    <menuitem name="GRN"
             id="menu_Indent_reporting_request" parent="menu_Indent_reporting"
             />
         <menuitem name="All"
