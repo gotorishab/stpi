@@ -20,6 +20,7 @@
         'views/indent_request.xml',
         'views/indent_configuration.xml',
         'views/issue_request.xml',
+        'views/stock_log_book.xml',
         # 'report/ltc_report.xml',
 
 
