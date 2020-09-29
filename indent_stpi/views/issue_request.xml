@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+
+        <record model='ir.ui.view' id='issue_request_tree_view'>
+            <field name="name">issue.request.tree</field>
+            <field name="model">issue.request</field>
+            <field name="arch" type="xml">
+                <tree string="Issue Request" create="0" delete="0">
+                    <field name="Indent_id" readonly="1"/>
+                    <field name="employee_id" readonly="1"/>
+                    <field name="branch_id" readonly="1"/>
+                    <field name="item_category_id" readonly="1"/>
+                    <field name="item_id" readonly="1"/>
+                    <field name="specification" readonly="1"/>
+                    <field name="requested_quantity" readonly="1"/>
+                    <field name="requested_date" readonly="1"/>
+                    <field name="indent_state" readonly="1"/>
+                    <field name="state" readonly="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <!--vehicle request by all-->
+        <record id="issue_request_action_id" model="ir.actions.act_window">
+            <field name="name">Issue Request</field>
+            <field name="res_model">issue.request</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+
+
+    <menuitem name="Issue Request"
+              id="menu_issue_request_id" parent="menu_Indent"
+              action="issue_request_action_id"
+                 />
+
+
+    </data>
+</odoo>

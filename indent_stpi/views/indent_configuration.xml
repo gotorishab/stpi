@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+
+
+        <record model='ir.ui.view' id='Indent_block_year_tree_view'>
+            <field name="name">indent.stock.tree</field>
+            <field name="model">indent.stock</field>
+            <field name="arch" type="xml">
+                <tree string="Indent Stock">
+                    <field name="name" required="1"/>
+                    <field name="branch_id" required="1"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="Indent_block_year_form_view" model="ir.ui.view">
+            <field name="name">indent.stock.form</field>
+            <field name="model">indent.stock</field>
+            <field name="arch" type="xml">
+                <form string="Child Indent Stock">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" required="1"/>
+                            </group>
+                            <group>
+                                <field name="branch_id" required="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                        <page string="Child Indent Stock">
+                            <field name="child_indent_stocks">
+                                <tree editable="bottom">
+                                    <field name="child_indent_stock" invisible="1"/>
+                                    <field name="name" required="1"/>
+                                    <field name="specification" required="1"/>
+                                    <field name="opening_quantity" required="1"/>
+                                    <field name="remaining_quantity" required="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!--Indent Indent Stock Action-->
+        <record id="Indent_block_year_action_id" model="ir.actions.act_window">
+            <field name="name">Indent Stock</field>
+            <field name="res_model">indent.stock</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+
+
+
+
+ <menuitem name="Configuration"
+                id="menu_Indent_configuration" parent="menu_Indent"
+                groups="base.group_no_one"
+                />
+
+    <menuitem name="Indent Stock"
+                id="menu_Indent_block_year_id" parent="menu_Indent_configuration"
+                 action="Indent_block_year_action_id"
+                 />
+
+    </data>
+</odoo>
