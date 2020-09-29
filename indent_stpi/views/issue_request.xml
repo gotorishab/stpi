@@ -17,8 +17,8 @@
                     <field name="requested_quantity" readonly="1"/>
                     <field name="requested_date" readonly="1"/>
                     <field name="indent_state" invisible="1"/>
-                    <field name="approved_quantity" attrs="{'readonly':[('state','=', 'approved')]}"/>
-                    <field name="approved_date" required="1"/>
+                    <field name="approved_quantity" attrs="{'readonly':[('state','!=', 'to_approve')]}"/>
+                    <field name="approved_date" required="1" attrs="{'readonly':[('state','!=', 'to_approve')]}"/>
                     <button name="button_approved" string="Approve" type="object" icon = "fa-thumbs-o-up" states="to_approve"/>
                     <button name="button_reject" string="Reject" type="object" icon = "fa-ban" states="to_approve"/>
                     <field name="state" readonly="1"/>
