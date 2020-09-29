@@ -8,8 +8,8 @@
                 <header>
                     <button name="button_to_approve" string="Send for Approval" class="oe_highlight" type="object" states="draft"/>
                      <button name="button_reset_to_draft" string="Reset to draft" type="object" states="to_approve"/>
-                    <button name="button_approved" string="Approve" class="oe_highlight" type="object" states="to_approve" groups="employee_Indent.group_Indent_manager"/>
-                    <button name="button_reject" string="Reject" type="object" states="to_approve" groups="employee_Indent.group_Indent_manager"/>
+                    <button name="button_approved" string="Approve" class="oe_highlight" type="object" states="to_approve"/>
+                    <button name="button_reject" string="Reject" type="object" states="to_approve"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,to_approve,approved,rejected" />
                 </header>
                 <sheet>
@@ -30,7 +30,7 @@
                                 <tree editable="bottom">
                                     <field name="request_id" invisible="1"/>
                                     <field name="item_category_id" required="1" options="{'no_create_edit': True}"/>
-                                    <field name="item_id" required="1"/>
+                                    <field name="item_id" required="1" options="{'no_create_edit': True}"/>
                                     <field name="specification" readonly="1"/>
                                     <field name="requested_quantity" required="1"/>
                                     <field name="requested_date" required="1"/>

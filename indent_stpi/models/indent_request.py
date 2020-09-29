@@ -41,6 +41,21 @@ class EmployeeIndentAdvance(models.Model):
     def button_approved(self):
         for res in self:
             res.write({'state': 'approved'})
+            for item in res.item_ids:
+                create_ledger_family = self.env['issue.request'].sudo().create(
+                    {
+                        'Indent_id': res.id,
+                        'employee_id': res.employee_id.id,
+                        'branch_id': res.branch_id.id,
+                        'item_category_id': item.item_category_id.id,
+                        'item_id': item.item_id.id,
+                        'specification': item.specification,
+                        'requested_quantity': item.requested_quantity,
+                        'requested_date': item.requested_date,
+                        'state': res.state,
+                    }
+                )
+
 
 
     @api.multi
