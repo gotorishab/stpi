@@ -19,7 +19,7 @@
         # 'data/ltc_mode_demo_data.xml',
         'views/indent_request.xml',
         'views/indent_configuration.xml',
-        'views/issue_request.xml.xml',
+        'views/issue_request.xml',
         # 'report/ltc_report.xml',
 
 
