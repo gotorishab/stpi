@@ -17,6 +17,8 @@
                     <field name="requested_quantity" readonly="1"/>
                     <field name="requested_date" readonly="1"/>
                     <field name="indent_state" readonly="1"/>
+                    <field name="approved_quantity" required="1"/>
+                    <field name="approved_date" required="1"/>
                     <button name="button_approved" string="Approve" type="object" icon = "fa-thumbs-o-up"/>
                     <button name="button_reject" string="Reject" type="object" icon = "fa-ban"/>
                     <field name="state" readonly="1"/>

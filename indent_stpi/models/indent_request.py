@@ -47,6 +47,7 @@ class EmployeeIndentAdvance(models.Model):
                         'Indent_id': res.id,
                         'employee_id': res.employee_id.id,
                         'branch_id': res.branch_id.id,
+                        'Indent_item_id': item.id,
                         'item_category_id': item.item_category_id.id,
                         'item_id': item.item_id.id,
                         'specification': item.specification,
@@ -93,7 +94,7 @@ class EmployeeIndentAdvance(models.Model):
 
 class FamilyDetails(models.Model):
     _name = 'indent.request.items'
-    _description = "Indent Family Details"
+    _description = "Indent Item Details"
 
 
     @api.onchange('item_category_id')
@@ -107,8 +108,8 @@ class FamilyDetails(models.Model):
     specification = fields.Text('Specifications')
     requested_quantity = fields.Integer('Requested Quantity')
     approved_quantity = fields.Integer('Approved Quantity')
-    requested_date = fields.Integer('Requested Date')
-    approved_date = fields.Integer('Approved Date')
+    requested_date = fields.Date('Requested Date', default=fields.Date.today())
+    approved_date = fields.Date('Approved Date')
 
 
     @api.onchange('item_id')
