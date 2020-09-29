@@ -19,10 +19,9 @@
                     <field name="serial_number" readonly="1"/>
                     <field name="requested_quantity" readonly="1"/>
                     <field name="requested_date" readonly="1"/>
-                    <field name="indent_state" invisible="1"/>
                     <field name="approved_quantity" readonly="1"/>
-                    <field name="issue" readonly="1"/>
-                    <field name="received" readonly="1"/>
+                    <field name="opening" readonly="1"/>
+                    <field name="quantity" readonly="1"/>
                     <field name="balance" readonly="1"/>
                 </tree>
             </field>

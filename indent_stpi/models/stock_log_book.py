@@ -22,19 +22,10 @@ class IndentLedger(models.Model):
     approved_quantity = fields.Integer('Approved Quantity')
     requested_date = fields.Date('Requested Date')
     approved_date = fields.Date('Approved Date', default=fields.Date.today())
-    issue = fields.Integer('Issue')
-    received = fields.Integer('Received')
+    opening = fields.Integer('Opening')
+    quantity = fields.Integer('Quantity')
     balance = fields.Integer('Balance')
 
 
     indent_type = fields.Selection([('issue', 'Issue'), ('grn', 'GRN')
                                ],track_visibility='always', string='Type')
-
-    indent_state = fields.Selection(
-        [('draft', 'Draft'), ('to_approve', 'To Approve'), ('approved', 'Approved'), ('rejected', 'Rejected')
-         ], string='Indent Status')
-
-    state = fields.Selection(
-        [('draft', 'Draft'), ('to_approve', 'To Approve'), ('approved', 'Approved'), ('rejected', 'Rejected')
-         ], string='Status')
-
