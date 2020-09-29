@@ -65,7 +65,7 @@
  <menuitem name="Configuration"
            id="menu_Indent_configuration" parent="menu_Indent"
            groups="indent_stpi.group_Indent_store_manager"
-           sequence="5"
+           sequence="6"
  />
 
     <menuitem name="Item Master"
