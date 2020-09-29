@@ -42,43 +42,44 @@ class IndentLedger(models.Model):
                 raise ValidationError(_("You are not able to approve more than {qty} {item_id}, as requested quantity is {qty}".format(qty=res.requested_quantity, item_id=res.item_id.name)))
             # sbook = self.env['stock.log.book'].sudo().search([('branch_id', '=', res.branch_id.id),('item_id', '=', res.item_id.id)])
             sum = 0
-            # for ln in sbook:
             sum = res.item_id.balance
-            qty = res.approved_quantity
-            if res.indent_type == 'issue':
-                balance = sum - qty
-                res.item_id.issue += qty
+            if int(sum) < int(res.approved_quantity):
+                raise ValidationError(_("You are not able to approve more than {qty} {item_id}, as stock balance is {qty}".format(qty=sum, item_id=res.item_id.name)))
             else:
-                balance = sum + qty
-                res.item_id.received += qty
-            res.item_id.balance = res.item_id.received - res.item_id.issue
-            create_service_log_book = self.env['stock.log.book'].sudo().create(
-                {
-                    'employee_id': res.employee_id.id,
-                    'branch_id': res.branch_id.id,
-                    'Indent_id': res.Indent_id.id,
-                    'Indent_item_id': res.Indent_item_id.id,
-                    'item_category_id': res.item_category_id.id,
-                    'item_id': res.item_id.id,
-                    'serial_bool': res.serial_bool,
-                    'specification': res.specification,
-                    'requested_quantity': res.requested_quantity,
-                    'requested_date': res.requested_date,
-                    'approved_quantity': res.approved_quantity,
-                    'indent_type': res.indent_type,
-                    'opening': sum,
-                    'quantity': qty,
-                    'balance': balance
-                }
-            )
-
-            search_id = self.env['indent.request.items'].sudo().search([('id', '=', res.Indent_item_id.id)],limit=1)
-            for sr in search_id:
-                sr.write({
-                    'approved_quantity': res.approved_quantity,
-                    'approved_date': res.approved_date
-                })
-            res.write({'state': 'approved'})
+                qty = res.approved_quantity
+                if res.indent_type == 'issue':
+                    balance = sum - qty
+                    res.item_id.issue += qty
+                else:
+                    balance = sum + qty
+                    res.item_id.received += qty
+                res.item_id.balance = res.item_id.received - res.item_id.issue
+                create_service_log_book = self.env['stock.log.book'].sudo().create(
+                    {
+                        'employee_id': res.employee_id.id,
+                        'branch_id': res.branch_id.id,
+                        'Indent_id': res.Indent_id.id,
+                        'Indent_item_id': res.Indent_item_id.id,
+                        'item_category_id': res.item_category_id.id,
+                        'item_id': res.item_id.id,
+                        'serial_bool': res.serial_bool,
+                        'specification': res.specification,
+                        'requested_quantity': res.requested_quantity,
+                        'requested_date': res.requested_date,
+                        'approved_quantity': res.approved_quantity,
+                        'indent_type': res.indent_type,
+                        'opening': sum,
+                        'quantity': qty,
+                        'balance': balance
+                    }
+                )
+                search_id = self.env['indent.request.items'].sudo().search([('id', '=', res.Indent_item_id.id)],limit=1)
+                for sr in search_id:
+                    sr.write({
+                        'approved_quantity': res.approved_quantity,
+                        'approved_date': res.approved_date
+                    })
+                res.write({'state': 'approved'})
 
 
     @api.multi
