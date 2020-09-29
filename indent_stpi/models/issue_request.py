@@ -32,6 +32,8 @@ class IndentLedger(models.Model):
     @api.multi
     def button_approved(self):
         for res in self:
+            if int(res.requested_quantity) >= int(res.approved_quantity):
+                raise ValidationError(_("You are not able to approve more than {qty} {item_id}, as requested quantity is {qty}".format(qty=res.requested_quantity, item_id=res.item_id.name)))
             if int(res.item_id.remaining_quantity) >= int(res.approved_quantity):
                 res.item_id.remaining_quantity = int(res.item_id.remaining_quantity) - int(res.approved_quantity)
                 search_id = self.env['indent.request.items'].sudo().search([('id', '=', res.Indent_item_id.id)],limit=1)
