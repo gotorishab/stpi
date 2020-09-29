@@ -42,7 +42,7 @@
         
         
     <!--============Action view of Employee Indent Advance To Approve============-->
-    <record id="employeeissue_request_action_to_approve" model="ir.actions.act_window">
+    <record id="indent_issue_request_action_to_approve" model="ir.actions.act_window">
         <field name="name">Indent Request</field>
         <field name="res_model">issue.request</field>
         <field name="view_type">form</field>
@@ -53,7 +53,7 @@
 
 
     <!--============Action view of Employee Indent Advance Approved============-->
-    <record id="employeeissue_request_action_approved" model="ir.actions.act_window">
+    <record id="indent_issue_request_action_approved" model="ir.actions.act_window">
         <field name="name">Indent Request</field>
         <field name="res_model">issue.request</field>
         <field name="view_type">form</field>
@@ -64,7 +64,7 @@
 
 
     <!--============Action view of Employee Indent Advance Rejected============-->
-    <record id="employeeissue_request_action_rejected" model="ir.actions.act_window">
+    <record id="indent_issue_request_action_rejected" model="ir.actions.act_window">
         <field name="name">Indent Request</field>
         <field name="res_model">issue.request</field>
         <field name="view_type">form</field>
@@ -89,21 +89,21 @@
                  />
 
     <menuitem name="All"
-              id="menu_issue_request_id" parent="menu_issue_request_id"
+              id="menu_issue_request_all_id" parent="menu_issue_request_id"
               action="issue_request_action_id"
                  />
 
         <menuitem name="To Approve"
                 id="menu_issue_request_apply_to_approve" parent="menu_issue_request_id"
-                 action="employeeissue_request_action_to_approve"
+                 action="indent_issue_request_action_to_approve"
                  />
     <menuitem name="Approved"
                 id="menu_issue_request_apply_approved" parent="menu_issue_request_id"
-                 action="employeeissue_request_action_approved"
+                 action="indent_issue_request_action_approved"
                  />
     <menuitem name="Rejected"
                 id="menu_issue_request_apply_rejected" parent="menu_issue_request_id"
-                 action="employeeissue_request_action_rejected"
+                 action="indent_issue_request_action_rejected"
                  />
 
 
