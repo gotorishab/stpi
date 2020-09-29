@@ -47,8 +47,11 @@ class IndentLedger(models.Model):
             qty = res.approved_quantity
             if res.indent_type == 'issue':
                 balance = sum - qty
+                res.item_id.issue += qty
             else:
                 balance = sum + qty
+                res.item_id.received += qty
+            res.item_id.balance = res.item_id.received - res.item_id.issue
             create_service_log_book = self.env['stock.log.book'].sudo().create(
                 {
                     'employee_id': res.employee_id.id,
