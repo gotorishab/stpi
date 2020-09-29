@@ -56,7 +56,7 @@
 
     <menuitem name="Stock Log Book"
               id="menu_stock_log_book_id" parent="stock_log_book_action_id"
-              action="hremployeeIndent_request_action"
+              action="stock_log_book_action_id"
               groups="indent_stpi.menu_Indent_reporting"
                  />
     </data>
