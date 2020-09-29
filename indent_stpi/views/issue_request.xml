@@ -33,7 +33,6 @@
         <field name="model">issue.request</field>
         <field name="arch" type="xml">
             <search string="Search for Indent Request">
-                <field name="indent_sequence"/>
                 <group expand="0" string="Group By">
                    <filter name="group_category" string="State" context="{'group_by':'state'}"/>
                 </group>
