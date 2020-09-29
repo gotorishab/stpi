@@ -63,9 +63,10 @@
 
 
  <menuitem name="Configuration"
-                id="menu_Indent_configuration" parent="menu_Indent"
-                groups="indent_stpi.group_Indent_store_manager"
-                />
+           id="menu_Indent_configuration" parent="menu_Indent"
+           groups="indent_stpi.group_Indent_store_manager"
+           sequence="5"
+ />
 
     <menuitem name="Item Master"
                 id="menu_Indent_configuration_id" parent="menu_Indent_configuration"
