@@ -16,7 +16,7 @@
                     <field name="specification" readonly="1"/>
                     <field name="requested_quantity" readonly="1"/>
                     <field name="requested_date" readonly="1"/>
-                    <field name="indent_state" readonly="1"/>
+                    <field name="indent_state" invisible="1"/>
                     <field name="approved_quantity" attrs="{'readonly':[('state','=', 'approved')]}"/>
                     <field name="approved_date" required="1"/>
                     <button name="button_approved" string="Approve" type="object" icon = "fa-thumbs-o-up" states="to_approve"/>
@@ -39,6 +39,7 @@
     <menuitem name="Issue Request"
               id="menu_issue_request_id" parent="menu_Indent"
               action="issue_request_action_id"
+              groups="indent_stpi.group_Indent_store_manager"
                  />
 
 

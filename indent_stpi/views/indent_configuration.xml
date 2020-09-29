@@ -62,7 +62,7 @@
 
  <menuitem name="Configuration"
                 id="menu_Indent_configuration" parent="menu_Indent"
-                groups="base.group_no_one"
+                groups="indent_stpi.group_Indent_store_manager"
                 />
 
     <menuitem name="Indent Stock"
