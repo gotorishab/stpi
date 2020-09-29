@@ -9,10 +9,10 @@ class IndentLedger(models.Model):
     _name = 'stock.log.book'
     _description = "Issue Request"
 
-    Indent_id = fields.Many2one('indent.request', string='Indent')
-    Indent_item_id = fields.Many2one('indent.request.items', string='Indent Item')
     employee_id = fields.Many2one('hr.employee', string='Requested By')
     branch_id = fields.Many2one('res.branch', string='Branch', store=True)
+    Indent_id = fields.Many2one('indent.request', string='Indent')
+    Indent_item_id = fields.Many2one('indent.request.items', string='Indent Item')
     item_category_id = fields.Many2one('indent.stock', string='Item Category')
     item_id = fields.Many2one('child.indent.stock', string='Item')
     specification = fields.Text('Specifications')

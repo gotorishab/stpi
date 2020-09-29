@@ -40,10 +40,10 @@ class IndentLedger(models.Model):
         for res in self:
             if int(res.requested_quantity) < int(res.approved_quantity):
                 raise ValidationError(_("You are not able to approve more than {qty} {item_id}, as requested quantity is {qty}".format(qty=res.requested_quantity, item_id=res.item_id.name)))
-            sbook = self.env['stock.log.book'].sudo().search([('branch_id', '=', res.branch_id.id),('item_id', '=', res.item_id.id)])
+            # sbook = self.env['stock.log.book'].sudo().search([('branch_id', '=', res.branch_id.id),('item_id', '=', res.item_id.id)])
             sum = 0
-            for ln in sbook:
-                sum += ln.balance
+            # for ln in sbook:
+            sum = res.item_id.balance
             qty = res.approved_quantity
             if res.indent_type == 'issue':
                 balance = sum - qty
@@ -51,9 +51,9 @@ class IndentLedger(models.Model):
                 balance = sum + qty
             create_service_log_book = self.env['stock.log.book'].sudo().create(
                 {
-                    'Indent_id': res.Indent_id.id,
                     'employee_id': res.employee_id.id,
                     'branch_id': res.branch_id.id,
+                    'Indent_id': res.Indent_id.id,
                     'Indent_item_id': res.Indent_item_id.id,
                     'item_category_id': res.item_category_id.id,
                     'item_id': res.item_id.id,
@@ -67,10 +67,7 @@ class IndentLedger(models.Model):
                     'balance': balance
                 }
             )
-            newsbook = self.env['stock.log.book'].sudo().search([('branch_id', '=', res.branch_id.id),('item_id', '=', res.item_id.id)])
-            sum1 = 0
-            for lin in newsbook:
-                sum1 += lin.balance
+
             search_id = self.env['indent.request.items'].sudo().search([('id', '=', res.Indent_item_id.id)],limit=1)
             for sr in search_id:
                 sr.write({
@@ -78,8 +75,7 @@ class IndentLedger(models.Model):
                     'approved_date': res.approved_date
                 })
             res.write({'state': 'approved'})
-            # else:
-            #     raise ValidationError(_("You are not able to approve more than {qty} {item_id}".format(qty=res.item_id.remaining_quantity, item_id=res.item_id.name)))
+
 
     @api.multi
     def button_reject(self):

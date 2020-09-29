@@ -28,21 +28,6 @@
         </record>
 
 
-    <!--==========Search view of Employee Indent Advance Status==========-->
-     <record id="view_stock_log_book_status_filter_report" model="ir.ui.view">
-        <field name="name">stock.log.book.search</field>
-        <field name="model">stock.log.book</field>
-        <field name="arch" type="xml">
-            <search string="Search for Indent Request">
-                <group expand="0" string="Group By">
-                   <filter name="group_category" string="State" context="{'group_by':'state'}"/>
-                </group>
-            </search>
-        </field>
-    </record>
-
-
-
         <!--vehicle request by all-->
         <record id="stock_log_book_action_id" model="ir.actions.act_window">
             <field name="name">Stock Log Book</field>
