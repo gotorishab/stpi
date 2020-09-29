@@ -3,7 +3,7 @@ from odoo.exceptions import ValidationError, UserError
 from dateutil.relativedelta import relativedelta
 from datetime import datetime, date
 
-class IndentStock(models.Model):
+class ItemMaster(models.Model):
     _name = 'indent.stock'
     _description = "Item Master"
 
@@ -18,6 +18,14 @@ class IndentStock(models.Model):
     child_indent_stocks = fields.One2many('child.indent.stock', 'child_indent_stock', string='Availing Indent for year Ids')
 
 
+
+
+    @api.multi
+    def unlink(self):
+        for rec in self:
+            for line in rec.child_indent_stocks:
+                line.sudo().unlink()
+        return super(ItemMaster, self).unlink()
 
 
 class ChildIndentStock(models.Model):
