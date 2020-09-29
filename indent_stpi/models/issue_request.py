@@ -64,6 +64,7 @@ class IndentLedger(models.Model):
                     'specification': res.specification,
                     'requested_quantity': res.requested_quantity,
                     'requested_date': res.requested_date,
+                    'approved_quantity': res.approved_quantity,
                     'indent_type': res.indent_type,
                     'opening': sum,
                     'quantity': qty,
