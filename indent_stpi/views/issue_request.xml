@@ -46,7 +46,7 @@
         
     <!--============Action view of Employee Indent Advance To Approve============-->
     <record id="indent_issue_request_action_to_approve" model="ir.actions.act_window">
-        <field name="name">Indent Request</field>
+        <field name="name">Issue Request</field>
         <field name="res_model">issue.request</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree</field>
@@ -57,7 +57,7 @@
 
     <!--============Action view of Employee Indent Advance Approved============-->
     <record id="indent_issue_request_action_approved" model="ir.actions.act_window">
-        <field name="name">Indent Request</field>
+        <field name="name">Issue Request</field>
         <field name="res_model">issue.request</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree</field>
@@ -68,7 +68,7 @@
 
     <!--============Action view of Employee Indent Advance Rejected============-->
     <record id="indent_issue_request_action_rejected" model="ir.actions.act_window">
-        <field name="name">Indent Request</field>
+        <field name="name">Issue Request</field>
         <field name="res_model">issue.request</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree</field>

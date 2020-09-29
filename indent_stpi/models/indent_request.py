@@ -126,7 +126,7 @@ class FamilyDetails(models.Model):
 
 
     @api.onchange('item_id')
-    @api.constrains('item_id')
+    # @api.constrains('item_id')
     def change_item_category_id(self):
         for rec in self:
             rec.specification = rec.item_id.specification

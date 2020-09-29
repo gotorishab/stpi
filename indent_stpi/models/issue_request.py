@@ -43,7 +43,7 @@ class IndentLedger(models.Model):
             # sbook = self.env['stock.log.book'].sudo().search([('branch_id', '=', res.branch_id.id),('item_id', '=', res.item_id.id)])
             sum = 0
             sum = res.item_id.balance
-            if int(sum) < int(res.approved_quantity):
+            if int(sum) < int(res.approved_quantity) and res.indent_type == 'issue':
                 raise ValidationError(_("You are not able to approve more than {qty} {item_id}, as stock balance is {qty}".format(qty=sum, item_id=res.item_id.name)))
             else:
                 qty = res.approved_quantity
@@ -54,6 +54,7 @@ class IndentLedger(models.Model):
                     balance = sum + qty
                     res.item_id.received += qty
                 res.item_id.balance = res.item_id.received - res.item_id.issue
+                # res.item_id.serial_number = res.serial_number
                 create_service_log_book = self.env['stock.log.book'].sudo().create(
                     {
                         'employee_id': res.employee_id.id,
@@ -63,6 +64,7 @@ class IndentLedger(models.Model):
                         'item_category_id': res.item_category_id.id,
                         'item_id': res.item_id.id,
                         'serial_bool': res.serial_bool,
+                        'serial_number': res.serial_number,
                         'specification': res.specification,
                         'requested_quantity': res.requested_quantity,
                         'requested_date': res.requested_date,

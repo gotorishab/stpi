@@ -32,10 +32,14 @@ class ChildIndentStock(models.Model):
     _name = 'child.indent.stock'
     _description = " Availing Indent for year"
 
+
+    def _default_branch_id(self):
+        emp = self.env['hr.employee'].sudo().search([('user_id', '=', self.env.uid)], limit=1)
+        return emp.branch_id.id
+
     name = fields.Char('Name')
     specification = fields.Text('Specifications')
-    # opening_quantity = fields.Integer('Opening Quantity')
-    # remaining_quantity = fields.Integer('Remaining Quantity')
+    branch_id = fields.Many2one('res.branch', string='Branch', default=_default_branch_id, store=True)
     child_indent_stock = fields.Many2one('indent.stock', string='Item Master')
     serial_bool = fields.Boolean(string='Serial Number')
     issue = fields.Integer('Issue')

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+
+
+        <record model='ir.ui.view' id='Indent_configuration_tree_view'>
+            <field name="name">indent.stock.tree</field>
+            <field name="model">child.indent.stock</field>
+            <field name="arch" type="xml">
+                <tree string="Stock Item Master">
+                    <field name="child_indent_stock" invisible="1"/>
+                    <field name="name" required="1"/>
+                    <field name="specification" required="1"/>
+                    <field name="branch_id" required="1"/>
+                    <field name="issue" readonly="1"/>
+                    <field name="received" readonly="1"/>
+                    <field name="balance" readonly="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <!--Indent Item Master Action-->
+        <record id="Indent_configuration_action_id" model="ir.actions.act_window">
+            <field name="name">Stock Item Master</field>
+            <field name="res_model">child.indent.stock</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+
+    <menuitem name="Item Master"
+                id="menu_Indent_configuration_id" parent="menu_Indent_configuration"
+                 action="Indent_configuration_action_id"
+                 />
+
+    </data>
+</odoo>
