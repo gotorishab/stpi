@@ -55,6 +55,7 @@ class EmployeeIndentAdvance(models.Model):
                         'serial_bool': item.item_id.serial_bool,
                         'specification': item.specification,
                         'requested_quantity': item.requested_quantity,
+                        'approved_quantity': item.requested_quantity,
                         'requested_date': item.requested_date,
                         'indent_state': res.state,
                         'indent_type': res.indent_type,
