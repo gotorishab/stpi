@@ -411,10 +411,11 @@ class HrDeclaration(models.Model):
 
 
             proll =  self.env['hr.payslip.line'].sudo().search([('slip_id.employee_id', '=', rec.employee_id.id),
-                                                         ('slip_id.state', '=', 'done'),
-                                                         ('salary_rule_id.taxable_percentage', '>', 0),
-                                                         ('slip_id.date_from', '>=', dstart),
-                                                         ('slip_id.date_to', '<=', dend)],order ="date_to desc")
+                                                                ('slip_id.state', '=', 'done'),
+                                                                ('salary_rule_id.taxable_percentage', '>', 0),
+                                                                ('slip_id.date_from', '>=', dstart),
+                                                                ('salary_rule_id.code', '=', 'GROSS'),
+                                                                ('slip_id.date_to', '<=', dend)],order ="date_to desc")
             for i in proll:
                 sum += i.taxable_amount
             rec.tax_salary_final = round(sum) + rec.income_after_house_property + rec.income_after_other_sources
