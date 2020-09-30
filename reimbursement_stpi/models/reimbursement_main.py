@@ -33,7 +33,10 @@ class Reimbursement(models.Model):
                     gr_id = self.env['reimbursement.configuration'].search(
                     [('name', '=', rec.name), ('pay_level_ids', '=', rec.employee_id.job_id.pay_level_id.id), ('branch_id', '=', rec.branch_id.id)], order='name desc', limit=1)
                 # print('==========================reimb=================================', gr_id.id)
-                return {'domain': {'date_range': [('type_id', '=', gr_id.date_range_type.id),('date_end', '<=', datetime.now().date())]}}
+                if gr_id.name != 'tuition_fee':
+                    return {'domain': {'date_range': [('type_id', '=', gr_id.date_range_type.id),('date_end', '<=', datetime.now().date())]}}
+                else:
+                    return {'domain': {'date_range': [('type_id', '=', gr_id.date_range_type.id),('date_start', '<=', datetime.now().date())]}}
 
 
     name = fields.Selection([
