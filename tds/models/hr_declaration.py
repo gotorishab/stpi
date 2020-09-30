@@ -677,6 +677,29 @@ class HrDeclaration(models.Model):
                 rec.taxable_income = round(rec.income_after_pro_tax - rec.total_tds_paid - (rec.allowed_rebate_under_80c + rec.allowed_rebate_under_80b + rec.allowed_rebate_under_80d + rec.allowed_rebate_under_80dsa + rec.allowed_rebate_under_80e + rec.allowed_rebate_under_80ccg + rec.allowed_rebate_under_tbhl + rec.allowed_rebate_under_80ee + rec.allowed_rebate_under_24 + rec.allowed_rebate_under_80cdd + rec.allowed_rebate_under_80mesdr))
             else:
                 rec.taxable_income = 0.00
+            ex_rebate_id = self.env['saving.master'].sudo().search(
+                [('saving_type', '=', 'Revised Rebate under Section 87A (2019-20)'), ('it_rule', '=', 'section87a')],
+                limit=1)
+            my_investment = 0.00
+            my_allowed_rebate = 0.00
+            if ex_rebate_id:
+                if rec.tax_salary_final <= 500000:
+                    my_investment = rec.taxable_income
+                else:
+                    my_investment = 0.00
+                if my_investment <= ex_rebate_id.rebate:
+                    my_allowed_rebate = my_investment
+                else:
+                    my_allowed_rebate = ex_rebate_id.rebate
+                rebate_ids = []
+                rebate_ids.append((0, 0, {
+                    'rebate_id': rec.id,
+                    'it_rule': ex_rebate_id.it_rule,
+                    'saving_master': ex_rebate_id.id,
+                    'investment': my_investment,
+                    'allowed_rebate': my_allowed_rebate,
+                }))
+                rec.rebate_ids = rebate_ids
 
             tax_salary_final = 0.00
             if rec.taxable_income <= 250000.00:
@@ -708,29 +731,29 @@ class HrDeclaration(models.Model):
                 rec.tax_payable = 0.00
             else:
                 rec.tax_payable_zero = True
-            ex_rebate_id = self.env['saving.master'].sudo().search(
-                [('saving_type', '=', 'Revised Rebate under Section 87A (2019-20)'), ('it_rule', '=', 'section87a')],
-                limit=1)
-            my_investment = 0.00
-            my_allowed_rebate = 0.00
-            if ex_rebate_id:
-                if rec.tax_salary_final <= 500000:
-                    my_investment = rec.tax_payable
-                else:
-                    my_investment = 0.00
-                if my_investment <= ex_rebate_id.rebate:
-                    my_allowed_rebate = my_investment
-                else:
-                    my_allowed_rebate = ex_rebate_id.rebate
-                rebate_ids = []
-                rebate_ids.append((0, 0, {
-                    'rebate_id': rec.id,
-                    'it_rule': ex_rebate_id.it_rule,
-                    'saving_master': ex_rebate_id.id,
-                    'investment': my_investment,
-                    'allowed_rebate': my_allowed_rebate,
-                }))
-                rec.rebate_ids = rebate_ids
+            # ex_rebate_id = self.env['saving.master'].sudo().search(
+            #     [('saving_type', '=', 'Revised Rebate under Section 87A (2019-20)'), ('it_rule', '=', 'section87a')],
+            #     limit=1)
+            # my_investment = 0.00
+            # my_allowed_rebate = 0.00
+            # if ex_rebate_id:
+            #     if rec.tax_salary_final <= 500000:
+            #         my_investment = rec.tax_payable
+            #     else:
+            #         my_investment = 0.00
+            #     if my_investment <= ex_rebate_id.rebate:
+            #         my_allowed_rebate = my_investment
+            #     else:
+            #         my_allowed_rebate = ex_rebate_id.rebate
+            #     rebate_ids = []
+            #     rebate_ids.append((0, 0, {
+            #         'rebate_id': rec.id,
+            #         'it_rule': ex_rebate_id.it_rule,
+            #         'saving_master': ex_rebate_id.id,
+            #         'investment': my_investment,
+            #         'allowed_rebate': my_allowed_rebate,
+            #     }))
+            #     rec.rebate_ids = rebate_ids
             sum_rbt=0.0
             for rbt in rec.rebate_ids:
                 sum_rbt += rbt.allowed_rebate
