@@ -732,7 +732,7 @@ class HrDeclaration(models.Model):
                 "Tax payment lines amount must be equal to Tax payable after rebate")
         return res
 
-    @api.constrains
+    @api.constrains('tax_payment_ids')
     def check_tax_equality(self):
         for res in self:
             sum = 0
