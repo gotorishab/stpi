@@ -121,6 +121,7 @@ class ReimbursementConfiguration(models.Model):
                 if line.grade_pay:
                     print('===============================', line.grade_pay)
                     lst.append(line.grade_pay)
+            lst = list(set(lst))
             listToStr = ' '.join([str(elem) for elem in lst])
             res.grade_pay = str(listToStr)
 
