@@ -93,7 +93,7 @@ class ReimbursementConfiguration(models.Model):
         ('quarterly', 'Newspaper Reimbursements'),
     ], string='Reimbursement Type')
     pay_level_ids = fields.Many2many('hr.payslip.paylevel', string='Pay Level')
-    grade_pay = fields.Char(string='Grade Pay')
+    grade_pay = fields.Text(string='Grade Pay')
     employee_type = fields.Selection([('regular', 'Regular Employee'),
                                       ('contractual_with_agency', 'Contractual with Agency'),
                                       ('contractual_with_stpi', 'Contractual with STPI')], string='Employment Type',
@@ -110,15 +110,15 @@ class ReimbursementConfiguration(models.Model):
     open = fields.Boolean('Open')
 
 
-    #
-    # @api.model
-    # def create(self, vals):
-    #     res = super(ReimbursementConfiguration, self).create(vals)
-    #     lst = []
-    #     for line in res.pay_level_ids.ids:
-    #         lst.append(line.grade_pay)
-    #     listToStr = ' '.join([str(elem) for elem in lst])
-    #     res.grade_pay = str(listToStr)
+
+    @api.model
+    def create(self, vals):
+        res = super(ReimbursementConfiguration, self).create(vals)
+        lst = []
+        for line in res.pay_level_ids:
+            lst.append(line.grade_pay)
+        listToStr = ' '.join([str(elem) for elem in lst])
+        res.grade_pay = str(listToStr)
 
 
 
