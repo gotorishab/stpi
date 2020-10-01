@@ -45,15 +45,21 @@
                     <attribute name="invisible">1</attribute>
                 </field>
 
-<!--                <xpath expr="//group[@name='right_column']" position="attributes">-->
-<!--                    <attribute name="invisible">1</attribute>-->
-<!--                </xpath>-->
 
-<!--                <xpath expr="//group[@name='left_column']" position="attributes">-->
-<!--                    <attribute name="invisible">1</attribute>-->
-<!--                </xpath>-->
+            </field>
+        </record>
 
-
+        <record model="ir.ui.view" id="hr_employee_contracts_form_hra_hide">
+            <field name="name">hr.contract.form.hra</field>
+            <field name="model">hr.contract</field>
+            <field name="inherit_id" ref="l10n_in_hr_payroll.hr_contract_form_in_inherit"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='right_column']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//group[@name='left_column']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
             </field>
         </record>
     </data>
