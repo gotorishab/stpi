@@ -34,6 +34,8 @@ class FileWizard(models.Model):
                 return {'domain': {'employee': [('job_id', '=', rec.jobposition.id),('department_id', '=', rec.department.id)]}}
             elif (not rec.jobposition.id) and (not rec.department.id):
                 return {'domain': {'employee': ['|', ('job_id', '=', rec.jobposition.id),('department_id', '=', rec.department.id)]}}
+            else:
+                return {'domain': {'employee': [('id', '!=', 0)]}}
 
 
 
@@ -138,6 +140,6 @@ class SecondaryOwners(models.Model):
                 return {'domain': {'employee': [('job_id', '=', rec.jobposition.id)]}}
             elif rec.jobposition.id and rec.department.id:
                 return {'domain': {'employee': [('job_id', '=', rec.jobposition.id),('department_id', '=', rec.department.id)]}}
-            else:
+            elif (not rec.jobposition.id) and (not rec.department.id):
                 return {'domain': {'employee': ['|', ('job_id', '=', rec.jobposition.id),('department_id', '=', rec.department.id)]}}
 
