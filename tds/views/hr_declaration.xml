@@ -39,7 +39,7 @@
                             <field name="job_id" readonly="1"/>
                              <field name="branch_id" readonly="1"/>
                              <field name="department_id" readonly="1"/>
-                            <field name="date_range" options="{'no_create_edit': True, 'no_create': True}" attrs="{'readonly':[('state','!=','draft')], 'required':[('state','=','draft')]}"/>
+                            <field name="date_range" options="{'no_create_edit': True, 'no_create': True}" attrs="{'readonly':[('state','!=','draft')], 'required':[('state','=','draft')]}" domain="[('tds', '=', True)]"/>
                             <field name="rent_paid" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                             <field name="rent_paid_attach_files" invisible="1"/>
                             <field name="pan_card" attrs="{'invisible':[('rent_paid_attach_files','!=',True)], 'required':[('rent_paid_attach_files','!=',False)]}"/>
@@ -121,7 +121,7 @@
                             <tree string="Income from House Property" editable="bottom">
                                 <field name="income_house_id" invisible="1"/>
                                 <field name="it_rule" invisible="1"/>
-                                <field name="saving_master" options="{'no_create_edit': True, 'no_create': True}"/>
+                                <field name="saving_master" options="{'no_create_edit': True, 'no_create': True}" domain="[('it_rule', '=', it_rule)]"/>
                                 <field name="investment"/>
                                 <field name="document"/>
                             </tree>
@@ -134,7 +134,7 @@
                             <tree string="Income from Other Sources" editable="bottom">
                                 <field name="income_other_id" invisible="1"/>
                                 <field name="it_rule" invisible="1"/>
-                                <field name="saving_master" options="{'no_create_edit': True, 'no_create': True}"/>
+                                <field name="saving_master" options="{'no_create_edit': True, 'no_create': True}" domain="[('it_rule', '=', it_rule)]"/>
                                 <field name="investment"/>
                                 <field name="document"/>
                             </tree>
@@ -153,7 +153,7 @@
                             <tree string="Slab - 80 Declaration" editable="bottom">
                                 <field name="slab_id" invisible="1"/>
                                 <field name="it_rule" required="1"/>
-                                <field name="saving_master" options="{'no_create_edit': True, 'no_create': True}" required="1"/>
+                                <field name="saving_master" options="{'no_create_edit': True, 'no_create': True}" required="1" domain="[('it_rule', '=', it_rule)]"/>
                                 <field name="investment" sum="Total"/>
                                 <field name="document"/>
                             </tree>
@@ -180,7 +180,7 @@
                             <tree string="Medical Insurance Premium paid" editable="bottom">
                                 <field name="med_ins_id" invisible="1"/>
                                 <field name="it_rule" required="1"/>
-                                <field name="saving_master" options="{'no_create_edit': True, 'no_create': True}" required="1"/>
+                                <field name="saving_master" options="{'no_create_edit': True, 'no_create': True}" required="1" domain="[('it_rule', '=', it_rule)]"/>
                                 <field name="investment" sum="Total"/>
                                 <field name="document"/>
                             </tree>
@@ -193,11 +193,11 @@
                             <tree string="Deductions on Interest on Savings Account" editable="bottom">
                                 <field name="deduction_saving_id" invisible="1"/>
                                 <field name="it_rule" required="1"/>
-                                <field name="saving_master" options="{'no_create_edit': True, 'no_create': True}" required="1"/>
+                                <field name="saving_master" options="{'no_create_edit': True, 'no_create': True}" required="1" domain="[('it_rule', '=', it_rule)]"/>
 <!--                                <field name="saving_type" required="1" readonly="1"/>-->
- 
+
                                 <field name="investment" sum="Total"/>
- 
+
                                 <field name="document"/>
                             </tree>
                         </field>
@@ -209,10 +209,10 @@
                             <tree string="Tax Benefits on Home Loan" editable="bottom">
                                 <field name="tax_home_id" invisible="1"/>
                                 <field name="it_rule" required="1"/>
-                                <field name="saving_master" options="{'no_create_edit': True, 'no_create': True}" required="1"/>
+                                <field name="saving_master" options="{'no_create_edit': True, 'no_create': True}" required="1" domain="[('it_rule', '=', it_rule)]"/>
 <!--                                <field name="saving_type" required="1" readonly="1"/>-->
                                 <field name="investment" sum="Total"/>
- 
+
                                 <field name="document"/>
                             </tree>
                         </field>
@@ -226,7 +226,7 @@
                             <tree string="Tax benefit on Education Loan (80E) " editable="bottom">
                                 <field name="tax_education_id" invisible="1"/>
                                 <field name="it_rule" required="1"/>
-                                <field name="saving_master" options="{'no_create_edit': True, 'no_create': True}" required="1"/>
+                                <field name="saving_master" options="{'no_create_edit': True, 'no_create': True}" required="1" domain="[('it_rule', '=', it_rule)]"/>
                                 <field name="investment" sum="Total"/>
                                 <field name="document"/>
                             </tree>
@@ -239,9 +239,9 @@
                             <tree string="RGESS" editable="bottom">
                                 <field name="rgess_id" invisible="1"/>
                                 <field name="it_rule" required="1"/>
-                                <field name="saving_master" options="{'no_create_edit': True, 'no_create': True}" required="1"/>
- 
- 
+                                <field name="saving_master" options="{'no_create_edit': True, 'no_create': True}" required="1" domain="[('it_rule', '=', it_rule)]"/>
+
+
                                 <field name="investment" sum="Total"/>
                                  <field name="document"/>
                             </tree>
@@ -254,7 +254,7 @@
                             <tree string="Deductions on Medical Expenditure for a Handicapped Relative" editable="bottom">
                                 <field name="dedmedical_id" invisible="1"/>
                                 <field name="it_rule" required="1"/>
-                                <field name="saving_master" options="{'no_create_edit': True, 'no_create': True}" required="1"/>
+                                <field name="saving_master" options="{'no_create_edit': True, 'no_create': True}" required="1" domain="[('it_rule', '=', it_rule)]"/>
                                 <field name="investment" sum="Total"/>
                                 <field name="document"/>
                             </tree>
@@ -267,7 +267,7 @@
                             <tree string="Deductions on Medical Expenditure on Self or Dependent Relative" editable="bottom">
                                 <field name="dedmedical_self_id" invisible="1"/>
                                 <field name="it_rule" required="1"/>
-                                <field name="saving_master" options="{'no_create_edit': True, 'no_create': True}" required="1"/>
+                                <field name="saving_master" options="{'no_create_edit': True, 'no_create': True}" required="1" domain="[('it_rule', '=', it_rule)]"/>
                                 <field name="investment" sum="Total"/>
                                 <field name="document"/>
                             </tree>
@@ -336,7 +336,7 @@
         <field name="model">hr.declaration</field>
         <field name="arch" type="xml">
            <search string="IT Declaration">
-               <filter string="My Declarations" name="mydeclaration"/>
+               <filter string="My Declarations" name="mydeclaration" domain="[('employee_id.user_id.id', '=', uid)]" />
                 <field name="employee_id" string="Employee"/>
                     <filter string="Employee" name="employee_id" context="{'group_by':'employee_id'}"/>
                     <filter string="Status" name="status" context="{'group_by':'state'}"/>
