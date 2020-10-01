@@ -33,6 +33,13 @@ class AddLetter(models.Model):
             rec.directory = directory.id
 
 
+
+    @api.constrains('name')
+    def _check_name(self):
+        for record in self:
+            pass
+
+
     @api.model
     def create(self, vals):
         res = super(AddLetter, self).create(vals)
