@@ -44,7 +44,8 @@ class IndentLedger(models.Model):
             sum = 0
             sum = res.item_id.balance
             if int(sum) < int(res.approved_quantity) and res.indent_type == 'issue':
-                raise ValidationError(_("You are not able to approve more than {qty} {item_id}, as stock balance is {qty}".format(qty=sum, item_id=res.item_id.name)))
+                raise ValidationError(_("Required quantity not in stock"))
+                # raise ValidationError(_("You are not able to approve more than {qty} {item_id}, as stock balance is {qty}".format(qty=sum, item_id=res.item_id.name)))
             else:
                 qty = res.approved_quantity
                 if res.indent_type == 'issue':
