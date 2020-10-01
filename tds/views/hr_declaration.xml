@@ -25,11 +25,11 @@
                     <button name="button_to_approve" string="Send for Approval" class="oe_highlight" type="object" states="draft"/>
                     <button name="button_forecast_gross" string="Forecast Gross" class="oe_highlight" type="object" states="draft"/>
                      <button name="button_reset_to_draft" string="Revert" type="object" states="to_approve"/>
-                    <button name="button_approved" string="Approve" class="oe_highlight" type="object" states="to_approve" groups="tds.group_manager_hr_declaration"/>
-                    <button name="button_reject" string="Reject" type="object" states="to_approve" groups="tds.group_manager_hr_declaration"/>
+                    <button name="button_approved" string="Approve" class="oe_highlight" type="object" states="to_approve"/>
+                    <button name="button_reject" string="Reject" type="object" states="to_approve"/>
                     <button name="button_compute_tax" string="Compute Tax" class="oe_highlight" type="object"/>
                     <button name="button_payment_tax" string="Tax Payment" class="oe_highlight" type="object" invisible="1"/>
-                    <button name="button_verify" string="Verify" type="object" class="oe_highlight" states="approved" groups="tds.group_manager_hr_declaration"/>
+                    <button name="button_verify" string="Verify" type="object" class="oe_highlight" states="approved"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,to_approve,approved" />
                 </header>
                 <sheet>
