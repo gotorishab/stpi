@@ -18,7 +18,7 @@
         <menuitem
                 action="action_indent_request_test_tree"
                 id="menu_indent_request_test"
-                parent="menu_hr_indent_exceptionrequest_parent"
+                parent="menu_hr_indent_exception_request_parent"
         />
 
         <record id="view_indent_request_exp_form" model="ir.ui.view">
