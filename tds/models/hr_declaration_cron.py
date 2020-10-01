@@ -17,7 +17,7 @@ class HrDeclarationCron(models.Model):
                     sum += lines.amount
             rec.rent_paid = round(sum)
             if rec.rent_paid > 100000.00:
-                rec.rent_paid_attach_files = Truez
+                rec.rent_paid_attach_files = True
             else:
                 rec.rent_paid_attach_files = False
             bs = 0.00
