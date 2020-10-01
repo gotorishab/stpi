@@ -41,7 +41,7 @@
         <record id="view_indent_request_exp_tree" model="ir.ui.view">
             <field name="name">view_indent_request_exp_tree</field>
             <field name="model">indent.request</field>
-            <field name="inherit_id" ref="indent_request.indent_request_tree_view"/>
+            <field name="inherit_id" ref="indent_request.employeeIndent_request_tree_view"/>
             <field name="arch" type="xml">
                  <field name="state" position="before">
                        <field name="main_exception_id"/>
