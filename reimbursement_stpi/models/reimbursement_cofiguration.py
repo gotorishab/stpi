@@ -111,20 +111,6 @@ class ReimbursementConfiguration(models.Model):
 
 
 
-    @api.model
-    def create(self, vals):
-        res = super(ReimbursementConfiguration, self).create(vals)
-        lst = []
-        serch_id = self.env['hr.payslip.paylevel'].search([('id', 'in', res.pay_level_ids.ids)])
-        for line in serch_id:
-            if line.grade_pay:
-                print('===============================', line.grade_pay)
-                lst.append(line.grade_pay)
-        listToStr = ' '.join([str(elem) for elem in lst])
-        res.grade_pay = str(listToStr)
-
-
-
 
     @api.constrains('pay_level_ids')
     def get_grade_pay(self):
