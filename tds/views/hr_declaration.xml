@@ -40,7 +40,7 @@
                              <field name="branch_id" readonly="1"/>
                              <field name="department_id" readonly="1"/>
                             <field name="date_range" options="{'no_create_edit': True, 'no_create': True}" attrs="{'readonly':[('state','!=','draft')], 'required':[('state','=','draft')]}" domain="[('tds', '=', True)]"/>
-                            <field name="rent_paid" widget="monetary" options="{'currency_field': 'currency_id'}" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="rent_paid" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                             <field name="rent_paid_attach_files" invisible="1"/>
                             <field name="pan_card" attrs="{'invisible':[('rent_paid_attach_files','!=',True)], 'required':[('rent_paid_attach_files','!=',False)]}"/>
                             <field name="owner_address" attrs="{'invisible':[('rent_paid_attach_files','!=',True)], 'required':[('rent_paid_attach_files','!=',False)]}"/>
