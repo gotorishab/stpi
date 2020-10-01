@@ -117,8 +117,8 @@ class ReimbursementConfiguration(models.Model):
         lst = []
         for line in res.pay_level_ids:
             lst.append(line.grade_pay)
-        listToStr = ' '.join([str(elem) for elem in lst])
-        res.grade_pay = str(listToStr)
+        # listToStr = ' '.join([str(elem) for elem in lst])
+        # res.grade_pay = str(listToStr)
 
 
 
