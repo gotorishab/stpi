@@ -117,7 +117,7 @@ class ReimbursementConfiguration(models.Model):
         lst = []
         serch_id = self.env['hr.payslip.paylevel'].search([('id', 'in', res.pay_level_ids.ids)])
         for line in serch_id:
-            if line:
+            if line.grade_pay:
                 print('===============================', line.grade_pay)
                 lst.append(line.grade_pay)
         listToStr = ' '.join([str(elem) for elem in lst])
