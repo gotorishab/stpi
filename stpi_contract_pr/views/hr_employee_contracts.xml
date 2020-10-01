@@ -44,14 +44,15 @@
                 <field name="schedule_pay" position="attributes">
                     <attribute name="invisible">1</attribute>
                 </field>
+                
+                <xpath expr="//group[@name='right_column']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
 
-                <!-- <xpath expr="//group[@name='duration_group']" position="replace"> 
-                    <group name="duration_group" string="Service History"/> 
-                </xpath> -->
+                <xpath expr="//group[@name='left_column']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
 
-                <!-- <xpath expr="//form/sheet/notebook/page/group/group[@name='duration_group']" position = "attributes">
-                    <attriute name = "name">Service History</attriute>
-                </xpath> -->
 
             </field>
         </record>
