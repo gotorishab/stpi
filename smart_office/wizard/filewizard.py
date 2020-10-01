@@ -32,9 +32,18 @@ class FileWizard(models.Model):
                 return {'domain': {'employee': [('job_id', '=', rec.jobposition.id)]}}
             elif rec.jobposition.id and rec.department.id:
                 return {'domain': {'employee': [('job_id', '=', rec.jobposition.id),('department_id', '=', rec.department.id)]}}
-            else:
-                # return True
+            elif (not rec.jobposition.id) and (not rec.department.id):
                 return {'domain': {'employee': ['|', ('job_id', '=', rec.jobposition.id),('department_id', '=', rec.department.id)]}}
+
+
+
+    @api.onchange('employee')
+    def _onchange_emp_get_eve(self):
+        for rec in self:
+            if not rec.department.id:
+                rec.department.id = rec.employee.department_id.id
+            if not rec.jobposition.id:
+                rec.jobposition.id = rec.employee.job_id.id
 
 
     def confirm_button(self):
