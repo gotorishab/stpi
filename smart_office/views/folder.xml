@@ -13,7 +13,7 @@
                     </header>
                     <sheet>
                         <div class="oe_button_box" name="button_box">
-                            <button name = "%(folder_forward_button_wizard_action_view)d" type = "action" string = "Forward" icon = "fa-forward" context = "{'default_defid': id}" attrs="{'invisible':['|',('state','=',closed),('current_owner_id','!=',uid)]}"/>
+                            <button name = "%(folder_forward_button_wizard_action_view)d" type = "action" string = "Forward" icon = "fa-forward" context = "{'default_defid': id}" attrs="{'invisible':['|',('state','=','closed'),('current_owner_id','!=',uid)]}"/>
                             <button name="deal_with_file" string="Deal with File" type="object" icon="fa-pencil-square-o" attrs="{'invisible':[('state','=', 'closed')]}"/>
                             <button type="object"
                                     class="oe_stat_button"
