@@ -110,20 +110,20 @@ class ReimbursementConfiguration(models.Model):
     open = fields.Boolean('Open')
 
 
-
-
-    @api.constrains('pay_level_ids')
-    def get_grade_pay(self):
-        for res in self:
-            lst = []
-            serch_id = self.env['hr.payslip.paylevel'].search([('id', 'in', res.pay_level_ids.ids)])
-            for line in serch_id:
-                if line.grade_pay:
-                    print('===============================', line.grade_pay)
-                    lst.append(line.grade_pay)
-            lst = list(set(lst))
-            listToStr = ' '.join([str(elem) for elem in lst])
-            res.grade_pay = str(listToStr)
+    #
+    #
+    # @api.constrains('pay_level_ids')
+    # def get_grade_pay(self):
+    #     for res in self:
+    #         lst = []
+    #         serch_id = self.env['hr.payslip.paylevel'].search([('id', 'in', res.pay_level_ids.ids)])
+    #         for line in serch_id:
+    #             if line.grade_pay:
+    #                 print('===============================', line.grade_pay)
+    #                 lst.append(line.grade_pay)
+    #         lst = list(set(lst))
+    #         listToStr = ' '.join([str(elem) for elem in lst])
+    #         res.grade_pay = str(listToStr)
 
 
 
