@@ -116,10 +116,11 @@ class ReimbursementConfiguration(models.Model):
         res = super(ReimbursementConfiguration, self).create(vals)
         lst = []
         for line in res.pay_level_ids:
-            print('===============================', line.grade_pay)
-            # lst.append(line.grade_pay)
-        # listToStr = ' '.join([str(elem) for elem in lst])
-        # res.grade_pay = str(listToStr)
+            if line:
+                print('===============================', line.grade_pay)
+                lst.append(line.grade_pay)
+        listToStr = ' '.join([str(elem) for elem in lst])
+        res.grade_pay = str(listToStr)
 
 
 
