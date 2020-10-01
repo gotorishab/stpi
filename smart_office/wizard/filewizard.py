@@ -41,9 +41,9 @@ class FileWizard(models.Model):
     def _onchange_emp_get_eve(self):
         for rec in self:
             if not rec.department.id:
-                rec.department.id = rec.employee.department_id.id
+                rec.department = rec.employee.department_id.id
             if not rec.jobposition.id:
-                rec.jobposition.id = rec.employee.job_id.id
+                rec.jobposition = rec.employee.job_id.id
 
 
     def confirm_button(self):
