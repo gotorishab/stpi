@@ -49,17 +49,17 @@
 <!--            </field>-->
 <!--        </record>-->
 
-        <record id="view_indent_request_exp_filter" model="ir.ui.view">
-            <field name="name">view_indent_request_exp_filter_s</field>
-            <field name="model">indent.request</field>
-            <field name="inherit_id" ref="indent_request.view_Indent_request_status_filter_report"/>
-            <field name="arch" type="xml">
-                <filter name="group_category" position="after">
-                    <separator orientation="vertical"/>
-                    <filter icon="terp-emblem-important" name="tofix" string="Blocked in draft" domain="[('main_exception_id','!=',False)]"/>
-                </filter>
-            </field>
-        </record>
+<!--        <record id="view_indent_request_exp_filter" model="ir.ui.view">-->
+<!--            <field name="name">view_indent_request_exp_filter_s</field>-->
+<!--            <field name="model">indent.request</field>-->
+<!--            <field name="inherit_id" ref="indent_request.view_Indent_request_status_filter_report"/>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <filter name="group_category" position="after">-->
+<!--                    <separator orientation="vertical"/>-->
+<!--                    <filter icon="terp-emblem-important" name="tofix" string="Blocked in draft" domain="[('main_exception_id','!=',False)]"/>-->
+<!--                </filter>-->
+<!--            </field>-->
+<!--        </record>-->
 
 
 
