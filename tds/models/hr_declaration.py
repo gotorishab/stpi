@@ -827,6 +827,17 @@ class HrDeclaration(models.Model):
         return res
 
 
+    @api.constrains('tax_payment_ids')
+    def tax_payment_onc(self):
+        for res in self:
+            sum = 0
+            for lines in res.tax_payment_ids:
+                sum += lines.amount
+            if sum != res.tax_payable_after_rebate:
+                raise ValidationError(
+                    "Tax payment lines amount must be equal to Tax payable after rebate")
+
+
 
     @api.multi
     def unlink(self):
