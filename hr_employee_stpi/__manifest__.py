@@ -24,6 +24,7 @@
         'views/employee_training_view.xml',
         'views/employee_stages_inherit.xml',
         'views/hr_leave_inherit.xml',
+        'views/payslip_view.xml',
         'report/employee_service_book.xml',
         'data/previous_occupation_organisation_type_demo.xml',
         'data/hr_leave_cron.xml',
