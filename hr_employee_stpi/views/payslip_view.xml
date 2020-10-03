@@ -21,8 +21,7 @@
                             string="Subordinate Payslips"
                         class="oe_stat_button"
                         icon="fa-money"
-                        type="action"
-                        groups="hr_payroll.group_hr_payroll_user">
+                        type="action">
                     </button>
                 </button>
         </field>
