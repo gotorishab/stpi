@@ -57,6 +57,9 @@
                 <attribute name= "string">First Half</attribute>
                 <attribute name= "attrs">{'invisible':[('half_pay_allowed','!=',True)], 'readonly':[('state','not in',["draft","confirm"])]}</attribute>
             </xpath>
+            <xpath expr="//field[@name='request_unit_half']" position="attributes">
+                <attribute name= "attrs">{'invisible':[('half_pay_allowed','!=',True)], 'readonly':[('state','not in',["draft","confirm"])]}</attribute>
+            </xpath>
             
             <field name="holiday_status_id" position="after">
                 <field name="ltc"/>
