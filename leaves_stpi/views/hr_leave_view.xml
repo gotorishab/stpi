@@ -22,6 +22,7 @@
                 <field name="commuted_leave" string="Commuted Type"/>
                 <field name="manager_designation_id"/>
                 <field name="pending_since"/>
+                <field name="commuted_leave_selection" invisible="1"/>
             </field>
             <field name="duration_display" position="after">
                 <field name="no_of_days_display_half" string="Requested(Days)(If Commuted)" attrs="{'invisible':[('commuted_leave_selection','=','No')]}"/>
