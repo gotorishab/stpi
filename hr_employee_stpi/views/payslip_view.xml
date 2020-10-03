@@ -6,7 +6,7 @@
         <field name="name">Payslips</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
-        <field name="domain">['|', ('employee_id.user_id', '=', user.id), ('employee_id.parent_id.user_id', '=', user.id)]</field>
+        <field name="domain">['|', ('employee_id', '=', active_id), ('employee_id.parent_id', '=', active_id)]</field>
     </record>
 
     <!-- Employee View -->
