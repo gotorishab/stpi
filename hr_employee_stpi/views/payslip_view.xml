@@ -7,7 +7,7 @@
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="domain">['|', ('employee_id', '=', active_id), ('employee_id.parent_id', '=', active_id)]</field>
-        <field name="context">{'search_default_employee_id': [active_id]}</field>
+        <field name="context">{'group_by':'employee_id'}</field>
     </record>
 
     <!-- Employee View -->
