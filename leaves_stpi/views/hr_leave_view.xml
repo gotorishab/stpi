@@ -55,6 +55,7 @@
             </xpath>
             <xpath expr="//label[@for='request_unit_half']" position="attributes">
                 <attribute name= "string">First Half</attribute>
+                <attribute name= "attrs">{'invisible':[('half_pay_allowed','!=',True)], 'readonly':[('state','not in',["draft","confirm"])]}</attribute>
             </xpath>
             
             <field name="holiday_status_id" position="after">
@@ -98,7 +99,7 @@
                 <field name="half_pay_allowed" invisible="1"/>
                 <label for="request_unit_half_2"
                     attrs="{'readonly': [('state', 'not in', ('draft', 'confirm'))],'invisible':[('allow_request_unit_half_2','=',True),('half_pay_allowed','!=',True)]}"/>
-                <field name="request_unit_half_2" attrs="{'invisible':[('allow_request_unit_half_2','=',True),('half_pay_allowed','!=',True)]}"/>
+                <field name="request_unit_half_2" attrs="{'invisible':['|',('allow_request_unit_half_2','=',True),('half_pay_allowed','!=',True)]}"/>
             </xpath>
             
             <xpath expr="//field[@name='request_date_from_period']" position="attributes">

@@ -421,6 +421,8 @@ class HrLeave(models.Model):
         if self.holiday_status_id:
             if self.holiday_status_id.half_pay_allowed == True:
                 self.half_pay_allowed = True
+            else:
+                self.half_pay_allowed = False
             print('===========================half_pay_allowed====================================', self.half_pay_allowed)
             if self.holiday_status_id.maximum_allow_leave != 0:
                 if self.holiday_status_id.maximum_allow_leave < self.number_of_days_display:
