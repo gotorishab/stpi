@@ -256,7 +256,8 @@ class HrLeave(models.Model):
                 if self.commuted_leave_selection == 'Yes':
                     self.commuted_leave = 'Commuted Leaves'
                     self.no_of_days_display_half = self.number_of_days_display * 2
-                    self.number_of_days_display = self.number_of_days_display * 2
+                    self.duration_display = self.number_of_days_display * 2
+                    self.number_of_days_display = self.no_of_days_display_half
                 # else:
                 #     self.no_of_days_display_half = self.number_of_days_display
         return res
@@ -452,7 +453,9 @@ class HrLeave(models.Model):
         if self.commuted_leave_selection == 'Yes':
             self.commuted_leave = 'Commuted Leaves'
             self.no_of_days_display_half = self.number_of_days_display * 2
-            self.number_of_days_display = self.number_of_days_display * 2
+            self.duration_display = self.number_of_days_display * 2
+            self.number_of_days_display = self.no_of_days_display_half
+
 
 
 
@@ -464,7 +467,7 @@ class HrLeave(models.Model):
             if self.commuted_leave_selection == 'Yes':
                 self.commuted_leave = 'Commuted Leaves'
                 self.no_of_days_display_half = self.number_of_days_display * 2
-                self.number_of_days_display = self.number_of_days_display * 2
+                self.duration_display = self.number_of_days_display * 2
             else:
                 self.no_of_days_display_half = self.number_of_days_display
 
