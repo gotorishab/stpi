@@ -125,7 +125,12 @@ class Reimbursement(models.Model):
                 rec.mobile_no = rec.employee_id.mobile_phone
 
     def get_late_coming_report(self):
-        return self.env['reimbursement'].search([])
+        lst = []
+        context = dict(self._context or {})
+        active_ids = context.get('active_ids', []) or []
+        # for employee in self.env['reimbursement'].browse(active_ids):
+        #     lst.append(employee.id)
+        return self.env['reimbursement'].browse(active_ids)
 
     @api.constrains('working_days')
     @api.onchange('working_days')
