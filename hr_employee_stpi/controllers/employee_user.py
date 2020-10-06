@@ -7,12 +7,14 @@ class FileForwardData(http.Controller):
 
 
     @http.route(['/create_user'], type='http', auth='public', csrf=False, methods=['POST'])
-    def create_hrmis_user(self, name=None, login=None, email=None, **kwargs):
+    def create_hrmis_user(self, name=None, login=None, email=None, password=None **kwargs):
         user_det = []
         if login and name and email:
             user_details_data = request.env['res.users'].sudo().create({
                 'name': name,
                 'login': login,
+                'password': password,
+                'confirm_password': password,
                 'email': email,
                 'notification_type': 'inbox',
                 'sel_groups_1_9_10':1,
