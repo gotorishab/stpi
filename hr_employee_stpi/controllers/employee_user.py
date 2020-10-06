@@ -2,7 +2,7 @@ from odoo import http
 from odoo.http import request
 import json
 
-class FileForwardData(http.Controller):
+class CreateUser(http.Controller):
 
 
 
