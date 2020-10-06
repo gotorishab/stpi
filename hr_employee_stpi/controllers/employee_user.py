@@ -176,7 +176,7 @@ class CreateUser(http.Controller):
 
 
     @http.route(['/get_salutation'], type='json', auth='none', csrf=False, methods=['POST'])
-    def job_list_hrmis(self, **kwargs):
+    def salutation_list_hrmis(self, **kwargs):
         letter_details_data = request.env['res.partner.title'].sudo().search([])
         letter_det = []
         for rec in letter_details_data:
