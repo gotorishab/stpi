@@ -130,6 +130,7 @@ class Reimbursement(models.Model):
         active_ids = context.get('active_ids', []) or []
         for employee in self.env['reimbursement'].browse(active_ids):
             lst.append(employee.id)
+        print('===========lst===============',lst)
         return self.env['reimbursement'].search([('id', 'in', lst)])
 
     @api.constrains('working_days')
