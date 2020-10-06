@@ -94,9 +94,9 @@ class WizardLateComing(models.TransientModel):
                     ('branch_id', 'in', rec.branch_ids.ids),
                     ('id', 'in', my_id),
                 ],
-                # 'context': {
-                #                 'name': 'Sunday',
-                #             }
+                'context': {
+                                'search_default_is_not_sat_sun': 1,
+                            }
                 }
 
 
