@@ -253,15 +253,15 @@ class HrLeave(models.Model):
                     print('====================================================TTTTTTTTTTT')
                     res.number_of_days = (res.request_date_to - res.request_date_from).days + 1
                     res.number_of_days_display = (res.request_date_to - res.request_date_from).days + 1
-                if res.commuted_leave_selection == 'Yes':
-                    res.commuted_leave = 'Commuted Leaves'
-                    res.no_of_days_display_half = res.number_of_days_display * 2
-                    res.leave_dur_tree = res.no_of_days_display_half * 2
-                    res.duration_display = res.number_of_days_display * 2
-                    res.number_of_days_display = res.no_of_days_display_half
-
-                else:
-                    res.leave_dur_tree = res.number_of_days_display
+                # if res.commuted_leave_selection == 'Yes':
+                #     res.commuted_leave = 'Commuted Leaves'
+                #     res.no_of_days_display_half = res.number_of_days_display * 2
+                #     res.leave_dur_tree = res.no_of_days_display_half * 2
+                #     res.duration_display = res.number_of_days_display * 2
+                #     res.number_of_days_display = res.no_of_days_display_half
+                #
+                # else:
+                #     res.leave_dur_tree = res.number_of_days_display
         return res
 
     @api.constrains('request_date_from', 'request_date_to', 'employee_id')
