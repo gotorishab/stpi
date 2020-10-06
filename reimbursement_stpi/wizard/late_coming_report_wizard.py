@@ -71,7 +71,7 @@ class WizardReimBursementReport(models.TransientModel):
                 select ca.reimbursement_sequence,ca.employee_id,ca.job_id,ca.branch_id,ca.department_id,ca.claimed_amount,ca.net_amount,ca.working_days,ca.state
                 from reimbursement as ca
                 where
-                ca.id in '{0}'
+                ca.id in {0}
      
                 """.format(tuple(lst))
 
