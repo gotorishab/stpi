@@ -25,40 +25,40 @@
                         </thead>
                         <tbody>
                             <t t-set="i" t-value="1"/>
-<!--                            <t t-foreach="o.get_late_coming_report()" t-as="ol">-->
+                            <t t-foreach="o.get_late_coming_report()" t-as="ol">
                                 <tr colspan="10">
                                     <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;" >
-                                        <span t-esc="o.reimbursement_sequence"/>
+                                        <span t-esc="ol.reimbursement_sequence"/>
                                     </td>
                                     <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">
-                                        <span t-esc="o.employee_id.name"/>
+                                        <span t-esc="ol.employee_id.name"/>
                                     </td>
                                     <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">
-                                        <span t-esc="o.job_id.name"/>
+                                        <span t-esc="ol.job_id.name"/>
                                     </td>
                                     <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">
-                                        <span t-esc="o.branch_id.name"/>
+                                        <span t-esc="ol.branch_id.name"/>
                                     </td>
                                     <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">
-                                        <span t-esc="o.department_id.name"/>
+                                        <span t-esc="ol.department_id.name"/>
                                     </td>
                                     <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">
-                                        <span t-esc="o.name"/>
+                                        <span t-esc="ol.name"/>
                                     </td>
                                     <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">
-                                        <span t-esc="o.working_days"/>
+                                        <span t-esc="ol.working_days"/>
                                     </td>
                                     <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">
-                                        <span t-esc="o.claimed_amount"/>
+                                        <span t-esc="ol.claimed_amount"/>
                                     </td>
                                     <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">
-                                        <span t-esc="o.net_amount"/>
+                                        <span t-esc="ol.net_amount"/>
                                     </td>
                                     <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">
-                                        <span t-esc="o.state"/>
+                                        <span t-esc="ol.state"/>
                                     </td>
                                 </tr>
-<!--                            </t>-->
+                            </t>
 
                         </tbody>
                     </table>
