@@ -128,6 +128,7 @@ class Reimbursement(models.Model):
         lst = []
         context = dict(self._context or {})
         active_ids = context.get('active_ids', []) or []
+        print('===========ids===============', active_ids)
         for employee in self.env['reimbursement'].browse(active_ids):
             print('===========id===============', employee.id)
             lst.append(employee.id)
