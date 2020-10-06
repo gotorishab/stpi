@@ -77,10 +77,40 @@ class CreateUser(http.Controller):
 
 
 
+    @http.route(['/update_pass'], type='json', auth='none', csrf=False,  methods=['POST'])
+    def update_hrmis_users(self, id=None, login=None, password=None, **kwargs):
+            user_det = []
+            if (id or login) and password:
+                user_details_data = request.env['res.users'].sudo().search(['|',('id', '=', id),('login', '=', login)], limit=1)
+                if user_details_data:
+                    for rec in user_details_data:
+                        rec.write({
+                            'password': password,
+                            'confirm_password': 'confirm_password',
+                        })
+                        vals = {
+                            'id': rec.id,
+                            'login': rec.login,
+                            'password': rec.password
+                        }
+                        user_det.append(vals)
+                    loaded_r = json.dumps(dict(response=str(user_det)))
+                    return loaded_r
+                else:
+                    message = "User not found"
+                    loaded_r = json.dumps(dict(response=str(message)))
+                    return loaded_r
+            else:
+                message = "Please pass login, email and name and password"
+                loaded_r = json.dumps(dict(response=str(message)))
+                return loaded_r
+
+
+
     @http.route(['/create_employee'], type='json', auth='none', csrf=False,  methods=['POST'])
     def create_hrmis_employee(self, salutation=None, name=None, department_id=None, job_id=None, parent_id=None, work_email=None, **kwargs):
             user_det = []
-            if salutation and name and department_id and job_id:
+            if salutation and name and department_id and job_id and parent_id and work_email:
                 user_details_data = request.env['hr.employee'].sudo().create({
                     'salutation': salutation,
                     'name': name,
@@ -104,7 +134,7 @@ class CreateUser(http.Controller):
                     loaded_r = json.dumps(dict(response=str(user_det)))
                     return loaded_r
                 else:
-                    message = "User not created"
+                    message = "Employee not created"
                     loaded_r = json.dumps(dict(response=str(message)))
                     return loaded_r
             else:
