@@ -1,27 +1,25 @@
 
 <odoo>
 
-<template id="late_coming_template_id">
+<template id="reimbusement_rep_templtate_id">
     <t t-call="web.html_container">
         <t t-foreach="docs" t-as="o">
             <t t-call="web.internal_layout">
                 <div class="page">
-                    <h4><center>Late Coming Report</center></h4>
-
-
+                    <h4><center>Reimbursement Report</center></h4>
 
                     <table cellspacing="0" style="width:1000px;">
                         <thead>
                             <tr>
-                                <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>Employee Code</strong></th>
-                                <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>Employee</strong></th>
+                                <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>Reimbursement number</strong></th>
+                                <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>Requested By</strong></th>
+                                <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>Functional Designation</strong></th>
+                                <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>Branch</strong></th>
                                 <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>Department</strong></th>
-                                <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>ChechIn</strong></th>
-                                <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>CheckOut</strong></th>
-                                <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>Duty Hours</strong></th>
-                                <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>Actual Duty Hours</strong></th>
-                                <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>Late Coming Min</strong></th>
-                                <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>Roster</strong></th>
+                                <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>Number of days</strong></th>
+                                <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>Claimed Amount</strong></th>
+                                <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>Eligible Amount</strong></th>
+                                <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>Status</strong></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -29,31 +27,34 @@
                             <t t-foreach="o.get_late_coming_report()" t-as="ol">
                                 <tr colspan="9">
                                     <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;" >
-                                        <span t-esc="ol.emp_code"/>
+                                        <span t-esc="ol.reimbursement_sequence"/>
                                     </td>
                                     <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">
-                                        <span t-esc="ol.emp_id.name"/>
+                                        <span t-esc="ol.employee_id.name"/>
                                     </td>
                                     <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">
-                                        <span t-esc="ol.dept_id.name"/>
+                                        <span t-esc="ol.job_id.name"/>
                                     </td>
                                     <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">
-                                        <span t-esc="ol.get_time_without_tz(ol.check_in)"/>
-                                    </td>
-                                    <td class="text-right" style="border: 1px solid black;font-size:15px;width=1000px;">
-                                        <span t-esc="ol.get_time_without_tz(ol.check_out)"/>
-                                    </td>
-                                    <td class="text-right" style="border: 1px solid black;font-size:15px;width=1000px;">
-                                        <span t-esc="ol.value_to_html(ol.duty_hr)"/>
-                                    </td>
-                                    <td class="text-right" style="border: 1px solid black;font-size:15px;width=1000px;">
-                                        <span t-esc="ol.value_to_html(ol.actual_duty_hr) "/>
+                                        <span t-esc="ol.branch_id.name"/>
                                     </td>
                                     <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">
-                                        <span t-esc="ol.value_to_html(ol.late_coming_min)"/>
+                                        <span t-esc="ol.department_id.name"/>
                                     </td>
                                     <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">
-                                        <span t-esc="ol.name_get(ol.roster_id)"/>
+                                        <span t-esc="ol.name"/>
+                                    </td>
+                                    <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">
+                                        <span t-esc="ol.working_days"/>
+                                    </td>
+                                    <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">
+                                        <span t-esc="ol.claimed_amount"/>
+                                    </td>
+                                    <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">
+                                        <span t-esc="ol.net_amount"/>
+                                    </td>
+                                    <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;">
+                                        <span t-esc="ol.state"/>
                                     </td>
                                 </tr>
                             </t>
@@ -67,12 +68,12 @@
 </template>
 
 
-    <report id="late_coming_report_reportview"
+    <report id="reimbursement_model_report_reportview"
             model="late.coming.report"
             string="Late Coming Report"
             report_type="qweb-pdf"
-            name="curated_report.late_coming_template_id"
-            file="curated_report.late_coming_template_id"
+            name="reimbursement_stpi.reimbusement_rep_templtate_id"
+            file="reimbursement_stpi.reimbusement_rep_templtate_id"
             />
 </odoo>
 

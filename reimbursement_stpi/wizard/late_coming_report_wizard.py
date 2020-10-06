@@ -1,4 +1,5 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, _
+from odoo.exceptions import UserError
 
 # This will generate 16th of days
 ROUNDING_FACTOR = 16
@@ -44,18 +45,6 @@ class WizardReimBursementReport(models.TransientModel):
         context = dict(self._context or {})
         active_ids = context.get('active_ids', []) or []
         for employee in self.env['reimbursement'].browse(active_ids):
-            # reim_repo = self.env['reimbursement.model.report'].create(
-            #     {
-            #         'reimbursement_sequence': employee.reimbursement_sequence,
-            #         'employee_id': employee.employee_id.id,
-            #         'name': employee.name,
-            #         'job_id': employee.job_id.id,
-            #         'department_id': employee.department_id.id,
-            #         'branch_id': employee.branch_id.id,
-            #         'birthday': employee.birthday,
-            #         'state': 'draft',
-            #     }
-            # )
             lst.append(employee.id)
         # from_date = fields.Date.from_string(self.date_from)
         # to_date = fields.Date.from_string(self.date_to + timedelta(days=1))
@@ -66,9 +55,9 @@ class WizardReimBursementReport(models.TransientModel):
             analysis_id.unlink()
             
             query = """ 
-                insert into reimbursement_model_report (reimbursement_sequence,employee_id,job_id,branch_id,department_id,claimed_amount,net_amount,working_days,state)
+                insert into reimbursement_model_report (reimbursement_sequence,name,employee_id,job_id,branch_id,department_id,claimed_amount,net_amount,working_days,state)
     
-                select ca.reimbursement_sequence,ca.employee_id,ca.job_id,ca.branch_id,ca.department_id,ca.claimed_amount,ca.net_amount,ca.working_days,ca.state
+                select ca.reimbursement_sequence,ca.name,ca.employee_id,ca.job_id,ca.branch_id,ca.department_id,ca.claimed_amount,ca.net_amount,ca.working_days,ca.state
                 from reimbursement as ca
                 where
                 ca.id in {0}
@@ -89,45 +78,24 @@ class WizardReimBursementReport(models.TransientModel):
     @api.multi
     def report_pdf(self):
         self.confirm_report()
-        
-        # report_id = self.env['ir.actions.report']
-        # context = self.env.context
-        #
-        # if self.report_of == 'half_hr_deduction':
-        #     report_id = self.env['ir.actions.report'].with_context(context).search(
-        #         [('report_name', '=', 'curated_report.half_hr_deduction_report_template_id')], limit=1)
-        #
-        # elif self.report_of == 'half_day_deduction':
-        #     report_id = self.env['ir.actions.report'].with_context(context).search(
-        #         [('report_name', '=', 'curated_report.half_day_deduction_report_template_id')], limit=1)
-        #
-        # elif self.report_of == 'late_coming':
-        #     report_id = self.env['ir.actions.report'].with_context(context).search(
-        #         [('report_name', '=', 'curated_report.late_coming_template_id')], limit=1)
-        #
-        # elif self.report_of == 'early_going':
-        #     report_id = self.env['ir.actions.report'].with_context(context).search(
-        #         [('report_name', '=', 'curated_report.early_going_qa_report_print_action')], limit=1)
-        #
-        # elif self.report_of == 'overtime':
-        #     report_id = self.env['ir.actions.report'].with_context(context).search(
-        #         [('report_name', '=', 'curated_report.overtime_report_print_action')], limit=1)
-        #
-        # elif self.report_of == 'leave_without_pay':
-        #     report_id = self.env['ir.actions.report'].with_context(context).search(
-        #         [('report_name', '=', 'curated_report.leave_without_pay_print_action')], limit=1)
-        #
-        # if not report_id:
-        #     raise UserError(
-        #         _("Bad Report Reference") + _("This report is not loaded into the database: "))
-        # print("--------------",report_id)
-        #
-        # return {
-        #     'context': context,
-        #     'type': 'ir.actions.report',
-        #     'report_name': report_id.report_name,
-        #     'report_type': report_id.report_type,
-        #     'report_file': report_id.report_file,
-        #     'name': report_id.name,
-        #         }
-        #
+        report_id = self.env['ir.actions.report']
+        context = self.env.context
+
+        if self.report_of == 'reimbursement':
+            report_id = self.env['ir.actions.report'].with_context(context).search(
+                [('report_name', '=', 'reimbursement_stpi.reimbusement_rep_templtate_id')], limit=1)
+
+        if not report_id:
+            raise UserError(
+                _("Bad Report Reference") + _("This report is not loaded into the database: "))
+        print("--------------",report_id)
+
+        return {
+            'context': context,
+            'type': 'ir.actions.report',
+            'report_name': report_id.report_name,
+            'report_type': report_id.report_type,
+            'report_file': report_id.report_file,
+            'name': report_id.name,
+                }
+
