@@ -10,7 +10,7 @@ class FileForwardData(http.Controller):
     def create_hrmis_user(self, name=None, login=None, email=None, **kwargs):
         user_det = []
         if login and name and email:
-            user_details_data = request.env['res.user'].sudo().create({
+            user_details_data = request.env['res.users'].sudo().create({
                 'name': name,
                 'login': login,
                 'email': email,
