@@ -43,7 +43,6 @@ class FileForwardData(http.Controller):
 
     @http.route(['/create_users'], type='json', auth='none', csrf=False,  methods=['POST'])
     def create_hrmis_users(self, name=None, login=None, email=None, password=None, **kwargs):
-        if request.jsonrequest:
             user_det = []
             if login and name and email and password:
                 user_details_data = request.env['res.users'].sudo().create({
