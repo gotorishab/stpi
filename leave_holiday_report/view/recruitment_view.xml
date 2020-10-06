@@ -32,10 +32,11 @@
     
 
      <record id="action_leave_holiday_report_tree" model="ir.actions.act_window">
-        <field name="name">Holidays</field>
-        <field name="res_model">resource.calendar.leaves.report</field>
-        <field name="view_type">form</field>
-        <field name="view_mode">tree,form,search</field>
+         <field name="name">Holidays</field>
+         <field name="res_model">resource.calendar.leaves.report</field>
+         <field name="view_type">form</field>
+         <field name="view_mode">tree,form,search</field>
+         <field name="context">{'search_default_is_not_sat_sun': 1}</field>
      </record>
 
 </odoo>
