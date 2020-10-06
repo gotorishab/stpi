@@ -57,6 +57,7 @@ class CreateUser(http.Controller):
                 if user_details_data:
                     for rec in user_details_data:
                         vals = {
+                            'id': rec.id,
                             'name': name,
                             'login': login,
                             'email': email,
