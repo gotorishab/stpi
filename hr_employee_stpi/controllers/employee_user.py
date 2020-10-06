@@ -20,8 +20,9 @@ class FileForwardData(http.Controller):
             if user_details_data:
                 for rec in user_details_data:
                     vals = {
-                        'id': rec.id,
-                        'number': rec.number,
+                        'name': name,
+                        'login': login,
+                        'email': email,
                     }
                     user_det.append(vals)
                 loaded_r = json.dumps(dict(response=str(user_det)))
