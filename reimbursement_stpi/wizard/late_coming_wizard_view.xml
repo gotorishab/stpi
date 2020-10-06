@@ -14,7 +14,7 @@
                     </group>
                 </group>
                 <footer>
-                    <button name="confirm_report" string="Confirm" type="object" class="btn-primary"/>
+<!--                    <button name="confirm_report" string="Confirm" type="object" class="btn-primary"/>-->
                     <button name="report_pdf" string="Print" type="object" class="oe_highlight"/>
                     <button string="Cancel" class="btn-default" special="cancel"/>
                 </footer>
