@@ -16,6 +16,7 @@
                                 <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>Functional Designation</strong></th>
                                 <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>Branch</strong></th>
                                 <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>Department</strong></th>
+                                <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>Reimbursement Type</strong></th>
                                 <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>Number of days</strong></th>
                                 <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>Claimed Amount</strong></th>
                                 <th class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;"><strong>Eligible Amount</strong></th>
@@ -23,9 +24,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <t t-set="i" t-value="1"/>
+<!--                            <t t-set="i" t-value="1"/>-->
                             <t t-foreach="o.get_late_coming_report()" t-as="ol">
-                                <tr colspan="9">
+                                <tr colspan="10">
                                     <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;" >
                                         <span t-esc="ol.reimbursement_sequence"/>
                                     </td>
