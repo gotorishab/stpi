@@ -27,7 +27,7 @@ class LateComingReport(models.Model):
     branch_id = fields.Many2one('res.branch', string='Branch', store=True, track_visibility='always')
     department_id = fields.Many2one('hr.department', string='Department', store=True, track_visibility='always')
     claimed_amount = fields.Float(string='Claimed Amount', track_visibility='always')
-    net_amount = fields.Float(string='Eligible Amount', compute='compute_net_amount', track_visibility='always')
+    net_amount = fields.Float(string='Eligible Amount', track_visibility='always')
     working_days = fields.Char(string='Number of days: ', track_visibility='always')
     state = fields.Selection([('draft', 'Draft'), ('waiting_for_approval', 'Submitted'), ('forwarded', 'Forwarded'),
                               ('approved', 'Approved'), ('rejected', 'Rejected')
