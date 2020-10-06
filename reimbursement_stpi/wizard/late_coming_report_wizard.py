@@ -73,7 +73,7 @@ class WizardReimBursementReport(models.TransientModel):
                 where
                 ca.id in '{0}'
      
-                """.format(lst)
+                """.format(tuple(lst))
 
             self.env.cr.execute(query)
             return {
