@@ -142,7 +142,7 @@ class CreateUser(http.Controller):
                 loaded_r = json.dumps(dict(response=str(message)))
                 return loaded_r
 
-    @http.route(['/department_list'], type='json', auth='none', csrf=False, methods=['POST'])
+    @http.route(['/department_list'], type='json', auth='none', csrf=False, methods=['GET'])
     def department_list_hrmis(self, **kwargs):
         letter_details_data = request.env['hr.department'].sudo().search([])
         letter_det = []
@@ -159,7 +159,7 @@ class CreateUser(http.Controller):
         loaded_r = json.dumps(dict(response=str(letter_det)))
         return loaded_r
 
-    @http.route(['/job_id_list'], type='json', auth='none', csrf=False, methods=['POST'])
+    @http.route(['/job_id_list'], type='json', auth='none', csrf=False, methods=['GET'])
     def job_list_hrmis(self, **kwargs):
         letter_details_data = request.env['hr.job'].sudo().search([])
         letter_det = []
