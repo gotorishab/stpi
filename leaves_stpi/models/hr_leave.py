@@ -245,7 +245,6 @@ class HrLeave(models.Model):
                     raise ValidationError(_(
                         'You are not allowed to take leave as maximum allowed RH should be {name}'.format(name=res.employee_id.resource_calendar_id.max_allowed_rh)))
 
-
             if res.holiday_status_id.leave_type == 'Half Pay Leave':
                 res.number_of_days_display = res.no_of_days_display_half
             if res.holiday_status_id:

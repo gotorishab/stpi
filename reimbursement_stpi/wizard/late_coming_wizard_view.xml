@@ -1,0 +1,126 @@
+<odoo>
+
+    <record id="form_view_reimbursement_report_wizard" model="ir.ui.view">
+        <field name="name">Reimbursement Report</field>
+        <field name="model">reimbursement.report</field>
+        <field name="arch" type="xml">
+            <form string="Reimbursement Report">
+                <group>
+                    <group>
+<!--                        <field name="type" widget="radio"/>-->
+<!--                        <field name="emp_ids"  widget="many2many_tags" attrs="{'invisible':[('type','=','by_dept')]}" options="{'no_create_edit':True}"/>-->
+<!--                        <field name="dept_ids" widget="many2many_tags" attrs="{'invisible':[('type','=','by_emp')]}" options="{'no_create_edit':True}"/>-->
+                        <field name="report_of" readonly="1"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="confirm_report" string="Confirm" type="object" class="btn-primary"/>
+                    <button name="report_pdf" string="Print" type="object" class="oe_highlight"/>
+                    <button string="Cancel" class="btn-default" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="reimbursement_report_action_wizard" model="ir.actions.act_window">
+        <field name="name">Reimbursement Report</field>
+        <field name="res_model">reimbursement.report</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{'default_report_of':'reimbursement_report'}</field>
+    </record>
+    
+    
+<!--    <menuitem id="hr_attendance.menu_hr_attendance_report" name="Reporting" parent="hr_attendance.menu_hr_attendance_root" sequence="30" groups="hr_attendance.group_hr_attendance_user" />-->
+<!--    <menuitem id="menu_hr_attendance" name="Attendance" parent="hr_attendance.menu_hr_attendance_report" sequence="1" groups="hr_attendance.group_hr_attendance_user" action="hr_attendance.hr_attendance_action_graph"/>-->
+<!--    <menuitem id="menu_late_coming_report" name="Late Coming Report" parent="hr_attendance.menu_hr_attendance_report" sequence="1" action="late_coming_action_wizard"/>-->
+<!--&lt;!&ndash;    &ndash;&gt;-->
+<!--    <record id="half_hr_deduction_action_wizard" model="ir.actions.act_window">-->
+<!--        <field name="name">Half Hour Deduction Report</field>-->
+<!--        <field name="res_model">reimbursement.report</field>-->
+<!--        <field name="view_type">form</field>-->
+<!--        <field name="view_mode">form</field>-->
+<!--        <field name="target">new</field>-->
+<!--        <field name="context">{'default_report_of':'half_hr_deduction'}</field>-->
+<!--    </record>-->
+<!--    -->
+<!--    <menuitem id="menu_half_hr_deduction_report" name="Half Hour Deduction Report" parent="hr_attendance.menu_hr_attendance_report" sequence="2" action="half_hr_deduction_action_wizard"/>-->
+<!--    -->
+<!--    -->
+    
+    
+<!--    <record id="half_day_deduction_action_wizard" model="ir.actions.act_window">-->
+<!--        <field name="name">Half Day Deduction Report</field>-->
+<!--        <field name="res_model">wizard.late.coming</field>-->
+<!--        <field name="view_type">form</field>-->
+<!--        <field name="view_mode">form</field>-->
+<!--        <field name="target">new</field>-->
+<!--        <field name="context">{'default_report_of':'half_day_deduction'}</field>-->
+<!--    </record>-->
+<!--    -->
+<!--    <menuitem id="menu_half_day_deduction_report" name="Half Day Deduction Report" parent="hr_attendance.menu_hr_attendance_report" sequence="3" action="half_day_deduction_action_wizard"/>-->
+<!--    -->
+<!--    <record id="early_going_action_wizard" model="ir.actions.act_window">-->
+<!--        <field name="name">Early Going Report</field>-->
+<!--        <field name="res_model">wizard.late.coming</field>-->
+<!--        <field name="view_type">form</field>-->
+<!--        <field name="view_mode">form</field>-->
+<!--        <field name="target">new</field>-->
+<!--        <field name="context">{'default_report_of':'early_going'}</field>-->
+<!--    </record>-->
+<!--    -->
+<!--    <menuitem id="menu_early_going_report" name="Early Going Report" parent="hr_attendance.menu_hr_attendance_report" sequence="4" action="early_going_action_wizard"/>-->
+<!--    -->
+    
+<!--    -->
+<!--    <record id="overtime_action_wizard" model="ir.actions.act_window">-->
+<!--        <field name="name">Overtime Report</field>-->
+<!--        <field name="res_model">wizard.late.coming</field>-->
+<!--        <field name="view_type">form</field>-->
+<!--        <field name="view_mode">form</field>-->
+<!--        <field name="target">new</field>-->
+<!--        <field name="context">{'default_report_of':'overtime'}</field>-->
+<!--    </record>-->
+<!--    -->
+<!--    <menuitem id="menu_overtime_report" name="Overtime Report" parent="hr_attendance.menu_hr_attendance_report" sequence="5" action="overtime_action_wizard"/>-->
+<!--    -->
+    
+    
+    
+<!--    <record id="leave_without_pay_action_wizard" model="ir.actions.act_window">-->
+<!--        <field name="name">Leave Without Pay</field>-->
+<!--        <field name="res_model">wizard.late.coming</field>-->
+<!--        <field name="view_type">form</field>-->
+<!--        <field name="view_mode">form</field>-->
+<!--        <field name="target">new</field>-->
+<!--        <field name="context">{'default_report_of':'leave_without_pay'}</field>-->
+<!--    </record>-->
+<!--    -->
+<!--    <menuitem id="menu_without_pay_report" name="Leave Without Pay" parent="hr_attendance.menu_hr_attendance_report" sequence="6" action="leave_without_pay_action_wizard"/>-->
+
+
+
+
+<!--    <record id="lwp_exception_action_wizard" model="ir.actions.act_window">-->
+<!--        <field name="name">LWP Exception</field>-->
+<!--        <field name="res_model">wizard.late.coming</field>-->
+<!--        <field name="view_type">form</field>-->
+<!--        <field name="view_mode">form</field>-->
+<!--        <field name="target">new</field>-->
+<!--        <field name="context">{'default_report_of':'lwp_exception'}</field>-->
+<!--    </record>-->
+
+<!--    <menuitem id="menu_lwp_exception_report" name="LWP Exception" parent="hr_attendance.menu_hr_attendance_report" sequence="7" action="lwp_exception_action_wizard"/>-->
+
+
+
+    <act_window id="action_get_reimbursement_report"
+            multi="True"
+            key2="client_action_multi" name="Print"
+                res_model="reimbursement.report" src_model="reimbursement"
+            view_mode="form" target="new" view_type="form" />
+
+
+
+</odoo>
