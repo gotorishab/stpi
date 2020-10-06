@@ -71,7 +71,6 @@ class HrLeave(models.Model):
     ltc = fields.Boolean(string='For LTC?')
     ltc_apply_done = fields.Boolean(string='LTC Taken')
     no_of_days_display_half = fields.Float(string="Duartion Half")
-    leave_dur_tree = fields.Float(string="Requested(Days)")
     holiday_half_pay = fields.Boolean(string="Half Pay Holiday")
     pre_post_leaves_ids = fields.One2many('hr.leave.pre.post', 'pre_post_leave', string='Leaves', readonly=True)
     commuted_leave = fields.Text(string="Leave Type")
@@ -253,15 +252,13 @@ class HrLeave(models.Model):
                     print('====================================================TTTTTTTTTTT')
                     res.number_of_days = (res.request_date_to - res.request_date_from).days + 1
                     res.number_of_days_display = (res.request_date_to - res.request_date_from).days + 1
-                # if res.commuted_leave_selection == 'Yes':
-                #     res.commuted_leave = 'Commuted Leaves'
-                #     res.no_of_days_display_half = res.number_of_days_display * 2
-                #     res.leave_dur_tree = res.no_of_days_display_half * 2
-                #     res.duration_display = res.number_of_days_display * 2
-                #     res.number_of_days_display = res.no_of_days_display_half
-                #
+                if self.commuted_leave_selection == 'Yes':
+                    self.commuted_leave = 'Commuted Leaves'
+                    self.no_of_days_display_half = self.number_of_days_display * 2
+                    self.duration_display = self.number_of_days_display * 2
+                    self.number_of_days_display = self.no_of_days_display_half
                 # else:
-                #     res.leave_dur_tree = res.number_of_days_display
+                #     self.no_of_days_display_half = self.number_of_days_display
         return res
 
     @api.constrains('request_date_from', 'request_date_to', 'employee_id')
@@ -450,15 +447,13 @@ class HrLeave(models.Model):
             if self.holiday_status_id.leave_type == 'Half Pay Leave':
                 self.holiday_half_pay = True
                 self.no_of_days_display_half = self.number_of_days_display
-                self.leave_dur_tree = self.number_of_days_display
             else:
                 self.holiday_half_pay = False
-        # if self.commuted_leave_selection == 'Yes':
-        #     self.commuted_leave = 'Commuted Leaves'
-        #     self.no_of_days_display_half = self.number_of_days_display * 2
-        #     self.leave_dur_tree = self.no_of_days_display_half * 2
-        #     self.duration_display = self.number_of_days_display * 2
-        #     self.number_of_days_display = self.no_of_days_display_half
+        if self.commuted_leave_selection == 'Yes':
+            self.commuted_leave = 'Commuted Leaves'
+            self.no_of_days_display_half = self.number_of_days_display * 2
+            self.duration_display = self.number_of_days_display * 2
+            self.number_of_days_display = self.no_of_days_display_half
 
 
 
@@ -471,11 +466,9 @@ class HrLeave(models.Model):
             if self.commuted_leave_selection == 'Yes':
                 self.commuted_leave = 'Commuted Leaves'
                 self.no_of_days_display_half = self.number_of_days_display * 2
-                self.leave_dur_tree = self.no_of_days_display_half * 2
                 self.duration_display = self.number_of_days_display * 2
             else:
                 self.no_of_days_display_half = self.number_of_days_display
-                self.leave_dur_tree = self.no_of_days_display_half
 
 
 
