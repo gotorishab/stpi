@@ -51,6 +51,7 @@ class LateComingReport(models.Model):
 #
     def get_late_coming_report(self):
         return self.env['reimbursement.model.report'].search([])
+
 #
 #     @api.model
 #     def value_to_html(self, value):
