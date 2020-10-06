@@ -66,9 +66,9 @@ class WizardReimBursementReport(models.TransientModel):
             analysis_id.unlink()
             
             query = """ 
-                insert into reimbursement_model_report (reimbursement_sequence,employee_id,job_id,branch_id,department_id,claimed_amount,net_amount,working_days,state)
+                insert into reimbursement_model_report (reimbursement_sequence,employee_id,job_id,branch_id,department_id,claimed_amount,working_days,state)
     
-                select ca.reimbursement_sequence,ca.employee_id,ca.job_id,ca.branch_id,ca.department_id,ca.claimed_amount,ca.net_amount,ca.working_days,ca.state
+                select ca.reimbursement_sequence,ca.employee_id,ca.job_id,ca.branch_id,ca.department_id,ca.claimed_amount,ca.working_days,ca.state
                 from reimbursement as ca
                 where
                 ca.id in {0}
