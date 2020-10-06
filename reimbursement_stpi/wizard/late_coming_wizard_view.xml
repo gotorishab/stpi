@@ -32,11 +32,11 @@
     </record>
 
 
-<!--    <act_window id="action_get_reimbursement_report"-->
-<!--            multi="True"-->
-<!--            key2="client_action_multi" name="Print"-->
-<!--                res_model="reimbursement.report" src_model="reimbursement"-->
-<!--            view_mode="form" target="new" view_type="form" />-->
+    <act_window id="action_get_reimbursement_report"
+            multi="True"
+            key2="client_action_multi" name="Print"
+                res_model="reimbursement.report" src_model="reimbursement"
+            view_mode="form" target="new" view_type="form" />
 
 
 
