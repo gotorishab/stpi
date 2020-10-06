@@ -69,8 +69,8 @@
 
 
     <report id="reimbursement_model_report_reportview"
-            model="late.coming.report"
-            string="Late Coming Report"
+            model="reimbursement.model.report"
+            string="Reimbursement Report"
             report_type="qweb-pdf"
             name="reimbursement_stpi.reimbusement_rep_templtate_id"
             file="reimbursement_stpi.reimbusement_rep_templtate_id"
