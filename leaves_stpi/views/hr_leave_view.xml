@@ -24,11 +24,14 @@
                 <field name="pending_since"/>
                 <field name="commuted_leave_selection" invisible="1"/>
             </field>
-            <field name="duration_display" position="after">
-                <field name="no_of_days_display_half" string="Requested(Days)(If Commuted)" attrs="{'invisible':[('commuted_leave_selection','=','No')]}"/>
+            <field name="date_to" position="after">
+                <field name="leave_dur_tree"/>
             </field>
+<!--            <field name="duration_display" position="attributes">-->
+<!--                <field name="no_of_days_display_half" string="Requested(Days)(If Commuted)" attrs="{'invisible':[('commuted_leave_selection','=','No')]}"/>-->
+<!--            </field>-->
             <xpath expr="//field[@name='duration_display']" position="attributes">
-                <attribute name="attrs">{'invisible':[('commuted_leave_selection','=','Yes')]}</attribute>
+                <attribute name="invisible">1</attribute>
             </xpath>
         </field>
     </record>
