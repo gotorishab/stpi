@@ -75,3 +75,40 @@ class CreateUser(http.Controller):
                 loaded_r = json.dumps(dict(response=str(message)))
                 return loaded_r
 
+
+
+    @http.route(['/create_employee'], type='json', auth='none', csrf=False,  methods=['POST'])
+    def create_hrmis_employee(self, salutation=None, name=None, department_id=None, job_id=None, parent_id=None, work_email=None, **kwargs):
+            user_det = []
+            if salutation and name and department_id and job_id:
+                user_details_data = request.env['hr.employee'].sudo().create({
+                    'salutation': salutation,
+                    'name': name,
+                    'department_id': department_id,
+                    'job_id': job_id,
+                    'parent_id': parent_id,
+                    'work_email': work_email
+                        })
+                if user_details_data:
+                    for rec in user_details_data:
+                        vals = {
+                            'id': rec.id,
+                            'salutation': salutation,
+                            'name': name,
+                            'department_id': department_id,
+                            'job_id': job_id,
+                            'parent_id': parent_id,
+                            'work_email': work_email,
+                        }
+                        user_det.append(vals)
+                    loaded_r = json.dumps(dict(response=str(user_det)))
+                    return loaded_r
+                else:
+                    message = "User not created"
+                    loaded_r = json.dumps(dict(response=str(message)))
+                    return loaded_r
+            else:
+                message = "Please pass salutation, department_id and name and job_id and parent_id and work_email"
+                loaded_r = json.dumps(dict(response=str(message)))
+                return loaded_r
+
