@@ -11,6 +11,17 @@ class LateComingReport(models.Model):
     
 
     reimbursement_sequence = fields.Char('Reimbursement number', track_visibility='always')
+
+
+    name = fields.Selection([
+        ('lunch', 'Lunch Subsidy'),
+        ('telephone', 'Telephone Reimbursement'),
+        ('mobile', 'Mobile Reimbursement'),
+        ('medical', 'Medical Reimbursement'),
+        ('tuition_fee', 'Tuition Fee claim'),
+        ('briefcase', 'Briefcase Reimbursement'),
+        ('quarterly', 'Newspaper Reimbursements'),
+    ], string='Reimbursement Type', store=True, track_visibility='always')
     employee_id = fields.Many2one('hr.employee', store=True, track_visibility='always', string='Requested By')
     job_id = fields.Many2one('hr.job', string='Functional Designation', store=True, track_visibility='always')
     branch_id = fields.Many2one('res.branch', string='Branch', store=True, track_visibility='always')

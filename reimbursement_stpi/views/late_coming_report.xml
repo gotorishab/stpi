@@ -11,6 +11,7 @@
                 <field name="job_id"/>
                 <field name="branch_id"/>
                 <field name="department_id"/>
+                <field name="name"/>
                 <field name="working_days"/>
                 <field name="claimed_amount"/>
                 <field name="net_amount"/>

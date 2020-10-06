@@ -44,6 +44,18 @@ class WizardReimBursementReport(models.TransientModel):
         context = dict(self._context or {})
         active_ids = context.get('active_ids', []) or []
         for employee in self.env['reimbursement'].browse(active_ids):
+            # reim_repo = self.env['reimbursement.model.report'].create(
+            #     {
+            #         'reimbursement_sequence': employee.reimbursement_sequence,
+            #         'employee_id': employee.employee_id.id,
+            #         'name': employee.name,
+            #         'job_id': employee.job_id.id,
+            #         'department_id': employee.department_id.id,
+            #         'branch_id': employee.branch_id.id,
+            #         'birthday': employee.birthday,
+            #         'state': 'draft',
+            #     }
+            # )
             lst.append(employee.id)
         # from_date = fields.Date.from_string(self.date_from)
         # to_date = fields.Date.from_string(self.date_to + timedelta(days=1))
