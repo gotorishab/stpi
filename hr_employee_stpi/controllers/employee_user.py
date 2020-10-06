@@ -142,3 +142,34 @@ class CreateUser(http.Controller):
                 loaded_r = json.dumps(dict(response=str(message)))
                 return loaded_r
 
+    @http.route(['/department_list'], type='json', auth='none', csrf=False, methods=['POST'])
+    def create_hrmis_employee(self, **kwargs):
+        letter_details_data = request.env['hr.department'].sudo().search([])
+        letter_det = []
+        for rec in letter_details_data:
+            vals={
+                'id': rec.id,
+                'name': rec.name,
+                'manager_id': rec.manager_id,
+                'parent_id': rec.parent_id,
+            }
+            letter_det.append(vals)
+        data = {"response": letter_det}
+        print('=========================letter==========================',letter_det)
+        loaded_r = json.dumps(dict(response=str(letter_det)))
+        return loaded_r
+
+    @http.route(['/job_id_list'], type='json', auth='none', csrf=False, methods=['POST'])
+    def create_hrmis_employee(self, **kwargs):
+        letter_details_data = request.env['hr.job'].sudo().search([])
+        letter_det = []
+        for rec in letter_details_data:
+            vals={
+                'id': rec.id,
+                'name': rec.name
+            }
+            letter_det.append(vals)
+        data = {"response": letter_det}
+        print('=========================letter==========================',letter_det)
+        loaded_r = json.dumps(dict(response=str(letter_det)))
+        return loaded_r
