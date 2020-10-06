@@ -124,7 +124,8 @@ class Reimbursement(models.Model):
             if rec.employee_id and rec.name == 'telephone':
                 rec.mobile_no = rec.employee_id.mobile_phone
 
-
+    def get_late_coming_report(self):
+        return self.env['reimbursement'].search([])
 
     @api.constrains('working_days')
     @api.onchange('working_days')

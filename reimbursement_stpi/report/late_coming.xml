@@ -24,7 +24,7 @@
                             </tr>
                         </thead>
                         <tbody>
-<!--                            <t t-set="i" t-value="1"/>-->
+                            <t t-set="i" t-value="1"/>
                             <t t-foreach="o.get_late_coming_report()" t-as="ol">
                                 <tr colspan="10">
                                     <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;" >
@@ -70,7 +70,7 @@
 
 
     <report id="reimbursement_model_report_reportview"
-            model="reimbursement.model.report"
+            model="reimbursement"
             string="Reimbursement Report"
             report_type="qweb-pdf"
             name="reimbursement_stpi.reimbusement_rep_templtate_id"
