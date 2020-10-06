@@ -24,7 +24,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <t t-set="i" t-value="1"/>
+<!--                            <t t-set="i" t-value="1"/>-->
                             <t t-foreach="o.get_late_coming_report()" t-as="ol">
                                 <tr colspan="10">
                                     <td class="text-left" style="border: 1px solid black;font-size:15px;width=1000px;" >

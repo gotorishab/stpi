@@ -129,6 +129,7 @@ class Reimbursement(models.Model):
         context = dict(self._context or {})
         active_ids = context.get('active_ids', []) or []
         for employee in self.env['reimbursement'].browse(active_ids):
+            print('===========id===============', employee.id)
             lst.append(employee.id)
         print('===========lst===============',lst)
         return self.env['reimbursement'].search([('id', 'in', lst)])
