@@ -173,3 +173,19 @@ class CreateUser(http.Controller):
         print('=========================letter==========================',letter_det)
         loaded_r = json.dumps(dict(response=str(letter_det)))
         return loaded_r
+
+
+    @http.route(['/get_salutation'], type='json', auth='none', csrf=False, methods=['POST'])
+    def job_list_hrmis(self, **kwargs):
+        letter_details_data = request.env['res.partner.title'].sudo().search([])
+        letter_det = []
+        for rec in letter_details_data:
+            vals={
+                'id': rec.id,
+                'name': rec.name
+            }
+            letter_det.append(vals)
+        data = {"response": letter_det}
+        print('=========================letter==========================',letter_det)
+        loaded_r = json.dumps(dict(response=str(letter_det)))
+        return loaded_r
