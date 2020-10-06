@@ -143,7 +143,7 @@ class CreateUser(http.Controller):
                 return loaded_r
 
     @http.route(['/department_list'], type='json', auth='none', csrf=False, methods=['POST'])
-    def create_hrmis_employee(self, **kwargs):
+    def department_list_hrmis(self, **kwargs):
         letter_details_data = request.env['hr.department'].sudo().search([])
         letter_det = []
         for rec in letter_details_data:
@@ -160,7 +160,7 @@ class CreateUser(http.Controller):
         return loaded_r
 
     @http.route(['/job_id_list'], type='json', auth='none', csrf=False, methods=['POST'])
-    def create_hrmis_employee(self, **kwargs):
+    def job_list_hrmis(self, **kwargs):
         letter_details_data = request.env['hr.job'].sudo().search([])
         letter_det = []
         for rec in letter_details_data:
