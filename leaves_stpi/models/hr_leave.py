@@ -260,7 +260,7 @@ class HrLeave(models.Model):
                     self.number_of_days_display = self.no_of_days_display_half
                     self.leave_dur_tree = self.no_of_days_display_half
                 else:
-                    self.leave_dur_tree = self.number_of_days_display
+                    res.leave_dur_tree = res.number_of_days_display
         return res
 
     @api.constrains('request_date_from', 'request_date_to', 'employee_id')
