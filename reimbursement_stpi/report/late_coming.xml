@@ -69,20 +69,20 @@
 </template>
 
 
-    <report id="reimbursement_report_reportview"
-            model="reimbursement"
-            string="Reimbursement Report"
-            report_type="qweb-pdf"
-            name="reimbursement_stpi.reimbusement_rep_templtate_id"
-            file="reimbursement_stpi.reimbusement_rep_templtate_id"
-            />
-
-<!--    <report id="reimbursement_model_report_reportview"-->
-<!--            model="reimbursement.model.report"-->
+<!--    <report id="reimbursement_report_reportview"-->
+<!--            model="reimbursement"-->
 <!--            string="Reimbursement Report"-->
 <!--            report_type="qweb-pdf"-->
 <!--            name="reimbursement_stpi.reimbusement_rep_templtate_id"-->
 <!--            file="reimbursement_stpi.reimbusement_rep_templtate_id"-->
 <!--            />-->
+
+    <report id="reimbursement_model_report_reportview"
+            model="reimbursement.model.report"
+            string="Reimbursement Report"
+            report_type="qweb-pdf"
+            name="reimbursement_stpi.reimbusement_rep_templtate_id"
+            file="reimbursement_stpi.reimbusement_rep_templtate_id"
+            />
 </odoo>
 
