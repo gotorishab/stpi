@@ -105,7 +105,7 @@ class MyVigilance(models.Model):
             return {
                 'name': 'Intimation of major',
                 'view_type': 'form',
-                'view_mode': 'tree,form',
+                'view_mode': 'form',
                 'res_model': 'vigilance.major.penalty',
                 'type': 'ir.actions.act_window',
                 'target': 'new',
