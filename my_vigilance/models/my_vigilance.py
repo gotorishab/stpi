@@ -99,18 +99,39 @@ class MyVigilance(models.Model):
 
 
 
-    @api.multi
+    # @api.multi
+    # def Initiation_of_major_pp(self):
+    #     for rec in self:
+    #         return {
+    #             'name': 'Intimation of major',
+    #             'view_type': 'form',
+    #             'view_mode': 'tree,form',
+    #             'res_model': 'vigilance.major.penalty',
+    #             'type': 'ir.actions.act_window',
+    #             'target': 'new',
+    #             # 'view_id': self.env.ref('hr_applicant.view_employee_relative_tree').id,
+    #         }
+
     def Initiation_of_major_pp(self):
         for rec in self:
-            return {
-                'name': 'Intimation of major',
+            form_view = self.env.ref('my_vigilance.vigilance_initiate_major_form_view')
+            tree_view = self.env.ref('my_vigilance.vigilance_initiate_major_tree_view')
+            value = {
+                'domain': str([('vigilance_id', '=', rec.id)]),
                 'view_type': 'form',
-                'view_mode': 'kanban,tree,graph,pivot,form',
+                'view_mode': 'tree, form',
                 'res_model': 'vigilance.major.penalty',
+                'view_id': False,
+                'views': [(form_view and form_view.id or False, 'form'),
+                          (tree_view and tree_view.id or False, 'tree')],
                 'type': 'ir.actions.act_window',
                 'target': 'new',
-                # 'view_id': self.env.ref('hr_applicant.view_employee_relative_tree').id,
+                'nodestroy': True,
+                'context': {
+                            'default_vigilance_id': rec.id
+                },
             }
+            return value
 
     @api.multi
     def Initiation_of_minor_pp(self):

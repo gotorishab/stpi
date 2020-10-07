@@ -14,6 +14,7 @@
 		'security/security.xml',
         'wizard/reason_wizard.xml',
         'views/my_vigilance.xml',
+        'views/masters.xml',
 	],
 	'images': [],
 	'license': 'AGPL-3',
