@@ -24,6 +24,7 @@
             <field name="arch" type="xml">
                 <form string="Vigilance">
                     <header>
+                        <button name="Initiation_of_major_pp" string="Intimation of major" type="object"/>
                         <button name="button_draft" string="Reset to Draft" type="object" states="in_progress" groups="my_vigilance.group_vigilance_user"/>
                         <button name="button_in_progress" string="Set in Progress" class="oe_highlight" type="object" states="draft" groups="my_vigilance.group_vigilance_user"/>
                         <button name="button_register_actions" string="Register Actions" class="oe_highlight" type="object" states="in_progress" groups="my_vigilance.group_vigilance_user"/>

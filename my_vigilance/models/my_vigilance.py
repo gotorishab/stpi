@@ -12,10 +12,8 @@ class MyVigilance(models.Model):
         return self.env['res.country'].search([('name', '=', 'India')], limit=1)
 
     vigilance_sequence = fields.Char('Vigilance number')
-    reg_no = fields.Char(string = 'Registration number',track_visibility='always')
+
     name = fields.Char(string="Case Name",track_visibility='always')
-    date_of_receipt = fields.Date(string="Date of Receipt", default=fields.Date.today(),track_visibility='always')
-    address = fields.Char(string="Address",track_visibility='always')
     district = fields.Char(string="District",track_visibility='always')
 
     state_id = fields.Many2one("res.country.state", string='State', help='Enter State', ondelete='restrict')
@@ -26,11 +24,141 @@ class MyVigilance(models.Model):
     description = fields.Text(string="Description",track_visibility='always')
     org_name = fields.Char(string="  Name of Organization(s) where Grievance is pending",track_visibility='always')
     receipt_type = fields.Many2one('vigilance.receipt.type', string="Receipt Type",track_visibility='always')
-    remarks = fields.Text('Remarks')
 
 
+
+
+    mode_of_complaint = fields.Selection([('oral', 'Oral'), ('written', 'Written')], string='Mode of Complaint', default='oral', track_visibility='always')
+    name_of_complaint = fields.Many2one('res.partner', string='Mode of Complaint')
+    complaint_against = fields.Many2one('hr.employee', string='Complaint Against')
+    address = fields.Char(string="Address of the Complainant",track_visibility='always')
+    reg_no = fields.Char(string = 'Communication Number',track_visibility='always')
+    allegation_in_brief = fields.Text(string = 'Allegation (in brief)',track_visibility='always')
+    com_date = fields.Date(string = 'Communication Date',track_visibility='always')
+    date_of_receipt = fields.Date(string="Date of Receipt of Complaint", default=fields.Date.today(),track_visibility='always')
+    remarks = fields.Text('Remarks (If any)')
     state = fields.Selection([('draft', 'Draft'), ('in_progress', 'In-Progress'), ('closed', 'Closed')], required=True, string='Status', default='draft', track_visibility='always')
 
+    pi_conducted_by = fields.Selection([('internal_emp', 'Internal Employee'), ('external_emp', 'External Employee')], string='PI conducted by', default='internal_emp', track_visibility='always')
+    pi_conducted_ext = fields.Many2one('res.partner', string='PI conducted by')
+    pi_conducted_int = fields.Many2one('hr.employee', string='PI conducted by')
+    date_pi = fields.Date(string = 'Date of Receipt of PI report',track_visibility='always')
+    outcome_pi = fields.Text('Outcome of PI')
+
+
+    date_co = fields.Date(string = 'Date of receipt of representation of CO',track_visibility='always')
+    comm_number_co = fields.Char(string = 'Communication Number(CO)',track_visibility='always')
+    comm_date_co = fields.Date(string = 'Communication Date(CO)',track_visibility='always')
+    remarks_co = fields.Text('Remarks CO (If any)')
+
+
+
+    io_conducted_by = fields.Selection([('internal_emp', 'Internal Employee'), ('external_emp', 'External Employee')], string='IO conducted by', default='internal_emp', track_visibility='always')
+    io_conducted_ext = fields.Many2one('res.partner', string='Name of the Inquiring Officer (IO)')
+    io_conducted_int = fields.Many2one('hr.employee', string='Name of the Inquiring Officer (IO)')
+    address_io = fields.Char('Address of the IO')
+    date_io = fields.Date(string = 'Date appointing IO',track_visibility='always')
+    order_number_io = fields.Char('Order Number IO')
+    po_conducted_int = fields.Many2one('hr.employee', string='Name of the Presenting Officer (PO)')
+    date_po = fields.Date(string = 'Date appointing PO',track_visibility='always')
+    address_po = fields.Char('Address of the PO')
+    order_number_po = fields.Char('Order Number PO')
+    remarks_io_po = fields.Text('Remarks IO/PO (If any)')
+
+
+    date_ir = fields.Date(string='Date  of receipt of inquiry report', track_visibility='always')
+    date_fw_ir = fields.Date(string='Date of forwarding of inquiry report to CO', track_visibility='always')
+    date_rep_ir = fields.Date(string='Date of receipt of representation from CO on IR', track_visibility='always')
+    date_cvc = fields.Date(string='Date of receipt of CVC 2nd  Stage advice', track_visibility='always')
+    report_num_ir = fields.Char('Report  No. & Date')
+    find_io = fields.Char('Findings of IO (in brief)')
+    comm_num_co = fields.Char('Communication No. & Date')
+    comm_num_ir = fields.Char('Communication No. & Date')
+    stpi_ref = fields.Char('STPI Ref No/Date')
+    cvc_om = fields.Char('CVC OM No. & Date')
+    recomend_cvc = fields.Char('Recommendations of CVC')
+    remarks_ir = fields.Text('Remarks(If any)')
+    remarks_cvc = fields.Text('Remarks(If any)')
+
+    revision_number = fields.Char('Revision Number')
+    revision_order_number = fields.Char('Revision Order no.')
+    decision_revision = fields.Text('Decision of the Revisionary Authority')
+    date_ra = fields.Date(string='Date of Revision application (if any)', track_visibility='always')
+    date_dis_ra = fields.Date(string='Date disposing  Revision application', track_visibility='always')
+    remarks_revise = fields.Text('Remarks(If any)')
+
+
+    review_number = fields.Char('review Number')
+    review_order_number = fields.Char('review Order no.')
+    decision_review = fields.Text('Decision of the reviewary Authority')
+    date_rev = fields.Date(string='Date of review application (if any)', track_visibility='always')
+    date_dis_rev = fields.Date(string='Date disposing  review application', track_visibility='always')
+    remarks_review = fields.Text('Remarks(If any)')
+
+
+
+
+
+    @api.multi
+    def Initiation_of_major_pp(self):
+        for rec in self:
+            return {
+                'name': 'Intimation of major',
+                'view_type': 'form',
+                'view_mode': 'kanban,tree,graph,pivot,form',
+                'res_model': 'vigilance.major.penalty',
+                'type': 'ir.actions.act_window',
+                'target': 'new',
+                # 'view_id': self.env.ref('hr_applicant.view_employee_relative_tree').id,
+            }
+
+    @api.multi
+    def Initiation_of_minor_pp(self):
+        for rec in self:
+            pass
+            # rec.write({'state': 'draft'})
+
+
+    @api.multi
+    def issue_of_warning(self):
+        for rec in self:
+            pass
+            # rec.write({'state': 'draft'})
+
+
+    @api.multi
+    def issue_of_warning(self):
+        for rec in self:
+            pass
+            # rec.write({'state': 'draft'})
+
+
+    @api.multi
+    def suspension(self):
+        for rec in self:
+            pass
+            # rec.write({'state': 'draft'})
+
+
+
+    @api.multi
+    def ignore_pi(self):
+        for rec in self:
+            pass
+            # rec.write({'state': 'draft'})
+
+
+    @api.multi
+    def initiate_pi(self):
+        for rec in self:
+            pass
+            # rec.write({'state': 'draft'})
+
+    @api.multi
+    def forward_to_admin(self):
+        for rec in self:
+            pass
+            # rec.write({'state': 'draft'})
 
 
     @api.multi
@@ -171,3 +299,65 @@ class ReceiptType(models.Model):
     _description = "Vigilance Receipt Type"
 
     name = fields.Char('Name')
+
+
+
+class MiniorPenalty(models.Model):
+
+    _name = "vigilance.minor.penalty"
+    _description = "Vigilance Minor Penalty"
+
+    vigilance_id = fields.Many2one('my.vigilance', string='Vigilance')
+    dis_auth = fields.Many2one('hr.employee', string='Disciplinary Authority')
+    charge_num = fields.Char( string='Chargesheet No.')
+    charge_date = fields.Date( string='Chargesheet Date')
+    charge_issue_date = fields.Date( string='Date of Issue of Chargesheet')
+    charge_in_brief = fields.Text( string='Charges in brief')
+    charge_in_brief_up = fields.Binary( string='Charges (Upload)')
+    charged_officer = fields.Many2one('hr.employee', string='Name of the Charged Officer(s)')
+    remarks = fields.Text('Remarks (if any)')
+
+class MajorrPenalty(models.Model):
+
+    _name = "vigilance.major.penalty"
+    _description = "Vigilance Major Penalty"
+
+    vigilance_id = fields.Many2one('my.vigilance', string='Vigilance')
+    dis_auth = fields.Many2one('hr.employee', string='Disciplinary Authority')
+    charge_num = fields.Char( string='Chargesheet No.')
+    charge_date = fields.Date( string='Chargesheet Date')
+    charge_issue_date = fields.Date( string='Date of Issue of Chargesheet')
+    charge_in_brief = fields.Text( string='Charges in brief')
+    charge_in_brief_up = fields.Binary( string='Charges (Upload)')
+    charged_officer = fields.Many2one('hr.employee', string='Name of the Charged Officer(s)')
+    remarks = fields.Text('Remarks (if any)')
+
+
+class Suspension(models.Model):
+
+    _name = "vigilance.suspension"
+    _description = "Vigilance Suspension"
+
+    vigilance_id = fields.Many2one('my.vigilance', string='Vigilance')
+    order_num = fields.Char( string='Order No.')
+    order_date = fields.Date( string='Order Date')
+    rate_sus = fields.Char( string='Rate of subsistance allowance under FR-53')
+    reason_suspension = fields.Text('Reason of suspension (in brief)')
+    period_of_suspension = fields.Integer('Period of suspension')
+
+    suspension_src = fields.Char( string='Suspension Review Committee (SRC)')
+    recomendation_src = fields.Char( string='Recommendations of the SRC')
+    decision_da = fields.Char( string='Decision of the Disciplinary Authority')
+    period_extn_sus = fields.Integer('Period of extension of suspension')
+    order_num_ep = fields.Char( string='Order No. extending period of suspension')
+    order_date_ep = fields.Date( string='Order Date extending period of suspension')
+
+    rate_sub_a = fields.Char( string='Rate of subsistance allowance ')
+
+    order_num_rsa = fields.Char( string='Order No.  regarding subsistance allowance')
+    order_date_rsa = fields.Date( string='Order Date  regarding subsistance allowance')
+
+
+    order_rs = fields.Char( string='Order No.  of revocation of suspension')
+    order_date_rs = fields.Date( string='Order Date  of revocation of suspension')
+
