@@ -35,8 +35,8 @@
                     </header>
                     <sheet>
                         <div class="oe_button_box" name="button_box">
-                            <button name="action_view_Initiation_of_major_pp" string="Major Intimations" type="object" icon="fa-pencil-square-o"/>
-                            
+                            <button name="%(my_vigilance.vigilance_initiate_major_menu_action_own)d" string="Major Intimations" type="object" icon="fa-pencil-square-o"/>
+
                         </div>
                      <div class="oe_title">
                     <h1><field name="vigilance_sequence" placeholder="Vigilance number" readonly="1"/></h1>
