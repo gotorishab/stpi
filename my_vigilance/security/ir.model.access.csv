@@ -4,3 +4,5 @@ access_vigilance_receipt_type,vigilance.receipt.type,model_vigilance_receipt_typ
 access_vigilance_minor_penalty,vigilance.minor.penalty,model_vigilance_minor_penalty,base.group_user,1,1,1,1
 access_vigilance_major_penalty,vigilance.major.penalty,model_vigilance_major_penalty,base.group_user,1,1,1,1
 access_vigilance_suspension,vigilance.suspension,model_vigilance_suspension,base.group_user,1,1,1,1
+access_vigilance_appeal,vigilance.appeal,model_vigilance_appeal,base.group_user,1,1,1,1
+access_vigilance_disciplinary,vigilance.disciplinary,model_vigilance_disciplinary,base.group_user,1,1,1,1

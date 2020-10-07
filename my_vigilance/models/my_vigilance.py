@@ -367,3 +367,39 @@ class Suspension(models.Model):
     order_rs = fields.Char( string='Order No.  of revocation of suspension')
     order_date_rs = fields.Date( string='Order Date  of revocation of suspension')
 
+
+
+
+
+class Appeal(models.Model):
+
+    _name = "vigilance.appeal"
+    _inherit = ['mail.thread', 'mail.activity.mixin']
+    _description = "Vigilance Appeal"
+
+    vigilance_id = fields.Many2one('my.vigilance', string='Vigilance')
+    appeal_auth = fields.Many2one('hr.employee', string='Appellate Authority')
+    date_app = fields.Date(string = 'Date of appeal',track_visibility='always')
+    comm_number = fields.Char(string = 'Communication Number',track_visibility='always')
+    order_number = fields.Char(string = 'Order Number',track_visibility='always')
+    comm_date = fields.Date(string = 'Communication Date',track_visibility='always')
+    dis_date = fields.Date(string = 'Date disposing appeal',track_visibility='always')
+    decision_da = fields.Char( string='Decision of the Appellate Authority')
+    remarks = fields.Text('Remarks (If any)')
+
+
+
+
+class DisAuth(models.Model):
+
+    _name = "vigilance.disciplinary"
+    _inherit = ['mail.thread', 'mail.activity.mixin']
+    _description = "Vigilance Appeal"
+
+    vigilance_id = fields.Many2one('my.vigilance', string='Vigilance')
+
+    date_app = fields.Date(string = 'Date of penalty imposed',track_visibility='always')
+    pen_detail = fields.Char(string = 'Detail of penalty imposed',track_visibility='always')
+    order_number = fields.Char(string = 'Order Number',track_visibility='always')
+
+    remarks = fields.Text('Remarks (If any)')

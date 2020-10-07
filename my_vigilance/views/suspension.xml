@@ -12,6 +12,7 @@
                     <field name="rate_sus"/>
                     <field name="reason_suspension"/>
                     <field name="period_of_suspension"/>
+                </tree>
             </field>
         </record>
 
