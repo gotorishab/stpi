@@ -119,7 +119,7 @@ class MyVigilance(models.Model):
             value = {
                 'domain': str([('vigilance_id', '=', rec.id)]),
                 'view_type': 'form',
-                'view_mode': 'tree, form',
+                'view_mode': 'tree',
                 'res_model': 'vigilance.major.penalty',
                 'view_id': False,
                 'views': [(form_view and form_view.id or False, 'form'),
