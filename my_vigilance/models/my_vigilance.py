@@ -326,6 +326,7 @@ class ReceiptType(models.Model):
 class MiniorPenalty(models.Model):
 
     _name = "vigilance.minor.penalty"
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = "Vigilance Minor Penalty"
 
     vigilance_id = fields.Many2one('my.vigilance', string='Vigilance')
@@ -341,6 +342,7 @@ class MiniorPenalty(models.Model):
 class MajorrPenalty(models.Model):
 
     _name = "vigilance.major.penalty"
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = "Vigilance Major Penalty"
 
     vigilance_id = fields.Many2one('my.vigilance', string='Vigilance')
@@ -357,6 +359,7 @@ class MajorrPenalty(models.Model):
 class Suspension(models.Model):
 
     _name = "vigilance.suspension"
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = "Vigilance Suspension"
 
     vigilance_id = fields.Many2one('my.vigilance', string='Vigilance')
