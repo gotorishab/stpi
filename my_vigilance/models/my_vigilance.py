@@ -118,7 +118,7 @@ class MyVigilance(models.Model):
             tree_view = self.env.ref('my_vigilance.vigilance_initiate_major_tree_view')
             value = {
                 'domain': str([('vigilance_id', '=', rec.id)]),
-                'view_type': 'form',
+                'view_type': 'tree',
                 'view_mode': 'tree',
                 'res_model': 'vigilance.major.penalty',
                 'view_id': False,
