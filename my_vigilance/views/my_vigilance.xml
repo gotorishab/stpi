@@ -18,22 +18,12 @@
             </field>
         </record>
 
-<!--    <record id="vigilance_initiate_major_menu_action_own" model="ir.actions.act_window">-->
-<!--        <field name="res_model">vigilance.major.penalty</field>-->
-<!--        <field name="name">Vigilance</field>-->
-<!--        <field name="view_type">form</field>-->
-<!--        <field name="view_mode">tree,form</field>-->
-<!--        <field name="domain">[('vigilance_id', '=', active_id)]</field>-->
-<!--        <field name="context">{'vigilance_id':'active_id'}</field>-->
-<!--    </record>-->
-
 		<record id="vigilance_form_view" model="ir.ui.view">
             <field name="name">my.vigilance.form</field>
             <field name="model">my.vigilance</field>
             <field name="arch" type="xml">
                 <form string="Vigilance">
                     <header>
-                        <button name="Initiation_of_major_pp" string="Intimation of major" type="object"/>
                         <button name="button_draft" string="Reset to Draft" type="object" states="in_progress" groups="my_vigilance.group_vigilance_user"/>
                         <button name="button_in_progress" string="Set in Progress" class="oe_highlight" type="object" states="draft" groups="my_vigilance.group_vigilance_user"/>
                         <button name="button_register_actions" string="Register Actions" class="oe_highlight" type="object" states="in_progress" groups="my_vigilance.group_vigilance_user"/>
@@ -45,6 +35,7 @@
                     <sheet>
                         <div class="oe_button_box" name="button_box">
                             <button name="%(my_vigilance.vigilance_initiate_major_menu_action_own)d" string="Major Intimations" type="action" icon="fa-pencil-square-o"/>
+                            <button name="%(my_vigilance.vigilance_initiate_minor_menu_action_own)d" string="Minor Intimations" type="action" icon="fa-pencil-square-o"/>
 
                         </div>
                      <div class="oe_title">

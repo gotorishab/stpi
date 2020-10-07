@@ -115,45 +115,7 @@ class MyVigilance(models.Model):
                 },
             }
 
-    @api.multi
-    def action_view_Initiation_of_major_pp(self):
-        for rec in self:
-            form_view = self.env.ref('my_vigilance.vigilance_initiate_major_form_view')
-            tree_view = self.env.ref('my_vigilance.vigilance_initiate_major_tree_view')
-            value = {
-                'domain': ([('vigilance_id', '=', rec.id)]),
-                'view_type': 'form',
-                'view_mode': 'tree, form',
-                'res_model': 'vigilance.major.penalty',
-                'view_id': False,
-                'views': [(form_view and form_view.id or False, 'form'),
-                          (tree_view and tree_view.id or False, 'tree')],
-                'type': 'ir.actions.act_window',
-                'target': 'current',
-                'nodestroy': True
-            }
-            return value
 
-    # def Initiation_of_major_pp(self):
-    #     for rec in self:
-    #         form_view = self.env.ref('my_vigilance.vigilance_initiate_major_form_view')
-    #         tree_view = self.env.ref('my_vigilance.vigilance_initiate_major_tree_view')
-    #         value = {
-    #             'domain': str([('vigilance_id', '=', rec.id)]),
-    #             'view_type': 'form',
-    #             'view_mode': 'tree, form',
-    #             'res_model': 'vigilance.major.penalty',
-    #             'view_id': False,
-    #             'views': [(form_view and form_view.id or False, 'form'),
-    #                       (tree_view and tree_view.id or False, 'tree')],
-    #             'type': 'ir.actions.act_window',
-    #             'target': 'new',
-    #             'nodestroy': True,
-    #             'context': {
-    #                         'default_vigilance_id': rec.id
-    #             },
-    #         }
-    #         return value
 
     @api.multi
     def Initiation_of_minor_pp(self):
