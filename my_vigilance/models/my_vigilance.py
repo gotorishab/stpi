@@ -88,8 +88,8 @@ class MyVigilance(models.Model):
     remarks_revise = fields.Text('Remarks(If any)')
 
 
-    review_number = fields.Char('review Number')
-    review_order_number = fields.Char('review Order no.')
+    review_number = fields.Char('Review Number')
+    review_order_number = fields.Char('Review Order no.')
     decision_review = fields.Text('Decision of the reviewary Authority')
     date_rev = fields.Date(string='Date of review application (if any)', track_visibility='always')
     date_dis_rev = fields.Date(string='Date disposing  review application', track_visibility='always')
@@ -359,9 +359,7 @@ class Suspension(models.Model):
     period_extn_sus = fields.Integer('Period of extension of suspension')
     order_num_ep = fields.Char( string='Order No. extending period of suspension')
     order_date_ep = fields.Date( string='Order Date extending period of suspension')
-
     rate_sub_a = fields.Char( string='Rate of subsistance allowance ')
-
     order_num_rsa = fields.Char( string='Order No.  regarding subsistance allowance')
     order_date_rsa = fields.Date( string='Order Date  regarding subsistance allowance')
 
