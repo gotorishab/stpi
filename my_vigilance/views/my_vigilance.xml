@@ -62,7 +62,6 @@
                          <field name='remarks' placeholder='Remarks.....'/>
                         <notebook>
                             <page name = "pi" string = "Preliminary investigation (PI)">
-                                <sheet>
                                     <group>
                                         <group>
                                             <field name="pi_conducted_by"/>
@@ -74,7 +73,86 @@
                                             <field name="outcome_pi"/>
                                         </group>
                                     </group>
-                                </sheet>
+                            </page>
+                            <page name = "co" string = "Representation of the Charged Officer">
+                                    <group>
+                                        <group>
+                                            <field name="date_co"/>
+                                            <field name="comm_number_co"/>
+                                        </group>
+                                        <group>
+                                            <field name="comm_date_co"/>
+                                            <field name="remarks_co"/>
+                                        </group>
+                                    </group>
+                            </page>
+                            <page name = "iopo" string = "Inquiry proceedings- Appointment of IO and PO">
+                                    <group>
+                                        <group>
+                                            <field name="io_conducted_by"/>
+                                            <field name="io_conducted_ext"/>
+                                            <field name="io_conducted_int"/>
+                                            <field name="address_io"/>
+                                            <field name="date_io"/>
+                                            <field name="order_number_io"/>
+                                        </group>
+                                        <group>
+                                            <field name="po_conducted_int"/>
+                                            <field name="date_po"/>
+                                            <field name="address_po"/>
+                                            <field name="order_number_po"/>
+                                            <field name="remarks_io_po"/>
+                                        </group>
+                                    </group>
+                            </page>
+                            <page name = "ir" string = "Inquiry Report">
+                                    <group>
+                                        <group>
+                                            <field name="date_ir"/>
+                                            <field name="date_fw_ir"/>
+                                            <field name="date_rep_ir"/>
+                                            <field name="date_cvc"/>
+                                            <field name="report_num_ir"/>
+                                            <field name="find_io"/>
+                                            <field name="comm_num_co"/>
+                                        </group>
+                                        <group>
+                                            <field name="comm_num_ir"/>
+                                            <field name="stpi_ref"/>
+                                            <field name="cvc_om"/>
+                                            <field name="recomend_cvc"/>
+                                            <field name="remarks_ir"/>
+                                            <field name="remarks_cvc"/>
+                                        </group>
+                                    </group>
+                            </page>
+                            <page name = "Revision" string = "Revision">
+                                    <group>
+                                        <group>
+                                            <field name="revision_number"/>
+                                            <field name="revision_order_number"/>
+                                            <field name="decision_revision"/>
+                                        </group>
+                                        <group>
+                                            <field name="date_ra"/>
+                                            <field name="date_dis_ra"/>
+                                            <field name="remarks_revise"/>
+                                        </group>
+                                    </group>
+                            </page>
+                            <page name = "Revision" string = "Revision">
+                                    <group>
+                                        <group>
+                                            <field name="review_number"/>
+                                            <field name="review_order_number"/>
+                                            <field name="decision_review"/>
+                                        </group>
+                                        <group>
+                                            <field name="date_rev"/>
+                                            <field name="date_dis_rev"/>
+                                            <field name="remarks_review"/>
+                                        </group>
+                                    </group>
                             </page>
                         </notebook>
                     </sheet>
