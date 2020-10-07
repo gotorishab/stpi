@@ -37,7 +37,7 @@ class MyVigilance(models.Model):
     com_date = fields.Date(string = 'Communication Date',track_visibility='always')
     date_of_receipt = fields.Date(string="Date of Receipt of Complaint", default=fields.Date.today(),track_visibility='always')
     remarks = fields.Text('Remarks (If any)')
-    state = fields.Selection([('draft', 'Draft'), ('in_progress', 'In-Progress'), ('closed', 'Closed')], required=True, string='Status', default='draft', track_visibility='always')
+    state = fields.Selection([('draft', 'Draft'), ('in_progress', 'Forwarded'), ('PI', 'PI'), ('closed', 'Closed')], required=True, string='Status', default='draft', track_visibility='always')
 
     pi_conducted_by = fields.Selection([('internal_emp', 'Internal Employee'), ('external_emp', 'External Employee')], string='PI conducted by', default='internal_emp', track_visibility='always')
     pi_conducted_ext = fields.Many2one('res.partner', string='PI conducted by')
@@ -164,6 +164,12 @@ class MyVigilance(models.Model):
         for rec in self:
             pass
             # rec.write({'state': 'draft'})
+
+
+    @api.multi
+    def button_pi(self):
+        for rec in self:
+            rec.write({'state': 'PI'})
 
 
     @api.multi
