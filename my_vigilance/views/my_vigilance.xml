@@ -64,11 +64,15 @@
                             <page name = "pi" string = "Preliminary investigation (PI)">
                                 <sheet>
                                     <group>
-                                        <field name="pi_conducted_by"/>
-                                        <field name="pi_conducted_ext"/>
-                                        <field name="pi_conducted_int"/>
-                                        <field name="date_pi"/>
-                                        <field name="outcome_pi"/>
+                                        <group>
+                                            <field name="pi_conducted_by"/>
+                                            <field name="pi_conducted_ext"/>
+                                            <field name="pi_conducted_int"/>
+                                        </group>
+                                        <group>
+                                            <field name="date_pi"/>
+                                            <field name="outcome_pi"/>
+                                        </group>
                                     </group>
                                 </sheet>
                             </page>
