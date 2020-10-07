@@ -68,8 +68,8 @@
                                     <group>
                                         <group>
                                             <field name="pi_conducted_by"/>
-                                            <field name="pi_conducted_ext"/>
-                                            <field name="pi_conducted_int"/>
+                                            <field name="pi_conducted_ext" attrs="{'invisible': [('pi_conducted_by', '=', 'internal_emp')],'required': [('pi_conducted_by', '!=', 'internal_emp')]}"/>
+                                            <field name="pi_conducted_int" attrs="{'invisible': [('pi_conducted_by', '!=', 'internal_emp')],'required': [('pi_conducted_by', '=', 'internal_emp')]}"/>
                                         </group>
                                         <group>
                                             <field name="date_pi"/>
@@ -93,8 +93,8 @@
                                     <group>
                                         <group>
                                             <field name="io_conducted_by"/>
-                                            <field name="io_conducted_ext"/>
-                                            <field name="io_conducted_int"/>
+                                            <field name="io_conducted_ext" attrs="{'invisible': [('io_conducted_by', '=', 'internal_emp')],'required': [('io_conducted_by', '!=', 'internal_emp')]}"/>
+                                            <field name="io_conducted_int" attrs="{'invisible': [('io_conducted_by', '!=', 'internal_emp')],'required': [('io_conducted_by', '=', 'internal_emp')]}"/>
                                             <field name="address_io"/>
                                             <field name="date_io"/>
                                             <field name="order_number_io"/>

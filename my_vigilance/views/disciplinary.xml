@@ -23,7 +23,7 @@
                     <sheet>
                         <group>
                             <group>
-                                <field name="vigilance_id"/>
+                                <field name="vigilance_id" readonly="1"/>
                                 <field name="date_app"/>
                                 <field name="pen_detail"/>
                                 <field name="order_number"/>
