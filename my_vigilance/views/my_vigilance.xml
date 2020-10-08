@@ -93,68 +93,68 @@
                             <page name = "iopo" string = "Inquiry proceedings- Appointment of IO and PO" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}">
                                     <group>
                                         <group>
-                                            <field name="io_conducted_by"/>
+                                            <field name="io_conducted_by" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
                                             <field name="io_conducted_ext" attrs="{'invisible': [('io_conducted_by', '=', 'internal_emp')],'required': [('io_conducted_by', '!=', 'internal_emp')]}"/>
                                             <field name="io_conducted_int" attrs="{'invisible': [('io_conducted_by', '!=', 'internal_emp')],'required': [('io_conducted_by', '=', 'internal_emp')]}"/>
-                                            <field name="address_io"/>
-                                            <field name="date_io"/>
-                                            <field name="order_number_io"/>
+                                            <field name="address_io" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
+                                            <field name="date_io" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
+                                            <field name="order_number_io" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
                                         </group>
                                         <group>
-                                            <field name="po_conducted_int"/>
-                                            <field name="date_po"/>
-                                            <field name="address_po"/>
-                                            <field name="order_number_po"/>
-                                            <field name="remarks_io_po"/>
+                                            <field name="po_conducted_int" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
+                                            <field name="date_po" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
+                                            <field name="address_po" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
+                                            <field name="order_number_po" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
+                                            <field name="remarks_io_po" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
                                         </group>
                                     </group>
                             </page>
                             <page name = "ir" string = "Inquiry Report" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}">
                                     <group>
                                         <group>
-                                            <field name="date_ir"/>
-                                            <field name="date_fw_ir"/>
-                                            <field name="date_rep_ir"/>
-                                            <field name="date_cvc"/>
-                                            <field name="report_num_ir"/>
-                                            <field name="find_io"/>
-                                            <field name="comm_num_co"/>
+                                            <field name="date_ir" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
+                                            <field name="date_fw_ir" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
+                                            <field name="date_rep_ir" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
+                                            <field name="date_cvc" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
+                                            <field name="report_num_ir" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
+                                            <field name="find_io" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
+                                            <field name="comm_num_co" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
                                         </group>
                                         <group>
-                                            <field name="comm_num_ir"/>
-                                            <field name="stpi_ref"/>
-                                            <field name="cvc_om"/>
-                                            <field name="recomend_cvc"/>
-                                            <field name="remarks_ir"/>
-                                            <field name="remarks_cvc"/>
-                                        </group>
-                                    </group>
-                            </page>
-                            <page name = "Revision" string = "Revision" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}">
-                                    <group>
-                                        <group>
-                                            <field name="revision_number"/>
-                                            <field name="revision_order_number"/>
-                                            <field name="decision_revision"/>
-                                        </group>
-                                        <group>
-                                            <field name="date_ra"/>
-                                            <field name="date_dis_ra"/>
-                                            <field name="remarks_revise"/>
+                                            <field name="comm_num_ir" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
+                                            <field name="stpi_ref" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
+                                            <field name="cvc_om" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
+                                            <field name="recomend_cvc" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
+                                            <field name="remarks_ir" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
+                                            <field name="remarks_cvc" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
                                         </group>
                                     </group>
                             </page>
                             <page name = "Revision" string = "Revision" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}">
                                     <group>
                                         <group>
-                                            <field name="review_number"/>
-                                            <field name="review_order_number"/>
-                                            <field name="decision_review"/>
+                                            <field name="revision_number" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
+                                            <field name="revision_order_number" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
+                                            <field name="decision_revision" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
                                         </group>
                                         <group>
-                                            <field name="date_rev"/>
-                                            <field name="date_dis_rev"/>
-                                            <field name="remarks_review"/>
+                                            <field name="date_ra" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
+                                            <field name="date_dis_ra" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
+                                            <field name="remarks_revise" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
+                                        </group>
+                                    </group>
+                            </page>
+                            <page name = "Revision" string = "Revision" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}">
+                                    <group>
+                                        <group>
+                                            <field name="review_number" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
+                                            <field name="review_order_number" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
+                                            <field name="decision_review" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
+                                        </group>
+                                        <group>
+                                            <field name="date_rev" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
+                                            <field name="date_dis_rev" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
+                                            <field name="remarks_review" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
                                         </group>
                                     </group>
                             </page>
