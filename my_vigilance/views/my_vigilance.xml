@@ -50,22 +50,22 @@
                 </div>
                         <group>
                             <group>
-                                <field name="mode_of_complaint" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
-                                <field name="name_of_complaint" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
-                                <field name="complaint_against" attrs="{'readonly':[('state','!=','draft')]}"/>
-                                <field name="address" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="mode_of_complaint" required="1" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
+                                <field name="name_of_complaint" required="1" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
+                                <field name="complaint_against" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
+                                <field name="address" required="1" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
 
                             </group>
                             <group>
-                                <field name="reg_no" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
-                                <field name="allegation_in_brief" attrs="{'readonly':[('state','!=','draft')]}"/>
-                                <field name="com_date" attrs="{'readonly':[('state','!=','draft')]}"/>
-                                <field name="date_of_receipt" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="reg_no" required="1" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
+                                <field name="allegation_in_brief" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
+                                <field name="com_date" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
+                                <field name="date_of_receipt" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
                             </group>
                          </group>
                          <field name='remarks' placeholder='Remarks.....'/>
                         <notebook>
-                            <page name = "pi" string = "Preliminary investigation (PI)" attrs="{'readonly':[('state','!=','PI')]}">
+                            <page name = "pi" string = "Preliminary investigation (PI)" attrs="{'readonly':[('state','not in',('PI','in_progress'))]}">
                                     <group>
                                         <group>
                                             <field name="pi_conducted_by"/>
@@ -78,7 +78,7 @@
                                         </group>
                                     </group>
                             </page>
-                            <page name = "co" string = "Representation of the Charged Officer" attrs="{'readonly':[('state','!=','draft')]}">
+                            <page name = "co" string = "Representation of the Charged Officer" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}">
                                     <group>
                                         <group>
                                             <field name="date_co"/>
@@ -90,7 +90,7 @@
                                         </group>
                                     </group>
                             </page>
-                            <page name = "iopo" string = "Inquiry proceedings- Appointment of IO and PO" attrs="{'readonly':[('state','!=','draft')]}">
+                            <page name = "iopo" string = "Inquiry proceedings- Appointment of IO and PO" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}">
                                     <group>
                                         <group>
                                             <field name="io_conducted_by"/>
@@ -109,7 +109,7 @@
                                         </group>
                                     </group>
                             </page>
-                            <page name = "ir" string = "Inquiry Report" attrs="{'readonly':[('state','!=','draft')]}">
+                            <page name = "ir" string = "Inquiry Report" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}">
                                     <group>
                                         <group>
                                             <field name="date_ir"/>
@@ -130,7 +130,7 @@
                                         </group>
                                     </group>
                             </page>
-                            <page name = "Revision" string = "Revision" attrs="{'readonly':[('state','!=','draft')]}">
+                            <page name = "Revision" string = "Revision" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}">
                                     <group>
                                         <group>
                                             <field name="revision_number"/>
@@ -144,7 +144,7 @@
                                         </group>
                                     </group>
                             </page>
-                            <page name = "Revision" string = "Revision" attrs="{'readonly':[('state','!=','draft')]}">
+                            <page name = "Revision" string = "Revision" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}">
                                     <group>
                                         <group>
                                             <field name="review_number"/>
