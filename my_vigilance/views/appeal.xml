@@ -40,6 +40,36 @@
                                 <field name="remarks"/>
                             </group>
                          </group>
+                        <notebook>
+                            <page name = "Revision" string = "Revision">
+                                    <group>
+                                        <group>
+                                            <field name="revision_number"/>
+                                            <field name="revision_order_number"/>
+                                            <field name="decision_revision"/>
+                                        </group>
+                                        <group>
+                                            <field name="date_ra"/>
+                                            <field name="date_dis_ra"/>
+                                            <field name="remarks_revise"/>
+                                        </group>
+                                    </group>
+                            </page>
+                            <page name = "Review" string = "Review">
+                                    <group>
+                                        <group>
+                                            <field name="review_number"/>
+                                            <field name="review_order_number"/>
+                                            <field name="decision_review"/>
+                                        </group>
+                                        <group>
+                                            <field name="date_rev"/>
+                                            <field name="date_dis_rev"/>
+                                            <field name="remarks_review"/>
+                                        </group>
+                                    </group>
+                            </page>
+                        </notebook>
                     </sheet>
                     <div class="oe_chatter">
                         <field name="message_follower_ids" widget="mail_followers"/>

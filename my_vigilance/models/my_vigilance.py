@@ -75,25 +75,6 @@ class MyVigilance(models.Model):
     comm_num_co = fields.Char('Communication No. & Date')
     comm_num_ir = fields.Char('Communication No. & Date')
     stpi_ref = fields.Char('STPI Ref No/Date')
-    cvc_om = fields.Char('CVC OM No. & Date')
-    recomend_cvc = fields.Char('Recommendations of CVC')
-    remarks_ir = fields.Text('Remarks(If any)')
-    remarks_cvc = fields.Text('Remarks(If any)')
-
-    revision_number = fields.Char('Revision Number')
-    revision_order_number = fields.Char('Revision Order no.')
-    decision_revision = fields.Text('Decision of the Revisionary Authority')
-    date_ra = fields.Date(string='Date of Revision application (if any)', track_visibility='always')
-    date_dis_ra = fields.Date(string='Date disposing  Revision application', track_visibility='always')
-    remarks_revise = fields.Text('Remarks(If any)')
-
-
-    review_number = fields.Char('Review Number')
-    review_order_number = fields.Char('Review Order no.')
-    decision_review = fields.Text('Decision of the reviewary Authority')
-    date_rev = fields.Date(string='Date of review application (if any)', track_visibility='always')
-    date_dis_rev = fields.Date(string='Date disposing  review application', track_visibility='always')
-    remarks_review = fields.Text('Remarks(If any)')
 
 
 
@@ -407,6 +388,26 @@ class Appeal(models.Model):
     dis_date = fields.Date(string = 'Date disposing appeal',track_visibility='always')
     decision_da = fields.Char( string='Decision of the Appellate Authority')
     remarks = fields.Text('Remarks (If any)')
+
+
+
+    revision_number = fields.Char('Revision Number')
+    revision_order_number = fields.Char('Revision Order no.')
+    decision_revision = fields.Text('Decision of the Revisionary Authority')
+    date_ra = fields.Date(string='Date of Revision application (if any)', track_visibility='always')
+    date_dis_ra = fields.Date(string='Date disposing  Revision application', track_visibility='always')
+    remarks_revise = fields.Text('Remarks(If any)')
+
+
+    review_number = fields.Char('Review Number')
+    review_order_number = fields.Char('Review Order no.')
+    decision_review = fields.Text('Decision of the reviewary Authority')
+    date_rev = fields.Date(string='Date of review application (if any)', track_visibility='always')
+    date_dis_rev = fields.Date(string='Date disposing  review application', track_visibility='always')
+    remarks_review = fields.Text('Remarks(If any)')
+
+
+
 
 
 
