@@ -6,3 +6,4 @@ access_vigilance_major_penalty,vigilance.major.penalty,model_vigilance_major_pen
 access_vigilance_suspension,vigilance.suspension,model_vigilance_suspension,base.group_user,1,1,1,1
 access_vigilance_appeal,vigilance.appeal,model_vigilance_appeal,base.group_user,1,1,1,1
 access_vigilance_disciplinary,vigilance.disciplinary,model_vigilance_disciplinary,base.group_user,1,1,1,1
+access_vigilance_cvc,vigilance.cvc,model_vigilance_cvc,base.group_user,1,1,1,1

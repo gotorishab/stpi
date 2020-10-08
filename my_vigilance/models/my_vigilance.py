@@ -400,7 +400,7 @@ class DisAuth(models.Model):
 
     _name = "vigilance.disciplinary"
     _inherit = ['mail.thread', 'mail.activity.mixin']
-    _description = "Vigilance Appeal"
+    _description = "Vigilance disciplinary"
 
     vigilance_id = fields.Many2one('my.vigilance', string='Vigilance')
 
@@ -409,3 +409,30 @@ class DisAuth(models.Model):
     order_number = fields.Char(string = 'Order Number',track_visibility='always')
 
     remarks = fields.Text('Remarks (If any)')
+
+
+
+class CvC(models.Model):
+
+    _name = "vigilance.cvc"
+    _inherit = ['mail.thread', 'mail.activity.mixin']
+    _description = "Vigilance cvc"
+
+    vigilance_id = fields.Many2one('my.vigilance', string='Vigilance')
+    cvc_stage = fields.Selection([('first', 'First'), ('second', 'Second')], string='CVC Stage', default='first', track_visibility='always')
+
+    stpi_refdate_cvci = fields.Date(string = 'STPI Reference Date',track_visibility='always')
+    stpi_refno_cvci = fields.Char(string = 'STPI Reference No',track_visibility='always')
+    stpi_omdate_cvci = fields.Date(string = 'CVC OM Date',track_visibility='always')
+    stpi_omno_cvci = fields.Char(string = 'CVC OM No.',track_visibility='always')
+    stpi_recdate_cvci = fields.Date(string = 'Date of receipt of CVC 1st Stage advice',track_visibility='always')
+    rec_cvc_i = fields.Char(string = 'Recommendations of CVC',track_visibility='always')
+    remarks_cvci = fields.Text('Remarks (If any)')
+
+    stpi_refdate_cvcii = fields.Date(string = 'STPI Reference Date',track_visibility='always')
+    stpi_refno_cvcii = fields.Char(string = 'STPI Reference No',track_visibility='always')
+    stpi_omdate_cvcii = fields.Date(string = 'CVC OM Date',track_visibility='always')
+    stpi_omno_cvcii = fields.Char(string = 'CVC OM No.',track_visibility='always')
+    stpi_recdate_cvcii = fields.Date(string = 'Date of receipt of CVC 2nd  Stage advice',track_visibility='always')
+    rec_cvc_ii = fields.Char(string = 'Recommendations of CVC',track_visibility='always')
+    remarks_cvcii = fields.Text('Remarks (If any)')

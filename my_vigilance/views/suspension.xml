@@ -67,21 +67,21 @@
             </field>
         </record>
 
-        <record id="vigilance_suspension_menu_action_closed" model="ir.actions.act_window">
-            <field name="name">Vigilance</field>
+        <record id="vigilance_suspension_menu_action" model="ir.actions.act_window">
+            <field name="name">Suspension</field>
             <field name="res_model">vigilance.suspension</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
         </record>
 
-    <record id="vigilance_suspension_menu_action_own" model="ir.actions.act_window">
-        <field name="res_model">vigilance.suspension</field>
-        <field name="name">Vigilance</field>
-        <field name="view_type">form</field>
-        <field name="view_mode">tree,form</field>
-        <field name="domain">[('vigilance_id', '=', active_id)]</field>
-        <field name="context">{'vigilance_id':'active_id'}</field>
-    </record>
+<!--    <record id="vigilance_suspension_menu_action_own" model="ir.actions.act_window">-->
+<!--        <field name="res_model">vigilance.suspension</field>-->
+<!--        <field name="name">Suspension</field>-->
+<!--        <field name="view_type">form</field>-->
+<!--        <field name="view_mode">tree,form</field>-->
+<!--        <field name="domain">[('vigilance_id', '=', active_id)]</field>-->
+<!--        <field name="context">{'vigilance_id':'active_id'}</field>-->
+<!--    </record>-->
 
 
 </odoo>

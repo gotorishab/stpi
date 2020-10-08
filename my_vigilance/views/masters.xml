@@ -50,21 +50,21 @@
             </field>
         </record>
 
-        <record id="vigilance_initiate_major_menu_action_closed" model="ir.actions.act_window">
-            <field name="name">Vigilance</field>
+        <record id="vigilance_initiate_major_menu_action" model="ir.actions.act_window">
+            <field name="name">Major Penalty</field>
             <field name="res_model">vigilance.major.penalty</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
         </record>
 
-    <record id="vigilance_initiate_major_menu_action_own" model="ir.actions.act_window">
-        <field name="res_model">vigilance.major.penalty</field>
-        <field name="name">Vigilance</field>
-        <field name="view_type">form</field>
-        <field name="view_mode">tree,form</field>
-        <field name="domain">[('vigilance_id', '=', active_id)]</field>
-        <field name="context">{'vigilance_id':'active_id'}</field>
-    </record>
+<!--    <record id="vigilance_initiate_major_menu_action_own" model="ir.actions.act_window">-->
+<!--        <field name="res_model">vigilance.major.penalty</field>-->
+<!--        <field name="name">Major Penalty</field>-->
+<!--        <field name="view_type">form</field>-->
+<!--        <field name="view_mode">tree,form</field>-->
+<!--        <field name="domain">[('vigilance_id', '=', active_id)]</field>-->
+<!--        <field name="context">{'vigilance_id':'active_id'}</field>-->
+<!--    </record>-->
 
 
 
@@ -118,20 +118,20 @@
             </field>
         </record>
 
-        <record id="vigilance_initiate_minor_menu_action_closed" model="ir.actions.act_window">
-            <field name="name">Vigilance</field>
+        <record id="vigilance_initiate_minor_menu_action" model="ir.actions.act_window">
+            <field name="name">Minor Penalty</field>
             <field name="res_model">vigilance.minor.penalty</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
         </record>
 
-    <record id="vigilance_initiate_minor_menu_action_own" model="ir.actions.act_window">
-        <field name="res_model">vigilance.minor.penalty</field>
-        <field name="name">Vigilance</field>
-        <field name="view_type">form</field>
-        <field name="view_mode">tree,form</field>
-        <field name="domain">[('vigilance_id', '=', active_id)]</field>
-        <field name="context">{'vigilance_id':'active_id'}</field>
-    </record>
+<!--    <record id="vigilance_initiate_minor_menu_action_own" model="ir.actions.act_window">-->
+<!--        <field name="res_model">vigilance.minor.penalty</field>-->
+<!--        <field name="name">Vigilance</field>-->
+<!--        <field name="view_type">form</field>-->
+<!--        <field name="view_mode">tree,form</field>-->
+<!--        <field name="domain">[('vigilance_id', '=', active_id)]</field>-->
+<!--        <field name="context">{'vigilance_id':'active_id'}</field>-->
+<!--    </record>-->
 
 </odoo>

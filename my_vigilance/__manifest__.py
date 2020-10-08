@@ -14,6 +14,7 @@
 		'security/security.xml',
         'wizard/reason_wizard.xml',
 		'views/appeal.xml',
+		'views/cvc.xml',
 		'views/disciplinary.xml',
 		'views/suspension.xml',
 		'views/masters.xml',
