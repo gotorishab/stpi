@@ -65,20 +65,20 @@
                          </group>
                          <field name='remarks' placeholder='Remarks.....'/>
                         <notebook>
-                            <page name = "pi" string = "Preliminary investigation (PI)" attrs="{'readonly':[('state','not in',('PI','in_progress'))]}">
+                            <page name = "pi" string = "Preliminary investigation (PI)">
                                     <group>
                                         <group>
-                                            <field name="pi_conducted_by"/>
+                                            <field name="pi_conducted_by" attrs="{'readonly':[('state','not in',('PI','in_progress'))]}"/>
                                             <field name="pi_conducted_ext" attrs="{'invisible': [('pi_conducted_by', '=', 'internal_emp')],'required': [('pi_conducted_by', '!=', 'internal_emp')]}"/>
                                             <field name="pi_conducted_int" attrs="{'invisible': [('pi_conducted_by', '!=', 'internal_emp')],'required': [('pi_conducted_by', '=', 'internal_emp')]}"/>
                                         </group>
                                         <group>
-                                            <field name="date_pi"/>
-                                            <field name="outcome_pi"/>
+                                            <field name="date_pi" attrs="{'readonly':[('state','not in',('PI','in_progress'))]}"/>
+                                            <field name="outcome_pi" attrs="{'readonly':[('state','not in',('PI','in_progress'))]}"/>
                                         </group>
                                     </group>
                             </page>
-                            <page name = "co" string = "Representation of the Charged Officer" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}">
+                            <page name = "co" string = "Representation of the Charged Officer">
                                     <group>
                                         <group>
                                             <field name="date_co"/>
@@ -90,7 +90,7 @@
                                         </group>
                                     </group>
                             </page>
-                            <page name = "iopo" string = "Inquiry proceedings- Appointment of IO and PO" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}">
+                            <page name = "iopo" string = "Inquiry proceedings- Appointment of IO and PO">
                                     <group>
                                         <group>
                                             <field name="io_conducted_by" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
@@ -109,7 +109,7 @@
                                         </group>
                                     </group>
                             </page>
-                            <page name = "ir" string = "Inquiry Report" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}">
+                            <page name = "ir" string = "Inquiry Report">
                                     <group>
                                         <group>
                                             <field name="date_ir" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
@@ -130,7 +130,7 @@
                                         </group>
                                     </group>
                             </page>
-                            <page name = "Revision" string = "Revision" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}">
+                            <page name = "Revision" string = "Revision">
                                     <group>
                                         <group>
                                             <field name="revision_number" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
@@ -144,7 +144,7 @@
                                         </group>
                                     </group>
                             </page>
-                            <page name = "Revision" string = "Revision" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}">
+                            <page name = "Revision" string = "Review">
                                     <group>
                                         <group>
                                             <field name="review_number" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
