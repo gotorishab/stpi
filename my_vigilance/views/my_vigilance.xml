@@ -69,8 +69,8 @@
                                     <group>
                                         <group>
                                             <field name="pi_conducted_by" attrs="{'readonly':[('state','not in',('PI','in_progress'))]}"/>
-                                            <field name="pi_conducted_ext" attrs="{'invisible': [('pi_conducted_by', '=', 'internal_emp')],'required': [('pi_conducted_by', '!=', 'internal_emp')]}"/>
-                                            <field name="pi_conducted_int" attrs="{'invisible': [('pi_conducted_by', '!=', 'internal_emp')],'required': [('pi_conducted_by', '=', 'internal_emp')]}"/>
+                                            <field name="pi_conducted_ext" attrs="{'invisible': [('pi_conducted_by', '=', 'internal_emp')],'required': [('pi_conducted_by', '!=', 'internal_emp'),('state', '=', 'PI')]}"/>
+                                            <field name="pi_conducted_int" attrs="{'invisible': [('pi_conducted_by', '!=', 'internal_emp')],'required': [('pi_conducted_by', '=', 'internal_emp'),('state', '=', 'PI')]}"/>
                                         </group>
                                         <group>
                                             <field name="date_pi" attrs="{'readonly':[('state','not in',('PI','in_progress'))]}"/>
