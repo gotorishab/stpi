@@ -6,7 +6,7 @@
             <field name="model">vigilance.major.penalty</field>
             <field name="arch" type="xml">
                 <tree string="Vigilance">
-                    <field name="vigilance_id"/>
+                    <field name="vigilance_id" readonly="1"/>
                     <field name="dis_auth"/>
                     <field name="charge_num"/>
                     <field name="charge_date"/>
@@ -27,7 +27,7 @@
                     <sheet>
                         <group>
                             <group>
-                                <field name="vigilance_id"/>
+                                <field name="vigilance_id" readonly="1"/>
                                 <field name="dis_auth"/>
                                 <field name="charge_num"/>
                                 <field name="charge_date"/>
@@ -125,13 +125,13 @@
             <field name="view_mode">tree,form</field>
         </record>
 
-<!--    <record id="vigilance_initiate_minor_menu_action_own" model="ir.actions.act_window">-->
-<!--        <field name="res_model">vigilance.minor.penalty</field>-->
-<!--        <field name="name">Vigilance</field>-->
-<!--        <field name="view_type">form</field>-->
-<!--        <field name="view_mode">tree,form</field>-->
-<!--        <field name="domain">[('vigilance_id', '=', active_id)]</field>-->
-<!--        <field name="context">{'vigilance_id':'active_id'}</field>-->
-<!--    </record>-->
+    <record id="vigilance_initiate_minor_menu_action_own" model="ir.actions.act_window">
+        <field name="res_model">vigilance.minor.penalty</field>
+        <field name="name">Minor Penalty</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('vigilance_id', '=', active_id)]</field>
+        <field name="context">{'vigilance_id':'active_id'}</field>
+    </record>
 
 </odoo>

@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <odoo>
-        <record id="vigilance_disciplinary_tree_view" model="ir.ui.view">
-            <field name="name">vigilance.disciplinary.tree</field>
-            <field name="model">vigilance.disciplinary</field>
-            <field name="arch" type="xml">
-                <tree string="Vigilance">
-                    <field name="vigilance_id"/>
-                    <field name="date_app"/>
-                    <field name="pen_detail"/>
-                    <field name="order_number"/>
-                    <field name="remarks"/>
-                </tree>
-            </field>
-        </record>
+    <record id="vigilance_disciplinary_tree_view" model="ir.ui.view">
+        <field name="name">vigilance.disciplinary.tree</field>
+        <field name="model">vigilance.disciplinary</field>
+        <field name="arch" type="xml">
+            <tree string="Vigilance">
+                <field name="vigilance_id"/>
+                <field name="date_app"/>
+                <field name="pen_detail"/>
+                <field name="order_number"/>
+                <field name="remarks"/>
+            </tree>
+        </field>
+    </record>
 
 		<record id="vigilance_disciplinary_form_view" model="ir.ui.view">
             <field name="name">vigilance.disciplinary.form</field>
