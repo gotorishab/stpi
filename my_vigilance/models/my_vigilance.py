@@ -343,6 +343,10 @@ class MiniorPenalty(models.Model):
     charged_officer = fields.Many2one('hr.employee', string='Name of the Charged Officer(s)')
     remarks = fields.Text('Remarks (if any)')
 
+    # @api.onchange('vigilance_id')
+    # @api.constrains('vigilance_id')
+    # def get_dis_i
+
 class MajorrPenalty(models.Model):
 
     _name = "vigilance.major.penalty"
