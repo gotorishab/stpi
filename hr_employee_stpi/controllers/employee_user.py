@@ -199,7 +199,6 @@ class CreateUser(http.Controller):
                 'id': rec.id,
                 'name': rec.name,
                 'login': rec.login,
-                'password': rec.password,
             }
             letter_det.append(vals)
         data = {"response": letter_det}
@@ -215,7 +214,23 @@ class CreateUser(http.Controller):
         for rec in letter_details_data:
             vals={
                 'id': rec.id,
+                'salutation': rec.salutation.id,
                 'name': rec.name,
+                'location': rec.work_location,
+                'user_id': rec.user_id.id,
+                'recruitment_file_no': rec.recruitment_file_no,
+                'office_order_no': rec.office_file_no,
+                'recruitment_type': rec.recruitment_type,
+                'parent_id': rec.parent_id.id,
+                'department_id': rec.department_id.id,
+                'job_id': rec.job_id.id,
+                'work_phone': rec.work_phone,
+                'country_id': rec.country_id.id,
+                'identify_id': rec.identify_id,
+                'passport_id': rec.passport_id,
+                'pan_no': rec.pan_no,
+                'religion': rec.religion,
+                'gender': rec.gende,
             }
             letter_det.append(vals)
         data = {"response": letter_det}
