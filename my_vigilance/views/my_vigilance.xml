@@ -252,6 +252,23 @@
         </record>
 
 
+        <record id="vigilance_penalty_tree" model="ir.ui.view">
+            <field name="name">vigilance.penalty.tree</field>
+            <field name="model">vigilance.penalty</field>
+            <field name="arch" type="xml">
+                <tree string="Vigilance Receipt Type" editable="bottom">
+                     <field name="name" required="True"/>
+                </tree>
+            </field>
+        </record>
+        <record id="vigilance_penalty_action" model="ir.actions.act_window">
+            <field name="name">Vigilance Penalty</field>
+            <field name="res_model">vigilance.penalty</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+
     <menuitem id = "vigilance_menu_id"
               name = "Vigilance"
               web_icon="my_vigilance,static/description/icon.png"
@@ -287,9 +304,15 @@
               sequence = "100"
               />
 
-    <menuitem id = "vigilance_receipt_type"
-              name = "Receipt Type"
-              action ="vigilance_receipt_type_action"
+<!--    <menuitem id = "vigilance_receipt_type"-->
+<!--              name = "Receipt Type"-->
+<!--              action ="vigilance_receipt_type_action"-->
+<!--              parent = "vigilance_configuration"-->
+<!--      />-->
+
+    <menuitem id = "vigilance_penalty"
+              name = "Penalty"
+              action ="vigilance_penalty_action"
               parent = "vigilance_configuration"
       />
 
