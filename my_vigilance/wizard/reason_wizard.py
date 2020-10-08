@@ -11,10 +11,10 @@ class Reason_wizard(models.TransientModel):
     penalty = fields.Many2one('vigilance.penalty', string='Penalty: ')
 
     def button_confirm(self):
-
         model_id = self.env[self.res_model].browse(self.res_id)
         _body = (_(
             (
                 "Remarks(Close): <ul><b>{0}</b></ul> ").format(self.reason_des)))
         model_id.message_post(body=_body)
+        model_id.penalty = self.penalty.id
         model_id.write({'state': 'closed'})

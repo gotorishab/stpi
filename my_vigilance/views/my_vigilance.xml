@@ -32,7 +32,7 @@
 <!--                        <button name="button_register_actions" string="Register Actions" class="oe_highlight" type="object" states="in_progress" groups="my_vigilance.group_vigilance_user"/>-->
 <!--                        <button name="button_create_activities" string="Create Activities" class="oe_highlight" type="object" states="in_progress" groups="my_vigilance.group_vigilance_user"/>-->
                         <button name="button_closed" string="Close" class="oe_highlight" type="object" states="PI" groups="my_vigilance.group_vigilance_manager"/>
-                        <button name="button_re_open" string="Re-Open" class="oe_highlight" type="object" states="closeds" groups="my_vigilance.group_vigilance_manager"/>
+                        <button name="button_re_open" string="Re-Open" class="oe_highlight" type="object" states="closed" groups="my_vigilance.group_vigilance_manager"/>
                         <field name="state" widget="statusbar" statusbar_visible="draft,in_progress,PI,closed" />
                     </header>
                     <sheet>
@@ -54,7 +54,7 @@
                                 <field name="name_of_complaint" required="1" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
                                 <field name="complaint_against" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
                                 <field name="address" required="1" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
-
+                                <field name="penalty" readonly="1" states="closed"/>
                             </group>
                             <group>
                                 <field name="reg_no" required="1" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>

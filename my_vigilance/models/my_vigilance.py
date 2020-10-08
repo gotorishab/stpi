@@ -37,6 +37,7 @@ class MyVigilance(models.Model):
     com_date = fields.Date(string = 'Communication Date',track_visibility='always')
     date_of_receipt = fields.Date(string="Date of Receipt of Complaint", default=fields.Date.today(),track_visibility='always')
     remarks = fields.Text('Remarks (If any)')
+    penalty = fields.Many2one('vigilance.penalty', string='Penalty: ')
     state = fields.Selection([('draft', 'Draft'), ('in_progress', 'Forwarded'), ('PI', 'PI'), ('closed', 'Closed')], required=True, string='Status', default='draft', track_visibility='always')
 
     pi_conducted_by = fields.Selection([('internal_emp', 'Internal Employee'), ('external_emp', 'External Employee')], string='PI conducted by', default='internal_emp', track_visibility='always')
