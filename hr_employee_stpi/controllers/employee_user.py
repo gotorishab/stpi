@@ -150,8 +150,8 @@ class CreateUser(http.Controller):
             vals={
                 'id': rec.id,
                 'name': rec.name,
-                'manager_id': rec.manager_id,
-                'parent_id': rec.parent_id,
+                'manager_id': rec.manager_id.id,
+                'parent_id': rec.parent_id.id,
             }
             letter_det.append(vals)
         data = {"response": letter_det}
@@ -183,6 +183,39 @@ class CreateUser(http.Controller):
             vals={
                 'id': rec.id,
                 'name': rec.name
+            }
+            letter_det.append(vals)
+        data = {"response": letter_det}
+        print('=========================letter==========================',letter_det)
+        loaded_r = json.dumps(dict(response=str(letter_det)))
+        return loaded_r
+
+    @http.route(['/get_user'], type='json', auth='none', csrf=False, methods=['GET'])
+    def user_list_hrmis(self, **kwargs):
+        letter_details_data = request.env['res.users'].sudo().search([])
+        letter_det = []
+        for rec in letter_details_data:
+            vals={
+                'id': rec.id,
+                'name': rec.name,
+                'login': rec.login,
+                'password': rec.password,
+            }
+            letter_det.append(vals)
+        data = {"response": letter_det}
+        print('=========================letter==========================',letter_det)
+        loaded_r = json.dumps(dict(response=str(letter_det)))
+        return loaded_r
+
+
+    @http.route(['/get_employee'], type='json', auth='none', csrf=False, methods=['GET'])
+    def employee_list_hrmis(self, **kwargs):
+        letter_details_data = request.env['hr.employee'].sudo().search([])
+        letter_det = []
+        for rec in letter_details_data:
+            vals={
+                'id': rec.id,
+                'name': rec.name,
             }
             letter_det.append(vals)
         data = {"response": letter_det}
