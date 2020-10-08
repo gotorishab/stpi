@@ -37,8 +37,8 @@
                     </header>
                     <sheet>
                         <div class="oe_button_box" name="button_box">
-                            <button name="%(my_vigilance.vigilance_initiate_major_menu_action)d" string="Major Intimations" type="action" icon="fa-pencil-square-o" domain="[('vigilance_id', '=', id)]" context = "{'default_vigilance_id': id, 'default_charged_officer': complaint_against}"/>
-                            <button name="%(my_vigilance.vigilance_initiate_minor_menu_action_own)d" string="Minor Intimations" type="action" icon="fa-pencil-square-o" domain="[('vigilance_id', '=', id)]" context = "{'default_vigilance_id': id, 'default_charged_officer': complaint_against}"/>
+                            <button name="%(my_vigilance.vigilance_initiate_major_menu_action)d" string="Major Intimations" type="action" icon="fa-pencil-square-o" domain="[('vigilance_id', '=', id)]" context = "{'default_vigilance_id': id, 'default_charged_officer': complaint_against.id}"/>
+                            <button name="%(my_vigilance.vigilance_initiate_minor_menu_action_own)d" string="Minor Intimations" type="action" icon="fa-pencil-square-o" domain="[('vigilance_id', '=', id)]" context = "{'default_vigilance_id': id, 'default_charged_officer': complaint_against.id}"/>
                             <button name="%(my_vigilance.vigilance_suspension_menu_action)d" string="Suspension" type="action" icon="fa-pencil-square-o" domain="[('vigilance_id', '=', id)]" context = "{'default_vigilance_id': id}"/>
                             <button name="%(my_vigilance.vigilance_disciplinary_menu_action)d" string="Disciplinary" type="action" icon="fa-pencil-square-o" domain="[('vigilance_id', '=', id)]" context = "{'default_vigilance_id': id}"/>
                             <button name="%(my_vigilance.vigilance_appeal_menu_action)d" string="Appeal" type="action" icon="fa-pencil-square-o" domain="[('vigilance_id', '=', id)]" context = "{'default_vigilance_id': id}"/>
