@@ -253,7 +253,21 @@ class MyVigilance(models.Model):
     @api.multi
     def button_closed(self):
         for rec in self:
-            rec.write({'state': 'closed'})
+            rc = {
+                'name': 'Register actions',
+                'view_type': 'form',
+                'view_mode': 'form',
+                'view_id': self.env.ref('my_vigilance.view_reason_revert_vigilance_wizard').id,
+                'res_model': 'revert.vigilance.wizard',
+                'type': 'ir.actions.act_window',
+                'target': 'new',
+                'context': {
+                    'default_res_model': self._name,
+                    'default_res_id': self.id,
+                }
+            }
+            return rc
+
 
     @api.constrains('email')
     @api.onchange('email')
@@ -436,3 +450,12 @@ class CvC(models.Model):
     stpi_recdate_cvcii = fields.Date(string = 'Date of receipt of CVC 2nd  Stage advice',track_visibility='always')
     rec_cvc_ii = fields.Char(string = 'Recommendations of CVC',track_visibility='always')
     remarks_cvcii = fields.Text('Remarks (If any)')
+
+
+class Penalty(models.Model):
+
+    _name = "vigilance.penalty"
+    _inherit = ['mail.thread', 'mail.activity.mixin']
+    _description = "Vigilance penalty"
+
+    name = fields.Char('Penalty')
