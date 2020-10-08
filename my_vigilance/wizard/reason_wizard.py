@@ -15,6 +15,6 @@ class Reason_wizard(models.TransientModel):
         model_id = self.env[self.res_model].browse(self.res_id)
         _body = (_(
             (
-                "Action Taken: <ul><b>{0}</b></ul> ").format(self.reason_des)))
+                "Remarks(Close): <ul><b>{0}</b></ul> ").format(self.reason_des)))
         model_id.message_post(body=_body)
         model_id.write({'state': 'closed'})

@@ -5,10 +5,10 @@
             <field name="name">revert.vigilance.wizard</field>
             <field name="model">revert.vigilance.wizard</field>
             <field name="arch" type="xml">
-                <form string="Action Taken" version="7.0">
+                <form string="Vigilance - Close" version="7.0">
                     <group>
                         <field name="penalty"/>
-                        <field name="reason_des" required="1" placeholder="Reason"/>
+                        <field name="reason_des" required="1" placeholder="Remarks.."/>
                     </group>
 
                     <newline/>
@@ -23,7 +23,7 @@
 
         
         <record id="action_vigilance_cancel_wizard" model="ir.actions.act_window">
-            <field name="name">Reason for Cancellation</field>
+            <field name="name">Vigilance - Cancel</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">revert.vigilance.wizard</field>
             <field name="view_type">form</field>
