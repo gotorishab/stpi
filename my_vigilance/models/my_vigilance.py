@@ -40,8 +40,8 @@ class MyVigilance(models.Model):
     state = fields.Selection([('draft', 'Draft'), ('in_progress', 'Forwarded'), ('PI', 'PI'), ('closed', 'Closed')], required=True, string='Status', default='draft', track_visibility='always')
 
     pi_conducted_by = fields.Selection([('internal_emp', 'Internal Employee'), ('external_emp', 'External Employee')], string='PI conducted by', default='internal_emp', track_visibility='always')
-    pi_conducted_ext = fields.Many2one('res.partner', string='PI conducted by')
-    pi_conducted_int = fields.Many2one('hr.employee', string='PI conducted by')
+    pi_conducted_ext = fields.Many2one('res.partner', string='Name')
+    pi_conducted_int = fields.Many2one('hr.employee', string='Name of the Employee')
     date_pi = fields.Date(string = 'Date of Receipt of PI report',track_visibility='always')
     outcome_pi = fields.Text('Outcome of PI')
 
@@ -343,9 +343,6 @@ class MiniorPenalty(models.Model):
     charged_officer = fields.Many2one('hr.employee', string='Name of the Charged Officer(s)')
     remarks = fields.Text('Remarks (if any)')
 
-    # @api.onchange('vigilance_id')
-    # @api.constrains('vigilance_id')
-    # def get_dis_i
 
 class MajorrPenalty(models.Model):
 
