@@ -21,7 +21,7 @@
                         <group>
                             <group>
                                 <field name="vigilance_id" readonly="1"/>
-                                <field name="cvc_stage"/>
+                                <field name="cvc_stage" invisible="1"/>
                             </group>
                          </group>
                         <notebook>
