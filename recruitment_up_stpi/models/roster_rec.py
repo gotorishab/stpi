@@ -23,14 +23,14 @@ class RecruitmentRoster(models.Model):
     st = fields.Boolean('ST')
     general = fields.Boolean('General')
 
-    @api.constrains('employee_id')
-    def putinto_employee_roster(self):
-        print('====================rec.employee_id.roster_line_item========================', self.employee_id.roster_line_item)
-        print('============================================', self.id)
-        self.employee_id.roster_line_item = self.id
-        print('====================rec.employee_id.roster_line_item========================',
-              self.employee_id.roster_line_item)
-        print('============================================', self.id)
+    # @api.constrains('employee_id')
+    # def putinto_employee_roster(self):
+    #     print('====================rec.employee_id.roster_line_item========================', self.employee_id.roster_line_item)
+    #     print('============================================', self.id)
+    #     self.employee_id.roster_line_item = self.id
+    #     print('====================rec.employee_id.roster_line_item========================',
+    #           self.employee_id.roster_line_item)
+    #     print('============================================', self.id)
 
 
 class Employee(models.Model):
