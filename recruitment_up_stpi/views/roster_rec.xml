@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+        <record id="recruitment_roster_tree_view" model="ir.ui.view">
+            <field name="name">recruitment.roster.tree</field>
+            <field name="model">recruitment.roster</field>
+            <field name="arch" type="xml">
+                <tree string="Vigilance" editable="bottom">
+                    <field name="name"/>
+                    <field name="job_id"/>
+                    <field name="sc"/>
+                    <field name="st"/>
+                    <field name="general"/>
+                    <field name="employee_id"/>
+                    <field name="position_number"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="recruitment_roster_menu_action" model="ir.actions.act_window">
+            <field name="name">Appeal</field>
+            <field name="res_model">recruitment.roster</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+    <menuitem
+            id="menu_recruitment_roster"
+            name="Roster "
+            parent="hr_recruitment.menu_hr_recruitment_root"
+            action="recruitment_roster_menu_action"
+            sequence="100"
+            />
+
+
+     <record model="ir.ui.view" id="hr_employee_recruitment_roster">
+        <field name="name">hr.employee.roster.recruitment</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='job_id']" position="after">
+                <field name="data-roster_line_item"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
