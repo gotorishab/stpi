@@ -25,13 +25,12 @@ class RecruitmentRoster(models.Model):
 
     @api.constrains('employee_id')
     def putinto_employee_roster(self):
-        for rec in self:
-            print('====================rec.employee_id.roster_line_item========================', rec.employee_id.roster_line_item)
-            print('============================================', rec.id)
-            rec.employee_id.roster_line_item = rec.id
-            print('====================rec.employee_id.roster_line_item========================',
-                  rec.employee_id.roster_line_item)
-            print('============================================', rec.id)
+        print('====================rec.employee_id.roster_line_item========================', self.employee_id.roster_line_item)
+        print('============================================', self.id)
+        self.employee_id.roster_line_item = self.id
+        print('====================rec.employee_id.roster_line_item========================',
+              self.employee_id.roster_line_item)
+        print('============================================', self.id)
 
 
 class Employee(models.Model):
