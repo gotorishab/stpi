@@ -28,7 +28,7 @@
                     <header>
                         <button name="button_draft" string="Reset to Draft" type="object" states="in_progress" groups="my_vigilance.group_vigilance_user"/>
                         <button name="button_in_progress" string="Forward to Admin" class="oe_highlight" type="object" states="draft" groups="my_vigilance.group_vigilance_user"/>
-                        <button name="button_pi" string="PI" class="oe_highlight" type="object" states="draft" groups="my_vigilance.group_vigilance_user"/>
+                        <button name="button_pi" string="PI" class="oe_highlight" type="object" states="draft,in_progress"/>
 <!--                        <button name="button_register_actions" string="Register Actions" class="oe_highlight" type="object" states="in_progress" groups="my_vigilance.group_vigilance_user"/>-->
 <!--                        <button name="button_create_activities" string="Create Activities" class="oe_highlight" type="object" states="in_progress" groups="my_vigilance.group_vigilance_user"/>-->
                         <button name="button_closed" string="Close" class="oe_highlight" type="object" states="PI" groups="my_vigilance.group_vigilance_manager"/>
@@ -50,17 +50,17 @@
                 </div>
                         <group>
                             <group>
-                                <field name="mode_of_complaint" required="1" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
-                                <field name="name_of_complaint" required="1" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
-                                <field name="complaint_against" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
-                                <field name="address" required="1" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
+                                <field name="mode_of_complaint" required="1" attrs="{'readonly':[('state','not in',('draft','PI'))]}"/>
+                                <field name="name_of_complaint" required="1" attrs="{'readonly':[('state','not in',('draft','PI'))]}"/>
+                                <field name="complaint_against" attrs="{'readonly':[('state','not in',('draft','PI'))]}"/>
+                                <field name="address" required="1" attrs="{'readonly':[('state','not in',('draft','PI'))]}"/>
                                 <field name="penalty" readonly="1" states="closed"/>
                             </group>
                             <group>
-                                <field name="reg_no" required="1" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
-                                <field name="allegation_in_brief" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
-                                <field name="com_date" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
-                                <field name="date_of_receipt" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
+                                <field name="reg_no" required="1" attrs="{'readonly':[('state','not in',('draft','PI'))]}"/>
+                                <field name="allegation_in_brief" attrs="{'readonly':[('state','not in',('draft','PI'))]}"/>
+                                <field name="com_date" attrs="{'readonly':[('state','not in',('draft','PI'))]}"/>
+                                <field name="date_of_receipt" attrs="{'readonly':[('state','not in',('draft','PI'))]}"/>
                             </group>
                          </group>
                          <field name='remarks' placeholder='Remarks.....'/>
@@ -68,62 +68,62 @@
                             <page name = "pi" string = "Preliminary investigation (PI)">
                                     <group>
                                         <group>
-                                            <field name="pi_conducted_by" attrs="{'readonly':[('state','not in',('PI','in_progress'))]}"/>
+                                            <field name="pi_conducted_by" attrs="{'readonly':[('state','!=','PI')]}"/>
                                             <field name="pi_conducted_ext" attrs="{'invisible': [('pi_conducted_by', '=', 'internal_emp')],'required': [('pi_conducted_by', '!=', 'internal_emp'),('state', '=', 'PI')]}"/>
                                             <field name="pi_conducted_int" attrs="{'invisible': [('pi_conducted_by', '!=', 'internal_emp')],'required': [('pi_conducted_by', '=', 'internal_emp'),('state', '=', 'PI')]}"/>
                                         </group>
                                         <group>
-                                            <field name="date_pi" attrs="{'readonly':[('state','not in',('PI','in_progress'))]}"/>
-                                            <field name="outcome_pi" attrs="{'readonly':[('state','not in',('PI','in_progress'))]}"/>
+                                            <field name="date_pi" attrs="{'readonly':[('state','!=','PI')]}"/>
+                                            <field name="outcome_pi" attrs="{'readonly':[('state','!=','PI')]}"/>
                                         </group>
                                     </group>
                             </page>
                             <page name = "co" string = "Representation of the Charged Officer">
                                     <group>
                                         <group>
-                                            <field name="date_co"/>
-                                            <field name="comm_number_co"/>
+                                            <field name="date_co" attrs="{'readonly':[('state','not in',('draft','PI'))]}"/>
+                                            <field name="comm_number_co" attrs="{'readonly':[('state','not in',('draft','PI'))]}"/>
                                         </group>
                                         <group>
-                                            <field name="comm_date_co"/>
-                                            <field name="remarks_co"/>
+                                            <field name="comm_date_co" attrs="{'readonly':[('state','not in',('draft','PI'))]}"/>
+                                            <field name="remarks_co" attrs="{'readonly':[('state','not in',('draft','PI'))]}"/>
                                         </group>
                                     </group>
                             </page>
                             <page name = "iopo" string = "Inquiry proceedings- Appointment of IO and PO">
                                     <group>
                                         <group>
-                                            <field name="io_conducted_by" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
+                                            <field name="io_conducted_by" attrs="{'readonly':[('state','not in',('draft','PI'))]}"/>
                                             <field name="io_conducted_ext" attrs="{'invisible': [('io_conducted_by', '=', 'internal_emp')],'required': [('io_conducted_by', '!=', 'internal_emp')]}"/>
                                             <field name="io_conducted_int" attrs="{'invisible': [('io_conducted_by', '!=', 'internal_emp')],'required': [('io_conducted_by', '=', 'internal_emp')]}"/>
-                                            <field name="address_io" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
-                                            <field name="date_io" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
-                                            <field name="order_number_io" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
+                                            <field name="address_io" attrs="{'readonly':[('state','not in',('draft','PI'))]}"/>
+                                            <field name="date_io" attrs="{'readonly':[('state','not in',('draft','PI'))]}"/>
+                                            <field name="order_number_io" attrs="{'readonly':[('state','not in',('draft','PI'))]}"/>
                                         </group>
                                         <group>
-                                            <field name="po_conducted_int" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
-                                            <field name="date_po" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
-                                            <field name="address_po" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
-                                            <field name="order_number_po" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
-                                            <field name="remarks_io_po" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
+                                            <field name="po_conducted_int" attrs="{'readonly':[('state','not in',('draft','PI'))]}"/>
+                                            <field name="date_po" attrs="{'readonly':[('state','not in',('draft','PI'))]}"/>
+                                            <field name="address_po" attrs="{'readonly':[('state','not in',('draft','PI'))]}"/>
+                                            <field name="order_number_po" attrs="{'readonly':[('state','not in',('draft','PI'))]}"/>
+                                            <field name="remarks_io_po" attrs="{'readonly':[('state','not in',('draft','PI'))]}"/>
                                         </group>
                                     </group>
                             </page>
                             <page name = "ir" string = "Inquiry Report">
                                     <group>
                                         <group>
-                                            <field name="date_ir" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
-                                            <field name="date_fw_ir" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
-                                            <field name="date_rep_ir" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
-                                            <field name="date_cvc" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
+                                            <field name="date_ir" attrs="{'readonly':[('state','not in',('draft','PI'))]}"/>
+                                            <field name="date_fw_ir" attrs="{'readonly':[('state','not in',('draft','PI'))]}"/>
+                                            <field name="date_rep_ir" attrs="{'readonly':[('state','not in',('draft','PI'))]}"/>
+                                            <field name="date_cvc" attrs="{'readonly':[('state','not in',('draft','PI'))]}"/>
 
                                         </group>
                                         <group>
-                                            <field name="comm_num_ir" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
-                                            <field name="stpi_ref" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
-                                            <field name="report_num_ir" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
-                                            <field name="find_io" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
-                                            <field name="comm_num_co" attrs="{'readonly':[('state','not in',('draft','in_progress'))]}"/>
+                                            <field name="comm_num_ir" attrs="{'readonly':[('state','not in',('draft','PI'))]}"/>
+                                            <field name="stpi_ref" attrs="{'readonly':[('state','not in',('draft','PI'))]}"/>
+                                            <field name="report_num_ir" attrs="{'readonly':[('state','not in',('draft','PI'))]}"/>
+                                            <field name="find_io" attrs="{'readonly':[('state','not in',('draft','PI'))]}"/>
+                                            <field name="comm_num_co" attrs="{'readonly':[('state','not in',('draft','PI'))]}"/>
                                         </group>
                                     </group>
                             </page>
