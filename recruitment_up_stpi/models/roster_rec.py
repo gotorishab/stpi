@@ -9,6 +9,12 @@ class RecruitmentRoster(models.Model):
     _description = "Recruitment Roster"
     _rec_name = 'name'
 
+    @api.onchange('job_id')
+    def get_roster_line_item(self):
+        return {'domain': {'employee_id': [('job_id', '=', self.job_id.id)]}}
+
+
+
     name = fields.Char(string="Name",track_visibility='always')
     job_id = fields.Many2one('hr.job', string='Job Position')
     employee_id = fields.Many2one('hr.employee', string='Employee')
