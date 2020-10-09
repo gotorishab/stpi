@@ -11,7 +11,7 @@ class RecruitmentRoster(models.Model):
 
     @api.onchange('job_id')
     def get_roster_line_item(self):
-        return {'domain': {'employee_id': [('job_id', '=', self.job_id.id)]}}
+        return {'domain': {'roster_line_item': [('job_id', '=', self.job_id.id), ('employee_id', '=', False)]}}
 
 
 
@@ -26,7 +26,12 @@ class RecruitmentRoster(models.Model):
     @api.constrains('employee_id')
     def putinto_employee_roster(self):
         for rec in self:
+            print('====================rec.employee_id.roster_line_item========================', rec.employee_id.roster_line_item)
+            print('============================================', rec.id)
             rec.employee_id.roster_line_item = rec.id
+            print('====================rec.employee_id.roster_line_item========================',
+                  rec.employee_id.roster_line_item)
+            print('============================================', rec.id)
 
 
 class Employee(models.Model):
