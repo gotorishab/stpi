@@ -46,7 +46,7 @@ class RecruitmentJobOpening(models.Model):
             create_advertisement = self.env['hr.requisition.application'].create(
                 {
                     'state': 'draft',
-                    'branch_id': rec.branch_id,
+                    'branch_id': rec.branch_id.id,
                     'start_date': datetime.now().date(),
                 }
             )
