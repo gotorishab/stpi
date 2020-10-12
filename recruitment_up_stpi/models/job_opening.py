@@ -9,7 +9,7 @@ class RecruitmentJobOpening(models.Model):
     _description = "Job Opening"
 
     def default_employee(self):
-        return self.env['hr.employee'].search([('user_id', '=', self.user.id)], limit=1)
+        return self.env['hr.employee'].search([('user_id', '=', self.env.user.id)], limit=1)
 
 
     requested_by = fields.Many2one('hr.employee', string='Requested By', default=default_employee)
