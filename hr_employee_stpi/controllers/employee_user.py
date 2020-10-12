@@ -155,7 +155,6 @@ class CreateUser(http.Controller):
             }
             letter_det.append(vals)
         data = {"response": letter_det}
-        print('=========================letter==========================',letter_det)
         loaded_r = json.dumps(dict(response=str(letter_det)))
         return loaded_r
 
@@ -170,7 +169,6 @@ class CreateUser(http.Controller):
             }
             letter_det.append(vals)
         data = {"response": letter_det}
-        print('=========================letter==========================',letter_det)
         loaded_r = json.dumps(dict(response=str(letter_det)))
         return loaded_r
 
@@ -186,7 +184,6 @@ class CreateUser(http.Controller):
             }
             letter_det.append(vals)
         data = {"response": letter_det}
-        print('=========================letter==========================',letter_det)
         loaded_r = json.dumps(dict(response=str(letter_det)))
         return loaded_r
 
@@ -202,7 +199,6 @@ class CreateUser(http.Controller):
             }
             letter_det.append(vals)
         data = {"response": letter_det}
-        print('=========================letter==========================',letter_det)
         loaded_r = json.dumps(dict(response=str(letter_det)))
         return loaded_r
 
@@ -234,6 +230,5 @@ class CreateUser(http.Controller):
             }
             letter_det.append(vals)
         data = {"response": letter_det}
-        print('=========================letter==========================',letter_det)
         loaded_r = json.dumps(dict(response=str(letter_det)))
         return loaded_r
