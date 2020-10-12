@@ -288,38 +288,38 @@
         <field name="domain">[('applicant_id', '=', active_id)]</field>
     </record>
     <!-- Inherited view of hr.applicant to add buttons -->
-    <record id="view_hr_applicant_inherited" model="ir.ui.view">
-        <field name="name">hr.applicant.form.inherited</field>
-        <field name="model">hr.applicant</field>
-        <field name="inherit_id" ref="hr_recruitment.crm_case_form_view_job" />
-        <field name="arch" type="xml">
-            <xpath expr="//div[@name='button_box']" position="inside">
-                <newline />
-                <button name="%(action_medical_details_list)d" type="action" attrs="{'invisible': [('emp_id', '!=', False)]}" class="oe_inline oe_stat_button" icon="fa-medkit" help="Add/Edit/Review Medical details of applicant">
-                    <field name="no_of_medical" widget="statinfo" string="Medical Details" />
-                </button>
-                <button name="%(action_prev_occupation_list)d" type="action" style="width:198px !important" class="oe_inline oe_stat_button" icon="fa-history" help="Add/Edit/Review Previous Occupation details of applicant">
-                    <field name="no_of_prev_occu" widget="statinfo" string="Previous Occupations" />
-                </button>
-                <button name="%(action_education_list)d" type="action" style="width:197px !important" class="oe_inline oe_stat_button" icon="fa-book" help="Add/Edit/Review Education details of applicant">
-                    <field name="no_of_education" widget="statinfo" string="Education Details" />
-                </button>
-                <button name="%(action_relatives_list)d" type="action" style="width:119px !important" class="oe_inline oe_stat_button" icon="fa-users" help="Add/Edit/Review Relative details of applicant">
-                    <field name="no_of_relative" widget="statinfo" string="Relatives" />
-                </button>
-                <button name="%(action_languages_list)d" type="action" class="oe_inline oe_stat_button" icon="fa-font" help="Add/Edit/Review Languages of applicant">
-                    <field name="no_of_lang" widget="statinfo" string="Languages" />
-                </button>
-                <button name="%(action_travels_list)d" type="action" style="width:145px !important" class="oe_inline oe_stat_button" icon="fa-car" help="Add/Edit/Review Priveous Travel details of applicant">
-                    <field name="no_of_prev_travel" widget="statinfo" string="Previous Travels" />
-                </button>
-                <button name="%(action_medical_details_list)d" type="action" attrs="{'invisible': [('emp_id', '=', False)]}" class="oe_inline oe_stat_button" icon="fa-medkit" help="Add/Edit/Review Medical details of applicant">
-                    <field name="no_of_medical1" widget="statinfo" string="Medical Details" />
-                </button>
-            </xpath>
-            <!--<button name="create_employee_from_applicant" position="replace">-->
-                <!--<button string="Create Employee" name="%(action_select_training_wizard)d" type="action" class="oe_highlight" attrs="{'invisible': ['|',('emp_id', '!=', False),('active', '=', False)]}" />-->
-            <!--</button>-->
-        </field>
-    </record>
+<!--    <record id="view_hr_applicant_inherited" model="ir.ui.view">-->
+<!--        <field name="name">hr.applicant.form.inherited</field>-->
+<!--        <field name="model">hr.applicant</field>-->
+<!--        <field name="inherit_id" ref="hr_recruitment.crm_case_form_view_job" />-->
+<!--        <field name="arch" type="xml">-->
+<!--            <xpath expr="//div[@name='button_box']" position="inside">-->
+<!--                <newline />-->
+<!--                <button name="%(action_medical_details_list)d" type="action" attrs="{'invisible': [('emp_id', '!=', False)]}" class="oe_inline oe_stat_button" icon="fa-medkit" help="Add/Edit/Review Medical details of applicant">-->
+<!--                    <field name="no_of_medical" widget="statinfo" string="Medical Details" />-->
+<!--                </button>-->
+<!--                <button name="%(action_prev_occupation_list)d" type="action" style="width:198px !important" class="oe_inline oe_stat_button" icon="fa-history" help="Add/Edit/Review Previous Occupation details of applicant">-->
+<!--                    <field name="no_of_prev_occu" widget="statinfo" string="Previous Occupations" />-->
+<!--                </button>-->
+<!--                <button name="%(action_education_list)d" type="action" style="width:197px !important" class="oe_inline oe_stat_button" icon="fa-book" help="Add/Edit/Review Education details of applicant">-->
+<!--                    <field name="no_of_education" widget="statinfo" string="Education Details" />-->
+<!--                </button>-->
+<!--                <button name="%(action_relatives_list)d" type="action" style="width:119px !important" class="oe_inline oe_stat_button" icon="fa-users" help="Add/Edit/Review Relative details of applicant">-->
+<!--                    <field name="no_of_relative" widget="statinfo" string="Relatives" />-->
+<!--                </button>-->
+<!--                <button name="%(action_languages_list)d" type="action" class="oe_inline oe_stat_button" icon="fa-font" help="Add/Edit/Review Languages of applicant">-->
+<!--                    <field name="no_of_lang" widget="statinfo" string="Languages" />-->
+<!--                </button>-->
+<!--                <button name="%(action_travels_list)d" type="action" style="width:145px !important" class="oe_inline oe_stat_button" icon="fa-car" help="Add/Edit/Review Priveous Travel details of applicant">-->
+<!--                    <field name="no_of_prev_travel" widget="statinfo" string="Previous Travels" />-->
+<!--                </button>-->
+<!--                <button name="%(action_medical_details_list)d" type="action" attrs="{'invisible': [('emp_id', '=', False)]}" class="oe_inline oe_stat_button" icon="fa-medkit" help="Add/Edit/Review Medical details of applicant">-->
+<!--                    <field name="no_of_medical1" widget="statinfo" string="Medical Details" />-->
+<!--                </button>-->
+<!--            </xpath>-->
+<!--            &lt;!&ndash;<button name="create_employee_from_applicant" position="replace">&ndash;&gt;-->
+<!--                &lt;!&ndash;<button string="Create Employee" name="%(action_select_training_wizard)d" type="action" class="oe_highlight" attrs="{'invisible': ['|',('emp_id', '!=', False),('active', '=', False)]}" />&ndash;&gt;-->
+<!--            &lt;!&ndash;</button>&ndash;&gt;-->
+<!--        </field>-->
+<!--    </record>-->
 </odoo>
