@@ -93,23 +93,23 @@ class HRApplicant(models.Model):
     bank_name = fields.Char(string='Bank Name')
     bank_account_number = fields.Char(string='Bank Account number')
     ifsc_code = fields.Char(string='IFSC Code')
-    penalty_awarded = fields.Selection(
-        [('yes', 'Yes'), ('no', 'No')],
-        string='Any Penalty awarded during the last 10 years')
     # penalty_awarded = fields.Selection(
     #     [('yes', 'Yes'), ('no', 'No')],
     #     string='Any Penalty awarded during the last 10 years')
-    action_can_know = fields.Selection(
-        [('yes', 'Yes'), ('no', 'No')],
-        string='Any action or inquiry is going on as far as candidate knowledge')
-    criminal_pending = fields.Selection(
-        [('yes', 'Yes'), ('no', 'No')],
-        string='Any criminal/ vigilance case is pending or contemplated')
-    relative_terms_css = fields.Selection(
-        [('yes', 'Yes'), ('no', 'No')],
-        string='Any relative defined in terms of CCS')
-    achievements_app = fields.Text('Achievements')
-    # achievements_app = fields.Text('Additional Information')
+    # # penalty_awarded = fields.Selection(
+    # #     [('yes', 'Yes'), ('no', 'No')],
+    # #     string='Any Penalty awarded during the last 10 years')
+    # action_can_know = fields.Selection(
+    #     [('yes', 'Yes'), ('no', 'No')],
+    #     string='Any action or inquiry is going on as far as candidate knowledge')
+    # criminal_pending = fields.Selection(
+    #     [('yes', 'Yes'), ('no', 'No')],
+    #     string='Any criminal/ vigilance case is pending or contemplated')
+    # relative_terms_css = fields.Selection(
+    #     [('yes', 'Yes'), ('no', 'No')],
+    #     string='Any relative defined in terms of CCS')
+    # achievements_app = fields.Text('Achievements')
+    # # achievements_app = fields.Text('Additional Information')
 
 
     bank_account_id = fields.Many2one(
