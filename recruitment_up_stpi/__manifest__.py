@@ -11,6 +11,7 @@
 	'depends': ['base','mail'],
 	'data': [
 		'security/ir.model.access.csv',
+		'security/security.xml',
 		'views/roster_rec.xml',
 		'views/job_opening.xml',
 	],

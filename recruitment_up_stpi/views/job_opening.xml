@@ -41,7 +41,7 @@
                             <page name = "JobOpeninglines" string = "Job Opening lines">
                                 <field name="job_pos">
                                     <tree editable="bottom">
-                                        <field name="job_opening_id" readonly="1"/>
+                                        <field name="job_opening_id" invisible="1"/>
                                         <field name="job_id"/>
                                         <field name="date"/>
                                         <field name="branch_id"/>

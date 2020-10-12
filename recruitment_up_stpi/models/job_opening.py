@@ -56,7 +56,7 @@ class RecruitmentJobLines(models.Model):
     _name = "job.opening.lines"
 
 
-    job_opening_id = fields.Many2one('recruitment.jobop', string='Requested By')
+    job_opening_id = fields.Many2one('recruitment.jobop', string='Job Opening')
     job_id = fields.Many2one('hr.job', string='Job Position')
     date = fields.Date(string="Date", default=fields.Date.today(),track_visibility='always')
     branch_id = fields.Many2one('res.branch', string='Branch')
