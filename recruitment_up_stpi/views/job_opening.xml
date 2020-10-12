@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+        <record id="recruitmentjobop_tree_view" model="ir.ui.view">
+            <field name="name">recruitment.jobop.tree</field>
+            <field name="model">recruitment.jobop</field>
+            <field name="arch" type="xml">
+                <tree string="Job Opening" editable="bottom">
+                    <field name="requested_by"/>
+                    <field name="requested_on"/>
+                    <field name="branch_id"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+		<record id="recruitmentjobop_form_view" model="ir.ui.view">
+            <field name="name">recruitment.jobop.form</field>
+            <field name="model">recruitment.jobop</field>
+            <field name="arch" type="xml">
+                <form string="Job Opening">
+                    <sheet>
+                        <header>
+                            <button name="button_draft" string="Reset to draft" class="oe_highlight" type="object" states="to_approve"/>
+                            <button name="button_to_approve" string="Send for approval" class="oe_highlight" type="object" states="draft" groups="recruitment_up_stpi.group_job_opening_recruitment_user"/>
+                             <button name="button_approved" string="Approve" type="object" states="to_approve" groups="recruitment_up_stpi.group_job_opening_recruitment_approver"/>
+                            <button name="button_reject" string="Reject" class="oe_highlight" type="object" states="to_approve" groups="recruitment_up_stpi.group_job_opening_recruitment_approver"/>
+                            <button name="button_create_advertisemtnt" string="Create Advertisement" class="oe_highlight" type="object" states="approved" groups="recruitment_up_stpi.group_job_opening_recruitment_approver"/>
+                            <field name="state" widget="statusbar" statusbar_visible="draft,to_approve,approved" />
+                        </header>
+                        <group>
+                            <group>
+                                <field name="requested_by" readonly="1"/>
+                                <field name="requested_on"/>
+                            </group>
+                            <group>
+                                <field name="branch_id"/>
+                            </group>
+                         </group>
+                        <notebook>
+                            <page name = "JobOpeninglines" string = "Job Opening lines">
+                                <field name="job_pos">
+                                    <tree editable="bottom">
+                                        <field name="job_opening_id" readonly="1"/>
+                                        <field name="job_id"/>
+                                        <field name="date"/>
+                                        <field name="branch_id"/>
+                                        <field name="roster_line_id"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <record id="recruitment_jobop_menu_action" model="ir.actions.act_window">
+            <field name="name">Job Opening</field>
+            <field name="res_model">recruitment.jobop</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+    <menuitem
+            id="menu_recruitment_jobop"
+            name="Job Opening "
+            parent="hr_recruitment.menu_hr_recruitment_root"
+            action="recruitment_jobop_menu_action"
+            sequence="90"
+            />
+    
+
+</odoo>

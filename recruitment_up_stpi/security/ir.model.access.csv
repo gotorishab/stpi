@@ -1,2 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_recruitment_roster,recruitment.roster,model_recruitment_roster,base.group_user,1,1,1,1
+access_recruitment_jobop,recruitment.jobop,model_recruitment_jobop,base.group_user,1,1,1,1
+access_job_opening_lines,job.opening.lines,model_job_opening_lines,base.group_user,1,1,1,1

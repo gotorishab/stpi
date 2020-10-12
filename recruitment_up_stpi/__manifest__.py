@@ -12,6 +12,7 @@
 	'data': [
 		'security/ir.model.access.csv',
 		'views/roster_rec.xml',
+		'views/job_opening.xml',
 	],
 	'images': [],
 	'license': 'AGPL-3',
