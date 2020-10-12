@@ -33,15 +33,15 @@
             />
 
 
-     <record model="ir.ui.view" id="hr_employee_recruitment_roster">
-        <field name="name">hr.employee.roster.recruitment</field>
-        <field name="model">hr.employee</field>
-        <field name="inherit_id" ref="hr.view_employee_form"/>
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='job_id']" position="after">
-                <field name="roster_line_item"/>
-            </xpath>
-        </field>
-    </record>
+<!--     <record model="ir.ui.view" id="hr_employee_recruitment_roster">-->
+<!--        <field name="name">hr.employee.roster.recruitment</field>-->
+<!--        <field name="model">hr.employee</field>-->
+<!--        <field name="inherit_id" ref="hr.view_employee_form"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <xpath expr="//field[@name='job_id']" position="after">-->
+<!--                <field name="roster_line_item"/>-->
+<!--            </xpath>-->
+<!--        </field>-->
+<!--    </record>-->
 
-</odoo>
+<!--</odoo>-->
