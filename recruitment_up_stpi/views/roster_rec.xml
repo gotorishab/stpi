@@ -18,7 +18,7 @@
         </record>
 
         <record id="recruitment_roster_menu_action" model="ir.actions.act_window">
-            <field name="name">Appeal</field>
+            <field name="name">Roster</field>
             <field name="res_model">recruitment.roster</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
