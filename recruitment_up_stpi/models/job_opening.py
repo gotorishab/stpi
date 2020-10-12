@@ -7,8 +7,7 @@ class RecruitmentJobOpening(models.Model):
     _name = "recruitment.jobop"
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = "Job Opening"
-    _rec_name = 'name'
-
+   
     def default_employee(self):
         return self.env['hr.employee'].search([('user_id', '=', self.user.id)], limit=1)
 
