@@ -19,7 +19,6 @@
             <field name="model">recruitment.jobop</field>
             <field name="arch" type="xml">
                 <form string="Job Opening">
-                    <sheet>
                         <header>
                             <button name="button_draft" string="Reset to draft" class="oe_highlight" type="object" states="to_approve"/>
                             <button name="button_to_approve" string="Send for approval" class="oe_highlight" type="object" states="draft" groups="recruitment_up_stpi.group_job_opening_recruitment_user"/>
@@ -28,6 +27,7 @@
                             <button name="button_create_advertisemtnt" string="Create Advertisement" class="oe_highlight" type="object" states="approved" groups="recruitment_up_stpi.group_job_opening_recruitment_approver"/>
                             <field name="state" widget="statusbar" statusbar_visible="draft,to_approve,approved" />
                         </header>
+                    <sheet>
                         <group>
                             <group>
                                 <field name="requested_by" readonly="1"/>
