@@ -5,7 +5,7 @@
             <field name="name">recruitment.jobop.tree</field>
             <field name="model">recruitment.jobop</field>
             <field name="arch" type="xml">
-                <tree string="Job Opening" editable="bottom">
+                <tree string="Job Opening">
                     <field name="requested_by"/>
                     <field name="requested_on"/>
                     <field name="branch_id"/>
@@ -59,20 +59,74 @@
                 </form>
             </field>
         </record>
-        <record id="recruitment_jobop_menu_action" model="ir.actions.act_window">
+        <record id="recruitment_jobop_menu_action_new" model="ir.actions.act_window">
             <field name="name">Job Opening</field>
             <field name="res_model">recruitment.jobop</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
+            <field name="domain">[('state','=','draft')]</field>
+        </record>
+ <record id="recruitment_jobop_menu_action_to_approve" model="ir.actions.act_window">
+            <field name="name">Job Opening</field>
+            <field name="res_model">recruitment.jobop</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('state','=','draft')]</field>
+        </record>
+ <record id="recruitment_jobop_menu_action_approved" model="ir.actions.act_window">
+            <field name="name">Job Opening - Approved</field>
+            <field name="res_model">recruitment.jobop</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('state','=','approved')]</field>
+        </record>
+ <record id="recruitment_jobop_menu_action_rejected" model="ir.actions.act_window">
+            <field name="name">Job Opening - Rejected</field>
+            <field name="res_model">recruitment.jobop</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('state','=','rejected')]</field>
         </record>
 
     <menuitem
             id="menu_recruitment_jobop"
-            name="Job Opening "
+            name="Job Opening"
             parent="hr_recruitment.menu_hr_recruitment_root"
-            action="recruitment_jobop_menu_action"
             sequence="90"
             />
-    
+
+    <menuitem
+            id="menu_recruitment_jobop_new"
+            name="New"
+            parent="menu_recruitment_jobop"
+            action="recruitment_jobop_menu_action_new"
+            sequence="1"
+            />
+
+    <menuitem
+            id="menu_recruitment_jobop_to_approve"
+            name="To Approve"
+            parent="menu_recruitment_jobop"
+            action="recruitment_jobop_menu_action_to_approve"
+            sequence="2"
+            />
+
+  <menuitem
+            id="menu_recruitment_jobop_approved"
+            name="Approved"
+            parent="menu_recruitment_jobop"
+            action="recruitment_jobop_menu_action_approved"
+            sequence="3"
+            />
+
+
+  <menuitem
+            id="menu_recruitment_jobop_rejected"
+            name="Rejected"
+            parent="menu_recruitment_jobop"
+            action="recruitment_jobop_menu_action_rejected"
+            sequence="4"
+            />
+
 
 </odoo>
