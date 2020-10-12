@@ -6,7 +6,7 @@ from ast import literal_eval
 from collections import OrderedDict
 from operator import itemgetter
 from odoo import http
-from odoo.exceptions import AccessError, MissingError, ValidationError
+from odoo.exceptions import AccessError, MissingError, ValidationError, UserError
 from odoo.http import request
 # from odoo.tools import image_process, groupby as groupbyelem
 from odoo.tools.translate import _
@@ -88,7 +88,9 @@ class HrPortalRecruitment(http.Controller):
             if operations_dic:
                 education_rec.append(operations_dic)
         print(">>>>>>>>>>>>>>>>", education_rec)
+        print('====================post===================', post)
         applicant_id = request.env['hr.applicant'].sudo().create(post)
+        print('====================app===================', applicant_id.id)
         if operation_rec or education_rec:
             try:
                 if education_rec:
