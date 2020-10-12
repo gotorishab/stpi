@@ -179,20 +179,20 @@
                                     </group>
 
 
-<!--                                    <group string="Contact Information">-->
-<!--                                        <field name="address_home_id" context="{                                                 'show_address': 1,                                                 'default_type': 'private',                                                 'form_view_ref': 'base.res_partner_view_form_private'}" options="{&quot;always_reload&quot;: True, &quot;highlight_first_line&quot;: True}"/>-->
-<!--                                        <field name="is_address_home_a_company" invisible="1"/>-->
-<!--                                        <div class="text-warning" groups="hr.group_hr_user" attrs="{'invisible': [('is_address_home_a_company','=', False)]}">-->
-<!--                                            Use here the home address of the employee.-->
-<!--                                            This private address is used in the expense report reimbursement document.-->
-<!--                                            It should be different from the work address.-->
-<!--                                        </div>-->
-<!--                                        <field name="emergency_contact"/>-->
-<!--                                        <field name="emergency_phone"/>-->
-<!--                                        <field name="km_home_work" string='KM Home-Work' groups="hr.group_hr_user"/>-->
-<!--                                        <field name="personal_email" required="True"/>-->
-<!--                                        <field name="phone"/>-->
-<!--                                    </group>-->
+                                    <group string="Contact Information">
+                                        <field name="address_home_id" context="{                                                 'show_address': 1,                                                 'default_type': 'private',                                                 'form_view_ref': 'base.res_partner_view_form_private'}" options="{&quot;always_reload&quot;: True, &quot;highlight_first_line&quot;: True}"/>
+                                        <field name="is_address_home_a_company" invisible="1"/>
+                                        <div class="text-warning" groups="hr.group_hr_user" attrs="{'invisible': [('is_address_home_a_company','=', False)]}">
+                                            Use here the home address of the employee.
+                                            This private address is used in the expense report reimbursement document.
+                                            It should be different from the work address.
+                                        </div>
+                                        <field name="emergency_contact"/>
+                                        <field name="emergency_phone"/>
+                                        <field name="km_home_work" string='KM Home-Work' groups="hr.group_hr_user"/>
+                                        <field name="personal_email" required="True"/>
+                                        <field name="phone"/>
+                                    </group>
 
                                     <group name="identify_id" string="Identification ID">
 
