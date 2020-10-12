@@ -5,7 +5,6 @@ import json
 class CreateUser(http.Controller):
 
 
-
     @http.route(['/create_user'], type='http', auth='public', csrf=False, methods=['POST'])
     def create_hrmis_user(self, name=None, login=None, email=None, password=None, **kwargs):
         user_det = []
@@ -225,7 +224,7 @@ class CreateUser(http.Controller):
                 'identify_id': rec.identify_id,
                 'passport_id': rec.passport_id,
                 'pan_no': rec.pan_no,
-                'religion': rec.religion,
+                'religion': rec.religion.id,
                 'gender': rec.gende,
             }
             letter_det.append(vals)
