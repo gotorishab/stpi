@@ -21,15 +21,15 @@
         </record>
 
 
-<!--    <record id="view_roster_rec_search_form" model="ir.ui.view">-->
-<!--        <field name="name">recruitment.roster.search.form</field>-->
-<!--        <field name="model">recruitment.roster</field>-->
-<!--        <field name="arch" type="xml">-->
-<!--           <search string="Roster">-->
-<!--               <filter string="Job Position" name="job_id" context="{'group_by':'job_id'}"/>-->
-<!--            </search>-->
-<!--        </field>-->
-<!--    </record>-->
+    <record id="view_roster_rec_search_form" model="ir.ui.view">
+        <field name="name">recruitment.roster.search.form</field>
+        <field name="model">recruitment.roster</field>
+        <field name="arch" type="xml">
+           <search string="Roster">
+               <filter string="Job Position" name="job_id" context="{'group_by':'job_id'}"/>
+            </search>
+        </field>
+    </record>
 
         <record id="recruitment_roster_menu_action" model="ir.actions.act_window">
             <field name="name">Roster</field>
