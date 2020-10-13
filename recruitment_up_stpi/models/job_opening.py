@@ -50,6 +50,10 @@ class RecruitmentJobOpening(models.Model):
                     'start_date': datetime.now().date(),
                 }
             )
+            sql = self._cr.execute("select job_id,branch_id, count(*) from job_opening_lines" \
+                  "group_by job_id,branch" \
+                  "where job_opening_id = {0}".format(rec.id))
+            print('============sql===================', sql)
             for line in rec.job_pos:
                 create_advertisement_line = self.env['advertisement.line'].create(
                     {
