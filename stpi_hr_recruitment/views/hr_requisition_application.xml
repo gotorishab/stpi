@@ -71,7 +71,7 @@
                         <field name="advertisement_line_ids">
                             <tree editable="bottom">
                                 <field name="allowed_category_id" invisible="1"/>
-                                <field name="job_ids" required="1" widget="many2many_tags"/>
+                                <field name="job_id" required="1"/>
                                 <field name="branch_id" required="1"/>
                                 <field name="department_id" required="1"/>
                                 <field name="opening" required="1"/>

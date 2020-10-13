@@ -66,10 +66,10 @@ class HrApplicationSd(models.Model):
                         "<ul>Branch: {4} </ul>"
                     ).format(allowed.opening, allowed.sc, allowed.st, allowed.general, allowed.branch_id)
                 ))
-                for jobs in allowed.job_ids:
-                    jobs.advertisement_id = rec.id
-                    jobs.message_post(body=_body)
-                    jobs.set_recruit()
+                # for jobs in allowed.job_ids:
+                allowed.job_id.advertisement_id = rec.id
+                allowed.job_id.message_post(body=_body)
+                allowed.job_id.set_recruit()
             rec.write({'state': 'active'})
     #
     #
@@ -128,6 +128,18 @@ class HrApplicationSd(models.Model):
             for jobs in rec.job_position_ids:
                 jobs.message_post(body=_body)
                 jobs.set_open()
+            rec.write({'state': 'completed'})
+
+    @api.multi
+    def button_complete(self):
+        for rec in self:
+            _body = (_(
+                (
+                    "<ul>Advertisement Ended</ul>")
+            ))
+            for line in rec.advertisement_line_ids:
+                line.job_id.message_post(body=_body)
+                line.job_id.set_open()
             rec.write({'state': 'completed'})
 
 
@@ -189,7 +201,7 @@ class JobPositionCat(models.Model):
     _description = 'Advertisement Line'
 
     allowed_category_id = fields.Many2one('hr.requisition.application', string='Allowed Cat')
-    job_ids = fields.Many2many('hr.job', string='Job Position')
+    job_id = fields.Many2one('hr.job', string='Job Position')
     branch_id = fields.Many2one('res.branch', string='Branch')
     department_id = fields.Many2one('hr.department', string='Department')
     opening = fields.Integer('Opening')
