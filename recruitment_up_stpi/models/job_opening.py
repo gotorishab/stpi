@@ -16,7 +16,7 @@ class RecruitmentJobOpening(models.Model):
     requested_on = fields.Date(string="Requested On", default=fields.Date.today(),track_visibility='always')
     branch_id = fields.Many2one('res.branch', string='Branch')
     job_pos = fields.One2many('job.opening.lines', 'job_opening_id', string='Job Openings')
-    state = fields.Selection([('draft', 'Draft'), ('to_approve', 'To Approve'), ('approved', 'Approved'), ('rejected', 'Rejected')], required=True, string='Status', default='draft', track_visibility='always')
+    state = fields.Selection([('draft', 'Draft'), ('to_approve', 'To Approve'), ('approved', 'Approved'), ('published', 'Published'), ('rejected', 'Rejected')], required=True, string='Status', default='draft', track_visibility='always')
 
 
     @api.multi
@@ -50,6 +50,7 @@ class RecruitmentJobOpening(models.Model):
                     'start_date': datetime.now().date(),
                 }
             )
+            rec.write({'state': 'published'})
             print('==================================================', create_advertisement.id)
 
 class RecruitmentJobLines(models.Model):
@@ -60,4 +61,4 @@ class RecruitmentJobLines(models.Model):
     job_id = fields.Many2one('hr.job', string='Job Position')
     date = fields.Date(string="Date", default=fields.Date.today(),track_visibility='always')
     branch_id = fields.Many2one('res.branch', string='Branch')
-    roster_line_id = fields.Many2one('recruitment.roster', string='Roster Line Item')
+    roster_line_id = fields.Many2one('recruitment.roster', string='Roster')

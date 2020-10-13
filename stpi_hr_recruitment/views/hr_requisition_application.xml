@@ -67,6 +67,20 @@
                             </tree>
                         </field>
                     </page>
+                    <page name="advertisement_lines" string="Job Post">
+                        <field name="advertisement_line_ids">
+                            <tree editable="bottom">
+                                <field name="allowed_category_id" invisible="1"/>
+                                <field name="job_ids" required="1"/>
+                                <field name="branch_id" required="1"/>
+                                <field name="department_id" required="1"/>
+                                <field name="opening" required="1"/>
+                                <field name="sc" required="1"/>
+                                <field name="st" required="1"/>
+                                <field name="general" required="1"/>
+                            </tree>
+                        </field>
+                    </page>
                 </notebook>
             </sheet>
             <div class="oe_chatter">

@@ -9,23 +9,6 @@ class HrApplicationSd(models.Model):
     _description = 'Hr Requisition Application'
 
 
-
-    # @api.onchange('leave_taken')
-    # def change_leave_taken(self):
-    #     fdat = datetime.now().date()
-    #     tdat = datetime.now().date()
-    #     for fd in self.employee_journey.tour_request_id.employee_journey:
-    #         fdat = fd.departure_date
-    #         tdat = fd.arrival_date
-    #     for fd in self.employee_journey.tour_request_id.employee_journey:
-    #         if fd.departure_date <= fdat:
-    #             fdat = fd.departure_date
-    #         if fd.arrival_date >= tdat:
-    #             tdat = fd.arrival_date
-    #     return {'domain': {'leave_taken': [('state', 'not in', ['cancel','refuse']),('employee_id', '=', self.employee_journey.employee_id.id)
-    #         ,('request_date_from', '>=', fdat),('request_date_to', '<=', tdat)]}}
-
-
     name = fields.Char('Sequence')
     branch_id = fields.Many2one('res.branch', string='Branch')
     contact = fields.Char('Contact')
@@ -37,6 +20,7 @@ class HrApplicationSd(models.Model):
     remarks = fields.Text('Remarks (if any)')
     job_position_ids = fields.Many2many('hr.job', string = 'Job Position')
     allowed_categories_ids = fields.One2many('allowed.categories','allowed_category_id', string='Allowed Categories')
+    advertisement_line_ids = fields.One2many('advertisement.line','allowed_category_id', string='Advertisement Lines')
 
     state = fields.Selection([
         ('draft', 'Draft'),
@@ -57,51 +41,72 @@ class HrApplicationSd(models.Model):
     @api.multi
     def button_to_approve(self):
         for rec in self:
-            rec.allowed_categories_ids.unlink()
-            allowed_categories_ids = []
-            for jobs in rec.job_position_ids:
-                allowed_categories_ids.append((0, 0, {
-                        'job_id': jobs.id,
-                        'vacant_post': jobs.vacant_post,
-                        'allowed_category_id': rec.id,
-                    }))
-            rec.allowed_categories_ids = allowed_categories_ids
+            # rec.allowed_categories_ids.unlink()
+            # allowed_categories_ids = []
+            # for jobs in rec.job_position_ids:
+            #     allowed_categories_ids.append((0, 0, {
+            #             'job_id': jobs.id,
+            #             'vacant_post': jobs.vacant_post,
+            #             'allowed_category_id': rec.id,
+            #         }))
+            # rec.allowed_categories_ids = allowed_categories_ids
             rec.write({'state': 'to_approve'})
 
     @api.multi
     def button_active(self):
         for rec in self:
-            sum=0
-            sum_vac = 0
-            lst = []
-            for allowed in rec.allowed_categories_ids:
-                sum_vac += (allowed.vacant_post)
-                sum += (allowed.scpercent + allowed.generalpercent + allowed.stpercent + allowed.obcercent + allowed.ebcpercent + allowed.vhpercent + allowed.hhpercent + allowed.phpercent)
+            for allowed in rec.advertisement_line_ids:
                 _body = (_(
                     (
                         "<ul>Advertisement Created</ul>"
-                        "<ul>Allowed Categories: </ul>"
-                        "<ul>Scheduled Castes: {0} </ul>"
-                        "<ul>Allowed Categories: {1} </ul>"
+                        "<ul>Opening: {0} </ul>"
+                        "<ul>Scheduled Caste: {1} </ul>"
                         "<ul>Scheduled Tribes: {2} </ul>"
-                        "<ul>Other Backward Castes: {3} </ul>"
-                        "<ul>Economically Backward Section: {4} </ul>"
-                        "<ul>Visually Handicappped: {5} </ul>"
-                        "<ul>Hearing Handicapped: {6} </ul>"
-                        "<ul>Physically Handicapped: {7} </ul>"
-                    ).format(allowed.scpercent, allowed.generalpercent, allowed.stpercent, allowed.obcercent,
-                             allowed.ebcpercent, allowed.vhpercent, allowed.hhpercent, allowed.phpercent)
+                        "<ul>General: {3} </ul>"
+                        "<ul>Branch: {4} </ul>"
+                    ).format(allowed.opening, allowed.sc, allowed.st, allowed.general, allowed.branch_id)
                 ))
-            if sum_vac > 0 and sum <= 0:
-                raise ValidationError(
-                        _(
-                            'Allowed Categories must be greater than 0'))
-            else:
-                for jobs in rec.job_position_ids:
+                for jobs in allowed.job_ids:
                     jobs.advertisement_id = rec.id
                     jobs.message_post(body=_body)
                     jobs.set_recruit()
             rec.write({'state': 'active'})
+    #
+    #
+    # @api.multi
+    # def button_active(self):
+    #     for rec in self:
+    #         sum=0
+    #         sum_vac = 0
+    #         lst = []
+    #         for allowed in rec.allowed_categories_ids:
+    #             sum_vac += (allowed.vacant_post)
+    #             sum += (allowed.scpercent + allowed.generalpercent + allowed.stpercent + allowed.obcercent + allowed.ebcpercent + allowed.vhpercent + allowed.hhpercent + allowed.phpercent)
+    #             _body = (_(
+    #                 (
+    #                     "<ul>Advertisement Created</ul>"
+    #                     "<ul>Allowed Categories: </ul>"
+    #                     "<ul>Scheduled Castes: {0} </ul>"
+    #                     "<ul>Allowed Categories: {1} </ul>"
+    #                     "<ul>Scheduled Tribes: {2} </ul>"
+    #                     "<ul>Other Backward Castes: {3} </ul>"
+    #                     "<ul>Economically Backward Section: {4} </ul>"
+    #                     "<ul>Visually Handicappped: {5} </ul>"
+    #                     "<ul>Hearing Handicapped: {6} </ul>"
+    #                     "<ul>Physically Handicapped: {7} </ul>"
+    #                 ).format(allowed.scpercent, allowed.generalpercent, allowed.stpercent, allowed.obcercent,
+    #                          allowed.ebcpercent, allowed.vhpercent, allowed.hhpercent, allowed.phpercent)
+    #             ))
+    #         if sum_vac > 0 and sum <= 0:
+    #             raise ValidationError(
+    #                     _(
+    #                         'Allowed Categories must be greater than 0'))
+    #         else:
+    #             for jobs in rec.job_position_ids:
+    #                 jobs.advertisement_id = rec.id
+    #                 jobs.message_post(body=_body)
+    #                 jobs.set_recruit()
+    #         rec.write({'state': 'active'})
 
     @api.multi
     def button_reject(self):
@@ -176,6 +181,21 @@ class HrApplicationSd(models.Model):
                 raise ValidationError(
                     _(
                         'Advertisement start date must be less than last date'))
+
+
+
+class JobPositionCat(models.Model):
+    _name = 'advertisement.line'
+    _description = 'Advertisement Line'
+
+    allowed_category_id = fields.Many2one('hr.requisition.application', string='Allowed Cat')
+    job_ids = fields.Many2many('hr.job', string='Job Position')
+    branch_id = fields.Many2one('res.branch', string='Branch')
+    department_id = fields.Many2one('hr.department', string='Department')
+    opening = fields.Integer('Opening')
+    sc = fields.Integer('Scheduled Castes')
+    general = fields.Integer('General')
+    st = fields.Integer('Scheduled Tribes')
 
 
 
