@@ -33,6 +33,16 @@ class RecruitmentRoster(models.Model):
     general = fields.Boolean('General')
 
 
+    @api.multi
+    def name_get(self):
+        res = []
+        for rec in self:
+            name = rec.name
+            if rec.name and rec.job_id:
+                name = str(rec.name) + ' (' + str(rec.job_id.name) + ')'
+            res.append((rec.id, name))
+            return res
+
 class Employee(models.Model):
     _inherit = "hr.employee"
 
