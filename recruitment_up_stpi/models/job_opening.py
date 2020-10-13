@@ -55,7 +55,7 @@ class RecruitmentJobOpening(models.Model):
                     {
                         'allowed_category_id': create_advertisement.id,
                         'job_id': line.job_id.id,
-                        'branch_id': line.branch.id,
+                        'branch_id': line.branch_id.id,
                         'opening': int(line.roster_line_id.sc) + int(line.roster_line_id.general) + int(line.roster_line_id.st),
                         'sc': int(line.roster_line_id.sc),
                         'general': int(line.roster_line_id.general),
