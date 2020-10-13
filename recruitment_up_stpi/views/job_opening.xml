@@ -45,7 +45,7 @@
                                         <field name="job_id" required="1"/>
                                         <field name="date" required="1"/>
                                         <field name="branch_id" required="1"/>
-                                        <field name="roster_line_id" required="1"/>
+                                        <field name="roster_line_id" required="1" domain="[('employee_id','=',False)]"/>
                                     </tree>
                                 </field>
                             </page>

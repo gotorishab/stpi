@@ -7,21 +7,36 @@
             <field name="arch" type="xml">
                 <tree string="Vigilance" editable="bottom">
                     <field name="name"/>
-                    <field name="job_id"/>
-                    <field name="sc"/>
-                    <field name="st"/>
-                    <field name="general"/>
+                    <field name="category_id"/>
+                    <field name="state"/>
                     <field name="employee_id"/>
-                    <field name="position_number"/>
+                    <field name="emp_code"/>
+                    <field name="Name_of_person"/>
+                    <field name="Hired_category"/>
+                    <field name="date_of_apointment"/>
+                    <field name="job_id"/>
+                    <field name="remarks"/>
                 </tree>
             </field>
         </record>
+
+
+    <record id="view_roster_rec_search_form" model="ir.ui.view">
+        <field name="name">recruitment.roster.search.form</field>
+        <field name="model">recruitment.roster</field>
+        <field name="arch" type="xml">
+           <search string="Roster">
+               <filter string="Job Position" name="job_id" context="{'group_by':'job_id'}"/>
+            </search>
+        </field>
+    </record>
 
         <record id="recruitment_roster_menu_action" model="ir.actions.act_window">
             <field name="name">Roster</field>
             <field name="res_model">recruitment.roster</field>
             <field name="view_type">form</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">tree,form,search</field>
+            <field name="context">{'search_default_job_id': 1}</field>
         </record>
 
     <menuitem

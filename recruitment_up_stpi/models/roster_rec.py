@@ -16,21 +16,21 @@ class RecruitmentRoster(models.Model):
 
 
     name = fields.Char(string="Name",track_visibility='always')
-    job_id = fields.Many2one('hr.job', string='Job Position')
+    job_id = fields.Many2one('hr.job', string='Utilised By')
     employee_id = fields.Many2one('hr.employee', string='Employee')
+    category_id = fields.Many2one('employee.category', string='Category')
+    state = fields.Many2one('res.state', string='State')
+    emp_code = fields.Char('Emp Code')
+    Name_of_person = fields.Char('Name of the Person')
+    Hired_category = fields.Char('Hired Category')
+    date_of_apointment = fields.Date('Date of Appointment')
+    remarks = fields.Text('Remarks')
+
+
     position_number = fields.Integer('Position Number')
     sc = fields.Boolean('SC')
     st = fields.Boolean('ST')
     general = fields.Boolean('General')
-
-    # @api.constrains('employee_id')
-    # def putinto_employee_roster(self):
-    #     print('====================rec.employee_id.roster_line_item========================', self.employee_id.roster_line_item)
-    #     print('============================================', self.id)
-    #     self.employee_id.roster_line_item = self.id
-    #     print('====================rec.employee_id.roster_line_item========================',
-    #           self.employee_id.roster_line_item)
-    #     print('============================================', self.id)
 
 
 class Employee(models.Model):
@@ -47,3 +47,6 @@ class Employee(models.Model):
     def putinto_roster_line_item(self):
         for rec in self:
             rec.roster_line_item.employee_id = rec.id
+            rec.emp_code.Name_of_person = rec.identify_id
+            rec.roster_line_item.Name_of_person = rec.name
+            rec.roster_line_item.date_of_apointment = rec.date_of_join
