@@ -39,19 +39,46 @@ class RecruitmentJobOpening(models.Model):
         for rec in self:
             rec.write({'state': 'rejected'})
 
+    #
+    # @api.multi
+    # def button_create_advertisemtnt(self):
+    #     for rec in self:
+    #         create_advertisement = self.env['hr.requisition.application'].create(
+    #             {
+    #                 'state': 'draft',
+    #                 'branch_id': rec.branch_id.id,
+    #                 'start_date': datetime.now().date(),
+    #             }
+    #         )
+    #         rec.write({'state': 'published'})
+
 
     @api.multi
     def button_create_advertisemtnt(self):
         for rec in self:
+            for line in rec.job_pos:
+
+            # detail_of_journey = []
             create_advertisement = self.env['hr.requisition.application'].create(
                 {
                     'state': 'draft',
                     'branch_id': rec.branch_id.id,
                     'start_date': datetime.now().date(),
+                    # 'advertisement_line_ids':
+                    #     ((0, 0, {
+                    #     'job_ids': rec.id,
+                    #     'branch_id': i.departure_date,
+                    #     'department_id': i.departure_time,
+                    #     'opening': i.arrival_date,
+                    #     'sc': i.arrival_time,
+                    #     'general': i.from_l.id,
+                    #     'st': i.to_l.id,
+                    #     }))
                 }
             )
             rec.write({'state': 'published'})
             print('==================================================', create_advertisement.id)
+
 
 class RecruitmentJobLines(models.Model):
     _name = "job.opening.lines"

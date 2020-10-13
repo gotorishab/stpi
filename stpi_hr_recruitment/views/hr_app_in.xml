@@ -1,16 +1,16 @@
 <odoo>
 
-    <record model="ir.ui.view" id="hr_applicant_form_advertisement_inherited">
-        <field name="name">hr.applicant.form</field>
-        <field name="model">hr.applicant</field>
-        <field name="inherit_id" ref="hr_recruitment.crm_case_form_view_job"/>
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='job_id']" position="after">
-                <field name="advertisement_id" required="1" invisible="1"/>
-                <field name="advertisement_id_related" required="1" readonly="1"/>
-            </xpath>
+<!--    <record model="ir.ui.view" id="hr_applicant_form_advertisement_inherited">-->
+<!--        <field name="name">hr.applicant.form</field>-->
+<!--        <field name="model">hr.applicant</field>-->
+<!--        <field name="inherit_id" ref="hr_recruitment.crm_case_form_view_job"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <xpath expr="//field[@name='job_id']" position="after">-->
+<!--                <field name="advertisement_id" required="1" invisible="1"/>-->
+<!--                <field name="advertisement_id_related" required="1" readonly="1"/>-->
+<!--            </xpath>-->
 
-        </field>
-    </record>
+<!--        </field>-->
+<!--    </record>-->
 
 </odoo>
