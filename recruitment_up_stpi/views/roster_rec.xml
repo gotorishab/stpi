@@ -35,7 +35,7 @@
             <field name="name">Roster</field>
             <field name="res_model">recruitment.roster</field>
             <field name="view_type">form</field>
-            <field name="view_mode">tree,form,search</field>
+            <field name="view_mode">tree,search</field>
             <field name="context">{'search_default_job_id': 1}</field>
         </record>
 
