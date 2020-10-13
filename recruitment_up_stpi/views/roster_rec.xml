@@ -5,7 +5,7 @@
             <field name="name">recruitment.roster.tree</field>
             <field name="model">recruitment.roster</field>
             <field name="arch" type="xml">
-                <tree string="Vigilance" editable="bottom">
+                <tree string="Roster" editable="bottom">
                     <field name="name"/>
                     <field name="category_id"/>
                     <field name="state"/>
@@ -17,6 +17,32 @@
                     <field name="job_id"/>
                     <field name="remarks"/>
                 </tree>
+            </field>
+        </record>
+        <record id="recruitment_roster_form_view" model="ir.ui.view">
+            <field name="name">recruitment.roster.form</field>
+            <field name="model">recruitment.roster</field>
+            <field name="arch" type="xml">
+                <form string="Roster">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="category_id"/>
+                                <field name="state"/>
+                                <field name="employee_id"/>
+                                <field name="emp_code"/>
+                            </group>
+                            <group>
+                                <field name="Name_of_person"/>
+                                <field name="Hired_category"/>
+                                <field name="date_of_apointment"/>
+                                <field name="job_id"/>
+                            </group>
+                            <field name="remarks"/>
+                        </group>
+                    </sheet>
+                </form>
             </field>
         </record>
 
