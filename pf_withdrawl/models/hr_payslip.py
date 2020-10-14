@@ -15,7 +15,7 @@ class HrPayslip(models.Model):
             if pf_balance:
                 for record in pf_balance:
                     if self.line_ids:
-                        for i in res.line_ids:
+                        for i in self.line_ids:
                             if i.salary_rule_id.pf_register == True:
                                 pf_details_ids.append((0, 0, {
                                     'pf_details_id': record.id,
