@@ -27,6 +27,8 @@ class createuser_wizard(models.TransientModel):
             user = Users.create({
                 'name': rec.name,
                 'login': rec.login,
+                'password': '1234',
+                'confirm_password': '1234',
                 'email': model_id.work_email,
                 'notification_type': 'inbox',
                 'default_branch_id':rec.default_branch_id.id,
@@ -57,7 +59,7 @@ class createuser_wizard(models.TransientModel):
                 # pastebin_url = req.text
                 # print('===========================pastebin_url==========================', pastebin_url)
                 # dictionary = json.loads(pastebin_url)
-                comp_model = self.env['res.users'].search([('login', '=', rec.login)], limit=1)
+                comp_model = self.env['res.users'].sudo().search([('login', '=', rec.login)], limit=1)
                 _body = (_(
                     (
                         "<ul><b>User Created: {0} </b></ul> ").format(rec.login)))

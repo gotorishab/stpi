@@ -18,6 +18,7 @@
         'data/emp_rec_type.xml',
         'security/recruitment_advertisement.xml',
         'wizard/update_advertisement.xml',
+        'wizard/create_job_pos.xml',
         'views/hr_app_in.xml',
         'views/hr_requisition_application.xml',
         'views/hr_job_inherit.xml',

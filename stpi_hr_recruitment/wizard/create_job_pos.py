@@ -15,16 +15,17 @@ class CreateJobPos(models.TransientModel):
 
     def confirm_job_pos(self):
         if self:
-            pf_details_ids = []
-            for line in self.jo
-            pf_details_ids.append((0, 0, {
-                'allowed_category_id': self.advertisement_id.id,
-                'job_id': record.employee_id.id,
-                'branch_id': record.employee_id.id,
-                'category_id': record.employee_id.id,
-                'state': record.employee_id.id,
-                'employee_type': 'Deposit',
-                'remarks': 'Deposit',
-                'opening': 'Deposit',
-            }))
-            record.pf_details_ids = pf_details_ids
+            pass
+            # pf_details_ids = []
+            # for line in self.jo
+            # pf_details_ids.append((0, 0, {
+            #     'allowed_category_id': self.advertisement_id.id,
+            #     'job_id': record.employee_id.id,
+            #     'branch_id': record.employee_id.id,
+            #     'category_id': record.employee_id.id,
+            #     'state': record.employee_id.id,
+            #     'employee_type': 'Deposit',
+            #     'remarks': 'Deposit',
+            #     'opening': 'Deposit',
+            # }))
+            # record.pf_details_ids = pf_details_ids
