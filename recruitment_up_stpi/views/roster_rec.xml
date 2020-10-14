@@ -9,11 +9,11 @@
                     <field name="name" required="1"/>
                     <field name="category_id" required="1"/>
                     <field name="state" required="1"/>
-                    <field name="employee_id" required="1"/>
-                    <field name="emp_code" required="1"/>
-                    <field name="Name_of_person" required="1"/>
-                    <field name="Hired_category" required="1"/>
-                    <field name="date_of_apointment" required="1"/>
+                    <field name="employee_id" readonly="1"/>
+                    <field name="emp_code" readonly="1"/>
+                    <field name="Name_of_person" readonly="1"/>
+                    <field name="Hired_category" readonly="1"/>
+                    <field name="date_of_apointment" readonly="1"/>
                     <field name="job_id" required="1"/>
                     <field name="remarks"/>
                 </tree>
@@ -30,13 +30,13 @@
                                 <field name="name" required="1"/>
                                 <field name="category_id" required="1"/>
                                 <field name="state" required="1"/>
-                                <field name="employee_id" required="1"/>
-                                <field name="emp_code" required="1"/>
+                                <field name="employee_id" readonly="1"/>
+                                <field name="emp_code" readonly="1"/>
                             </group>
                             <group>
-                                <field name="Name_of_person" required="1"/>
-                                <field name="Hired_category" required="1"/>
-                                <field name="date_of_apointment" required="1"/>
+                                <field name="Name_of_person" readonly="1"/>
+                                <field name="Hired_category" readonly="1"/>
+                                <field name="date_of_apointment" readonly="1"/>
                                 <field name="job_id" required="1"/>
                             </group>
                             <field name="remarks"/>
