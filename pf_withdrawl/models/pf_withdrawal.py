@@ -203,11 +203,11 @@ class PfWidthdrawl(models.Model):
     def _onchange_basic_details(self):
         for res in self:
             rec = self.env['hr.employee'].sudo().search([('user_id', '=', self.env.uid)], limit=1)
-            rec.designation = rec.employee_id.job_id.id
-            rec.bank_account_number = rec.employee_id.bank_account_number
-            rec.center = rec.employee_id.work_location
-            rec.branch_id = rec.employee_id.branch_id.id
-            rec.department_id = rec.employee_id.department_id.id
+            rec.designation = rec.job_id.id
+            rec.bank_account_number = rec.bank_account_number
+            rec.center = rec.work_location
+            rec.branch_id = rec.branch_id.id
+            rec.department_id = rec.department_id.id
             
 
     @api.depends('employee_id')
