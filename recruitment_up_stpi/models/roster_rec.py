@@ -19,7 +19,7 @@ class RecruitmentRoster(models.Model):
     job_id = fields.Many2one('hr.job', string='Utilised By')
     employee_id = fields.Many2one('hr.employee', string='Employee')
     category_id = fields.Many2one('employee.category', string='Category')
-    state = fields.Many2one('res.state', string='State')
+    state = fields.Many2one('res.country.state', string='State')
     emp_code = fields.Char('Emp Code')
     Name_of_person = fields.Char('Name of the Person')
     Hired_category = fields.Char('Hired Category')
