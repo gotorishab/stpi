@@ -74,7 +74,7 @@
             />
 
 
-     <record model="ir.ui.view" id="hr_employee_recruitment_roster">
+    <record model="ir.ui.view" id="hr_employee_recruitment_roster">
         <field name="name">hr.employee.roster.recruitment</field>
         <field name="model">hr.employee</field>
         <field name="inherit_id" ref="hr.view_employee_form"/>

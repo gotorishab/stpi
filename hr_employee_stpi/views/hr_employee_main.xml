@@ -160,7 +160,7 @@
                             <group string="Contact Information">
                                 <field name="address_home_id" context="{'show_address': 1,'default_type': 'private','form_view_ref': 'base.res_partner_view_form_private'}" options="{&quot;always_reload&quot;: True, &quot;highlight_first_line&quot;: True}"/>
                                 <field name="is_address_home_a_company" invisible="1"/>
-                                <div class="text-warning" groups="hr.group_hr_user" attrs="{'invisible': [('is_address_home_a_company','=', False)]}">
+                                <div class="text-warning">
                                     Use here the home address of the employee.
                                     This private address is used in the expense report reimbursement document.
                                     It should be different from the work address.
