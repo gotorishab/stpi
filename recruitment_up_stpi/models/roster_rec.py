@@ -22,7 +22,7 @@ class RecruitmentRoster(models.Model):
     state = fields.Many2one('res.country.state', string='State')
     emp_code = fields.Char('Emp Code')
     Name_of_person = fields.Char('Name of the Person')
-    Hired_category = fields.Char('Hired Category')
+    Hired_category = fields.Many2one('employee.category', string='Hired Category')
     date_of_apointment = fields.Date('Date of Appointment')
     remarks = fields.Text('Remarks')
 
@@ -57,6 +57,7 @@ class Employee(models.Model):
     def putinto_roster_line_item(self):
         for rec in self:
             rec.roster_line_item.employee_id = rec.id
-            rec.emp_code.Name_of_person = rec.identify_id
+            rec.roster_line_item.Hired_category = rec.category.id
+            rec.roster_line_item.emp_code = rec.identify_id
             rec.roster_line_item.Name_of_person = rec.name
             rec.roster_line_item.date_of_apointment = rec.date_of_join
