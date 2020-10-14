@@ -70,46 +70,6 @@ class RecruitmentJobOpening(models.Model):
             rec.write({'state': 'published'})
 
 
-    # @api.multi
-    # def button_create_advertisemtnt(self):
-    #     for rec in self:
-    #         lst1 = []
-    #         combcount = 1
-    #         for line in rec.job_pos:
-    #             comb = str(line.job_id) + ' ' + str(line.branch_id)
-    #             lst1.append(comb)
-    #
-    #         word_dict = {}
-    #         for words in lst1:
-    #             if words in word_dict.keys():
-    #                 word_dict[words] += 1
-    #             else:
-    #                 word_dict[words] = 1
-    #         print('==========================', word_dict)
-    #
-    #
-    #         # detail_of_journey = []
-    #         create_advertisement = self.env['hr.requisition.application'].create(
-    #             {
-    #                 'state': 'draft',
-    #                 'branch_id': rec.branch_id.id,
-    #                 'start_date': datetime.now().date(),
-    #                 # 'advertisement_line_ids':
-    #                 #     ((0, 0, {
-    #                 #     'job_ids': rec.id,
-    #                 #     'branch_id': i.departure_date,
-    #                 #     'department_id': i.departure_time,
-    #                 #     'opening': i.arrival_date,
-    #                 #     'sc': i.arrival_time,
-    #                 #     'general': i.from_l.id,
-    #                 #     'st': i.to_l.id,
-    #                 #     }))
-    #             }
-    #         )
-    #         rec.write({'state': 'published'})
-    #         print('==================================================', create_advertisement.id)
-
-
 class RecruitmentJobLines(models.Model):
     _name = "job.opening.lines"
 
@@ -117,5 +77,14 @@ class RecruitmentJobLines(models.Model):
     job_opening_id = fields.Many2one('recruitment.jobop', string='Job Opening')
     job_id = fields.Many2one('hr.job', string='Job Position')
     date = fields.Date(string="Date", default=fields.Date.today(),track_visibility='always')
-    branch_id = fields.Many2one('res.branch', string='Branch')
+    branch_id = fields.Many2one('res.branch', string='Hiring for Branch')
     roster_line_id = fields.Many2one('recruitment.roster', string='Roster')
+    category_id = fields.Many2one('employee.category', string='Category')
+    state = fields.Many2one('res.country.state', string='State')
+    employee_type = fields.Selection([('regular', 'Regular Employee'),
+                                      ('contractual_with_agency', 'Contractual with Agency'),
+                                      ('contractual_with_stpi', 'Contractual with STPI')], string='Employment Type',
+                                     track_visibility='always', store=True)
+
+    remarks = fields.Text('Remarks')
+

@@ -24,7 +24,7 @@
                             <button name="button_to_approve" string="Send for approval" class="oe_highlight" type="object" states="draft" groups="recruitment_up_stpi.group_job_opening_recruitment_user"/>
                              <button name="button_approved" string="Approve" type="object" states="to_approve" groups="recruitment_up_stpi.group_job_opening_recruitment_approver"/>
                             <button name="button_reject" string="Reject" class="oe_highlight" type="object" states="to_approve" groups="recruitment_up_stpi.group_job_opening_recruitment_approver"/>
-                            <button name="button_create_advertisemtnt" string="Create Advertisement" class="oe_highlight" type="object" states="approved" groups="recruitment_up_stpi.group_job_opening_recruitment_approver"/>
+                            <button name="button_create_advertisemtnt" string="Create Advertisement" class="oe_highlight" type="object" states="approved" invisible="1"/>
                             <field name="state" widget="statusbar" statusbar_visible="draft,to_approve,approved" />
                         </header>
                     <sheet>
@@ -45,7 +45,10 @@
                                         <field name="job_id" required="1"/>
                                         <field name="date" required="1"/>
                                         <field name="branch_id" required="1"/>
-                                        <field name="roster_line_id" required="1" domain="[('employee_id','=',False)]"/>
+                                        <field name="roster_line_id" required="1" domain="[('job_id', '=', job_id),('employee_id', '=', False)]"/>
+                                        <field name="category_id" readonly="1"/>
+                                        <field name="state" readonly="1"/>
+                                        <field name="remarks" readonly="1"/>
                                     </tree>
                                 </field>
                             </page>

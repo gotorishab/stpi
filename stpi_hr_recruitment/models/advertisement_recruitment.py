@@ -9,7 +9,7 @@ class HrApplicationSd(models.Model):
     _description = 'Hr Requisition Application'
 
 
-    name = fields.Char('Sequence')
+    name = fields.Char('Employment Notice Number')
     branch_id = fields.Many2one('res.branch', string='Branch')
     contact = fields.Char('Contact')
     advertisement_number = fields.Char('Advertisement No.')
@@ -21,6 +21,7 @@ class HrApplicationSd(models.Model):
     job_position_ids = fields.Many2many('hr.job', string = 'Job Position')
     allowed_categories_ids = fields.One2many('allowed.categories','allowed_category_id', string='Allowed Categories')
     advertisement_line_ids = fields.One2many('advertisement.line','allowed_category_id', string='Advertisement Lines')
+    reportadv_line_ids = fields.One2many('report.advertisement.line','allowed_category_id', string='Report Advertisement Lines')
 
     state = fields.Selection([
         ('draft', 'Draft'),
@@ -150,16 +151,16 @@ class HrApplicationSd(models.Model):
             rec.sudo().button_complete()
 
 
-
-    @api.model
-    def create(self, vals):
-        res =super(HrApplicationSd, self).create(vals)
-        sequence = ''
-        seq = self.env['ir.sequence'].next_by_code('hr.requisition.application')
-        sequence = 'Adv. ' + str(seq)
-        # res.adv_sequence = sequence
-        res.name = sequence
-        return res
+    #
+    # @api.model
+    # def create(self, vals):
+    #     res =super(HrApplicationSd, self).create(vals)
+    #     sequence = ''
+    #     seq = self.env['ir.sequence'].next_by_code('hr.requisition.application')
+    #     sequence = 'Adv. ' + str(seq)
+    #     # res.adv_sequence = sequence
+    #     res.name = sequence
+    #     return res
 
     @api.multi
     @api.depends('name')
@@ -203,12 +204,35 @@ class JobPositionCat(models.Model):
     allowed_category_id = fields.Many2one('hr.requisition.application', string='Allowed Cat')
     job_id = fields.Many2one('hr.job', string='Job Position')
     branch_id = fields.Many2one('res.branch', string='Branch')
-    department_id = fields.Many2one('hr.department', string='Department')
+    category_id = fields.Many2one('employee.category', string='Category')
+    state = fields.Many2one('res.country.state', string='State')
+    employee_type = fields.Selection([('regular', 'Regular Employee'),
+                                      ('contractual_with_agency', 'Contractual with Agency'),
+                                      ('contractual_with_stpi', 'Contractual with STPI')], string='Employment Type',
+                                     track_visibility='always', store=True)
+
+    remarks = fields.Text('Remarks')
     opening = fields.Integer('Opening')
+
+
+    department_id = fields.Many2one('hr.department', string='Department')
     sc = fields.Integer('Scheduled Castes')
     general = fields.Integer('General')
     st = fields.Integer('Scheduled Tribes')
 
+
+
+
+
+class ReportAdvertisement(models.Model):
+    _name = 'report.advertisement.line'
+    _description = 'Report Advertisement Lines'
+
+    allowed_category_id = fields.Many2one('hr.requisition.application', string='Allowed Cat')
+    publication_name = fields.Char('Publication Name')
+    published_date = fields.Date('Published Date')
+    language = fields.Char('language')
+    attachment = fields.Binary('Attachment')
 
 
 class AllowedCategories(models.Model):

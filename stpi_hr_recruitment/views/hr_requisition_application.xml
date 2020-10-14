@@ -29,7 +29,7 @@
             </header>
             <sheet>
                 <div class="oe_title">
-                    <h1><field name="name" placeholder="Advertisement number" readonly="1"/></h1>
+                    <h1><field name="name" placeholder="Employment Notice Number" required="1"/></h1>
                 </div>
                 <group>
                     <group>
@@ -73,11 +73,25 @@
                                 <field name="allowed_category_id" invisible="1"/>
                                 <field name="job_id" required="1"/>
                                 <field name="branch_id" required="1"/>
-                                <field name="department_id" required="1"/>
+                                <field name="category_id" required="1"/>
+                                <field name="state" required="1"/>
+                                <field name="employee_type" required="1"/>
+                                <field name="remarks" required="1"/>
                                 <field name="opening" required="1"/>
-                                <field name="sc" required="1"/>
-                                <field name="st" required="1"/>
-                                <field name="general" required="1"/>
+                                <field name="sc" invisible="1"/>
+                                <field name="st" invisible="1"/>
+                                <field name="general" invisible="1"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page name="report_adv" string="Report Adv.">
+                        <field name="reportadv_line_ids">
+                            <tree editable="bottom">
+                                <field name="allowed_category_id" invisible="1"/>
+                                <field name="publication_name" required="1"/>
+                                <field name="published_date" required="1"/>
+                                <field name="language" required="1"/>
+                                <field name="attachment" required="1"/>
                             </tree>
                         </field>
                     </page>

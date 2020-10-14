@@ -15,7 +15,7 @@
                     <field name="Hired_category" readonly="1"/>
                     <field name="date_of_apointment" readonly="1"/>
                     <field name="job_id" required="1"/>
-                    <field name="remarks"/>
+                    <field name="remarks" placeholder="Remarks..."/>
                 </tree>
             </field>
         </record>
@@ -39,7 +39,7 @@
                                 <field name="date_of_apointment" readonly="1"/>
                                 <field name="job_id" required="1"/>
                             </group>
-                            <field name="remarks"/>
+                            <field name="remarks" placeholder="Remarks..."/>
                         </group>
                     </sheet>
                 </form>
@@ -80,7 +80,7 @@
         <field name="inherit_id" ref="hr.view_employee_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='job_id']" position="after">
-                <field name="roster_line_item"/>
+                <field name="roster_line_item" domain="[('job_id', '=', job_id),('employee_id', '=', False)]"/>
             </xpath>
         </field>
     </record>
