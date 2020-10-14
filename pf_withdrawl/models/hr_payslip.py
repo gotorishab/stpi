@@ -17,15 +17,27 @@ class HrPayslip(models.Model):
                     if self.line_ids:
                         for i in self.line_ids:
                             if i.salary_rule_id.pf_register == True:
-                                pf_details_ids.append((0, 0, {
-                                    'pf_details_id': record.id,
-                                    'employee_id': record.employee_id.id,
-                                    'type': 'Deposit',
-                                    'pf_code': i.code,
-                                    'description': i.name,
-                                    'date': datetime.now().date(),
-                                    'amount': i.total,
-                                    'reference': res.number,
-                                }))
-                        record.pf_details_ids = pf_details_ids
-            return res
+                                create_pf_details = self.env['pf.employee.details'].create(
+                                    {
+                                        'pf_details_id': record.id,
+                                        'employee_id': record.employee_id.id,
+                                        'type': 'Deposit',
+                                        'pf_code': i.code,
+                                        'description': i.name,
+                                        'date': datetime.now().date(),
+                                        'amount': i.total,
+                                        'reference': res.number,
+                                    }
+                                )
+                        #         pf_details_ids.append((0, 0, {
+                        #             'pf_details_id': record.id,
+                        #             'employee_id': record.employee_id.id,
+                        #             'type': 'Deposit',
+                        #             'pf_code': i.code,
+                        #             'description': i.name,
+                        #             'date': datetime.now().date(),
+                        #             'amount': i.total,
+                        #             'reference': res.number,
+                        #         }))
+                        # record.pf_details_ids = pf_details_ids
+        return self
