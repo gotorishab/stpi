@@ -88,3 +88,12 @@ class RecruitmentJobLines(models.Model):
 
     remarks = fields.Text('Remarks')
 
+
+    @api.onchange('roster_line_id')
+    @api.constrains('roster_line_id')
+    def get_basic_details(self):
+        for rec in self:
+            rec.category_id = rec.roster_line_id.category_id.id
+            rec.state = rec.roster_line_id.state.id
+            rec.remarks = rec.roster_line_id.remarks
+
