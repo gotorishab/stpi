@@ -32,7 +32,7 @@ class HrPayslip(models.Model):
                                         'description': i.name,
                                         'date': datetime.now().date(),
                                         'amount': i.total,
-                                        'reference': res.number,
+                                        'reference': self.number,
                                     }
                                 )
                                 print('===============pf create_pf_details========================', create_pf_details.id)
