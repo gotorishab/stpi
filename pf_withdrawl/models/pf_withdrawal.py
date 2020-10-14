@@ -161,7 +161,10 @@ class PfWidthdrawl(models.Model):
         res.name = sequence
         # contract_obj = self.env['hr.contract'].sudo().search([('employee_id', '=', res.employee_id.id)], limit=1)
         # maximum_allowed = contract_obj.updated_basic * res.pf_type.months
-        if res.pf_type.min_years < (res.employee_id.birthday - datetime.now().date()).days:
+        my_emp = self.env['hr.employee'].sudo().search(
+            [('id', '=', res.employee_id.id)
+             ], limit=1)
+        if res.pf_type.min_years < (my_emp.birthday - datetime.now().date()).days:
             raise ValidationError(
                 "You are not able to  apply as minimum age for PF should be atleast %s" % res.pf_type.min_years)
         if res.advance_amount > res.maximum_withdrawal:
