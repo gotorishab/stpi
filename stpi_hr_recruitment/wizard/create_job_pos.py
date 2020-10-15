@@ -28,4 +28,5 @@ class CreateJobPos(models.TransientModel):
                         'remarks': inline.remarks,
                         'opening': 1,
                     }))
-                    self.advertisement_id.advertisement_line_ids = advertisement_line_ids
+                line.write({'state': 'published'})
+            self.advertisement_id.advertisement_line_ids = advertisement_line_ids

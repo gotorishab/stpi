@@ -24,7 +24,7 @@
                 <button name="button_active" string="Approve" class="oe_highlight" type="object" states="to_approve"/>
                 <button name="button_reject" string="Reject" type="object" states="to_approve"/>
                 <button name = "%(hr_update_advertisement_action_view)d" type = "action" string = "Update" context="{'default_advertisement_id': id}" attrs="{'invisible': [('state', '!=', 'active')]}"/>
-                <button name = "%(jobrecruit_create_action_view)d" type = "action" string = "Create Job Pos lines" context="{'default_advertisement_id': id}"/>
+                <button name = "%(jobrecruit_create_action_view)d" type = "action" string = "Create Job Pos lines" class="oe_highlight" context="{'default_advertisement_id': id}"/>
                 <!--<button name="button_update" string="Update" type="object" states="active"/>-->
                 <field name="state" widget="statusbar" statusbar_visible="draft,to_approve,active" />
             </header>

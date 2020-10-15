@@ -8,7 +8,7 @@
                 <form string="Create Job Position">
                         <group>
                             <field name = "advertisement_id" invisible="1"/>
-                            <field name = "job_recruit" required="1"/>
+                            <field name = "job_recruit" required="1" domain="[('state', '=', 'approved')]"/>
                         </group>
                     <footer>
                         <button name = "confirm_job_pos" class="btn-primary o_sale_print" string = "Confirm" type = "object"/>
