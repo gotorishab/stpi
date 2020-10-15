@@ -24,7 +24,7 @@ class CreateJobPos(models.TransientModel):
                         'job_id': inline.job_id.id,
                         'branch_id': inline.branch_id.id,
                         'category_id': inline.category_id.id,
-                        'state': inline.category_id.id,
+                        'state': inline.state.id,
                         'remarks': inline.remarks,
                         'opening': 1,
                     }))
