@@ -15,31 +15,31 @@ class IdentifyIdSeq(models.Model):
 class HrEmployee(models.Model):
     _inherit = 'hr.employee'
 
-    name = fields.Char(string="Employee Name", store=True, readonly=False, tracking=True)
-    user_id = fields.Many2one('res.users', 'User', store=True, readonly=False)
-    active = fields.Boolean('Active', default=True, store=True, readonly=False)
-
-
-    #header
-    employee_type = fields.Selection([('regular','Regular Employee'),
-                                     ('contractual_with_agency','Contractual with Agency'),
-                                     ('contractual_with_stpi','Contractual with STPI')],string='Employment Type',track_visibility='always', store=True)
-
-    recruitment_type = fields.Selection([
-                                    ('d_recruitment','Direct Recruitment(DR)'),
-                                    ('transfer','Transfer(Absorption)'),
-                                    ('i_absorption','Immediate Absorption'),
-                                    ('deputation','Deputation'),
-                                    ('c_appointment','Compassionate Appointment'),
-                                    ('promotion','Promotion'),
-                                         ],'Recruitment Type',track_visibility='always', store=True)
-
-    salutation = fields.Many2one('res.partner.title',track_visibility='always')
-
-    fax_number = fields.Char('FAX number',track_visibility='always')
-    
-    #added by Sangita 
-    pay_level = fields.Many2one('payslip.pay.level', string='Pay Band')
+    # name = fields.Char(string="Employee Name", store=True, readonly=False, tracking=True)
+    # user_id = fields.Many2one('res.users', 'User', store=True, readonly=False)
+    # active = fields.Boolean('Active', default=True, store=True, readonly=False)
+    #
+    #
+    # #header
+    # employee_type = fields.Selection([('regular','Regular Employee'),
+    #                                  ('contractual_with_agency','Contractual with Agency'),
+    #                                  ('contractual_with_stpi','Contractual with STPI')],string='Employment Type',track_visibility='always', store=True)
+    #
+    # recruitment_type = fields.Selection([
+    #                                 ('d_recruitment','Direct Recruitment(DR)'),
+    #                                 ('transfer','Transfer(Absorption)'),
+    #                                 ('i_absorption','Immediate Absorption'),
+    #                                 ('deputation','Deputation'),
+    #                                 ('c_appointment','Compassionate Appointment'),
+    #                                 ('promotion','Promotion'),
+    #                                      ],'Recruitment Type',track_visibility='always', store=True)
+    #
+    # salutation = fields.Many2one('res.partner.title',track_visibility='always')
+    #
+    # fax_number = fields.Char('FAX number',track_visibility='always')
+    #
+    # #added by Sangita
+    # pay_level = fields.Many2one('payslip.pay.level', string='Pay Band')
 
     #citizenship
     # citizen_country_id = fields.Many2one('res.country','Country name')

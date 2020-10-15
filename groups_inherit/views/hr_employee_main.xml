@@ -1,6 +1,131 @@
 <odoo>
     <data>
 
+        <record model="ir.ui.view" id="hr_employee_form_field_inherited">
+            <field name="name">hr.employee.form</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//label[@for='name']" position="after">
+                    <h2><field name="salutation" required="1" options="{'no_create_edit': 1}"/></h2>
+                </xpath>
+                <xpath expr="//notebook" position="before">
+                    <group>
+                    <group>
+                        <field name="employee_type" required="1"/>
+                        <field name="identify_id"/>
+                    </group>
+                    <group>
+                        <field name="recruitment_type" attrs="{'invisible': [('employee_type', '!=', 'regular')],'required': [('employee_type', '=', 'regular')]}"/>
+                    </group>
+                    </group>
+                </xpath>
+
+                <xpath expr="//field[@name='department_id']" position="attributes">
+                  <attribute name="options">{'no_create_edit': True}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='job_id']" position="attributes">
+                  <attribute name="options">{'no_create_edit': True}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='parent_id']" position="attributes">
+                  <attribute name="options">{'no_create_edit': True}</attribute>
+                </xpath>
+
+
+                <xpath expr="//field[@name='user_id']" position="attributes">
+                    <attribute name="options">{'no_create_edit': True}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='address_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='bank_account_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='work_phone']" position="after">
+                    <field name="fax_number"/>
+                </xpath>
+
+                <xpath expr="//label[@for='name']" position="replace">
+                    <label for="name" class="oe_edit_only" string="Title"/>
+                </xpath>
+
+                <xpath expr="//page[@name='public']/group/group[2]" position="after">
+                    <group name="office_work" string="Office Work">
+                        <field name="recruitment_file_no" attrs="{'invisible': [('employee_type', '=', 'contractual_with_agency')]}"/>
+                        <field name="office_file_no" attrs="{'invisible': [('employee_type', '=', 'contractual_with_agency')]}"/>
+                        <field name="office_order_date" attrs="{'invisible': [('employee_type', '=', 'contractual_with_agency')], 'required': [('employee_type', '!=', 'contractual_with_agency')]}"/>
+                        <field name="post" invisible="True"/>
+                        <field name="date_of_join" required="True"/>
+                    </group>
+                </xpath>
+
+                <xpath expr="//page[@name='public']/group/group[1]" position="inside">
+
+                    <field name="ex_serviceman" required="True"/>
+                </xpath>
+
+                <xpath expr="//page[@name='hr_settings']" position="before">
+                    <page string="Address" groups="hr.group_hr_manager">
+                        <field name="address_ids">
+                            <tree editable="bottom" string="Address">
+                                <field name="address_type"/>
+                                <field name="street"/>
+                                <field name="street2"/>
+                                <field name="city"/>
+                                <field name="state_id"/>
+                                <field name="country_id"/>
+                                <field name="zip"/>
+                                <field name="is_correspondence_address"/>
+                            </tree>
+                            <form string="Address">
+                                <group>
+                                    <group>
+                                        <field name="street"/>
+                                        <field name="street2"/>
+                                        <field name="city"/>
+                                    </group>
+                                    <group>
+                                        <field name="state_id"/>
+                                        <field name="country_id"/>
+                                        <field name="zip"/>
+                                    </group>
+                                </group>
+                            </form>
+                        </field>
+                    </page>
+                </xpath>
+
+                <xpath expr="//field[@name='mobile_phone']" position="attributes">
+                    <attribute name="string">Phone Number</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='work_phone']" position="attributes">
+                    <attribute name="string">Telephone Number</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='job_id']" position="attributes">
+                    <attribute name="string">Functional Designation</attribute>
+                    <attribute name="required">1</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='job_title']" position="attributes">
+                    <attribute name="string">Post</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='coach_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='resource_calendar_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='tz']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+            </field>
+        </record>
 
          <record model="ir.ui.view" id="hr_employee_private_inherited">
             <field name="name">hr.employee.form</field>
