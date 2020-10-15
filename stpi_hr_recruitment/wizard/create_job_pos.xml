@@ -20,7 +20,7 @@
 
      <!-- =============== Action View of Approve button================ -->
      <record id="jobrecruit_create_action_view" model="ir.actions.act_window">
-         <field name="name">Update Advertisement</field>
+         <field name="name">Select Job Openings</field>
          <field name="type">ir.actions.act_window</field>
          <field name="res_model">create.jobrecruit.line</field>
          <field name="view_type">form</field>
