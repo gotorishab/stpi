@@ -201,6 +201,7 @@ class JobPositionCat(models.Model):
     _name = 'advertisement.line'
     _description = 'Advertisement Line'
 
+    name = fields.Char('Name')
     allowed_category_id = fields.Many2one('hr.requisition.application', string='Allowed Cat')
     job_id = fields.Many2one('hr.job', string='Job Position')
     branch_id = fields.Many2one('res.branch', string='Branch')
@@ -231,6 +232,7 @@ class JobPositionCat(models.Model):
             else:
                 name = 'Advertisement'
             res.append((record.id, name))
+            res.name = name
         return res
 
 

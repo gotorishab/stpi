@@ -139,4 +139,3 @@ class HrPortalRecruitment(http.Controller):
                 for course in job_ids:
                     result.append((course.job_id.id, course.job_id.name))
                 return json.dumps(dict(result=result))
-                

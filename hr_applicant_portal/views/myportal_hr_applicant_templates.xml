@@ -270,7 +270,7 @@
                                                         <select class="form-control religion_id">
                                                             <option value="" t-attf-selected="selected">Select...</option>
                                                             <t t-foreach="advertisement_ids" t-as="advertisement">
-                                                                <option t-att-value="advertisement.id"><t t-esc="advertisement.allowed_category_id"/>
+                                                                <option t-att-value="advertisement.id"><t t-esc="advertisement.name"/>
                                                                 </option>
                                                             </t>
                                                         </select>
