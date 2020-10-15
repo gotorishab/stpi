@@ -136,6 +136,7 @@ class HrPortalRecruitment(http.Controller):
             result = []
             print('=================================id===============================', job_ids)
             if job_ids:
-                for job in job_ids:
-                    job_ids = job.job_id.id
-                    return json.dumps(dict(job_ids=job_ids))
+                for course in job_ids:
+                    result.append((course.job_id.id, course.job_id.name))
+                return json.dumps(dict(result=result))
+                
