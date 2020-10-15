@@ -10,7 +10,7 @@
     'maintainer': 'Dexciss Technology ',
     'website': "https://www.dexciss.com",
     'version': '12.0.4',
-    'depends': ['base','hr_employee_requisition','stpi_contract_pr'],
+    'depends': ['base','hr_employee_requisition','stpi_contract_pr','recruitment_up_stpi'],
     'data': [
         'security/ir.model.access.csv',
         'security/employee_job_position.xml',
