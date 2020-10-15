@@ -122,7 +122,7 @@ class HRApplicant(models.Model):
         ('cohabitant', 'Legal Cohabitant'),
         ('widower', 'Widower'),
         ('divorced', 'Divorced')
-    ], string='Marital Status', groups="hr.group_hr_user", default='single')
+    ], string='Marital Status', default='single')
     spouse_complete_name = fields.Char(string="Spouse Complete Name", groups="hr.group_hr_user")
     spouse_birthdate = fields.Date(string="Spouse Birthdate", groups="hr.group_hr_user")
     children = fields.Integer(string='Number of Children', groups="hr.group_hr_user")
