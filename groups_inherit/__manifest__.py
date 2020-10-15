@@ -32,7 +32,7 @@
     'website': "https://www.dexciss.com",
     'depends': ['base', 'hr'],
     'data': [
-        # 'security/ir.model.access.csv',
+        'security/ir.model.access.csv',
         'views/employee_b_view.xml',
         'wizard/create_user_wizard.xml',
         'wizard/employee_action_select.xml',
