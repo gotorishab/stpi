@@ -1,19 +1,8 @@
 <odoo>
     <data>
 
-        <!--Hr Employee Private Information page view-->
-        <record model="ir.ui.view" id="hr_employee_form_user_create_inherited">
-            <field name="name">hr.employee.form</field>
-            <field name="model">hr.employee</field>
-            <field name="inherit_id" ref="hr.view_employee_form"/>
-            <field name="arch" type="xml">
-                <button name="toggle_active" position="before">
-                    <button name="create_user" string='Create User' type="object" class="oe_stat_button" icon="fa-user" groups="base.group_user" help="Create User" attrs="{'invisible': [('user_id', '!=', False)]}"/>
-                </button>
-            </field>
-        </record>
 
-        <record model="ir.ui.view" id="hr_employee_private_inherited">
+         <record model="ir.ui.view" id="hr_employee_private_inherited">
             <field name="name">hr.employee.form</field>
             <field name="model">hr.employee</field>
             <field name="inherit_id" ref="hr.view_employee_form"/>
@@ -112,6 +101,21 @@
                 </xpath>
             </field>
         </record>
+
+        
+        <!--Hr Employee Private Information page view-->
+        <record model="ir.ui.view" id="hr_employee_form_user_create_inherited">
+            <field name="name">hr.employee.form</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <button name="toggle_active" position="before">
+                    <button name="create_user" string='Create User' type="object" class="oe_stat_button" icon="fa-user" groups="base.group_user" help="Create User" attrs="{'invisible': [('user_id', '!=', False)]}"/>
+                </button>
+            </field>
+        </record>
+
+
 
 
     </data>
