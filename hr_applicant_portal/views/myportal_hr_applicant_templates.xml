@@ -6,7 +6,7 @@
          <script type="text/javascript" src="/hr_applicant_portal/static/src/js/employee_move_line.js"></script>
         </xpath>
     </template>
-    <template id="header_layout" inherit_id="website.layout" name="Admission">
+    <template id="header_layout" inherit_id="website.layout" name="Jobs">
         <xpath expr="//header//ul[@id='top_menu']/li" position="before">
             <li class="nav-item dropdown" t-ignore="true">
                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
@@ -20,7 +20,7 @@
             </li>
         </xpath>
     </template>
-    <template id="apply4jobs" name="Admission">
+    <template id="apply4jobs" name="Jobs">
         <t t-call="website.layout">
             <script src="/hr_applicant_portal/static/src/js/custom.js"/>
             <div class="oe_structure"/>

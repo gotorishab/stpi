@@ -23,7 +23,7 @@ class HrPortalRecruitment(http.Controller):
     def jobs(self, **post):
         # values = self.get_values()
         post['titles'] = request.env['res.partner.title'].sudo().search_read([], ['id', 'name'])
-        post['advertisement_ids'] = request.env['hr.requisition.application'].sudo().search([('state', '=', 'active')])
+        post['advertisement_ids'] = request.env['advertisement.line'].sudo().search([('allowed_category_id.state', '=', 'active')])
         print("svsdvdvsdvsdvsdvsdv", post.get('advertisement_ids'))
         post['job_ids'] = request.env['hr.job'].sudo().search([])
         post['category_ids'] = request.env['employee.category'].sudo().search([])
@@ -130,10 +130,11 @@ class HrPortalRecruitment(http.Controller):
     def getJobName(self, **kw):
         if kw.get('advertisement_ids'):
             # institute_id = request.env['res.branch'].sudo().search([('id', '=', int(kw.get('institute_id')))])
-            job_ids = request.env['hr.job'].sudo().search(
-                [('advertisement_id', '=', int(kw.get('advertisement_ids'))),
-                 ('state', '=', 'recruit')])
+            job_ids = request.env['advertisement.line'].sudo().search(
+                [('id', '=', int(kw.get('advertisement_ids'))),
+                 ])
             result = []
-            for job in job_ids:
-                result.append((job.id, job.name))
-            return json.dumps(dict(result=result))
+            if job_ids:
+                for job in job_ids:
+                    result = job.job_id.id
+                    return json.dumps(dict(result=result))

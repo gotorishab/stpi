@@ -10,7 +10,8 @@
     'depends': ['hr_applicant','website'],
     'data': [
         # 'security/ir.model.access.csv',
-        'views/portal_hr_applicant_templates.xml',
+        'views/myportal_hr_applicant_templates.xml',
+        # 'views/portal_hr_applicant_templates.xml',
     ],
     'demo': [],
     'images': [],
