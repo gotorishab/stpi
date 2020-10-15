@@ -34,6 +34,7 @@
     'data': [
         # 'security/ir.model.access.csv',
         'wizard/create_user_wizard.xml',
+        'wizard/employee_action_select.xml',
         'views/hr_employee_main.xml',
         'views/res_groups_inherit.xml',
 
