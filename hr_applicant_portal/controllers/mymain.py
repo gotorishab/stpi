@@ -134,7 +134,8 @@ class HrPortalRecruitment(http.Controller):
                 [('id', '=', int(kw.get('advertisement_ids'))),
                  ])
             result = []
+            print('=================================id===============================', job_ids)
             if job_ids:
                 for job in job_ids:
-                    result = job.job_id.id
-                    return json.dumps(dict(result=result))
+                    job_ids = job.job_id.id
+                    return json.dumps(dict(job_ids=job_ids))
