@@ -114,8 +114,6 @@ class HRApplicant(models.Model):
 
     bank_account_id = fields.Many2one(
         'res.partner.bank', 'Bank Account Number',
-        domain="[('partner_id', '=', address_home_id)]",
-        groups="hr.group_hr_user",
         help='Employee bank salary account')
 
     marital = fields.Selection([
@@ -132,7 +130,7 @@ class HRApplicant(models.Model):
     address_home_id = fields.Many2one(
         'res.partner', 'Private Address',
         help='Enter here the private address of the employee, not the one linked to your company.',
-        groups="hr.group_hr_user")
+        )
     is_address_home_a_company = fields.Boolean(
         'The employee adress has a company linked',
         compute='_compute_is_address_home_a_company',
