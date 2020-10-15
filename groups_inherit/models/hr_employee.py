@@ -110,6 +110,8 @@ class HrEmployee(models.Model):
     bank_account_number = fields.Char(string='Bank Account number')
     ifsc_code = fields.Char(string='IFSC Code')
 
+    address_ids = fields.One2many('employee.address','employee_id',string='Address',track_visibility='always')
+
     _sql_constraints = [
         ('pan_uniq', 'unique (pan_no)', 'Pan No must be unique!'),
         ('aadhar_uniq', 'unique (aadhar_no)', 'Aadhar no must be unique!'),
@@ -137,4 +139,48 @@ class HrEmployee(models.Model):
                 'default_login': self.identify_id,
                 }
         }
-    
+
+
+
+
+class EmployeeAddress(models.Model):
+    _name = 'employee.address'
+    _description = 'Address'
+
+    def default_country(self):
+        return self.env['res.country'].search([('name', '=', 'India')], limit=1)
+
+    address_type = fields.Selection([('permanent_add', 'Permanent Add'),
+                                     ('present_add', 'Present Add'),
+                                     ('office_add', 'Office Add'),
+                                     ('hometown_add', 'HomeTown Add'),
+                                    ],string='Address Type',required=True)
+    employee_id = fields.Many2one('hr.employee','Employee Id')
+    street = fields.Char('Street')
+    street2 = fields.Char('Street2')
+    zip = fields.Char('Zip', change_default=True)
+    is_correspondence_address = fields.Boolean('Is Correspondence Address')
+    city = fields.Char('City')
+    state_id = fields.Many2one("res.country.state", string='State')
+    country_id = fields.Many2one('res.country', string='Country', default = default_country)
+    count = fields.Integer('Count')
+
+    @api.onchange('street', 'street2','zip', 'country_id','is_correspondence_address', 'city','state_id')
+    def _onchange_hometown_address(self):
+        for rec in self:
+            rec.count = 0
+            if rec.address_type == 'hometown_add':
+                rec.count += 1
+            if rec.count >2:
+                raise ValidationError("You cannot change Homettown address more than 2 times")
+
+
+    @api.constrains('address_type','employee_id')
+    def check_unique_add(self):
+        for rec in self:
+            count = 0
+            emp_id = self.env['employee.address'].search([('address_type', '=', rec.address_type),('employee_id', '=', rec.employee_id.id)])
+            for e in emp_id:
+                count+=1
+            if count >1:
+                raise ValidationError("The Address Type must be unique")
