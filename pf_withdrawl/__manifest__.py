@@ -8,7 +8,7 @@
 	'maintainer': 'dexciss Techno Solutions',
 	'company': 'dexciss Techno Solutions',
 	'website': 'https://www.dexciss.com',
-	'depends': ['base','hr','ohrms_loan','hr_branch_company','hr_payroll'],
+	'depends': ['base','hr','ohrms_loan','hr_branch_company','hr_payroll','groups_inherit'],
 	'data': [
 		'security/ir.model.access.csv',
 		'security/pf_withdrawal_security.xml',
