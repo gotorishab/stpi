@@ -70,8 +70,8 @@ class EmployeeActionSelection(models.TransientModel):
                 'res_model': 'hr.employee',
                 'view_id': False,
                 'views': [(self.env.ref('hr.hr_kanban_view_employees').id, 'kanban'),
-                          (self.env.ref('hr_employee_stpi.view_add_employee_doc_tree').id, 'tree'),
-                          (self.env.ref('hr_employee_stpi.view_add_Employee_doc_form').id, 'form')],
+                          (self.env.ref('groups_inherit.view_add_employee_doc_tree').id, 'tree'),
+                          (self.env.ref('groups_inherit.view_add_Employee_doc_form').id, 'form')],
                 'type': 'ir.actions.act_window'
             }
 

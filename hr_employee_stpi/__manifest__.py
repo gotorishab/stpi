@@ -17,7 +17,7 @@
         'security/ir.model.access.csv',
         'security/hr_employee_security.xml',
         # 'wizard/employee_action_select.xml',
-        'views/employee_b_view.xml',
+        # 'views/employee_b_view.xml',
         'views/hr_employee_main.xml',
         'views/employee_family_view.xml',
         'views/employee_previous_occupation.xml',

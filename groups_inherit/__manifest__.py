@@ -33,6 +33,7 @@
     'depends': ['base', 'hr'],
     'data': [
         # 'security/ir.model.access.csv',
+        'views/employee_b_view.xml',
         'wizard/create_user_wizard.xml',
         'wizard/employee_action_select.xml',
         'views/hr_employee_main.xml',
