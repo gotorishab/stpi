@@ -221,6 +221,17 @@ class JobPositionCat(models.Model):
     st = fields.Integer('Scheduled Tribes')
 
 
+    @api.multi
+    @api.depends('allowed_category_id')
+    def name_get(self):
+        res = []
+        for record in self:
+            if record.allowed_category_id.advertisement_number:
+                name = str(record.allowed_category_id.advertisement_number) + ' (' + str(record.job_id.name) + ') (' + str(record.category_id.name) + ') (' + str(record.state.name) + ')'
+            else:
+                name = 'Advertisement'
+            res.append((record.id, name))
+        return res
 
 
 
