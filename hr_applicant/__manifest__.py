@@ -10,7 +10,7 @@
     "author": "Serpent Consulting Services Pvt. Ltd.",
     "website": "http://www.serpentcs.com",
     "maintainer": "Serpent Consulting Services Pvt. Ltd.",
-    'depends': ['hr_recruitment', 'document','stpi_contract_pr','category_religion','hr_skills','hr_skills_applicant'],
+    'depends': ['hr_recruitment', 'document','stpi_contract_pr','category_religion','hr_skills','hr_skills_applicant','hr_employee_stpi'],
     'data': [
         'security/ir.model.access.csv',
         # 'security/applicant_security.xml',
