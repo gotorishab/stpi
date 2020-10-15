@@ -236,6 +236,14 @@ class JobPositionCat(models.Model):
         return res
 
 
+    @api.model
+    def create(self, vals):
+        res =super(JobPositionCat, self).create(vals)
+        res.name = str(res.allowed_category_id.advertisement_number) + ' (' + str(res.job_id.name) + ') (' + str(
+            res.category_id.name) + ') (' + str(res.state.name) + ')'
+        return res
+
+    
 
 class ReportAdvertisement(models.Model):
     _name = 'report.advertisement.line'
