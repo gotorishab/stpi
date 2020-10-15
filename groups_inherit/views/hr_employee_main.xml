@@ -102,7 +102,7 @@
             </field>
         </record>
 
-        
+
         <!--Hr Employee Private Information page view-->
         <record model="ir.ui.view" id="hr_employee_form_user_create_inherited">
             <field name="name">hr.employee.form</field>
