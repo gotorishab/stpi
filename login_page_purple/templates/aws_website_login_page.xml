@@ -18,7 +18,7 @@
         <xpath expr="//div[@class='oe_website_login_container']" position="after">
             <style type="text/css">
 		#wrapwrap {
-		    background-color: #b545b1!important;
+		    background-image: url('/login_page_purple/static/src/img/mimetypes/vecror.png');!important;
     		background: linear-gradient(to right,#b545b1,#f24598,#8A38AE);
 		}
 		.navbar {
