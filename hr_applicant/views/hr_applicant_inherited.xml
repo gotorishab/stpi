@@ -48,8 +48,8 @@
             </xpath>
             <xpath expr="//label[@for='salary_expected']" position="before">
                 <field name="struct_id" required="1"/>
-                <field name="pay_level_id" required="1"/>
-                <field name="pay_level" domain="[('entry_pay_id', '=', pay_level_id)]"/>
+                <field name="pay_level_id" attrs="{'invisible': [('employee_type', '!=', 'regular')], 'required': [('employee_type', '=', 'regular')]}"/>
+                <field name="pay_level" domain="[('entry_pay_id', '=', pay_level_id)]" attrs="{'invisible': [('employee_type', '!=', 'regular')]}"/>
             </xpath>
 
             <xpath expr="//field[@name='categ_ids']" position="attributes">
