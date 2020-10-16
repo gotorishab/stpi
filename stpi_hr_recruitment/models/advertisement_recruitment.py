@@ -200,6 +200,7 @@ class HrApplicationSd(models.Model):
 class JobPositionCat(models.Model):
     _name = 'advertisement.line'
     _description = 'Advertisement Line'
+    _rec_name = 'name'
 
     name = fields.Char('Name')
     allowed_category_id = fields.Many2one('hr.requisition.application', string='Allowed Cat')
@@ -222,18 +223,18 @@ class JobPositionCat(models.Model):
     st = fields.Integer('Scheduled Tribes')
 
 
-    @api.multi
-    @api.depends('allowed_category_id')
-    def name_get(self):
-        res = []
-        for record in self:
-            if record.allowed_category_id.advertisement_number:
-                name = str(record.allowed_category_id.advertisement_number) + ' (' + str(record.job_id.name) + ') (' + str(record.category_id.name) + ') (' + str(record.state.name) + ')'
-            else:
-                name = 'Advertisement'
-            res.append((record.id, name))
-            res.name = name
-        return res
+    # @api.multi
+    # @api.depends('allowed_category_id')
+    # def name_get(self):
+    #     res = []
+    #     for record in self:
+    #         if record.allowed_category_id.advertisement_number:
+    #             name = str(record.allowed_category_id.advertisement_number) + ' (' + str(record.job_id.name) + ') (' + str(record.category_id.name) + ') (' + str(record.state.name) + ')'
+    #         else:
+    #             name = 'Advertisement'
+    #         res.append((record.id, name))
+    #         res.name = name
+    #     return res
 
 
     @api.model

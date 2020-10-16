@@ -131,8 +131,8 @@ class HRApplicant(models.Model):
     advertisement_id_related = fields.Many2one('hr.requisition.application', string='Advertisement', related='advertisement_id')
     advertisement_line_id = fields.Many2one('advertisement.line', string='Advertisement Line')
 
-    @api.onchange('advertisement_line_id')
-    @api.constrains('advertisement_line_id')
-    def get_job_advertonch(self):
-        for rec in self:
-            rec.job_id = rec.advertisement_line_id.job_id
+    # @api.onchange('advertisement_line_id')
+    # @api.constrains('advertisement_line_id')
+    # def get_job_advertonch(self):
+    #     for rec in self:
+    #         rec.job_id = rec.advertisement_line_id.job_id
