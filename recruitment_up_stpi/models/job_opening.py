@@ -12,15 +12,20 @@ class RecruitmentJobOpening(models.Model):
     def default_employee(self):
         return self.env['hr.employee'].search([('user_id', '=', self.env.user.id)], limit=1)
 
-    def default_branch(self):
-        return self.env.user.default_branch_id
 
     name = fields.Char('Name')
     requested_by = fields.Many2one('hr.employee', string='Requested By', default=default_employee)
     requested_on = fields.Date(string="Requested On", default=fields.Date.today(),track_visibility='always')
-    branch_id = fields.Many2one('res.branch', string='Branch', default=default_branch)
+    branch_id = fields.Many2one('res.branch', string='Branch')
     job_pos = fields.One2many('job.opening.lines', 'job_opening_id', string='Job Openings')
     state = fields.Selection([('draft', 'Draft'), ('to_approve', 'To Approve'), ('approved', 'Approved'), ('published', 'Published'), ('rejected', 'Rejected')], required=True, string='Status', default='draft', track_visibility='always')
+
+
+    @api.onchange('employee_id')
+    @api.constrains('employee_id')
+    def onchange_emo_get_basic(self):
+        for record in self:
+            record.branch_id = record.employee_id.branch_id
 
     @api.model
     def create(self, vals):
