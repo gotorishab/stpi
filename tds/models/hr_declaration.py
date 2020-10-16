@@ -544,7 +544,7 @@ class HrDeclaration(models.Model):
             sum_list = []
             for cc in prl_id:
                 sum_prl+=cc.amount
-            if rec.employee_id.address_home_id.city_id.metro == True:
+            if rec.employee_id.branch_id.city_id.metro == True:
                 sum_bs = ((rec.basic_salary + rec.da_salary)*50)/100
             else:
                 sum_bs = ((rec.basic_salary + rec.da_salary)*40)/100
