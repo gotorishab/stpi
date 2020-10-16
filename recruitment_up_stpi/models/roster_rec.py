@@ -46,10 +46,11 @@ class RecruitmentRoster(models.Model):
 class Employee(models.Model):
     _inherit = "hr.employee"
 
-    def get_domain_roster(self):
-        return [('job_id', '=', self.job_id.id),('employee_id', '=', False)]
+    # def get_domain_roster(self):
+    #     print('============================job_id====================')
+    #     return [('job_id', '=', self.job_id.id),('employee_id', '=', False)]
 
-    roster_line_item = fields.Many2one('recruitment.roster', string="Roster line item",track_visibility='always', domain=lambda self: self.get_domain_roster())
+    roster_line_item = fields.Many2one('recruitment.roster', string="Roster line item",track_visibility='always')
 
 
     @api.constrains('roster_line_item')
