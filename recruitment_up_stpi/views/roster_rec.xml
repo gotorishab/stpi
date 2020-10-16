@@ -9,7 +9,7 @@
                     <field name="name" required="1"/>
                     <field name="category_id" required="1"/>
                     <field name="state" required="1" domain="[('country_id.name', '=', 'India')]"/>
-                    <field name="employee_id" readonly="1"/>
+                    <field name="employee_id" invisible="1"/>
                     <field name="emp_code" readonly="1"/>
                     <field name="Name_of_person" readonly="1"/>
                     <field name="Hired_category" readonly="1"/>
@@ -30,7 +30,7 @@
                                 <field name="name" required="1"/>
                                 <field name="category_id" required="1"/>
                                 <field name="state" required="1" domain="[('country_id.name', '=', 'India')]"/>
-                                <field name="employee_id" readonly="1"/>
+                                <field name="invisible" readonly="1"/>
                                 <field name="emp_code" readonly="1"/>
                             </group>
                             <group>
