@@ -39,9 +39,9 @@ class employee_previous_occupation(models.Model):
         for rec in self:
             if rec.ref_phone and not rec.ref_phone.isnumeric():
                 raise ValidationError(_("Phone number must be a number"))
-            # if rec.ref_phone and len(rec.ref_phone) != 10:
-            #     raise ValidationError(_("Please enter correct phone number."
-            #                             "It must be of 10 digits"))
+            if rec.ref_phone and len(rec.ref_phone) != 10:
+                raise ValidationError(_("Please enter correct phone number."
+                                        "It must be of 10 digits"))
 
 
 class OrganizationType(models.Model):
