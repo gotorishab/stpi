@@ -445,7 +445,7 @@ class HRApplicant(models.Model):
                         'fax_number': self.fax_number,
                 })
                 if self.employee_type == 'regular' and self.recruitment_type == 'd_recruitment':
-                    emp_id.sudo().start_test_period()
+                    
                     create_contract = self.env['hr.contract'].create(
                         {
                             'state': 'open',
@@ -463,7 +463,7 @@ class HRApplicant(models.Model):
                         }
                     )
                 elif self.employee_type == 'regular' and self.recruitment_type == 'transfer':
-                    emp_id.sudo().start_test_period()
+                    
                     create_contract = self.env['hr.contract'].create(
                         {
                             'state': 'open',
@@ -481,7 +481,7 @@ class HRApplicant(models.Model):
                         }
                     )
                 elif self.employee_type == 'regular' and self.recruitment_type == 'i_absorption':
-                    emp_id.sudo().start_test_period()
+                    
                     create_contract = self.env['hr.contract'].create(
                         {
                             'state': 'open',
@@ -515,7 +515,7 @@ class HRApplicant(models.Model):
                         }
                     )
                 elif self.employee_type == 'regular' and self.recruitment_type == 'c_appointment':
-                    emp_id.sudo().start_test_period()
+                    
                     create_contract = self.env['hr.contract'].create(
                         {
                             'state': 'open',
@@ -532,7 +532,7 @@ class HRApplicant(models.Model):
                         }
                     )
                 elif self.employee_type == 'regular' and self.recruitment_type == 'promotion':
-                    emp_id.sudo().start_test_period()
+                    
                     create_contract = self.env['hr.contract'].create(
                         {
                             'state': 'open',
