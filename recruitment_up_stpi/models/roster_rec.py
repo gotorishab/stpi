@@ -29,7 +29,7 @@ class RecruitmentRoster(models.Model):
     @api.model
     def create(self, vals):
         res = super(RecruitmentRoster, self).create(vals)
-        res.number = str(res.name) + ' (' + str(res.job_id.name) + ')'
+        res.number = str(res.name) + ' (' + str(res.job_id.name) + ')' + ' (' + str(res.category_id.name) + ')' + ' (' + str(res.state.name) + ')'
         print('============================', res.number)
         return res
 
