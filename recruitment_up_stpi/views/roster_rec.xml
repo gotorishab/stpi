@@ -29,7 +29,7 @@
                             <group>
                                 <field name="name" required="1"/>
                                 <field name="category_id" required="1"/>
-                                <field name="state" required="1"/>
+                                <field name="state" required="1" domain="[('country_id.name', '=', 'India')]"/>
                                 <field name="employee_id" readonly="1"/>
                                 <field name="emp_code" readonly="1"/>
                             </group>
