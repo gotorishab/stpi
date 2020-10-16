@@ -136,3 +136,6 @@ class HRApplicant(models.Model):
     def get_job_advertonch(self):
         for rec in self:
             rec.job_id = rec.advertisement_line_id.job_id
+            rec.struct_id = rec.advertisement_line_id.job_id.struct_id
+            rec.employee_type = rec.advertisement_line_id.job_id.employee_type
+            rec.branch_id = rec.advertisement_line_id.job_id.branch_id
