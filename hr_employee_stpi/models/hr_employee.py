@@ -164,16 +164,16 @@ class HrEmployee(models.Model):
             if count > 1:
                 raise ValidationError("The Personal Email must be unique")
 
-    @api.constrains('work_email')
-    def check_unique_work_email(self):
-        for rec in self:
-            count = 0
-            emp_id = self.env['hr.employee'].sudo().search(
-                [('work_email', '=', rec.work_email)])
-            for e in emp_id:
-                count += 1
-            if count > 1:
-                raise ValidationError("The Work Email must be unique")
+    # @api.constrains('work_email')
+    # def check_unique_work_email(self):
+    #     for rec in self:
+    #         count = 0
+    #         emp_id = self.env['hr.employee'].sudo().search(
+    #             [('work_email', '=', rec.work_email)])
+    #         for e in emp_id:
+    #             count += 1
+    #         if count > 1:
+    #             raise ValidationError("The Work Email must be unique")
 
     #
     #

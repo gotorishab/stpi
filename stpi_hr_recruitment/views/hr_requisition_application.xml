@@ -158,11 +158,4 @@
     </record>
 
 
-    <menuitem
-            id="menu_application_requisitn_line_adv"
-            name="Advertisement line"
-            parent="menu_application_requisition"
-            action="requisition_applicatio_line_action"
-            />
-
 </odoo>

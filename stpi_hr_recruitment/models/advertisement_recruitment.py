@@ -81,6 +81,8 @@ class HrApplicationSd(models.Model):
                     "You cannot delete an advertisement which is not in draft state"))
             for line in order.advertisement_line_ids:
                 line.sudo().unlink()
+            for line in order.reportadv_line_ids:
+                line.sudo().unlink()
         return super(HrApplicationSd, self).unlink()
 
     #
