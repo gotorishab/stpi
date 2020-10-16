@@ -150,11 +150,19 @@
         </field>
     </record>
 
+        <record id="requisition_applicatio_line_action" model="ir.actions.act_window">
+        <field name="name">Advertisement line</field>
+        <field name="res_model">advertisement.line</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
     <menuitem
             id="menu_application_requisitn_line_adv"
             name="Advertisement line"
             parent="menu_application_requisition"
-            action="requisition_applicatio_line_tree"
+            action="requisition_applicatio_line_action"
             />
 
 </odoo>
