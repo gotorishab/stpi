@@ -20,7 +20,7 @@ $(document).ready(function(){
                     for(var i=0;i<response_data.length;i++){
                         html_content += "<option name='courses.id' value='"+response_data[i][0]+"'>"+response_data[i][1]+"</option>";
                     }
-                    document.getElementById('job_ids').innerHTML = html_content;
+                    document.getElementById('job_id').innerHTML = html_content;
                 }
                 else{
                     document.getElementById('advertisement_ids').innerHTML = "<option value=''/>";

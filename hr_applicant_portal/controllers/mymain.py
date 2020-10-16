@@ -25,7 +25,7 @@ class HrPortalRecruitment(http.Controller):
         post['titles'] = request.env['res.partner.title'].sudo().search_read([], ['id', 'name'])
         post['advertisement_ids'] = request.env['advertisement.line'].sudo().search([('allowed_category_id.state', '=', 'active')])
         print("svsdvdvsdvsdvsdvsdv", post.get('advertisement_ids'))
-        post['job_ids'] = request.env['hr.job'].sudo().search([])
+        post['job_id'] = request.env['hr.job'].sudo().search([])
         post['category_ids'] = request.env['employee.category'].sudo().search([])
         post['religion_ids'] = request.env['employee.religion'].sudo().search([])
         post['country_ids'] = request.env['res.country'].sudo().search([])
@@ -130,12 +130,12 @@ class HrPortalRecruitment(http.Controller):
     def getJobName(self, **kw):
         if kw.get('advertisement_ids'):
             # institute_id = request.env['res.branch'].sudo().search([('id', '=', int(kw.get('institute_id')))])
-            job_ids = request.env['advertisement.line'].sudo().search(
+            job_id = request.env['advertisement.line'].sudo().search(
                 [('id', '=', int(kw.get('advertisement_ids'))),
                  ])
             result = []
-            print('=================================id===============================', job_ids)
-            if job_ids:
-                for course in job_ids:
+            print('=================================id===============================', job_id)
+            if job_id:
+                for course in job_id:
                     result.append((course.job_id.id, course.job_id.name))
                 return json.dumps(dict(result=result))

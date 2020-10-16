@@ -282,7 +282,7 @@
                                                     <label class="col-md-4 pl0 col-sm-6 o_label" for="business_address">Application for the post of
                                                     </label>
                                                     <div class="col-md-8 col-sm-12">
-                                                        <select class="form-control o_website_form_input" name="job_ids" id="job_ids" required="required">
+                                                        <select class="form-control o_website_form_input" name="job_id" id="job_id" required="required">
                                                             <option value="">Select</option>
                                                         </select>
                                                     </div>
