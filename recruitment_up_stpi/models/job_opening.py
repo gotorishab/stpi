@@ -30,9 +30,9 @@ class RecruitmentJobOpening(models.Model):
             record.branch_id = record.requested_by.branch_id
             print('=======================record.branch_id==============', record.branch_id)
             print('=======================record.requested_by.branch_id==============', record.requested_by.branch_id)
-            record.branch_id = record.requested_by.branch_id.id
+            # record.branch_id = record.requested_by.branch_id.id
 
-            
+
 
     @api.model
     def create(self, vals):
