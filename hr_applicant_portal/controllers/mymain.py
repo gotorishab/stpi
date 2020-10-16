@@ -25,7 +25,7 @@ class HrPortalRecruitment(http.Controller):
         post['titles'] = request.env['res.partner.title'].sudo().search_read([], ['id', 'name'])
         post['advertisement_ids'] = request.env['advertisement.line'].sudo().search([('allowed_category_id.state', '=', 'active')])
         print("svsdvdvsdvsdvsdvsdv", post.get('advertisement_ids'))
-        post['job_id'] = request.env['hr.job'].sudo().search([])
+        post['job_ids'] = request.env['hr.job'].sudo().search([])
         post['category_ids'] = request.env['employee.category'].sudo().search([])
         post['religion_ids'] = request.env['employee.religion'].sudo().search([])
         post['country_ids'] = request.env['res.country'].sudo().search([])

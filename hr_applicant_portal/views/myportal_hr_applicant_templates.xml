@@ -263,7 +263,7 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label class="col-md-4 pl0 col-sm-6 o_label" for="business_address">Advertisement number
+                                                    <label class="col-md-4 pl0 col-sm-6 o_label" for="business_address">Employment Notice Number
                                                     </label>
                                                     <div class="col-md-8 col-sm-12">
                                                         <select class="form-control religion_id">
@@ -281,8 +281,13 @@
                                                     <label class="col-md-4 pl0 col-sm-6 o_label" for="business_address">Application for the post of
                                                     </label>
                                                     <div class="col-md-8 col-sm-12">
-                                                        <select class="form-control o_website_form_input" name="job_id" id="job_id" required="required">
-                                                            <option value="">Select</option>
+                                                        <select class="form-control job_id" name="job_id">
+                                                            <option value="" t-attf-selected="selected">Select...</option>
+                                                            <t t-foreach="job_ids" t-as="job_id">
+                                                                <option t-att-value="job_id.id">
+                                                                   <t t-esc="job_id.name"/>
+                                                                </option>
+                                                            </t>
                                                         </select>
                                                     </div>
                                                 </div>
