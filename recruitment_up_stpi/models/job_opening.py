@@ -23,9 +23,16 @@ class RecruitmentJobOpening(models.Model):
 
     @api.onchange('requested_by')
     @api.constrains('requested_by')
-    def onchange_emo_get_basic(self):
+    def onchange_get_basic(self):
         for record in self:
+            print('=======================record.branch_id==============', record.branch_id)
+            print('=======================record.requested_by.branch_id==============', record.requested_by.branch_id)
             record.branch_id = record.requested_by.branch_id
+            print('=======================record.branch_id==============', record.branch_id)
+            print('=======================record.requested_by.branch_id==============', record.requested_by.branch_id)
+            record.branch_id = record.requested_by.branch_id.id
+
+            
 
     @api.model
     def create(self, vals):

@@ -84,7 +84,7 @@
             <field name="res_model">recruitment.jobop</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
-            <field name="domain">[('state','=','draft')]</field>
+            <field name="domain">[('state','=','to_approve')]</field>
         </record>
  <record id="recruitment_jobop_menu_action_approved" model="ir.actions.act_window">
             <field name="name">Job Opening - Approved</field>
