@@ -779,7 +779,7 @@ class HrDeclaration(models.Model):
             for lines in rec.tax_payment_ids:
                 if lines.paid == False:
                     lines.unlink()
-            edate = rec.date_range.date_end
+            edate = rec.date_range.date_end - relativedelta(months=1)
             date = datetime.now().date().replace(day=1)+ relativedelta(months=1)
             month_cal = ((edate - date).days)/30
             if month_cal > 0:
