@@ -7,7 +7,6 @@ class RecruitmentRoster(models.Model):
     _name = "recruitment.roster"
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = "Recruitment Roster"
-    _rec_name = 'name'
 
     @api.onchange('job_id')
     def get_roster_line_item(self):
@@ -28,15 +27,15 @@ class RecruitmentRoster(models.Model):
 
 
 
-    # @api.multi
-    # def name_get(self):
-    #     res = []
-    #     for rec in self:
-    #         name = rec.name
-    #         if rec.name and rec.job_id:
-    #             name = str(rec.name) + ' (' + str(rec.job_id.name) + ')'
-    #         res.append((rec.id, name))
-    #         return res
+    @api.multi
+    def name_get(self):
+        res = []
+        for rec in self:
+            name = rec.name
+            if rec.name and rec.job_id:
+                name = str(rec.name) + ' (' + str(rec.job_id.name) + ')'
+            res.append((rec.id, name))
+            return res
 
 class EmployeeRoster(models.Model):
     _inherit = "hr.employee"
