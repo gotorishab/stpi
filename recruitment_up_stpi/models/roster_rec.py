@@ -27,11 +27,6 @@ class RecruitmentRoster(models.Model):
     remarks = fields.Text('Remarks')
 
 
-    position_number = fields.Integer('Position Number')
-    sc = fields.Boolean('SC')
-    st = fields.Boolean('ST')
-    general = fields.Boolean('General')
-
 
     @api.multi
     def name_get(self):
@@ -43,14 +38,14 @@ class RecruitmentRoster(models.Model):
             res.append((rec.id, name))
             return res
 
-class Employee(models.Model):
+class EmployeeRoster(models.Model):
     _inherit = "hr.employee"
 
     # def get_domain_roster(self):
     #     print('============================job_id====================')
     #     return [('job_id', '=', self.job_id.id),('employee_id', '=', False)]
 
-    roster_line_item = fields.Many2one('recruitment.roster', string="Roster line item",track_visibility='always')
+    roster_line_item = fields.Many2one('recruitment.roster', string="Roster line item")
 
 
     @api.constrains('roster_line_item')
