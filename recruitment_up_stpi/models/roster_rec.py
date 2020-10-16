@@ -7,13 +7,14 @@ class RecruitmentRoster(models.Model):
     _name = "recruitment.roster"
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = "Recruitment Roster"
+    _rec_name = 'number'
 
     @api.onchange('job_id')
     def get_roster_line_item(self):
         return {'domain': {'roster_line_item': [('job_id', '=', self.job_id.id), ('employee_id', '=', False)]}}
 
 
-
+    number = fields.Char('Number')
     name = fields.Char(string="Name",track_visibility='always')
     job_id = fields.Many2one('hr.job', string='Utilised By')
     employee_id = fields.Many2one('hr.employee', string='Employee')
@@ -25,17 +26,21 @@ class RecruitmentRoster(models.Model):
     date_of_apointment = fields.Date('Date of Appointment')
     remarks = fields.Text('Remarks')
 
+    @api.model
+    def create(self, vals):
+        res = super(RecruitmentRoster, self).create(vals)
+        res.number = str(res.name) + ' (' + str(res.job_id.name) + ')'
+        return res
 
-
-    @api.multi
-    def name_get(self):
-        res = []
-        for rec in self:
-            name = ''
-            if rec.name and rec.job_id:
-                name = str(rec.name) + ' (' + str(rec.job_id.name) + ')'
-            res.append((rec.id, name))
-            return res
+    # @api.multi
+    # def name_get(self):
+    #     res = []
+    #     for rec in self:
+    #         name = ''
+    #         if rec.name and rec.job_id:
+    #             name = str(rec.name) + ' (' + str(rec.job_id.name) + ')'
+    #         res.append((rec.id, name))
+    #         return res
 
 class EmployeeRoster(models.Model):
     _inherit = "hr.employee"
