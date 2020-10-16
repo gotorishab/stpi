@@ -394,7 +394,6 @@ class HrDeclaration(models.Model):
                                                                 ('slip_id.state', '=', 'done'),
                                                                 ('slip_id.date_from', '>=', dstart),
                                                                 ('slip_id.date_to', '<=', dend),
-                                                                ('slip_id.date_to', '<=', datetime.now().date())
                                                                 ], order="date_to desc")
             for pr in prl_id:
                 if pr.code == 'BASIC':
@@ -415,7 +414,8 @@ class HrDeclaration(models.Model):
                                                                 ('salary_rule_id.taxable_percentage', '>', 0),
                                                                 ('slip_id.date_from', '>=', dstart),
                                                                 ('salary_rule_id.code', '=', 'GROSS'),
-                                                                ('slip_id.date_to', '<=', dend)],order ="date_to desc")
+                                                                ('slip_id.date_to', '<=', dend)
+                                                                ],order ="date_to desc")
             for i in proll:
                 sum += i.taxable_amount
             rec.tax_salary_final = round(sum) + rec.income_after_house_property + rec.income_after_other_sources
