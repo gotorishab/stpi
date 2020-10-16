@@ -48,11 +48,11 @@ class EmployeeRoster(models.Model):
     roster_line_item = fields.Many2one('recruitment.roster', string="Roster line")
 
 
-    # @api.constrains('roster_line_item')
-    # def putinto_roster_line_item(self):
-    #     for rec in self:
-    #         rec.roster_line_item.employee_id = rec.id
-    #         rec.roster_line_item.Hired_category = rec.category.id
-    #         rec.roster_line_item.emp_code = rec.identify_id
-    #         rec.roster_line_item.Name_of_person = rec.name
-    #         rec.roster_line_item.date_of_apointment = rec.date_of_join
+    @api.constrains('roster_line_item')
+    def putinto_roster_line_item(self):
+        for rec in self:
+            rec.roster_line_item.employee_id = rec.id
+            rec.roster_line_item.Hired_category = rec.category.id
+            rec.roster_line_item.emp_code = rec.identify_id
+            rec.roster_line_item.Name_of_person = rec.name
+            rec.roster_line_item.date_of_apointment = rec.date_of_join

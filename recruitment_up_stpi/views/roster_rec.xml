@@ -80,7 +80,7 @@
         <field name="inherit_id" ref="hr.view_employee_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='job_id']" position="after">
-                <field name="roster_line_item"/>
+                <field name="roster_line_item" domain="[('job_id', '=', job_id),('employee_id', '=', False)]"/>
             </xpath>
         </field>
     </record>
