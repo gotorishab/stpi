@@ -1,5 +1,5 @@
 from odoo import models, fields, api,_
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError, UserError
 from datetime import datetime
 
 
@@ -72,6 +72,17 @@ class HrApplicationSd(models.Model):
                 allowed.job_id.message_post(body=_body)
                 allowed.job_id.set_recruit()
             rec.write({'state': 'active'})
+
+    @api.multi
+    def unlink(self):
+        for order in self:
+            if order.state != 'draft':
+                raise UserError(_(
+                    "You cannot delete an advertisement which is not in draft state"))
+            for line in order.advertisement_line_ids:
+                line.sudo().unlink()
+        return super(HrApplicationSd, self).unlink()
+
     #
     #
     # @api.multi

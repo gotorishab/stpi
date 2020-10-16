@@ -138,4 +138,23 @@
             parent="menu_application_requisition"
             action="requisition_application_action"
             />
+
+
+        <record id="requisition_applicatio_line_tree"  model="ir.ui.view">
+        <field name="name">advertisement.line.tree</field>
+        <field name="model">advertisement.line</field>
+         <field name ="arch" type="xml">
+        <tree string="Advertisement">
+             <field name="name"/>
+        </tree>
+        </field>
+    </record>
+
+    <menuitem
+            id="menu_application_requisitn_line_adv"
+            name="Advertisement line"
+            parent="menu_application_requisition"
+            action="requisition_applicatio_line_tree"
+            />
+
 </odoo>
