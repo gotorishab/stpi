@@ -77,6 +77,7 @@ class InheritContractss(models.Model):
             rec.employee_hra_cat = rec.employee_id.branch_id.city_id.employee_hra_cat
             rec.city_tier = rec.employee_id.branch_id.city_id.city_tier
 
+
     @api.multi
     @api.depends('wage','da')
     def _compute_updated_basic_f_da(self):
