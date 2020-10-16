@@ -401,7 +401,7 @@ class HRApplicant(models.Model):
                         'address_ids': address_ids,
                         'religion': self.religion_id,
                         'post': self.post,
-                        'date_of_join': self.date_of_join,
+                        'date_of_join': datetime.now().date(),
                         'office_order_date': self.office_order_date,
                         'job_id': self.job_id,
                         'branch_id': self.branch_id,

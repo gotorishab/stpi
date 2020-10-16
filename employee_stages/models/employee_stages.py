@@ -28,7 +28,7 @@ class EmployeeFormInherit(models.Model):
         result = super(EmployeeFormInherit, self).create(vals)
         result.stages_history.sudo().create({
             'start_date': date.today(),
-            'end_date': date.today() + relativedelta(years=3)
+            'end_date': date.today() + relativedelta(years=3),
              'employee_id': result.id,
              'state': 'test_period'})
         return result
