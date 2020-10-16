@@ -8,7 +8,7 @@
 	'maintainer': 'dexciss Techno Solutions',
 	'company': 'dexciss Techno Solutions',
 	'website': 'https://www.dexciss.com',
-	'depends': ['base','hr','hr_payroll','date_range'],
+	'depends': ['base','hr','hr_payroll','date_range','groups_inherit'],
 	'data': [
 		'security/ir.model.access.csv',
 		'security/security.xml',
