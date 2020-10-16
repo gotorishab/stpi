@@ -2,6 +2,7 @@
 from datetime import date
 from odoo import models, fields, api,_
 from odoo.exceptions import UserError
+from dateutil.relativedelta import relativedelta
 
 emp_stages = [
                 # ('joined', 'Roll On'),
@@ -25,9 +26,11 @@ class EmployeeFormInherit(models.Model):
     @api.model
     def create(self, vals):
         result = super(EmployeeFormInherit, self).create(vals)
-        result.stages_history.sudo().create({'start_date': date.today(),
-                                             'employee_id': result.id,
-                                             'state': 'test_period'})
+        result.stages_history.sudo().create({
+            'start_date': date.today(),
+            'end_date': date.today() + relativedelta(years=3)
+             'employee_id': result.id,
+             'state': 'test_period'})
         return result
 
     @api.multi

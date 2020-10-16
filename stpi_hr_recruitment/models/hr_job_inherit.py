@@ -141,7 +141,7 @@ class HRApplicant(models.Model):
             rec.branch_id = rec.advertisement_line_id.branch_id
 
 
-    @api.constrains('advertisement_line_id','category_id')
+    @api.constrains('advertisement_line_id','category_id','type_id','job_id')
     def get_state_degree_validation(self):
         for rec in self:
             if rec.category_id != rec.advertisement_line_id.category_id:
