@@ -21,8 +21,8 @@ class RecruitmentJobOpening(models.Model):
     state = fields.Selection([('draft', 'Draft'), ('to_approve', 'To Approve'), ('approved', 'Approved'), ('published', 'Published'), ('rejected', 'Rejected')], required=True, string='Status', default='draft', track_visibility='always')
 
 
-    @api.onchange('employee_id')
-    @api.constrains('employee_id')
+    @api.onchange('requested_by')
+    @api.constrains('requested_by')
     def onchange_emo_get_basic(self):
         for record in self:
             record.branch_id = record.requested_by.branch_id
