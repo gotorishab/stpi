@@ -25,7 +25,7 @@ class RecruitmentJobOpening(models.Model):
     @api.constrains('employee_id')
     def onchange_emo_get_basic(self):
         for record in self:
-            record.branch_id = record.employee_id.branch_id
+            record.branch_id = record.requested_by.branch_id
 
     @api.model
     def create(self, vals):
