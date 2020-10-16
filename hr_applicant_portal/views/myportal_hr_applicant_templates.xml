@@ -40,6 +40,54 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="row pt-3">
+                                <div class="col-md-12">
+                                    <div class="col-md-12 pl0">
+                                        <h4 class="title">
+                                            <b>Job Details</b>
+                                        </h4>
+                                    </div>
+                                    <div class="oe_box mt-3">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="col-md-4 pl0 col-sm-6 o_label" for="business_address">Employment Notice Number
+                                                    </label>
+                                                    <div class="col-md-8 col-sm-12">
+                                                        <select class="form-control advertisement_line_id">
+                                                            <option value="" t-attf-selected="selected">Select...</option>
+                                                            <t t-foreach="advertisement_ids" t-as="advertisement_line_id">
+                                                                <option t-att-value="advertisement_line_id.id"><t t-esc="advertisement_line_id.name"/>
+                                                                </option>
+                                                            </t>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="col-md-4 pl0 col-sm-6 o_label" for="business_address">Application for the post of
+                                                    </label>
+                                                    <div class="col-md-8 col-sm-12">
+                                                        <select class="form-control job_id" name="job_id">
+                                                            <option value="" t-attf-selected="selected">Select...</option>
+                                                            <t t-foreach="job_ids" t-as="job_id">
+                                                                <option t-att-value="job_id.id">
+                                                                   <t t-esc="job_id.name"/>
+                                                                </option>
+                                                            </t>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
                             <div class="col-md-12 pl0 mb16">
                                 <h4 class="title">
                                     <b>Personal details</b>
@@ -252,50 +300,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row pt-3">
-                                <div class="col-md-12">
-                                    <div class="col-md-12 pl0">
-                                        <h4 class="title">
-                                            <b>Job Details</b>
-                                        </h4>
-                                    </div>
-                                    <div class="oe_box mt-3">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="col-md-4 pl0 col-sm-6 o_label" for="business_address">Employment Notice Number
-                                                    </label>
-                                                    <div class="col-md-8 col-sm-12">
-                                                        <select class="form-control religion_id">
-                                                            <option value="" t-attf-selected="selected">Select...</option>
-                                                            <t t-foreach="advertisement_ids" t-as="advertisement_line_id">
-                                                                <option t-att-value="advertisement_line_id.id"><t t-esc="advertisement_line_id.name"/>
-                                                                </option>
-                                                            </t>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="col-md-4 pl0 col-sm-6 o_label" for="business_address">Application for the post of
-                                                    </label>
-                                                    <div class="col-md-8 col-sm-12">
-                                                        <select class="form-control job_id" name="job_id">
-                                                            <option value="" t-attf-selected="selected">Select...</option>
-                                                            <t t-foreach="job_ids" t-as="job_id">
-                                                                <option t-att-value="job_id.id">
-                                                                   <t t-esc="job_id.name"/>
-                                                                </option>
-                                                            </t>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+
                             <div class="row pt-3">
                                 <div class="col-md-12">
                                     <div class="col-md-12 pl0">
