@@ -30,6 +30,7 @@ class RecruitmentRoster(models.Model):
     def create(self, vals):
         res = super(RecruitmentRoster, self).create(vals)
         res.number = str(res.name) + ' (' + str(res.job_id.name) + ')'
+        print('============================', res.number)
         return res
 
     # @api.multi
