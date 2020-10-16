@@ -126,16 +126,16 @@ class HrPortalRecruitment(http.Controller):
         # return request.render("sync_ems_admission_website.apply4admission", post, {})
 
 
-    @http.route('/getJobName', type='http', auth="public", website=True, csrf=False)
-    def getJobName(self, **kw):
-        if kw.get('advertisement_ids'):
-            # institute_id = request.env['res.branch'].sudo().search([('id', '=', int(kw.get('institute_id')))])
-            job_id = request.env['advertisement.line'].sudo().search(
-                [('id', '=', int(kw.get('advertisement_ids'))),
-                 ])
-            result = []
-            print('=================================id===============================', job_id)
-            if job_id:
-                for course in job_id:
-                    result.append((course.job_id.id, course.job_id.name))
-                return json.dumps(dict(result=result))
+    # @http.route('/getJobName', type='http', auth="public", website=True, csrf=False)
+    # def getJobName(self, **kw):
+    #     if kw.get('advertisement_ids'):
+    #         # institute_id = request.env['res.branch'].sudo().search([('id', '=', int(kw.get('institute_id')))])
+    #         job_id = request.env['advertisement.line'].sudo().search(
+    #             [('id', '=', int(kw.get('advertisement_ids'))),
+    #              ])
+    #         result = []
+    #         print('=================================id===============================', job_id)
+    #         if job_id:
+    #             for course in job_id:
+    #                 result.append((course.job_id.id, course.job_id.name))
+    #             return json.dumps(dict(result=result))

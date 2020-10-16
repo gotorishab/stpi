@@ -22,7 +22,6 @@
     </template>
     <template id="apply4jobs" name="Jobs">
         <t t-call="website.layout">
-            <script src="/hr_applicant_portal/static/src/js/custom.js"/>
             <div class="oe_structure"/>
             <div class="container oe_website_sale s_website_form apply4jobs">
                 <form class="mb32 mt32 apply4jobs_form" action="/Apply/jobs" role="form" method="post" data-model_name="hr.applicant" enctype="multipart/form-data">
