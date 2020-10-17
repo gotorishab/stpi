@@ -165,7 +165,6 @@ class HrPayslip(models.Model):
 
     @api.multi
     def action_payslip_done(self):
-        # tax_list = []
         for line in self.tax_payment_ids:
             if line.paid:
                 loan_ids = self.env['tax.payment'].search(
