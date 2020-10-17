@@ -163,23 +163,23 @@ class HrPayslip(models.Model):
 #         }
 
 
-    @api.multi
-    def action_payslip_done(self):
-        for line in self.tax_payment_ids:
-            if line.paid:
-                loan_ids = self.env['tax.payment'].search(
-                    [('employee_id', '=', self.employee_id.id),('loan_id','=',line.tax_payslip_id.id), ('paid', '=', False), ('date', '=', line.date)])
-                for loans in loan_ids:
-                    loans.paid = True
-                    loans.tax_payslip_ref_id = self.id
-#                 print(">>>>>>>>>>>>>>>>>>>>>>>>>>>",line.paid)
-#                 tax_list.append(line.id)
-            else:
-                line.payslip_id = False
-#                 print("..................................",line.payslip_id)
-#         self.tax_payment_ids = tax_list
-#         print("????????????????????????????????????",self.tax_payment_ids)
-        return super(HrPayslip, self).action_payslip_done()
+#     @api.multi
+#     def action_payslip_done(self):
+#         for line in self.tax_payment_ids:
+#             if line.paid:
+#                 loan_ids = self.env['tax.payment'].search(
+#                     [('tax_payment_id.employee_id', '=', self.employee_id.id),('loan_id','=',line.tax_payslip_id.id), ('paid', '=', False), ('date', '=', line.date)])
+#                 for loans in loan_ids:
+#                     loans.paid = True
+#                     loans.tax_payslip_ref_id = self.id
+# #                 print(">>>>>>>>>>>>>>>>>>>>>>>>>>>",line.paid)
+# #                 tax_list.append(line.id)
+#             else:
+#                 line.payslip_id = False
+# #                 print("..................................",line.payslip_id)
+# #         self.tax_payment_ids = tax_list
+# #         print("????????????????????????????????????",self.tax_payment_ids)
+#         return super(HrPayslip, self).action_payslip_done()
 
 
     #
