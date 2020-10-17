@@ -17,4 +17,13 @@
         <field name="category_id" ref="module_job_opening_recruitment"/>
     </record>
 
+
+    <record id="roster_global_record_rule" model="ir.rule">
+        <field name="name">Roster Branch</field>
+        <field name="model_id" ref="recruitment_up_stpi.model_recruitment_roster"/>
+        <field name="domain_force">['|',  ('job_id.branch_id','=',False), ('job_id.branch_id','in',[g.id for g in user.branch_ids])]</field>
+        <field name="global" eval="True"/>
+    </record>
+
+
 </odoo>

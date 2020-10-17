@@ -3,7 +3,6 @@ from odoo.exceptions import ValidationError
 
 class HrPayslip(models.Model):
     _inherit = 'hr.payslip'
-    _description = 'HR Payslip Changes For STPI'
 
 
     casual_leave = fields.Float(string="Casual Leave",readonly=True)

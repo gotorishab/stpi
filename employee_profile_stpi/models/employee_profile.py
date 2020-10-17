@@ -1387,9 +1387,9 @@ class EmployeePreviousOccupationCurrent(models.Model):
     def _check_ref_phone(self):
         for rec in self:
             if rec.ref_phone and not rec.ref_phone.isnumeric():
-                raise ValidationError(_("Phone number must be a number"))
+                raise ValidationError(_("Phone number must be a number - Previous Occupation"))
             if rec.ref_phone and len(rec.ref_phone) != 10:
-                raise ValidationError(_("Please enter correct phone number."
+                raise ValidationError(_("Please enter correct phone number. - Previous Occupation"
                                         "It must be of 10 digits"))
 
 

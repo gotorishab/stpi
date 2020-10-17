@@ -6,7 +6,7 @@ from datetime import datetime
 class HrApplicationSd(models.Model):
     _name = 'hr.requisition.application'
     _inherit = ['mail.thread', 'mail.activity.mixin']
-    _description = 'Hr Requisition Application'
+    _description = 'Advertisement'
 
 
     name = fields.Char('Employment Notice Number')
