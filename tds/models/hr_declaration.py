@@ -783,7 +783,8 @@ class HrDeclaration(models.Model):
             print('================edate===================',edate)
             date = datetime.now().date().replace(day=1) + relativedelta(months=1)
             print('================date===================',date)
-            month_cal = ((edate - date).days)/30
+            month_cal = (edate.year - date.year) * 12 + (edate.month - date.month)
+            # month_cal = ((edate - date).days)/30
             print('==================month_cal===============',month_cal)
             if month_cal > 0:
                 print('==================rec.pending_tax===============', rec.pending_tax)
