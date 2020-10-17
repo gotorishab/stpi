@@ -779,7 +779,7 @@ class HrDeclaration(models.Model):
             for lines in rec.tax_payment_ids:
                 if lines.paid == False:
                     lines.unlink()
-            edate = rec.date_range.date_end - relativedelta(months=1)
+            edate = rec.date_range.date_end + relativedelta(day=1) - relativedelta(months=1)
             print('================edate===================',edate)
             date = datetime.now().date().replace(day=1) + relativedelta(months=1)
             print('================date===================',date)
@@ -788,7 +788,8 @@ class HrDeclaration(models.Model):
             if month_cal > 0:
                 print('==================rec.pending_tax===============', rec.pending_tax)
                 amount = (rec.pending_tax)/month_cal
-                for i in range(int(month_cal)):
+                print('==================amount===============', amount)
+                for i in range(round(month_cal)):
                     self.env['tax.payment'].create({
                         'tax_payment_id': rec.id,
                         'date': date,
