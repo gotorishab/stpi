@@ -168,7 +168,7 @@ class HrPayslip(models.Model):
         # tax_list = []
         for line in self.tax_payment_ids:
             if line.paid:
-                loan_ids = self.env['hr.loan.line'].search(
+                loan_ids = self.env['tax.payment'].search(
                     [('employee_id', '=', self.employee_id.id),('loan_id','=',line.tax_payslip_id.id), ('paid', '=', False), ('date', '=', line.date)])
                 for loans in loan_ids:
                     loans.paid = True

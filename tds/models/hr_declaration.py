@@ -512,9 +512,9 @@ class HrDeclaration(models.Model):
                     pl_amount += pl.amount
                 if rec.employee_id.date_of_join and rec.date_range.date_start < rec.employee_id.date_of_join <= rec.date_range.date_end:
                     nm = ((rec.date_range.date_end - rec.employee_id.date_of_join).days)/30
-                    relative_sum = count * 100 * int(nm)
+                    relative_sum = count * 100 * round(nm)
                 else:
-                    relative_sum = count * 100 * int(count_paylines)
+                    relative_sum = count * 100 * round(count_paylines)
                 if pl_amount < relative_sum:
                     my_investment = pl_amount
                 else:
