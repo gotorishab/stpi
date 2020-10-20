@@ -6,6 +6,7 @@
             <field name="arch" type="xml">
                 <form string="File">
                     <header>
+                        <field name="is_current_user" invisible="1"/>
                         <button name="button_submit" string="Submit" class="oe_highlight" type="object" states="draft"/>
                         <button name="button_close" string="Close" class="oe_highlight" type="object" states="in_progress"/>
                         <button name="button_reset_to_draft" string="Reopen" class="oe_highlight" type="object" states="closed"/>
