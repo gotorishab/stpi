@@ -30,6 +30,7 @@ class FolderMaster(models.Model):
     subject = fields.Many2one('code.subject', string='Subject',track_visibility='always')
     tags = fields.Many2many('muk_dms.tag', string='Tags',track_visibility='always')
     number = fields.Char(string = 'Number',track_visibility='always')
+    is_current_user = fields.Boolean(string = 'Is Current User')
     status = fields.Selection([('normal', 'Normal'),
                                ('important', 'Important'),
                                ('urgent', 'Urgent')
@@ -173,6 +174,14 @@ class FolderMaster(models.Model):
                 return (status, response)
             except Exception as e:
                 print('=============Error==========',e)
+
+
+    def is_current_user(self):
+        for rec in self:
+            if rec.env.user.id == rec.current_owner_id.id:
+                rec.is_current_user = True
+            else:
+                rec.is_current_user = False
 
 
     @api.multi
