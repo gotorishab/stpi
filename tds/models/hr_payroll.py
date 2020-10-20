@@ -24,7 +24,7 @@ class HrPayslip(models.Model):
                 total += line.amount
         self.total_paid_tax = total
 
-    tax_payment_ids = fields.One2many('tax.payment', 'payslip_id', string="Tax")
+    tax_payment_ids = fields.One2many('tax.payment', 'tax_payslip_ref_id', string="Tax")
     total_paid_tax = fields.Float(string="Total Income Tax Amount", compute='compute_total_paid_tax')
     #added by sangita
     refund_id_tax = fields.Many2one('hr.payslip',string="Refund ID")
@@ -181,7 +181,21 @@ class HrPayslip(models.Model):
 # #         print("????????????????????????????????????",self.tax_payment_ids)
 #         return super(HrPayslip, self).action_payslip_done()
 
-
+    @api.multi
+    def action_payslip_done(self):
+        loan_list = []
+        for line in self.tax_payment_ids:
+            if line.paid:
+                loan_ids = self.env['tax.payment'].search(
+                    [('tax_payment_id.employee_id', '=', self.employee_id.id),('loan_id','=',line.loan_payslip_id.id), ('paid', '=', False), ('date', '=', line.date)])
+                for loans in loan_ids:
+                    loans.paid = True
+                    loans.loan_payslip_ref_id = self.id
+                # loan_list.append(line.id)
+            else:
+                line.payslip_id = False
+        # self.loan_ids = loan_list
+        return super(HrPayslip, self).action_payslip_done()
     #
     # @api.multi
     # def action_payslip_done(self):

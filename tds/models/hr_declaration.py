@@ -1194,11 +1194,15 @@ class TaxPayment(models.Model):
     _description = 'Tax Payment'
 
     tax_payment_id = fields.Many2one('hr.declaration', string='Tax Payment')
-    tax_payslip_id = fields.Many2one('hr.declaration', string='Tax Payment')
+
+    payslip_id = fields.Many2one('hr.payslip', string="Payslip Ref.")
+
+
+    tax_payslip_id = fields.Many2one('hr.payslip', string='Tax Payment Payslip')
     date = fields.Date(string='Date')
     amount = fields.Float(string='Amount')
     paid = fields.Boolean(string="Paid")
-    payslip_id = fields.Many2one('hr.payslip', string="Payslip Ref.")
+    # payslip_id = fields.Many2one('hr.payslip', string="Payslip Ref.")
     tax_payslip_ref_id = fields.Many2one('hr.payslip', string="Payslip Ref.")
     # employee_id = fields.Many2one('hr.employee', string="Employee Ref.")
     #
