@@ -6,7 +6,6 @@
             <field name="arch" type="xml">
                 <form string="File">
                     <header>
-                        <field name="is_current_user" invisible="1"/>
                         <button name="button_submit" string="Submit" class="oe_highlight" type="object" states="draft"/>
                         <button name="button_close" string="Close" class="oe_highlight" type="object" states="in_progress"/>
                         <button name="button_reset_to_draft" string="Reopen" class="oe_highlight" type="object" states="closed"/>
@@ -14,14 +13,13 @@
                     </header>
                     <sheet>
                         <div class="oe_button_box" name="button_box">
-                            <button name = "%(folder_forward_button_wizard_action_view)d" type = "action" string = "Forward" icon = "fa-forward" context = "{'default_defid': id}" attrs="{'invisible':['|',('state','=', 'closed'),('is_current_user','=', False)]}"/>
-                            <button name="deal_with_file" string="Deal with File" type="object" icon="fa-pencil-square-o" attrs="{'invisible':['|',('state','=', 'closed'),('is_current_user','=', False)]}"/>
+                            <button name = "%(folder_forward_button_wizard_action_view)d" type = "action" string = "Forward" icon = "fa-forward" context = "{'default_defid': id}" attrs="{'invisible':[('state','=', 'closed')]}"/>
+                            <button name="deal_with_file" string="Deal with File" type="object" icon="fa-pencil-square-o" attrs="{'invisible':[('state','=', 'closed')]}"/>
                             <button type="object"
-                                    class="oe_stat_button"
-                                    icon="fa-folder-open-o"
-                                    name="tracker_view_file"
-                                    string = "Tracking info - File"
-                                    attrs="{'invisible':[('is_current_user','=', False)]}"
+                                            class="oe_stat_button"
+                                            icon="fa-folder-open-o"
+                                            name="tracker_view_file"
+                                            string = "Tracking info - File"
                                             >
                                     </button>
                         </div>
