@@ -851,6 +851,7 @@ class HrDeclaration(models.Model):
             if data.state not in ('draft', 'rejected'):
                 raise UserError(
                     'You cannot delete a Tax which is not in draft or Rejected state')
+            data.tax_payment_ids.sudo().unlink()
         return super(HrDeclaration, self).unlink()
 
 
