@@ -38,6 +38,7 @@
                             <field name="employee_id" required="1" readonly="1"/>
                             <field name="job_id" readonly="1"/>
                              <field name="branch_id" readonly="1"/>
+                            <field name="address_employee" invisible="1"/>
                              <field name="department_id" readonly="1"/>
                             <field name="date_range" options="{'no_create_edit': True, 'no_create': True}" attrs="{'readonly':[('state','!=','draft')], 'required':[('state','=','draft')]}" domain="[('tds', '=', True)]"/>
                             <field name="rent_paid" widget="monetary" options="{'currency_field': 'currency_id'}"/>
