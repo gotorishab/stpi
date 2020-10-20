@@ -4,11 +4,11 @@ import babel
 from odoo import models, fields, api, tools, _
 from datetime import datetime
 
-
-class HrPayslipInput(models.Model):
-    _inherit = 'hr.payslip.input'
-
-    it_tax_payment_id = fields.Many2one('tax.payment', string="IT Installment")
+#
+# class HrPayslipInput(models.Model):
+#     _inherit = 'hr.payslip.input'
+#
+#     it_tax_payment_id = fields.Many2one('tax.payment', string="IT Installment")
 
 
 class HrPayslip(models.Model):
@@ -77,17 +77,14 @@ class HrPayslip(models.Model):
         res = super(HrPayslip, self).get_inputs(contract_ids, date_from, date_to)
         contract_obj = self.env['hr.contract']
         emp_id = contract_obj.browse(contract_ids[0].id).employee_id
-        amt = 0
         lon_obj = self.env['hr.declaration'].search([('employee_id', '=', emp_id.id), ('state', '!=', 'rejected')])
         for tax in lon_obj:
             for tax_line in tax.tax_payment_ids:
-                # if date_from <= tax_line.date <= date_to and not tax_line.paid:
-                if not tax_line.paid:
-                    amt += tax_line.amount
+                if date_from <= tax_line.date <= date_to and not tax_line.paid:
                     for result in res:
                         if result.get('code') == 'IT':
-                            result['amount'] = amt
-                            result['it_tax_payment_id'] = tax_line.id
+                            result['amount'] = tax_line.amount
+                            # result['it_tax_payment_id'] = tax_line.id
         return res
 
     @api.multi
