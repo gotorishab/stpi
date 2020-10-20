@@ -88,7 +88,7 @@ class HrPayslip(models.Model):
         return res
 
     @api.multi
-    def get_it_lines(self):
+    def get_income_tax(self):
         """This gives the installment lines of an employee where the state is not in paid.
             """
         loan_list = []
@@ -106,7 +106,7 @@ class HrPayslip(models.Model):
             for loan in s.tax_payment_ids:
                 if loan.date <= s.date_to:
                     loan.paid = True
-            s.get_loan()
+            s.get_income_tax()
             return super(HrPayslip,s).compute_sheet()
        
     @api.multi
