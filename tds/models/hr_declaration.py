@@ -1197,8 +1197,8 @@ class TaxPayment(models.Model):
 
     payslip_id = fields.Many2one('hr.payslip', string="Payslip Ref.")
 
-
     tax_payslip_id = fields.Many2one('hr.payslip', string='Tax Payment Payslip')
+
     date = fields.Date(string='Date')
     amount = fields.Float(string='Amount')
     paid = fields.Boolean(string="Paid")
