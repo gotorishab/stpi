@@ -23,7 +23,7 @@
                         </tr>
                         <tr>
                             <td class="text-left"><strong>Residential Address</strong></td>
-                            <td class="text-left"><span t-field="o.hometown_address"/></td>
+                            <td class="text-left"><span t-field="o.address_employee"/></td>
                         </tr>
                         <tr>
                             <td class="text-left"><strong>Monthly Rent Paid if neither Owned nor provided by STPI</strong></td>
