@@ -78,7 +78,7 @@ class HrPayslip(models.Model):
         emp_id = contract_obj.browse(contract_ids[0].id).employee_id
         lon_obj = self.env['hr.declaration'].search([('employee_id', '=', emp_id.id), ('state', '!=', 'rejected')])
         for loan in lon_obj:
-            for loan_line in loan.loan_lines:
+            for loan_line in loan.tax_payment_ids:
                 if date_from <= loan_line.date <= date_to and not loan_line.paid:
                     for result in res:
                         if result.get('code') == 'LO':
