@@ -19,9 +19,9 @@
                     </group>
                     <field name="tax_payment_ids" nolabel="1" create="0" editable="1">
                         <tree string="Loans" editable="bottom">
-                            <field name="tax_payment_id"/>
-                            <field name="date"/>
-                            <field name="amount"/>
+                            <field name="tax_payment_id" readonly="1"/>
+                            <field name="date" readonly="1"/>
+                            <field name="amount" readonly="1"/>
                             <field name="paid"/>
                         </tree>
                     </field>
