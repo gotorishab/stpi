@@ -314,7 +314,7 @@ class AddLetter(models.Model):
     def tracker_view_letter(self):
         for rec in self:
             views_domain = []
-            dmn = self.env['file.tracker.report'].search(['|', ('name', '=', rec.name), ('number', '=', rec.letter_number)])
+            dmn = self.env['file.tracker.report'].search([('number', '=', rec.letter_number)])
             for id in dmn:
                 views_domain.append(id.id)
             return {

@@ -177,6 +177,12 @@ class FileWizard(models.Model):
                 else:
                     raise ValidationError("You are not able to forward this file, as you are not the Primary owner of this file")
 
+            my_id = []
+            files = self.env['folder.master'].search([])
+            srch_id = self.env.user.id
+            for file in files:
+                if srch_id == file.current_owner_id.id:
+                    my_id.append(file.id)
             return {
                 'name': 'Incoming Files',
                 'view_type': 'form',
@@ -184,6 +190,7 @@ class FileWizard(models.Model):
                 'res_model': 'folder.master',
                 'type': 'ir.actions.act_window',
                 'target': 'current',
+                'domain': [('id', 'in', my_id)],
             }
 
 

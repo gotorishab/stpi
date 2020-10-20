@@ -109,6 +109,15 @@ class FileWizard(models.Model):
                 else:
                     # pass
                     raise ValidationError("You are not able to forward this file, as you are not the Primary owner of this file")
+            my_id = []
+            files = self.env['muk_dms.file'].search([])
+            srch_id = self.env.user.id
+            for file in files:
+                if srch_id in file.sec_owner.ids or srch_id == file.current_owner_id.id:
+                    print('=====================first=======================', file.name)
+                    if not file.folder_id:
+                        print('=====================second=======================', file.name)
+                        my_id.append(file.id)
             return {
                 'name': 'Incoming correspondence',
                 'view_type': 'form',
@@ -116,6 +125,7 @@ class FileWizard(models.Model):
                 'res_model': 'muk_dms.file',
                 'type': 'ir.actions.act_window',
                 'target': 'current',
+                'domain': [('id', 'in', my_id)],
             }
 
 
