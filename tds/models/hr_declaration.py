@@ -181,6 +181,7 @@ class HrDeclaration(models.Model):
     job_id = fields.Many2one('hr.job', string="Functional Designation", store=True, track_visibility='always')
     branch_id = fields.Many2one('res.branch', string="Branch", store=True, track_visibility='always')
     department_id = fields.Many2one('hr.department', string="Department", store=True, track_visibility='always')
+    address_employee = fields.Text('Address Employee')
     date_range = fields.Many2one('date.range','Financial Year', track_visibility='always')
     date = fields.Date(string="Date", default=fields.Date.today(), readonly=True, track_visibility='always')
     rent_paid_ids = fields.One2many('rent.paid', 'rent_paid_id', string='Rent Paid')
@@ -268,10 +269,14 @@ class HrDeclaration(models.Model):
     @api.constrains('employee_id')
     def onchange_emo_get_basic(self):
         for record in self:
+            my_add = ''
             record.job_id = record.employee_id.job_id
             record.branch_id = record.employee_id.branch_id
             record.department_id = record.employee_id.department_id
-
+            for rec in record.employee_id.address_ids:
+                if rec.address_type == 'permanent_add':
+                    record.address_employee = str(rec.street) + ' ' + str(rec.street2) + ', ' + str(rec.city) + ', ' + str(
+                        rec.state_id.name) + ', ' + str(rec.country_id.name) + ' - ' + str(rec.zip)
     #
     # @api.depends('exemption_ids','rebate_ids','allowed_rebate_under_80c','allowed_rebate_under_80b','allowed_rebate_under_80d','allowed_rebate_under_80dsa','allowed_rebate_under_80e','allowed_rebate_under_80ccg','allowed_rebate_under_tbhl','allowed_rebate_under_80ee','allowed_rebate_under_24','allowed_rebate_under_80cdd', 'allowed_rebate_under_80mesdr')
     # def compute_net_allowed_rebate(self):
@@ -284,7 +289,6 @@ class HrDeclaration(models.Model):
     #             sum+=de.allowed_rebate
     #         sum1 = rec.allowed_rebate_under_80c + rec.allowed_rebate_under_80b + rec.allowed_rebate_under_80d + rec.allowed_rebate_under_80dsa + rec.allowed_rebate_under_80e + rec.allowed_rebate_under_80ccg + rec.allowed_rebate_under_tbhl + rec.allowed_rebate_under_80ee + rec.allowed_rebate_under_24 + rec.allowed_rebate_under_80cdd + rec.allowed_rebate_under_80mesdr
     #         rec.net_allowed_rebate = sum + sum1
-
 
 
     @api.onchange('date_range')
