@@ -4,11 +4,11 @@ import babel
 from odoo import models, fields, api, tools, _
 from datetime import datetime
 
-#
-# class HrPayslipInput(models.Model):
-#     _inherit = 'hr.payslip.input'
-#
-#     it_tax_payment_id = fields.Many2one('tax.payment', string="IT Installment")
+
+class HrPayslipInput(models.Model):
+    _inherit = 'hr.payslip.input'
+
+    it_tax_payment_id = fields.Many2one('tax.payment', string="IT Installment")
 
 
 class HrPayslip(models.Model):
