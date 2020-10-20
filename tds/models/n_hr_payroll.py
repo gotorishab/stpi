@@ -77,13 +77,16 @@ class HrPayslip(models.Model):
         res = super(HrPayslip, self).get_inputs(contract_ids, date_from, date_to)
         contract_obj = self.env['hr.contract']
         emp_id = contract_obj.browse(contract_ids[0].id).employee_id
+        amt = 0
         lon_obj = self.env['hr.declaration'].search([('employee_id', '=', emp_id.id), ('state', '!=', 'rejected')])
         for tax in lon_obj:
             for tax_line in tax.tax_payment_ids:
-                if date_from <= tax_line.date <= date_to and not tax_line.paid:
+                # if date_from <= tax_line.date <= date_to and not tax_line.paid:
+                if not tax_line.paid:
+                    amt += tax_line.amount
                     for result in res:
                         if result.get('code') == 'IT':
-                            result['amount'] = tax_line.amount
+                            result['amount'] = amt
                             result['it_tax_payment_id'] = tax_line.id
         return res
 

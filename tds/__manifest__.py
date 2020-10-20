@@ -20,6 +20,7 @@
 		'report/employee_service_book.xml',
 		'wizard/reason_wizard.xml',
 		'wizard/non_documents.xml',
+		'wizard/not_created_tds.xml',
         'views/date_range.xml',
         'views/hr_payslip.xml',
         'views/tds.xml',
