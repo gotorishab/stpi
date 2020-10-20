@@ -107,9 +107,14 @@ class HrPayslip(models.Model):
                 if loan.date <= s.date_to:
                     loan.paid = True
             s.get_income_tax()
+            total = 0
+            for line in self.tax_payment_ids:
+                if line.paid:
+                    total += line.amount
+            self.total_paid_tax = total
             for line in s.input_line_ids:
                 if line.code == 'IT':
-                    line.amount = line.total_paid_tax
+                    line.amount = total
             return super(HrPayslip,s).compute_sheet()
        
     @api.multi
