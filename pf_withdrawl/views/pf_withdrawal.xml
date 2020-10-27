@@ -59,6 +59,7 @@
                             <field name="date" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
                             <field name="present_pay" invisible="1"/>
                             <field name="bank_account_number" readonly="1"/>
+                            <field name="approval_workflow" readonly="1"/>
                         </group>
                         <group>
                             <field name="rule" invisible="1"/>

@@ -21,6 +21,7 @@ class PfWidthdrawl(models.Model):
     interest=fields.Float(string="Interest",track_visibility='always',)
     designation=fields.Many2one('hr.job', string="Designation",track_visibility='always',)
     center=fields.Char(string="Work Location",track_visibility='always',)
+    approval_workflow=fields.Text(string="Approval Workflow",track_visibility='always',)
     present_pay=fields.Float(string="Present Pay", compute='_compute_present_pay',track_visibility='always')
     bank_account_number=fields.Char(string="Bank Account",track_visibility='always',)
     cepf_vcpf = fields.Boolean('CEPF + VCPF')
