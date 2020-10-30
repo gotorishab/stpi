@@ -12,7 +12,7 @@
                             </group>
                             <group>
                                 </group>
-                                <field name="folder_id" required ="1" domain="[('version', '=', deffolderid.id)]"/>
+                                <field name="folder_id" required ="1" domain="[('version', '=', deffolderid)]"/>
                                 <field name="description" placeholder="Description"/>
                     </group>
                     <footer>
