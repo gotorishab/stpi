@@ -282,7 +282,7 @@ class FolderMaster(models.Model):
             if cout < 1:
                 name = 1
             else:
-                name = rec.name
+                name = cout
             file_id = rec.env['folder.master'].create({
                 'folder_name': rec.folder_name  + ' - ' + str(name),
                 'number': str(rec.number) + ' - ' + str(name),
