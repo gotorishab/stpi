@@ -8,7 +8,7 @@
                 <form string="Part File">
                     <group>
                         <group>
-                                <field name="deffolderid" invisivle ="1"/>
+                                <field name="deffolderid" invisible ="1"/>
                             </group>
                             <group>
                                 </group>
