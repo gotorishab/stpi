@@ -16,4 +16,10 @@ class CreateFolder(models.TransientModel):
     def confirm_button(self):
         if self:
             for file in self.folder_id:
+                for letter in file.file_ids:
+                    letter.folder_id = self.deffolderid.id
+                    self.deffolderid.file_ids = [(4, letter.id)]
+                for letter in file.document_dispatch:
+                    letter.folder_id = self.deffolderid.id
+                    self.deffolderid.document_dispatch = [(4, letter.id)]
                 file.sudo().button_close()
