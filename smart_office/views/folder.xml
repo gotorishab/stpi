@@ -92,6 +92,13 @@
                                     </group>
                                 </group>
                             </page>
+                            <page name="part_files" string="Part Files">
+                                <group>
+                                    <group>
+                                            <field name="part_file_ids"/>
+                                    </group>
+                                </group>
+                            </page>
                         </notebook>
                     </sheet>
                     <div class="oe_chatter">

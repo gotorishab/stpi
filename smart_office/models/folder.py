@@ -49,7 +49,7 @@ class FolderMaster(models.Model):
     basic_version = fields.Float('Basic Version')
     version = fields.Many2one('folder.master', string='Version', track_visibility='always')
     previousversion = fields.Many2one('folder.master', string='Previous  Version', track_visibility='always')
-
+    part_file_ids = fields.Many2many('folder.master', string='Part Files')
 
 
     file_ids_m2m = fields.Many2many('muk_dms.file', string = 'Reference',track_visibility='always')
@@ -299,6 +299,7 @@ class FolderMaster(models.Model):
                 'document_ids': rec.document_ids,
                 'file_ids': [(6, 0, rec.file_ids.ids)]
             })
+            rec.part_file_ids.append(file_id.id)
 
     @api.multi
     def button_merge_file(self):
