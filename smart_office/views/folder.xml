@@ -24,6 +24,13 @@
                                             string = "Tracking info - File"
                                             >
                                     </button>
+                            <button type="object"
+                                            class="oe_stat_button"
+                                            icon="fa-folder-open-o"
+                                            name="view_part_files"
+                                            string = "View Part Files"
+                                            >
+                                    </button>
                         </div>
                         <group>
                             <group>

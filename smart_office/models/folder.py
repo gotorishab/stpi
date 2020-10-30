@@ -271,6 +271,22 @@ class FolderMaster(models.Model):
                 'target': 'current',
                 'domain': [('id', 'in', views_domain)]
             }
+    @api.multi
+    def view_part_files(self):
+        for rec in self:
+            views_domain = []
+            dmn = self.env['folder.master'].search([('version', '=', rec.id)])
+            for id in dmn:
+                views_domain.append(id.id)
+            return {
+                'name': 'Part Files',
+                'view_type': 'form',
+                'view_mode': 'tree',
+                'res_model': 'folder.master',
+                'type': 'ir.actions.act_window',
+                'target': 'current',
+                'domain': [('id', 'in', views_domain)]
+            }
 
     @api.multi
     def button_part_file(self):
