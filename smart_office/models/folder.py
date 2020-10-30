@@ -272,34 +272,53 @@ class FolderMaster(models.Model):
                 'domain': [('id', 'in', views_domain)]
             }
 
+    def copy(self, cr, uid, id, default={}, context=None):
+        cout = 0
+        m_name = self.env['folder.master'].sudo().search([('version', '=', rec.id)])
+        for ct in m_name:
+            cout += 1
+        if cout < 1:
+            name = 1
+        else:
+            name = self.name
+        if not default:
+            default = {}
+        default.update({
+            'folder_name': self.folder_name  + ' - ' + str(name),
+            'number': str(self.number) + ' - ' + str(name),
+            'version': self.id,
+            'basic_version': name,
+        })
+        return super(FolderMaster, self).copy(cr, uid, id, default, context=context)
 
     @api.multi
     def button_part_file(self):
         for rec in self:
-            cout = 0
-            m_name = self.env['folder.master'].sudo().search([('version', '=', rec.id)])
-            for ct in m_name:
-                cout += 1
-            if cout < 1:
-                name = 1
-            else:
-                name = rec.name
-            file_id = rec.env['folder.master'].create({
-                'folder_name': rec.folder_name  + ' - ' + str(name),
-                'number': str(rec.number) + ' - ' + str(name),
-                'version': rec.id,
-                'basic_version': name,
-                'subject': rec.subject.id,
-                'date': rec.date,
-                'tags': rec.tags,
-                'old_file_number': rec.old_file_number,
-                'status': rec.status,
-                'type': rec.type,
-                'description': rec.description,
-                'first_doc_id': rec.first_doc_id,
-                'document_ids': rec.document_ids,
-                'file_ids': [(6, 0, rec.file_ids.ids)]
-            })
+            rec.sudo().copy()
+            # cout = 0
+            # m_name = self.env['folder.master'].sudo().search([('version', '=', rec.id)])
+            # for ct in m_name:
+            #     cout += 1
+            # if cout < 1:
+            #     name = 1
+            # else:
+            #     name = rec.name
+            # file_id = rec.env['folder.master'].create({
+            #     'folder_name': rec.folder_name  + ' - ' + str(name),
+            #     'number': str(rec.number) + ' - ' + str(name),
+            #     'version': rec.id,
+            #     'basic_version': name,
+            #     'subject': rec.subject.id,
+            #     'date': rec.date,
+            #     'tags': rec.tags,
+            #     'old_file_number': rec.old_file_number,
+            #     'status': rec.status,
+            #     'type': rec.type,
+            #     'description': rec.description,
+            #     'first_doc_id': rec.first_doc_id,
+            #     'document_ids': rec.document_ids,
+            #     'file_ids': [(6, 0, rec.file_ids.ids)]
+            # })
 
     @api.multi
     def button_merge_file(self):
