@@ -5,7 +5,7 @@
             <field name="name">part.file.wizard.form</field>
             <field name="model">part.file.wizard</field>
             <field name="arch" type="xml">
-                <form string="Assign to File">
+                <form string="Part File">
                     <group>
                         <group>
                                 <field name="deffolderid" invisivle ="1"/>
