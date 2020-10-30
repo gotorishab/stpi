@@ -8,11 +8,11 @@
                 <form string="Assign to File">
                     <group>
                         <group>
-                                <field name="folder_id" required ="1" domain="[('current_owner_id','=',uid)]"/>
+                                <field name="deffolderid" invisivle ="1"/>
                             </group>
                             <group>
                                 </group>
-                                <field name="cooespondence_ids" required ="1" domain="[('current_owner_id', '=', uid),('folder_id', '=', False)]"/>
+                                <field name="folder_id" required ="1" domain="[('version', '=', deffolderid.id)]"/>
                                 <field name="description" placeholder="Description"/>
                     </group>
                     <footer>

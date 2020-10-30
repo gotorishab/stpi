@@ -20,3 +20,4 @@ from . import edit_doc_dispatch
 from . import edit_doc_dispatch_mode
 from . import send_back_file
 from . import send_back
+from . import part_file

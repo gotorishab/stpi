@@ -8,7 +8,8 @@
                     <header>
                         <button name="button_submit" string="Submit" class="oe_highlight" type="object" states="draft"/>
                         <button name="button_part_file" string="Part File" class="oe_highlight" type="object" states="in_progress"/>
-                        <button name="button_merge_file" string="Merge File" class="oe_highlight" type="object" states="in_progress"/>
+                        <button name = "%(folder_forward_button_wizard_action_view)d" type = "action" string = "Merge File" context = "{'default_defid': id}"/>
+<!--                        <button name="button_merge_file" string="Merge File" class="oe_highlight" type="object" states="in_progress"/>-->
                         <button name="button_close" string="Close" class="oe_highlight" type="object" states="in_progress"/>
                         <button name="button_reset_to_draft" string="Reopen" class="oe_highlight" type="object" states="closed"/>
                         <field name="state" widget="statusbar" statusbar_visible="draft,in_progress,closed" />

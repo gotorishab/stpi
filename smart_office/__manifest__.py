@@ -46,6 +46,7 @@
         'wizard/edit_doc_dispatch_mode.xml',
         'wizard/send_back_file.xml',
         'wizard/send_back.xml',
+        'wizard/part_file.xml',
         'views/department_job.xml',
         'views/file_tracking_information.xml',
         'views/add_letter.xml',
