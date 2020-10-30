@@ -96,7 +96,10 @@ class DispatchDocument(models.Model):
     @api.multi
     def button_ready_for_dispatch(self):
         for rec in self:
-            pass
+            dis_name = self.env['dispatch.document'].sudo().search([('id', '!=', rec.id),('folder_id', '=', rec.folder_id.id),('basic_version', '=', rec.basic_version)])
+            for dd in dis_name:
+                dd.sudo().button_obsellete()
+            rec.write({'state': 'ready_for_dispatched'})
 
 
 

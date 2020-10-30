@@ -298,7 +298,7 @@ class FolderMaster(models.Model):
                 'description': rec.description,
                 'first_doc_id': rec.first_doc_id,
                 'document_ids': rec.document_ids,
-                'file_ids': [(6, 0, rec.file_ids)]
+                'file_ids': [(6, 0, rec.file_ids.ids)]
             })
 
     @api.multi
