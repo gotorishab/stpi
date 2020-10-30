@@ -7,6 +7,8 @@
                 <form string="File">
                     <header>
                         <button name="button_submit" string="Submit" class="oe_highlight" type="object" states="draft"/>
+                        <button name="button_part_file" string="Part File" class="oe_highlight" type="object" states="in_progress"/>
+                        <button name="button_merge_file" string="Merge File" class="oe_highlight" type="object" states="in_progress"/>
                         <button name="button_close" string="Close" class="oe_highlight" type="object" states="in_progress"/>
                         <button name="button_reset_to_draft" string="Reopen" class="oe_highlight" type="object" states="closed"/>
                         <field name="state" widget="statusbar" statusbar_visible="draft,in_progress,closed" />
@@ -72,10 +74,11 @@
                             <page name="meta_info" string="Meta Information">
                                 <group>
                                     <group>
-                                        <field name="current_owner_id"/>
-                                        <field name="last_owner_id"/>
+                                        <field name="create_uid" readonly="1"/>
+                                        <field name="current_owner_id" readonly="1"/>
+                                        <field name="last_owner_id" readonly="1"/>
                                         <field name="sec_owner" widget="many2many_tags" invisible="1"/>
-                                        <field name="previous_owner" widget="many2many_tags"/>
+                                        <field name="previous_owner" widget="many2many_tags" readonly="1"/>
                                     </group>
                                 </group>
                             </page>
@@ -107,6 +110,8 @@
             <field name="arch" type="xml">
                 <tree string="Folder">
                     <field name="folder_name"/>
+                    <field name="number"/>
+                    <field name="subject"/>
                     <field name="date"/>
                     <field name="tags"/>
                     <field name="write_date"/>

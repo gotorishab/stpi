@@ -46,6 +46,11 @@ class FolderMaster(models.Model):
     file_ids = fields.One2many('muk_dms.file','folder_id', string = 'Files',track_visibility='always')
     document_dispatch = fields.One2many('dispatch.document','folder_id', string = 'Document Dispatch',track_visibility='always')
 
+    basic_version = fields.Float('Basic Version')
+    version = fields.Many2one('folder.master', string='Version', track_visibility='always')
+    previousversion = fields.Many2one('folder.master', string='Previous  Version', track_visibility='always')
+
+
 
     file_ids_m2m = fields.Many2many('muk_dms.file', string = 'Reference',track_visibility='always')
     notesheet_url = fields.Text()
@@ -55,7 +60,7 @@ class FolderMaster(models.Model):
     my_dash = fields.Html('My Dash Html')
     dashboard_view = fields.Many2one('ir.ui.view')
     state = fields.Selection(
-        [('draft', 'Draft'), ('in_progress', 'In Progress'), ('closed', 'Closed')
+        [('draft', 'Draft'), ('in_progress', 'In Progress'), ('closed', 'Action Completed')
          ], required=True, default='draft', string='Status',track_visibility='always')
     # green_ids = fields.Many2many('green.sheets','folder_id', string = 'Green Sheets')
 
@@ -227,8 +232,8 @@ class FolderMaster(models.Model):
         res = []
         name = ''
         for record in self:
-            if record.number:
-                name = record.number
+            if record.number and record.folder_name:
+                name = str(record.number) + ' - ' + str(record.folder_name)
             else:
                 count = 0
                 current_employee = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
@@ -243,7 +248,7 @@ class FolderMaster(models.Model):
                     count += 1
                 if self.subject:
                     name = (self.subject.code) + '(' + str(count) + ')/' + str(d_id) + '/' + str(sur_usr) + '/' + str(
-                        fy.name)
+                        fy.name) + ' - ' + str(record.folder_name)
                 else:
                     name = 'File'
             res.append((record.id, name))
@@ -254,7 +259,7 @@ class FolderMaster(models.Model):
     def tracker_view_file(self):
         for rec in self:
             views_domain = []
-            dmn = self.env['file.tracker.report'].search(['|', ('name', '=', rec.folder_name), ('number', '=', rec.number)])
+            dmn = self.env['file.tracker.report'].search([('number', '=', rec.number)])
             for id in dmn:
                 views_domain.append(id.id)
             return {
@@ -268,6 +273,38 @@ class FolderMaster(models.Model):
             }
 
 
+    @api.multi
+    def button_part_file(self):
+        for rec in self:
+            cout = 0
+            m_name = self.env['folder.master'].sudo().search([('version', '=', rec.id)])
+            for ct in m_name:
+                cout += 1
+            if cout < 1:
+                name = 1
+            else:
+                name = rec.name
+            file_id = rec.env['folder.master'].create({
+                'folder_name': rec.folder_name  + ' - ' + str(name),
+                'number': str(rec.number) + ' - ' + str(name),
+                'version': rec.id,
+                'basic_version': name,
+                'subject': rec.subject.id,
+                'date': rec.date,
+                'tags': rec.tags,
+                'old_file_number': rec.old_file_number,
+                'status': rec.status,
+                'type': rec.type,
+                'description': rec.description,
+                'first_doc_id': rec.first_doc_id,
+                'document_ids': rec.document_ids,
+                'file_ids': [(6, 0, rec.file_ids)]
+            })
+
+    @api.multi
+    def button_merge_file(self):
+        for rec in self:
+            pass
 
     @api.multi
     def button_submit(self):
