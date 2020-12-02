@@ -10,7 +10,7 @@ class HrDeclaration(models.Model):
 
 
     def _default_employee(self):
-        return self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+        return self.env['hr.employee'].sudo().search([('user_id', '=', self.env.uid)], limit=1)
 
 
     @api.multi
@@ -472,7 +472,7 @@ class HrDeclaration(models.Model):
             rec.std_ded_ids.unlink()
             rec.exemption_ids.unlink()
             rec.rebate_ids.unlink()
-            rec.slab_ids.unlink()
+            # rec.slab_ids.unlink()
             ex_std_id = self.env['saving.master'].sudo().search(
                 [('saving_type', '=', 'Std. Deduction'), ('it_rule', '=', 'mus10ale')], limit=1)
             my_investment = 0.00
@@ -807,7 +807,7 @@ class HrDeclaration(models.Model):
     @api.model
     def create(self, values):
         res = super(HrDeclaration, self).create(values)
-        search_id = self.env['hr.declaration'].search(
+        search_id = self.env['hr.declaration'].sudo().search(
             [
                 ('employee_id', '=', res.employee_id.id),
                 ('state', '!=', 'rejected'),
@@ -1082,7 +1082,7 @@ class IncomeHouse(models.Model):
     def check_unique_saving(self):
         for rec in self:
             count = 0
-            emp_id = self.env['income.house'].search(
+            emp_id = self.env['income.house'].sudo().search(
                 [('saving_master', '=', rec.saving_master.id), ('income_house_id', '=', rec.income_house_id.id)])
             for e in emp_id:
                 count += 1
@@ -1106,7 +1106,7 @@ class IncomeOther(models.Model):
     def check_unique_saving(self):
         for rec in self:
             count = 0
-            emp_id = self.env['income.house'].search(
+            emp_id = self.env['income.other'].sudo().search(
                 [('saving_master', '=', rec.saving_master.id), ('income_other_id', '=', rec.income_other_id.id)])
             for e in emp_id:
                 count += 1

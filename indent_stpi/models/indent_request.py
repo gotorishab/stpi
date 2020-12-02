@@ -90,7 +90,7 @@ class EmployeeIndentAdvance(models.Model):
             sequence = 'GRN' + str(seq)
         res.indent_sequence = sequence
 
-        search_id = self.env['indent.request'].search(
+        search_id = self.env['indent.request'].sudo().search(
             [('employee_id', '=', res.employee_id.id),
              ('state', 'not in', ['approved','rejected']), ('id', '!=', res.id)])
         for emp in search_id:

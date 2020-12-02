@@ -33,22 +33,9 @@ class RecruitmentRoster(models.Model):
         print('============================', res.number)
         return res
 
-    # @api.multi
-    # def name_get(self):
-    #     res = []
-    #     for rec in self:
-    #         name = ''
-    #         if rec.name and rec.job_id:
-    #             name = str(rec.name) + ' (' + str(rec.job_id.name) + ')'
-    #         res.append((rec.id, name))
-    #         return res
 
 class EmployeeRoster(models.Model):
     _inherit = "hr.employee"
-
-    # def get_domain_roster(self):
-    #     print('============================job_id====================')
-    #     return [('job_id', '=', self.job_id.id),('employee_id', '=', False)]
 
     roster_line_item = fields.Many2one('recruitment.roster', string="Roster line")
 
@@ -56,8 +43,9 @@ class EmployeeRoster(models.Model):
     @api.constrains('roster_line_item')
     def putinto_roster_line_item(self):
         for rec in self:
-            rec.roster_line_item.employee_id = rec.id
-            rec.roster_line_item.Hired_category = rec.category.id
-            rec.roster_line_item.emp_code = rec.identify_id
-            rec.roster_line_item.Name_of_person = rec.name
-            rec.roster_line_item.date_of_apointment = rec.date_of_join
+            if rec.roster_line_item:
+                rec.roster_line_item.employee_id = rec.id
+                rec.roster_line_item.Hired_category = rec.category.id
+                rec.roster_line_item.emp_code = rec.identify_id
+                rec.roster_line_item.Name_of_person = rec.name
+                rec.roster_line_item.date_of_apointment = rec.date_of_join

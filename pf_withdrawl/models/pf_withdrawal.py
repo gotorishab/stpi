@@ -201,7 +201,7 @@ class PfWidthdrawl(models.Model):
 
     @api.constrains('employee_id')
     @api.onchange('employee_id')
-    def _onchange_basic_details(self):
+    def onchange_basic_details(self):
         for res in self:
             rec = self.env['hr.employee'].sudo().search([('user_id', '=', self.env.uid)], limit=1)
             rec.designation = rec.job_id.id
@@ -258,7 +258,7 @@ class PfEmployee(models.Model):
 
     @api.constrains('employee_id')
     @api.onchange('employee_id')
-    def _onchange_basic_detailsss(self):
+    def onchange_basic_detailsss(self):
         for rec in self:
             rec.branch_id = rec.employee_id.branch_id.id
 

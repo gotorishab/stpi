@@ -27,9 +27,9 @@
                     <button name="button_to_approve" string="Send for Approval" class="oe_highlight" type="object" states="draft"/>
                      <button name="button_reset_to_draft" string="Cancel" type="object"/>
 <!--                    <button name="button_forwarded" string="Forward" class="oe_highlight" type="object" states="waiting_for_approval" groups="hr_property.group_employee_manager"/>-->
-                    <button name="button_approved" string="Approve" class="oe_highlight" type="object" states="waiting_for_approval" groups="hr_property.group_hr_property_approvere"/>
+                    <button name="button_approved" string="Approve" class="oe_highlight" type="object" states="submitted" groups="hr_property.group_hr_property_approvere"/>
 <!--                    <button name="button_processed" string="Process" class="oe_highlight" type="object" states="approved" groups="hr_property.group_travel_processor"/>-->
-                    <button name="button_reject" string="Reject" type="object"  states="waiting_for_approval" groups="hr_property.group_hr_property_approvere"/>
+                    <button name="button_reject" string="Reject" type="object"  states="submitted" groups="hr_property.group_hr_property_approvere"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,submitted,approved" />
                 </header>
                 <sheet>

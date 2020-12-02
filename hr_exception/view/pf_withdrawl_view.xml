@@ -38,6 +38,9 @@
                     <page string="Other info" name="other_info" groups="base.group_no_one">
                         <field name="exception_ids" colspan="2" nolabel="1" readonly="1"/>
                     </page>
+                    <page string="Approvals" name="approvals_list">
+                        <field name="approval_list" colspan="2" nolabel="1" readonly="1"/>
+                    </page>
                 </notebook>
             </xpath>
         </field>
