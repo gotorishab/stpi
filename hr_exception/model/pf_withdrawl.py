@@ -25,8 +25,6 @@ class PFWidthdrawl(models.Model):
         default='pf_widthdrawl',
     )
 
-    approval_list = fields.Many2many('approvals.list', string='Approvals')
-
     @api.model
     def test_all_draft_orders(self):
         order_set = self.search([('state', '=', 'to_approve')])

@@ -16,7 +16,6 @@ class PFWidthdrawlConfirm(models.TransientModel):
             for line in exep.group_approval_ids:
                 string += str(line.group.name) + ' >> '
         self.related_model_id.approval_workflow = string
-        self.related_model_id.approval_list = string
         if self.ignore:
             self.related_model_id.ignore_exception = True
         return super(PFWidthdrawlConfirm, self).action_confirm()
