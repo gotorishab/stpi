@@ -34,11 +34,10 @@ class ChequeRequests(models.Model):
                     'You cannot delete a Cheque Request which is not in draft state')
         return super(ChequeRequests, self).unlink()
 
-
     @api.multi
     def button_to_approve(self):
-            for rec in self:
-                rec.write({'state': 'to_approve'})
+        for rec in self:
+            rec.write({'state': 'to_approve'})
 
     @api.multi
     def button_approved(self):

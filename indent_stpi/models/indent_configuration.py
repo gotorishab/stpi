@@ -40,6 +40,7 @@ class ChildIndentStock(models.Model):
     name = fields.Char('Name')
     specification = fields.Text('Specifications')
     branch_id = fields.Many2one('res.branch', string='Branch', default=_default_branch_id, store=True)
+    asset = fields.Boolean('Asset')
     child_indent_stock = fields.Many2one('indent.stock', string='Item Master')
     serial_bool = fields.Boolean(string='Serial Number')
     issue = fields.Integer('Issue')

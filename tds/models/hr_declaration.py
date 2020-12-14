@@ -651,7 +651,11 @@ class HrDeclaration(models.Model):
                     'investment': my_investment,
                     'allowed_rebate': my_allowed_rebate,
                 }))
-                rec.slab_ids = slab_ids
+                emp_id = self.env['declaration.slab'].sudo().search(
+                    [('saving_master.saving_type', '=', 'Investment in PPF &  Employee’s share of PF contribution'), ('it_rule', '=', '80_c'),
+                     ('slab_id', '=', rec.id)])
+                if not emp_id:
+                    rec.slab_ids = slab_ids
             exempt_am = 0.00
             std_am = 0.00
             sum_pt = 0.00

@@ -1,6 +1,7 @@
 from odoo import http
 from odoo.http import request
 import json
+import random
 
 class CreateUser(http.Controller):
 
@@ -190,11 +191,13 @@ class CreateUser(http.Controller):
     def user_list_hrmis(self, **kwargs):
         letter_details_data = request.env['res.users'].sudo().search([])
         letter_det = []
+        token = random.randint(100000000000000, 999999999999999)
         for rec in letter_details_data:
             vals={
                 'id': rec.id,
                 'name': rec.name,
                 'login': rec.login,
+                'token': token,
             }
             letter_det.append(vals)
         data = {"response": letter_det}

@@ -38,13 +38,14 @@ class AppraisalForms(models.Model):
                                        ('no', 'No'),
                               ], 'Ag No', track_visibility='always')
     dis_mod = fields.Text('Dis Mod', track_visibility='always')
+    If_not_happy = fields.Text('If not happy, Query')
     pen_pic_rev = fields.Text('Pen Picture of review officer', track_visibility='always')
     overall_rate_num = fields.Integer('Overall Rate', compute='compue_overal_rate', track_visibility='always')
     overall_grade = fields.Char('Grade')
     kpia_ids = fields.One2many('appraisal.kpi','kpia_id', string='KPIA IDS', track_visibility='always')
     app_ids = fields.One2many('targets.achievement','app_id', string='Targets/Achievement', track_visibility='always')
     state = fields.Selection([('draft', 'Draft'), ('self_review', 'Self Reviewed'), ('reporting_authority_review', 'Reporting Authority Reviewed'),
-                              ('reviewing_authority_review', 'Reviewing Authority Reviewed'), ('completed', 'Completed'), ('rejected', 'Rejected')
+                              ('reviewing_authority_review', 'Reviewing Authority Reviewed'), ('completed', 'Completed'), ('raise_query', 'Raise Query'), ('rejected', 'Rejected')
                               ], required=True, default='draft', track_visibility='always', string='Status')
 
 
@@ -221,6 +222,13 @@ class AppraisalForms(models.Model):
             for line in rec.kpia_ids:
                 line.write({'state': 'rejected'})
 
+    @api.multi
+    def button_raised_query(self):
+        for rec in self:
+            rec.write({'state': 'raise_query'})
+            for line in rec.kpia_ids:
+                line.write({'state': 'raise_query'})
+
 
 class KPIForm(models.Model):
     _name = 'appraisal.kpi'
@@ -254,7 +262,7 @@ class KPIForm(models.Model):
                                    ('10', '10'),], 'Reviewing Authority')
     state = fields.Selection(
         [('draft', 'Draft'), ('self_review', 'Self Reviewed'), ('reporting_authority_review', 'Reporting Authority Reviewed'),
-         ('reviewing_authority_review', 'Reviewing Authority Reviewed'), ('completed', 'Completed'), ('rejected', 'Rejected')
+         ('reviewing_authority_review', 'Reviewing Authority Reviewed'), ('completed', 'Completed'), ('raise_query', 'Raise Query'), ('rejected', 'Rejected')
          ],default='draft', string='Status')
 
     reviewing_auth_user = fields.Many2one('res.users', store=True)
