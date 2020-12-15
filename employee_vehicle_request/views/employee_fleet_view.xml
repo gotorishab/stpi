@@ -155,6 +155,16 @@
             <field name="search_view_id" ref="employee_fleet_search_view"/>
             <field name="domain">[('state','=','rejected')]</field>
         </record>
+
+        <record id="action_employee_waiting_returned" model="ir.actions.act_window">
+            <field name="name">Vehicle Request</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">employee.fleet</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="employee_fleet_search_view"/>
+            <field name="domain">[('state','=','return')]</field>
+        </record>
         
         <!--vehicle request by employee-->
 
@@ -233,9 +243,12 @@
         <menuitem id="employee_fleet_sub_approved" name="Approved" parent="employee_fleet_menu_id" sequence="3"
                   action="action_employee_waiting_approved"/>
 
-        <menuitem id="employee_fleet_sub_rejected" name="Rejected" parent="employee_fleet_menu_id" sequence="3"
+        <menuitem id="employee_fleet_sub_rejected" name="Rejected" parent="employee_fleet_menu_id" sequence="4"
                   action="action_employee_waiting_rejected"/>
-                  
+
+        <menuitem id="employee_fleet_sub_returned" name="Returned" parent="employee_fleet_menu_id" sequence="5"
+                  action="action_employee_waiting_returned"/>
+
        <menuitem id = "employee_fleet_report_menu_id"
                   name = "Report"
                   parent="employee_fleet_menu"
