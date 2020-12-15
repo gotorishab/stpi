@@ -8,11 +8,11 @@
 	'maintainer': 'dexciss Techno Solutions',
 	'company': 'Dexciss Techno Solutions',
 	'website': 'https://www.dexciss.com',
-	'depends': ['base','hr','groups_inherit','hr_payroll','date_range','stpi_contract_pr','hr_employee_stpi'],
+	'depends': ['base','hr','hr_payroll','date_range','stpi_contract_pr','hr_employee_stpi'],
 	'data': [
 		'security/ir.model.access.csv',
 		'security/security.xml',
-        'views/hr_employee.xml',
+        # 'views/hr_employee.xml',
         'views/appraisal_forms.xml',
         'views/appraisal_template.xml',
         'views/overall_rate.xml',
