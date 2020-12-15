@@ -16,7 +16,7 @@
                     <field name="item_id" readonly="1"/>
                     <field name="specification" readonly="1"/>
                     <field name="serial_bool" readonly="1"/>
-                    <field name="serial_number" attrs="{'required': [('serial_bool', '=', True)],'invisible': [('serial_bool', '=', False)],'readonly': [('state', '!=', 'to_approve')]}"/>
+                    <field name="serial_number" attrs="{'required': [('serial_bool', '=', True)],'invisible': ['|',('serial_bool', '=', False),('indent_type', '=', 'issue')],'readonly': [('state', '!=', 'to_approve')]}"/>
                     <field name="asset" readonly="1"/>
                     <button name="fill_asset_details" string="Fill Asset Details" type="object"  attrs="{'invisible': [('asset', '=', False)],'readonly': [('state', '!=', 'to_approve')]}"/>
                     <field name="requested_quantity" readonly="1"/>
