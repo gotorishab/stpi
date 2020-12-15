@@ -88,7 +88,7 @@ class EmployeeIndentAdvance(models.Model):
                                 'item_category_id': item.item_category_id.id,
                                 'item_id': item.item_id.id,
                                 'serial_bool': item.item_id.serial_bool,
-                                'asset': item.item_id.asset0,
+                                'asset': item.item_id.asset,
                                 'specification': item.specification,
                                 'requested_quantity': 1,
                                 'approved_quantity': 1,
