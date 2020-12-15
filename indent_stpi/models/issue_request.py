@@ -18,6 +18,7 @@ class IndentLedger(models.Model):
     specification = fields.Text('Specifications')
     serial_bool = fields.Boolean(string='Serial Number')
     serial_number = fields.Char(string='Serial Number')
+    asset = fields.Boolean('is Asset?')
     requested_quantity = fields.Integer('Requested Quantity')
     approved_quantity = fields.Integer('Approved Quantity')
     requested_date = fields.Date('Requested Date')
@@ -90,3 +91,9 @@ class IndentLedger(models.Model):
     def button_reject(self):
         for rec in self:
             rec.write({'state': 'rejected'})
+
+
+    @api.multi
+    def fill_asset_details(self):
+        for rec in self:
+            pass

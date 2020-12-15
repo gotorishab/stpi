@@ -56,24 +56,48 @@ class EmployeeIndentAdvance(models.Model):
         for res in self:
             res.write({'state': 'approved'})
             for item in res.item_ids:
-                create_ledger_family = self.env['issue.request'].sudo().create(
-                    {
-                        'Indent_id': res.id,
-                        'employee_id': res.employee_id.id,
-                        'branch_id': res.branch_id.id,
-                        'Indent_item_id': item.id,
-                        'item_category_id': item.item_category_id.id,
-                        'item_id': item.item_id.id,
-                        'serial_bool': item.item_id.serial_bool,
-                        'specification': item.specification,
-                        'requested_quantity': item.requested_quantity,
-                        'approved_quantity': item.requested_quantity,
-                        'requested_date': item.requested_date,
-                        'indent_state': res.state,
-                        'indent_type': res.indent_type,
-                        'state': 'to_approve',
-                    }
-                )
+                if not item.item_id.serial_bool:
+                    create_ledger_family = self.env['issue.request'].sudo().create(
+                        {
+                            'Indent_id': res.id,
+                            'employee_id': res.employee_id.id,
+                            'branch_id': res.branch_id.id,
+                            'Indent_item_id': item.id,
+                            'item_category_id': item.item_category_id.id,
+                            'item_id': item.item_id.id,
+                            'serial_bool': item.item_id.serial_bool,
+                            'asset': item.item_id.asset,
+                            'specification': item.specification,
+                            'requested_quantity': item.requested_quantity,
+                            'approved_quantity': item.requested_quantity,
+                            'requested_date': item.requested_date,
+                            'indent_state': res.state,
+                            'indent_type': res.indent_type,
+                            'state': 'to_approve',
+                        }
+                    )
+                else:
+                    n = item.requested_quantity
+                    for i in range(n):
+                        create_ledger_family = self.env['issue.request'].sudo().create(
+                            {
+                                'Indent_id': res.id,
+                                'employee_id': res.employee_id.id,
+                                'branch_id': res.branch_id.id,
+                                'Indent_item_id': item.id,
+                                'item_category_id': item.item_category_id.id,
+                                'item_id': item.item_id.id,
+                                'serial_bool': item.item_id.serial_bool,
+                                'asset': item.item_id.asset0,
+                                'specification': item.specification,
+                                'requested_quantity': 1,
+                                'approved_quantity': 1,
+                                'requested_date': item.requested_date,
+                                'indent_state': res.state,
+                                'indent_type': res.indent_type,
+                                'state': 'to_approve',
+                            }
+                        )
 
 
 
