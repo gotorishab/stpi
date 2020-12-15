@@ -148,9 +148,12 @@ class Home(Home):
 
     def _login_redirect(self, uid, redirect=None):
         partner_sudo = request.env['res.users'].sudo().browse(uid)
-        if partner_sudo.partner_type  in  ('portfolio','hq','coe'):
-            return redirect if redirect else '/web'
-        else:
+        try:
+            if partner_sudo.access_type_ids and partner_sudo.partner_type in  ('portfolio','hq','coe', 'center', 'directorate', 'hrms'):
+                return redirect if redirect else '/web'
+            else:
+                return '/web'
+        except Exception as e:
             return '/web'
 
         # return redirect if redirect else '/login/intermediate'
@@ -212,6 +215,8 @@ class Home(Home):
     def web_login_switch(self, redirect=None, **kw):
         request.website = request.env['website'].get_current_website()
         old_uid = False
+        _logger.info("======request.website==%s=", request.website)
+        # print ("======request.website===", request.website)
         # ensure_db()
         values = {}
         request.params['login_success'] = False
@@ -223,10 +228,13 @@ class Home(Home):
             return http.redirect_with_hash(self._login_redirect(uid, redirect=redirect))
         except odoo.exceptions.AccessDenied as e:
             request.uid = old_uid
-            if e.args == odoo.exceptions.AccessDenied().args:
-                values['error'] = _("Wrong login/password")
-            else:
-                values['error'] = e.args[0]
+            values = {'login_user': request.uid,}
+            return request.render("gts_switcher.intermediate_login_fail_page", values)
+            # if e.args == odoo.exceptions.AccessDenied().args:
+            #     values['error'] = _("Wrong login/password")
+            # else:
+            #     values['error'] = e.args[0]
+
 
         response = request.render('web.login', values)
         response.headers['X-Frame-Options'] = 'DENY'
@@ -240,14 +248,13 @@ class Home(Home):
         request.params['login_success'] = False
         try:
             uid = request.session.authenticate(request.session.db, kw.get('login'), kw.get('password'))
-            user_id=request.env['res.users'].search([('id','=',uid)])
-            for company_id in user_id.company_ids:
+            user_id=request.env['res.users'].sudo().search([('id','=',uid)])
+            for company_id in user_id.sudo().company_ids:
                 if company_id.access_type == 'coe/hrms':
                     request.params['login_success'] = True
                     user_id.write({'company_id':company_id.id})
                     return http.redirect_with_hash(self._login_redirect(uid, redirect=redirect))
             # request.params['login_success'] = False
-
         except odoo.exceptions.AccessDenied as e:
             request.uid = old_uid
             if e.args == odoo.exceptions.AccessDenied().args:

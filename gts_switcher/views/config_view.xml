@@ -21,14 +21,14 @@
                     <group colspan="4" cols="4">
                         <group>
                             <field name="name"/>
-                            <field name="url"/>
                             <field name="instance_type"/>
                             <field name="active" invisible="1"/>
                         </group>
                         <group>
-                            <field name="db_name"/>
-                            <field name="user_name"/>
-                            <field name="password"/>
+                              <field name="url" string="Instance Url"/>
+                            <field name="db_name" invisible="1"/>
+                            <field name="user_name" invisible="1"/>
+                            <field name="password" invisible="1"/>
                         </group>
                     </group>
 

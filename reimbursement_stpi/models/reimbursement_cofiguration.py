@@ -105,7 +105,7 @@ class ReimbursementConfiguration(models.Model):
     full = fields.Boolean('Full')
     allowed = fields.Char('Upper Limit')
     date_range_type = fields.Many2one('date.range.type', string='Applicable Period')
-    max_submit = fields.Integer(string='Should apply in Days')
+    max_submit = fields.Integer(string='Max. Application Date')
 
     open = fields.Boolean('Open')
 

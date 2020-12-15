@@ -26,6 +26,11 @@
                             <field name="indent_type" readonly="1"/>
                         </group>
                         <group>
+                            <field name="vendor_info" attrs="{'invisible':[('indent_type','=', 'issue')], 'readonly':[('state','!=', 'draft')]}"/>
+                            <field name="department_id" readonly="1"/>
+                            <field name="indent_type" readonly="1"/>
+                        </group>
+                        <group>
                         </group>
                     </group>
                     <notebook>

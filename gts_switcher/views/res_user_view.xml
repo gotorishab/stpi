@@ -7,10 +7,11 @@
             <field name="inherit_id" ref="base.view_users_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='lang']" position="before">
-                    <field name="access_type"/>
+                    <field name="access_type" invisible="1"/>
+                    <field name="access_type_ids"   options="{'no_edit':True, 'no_create': True, 'no_open': True}"  widget="many2many_tags"/>
                 </xpath>
                 <xpath expr="//field[@name='action_id']" position="after">
-                    <field name="token" invisible="0"/>
+                    <field name="token" invisible="1"/>
                 </xpath>
             </field>
         </record>

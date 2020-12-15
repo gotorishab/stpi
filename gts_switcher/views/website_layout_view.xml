@@ -6,7 +6,7 @@
         <field name="sequence" type="int">20</field>
     </record>
 
-    <template id="intermediate_page" name="Select Choice">
+    <template id="intermediate_page" name="Select Choice" >
         <div id="wrap">
             <div class="oe_structure" id="oe_structure_website"/>
             <div class="container">
@@ -17,8 +17,8 @@
         </div>
     </template>
     <!--    style="background-color: #875A7B;"-->
-    <template id="intermediate_detail" name="Select Choice">
-        <t t-call="web.layout">
+    <template id="intermediate_detail" name="Select Choice" >
+        <t t-call="web.layout" >
             <t t-set="head_website">
                 <script type="text/javascript">
                     odoo.session_info = {
@@ -35,6 +35,7 @@
                 <style>
                     html, body {
                     overflow: auto;
+                    background-color: #875A7B;
                     }
                 </style>
             </t>
@@ -42,17 +43,17 @@
             <t t-set="head" t-value="head_website + (head or '')"/>
             <t t-set="body_classname" t-value="'o_docs_share_page o_home_menu_background'"/>
             <div id="wrap" t-att-class="'h-100 flex-column flex-nowrap d-flex container'">
-                <header class="mt8">
+                <header class="mt6">
                     <br/>
-                    <h1 style="color:black;padding-left:400px;">Please Select App</h1>
+                    <h1 style="color:white;padding-left:400px;"></h1>
                     <span class="o_company_logo"/>
-                    <ul class="list-inline mt8 float-right">
+                    <ul class="list-inline mt10 float-right">
                         <li class="dropdown hidden-sm hidden-xs" t-ignore="true" t-if="not user_id._is_public()">
                             <a href="#" class="dropdown-toggle o_docs_btn" data-toggle="dropdown">
-                                <img style="color:blue" class="rounded-circle" height="40"
+                                <img style="color:blue" class="rounded-circle" height="50"
                                      t-attf-src="/web/image?model=res.users&amp;field=image_small&amp;id=#{json.dumps(request.env.user.id)}"
                                      alt=""/>
-                                <span style="color:blue;font-size: 16px;"
+                                <span style="color:white;font-size: 16px;"
                                       t-esc="user_id.name[:23] + '...' if user_id.name and len(user_id.name) &gt; 25 else user_id.name"/>
                                 <span class="caret"/>
                             </a>
@@ -62,29 +63,19 @@
                                 </li>
                             </ul>
                         </li>
-                        <li style="color:black">
-                            <li style="color:black;" id="o_logout">
-                                <a t-attf-href="/web/session/logout?redirect=/" role="menuitem">Logout</a>
-                            </li>
-                            <!--                            <a style="color:black;" href="/web/login" class="col-sm-6 o_docs_btn">Logout</a>-->
-                        </li>
                     </ul>
                 </header>
-                <br/>
-                <br/>
-                <main class="d-flex flex-column flex-nowrap">
+                <main >
                     <t t-raw="0"/>
-                    <div>
-                        <div></div>
+<!--                    <div>-->
                         <table>
                             <tr>
-                                <!--                                =======================COE===================-->
-                                <t t-if="access_type in ('all','coe')">
-                                    <td style="padding-left:100px;">
-                                        <br/>
-                                        <div style="width:100px;height:40px;">
-                                            <img src="/gts_switcher/static/description/icon.png"
-                                                 style="height:200px; width:200px"/>
+                                <!--=======================COE===================-->
+                                <t t-if=" all == 'All' or coe == 'COE' or coe_hrms== 'COE And HRMS'">
+                                    <td style="padding-left:115px;">
+                                        <div style="width:80px;height:80px;">
+                                            <img src="/gts_switcher/static/description/configuration.png"
+                                                 style="height:80px; width:80px"/>
                                             <t t-if="instance_type == 'coe'">
                                                 <a role="button" t-att-href="'/web'"
                                                    style="padding: 0px 0px; color: #FFFFFF; text-decoration: none; background-color: #875A7B; border: 1px solid #875A7B; border-radius: 3px"
@@ -109,16 +100,13 @@
                                 <td>
                                     <div style="width:50px;height:50px;"></div>
                                 </td>
-                                <td>
-                                    <div style="width:50px;height:50px;"></div>
-                                </td>
-                                <!--                                ================================HRMS===============================-->
-                                <t t-if="access_type in ('all','hrms')">
+                                <!--   ================================HRMS===============================-->
+                                <t t-if=" all == 'All' or hrms == 'HRMS' or coe_hrms== 'COE And HRMS'">
                                     <td style="padding-right:90px;">
                                         <br/>
-                                        <div style="width:100px;height:40px;">
-                                            <img src="/gts_switcher/static/description/hrms.png"
-                                                 style="height:200px; width:200px"/>
+                                        <div style="width:100px;height:100px;">
+                                            <img src="/gts_switcher/static/description/myprofile.png"
+                                                 style="height:80px; width:80px"/>
                                             <t t-if="instance_type == 'coe'">
                                                 <a role="button"
                                                    t-att-href="url+'/web/switch'+ '?' + 'login' + '=' + login + '&amp;' + 'password' + '='  + password "
@@ -137,30 +125,93 @@
                                         </div>
                                     </td>
                                 </t>
-                                <td>
-                                    <div style="width:50px;height:50px;"></div>
-                                </td>
-                                <!--                               *******************************COE/HRMS********************************-->
-                                <t t-if="access_type in ('all','coe/hrms')">
+                                <br/>
+                                <br/>
+                                <!--*******************************COE/HRMS********************************-->
+                                <t t-if=" all =='All' or coehrms == 'COE With HRMS'">
                                     <td style="padding-right:90px;">
-                                        <br/>
-                                        <div style="width:100px;height:40px;">
-                                            <img src="/gts_switcher/static/description/coe_hrms.png"
-                                                 style="height:200px; width:200px"/>
+                                        <div style="width:80px;height:80px;">
+                                            <img src="/gts_switcher/static/description/discuss.png"
+                                                 style="height:80px; width:80px"/>
                                             <t t-if="instance_type in 'coe'">
                                                 <a role="button"
-                                                   t-att-href="url+'/web/switch/hrms/coe'+ '?' + 'login' + '=' + login + '&amp;' + 'password' + '='  + password "
-                                                   style="padding: 0px 0px; height:30px; width:125px; color: #FFFFFF; text-decoration: none; background-color: #875A7B; border: 1px solid #875A7B; border-radius: 3px"
+                                                   t-att-href="url+'/web/switch'+ '?' + 'login' + '=' + login + '&amp;' + 'password' + '='  + password "
+                                                   style="padding: 0px 0px; color: #FFFFFF; text-decoration: none; background-color: #875A7B; border: 1px solid #875A7B; border-radius: 3px"
                                                    target="_blank" class="btn btn-primary btn-lg btn-block">
                                                     <i class="fa fa-arrow-circle-right "/>COE/HRMS
                                                 </a>
+                                                <!--<a role="button"-->
+                                                   <!--t-att-href="url+'/web/switch/hrms/coe'+ '?' + 'login' + '=' + login + '&amp;' + 'password' + '='  + password "-->
+                                                   <!--style="padding: 0px 0px; height:30px; width:125px; color: #FFFFFF; text-decoration: none; background-color: #875A7B; border: 1px solid #875A7B; border-radius: 3px"-->
+                                                   <!--target="_blank" class="btn btn-primary btn-lg btn-block">-->
+                                                    <!--<i class="fa fa-arrow-circle-right "/>COE/HRMS-->
+                                                <!--</a>-->
                                             </t>
                                             <t t-if="instance_type in 'hrms'">
-                                                <a role="button"
-                                                   t-att-href="base_url+'/web/switch/hrms/coe'+ '?' + 'login' + '=' + login + '&amp;' + 'password' + '='  + password "
-                                                   style="padding: 0px 0px; height:30px; width:125px; color: #FFFFFF; text-decoration: none; background-color: #875A7B; border: 1px solid #875A7B; border-radius: 3px"
-                                                   target="_blank" class="btn btn-primary btn-lg btn-block">
+                                                <!--<a role="button"-->
+                                                   <!--t-att-href="base_url+'/web/switch/hrms/coe'+ '?' + 'login' + '=' + login + '&amp;' + 'password' + '='  + password "-->
+                                                   <!--style="padding: 0px 0px; height:30px; width:125px; color: #FFFFFF; text-decoration: none; background-color: #875A7B; border: 1px solid #875A7B; border-radius: 3px"-->
+                                                   <!--target="_blank" class="btn btn-primary btn-lg btn-block">-->
+                                                    <!--<i class="fa fa-arrow-circle-right "/>COE/HRMS-->
+                                                <!--</a>-->
+                                                <a role="button" t-att-href="'/web'"
+                                                   style="padding: 0px 0px; color: #FFFFFF; text-decoration: none; background-color: #875A7B; border: 1px solid #875A7B; border-radius: 3px"
+                                                   class="btn btn-primary btn-lg btn-block">
                                                     <i class="fa fa-arrow-circle-right "/>COE/HRMS
+                                                </a>
+
+                                            </t>
+                                        </div>
+                                    </td>
+                                </t>
+                                <br/>
+                                <br/>
+<!--                            ========================================== Asset ================================================-->
+                                <t t-if=" asset == 'Asset'">
+                                    <td style="padding-right:90px;">
+                                        <div style="width:80px;height:80px;">
+                                            <img src="/gts_switcher/static/description/asset.png" style="height:80px; width:80px"/>
+                                            <t t-if="instance_type in 'coe'">
+                                                <a role="button" t-att-href="asset_url"
+                                                   style="padding: 0px 0px; color: #FFFFFF; text-decoration: none; background-color: #875A7B; border: 1px solid #875A7B; border-radius: 3px"
+                                                   class="btn btn-primary btn-lg btn-block">
+                                                    <i class="fa fa-arrow-circle-right "/>Asset
+                                                </a>
+                                            </t>
+                                        </div>
+                                    </td>
+                                </t>
+                                 <br/>
+                                <br/>
+<!--        ===========================================services===========================================================-->
+                                 <t t-if=" services == 'Services'">
+                                    <td style="padding-right:90px;">
+                                        <div style="width:80px;height:80px;">
+                                            <img src="/gts_switcher/static/description/services.png"
+                                                 style="height:80px; width:80px"/>
+                                            <t t-if="instance_type in 'coe'">
+                                                <a role="button" t-att-href="service_url"
+                                                   style="padding: 0px 0px; color: #FFFFFF; text-decoration: none; background-color: #875A7B; border: 1px solid #875A7B; border-radius: 3px"
+                                                   class="btn btn-primary btn-lg btn-block">
+                                                    <i class="fa fa-arrow-circle-right "/>Services
+                                                </a>
+                                            </t>
+                                        </div>
+                                    </td>
+                                </t>
+                                <br/>
+                                <br/>
+<!--        ========================================Lab=====================================================-->
+                                <t t-if=" floor == 'Floor Plan' ">
+                                    <td style="padding-right:90px;">
+                                        <div style="width:80px;height:80px;">
+                                            <img src="/gts_switcher/static/description/projects.png"
+                                                 style="height:80px; width:80px"/>
+                                            <t t-if="instance_type in 'coe'">
+                                                <a
+                                                   style="padding: 0px 0px; color: #FFFFFF; text-decoration: none; background-color: #875A7B; border: 1px solid #875A7B; border-radius: 3px"
+                                                   class="btn btn-primary btn-lg btn-block">
+                                                    <i class="fa fa-arrow-circle-right "/>Floor
                                                 </a>
                                             </t>
                                         </div>
@@ -170,7 +221,7 @@
                                 <br/>
                             </tr>
                         </table>
-                    </div>
+<!--                    </div>-->
                 </main>
                 <div style="width:50px;height:50px;"></div>
                 <div style="width:50px;height:50px;"></div>
@@ -184,6 +235,83 @@
                         <br/>
                         <br/>
                         <br/>
+                        <span style="color:black;">Powered by STPI
+                            <a target="_blank" title="STPI NextWebsite" href="http://www.htpi.com"></a>
+                        </span>
+                    </div>
+                </footer>
+            </div>
+        </t>
+    </template>
+
+<!--    ==================================================template Authentication Fail==========================================-->
+        <template id="intermediate_login_fail_page" name="Authentication Page" >
+        <div id="wrap">
+            <div class="oe_structure" id="oe_structure_website"/>
+            <div class="container">
+                <div class="row">
+                    <t t-call="gts_switcher.intermediate_login_fail"></t>
+                </div>
+            </div>
+        </div>
+    </template>
+
+       <template id="intermediate_login_fail" name="Authentication Fail" >
+        <t t-call="web.layout" >
+            <t t-set="head_website">
+                <t t-call-assets="web.assets_common" t-css="false"/>
+                <t t-call-assets="web.assets_common" t-js="false"/>
+                <t t-call-assets="web.assets_backend" t-js="false"/>
+                <t t-call-assets="coe_documents.public_page_assets"/>
+                <style>
+                    html, body {
+                    overflow: auto;
+                    background-color: #875A7B;
+                    }
+                </style>
+            </t>
+            <t t-set="head" t-value="head_website + (head or '')"/>
+            <t t-set="body_classname" t-value="'o_docs_share_page o_home_menu_background'"/>
+            <div id="wrap" t-att-class="'h-100 flex-column flex-nowrap d-flex container'">
+                <header class="mt6">
+                    <br/>
+                    <h1 style="color:white;padding-left:400px;"></h1>
+                    <span class="o_company_logo"/>
+                    <ul class="list-inline mt10 float-right">
+                        <li class="dropdown hidden-sm hidden-xs" t-ignore="true" t-if="not user_id._is_public()">
+                            <a href="#" class="dropdown-toggle o_docs_btn" data-toggle="dropdown">
+                                <img style="color:blue" class="rounded-circle" height="50"
+                                     t-attf-src="/web/image?model=res.users&amp;field=image_small&amp;id=#{json.dumps(request.env.user.id)}"
+                                     alt=""/>
+                                <span style="color:white;font-size: 16px;"> Login</span>
+                                <span class="caret"/>
+                            </a>
+                            <ul class="dropdown-menu js_usermenu" role="menu">
+                                <li style="color:black;" id="o_logout">
+                                    <a t-attf-href="/web/login?redirect=/" role="menuitem">Login</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </header>
+                <main>
+                    <table>
+                         <br/><br/><br/>
+                        <tr>
+                            <td style="padding-left:115px;">
+                                <h2 style="color:white;padding-left:200px;"> Invalid Login Token or Invalid Credentials .</h2>
+                            </td>
+                        </tr>
+                    </table>
+                </main>
+                <div style="width:50px;height:50px;"></div>
+                <div style="width:50px;height:50px;"></div>
+                <div style="width:50px;height:50px;"></div>
+                <div style="width:50px;height:50px;"></div>
+                <div style="width:50px;height:50px;"></div>
+                <footer class="flex-grow-0 flex-shrink-0 mb16 mt32 ">
+                    <div class="text-center col-sm-12">
+                        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
                         <span style="color:black;">Powered by STPI
                             <a target="_blank" title="STPI NextWebsite" href="http://www.htpi.com"></a>
                         </span>

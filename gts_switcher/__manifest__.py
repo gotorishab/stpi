@@ -12,6 +12,7 @@
     'depends': ['base','website'],
     'data': [
         'security/ir.model.access.csv',
+        'security/data.xml',
         'views/res_user_view.xml',
         'views/config_view.xml',
         'views/website_layout_view.xml',

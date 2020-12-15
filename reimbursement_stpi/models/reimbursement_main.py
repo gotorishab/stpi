@@ -62,14 +62,15 @@ class Reimbursement(models.Model):
     amount_lunch = fields.Float(string='Daily Eligible Amount', track_visibility='always')
     lunch_tds_amt = fields.Float('Amount for TDS', track_visibility='always')
     working_days = fields.Char(string='Number of days: ', track_visibility='always')
+    tution_document = fields.Binary(string='Document', track_visibility='always')
 
     # amount_tel = fields.Float(string='Claimed Amount')
     # amount_mob = fields.Float(string='Claimed Amount')
     service_provider = fields.Char(string='Service Provider', track_visibility='always')
-    phone = fields.Binary(string='Phone Attachment', track_visibility='always')
+    phone = fields.Binary(string='Telephone or Landline Attachment', track_visibility='always')
     bill_no = fields.Char(string='Bill number', track_visibility='always')
     bill_due_date = fields.Date(string='Bill Due Date', track_visibility='always')
-    mobile_no = fields.Char(string='Mobile Number')
+    mobile_no = fields.Char(string='Telephone or Landline number')
 
     brief_date = fields.Date(string='Date')
     no_of_months = fields.Char(string='No of months', track_visibility='always')
@@ -121,8 +122,9 @@ class Reimbursement(models.Model):
                 # rec.working_days = count
                 # rec.claimed_amount = float(rec.working_days * 75)
                 # rec.lunch_tds_amt = float(rec.working_days * 50)
-            if rec.employee_id and rec.name == 'telephone':
-                rec.mobile_no = rec.employee_id.mobile_phone
+            if rec.employee_id:
+                if rec.name == 'telephone' or rec.name == 'mobile':
+                    rec.mobile_no = rec.employee_id.mobile_phone
 
     def get_late_coming_report(self):
         lst = []
@@ -189,8 +191,8 @@ class Reimbursement(models.Model):
                     mult = 2
                 else:
                     mult = count
-                if int(rec.claimed_amount) > 2250 * int(mult):
-                    rec.net_amount = 2250 * int(mult)
+                if int(rec.claimed_amount) > (2250 * int(mult))*12:
+                    rec.net_amount = (2250 * int(mult))*12
                 else:
                     rec.net_amount = int(rec.claimed_amount)
 

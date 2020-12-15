@@ -59,6 +59,7 @@ class Reimbursement(models.Model):
     # amount_mob = fields.Float(string='Claimed Amount')
     service_provider = fields.Char(string='Service Provider', track_visibility='always')
     phone = fields.Binary(string='Phone Attachment', track_visibility='always')
+    tution_document = fields.Binary(string='Document', track_visibility='always')
     bill_no = fields.Char(string='Bill number', track_visibility='always')
     bill_due_date = fields.Date(string='Bill Due Date', track_visibility='always')
 
