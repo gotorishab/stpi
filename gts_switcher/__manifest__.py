@@ -17,7 +17,7 @@
         'views/config_view.xml',
         'views/website_layout_view.xml',
         'views/res_company_view.xml',
-        'views/asset_indent_view.xml',
+        # 'views/asset_indent_view.xml',
     ],
     'qweb': [],
     'application': True
