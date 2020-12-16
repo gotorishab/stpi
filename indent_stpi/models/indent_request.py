@@ -84,7 +84,8 @@ class EmployeeIndentAdvance(models.Model):
                                 'Indent_id': res.id,
                                 'employee_id': res.employee_id.id,
                                 'branch_id': res.branch_id.id,
-                                'Indent_item_id': item.id,
+                                'Indent_item_id'
+                                : item.id,
                                 'item_category_id': item.item_category_id.id,
                                 'item_id': item.item_id.id,
                                 'serial_bool': item.item_id.serial_bool,
