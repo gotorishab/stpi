@@ -106,7 +106,7 @@ class IndentLedger(models.Model):
         print('==========models================', models)
         uid = self.env.user.id
         password = self.env.user.password
-        id = models.execute_kw(db, uid, password, 'account.asset.asset', 'create', [{"name": self.item_id.name,"serial_number": self.serial_number,"category_id":1,"value":1}])
+        id = models.execute_kw(db, 2, "admin", 'account.asset.asset', 'create', [{"name": self.item_id.name,"serial_number": self.serial_number,"category_id":1,"value":1}])
         print('==========asset_data================', id)
         self.coe_asset_id = id
         asset_id = id
