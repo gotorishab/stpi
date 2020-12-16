@@ -25,7 +25,7 @@ class IntermediateWebsitePage(http.Controller):
                 hrms = 'HRMS'
             if access.name == 'COE And HRMS':
                 coe_hrms = 'COE And HRMS'
-            if access.name == 'COE With HRMS':
+            if access.name == 'STPI Next':
                coehrms = 'COE With HRMS'
             if access.name == 'Asset':
                asset = 'Asset'

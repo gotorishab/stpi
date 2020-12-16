@@ -77,20 +77,17 @@ class ResUsers(models.Model):
         return action
 
 
-# class ChangePasswordUser(models.TransientModel):
-#     _inherit = 'change.password.user'
-#     _description = "Change Password Wizard"
-#
-#     @api.multi
-#     def change_password_button(self):
-#         server_connection_id = self.env['server.connection'].search([('active', '=', True)])
-#         url = server_connection_id.url
-#         db = server_connection_id.db_name
-#         password = server_connection_id.password
-#         username = server_connection_id.user_name
-#         common = xmlrpc.client.ServerProxy('{}/xmlrpc/2/common'.format(url))
-#         models = xmlrpc.client.ServerProxy('{}/xmlrpc/2/object'.format(url))
-#         uid = common.authenticate(db, username, password, {})
-#         user = models.execute_kw(db, self.user_id.id, password, 'res.users', 'write',
-#                                  [[self.user_id.id], {'password': self.new_passwd}])
-#         return super(ChangePasswordUser, self).change_password_button()
+class ChangePasswordUser(models.TransientModel):
+    _inherit = 'change.password.user'
+    _description = "Change Password Wizard"
+
+    @api.multi
+    def change_password_button(self):
+        server_connection_id = self.env['server.connection'].search([('active', '=', True)])
+        url = server_connection_id.url
+        db = server_connection_id.db_name
+        common = xmlrpc.client.ServerProxy('{}/xmlrpc/2/common'.format(url))
+        models = xmlrpc.client.ServerProxy('{}/xmlrpc/2/object'.format(url))
+        # uid = common.authenticate(db, self.user_id.login, self.user_id.password, {})
+        user = models.execute_kw(db, self.user_id.id,self.user_id.password,'res.users', 'write',[[self.user_id.id], {'password': self.new_passwd}])
+        return super(ChangePasswordUser, self).change_password_button()

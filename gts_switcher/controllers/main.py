@@ -215,9 +215,6 @@ class Home(Home):
     def web_login_switch(self, redirect=None, **kw):
         request.website = request.env['website'].get_current_website()
         old_uid = False
-        _logger.info("======request.website==%s=", request.website)
-        # print ("======request.website===", request.website)
-        # ensure_db()
         values = {}
         request.params['login_success'] = False
         try:
@@ -230,10 +227,6 @@ class Home(Home):
             request.uid = old_uid
             values = {'login_user': request.uid,}
             return request.render("gts_switcher.intermediate_login_fail_page", values)
-            # if e.args == odoo.exceptions.AccessDenied().args:
-            #     values['error'] = _("Wrong login/password")
-            # else:
-            #     values['error'] = e.args[0]
 
 
         response = request.render('web.login', values)

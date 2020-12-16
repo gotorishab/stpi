@@ -1,10 +1,25 @@
 <odoo>
-    <record id="menu_intermediate" model="website.menu">
-        <field name="name">Select Choice</field>
-        <field name="url">/login/intermediate/</field>
-        <field name="user_id" ref="website.main_menu"/>
-        <field name="sequence" type="int">20</field>
-    </record>
+<!--<<<<<<< HEAD-->
+    <!--<record id="menu_intermediate" model="website.menu">-->
+        <!--<field name="name">Select Choice</field>-->
+        <!--<field name="url">/login/intermediate/</field>-->
+        <!--<field name="user_id" ref="website.main_menu"/>-->
+        <!--<field name="sequence" type="int">20</field>-->
+    <!--</record>-->
+=======
+<!--    <template id="assets_book" name="SSO Page" inherit_id="web.assets_backend">-->
+<!--        <xpath expr="." position="inside">-->
+<!--              <a role="menuitem" href="/login/intermediate" data-menu="switcher" class="dropdown-item">Switcher</a>-->
+<!--        </xpath>-->
+<!--    </template>-->
+
+    <!--<record id="menu_intermediate" model="website.menu">-->
+        <!--<field name="name">Select Choice</field>-->
+        <!--<field name="url">/login/intermediate/</field>-->
+        <!--<field name="user_id" ref="website.main_menu"/>-->
+        <!--<field name="sequence" type="int">20</field>-->
+    <!--</record>-->
+<!--&gt;>>>>>> 24484530a4de6769081cd5b19a8a3ec392395d54-->
 
     <template id="intermediate_page" name="Select Choice" >
         <div id="wrap">
@@ -183,7 +198,7 @@
                                 </t>
                                  <br/>
                                 <br/>
-<!--        ===========================================services===========================================================-->
+<!--   ===========================================services===========================================================-->
                                  <t t-if=" services == 'Services'">
                                     <td style="padding-right:90px;">
                                         <div style="width:80px;height:80px;">

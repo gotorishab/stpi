@@ -13,7 +13,8 @@
 
 
     <record id="coe/hrms" model="access.type">
-        <field name="name">COE With HRMS</field>
+<!--        <field name="name">COE With HRMS</field>-->
+        <field name="name">STPI Next</field>
     </record>
 
 
