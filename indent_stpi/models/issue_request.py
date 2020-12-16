@@ -106,22 +106,20 @@ class IndentLedger(models.Model):
         print('==========models================', models)
         uid = self.env.user.id
         password = self.env.user.password
-        asset_data = models.execute_kw(db, uid, password, 'account.asset.asset', 'create',
-                          {"name": 'Asset name',"serial_number": 'Unique Serial number of HRMIS instance',"category_id": 1,})
-        print('==========asset_data================', asset_data)
-        #
-        #
-        # asset_id = self.coe_asset_id
-        # key = ",jy`\;4Xpe7%KKL$.VNJ'.s6)wErQa"
-        # connection_rec = self.env['server.connection'].search([], limit=1)
-        # if not connection_rec:
-        #     raise UserError(_('No Server Configuration Found !'))
-        # encoded_jwt = jwt.encode({'token': self.env.user.token}, key)
-        # action = {
-        #     'name': connection_rec.name,
-        #     'type': 'ir.actions.act_url',
-        #     'url': str(connection_rec.url).strip() + "/asset/indent?login=" + str(
-        #         self.env.user.login) + "&password=" + str(encoded_jwt.decode("utf-8")) + "&menu_id=" + str(asset_id),
-        #     'target': 'new',
-        # }
-        # return action
+        id = models.execute_kw(db, uid, password, 'account.asset.asset', 'create', [{"name": self.item_id.name,"serial_number": self.serial_number,"category_id":1,"value":1}])
+        print('==========asset_data================', id)
+        self.coe_asset_id = id
+        asset_id = id
+        key = ",jy`\;4Xpe7%KKL$.VNJ'.s6)wErQa"
+        connection_rec = self.env['server.connection'].search([], limit=1)
+        if not connection_rec:
+            raise UserError(_('No Server Configuration Found !'))
+        encoded_jwt = jwt.encode({'token': self.env.user.token}, key)
+        action = {
+            'name': connection_rec.name,
+            'type': 'ir.actions.act_url',
+            'url': str(connection_rec.url).strip() + "/asset/indent?login=" + str(
+                self.env.user.login) + "&password=" + str(encoded_jwt.decode("utf-8")) + "&menu_id=" + str(asset_id),
+            'target': 'new',
+        }
+        return action
