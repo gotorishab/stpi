@@ -103,10 +103,12 @@ class IndentLedger(models.Model):
         db = server_connection_id.db_name
         common = xmlrpc.client.ServerProxy('{}/xmlrpc/2/common'.format(url))
         models = xmlrpc.client.ServerProxy('{}/xmlrpc/2/object'.format(url))
+        print('==========models================', models)
         uid = self.env.user.id
         password = self.env.user.password
         asset_data = models.execute_kw(db, uid, password, 'account.asset.asset', 'create',
                           {"name": 'Asset name',"serial_number": 'Unique Serial number of HRMIS instance',"category_id": 1,})
+        print('==========asset_data================', asset_data)
         #
         #
         # asset_id = self.coe_asset_id
