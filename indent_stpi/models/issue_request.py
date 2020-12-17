@@ -97,21 +97,24 @@ class IndentLedger(models.Model):
 
     @api.multi
     def fill_asset_details(self):
-        server_connection_id = self.env['server.connection'].search([('active', '=', True)])
-        url = server_connection_id.url
-        db = server_connection_id.db_name
-        common = xmlrpc.client.ServerProxy('{}/xmlrpc/2/common'.format(url))
-        models = xmlrpc.client.ServerProxy('{}/xmlrpc/2/object'.format(url))
-        # print('==========models================', models)
-        uid = 2
-        # password = self.env.user.password
-        password = 'admin'
-        id = models.execute_kw(db, uid, password, 'account.asset.asset', 'create',
-                               [{"name": self.item_id.name, "serial_number": self.serial_number,
-                                 "category_id": 1, "value": 1, 'login': self.env.user.login}])
-        # print('==========asset_data================', id)
-        self.coe_asset_id = id
-        asset_id = id
+        if not self.coe_asset_id:
+            server_connection_id = self.env['server.connection'].search([('active', '=', True)])
+            url = server_connection_id.url
+            db = server_connection_id.db_name
+            common = xmlrpc.client.ServerProxy('{}/xmlrpc/2/common'.format(url))
+            models = xmlrpc.client.ServerProxy('{}/xmlrpc/2/object'.format(url))
+            # print('==========models================', models)
+            uid = 2
+            # password = self.env.user.password
+            password = 'admin'
+            id = models.execute_kw(db, uid, password, 'account.asset.asset', 'create',
+                                   [{"name": self.item_id.name, "serial_number": self.serial_number,
+                                     "category_id": 1, "value": 1, 'login': self.env.user.login}])
+            # print('==========asset_data================', id)
+            self.coe_asset_id = id
+            asset_id = id
+        else:
+            asset_id = self.coe_asset_id
         key = ",jy`\;4Xpe7%KKL$.VNJ'.s6)wErQa"
         connection_rec = self.env['server.connection'].search([], limit=1)
         if not connection_rec:
@@ -125,3 +128,4 @@ class IndentLedger(models.Model):
             'target': 'new',
         }
         return action
+        
