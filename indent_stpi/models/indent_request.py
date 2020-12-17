@@ -22,7 +22,7 @@ class EmployeeIndentAdvance(models.Model):
     amount = fields.Float('Amount',track_visibility='always')
     received_by = fields.Char('Received By',track_visibility='always')
     item_checked_by = fields.Char('Item Checked By',track_visibility='always')
-    date_of_receive = fields.Char('Date of Receive',track_visibility='always')
+    date_of_receive = fields.Date('Date of Receive',track_visibility='always')
 
     employee_id = fields.Many2one('hr.employee', string='Employee', default=_default_employee ,track_visibility='always')
     branch_id = fields.Many2one('res.branch', string='Branch', store=True)

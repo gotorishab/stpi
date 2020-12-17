@@ -108,8 +108,16 @@ class IndentLedger(models.Model):
             # password = self.env.user.password
             password = 'admin'
             id = models.execute_kw(db, uid, password, 'account.asset.asset', 'create',
-                                   [{"name": self.item_id.name, "serial_number": self.serial_number,
-                                     "category_id": 1, "value": 1, 'login': self.env.user.login}])
+                                   [{"name": self.item_id.name,
+                                     "serial_number": self.serial_number,
+                                     "invoice_no": self.Indent_id.bill_no,
+                                     "purchase_date": self.Indent_id.date_of_receive,
+                                     # "first_depreciation_manual_date": self.Indent_id.date_of_receive,
+                                     "code": str(self.Indent_id.vendor_info + ' - ' + self.specification),
+                                     "salvage_value": 1,
+                                     "category_id": 1,
+                                     "value": 1,
+                                     'login': self.env.user.login}])
             # print('==========asset_data================', id)
             self.coe_asset_id = id
             asset_id = id
@@ -128,4 +136,3 @@ class IndentLedger(models.Model):
             'target': 'new',
         }
         return action
-        
