@@ -325,9 +325,9 @@ class HrLoan(models.Model):
             i.date = payment_date
             payment_date = payment_date + relativedelta(months=1)
         # loan_approve = self.env['ir.config_parameter'].sudo().get_param('account.loan_approve')
-        contract_obj = self.env['hr.contract'].search([('employee_id', '=', self.employee_id.id)])
+        contract_obj = self.env['hr.contract'].search([('employee_id', '=', self.employee_id.id),('state', '=', 'open')])
         if not contract_obj:
-            raise UserError('You must Define a contract for employee')
+            raise UserError('You must Define a running contract for employee')
         if not self.loan_lines:
             raise UserError('You must compute installment before Approved')
         # if loan_approve:
