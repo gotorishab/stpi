@@ -18,7 +18,7 @@ class ExceptionRule(models.Model):
 class HealthManagefireincident(models.Model):
     _inherit = ['health.manage.fireincident', 'base.exception']
     _name = 'health.manage.fireincident'
-    _order = 'main_exception_id asc,name desc'
+    _order = 'main_exception_id asc'
 
     rule_group = fields.Selection(
         selection_add=[('health_manage_fireincident', 'Health Manage fireincident')],
