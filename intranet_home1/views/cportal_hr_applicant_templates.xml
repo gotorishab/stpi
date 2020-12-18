@@ -1,0 +1,180 @@
+<odoo>
+    <template id="new_homepage_vardhman" inherit_id="website.homepage">
+        <xpath expr="//div[@id='wrap']" position="replace">
+            <div id="wrap" class="oe_structure">
+                <link rel="stylesheet" href="/intranet_home/static/src/scss/cwebsite_shiping.css"/>
+                <br/>
+                <div class="container-fluid;bg-light">
+                    <div class="row">
+                        <div class="col-xs-6 mb-3 col-sm-3">
+                            <div class="row">
+                                <form action="#" method="#" role="search">
+                                    <input class="form-control" placeholder="Search" name="srch-term" id="ed-srch-term" type="text"/>
+                                    <span class="input-group-btn">
+                                    <button class="btn btn-default" type="submit">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                  </span>
+                                </form>
+                            </div>
+                            <br/>
+                            <div class="row;shadow-lg p-3 bg-white">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Useful Links</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>About Company</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Company Policy</td>
+                                        </tr>
+                                        <tr>
+                                            <td>NOW</td>
+                                        </tr>
+                                    </tbody>
+                                  </table>
+                            </div>
+                            <div class="row;shadow-lg p-4 bg-white">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Upcoming Birthdays</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Riyan</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Joey</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Tim</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="row;shadow-lg p-4 bg-white">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th colspan="2">Anniversaries</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Marriage Anniversary</td>
+                                            <td>Work Anniversary</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">Fernando</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">Mellisa</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">Audrey</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-xs-6 col-sm-6">
+                            <div class="container" style="position: relative;text-align: center;color: white;">
+                                <img src="https://www.w3schools.com/howto/img_snow_wide.jpg" alt="Snow" style="width:100%;">
+                                    <div class="bottom-left" style="position: absolute;top: 8px;left: 16px;">Topics</div>
+                                    <div class="bottom-left" style="position: absolute;bottom: 8px;left: 16px;">Bringing the Future Forward</div>
+                                </img>
+                                <div class="row" style="position: relative;text-align: left;color: white;shadow-lg p-4 mb-4 bg-white">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Key Modules</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Telephone Directory</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Kaizen Management</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Knowledge Management</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-6 col-sm-2 mr-1">
+                            <div class="row">
+                                <div class="col-xs-6 col-sm-6" style="background-color:purple;">
+                                    <img src="https://www.vardhman.com/team_pics/sp-oswal.jpg" alt="CEO" width="120" height="120" align="left"/>
+                                </div>
+                                <div class="col-xs-6 col-sm-6" style="background-color:purple;color: white;">
+                                    From the CEO:
+                                    <br/>
+                                    July's Message
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="row">
+                                <div class="col-xs-6 col-sm-6" style="background-color:white;">
+                                    <img src="https://im.proptiger.com/1/673861/6/vardhman-group-jaipur-sampada-elevation-775870.jpeg" alt="Vardhman" width="120" height="120" align="left"/>
+                                </div>
+                                <div class="col-xs-6 col-sm-6" style="background-color:white;">
+                                    <img src="https://www.vardhman.com/images/circle1.png" alt="CEO" width="120" height="120" align="left"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+
+        <template id="use_links">
+            <t t-call="website.layout">
+                <t t-set="title">Useful Links</t>
+                <div class="oe_structure">
+                    <table border="1" style="float: left">
+                        <tr style="font-weight:bold;">
+                                <td padding="10px">
+                                <p>Useful Links</p>
+                            </td>
+                        </tr>
+                        <tr style="font-weight:bold;">
+                            <td>
+                                <div class="container">
+                                    <t t-foreach="teachers" t-as="teacher">
+                                        <p><a  t-attf-href="{{ teacher.url }}"><t t-esc="teacher.icon" t-options='{"widget": "image","class": "oe_avatar"}'/><![CDATA[&nbsp;]]><![CDATA[&nbsp;]]><t t-esc="teacher.name"/></a></p>
+                                    </t>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    <table border="1" style="float: left">
+                        <tr style="font-weight:bold;">
+                            <td padding="10px">
+                                <div class="container" style="position: relative;text-align: center;color: white;">
+                                    <img src="https://www.w3schools.com/howto/img_snow_wide.jpg" alt="Snow" style="width:100%;">
+                                        <div class="bottom-left" style="position: absolute;top: 8px;left: 16px;">Top Left</div>
+                                        <div class="bottom-left" style="position: absolute;bottom: 8px;left: 16px;">Bottom Left</div>
+                                    </img>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </t>
+        </template>
+
+
+
+</odoo>

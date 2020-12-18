@@ -1,0 +1,51 @@
+<odoo>
+
+    <!-- ============ Form View of forward button============= -->
+        <record id="create_story_form_view" model="ir.ui.view">
+            <field name="name">wizard.story.category.form</field>
+            <field name="model">wizard.story.category</field>
+            <field name="arch" type="xml">
+                <form string="Create Story">
+                    <group>
+                            <group>
+                                <field name="name" required ="1"/>
+                            </group>
+                        </group>
+                    <footer>
+                        <button name = "confirm_button" string = "Confirm" type = "object" class="oe_highlight"/>
+                        <button name="cancel" string = "Cancel" special = "cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+    <record id="create_story_action_view" model="ir.actions.act_window">
+            <field name="name">Create Story</field>
+            <field name="res_model">wizard.story.category</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="view_id" ref="create_story_form_view"/>
+        </record>
+
+
+    <menuitem id="menu_all_master"
+              name="Master"
+              sequence="2"/>
+
+
+    <menuitem id="add_story_wizard_view"
+            name="Story"
+            sequence="1"
+            parent="menu_all_master"/>
+
+
+
+    <menuitem id="create_story_wizard_view"
+            name="Create"
+            sequence="1"
+            parent="add_story_wizard_view"
+            action="create_story_action_view"
+    />
+
+
+</odoo>

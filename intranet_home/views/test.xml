@@ -1,0 +1,31 @@
+<odoo>
+
+        <template id="indextwo">
+            <title>Academy</title>
+            <t t-foreach="teachers" t-as="teacher">
+              <p><t t-esc="teacher"/></p>
+            </t>
+        </template>
+
+        <template id="indexthree">
+            <title>Academy</title>
+            <t t-foreach="teachers" t-as="teacher">
+                <p><t t-esc="teacher.name"/> <t t-esc="teacher.url"/> <t t-esc="teacher.icon"/></p>
+            </t>
+        </template>
+
+    <template id="indexfour">
+            <t t-call="website.layout">
+                <t t-set="title">Useful Links</t>
+                <div class="oe_structure">
+                    <div class="container">
+                        <t t-foreach="teachers" t-as="teacher">
+                            <p><t t-esc="teacher.icon" t-options='{"widget": "image","class": "oe_avatar"}'/><a  t-attf-href="{{ teacher.url }}"><t t-esc="teacher.name"/></a></p>
+                            <p><t t-esc="teacher.icon" t-options='{"widget": "image","class": "oe_avatar"}'/><a  t-attf-href="{{ teacher.url }}"><t t-esc="teacher.name"/></a></p>
+
+                        </t>
+                    </div>
+                </div>
+            </t>
+        </template>
+</odoo>

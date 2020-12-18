@@ -1,0 +1,44 @@
+<odoo>
+    <record id="km_portal_documents_form" model="ir.ui.view">
+        <field name="name">portal.documents.form</field>
+        <field name="model">portal.documents</field>
+        <field name="arch" type="xml">
+            <form string="Business Type">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="type_id"/>
+                        </group>
+                        <group>
+                            <field name="document"/>
+                            <field name="is_published"/>
+                        </group>
+                    </group>
+                    <separator string="Description"/>
+                    <field name="description"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="km_portal_documents_list" model="ir.ui.view">
+        <field name="name">portal.documents.list</field>
+        <field name="model">portal.documents</field>
+        <field eval="8" name="priority"/>
+        <field name="arch" type="xml">
+            <tree string="Create Story">
+                <field name="name"/>
+                <field name="type_id"/>
+            </tree>
+        </field>
+    </record>
+    <record id="ir_action_km_portal_documents_list" model="ir.actions.act_window">
+        <field name="name">Health Business Type</field>
+        <field name="res_model">portal.documents</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem id="menu_knowledge_documets"
+              name="Documents"
+              action="ir_action_km_portal_documents_list"/>
+    
+</odoo>

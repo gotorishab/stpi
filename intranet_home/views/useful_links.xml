@@ -1,0 +1,46 @@
+<odoo>
+
+
+
+            <record id="view_vardhman_useful_links_form" model="ir.ui.view">
+             <field name="name">vardhman.useful.links.form</field>
+             <field name="model">vardhman.useful.links</field>
+             <field name="arch" type="xml">
+                 <form string="Useful Links">
+                     <sheet>
+                         <group>
+                             <field name="name"/>
+                             <field name="url"/>
+                             <field name="icon"/>
+                         </group>
+                     </sheet>
+                 </form>
+             </field>
+         </record>
+
+         <record id="view_vardhman_useful_links_list" model="ir.ui.view">
+             <field name="name">vardhman.useful.links.list</field>
+             <field name="model">vardhman.useful.links</field>
+             <field eval="8" name="priority"/>
+             <field name="arch" type="xml">
+                 <tree string="Useful Links" editable="bottom">
+                     <field name="name" required="1"/>
+                     <field name="url" required="1"/>
+                     <field name="icon" required="1"/>
+                 </tree>
+             </field>
+         </record>
+
+         <record id="ir_action_useful_links" model="ir.actions.act_window">
+             <field name="name">Useful Links</field>
+             <field name="res_model">vardhman.useful.links</field>
+             <field name="view_mode">tree,form</field>
+         </record>
+    
+    <menuitem id="menu_useful_links"
+            name="Useful Links"
+            sequence="1"
+            parent="website.menu_website_configuration"
+              action="intranet_home.ir_action_useful_links"/>
+
+</odoo>

@@ -1,0 +1,82 @@
+<odoo>
+    <record id="health_manage_docrep_form" model="ir.ui.view">
+        <field name="name">health.manage.docrep.form</field>
+        <field name="model">health.manage.docrep</field>
+        <field name="arch" type="xml">
+            <form string="Document Repository">
+                <header>
+                    <button name="button_submit" string="Submit" class="oe_highlight" type="object" states="draft"/>
+                    <button name="button_cancel" string="Cancel" type="object" states="draft"/>
+                     <button name="button_reset_to_draft" string="Reset to draft" type="object" states="submitted"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft" />
+                </header>
+                <sheet>
+                    <h1 class="d-flex">
+                        Upload Documents
+                    </h1>
+                    <hr/>
+                    <br/>
+                    <group>
+                        <group>
+                            <field name="select_document" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="document_description" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        </group>
+                        <group>
+                            <field name="file" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+            </form>
+        </field>
+    </record>
+    <record id="health_manage_docrep_list" model="ir.ui.view">
+        <field name="name">health.manage.docrep.list</field>
+        <field name="model">health.manage.docrep</field>
+        <field eval="8" name="priority"/>
+        <field name="arch" type="xml">
+            <tree string="Upload Documwnt List" create="0">
+                <field name="select_document"/>
+                <field name="document_description"/>
+            </tree>
+        </field>
+    </record>
+    <record id="ir_action_health_manage_docrep_list" model="ir.actions.act_window">
+        <field name="name">Document Repository</field>
+        <field name="res_model">health.manage.docrep</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <record id="ir_action_health_manage_docrep_create" model="ir.actions.act_window">
+        <field name="name">Document Repository</field>
+        <field name="res_model">health.manage.docrep</field>
+        <field name="view_mode">form</field>
+    </record>
+    <menuitem id="menu_health_manage_docrep_master"
+            name="Document Repository"
+            sequence="13"
+            />
+
+
+    <menuitem id="menu_health_manage_docrep_list"
+            name="Upload Documents List"
+            sequence="3"
+            parent="menu_health_manage_docrep_master"
+            action="ir_action_health_manage_docrep_list"
+    />
+
+    <menuitem id="menu_health_manage_docrep_create"
+            name="Upload Documents"
+            sequence="1"
+            parent="menu_health_manage_docrep_master"
+            action="ir_action_health_manage_docrep_create"
+    />
+
+
+
+
+    
+</odoo>

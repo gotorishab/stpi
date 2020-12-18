@@ -1,0 +1,44 @@
+<odoo>
+
+
+            <record id="view_vardhman_story_form" model="ir.ui.view">
+             <field name="name">wizard.story.category.form</field>
+             <field name="model">wizard.story.category</field>
+             <field name="arch" type="xml">
+                 <form string="Story List">
+                     <sheet>
+                         <group>
+                             <field name="name"/>
+                         </group>
+                     </sheet>
+                 </form>
+             </field>
+         </record>
+         <record id="view_vardhman_story_list" model="ir.ui.view">
+             <field name="name">wizard.story.category.list</field>
+             <field name="model">wizard.story.category</field>
+             <field eval="8" name="priority"/>
+             <field name="arch" type="xml">
+                 <tree string="Create Story" create="0">
+                     <field name="name" required="1"/>
+                 </tree>
+             </field>
+         </record>
+
+         <record id="ir_action_story_list" model="ir.actions.act_window">
+             <field name="name">Story List</field>
+             <field name="res_model">wizard.story.category</field>
+             <field name="view_mode">tree,form</field>
+         </record>
+
+
+
+    <menuitem id="list_story_wizard_view"
+            name="List"
+            sequence="2"
+            parent="add_story_wizard_view"
+            action="ir_action_story_list"
+    />
+
+    
+</odoo>

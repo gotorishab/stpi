@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="documents_my_home_menu_expense" name="Portal layout: maintenance" inherit_id="portal.portal_breadcrumbs">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'documents' or documents" t-attf-class="breadcrumb-item #{'active ' if not documents else ''}">
+                <a t-if="documents" t-attf-href="/get/documents?{{ keep_query() }}">Documents</a>
+                <t t-else="">Documents</t>
+            </li>
+        </xpath>
+    </template>
+
+    <!-- menu in my account -->
+    <template id="portal_my_home_sale" name="Portal My Home : sales entries" inherit_id="portal.portal_my_home" priority="20">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-if="documents_count" t-call="portal.portal_docs_entry">
+                <t t-set="title">Documents</t>
+                <t t-set="url" t-value="'/get/documents'"/>
+                <t t-set="count" t-value="documents_count"/>
+            </t>
+        </xpath>
+    </template>
+
+    <!-- list view of maintenance -->
+    <template id="portal_my_documents_data" name="My Documents">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Documents</t>
+            </t>
+            <t t-if="not documents_ids">
+                 <p>There are currently no 'Documents' for your account.</p>
+            </t>
+            <t t-if="documents_ids" t-call="portal.portal_table">
+                <thead>
+                    <tr>
+                        <th><i class="fa fa-file"></i></th>
+                        <!-- <th></th> -->
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Published</th>
+                        <th>Published By</th>
+                        <th>Size</th>
+                    </tr>
+                </thead>
+                <t t-foreach="documents_ids" t-as="documents">
+                    <tr>
+                        <td>
+                            <img style="height: 30px;width: 25px;" t-attf-src="/portal_document_management/static/src/img/{{documents._get_image()}}"/>
+                        </td>
+                        <!-- <td>
+                            <a t-attf-href="/web/content/portal.documents/{{documents.id}}/document?download=true" target="_blank"><i style="height: 30px;width: 25px;cursor: pointer;" class="fa fa-share"></i></a>
+                        </td> -->
+                       <td>
+                            <a t-attf-href="/web/content/portal.documents/{{documents.id}}/document?download=true" target="_blank"><t t-esc="documents.name"/></a>
+                        </td>
+                       <td>
+                            <t t-esc="documents.type_id"/>
+                        </td>
+                        <td>
+                            <t t-esc="documents.create_date"/>
+                        </td>
+                        <td>
+                            <t t-esc="documents.create_uid.name"/>
+                        </td>
+                        <td>
+                            <t t-esc="documents._get_size()"/> <span t-if="documents._get_size() > 1">MB</span><span t-else="">Bytes</span>
+                        </td>
+                    </tr>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

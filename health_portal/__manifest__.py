@@ -1,0 +1,33 @@
+{
+    'name': "Vardhman Health Postal",
+    'version': '1.0',
+    'summary': """Vardhman Portal """,
+    'description': """
+    Vardhman Homepage
+""",
+    'category': 'Human Resources',
+    'author': '',
+    'depends': ['website','hr','board'],
+    'data': [
+        'security/ir.model.access.csv',
+        'views/masters.xml',
+        'views/accidents.xml',
+        'views/fire_incident.xml',
+        'views/audit.xml',
+        'views/monthly_incident.xml',
+        'views/zone_audit.xml',
+        'views/best_practice.xml',
+        'views/near_miss_info.xml',
+        'views/safety_comm.xml',
+        'views/safety_obs.xml',
+        'views/unsafe_work.xml',
+        'views/why_why_analysis.xml',
+        'views/document_repository.xml',
+        'views/board_views.xml',
+    ],
+    'demo': [],
+    'images': [],
+    'installable': True,
+    'application': True,
+    'license': 'OPL-1',
+}

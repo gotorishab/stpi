@@ -1,0 +1,87 @@
+<odoo>
+    <record id="health_manage_zoneaudit_form" model="ir.ui.view">
+        <field name="name">health.manage.zoneaudit.form</field>
+        <field name="model">health.manage.zoneaudit</field>
+        <field name="arch" type="xml">
+            <form string="zoneaudit Information">
+                <header>
+                    <button name="button_submit" string="Submit" class="oe_highlight" type="object" states="draft"/>
+                    <button name="button_cancel" string="Cancel" type="object" states="draft"/>
+                     <button name="button_reset_to_draft" string="Reset to draft" type="object" states="submitted"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft" />
+                </header>
+                <sheet>
+                    <h1 class="d-flex">
+                        Zone Audit
+                    </h1>
+                    <hr/>
+                    <br/>
+                    <group>
+                        <group>
+                            <field name="unit_id" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="month" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        </group>
+                        <group>
+                            <field name="year" readonly="1"/>
+                            <field name="upload" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        </group>
+                    </group>
+                    <field name="description" placeholder="Description" attrs="{'readonly':[('state','!=','draft')]}"/>
+                </sheet>
+                <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+            </form>
+        </field>
+    </record>
+    <record id="health_manage_zoneaudit_list" model="ir.ui.view">
+        <field name="name">health.manage.zoneaudit.list</field>
+        <field name="model">health.manage.zoneaudit</field>
+        <field eval="8" name="priority"/>
+        <field name="arch" type="xml">
+            <tree string="zoneaudit information" create="0">
+                <field name="unit_id"/>
+                <field name="year"/>
+                <field name="month" readonly="1"/>
+                <field name="upload"/>
+                <field name="description"/>
+            </tree>
+        </field>
+    </record>
+    <record id="ir_action_health_manage_zoneaudit_list" model="ir.actions.act_window">
+        <field name="name">Zone Audit information</field>
+        <field name="res_model">health.manage.zoneaudit</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <record id="ir_action_health_manage_zoneaudit_create" model="ir.actions.act_window">
+        <field name="name">Zone Audit</field>
+        <field name="res_model">health.manage.zoneaudit</field>
+        <field name="view_mode">form</field>
+    </record>
+    <menuitem id="menu_health_manage_zoneaudit_master"
+            name="Manage Zone Audit"
+            sequence="6"
+            />
+
+
+    <menuitem id="menu_health_manage_zoneaudit_list"
+            name="Zone Audit List"
+            sequence="3"
+            parent="menu_health_manage_zoneaudit_master"
+            action="ir_action_health_manage_zoneaudit_list"
+    />
+
+    <menuitem id="menu_health_manage_zoneaudit_create"
+            name="Zone Audit"
+            sequence="1"
+            parent="menu_health_manage_zoneaudit_master"
+            action="ir_action_health_manage_zoneaudit_create"
+    />
+
+
+
+
+    
+</odoo>

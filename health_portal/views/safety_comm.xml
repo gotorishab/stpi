@@ -1,0 +1,106 @@
+<odoo>
+    <record id="health_manage_safetycomm_form" model="ir.ui.view">
+        <field name="name">health.manage.safetycomm.form</field>
+        <field name="model">health.manage.safetycomm</field>
+        <field name="arch" type="xml">
+            <form string="Safety Committee Meeting">
+                <header>
+                    <button name="button_submit" string="Submit" class="oe_highlight" type="object" states="draft"/>
+                    <button name="button_cancel" string="Cancel" type="object" states="draft"/>
+                     <button name="button_reset_to_draft" string="Reset to draft" type="object" states="submitted"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft" />
+                </header>
+                <sheet>
+                    <h1 class="d-flex">
+                        Safety Committee Meeting
+                    </h1>
+                    <hr/>
+                    <br/>
+                    <group>
+                        <group>
+                            <field name="unit_id" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="venue" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="date" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        </group>
+                        <group>
+                            <field name="agenda" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="outcome" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        </group>
+                        <group>
+                            <field name="management" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="workers" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Details" name="details">
+                            <field name="action_ids">
+                                <tree editable="bottom">
+                                    <field name="safety_meeting_id" invisible="1"/>
+                                    <field name="action_point" required="1"/>
+                                    <field name="person_responsible" required="1"/>
+                                    <field name="support_team" required="1"/>
+                                    <field name="target_date" required="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+            </form>
+        </field>
+    </record>
+    <record id="health_manage_safetycomm_list" model="ir.ui.view">
+        <field name="name">health.manage.safetycomm.list</field>
+        <field name="model">health.manage.safetycomm</field>
+        <field eval="8" name="priority"/>
+        <field name="arch" type="xml">
+            <tree string="safetycomm information" create="0">
+                <field name="unit_id"/>
+                <field name="venue"/>
+                <field name="date"/>
+                <field name="agenda"/>
+                <field name="outcome"/>
+                <field name="management"/>
+                <field name="workers"/>
+            </tree>
+        </field>
+    </record>
+    <record id="ir_action_health_manage_safetycomm_list" model="ir.actions.act_window">
+        <field name="name">Safety Committee Meeting</field>
+        <field name="res_model">health.manage.safetycomm</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <record id="ir_action_health_manage_safetycomm_create" model="ir.actions.act_window">
+        <field name="name">Safety Committee Meeting</field>
+        <field name="res_model">health.manage.safetycomm</field>
+        <field name="view_mode">form</field>
+    </record>
+    <menuitem id="menu_health_manage_safetycomm_master"
+            name="Manage Safety Committee Meeting"
+            sequence="9"
+            />
+
+
+    <menuitem id="menu_health_manage_safetycomm_list"
+            name="Safety Committee Meeting List"
+            sequence="3"
+            parent="menu_health_manage_safetycomm_master"
+            action="ir_action_health_manage_safetycomm_list"
+    />
+
+    <menuitem id="menu_health_manage_safetycomm_create"
+            name="Safety Committee Meeting"
+            sequence="1"
+            parent="menu_health_manage_safetycomm_master"
+            action="ir_action_health_manage_safetycomm_create"
+    />
+
+
+
+
+    
+</odoo>

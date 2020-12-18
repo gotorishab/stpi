@@ -1,0 +1,1347 @@
+<odoo>
+    <record id="health_business_type_form" model="ir.ui.view">
+        <field name="name">health.business.type.form</field>
+        <field name="model">health.business.type</field>
+        <field name="arch" type="xml">
+            <form string="Business Type">
+                <sheet>
+                    <h1 class="d-flex">
+                        Business Type
+                    </h1>
+                    <hr/>
+                    <br/>
+                    <group>
+                        <group>
+                            <field name="name" placeholder="Enter your  Business." required="1"/>
+                        </group>
+                        <group>
+                            <field name="description" placeholder="Description" required="1"/>
+                        </group>
+
+                    </group>
+<!--                    <div class="oe_title">-->
+<!--                        <label for="name"/>-->
+<!--                        <h4><field name="name" placeholder="Enter your  Business." required="1"/></h4>-->
+<!--                    </div>-->
+                    <br/>
+<!--                    <div class="oe_title">-->
+<!--                        <label for="description"/>-->
+<!--                        <field name="description" required="1"/>-->
+<!--                    </div>-->
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="health_business_type_list" model="ir.ui.view">
+        <field name="name">health.business.type.list</field>
+        <field name="model">health.business.type</field>
+        <field eval="8" name="priority"/>
+        <field name="arch" type="xml">
+            <tree string="Create Story" create="0">
+                <field name="name" required="1"/>
+            </tree>
+        </field>
+    </record>
+    <record id="ir_action_health_business_type_list" model="ir.actions.act_window">
+        <field name="name">Health Business Type</field>
+        <field name="res_model">health.business.type</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <record id="ir_action_health_business_type_create" model="ir.actions.act_window">
+        <field name="name">Health Business Type</field>
+        <field name="res_model">health.business.type</field>
+        <field name="view_mode">form</field>
+    </record>
+    <menuitem id="menu_health_all_master"
+              name="Manage Master"
+              sequence="1"/>
+
+    <menuitem id="menu_health_business_type_master"
+            name="Business Type"
+            sequence="1"
+            parent="menu_health_all_master"/>
+
+
+    <menuitem id="menu_health_business_type_list"
+            name="List"
+            sequence="2"
+            parent="menu_health_business_type_master"
+            action="ir_action_health_business_type_list"
+    />
+
+    <menuitem id="menu_health_business_type_create"
+            name="Create"
+            sequence="1"
+            parent="menu_health_business_type_master"
+            action="ir_action_health_business_type_create"
+    />
+
+
+
+
+
+    <record id="health_unit_master_form" model="ir.ui.view">
+        <field name="name">health.unit.master.form</field>
+        <field name="model">health.unit.master</field>
+        <field name="arch" type="xml">
+            <form string="Unit Master">
+                <sheet>
+                    <h1 class="d-flex">
+                        Unit Master
+                    </h1>
+                    <hr/>
+                    <br/>
+                    <group>
+                        <group>
+                            <field name="name" placeholder="Enter your  Unit." required="1"/>
+                            <field name="location" placeholder="Enter your  location." required="1"/>
+                        </group>
+                        <group>
+                            <field name="description" required="1"/>
+                        </group>
+                    </group>
+                    <br/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="health_unit_master_list" model="ir.ui.view">
+        <field name="name">health.unit.master.list</field>
+        <field name="model">health.unit.master</field>
+        <field eval="8" name="priority"/>
+        <field name="arch" type="xml">
+            <tree string="Unit Master" create="0">
+                <field name="name" required="1"/>
+            </tree>
+        </field>
+    </record>
+    <record id="ir_action_health_unit_master_list" model="ir.actions.act_window">
+        <field name="name">Unit Master</field>
+        <field name="res_model">health.unit.master</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <record id="ir_action_health_unit_master_create" model="ir.actions.act_window">
+        <field name="name">Unit Master</field>
+        <field name="res_model">health.unit.master</field>
+        <field name="view_mode">form</field>
+    </record>
+    <menuitem id="menu_health_unit_master_master"
+            name="Unit Master"
+            sequence="2"
+            parent="menu_health_all_master"/>
+
+
+    <menuitem id="menu_health_unit_master_list"
+            name="List"
+            sequence="2"
+            parent="menu_health_unit_master_master"
+            action="ir_action_health_unit_master_list"
+    />
+
+    <menuitem id="menu_health_unit_master_create"
+            name="Create"
+            sequence="1"
+            parent="menu_health_unit_master_master"
+            action="ir_action_health_unit_master_create"
+    />
+
+
+
+
+
+
+
+
+
+
+    <record id="health_section_master_form" model="ir.ui.view">
+        <field name="name">health.section.master.form</field>
+        <field name="model">health.section.master</field>
+        <field name="arch" type="xml">
+            <form string="Section Master">
+                <sheet>
+                    <h1 class="d-flex">
+                        Section Master
+                    </h1>
+                    <hr/>
+                    <br/>
+                    <group>
+                        <group>
+                            <field name="name" placeholder="Enter your  section." required="1"/>
+                        </group>
+                        <group>
+                            <field name="description" required="1"/>
+                        </group>
+                    </group>
+                    <br/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="health_section_master_list" model="ir.ui.view">
+        <field name="name">health.section.master.list</field>
+        <field name="model">health.section.master</field>
+        <field eval="8" name="priority"/>
+        <field name="arch" type="xml">
+            <tree string="Section Master" create="0">
+                <field name="name" required="1"/>
+            </tree>
+        </field>
+    </record>
+    <record id="ir_action_health_section_master_list" model="ir.actions.act_window">
+        <field name="name">Section Master</field>
+        <field name="res_model">health.section.master</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <record id="ir_action_health_section_master_create" model="ir.actions.act_window">
+        <field name="name">Section Master</field>
+        <field name="res_model">health.section.master</field>
+        <field name="view_mode">form</field>
+    </record>
+    <menuitem id="menu_health_section_master_master"
+            name="Section Master"
+            sequence="4"
+            parent="menu_health_all_master"/>
+
+
+    <menuitem id="menu_health_section_master_list"
+            name="List"
+            sequence="2"
+            parent="menu_health_section_master_master"
+            action="ir_action_health_section_master_list"
+    />
+
+    <menuitem id="menu_health_section_master_create"
+            name="Create"
+            sequence="1"
+            parent="menu_health_section_master_master"
+            action="ir_action_health_section_master_create"
+    />
+
+
+
+
+
+
+
+
+
+
+
+
+    <record id="health_incident_master_form" model="ir.ui.view">
+        <field name="name">health.incident.master.form</field>
+        <field name="model">health.incident.master</field>
+        <field name="arch" type="xml">
+            <form string="Add Incident Reason">
+                <sheet>
+                    <h1 class="d-flex">
+                        Add Incident Reason
+                    </h1>
+                    <hr/>
+                    <br/>
+                    <group>
+                        <group>
+                            <field name="name" placeholder="Enter your  incident." required="1"/>
+                        </group>
+                        <group>
+                            <field name="description" required="1"/>
+                        </group>
+                    </group>
+                    <br/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="health_incident_master_list" model="ir.ui.view">
+        <field name="name">health.incident.master.list</field>
+        <field name="model">health.incident.master</field>
+        <field eval="8" name="priority"/>
+        <field name="arch" type="xml">
+            <tree string="Add Incident Reason" create="0">
+                <field name="name" required="1"/>
+            </tree>
+        </field>
+    </record>
+    <record id="ir_action_health_incident_master_list" model="ir.actions.act_window">
+        <field name="name">Add Incident Reason</field>
+        <field name="res_model">health.incident.master</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <record id="ir_action_health_incident_master_create" model="ir.actions.act_window">
+        <field name="name">Add Incident Reason</field>
+        <field name="res_model">health.incident.master</field>
+        <field name="view_mode">form</field>
+    </record>
+    <menuitem id="menu_health_incident_master_master"
+            name="Add Incident Reason"
+            sequence="2"
+            parent="menu_health_all_master"/>
+
+
+    <menuitem id="menu_health_incident_master_list"
+            name="List"
+            sequence="2"
+            parent="menu_health_incident_master_master"
+            action="ir_action_health_incident_master_list"
+    />
+
+    <menuitem id="menu_health_incident_master_create"
+            name="Create"
+            sequence="1"
+            parent="menu_health_incident_master_master"
+            action="ir_action_health_incident_master_create"
+    />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <record id="health_accident_master_form" model="ir.ui.view">
+        <field name="name">health.accident.master.form</field>
+        <field name="model">health.accident.master</field>
+        <field name="arch" type="xml">
+            <form string="Accident Reason">
+                <sheet>
+                    <h1 class="d-flex">
+                        Accident Reason
+                    </h1>
+                    <hr/>
+                    <br/>
+                    <group>
+                        <group>
+                            <field name="name" placeholder="Enter your  accident." required="1"/>
+                        </group>
+                        <group>
+                            <field name="description" required="1"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="health_accident_master_list" model="ir.ui.view">
+        <field name="name">health.accident.master.list</field>
+        <field name="model">health.accident.master</field>
+        <field eval="8" name="priority"/>
+        <field name="arch" type="xml">
+            <tree string="Accident Reason" create="0">
+                <field name="name" required="1"/>
+            </tree>
+        </field>
+    </record>
+    <record id="ir_action_health_accident_master_list" model="ir.actions.act_window">
+        <field name="name">Accident Reason</field>
+        <field name="res_model">health.accident.master</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <record id="ir_action_health_accident_master_create" model="ir.actions.act_window">
+        <field name="name">Accident Reason</field>
+        <field name="res_model">health.accident.master</field>
+        <field name="view_mode">form</field>
+    </record>
+    <menuitem id="menu_health_accident_master_master"
+            name="Accident Reason"
+            sequence="5"
+            parent="menu_health_all_master"/>
+
+
+    <menuitem id="menu_health_accident_master_list"
+            name="List"
+            sequence="2"
+            parent="menu_health_accident_master_master"
+            action="ir_action_health_accident_master_list"
+    />
+
+    <menuitem id="menu_health_accident_master_create"
+            name="Create"
+            sequence="1"
+            parent="menu_health_accident_master_master"
+            action="ir_action_health_accident_master_create"
+    />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <record id="health_audit_type_master_form" model="ir.ui.view">
+        <field name="name">health.audit.type.master.form</field>
+        <field name="model">health.audit.type.master</field>
+        <field name="arch" type="xml">
+            <form string="Audit Type master">
+                <sheet>
+                    <h1 class="d-flex">
+                        Audit Type master
+                    </h1>
+                    <hr/>
+                    <br/>
+                    <group>
+                        <group>
+                            <field name="audit_type" required="1"/>
+                            <field name="objective" required="1" widget="many2many_tags"/>
+                        </group>
+                        <group>
+                            <field name="frequency" required="1"/>
+                            <field name="introduction" required="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="checklist" string="'Checklist">
+                            <field name="checklist_ids">
+                                <tree editable="bottom">
+                                    <field name="audit_type_id" invisible="1"/>
+                                    <field name="checklist_item" required="1"/>
+                                    <field name="sub_checklist_item" required="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="health_audit_type_master_list" model="ir.ui.view">
+        <field name="name">health.audit.type.master.list</field>
+        <field name="model">health.audit.type.master</field>
+        <field eval="8" name="priority"/>
+        <field name="arch" type="xml">
+            <tree string="Audit Type master" create="0">
+                <field name="audit_type" required="1"/>
+            </tree>
+        </field>
+    </record>
+    <record id="ir_action_health_audit_type_master_list" model="ir.actions.act_window">
+        <field name="name">Audit Type master</field>
+        <field name="res_model">health.audit.type.master</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <record id="ir_action_health_audit_type_master_create" model="ir.actions.act_window">
+        <field name="name">Audit Type masterr</field>
+        <field name="res_model">health.audit.type.master</field>
+        <field name="view_mode">form</field>
+    </record>
+    <menuitem id="menu_health_audit_type_master_master"
+            name="Audit Type master"
+            sequence="5"
+            parent="menu_health_all_master"/>
+
+
+    <menuitem id="menu_health_audit_type_master_list"
+            name="List"
+            sequence="2"
+            parent="menu_health_audit_type_master_master"
+            action="ir_action_health_audit_type_master_list"
+    />
+
+    <menuitem id="menu_health_audit_type_master_create"
+            name="Create"
+            sequence="1"
+            parent="menu_health_audit_type_master_master"
+            action="ir_action_health_audit_type_master_create"
+    />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <record id="health_department_section_form" model="ir.ui.view">
+        <field name="name">health.department.section.form</field>
+        <field name="model">health.department.section</field>
+        <field name="arch" type="xml">
+            <form string="Map Department to Section">
+                <sheet>
+                    <h1 class="d-flex">
+                        Map Department to Section
+                    </h1>
+                    <hr/>
+                    <br/>
+                    <group>
+                        <group>
+                            <field name="department_id" required="1"/>
+                        </group>
+                        <group>
+                            <field name="section_id" required="1"/>
+                        </group>
+                    </group>
+                    <br/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="health_department_section_list" model="ir.ui.view">
+        <field name="name">health.department.section.list</field>
+        <field name="model">health.department.section</field>
+        <field eval="8" name="priority"/>
+        <field name="arch" type="xml">
+            <tree string="Create Story" create="0">
+                <field name="department_id" required="1"/>
+                <field name="section_id" required="1"/>
+            </tree>
+        </field>
+    </record>
+    <record id="ir_action_health_department_section_list" model="ir.actions.act_window">
+        <field name="name">Map Department to Section</field>
+        <field name="res_model">health.department.section</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <record id="ir_action_health_department_section_create" model="ir.actions.act_window">
+        <field name="name">Map Department to Section</field>
+        <field name="res_model">health.department.section</field>
+        <field name="view_mode">form</field>
+    </record>
+    <menuitem id="menu_health_department_section_master"
+            name="Map Department to Section"
+            sequence="5"
+            parent="menu_health_all_master"/>
+
+
+    <menuitem id="menu_health_department_section_list"
+            name="List"
+            sequence="2"
+            parent="menu_health_department_section_master"
+            action="ir_action_health_department_section_list"
+    />
+
+    <menuitem id="menu_health_department_section_create"
+            name="Create"
+            sequence="1"
+            parent="menu_health_department_section_master"
+            action="ir_action_health_department_section_create"
+    />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <record id="health_business_unit_form" model="ir.ui.view">
+        <field name="name">health.business.unit.form</field>
+        <field name="model">health.business.unit</field>
+        <field name="arch" type="xml">
+            <form string="Map Business to Unit">
+                <sheet>
+                    <h1 class="d-flex">
+                        Map Business to Unit
+                    </h1>
+                    <hr/>
+                    <br/>
+                    <group>
+                        <group>
+                            <field name="business_id" required="1"/>
+                        </group>
+                        <group>
+                            <field name="unit_id" required="1"/>
+                        </group>
+                    </group>
+                    <br/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="health_business_unit_list" model="ir.ui.view">
+        <field name="name">health.business.unit.list</field>
+        <field name="model">health.business.unit</field>
+        <field eval="8" name="priority"/>
+        <field name="arch" type="xml">
+            <tree string="Create Story" create="0">
+                <field name="business_id" required="1"/>
+                <field name="unit_id" required="1"/>
+            </tree>
+        </field>
+    </record>
+    <record id="ir_action_health_business_unit_list" model="ir.actions.act_window">
+        <field name="name">Map Business to Unit</field>
+        <field name="res_model">health.business.unit</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <record id="ir_action_health_business_unit_create" model="ir.actions.act_window">
+        <field name="name">Map Business to Unit</field>
+        <field name="res_model">health.business.unit</field>
+        <field name="view_mode">form</field>
+    </record>
+    <menuitem id="menu_health_business_unit_master"
+            name="Map Business to Unit"
+            sequence="5"
+            parent="menu_health_all_master"/>
+
+
+    <menuitem id="menu_health_business_unit_list"
+            name="List"
+            sequence="2"
+            parent="menu_health_business_unit_master"
+            action="ir_action_health_business_unit_list"
+    />
+
+    <menuitem id="menu_health_business_unit_create"
+            name="Create"
+            sequence="1"
+            parent="menu_health_business_unit_master"
+            action="ir_action_health_business_unit_create"
+    />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--    <record id="health_ammonia_safety_audit_form" model="ir.ui.view">-->
+<!--        <field name="name">health.ammonia.safety.audit.form</field>-->
+<!--        <field name="model">health.ammonia.safety.audit</field>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <form string="Ammonia safety audit">-->
+<!--                <sheet>-->
+<!--                    <h1 class="d-flex">-->
+<!--                        Ammonia safety audit-->
+<!--                    </h1>-->
+<!--                    <hr/>-->
+<!--                    <br/>-->
+<!--                    <div class="oe_title">-->
+<!--                        <label for="audit_type_id"/>-->
+<!--                        <h4><field name="audit_type_id" required="1"/></h4>-->
+<!--                        <label for="checklist_item"/>-->
+<!--                        <h4><field name="checklist_item" required="1"/></h4>-->
+<!--                        <label for="sub_checklist_item"/>-->
+<!--                        <h4><field name="sub_checklist_item" required="1"/></h4>-->
+<!--                    </div>-->
+<!--                    <br/>-->
+<!--                </sheet>-->
+<!--            </form>-->
+<!--        </field>-->
+<!--    </record>-->
+<!--    <record id="health_ammonia_safety_audit_list" model="ir.ui.view">-->
+<!--        <field name="name">health.ammonia.safety.audit.list</field>-->
+<!--        <field name="model">health.ammonia.safety.audit</field>-->
+<!--        <field eval="8" name="priority"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <tree string="Ammonia safety audit" create="0">-->
+<!--                <field name="audit_type_id" required="1"/>-->
+<!--            </tree>-->
+<!--        </field>-->
+<!--    </record>-->
+<!--    <record id="ir_action_health_ammonia_safety_audit_list" model="ir.actions.act_window">-->
+<!--        <field name="name">Ammonia safety audit</field>-->
+<!--        <field name="res_model">health.ammonia.safety.audit</field>-->
+<!--        <field name="view_mode">tree,form</field>-->
+<!--    </record>-->
+<!--    <record id="ir_action_health_ammonia_safety_audit_create" model="ir.actions.act_window">-->
+<!--        <field name="name">Ammonia safety auditr</field>-->
+<!--        <field name="res_model">health.ammonia.safety.audit</field>-->
+<!--        <field name="view_mode">form</field>-->
+<!--    </record>-->
+<!--    <menuitem id="menu_health_ammonia_safety_audit_master"-->
+<!--            name="Ammonia safety audit"-->
+<!--            sequence="5"-->
+<!--            parent="menu_health_all_master"/>-->
+
+
+<!--    <menuitem id="menu_health_ammonia_safety_audit_list"-->
+<!--            name="List"-->
+<!--            sequence="2"-->
+<!--            parent="menu_health_ammonia_safety_audit_master"-->
+<!--            action="ir_action_health_ammonia_safety_audit_list"-->
+<!--    />-->
+
+<!--    <menuitem id="menu_health_ammonia_safety_audit_create"-->
+<!--            name="Create"-->
+<!--            sequence="1"-->
+<!--            parent="menu_health_ammonia_safety_audit_master"-->
+<!--            action="ir_action_health_ammonia_safety_audit_create"-->
+<!--    />-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--    <record id="health_canteen_safety_audit_form" model="ir.ui.view">-->
+<!--        <field name="name">health.canteen.safety.audit.form</field>-->
+<!--        <field name="model">health.canteen.safety.audit</field>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <form string="Canteen safety audit">-->
+<!--                <sheet>-->
+<!--                    <h1 class="d-flex">-->
+<!--                        Canteen safety audit-->
+<!--                    </h1>-->
+<!--                    <hr/>-->
+<!--                    <br/>-->
+<!--                    <div class="oe_title">-->
+<!--                        <label for="audit_type_id"/>-->
+<!--                        <h4><field name="audit_type_id" required="1"/></h4>-->
+<!--                        <label for="checklist_item"/>-->
+<!--                        <h4><field name="checklist_item" required="1"/></h4>-->
+<!--                        <label for="sub_checklist_item"/>-->
+<!--                        <h4><field name="sub_checklist_item" required="1"/></h4>-->
+<!--                    </div>-->
+<!--                </sheet>-->
+<!--            </form>-->
+<!--        </field>-->
+<!--    </record>-->
+<!--    <record id="health_canteen_safety_audit_list" model="ir.ui.view">-->
+<!--        <field name="name">health.canteen.safety.audit.list</field>-->
+<!--        <field name="model">health.canteen.safety.audit</field>-->
+<!--        <field eval="8" name="priority"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <tree string="Canteen safety audit" create="0">-->
+<!--                <field name="audit_type_id" required="1"/>-->
+<!--            </tree>-->
+<!--        </field>-->
+<!--    </record>-->
+<!--    <record id="ir_action_health_canteen_safety_audit_list" model="ir.actions.act_window">-->
+<!--        <field name="name">Canteen safety audit</field>-->
+<!--        <field name="res_model">health.canteen.safety.audit</field>-->
+<!--        <field name="view_mode">tree,form</field>-->
+<!--    </record>-->
+<!--    <record id="ir_action_health_canteen_safety_audit_create" model="ir.actions.act_window">-->
+<!--        <field name="name">Canteen safety audit</field>-->
+<!--        <field name="res_model">health.canteen.safety.audit</field>-->
+<!--        <field name="view_mode">form</field>-->
+<!--    </record>-->
+<!--    <menuitem id="menu_health_canteen_safety_audit_master"-->
+<!--            name="Canteen safety audit"-->
+<!--            sequence="5"-->
+<!--            parent="menu_health_all_master"/>-->
+
+
+<!--    <menuitem id="menu_health_canteen_safety_audit_list"-->
+<!--            name="List"-->
+<!--            sequence="2"-->
+<!--            parent="menu_health_canteen_safety_audit_master"-->
+<!--            action="ir_action_health_canteen_safety_audit_list"-->
+<!--    />-->
+
+<!--    <menuitem id="menu_health_canteen_safety_audit_create"-->
+<!--            name="Create"-->
+<!--            sequence="1"-->
+<!--            parent="menu_health_canteen_safety_audit_master"-->
+<!--            action="ir_action_health_canteen_safety_audit_create"-->
+<!--    />-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--    <record id="health_cpp_safety_audit_form" model="ir.ui.view">-->
+<!--        <field name="name">health.cpp.safety.audit.form</field>-->
+<!--        <field name="model">health.cpp.safety.audit</field>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <form string="CPP safety audit">-->
+<!--                <sheet>-->
+<!--                    <h1 class="d-flex">-->
+<!--                        CPP safety audit-->
+<!--                    </h1>-->
+<!--                    <hr/>-->
+<!--                    <br/>-->
+<!--                    <div class="oe_title">-->
+<!--                        <label for="audit_type_id"/>-->
+<!--                        <h4><field name="audit_type_id" required="1"/></h4>-->
+<!--                        <label for="checklist_item"/>-->
+<!--                        <h4><field name="checklist_item" required="1"/></h4>-->
+<!--                        <label for="sub_checklist_item"/>-->
+<!--                        <h4><field name="sub_checklist_item" required="1"/></h4>-->
+<!--                    </div>-->
+<!--                </sheet>-->
+<!--            </form>-->
+<!--        </field>-->
+<!--    </record>-->
+<!--    <record id="health_cpp_safety_audit_list" model="ir.ui.view">-->
+<!--        <field name="name">health.cpp.safety.audit.list</field>-->
+<!--        <field name="model">health.cpp.safety.audit</field>-->
+<!--        <field eval="8" name="priority"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <tree string="CPP safety audit" create="0">-->
+<!--                <field name="audit_type_id" required="1"/>-->
+<!--            </tree>-->
+<!--        </field>-->
+<!--    </record>-->
+<!--    <record id="ir_action_health_cpp_safety_audit_list" model="ir.actions.act_window">-->
+<!--        <field name="name">CPP safety audit</field>-->
+<!--        <field name="res_model">health.cpp.safety.audit</field>-->
+<!--        <field name="view_mode">tree,form</field>-->
+<!--    </record>-->
+<!--    <record id="ir_action_health_cpp_safety_audit_create" model="ir.actions.act_window">-->
+<!--        <field name="name">CPP safety audit</field>-->
+<!--        <field name="res_model">health.cpp.safety.audit</field>-->
+<!--        <field name="view_mode">form</field>-->
+<!--    </record>-->
+<!--    <menuitem id="menu_health_cpp_safety_audit_master"-->
+<!--            name="CPP safety audit"-->
+<!--            sequence="5"-->
+<!--            parent="menu_health_all_master"/>-->
+
+
+<!--    <menuitem id="menu_health_cpp_safety_audit_list"-->
+<!--            name="List"-->
+<!--            sequence="2"-->
+<!--            parent="menu_health_cpp_safety_audit_master"-->
+<!--            action="ir_action_health_cpp_safety_audit_list"-->
+<!--    />-->
+
+<!--    <menuitem id="menu_health_cpp_safety_audit_create"-->
+<!--            name="Create"-->
+<!--            sequence="1"-->
+<!--            parent="menu_health_cpp_safety_audit_master"-->
+<!--            action="ir_action_health_cpp_safety_audit_create"-->
+<!--    />-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--    <record id="health_godown_safety_audit_form" model="ir.ui.view">-->
+<!--        <field name="name">health.godown.safety.audit.form</field>-->
+<!--        <field name="model">health.godown.safety.audit</field>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <form string="Go-down safety inspection">-->
+<!--                <sheet>-->
+<!--                    <h1 class="d-flex">-->
+<!--                        Go-down safety inspection-->
+<!--                    </h1>-->
+<!--                    <hr/>-->
+<!--                    <br/>-->
+<!--                    <div class="oe_title">-->
+<!--                        <label for="audit_type_id"/>-->
+<!--                        <h4><field name="audit_type_id" required="1"/></h4>-->
+<!--                        <label for="checklist_item"/>-->
+<!--                        <h4><field name="checklist_item" required="1"/></h4>-->
+<!--                        <label for="sub_checklist_item"/>-->
+<!--                        <h4><field name="sub_checklist_item" required="1"/></h4>-->
+<!--                    </div>-->
+<!--                </sheet>-->
+<!--            </form>-->
+<!--        </field>-->
+<!--    </record>-->
+<!--    <record id="health_godown_safety_audit_list" model="ir.ui.view">-->
+<!--        <field name="name">health.godown.safety.audit.list</field>-->
+<!--        <field name="model">health.godown.safety.audit</field>-->
+<!--        <field eval="8" name="priority"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <tree string="Go-down safety inspection" create="0">-->
+<!--                <field name="audit_type_id" required="1"/>-->
+<!--            </tree>-->
+<!--        </field>-->
+<!--    </record>-->
+<!--    <record id="ir_action_health_godown_safety_audit_list" model="ir.actions.act_window">-->
+<!--        <field name="name">Go-down safety inspection</field>-->
+<!--        <field name="res_model">health.godown.safety.audit</field>-->
+<!--        <field name="view_mode">tree,form</field>-->
+<!--    </record>-->
+<!--    <record id="ir_action_health_godown_safety_audit_create" model="ir.actions.act_window">-->
+<!--        <field name="name">Go-down safety inspection</field>-->
+<!--        <field name="res_model">health.godown.safety.audit</field>-->
+<!--        <field name="view_mode">form</field>-->
+<!--    </record>-->
+<!--    <menuitem id="menu_health_godown_safety_audit_master"-->
+<!--            name="Go-down safety inspection"-->
+<!--            sequence="5"-->
+<!--            parent="menu_health_all_master"/>-->
+
+
+<!--    <menuitem id="menu_health_godown_safety_audit_list"-->
+<!--            name="List"-->
+<!--            sequence="2"-->
+<!--            parent="menu_health_godown_safety_audit_master"-->
+<!--            action="ir_action_health_godown_safety_audit_list"-->
+<!--    />-->
+
+<!--    <menuitem id="menu_health_godown_safety_audit_create"-->
+<!--            name="Create"-->
+<!--            sequence="1"-->
+<!--            parent="menu_health_godown_safety_audit_master"-->
+<!--            action="ir_action_health_godown_safety_audit_create"-->
+<!--    />-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--    <record id="health_hostel_safety_audit_form" model="ir.ui.view">-->
+<!--        <field name="name">health.hostel.safety.audit.form</field>-->
+<!--        <field name="model">health.hostel.safety.audit</field>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <form string="Hostel safety inspection">-->
+<!--                <sheet>-->
+<!--                    <h1 class="d-flex">-->
+<!--                        Hostel safety inspection-->
+<!--                    </h1>-->
+<!--                    <hr/>-->
+<!--                    <br/>-->
+<!--                    <div class="oe_title">-->
+<!--                        <label for="audit_type_id"/>-->
+<!--                        <h4><field name="audit_type_id" required="1"/></h4>-->
+<!--                        <label for="checklist_item"/>-->
+<!--                        <h4><field name="checklist_item" required="1"/></h4>-->
+<!--                        <label for="sub_checklist_item"/>-->
+<!--                        <h4><field name="sub_checklist_item" required="1"/></h4>-->
+<!--                    </div>-->
+<!--                </sheet>-->
+<!--            </form>-->
+<!--        </field>-->
+<!--    </record>-->
+<!--    <record id="health_hostel_safety_audit_list" model="ir.ui.view">-->
+<!--        <field name="name">health.hostel.safety.audit.list</field>-->
+<!--        <field name="model">health.hostel.safety.audit</field>-->
+<!--        <field eval="8" name="priority"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <tree string="Create Story" create="0">-->
+<!--                <field name="audit_type_id" required="1"/>-->
+<!--            </tree>-->
+<!--        </field>-->
+<!--    </record>-->
+<!--    <record id="ir_action_health_hostel_safety_audit_list" model="ir.actions.act_window">-->
+<!--        <field name="name">Hostel safety inspection</field>-->
+<!--        <field name="res_model">health.hostel.safety.audit</field>-->
+<!--        <field name="view_mode">tree,form</field>-->
+<!--    </record>-->
+<!--    <record id="ir_action_health_hostel_safety_audit_create" model="ir.actions.act_window">-->
+<!--        <field name="name">Hostel safety inspection</field>-->
+<!--        <field name="res_model">health.hostel.safety.audit</field>-->
+<!--        <field name="view_mode">form</field>-->
+<!--    </record>-->
+<!--    <menuitem id="menu_health_hostel_safety_audit_master"-->
+<!--            name="Hostel safety inspection"-->
+<!--            sequence="5"-->
+<!--            parent="menu_health_all_master"/>-->
+
+
+<!--    <menuitem id="menu_health_hostel_safety_audit_list"-->
+<!--            name="List"-->
+<!--            sequence="2"-->
+<!--            parent="menu_health_hostel_safety_audit_master"-->
+<!--            action="ir_action_health_hostel_safety_audit_list"-->
+<!--    />-->
+
+<!--    <menuitem id="menu_health_hostel_safety_audit_create"-->
+<!--            name="Create"-->
+<!--            sequence="1"-->
+<!--            parent="menu_health_hostel_safety_audit_master"-->
+<!--            action="ir_action_health_hostel_safety_audit_create"-->
+<!--    />-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--    <record id="health_hplant_safety_audit_form" model="ir.ui.view">-->
+<!--        <field name="name">health.hplant.safety.audit.form</field>-->
+<!--        <field name="model">health.hplant.safety.audit</field>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <form string="Hplant safety audit">-->
+<!--                <sheet>-->
+<!--                    <h1 class="d-flex">-->
+<!--                        Hplant safety audit-->
+<!--                    </h1>-->
+<!--                    <hr/>-->
+<!--                    <br/>-->
+<!--                    <div class="oe_title">-->
+<!--                        <label for="audit_type_id"/>-->
+<!--                        <h4><field name="audit_type_id" required="1"/></h4>-->
+<!--                        <label for="checklist_item"/>-->
+<!--                        <h4><field name="checklist_item" required="1"/></h4>-->
+<!--                        <label for="sub_checklist_item"/>-->
+<!--                        <h4><field name="sub_checklist_item" required="1"/></h4>-->
+<!--                    </div>-->
+<!--                </sheet>-->
+<!--            </form>-->
+<!--        </field>-->
+<!--    </record>-->
+<!--    <record id="health_hplant_safety_audit_list" model="ir.ui.view">-->
+<!--        <field name="name">health.hplant.safety.audit.list</field>-->
+<!--        <field name="model">health.hplant.safety.audit</field>-->
+<!--        <field eval="8" name="priority"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <tree string="Create Story" create="0">-->
+<!--                <field name="audit_type_id" required="1"/>-->
+<!--            </tree>-->
+<!--        </field>-->
+<!--    </record>-->
+<!--    <record id="ir_action_health_hplant_safety_audit_list" model="ir.actions.act_window">-->
+<!--        <field name="name">Hplant safety audit</field>-->
+<!--        <field name="res_model">health.hplant.safety.audit</field>-->
+<!--        <field name="view_mode">tree,form</field>-->
+<!--    </record>-->
+<!--    <record id="ir_action_health_hplant_safety_audit_create" model="ir.actions.act_window">-->
+<!--        <field name="name">Hplant safety audit</field>-->
+<!--        <field name="res_model">health.hplant.safety.audit</field>-->
+<!--        <field name="view_mode">form</field>-->
+<!--    </record>-->
+<!--    <menuitem id="menu_health_hplant_safety_audit_master"-->
+<!--            name="Hplant safety audit"-->
+<!--            sequence="5"-->
+<!--            parent="menu_health_all_master"/>-->
+
+
+<!--    <menuitem id="menu_health_hplant_safety_audit_list"-->
+<!--            name="List"-->
+<!--            sequence="2"-->
+<!--            parent="menu_health_hplant_safety_audit_master"-->
+<!--            action="ir_action_health_hplant_safety_audit_list"-->
+<!--    />-->
+
+<!--    <menuitem id="menu_health_hplant_safety_audit_create"-->
+<!--            name="Create"-->
+<!--            sequence="1"-->
+<!--            parent="menu_health_hplant_safety_audit_master"-->
+<!--            action="ir_action_health_hplant_safety_audit_create"-->
+<!--    />-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--    <record id="health_washroom_safety_audit_form" model="ir.ui.view">-->
+<!--        <field name="name">health.washroom.safety.audit.form</field>-->
+<!--        <field name="model">health.washroom.safety.audit</field>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <form string="Washroom safety inspection">-->
+<!--                <sheet>-->
+<!--                    <h1 class="d-flex">-->
+<!--                        Washroom safety inspection-->
+<!--                    </h1>-->
+<!--                    <hr/>-->
+<!--                    <br/>-->
+<!--                    <div class="oe_title">-->
+<!--                        <label for="audit_type_id"/>-->
+<!--                        <h4><field name="audit_type_id" required="1"/></h4>-->
+<!--                        <label for="checklist_item"/>-->
+<!--                        <h4><field name="checklist_item" required="1"/></h4>-->
+<!--                        <label for="sub_checklist_item"/>-->
+<!--                        <h4><field name="sub_checklist_item" required="1"/></h4>-->
+<!--                    </div>-->
+<!--                </sheet>-->
+<!--            </form>-->
+<!--        </field>-->
+<!--    </record>-->
+<!--    <record id="health_washroom_safety_audit_list" model="ir.ui.view">-->
+<!--        <field name="name">health.washroom.safety.audit.list</field>-->
+<!--        <field name="model">health.washroom.safety.audit</field>-->
+<!--        <field eval="8" name="priority"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <tree string="Create Story" create="0">-->
+<!--                <field name="audit_type_id" required="1"/>-->
+<!--            </tree>-->
+<!--        </field>-->
+<!--    </record>-->
+<!--    <record id="ir_action_health_washroom_safety_audit_list" model="ir.actions.act_window">-->
+<!--        <field name="name">Washroom safety inspection</field>-->
+<!--        <field name="res_model">health.washroom.safety.audit</field>-->
+<!--        <field name="view_mode">tree,form</field>-->
+<!--    </record>-->
+<!--    <record id="ir_action_health_washroom_safety_audit_create" model="ir.actions.act_window">-->
+<!--        <field name="name">Washroom safety inspection</field>-->
+<!--        <field name="res_model">health.washroom.safety.audit</field>-->
+<!--        <field name="view_mode">form</field>-->
+<!--    </record>-->
+<!--    <menuitem id="menu_health_washroom_safety_audit_master"-->
+<!--            name="Washroom safety inspection"-->
+<!--            sequence="5"-->
+<!--            parent="menu_health_all_master"/>-->
+
+
+<!--    <menuitem id="menu_health_washroom_safety_audit_list"-->
+<!--            name="List"-->
+<!--            sequence="2"-->
+<!--            parent="menu_health_washroom_safety_audit_master"-->
+<!--            action="ir_action_health_washroom_safety_audit_list"-->
+<!--    />-->
+
+<!--    <menuitem id="menu_health_washroom_safety_audit_create"-->
+<!--            name="Create"-->
+<!--            sequence="1"-->
+<!--            parent="menu_health_washroom_safety_audit_master"-->
+<!--            action="ir_action_health_washroom_safety_audit_create"-->
+<!--    />-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--    <record id="health_workplace_safety_audit_form" model="ir.ui.view">-->
+<!--        <field name="name">health.workplace.safety.audit.form</field>-->
+<!--        <field name="model">health.workplace.safety.audit</field>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <form string="Workplace safety audit">-->
+<!--                <sheet>-->
+<!--                    <h1 class="d-flex">-->
+<!--                        Workplace safety audit-->
+
+<!--                    </h1>-->
+<!--                    <hr/>-->
+<!--                    <br/>-->
+<!--                    <div class="oe_title">-->
+<!--                        <label for="audit_type_id"/>-->
+<!--                        <h4><field name="audit_type_id" required="1"/></h4>-->
+<!--                        <label for="checklist_item"/>-->
+<!--                        <h4><field name="checklist_item" required="1"/></h4>-->
+<!--                        <label for="sub_checklist_item"/>-->
+<!--                        <h4><field name="sub_checklist_item" required="1"/></h4>-->
+<!--                    </div>-->
+<!--                </sheet>-->
+<!--            </form>-->
+<!--        </field>-->
+<!--    </record>-->
+<!--    <record id="health_workplace_safety_audit_list" model="ir.ui.view">-->
+<!--        <field name="name">health.workplace.safety.audit.list</field>-->
+<!--        <field name="model">health.workplace.safety.audit</field>-->
+<!--        <field eval="8" name="priority"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <tree string="Workplace safety audit" create="0">-->
+<!--                <field name="audit_type_id" required="1"/>-->
+<!--            </tree>-->
+<!--        </field>-->
+<!--    </record>-->
+<!--    <record id="ir_action_health_workplace_safety_audit_list" model="ir.actions.act_window">-->
+<!--        <field name="name">Workplace safety audit</field>-->
+<!--        <field name="res_model">health.workplace.safety.audit</field>-->
+<!--        <field name="view_mode">tree,form</field>-->
+<!--    </record>-->
+<!--    <record id="ir_action_health_workplace_safety_audit_create" model="ir.actions.act_window">-->
+<!--        <field name="name">Workplace safety audit</field>-->
+<!--        <field name="res_model">health.workplace.safety.audit</field>-->
+<!--        <field name="view_mode">form</field>-->
+<!--    </record>-->
+<!--    <menuitem id="menu_health_workplace_safety_audit_master"-->
+<!--            name="Workplace safety audit"-->
+<!--            sequence="5"-->
+<!--            parent="menu_health_all_master"/>-->
+
+
+<!--    <menuitem id="menu_health_workplace_safety_audit_list"-->
+<!--            name="List"-->
+<!--            sequence="2"-->
+<!--            parent="menu_health_workplace_safety_audit_master"-->
+<!--            action="ir_action_health_workplace_safety_audit_list"-->
+<!--    />-->
+
+<!--    <menuitem id="menu_health_workplace_safety_audit_create"-->
+<!--            name="Create"-->
+<!--            sequence="1"-->
+<!--            parent="menu_health_workplace_safety_audit_master"-->
+<!--            action="ir_action_health_workplace_safety_audit_create"-->
+<!--    />-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--    -->
+</odoo>

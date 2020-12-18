@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates>
+  <t t-name="EmployeeRows">
+      <tr class="employee_row" style="border-bottom: 0.5px solid #DEE2E6;">
+          <td colspan="1">
+              <div class="form-field from_date">
+                  <input required="required" type="date"  class="form-control o_required_modifier text-left"  t-attf-name="from_date_#{id}"/>
+              </div>
+          </td>
+          <td colspan="1">
+              <div class="form-field to_date">
+                  <input required="required" type="date"  class="form-control o_required_modifier text-left"  t-attf-name="to_date_#{id}"/>
+              </div>
+          </td>
+          <td colspan="1">
+              <div class="form-field position">
+                  <input required="required" type="text"  class="form-control o_required_modifier text-left"  t-attf-name="position_#{id}"/>
+              </div>
+          </td>
+          <td colspan="1">
+              <div class="form-field organization">
+                  <input required="required" type="text"  class="form-control o_required_modifier text-left"  t-attf-name="organization_#{id}"/>
+              </div>
+          </td>
+          <td colspan="1">
+              <div class="form-field ref_name">
+                  <input required="required" type="text"  class="form-control o_required_modifier text-left"  t-attf-name="ref_name_#{id}"/>
+              </div>
+          </td>
+          <td colspan="1">
+              <div class="form-field ref_position">
+                  <input required="required" type="text"  class="form-control o_required_modifier text-left"  t-attf-name="ref_position_#{id}"/>
+              </div>
+          </td>
+          <td colspan="1">
+              <div class="form-field ref_phone">
+                  <input required="required" type="text"  class="form-control o_required_modifier text-left"  t-attf-name="ref_phone_#{id}"/>
+              </div>
+          </td>
+          <td class="line_record_delete" width="50px">
+              <span style="font-size:24px" class="fa fa-trash-o" name="delete"/>
+          </td>
+      </tr>
+  </t>
+
+  <t t-name="EducationRows">
+      <tr class="education_row" style="border-bottom: 0.5px solid #DEE2E6;">
+        <t t-set="rec_id" t-value="id"/>
+          <td colspan="1">
+            <select t-if="line_type_ids" class="form-control line_type_id" t-attf-name="line_type_id_#{rec_id}" id="line_type_id">
+                <option t-foreach="line_type_ids" t-as="type" t-att-value="type.id">
+                    <t t-esc="type.name"/>
+                </option>
+            </select>
+          </td>
+          <td t-if="line_type_ids" colspan="1">
+              <div class="form-field name">
+                  <input required="required" type="text"  class="form-control o_required_modifier text-left"  t-attf-name="name_#{rec_id}"/>
+              </div>
+          </td>
+          <td t-if="line_type_ids" colspan="1">
+              <div class="form-field description">
+                  <input required="required" type="text"  class="form-control o_required_modifier text-left"  t-attf-name="description_#{rec_id}"/>
+              </div>
+          </td>
+          <td t-if="line_type_ids" colspan="1">
+              <div class="form-field specialization">
+                  <input required="required" type="text"  class="form-control o_required_modifier text-left"  t-attf-name="specialization_#{rec_id}"/>
+              </div>
+          </td>
+          <td t-if="line_type_ids" colspan="1">
+              <div class="form-field date_start">
+                  <input required="required" type="date"  class="form-control o_required_modifier text-left"  t-attf-name="date_start_#{rec_id}"/>
+              </div>
+          </td>
+          <td t-if="line_type_ids" colspan="1">
+              <div class="form-field date_end">
+                  <input required="required" type="date"  class="form-control o_required_modifier text-left"  t-attf-name="date_end_#{rec_id}"/>
+              </div>
+          </td>
+          <td t-if="line_type_ids" class="education_delete" width="50px">
+              <span style="font-size:24px" class="fa fa-trash-o" name="delete"/>
+          </td>
+      </tr>
+  </t>
+</templates>

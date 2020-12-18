@@ -1,0 +1,33 @@
+{
+    'name': "Vardhman Homepage",
+    'version': '1.0',
+    'summary': """Vardhman Homepage """,
+    'description': """
+    Vardhman Homepage
+""",
+    'category': 'Human Resources',
+    'author': '',
+    'depends': ['website','hr'],
+    'data': [
+        'security/ir.model.access.csv',
+        # 'views/myportal_hr_applicant_templates.xml',
+        'views/hr_employee.xml',
+        'views/portal_hr_applicant_templates.xml',
+        # 'views/cportal_hr_applicant_templates.xml',
+        'views/employee_birthday.xml',
+        'wizard/create_from_master.xml',
+        'views/masters.xml',
+        'views/employee_workanniversary.xml',
+        'views/employee_marriageanniversary.xml',
+        'views/useful_links.xml',
+        'views/test.xml',
+        'wizard/employee_birthday_wizard.xml',
+        'wizard/employee_workanniversary_wizard.xml',
+        'wizard/employee_marriageanniversary_wizard.xml',
+    ],
+    'demo': [],
+    'images': [],
+    'installable': True,
+    'application': True,
+    'license': 'OPL-1',
+}

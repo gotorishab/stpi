@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_work_anniversary_cheque_wizard" model="ir.ui.view">
+            <field name="name">employee.workanniversary.wizard</field>
+            <field name="model">employee.workanniversary.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Employees">
+                    <p class="oe_grey">
+                        Select any action.
+                    </p>
+                    <footer>
+                        <button string="Current Month" name="button_current_month" type="object" class="btn-primary"/>
+                        <button string="Previous Month" name="button_previous_month" type="object" class="btn-primary"/>
+                        <button string="Next Month" name="button_next_month" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="work_anniversary_cheque_action_call" model="ir.actions.act_window">
+            <field name="name">Employees Work Anniversary</field>
+            <field name="res_model">employee.workanniversary.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="view_id" ref="view_work_anniversary_cheque_wizard"/>
+        </record>
+
+
+    <menuitem id="anniversary_cheque_wizard_view"
+            name="Employee Anniversary"
+            sequence="3"
+            parent="website.menu_website_configuration"/>
+
+    <menuitem id="work_anniversary_cheque_wizard_view"
+            name="Employee Work Anniversary"
+            sequence="1"
+            parent="anniversary_cheque_wizard_view"
+              action="work_anniversary_cheque_action_call"/>
+
+    </data>
+</odoo>

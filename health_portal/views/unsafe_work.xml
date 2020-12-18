@@ -1,0 +1,99 @@
+<odoo>
+    <record id="health_manage_unsafework_form" model="ir.ui.view">
+        <field name="name">health.manage.unsafework.form</field>
+        <field name="model">health.manage.unsafework</field>
+        <field name="arch" type="xml">
+            <form string="Unsafe Work Stop Card">
+                <header>
+                    <button name="button_submit" string="Submit" class="oe_highlight" type="object" states="draft"/>
+                    <button name="button_cancel" string="Cancel" type="object" states="draft"/>
+                     <button name="button_reset_to_draft" string="Reset to draft" type="object" states="submitted"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft" />
+                </header>
+                <sheet>
+                    <h1 class="d-flex">
+                        Unsafe Work Stop Card
+                    </h1>
+                    <hr/>
+                    <br/>
+                    <group>
+                        <group>
+                            <field name="unit_id" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="location" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="safety_officer" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="location_unsafe" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="responsible_worker" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="observation_date" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        </group>
+                        <group>
+                            <field name="describe_hazard" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="address_problem" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="action_taken" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="received_concern" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="closed_officer" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+            </form>
+        </field>
+    </record>
+    <record id="health_manage_unsafework_list" model="ir.ui.view">
+        <field name="name">health.manage.unsafework.list</field>
+        <field name="model">health.manage.unsafework</field>
+        <field eval="8" name="priority"/>
+        <field name="arch" type="xml">
+            <tree string="Unsafe Work information" create="0">
+                <field name="unit_id"/>
+                <field name="location"/>
+                <field name="safety_officer"/>
+                <field name="location_unsafe"/>
+                <field name="responsible_worker"/>
+                <field name="observation_date"/>
+                <field name="describe_hazard"/>
+                <field name="address_problem"/>
+                <field name="action_taken"/>
+                <field name="received_concern"/>
+                <field name="closed_officer"/>
+            </tree>
+        </field>
+    </record>
+    <record id="ir_action_health_manage_unsafework_list" model="ir.actions.act_window">
+        <field name="name">Unsafe Work Stop Card</field>
+        <field name="res_model">health.manage.unsafework</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <record id="ir_action_health_manage_unsafework_create" model="ir.actions.act_window">
+        <field name="name">Unsafe Work Stop Card</field>
+        <field name="res_model">health.manage.unsafework</field>
+        <field name="view_mode">form</field>
+    </record>
+    <menuitem id="menu_health_manage_unsafework_master"
+            name="Manage Unsafe Work Stop Card"
+            sequence="11"
+            />
+
+
+    <menuitem id="menu_health_manage_unsafework_list"
+            name="Unsafe Work Stop Card List"
+            sequence="3"
+            parent="menu_health_manage_unsafework_master"
+            action="ir_action_health_manage_unsafework_list"
+    />
+
+    <menuitem id="menu_health_manage_unsafework_create"
+            name="Unsafe Work Stop Card"
+            sequence="1"
+            parent="menu_health_manage_unsafework_master"
+            action="ir_action_health_manage_unsafework_create"
+    />
+
+
+
+
+    
+</odoo>
