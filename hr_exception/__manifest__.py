@@ -16,8 +16,10 @@
                  """,
  'data': [
           'security/ir.model.access.csv',
-          'view/hr_leave_view.xml',
-          'wizard/hr_leave_wizard_view.xml',
+          'view/health_manage_accident_view.xml',
+          'wizard/health_manage_accident_wizard_view.xml',
+          'view/health_manage_fireincident_view.xml',
+          'wizard/health_manage_fireincident_wizard_view.xml',
  ],
  'images': [],
  'installable': True,

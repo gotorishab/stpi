@@ -1,1 +1,2 @@
-from . import hr_leave_wizard
+from . import health_manage_accident_wizard
+from . import health_manage_fireincident_wizard

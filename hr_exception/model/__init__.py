@@ -1,1 +1,2 @@
-from . import hr_leaves
+from . import health_manage_accident
+from . import health_manage_fireincident
