@@ -18,3 +18,7 @@ access_wizard_event_category,wizard.event.category,model_wizard_event_category,b
 access_wizard_story_rejection,wizard.story.rejection,model_wizard_story_rejection,base.group_user,1,1,1,1
 access_wizard_idea_rejection,wizard.idea.rejection,model_wizard_idea_rejection,base.group_user,1,1,1,1
 access_wizard_unit_master,wizard.unit.master,model_wizard_unit_master,base.group_user,1,1,1,1
+access_vardhman_slider_links,vardhman.slider.links,model_vardhman_slider_links,base.group_user,1,1,1,1
+access_vardhman_magazine_links,vardhman.magazine.links,model_vardhman_magazine_links,base.group_user,1,1,1,1
+access_vardhman_photo_links,vardhman.photo.links,model_vardhman_photo_links,base.group_user,1,1,1,1
+access_vardhman_videos_links,vardhman.videos.links,model_vardhman_videos_links,base.group_user,1,1,1,1

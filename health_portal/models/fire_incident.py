@@ -24,7 +24,7 @@ class HealthBusinessType(models.Model):
     route_cause_why_ids = fields.One2many('health.fireincident.causewhy','health_fireincident_id',string='Root Cause Why', track_visibility='always')
 
     state = fields.Selection(
-        [('draft', 'Draft'), ('submitted', 'Submitted'), ('cancelled', 'Cancelled')
+        [('draft', 'Draft'), ('submitted', 'Submitted'), ('approved', 'Approved'), ('cancelled', 'Cancelled')
          ], required=True, default='draft', string='Status', track_visibility='always')
 
     def button_reset_to_draft(self):
@@ -35,6 +35,10 @@ class HealthBusinessType(models.Model):
         for rec in self:
             rec.write({'state': 'submitted'})
 
+    def button_approved(self):
+        for rec in self:
+            rec.write({'state': 'approved'})
+            
     def button_cancel(self):
         for rec in self:
             rec.write({'state': 'cancelled'})

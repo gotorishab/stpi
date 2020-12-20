@@ -1,0 +1,18 @@
+<odoo>
+     <record model="ir.module.category" id="module_health_zone_audit">
+        <field name="name">Health zone_audit</field>
+        <field name="description">Help You For Knowledge Documents</field>
+        <field name="sequence">20</field>
+    </record>
+
+    <record id="group_manager_health_zone_audit" model="res.groups">
+        <field name="name">Health Zone Audit Manager</field>
+        <field name="category_id" ref="module_health_zone_audit"/>
+    </record>
+    <record id="group_approver_health_zone_audit" model="res.groups">
+        <field name="name">Health Zone Audit Approver</field>
+        <field name="category_id" ref="module_health_zone_audit"/>
+    </record>
+
+
+</odoo>

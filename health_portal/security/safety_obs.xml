@@ -1,0 +1,18 @@
+<odoo>
+     <record model="ir.module.category" id="module_health_safety_obs">
+        <field name="name">Health Safety Observation Card</field>
+        <field name="description">Help You For Knowledge Documents</field>
+        <field name="sequence">20</field>
+    </record>
+
+    <record id="group_manager_health_safety_obs" model="res.groups">
+        <field name="name">Health Safety Observation Card Manager</field>
+        <field name="category_id" ref="module_health_safety_obs"/>
+    </record>
+    <record id="group_approver_health_safety_obs" model="res.groups">
+        <field name="name">Health Safety Observation Card Approver</field>
+        <field name="category_id" ref="module_health_safety_obs"/>
+    </record>
+
+
+</odoo>

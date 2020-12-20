@@ -6,9 +6,10 @@
             <form string="Unsafe Work Stop Card">
                 <header>
                     <button name="button_submit" string="Submit" class="oe_highlight" type="object" states="draft"/>
+                    <button name="button_approved" string="Approve" class="oe_highlight" type="object" states="submitted" groups="health_portal.group_approver_health_unsafe_work"/>
                     <button name="button_cancel" string="Cancel" type="object" states="draft"/>
                      <button name="button_reset_to_draft" string="Reset to draft" type="object" states="submitted"/>
-                    <field name="state" widget="statusbar" statusbar_visible="draft" />
+                    <field name="state" widget="statusbar" statusbar_visible="draft,submitted,approved" />
                 </header>
                 <sheet>
                     <h1 class="d-flex">
@@ -75,6 +76,7 @@
     <menuitem id="menu_health_manage_unsafework_master"
             name="Manage Unsafe Work Stop Card"
             sequence="11"
+               groups="health_portal.group_approver_health_accident"
             />
 
 

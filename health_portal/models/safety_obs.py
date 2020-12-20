@@ -40,7 +40,7 @@ class HealthBusinessType(models.Model):
 
 
     state = fields.Selection(
-        [('draft', 'Draft'), ('submitted', 'Submitted'), ('cancelled', 'Cancelled')
+        [('draft', 'Draft'), ('submitted', 'Submitted'), ('approved', 'Approved'), ('cancelled', 'Cancelled')
          ], required=True, default='draft', string='Status', track_visibility='always')
 
     def button_reset_to_draft(self):
@@ -50,6 +50,10 @@ class HealthBusinessType(models.Model):
     def button_submit(self):
         for rec in self:
             rec.write({'state': 'submitted'})
+
+    def button_approved(self):
+        for rec in self:
+            rec.write({'state': 'approved'})
 
     def button_cancel(self):
         for rec in self:

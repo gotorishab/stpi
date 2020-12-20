@@ -54,7 +54,7 @@
                             <a t-attf-href="/web/content/portal.documents/{{documents.id}}/document?download=true" target="_blank"><t t-esc="documents.name"/></a>
                         </td>
                        <td>
-                            <t t-esc="documents.type_id"/>
+                            <t t-esc="documents.type_id.name"/>
                         </td>
                         <td>
                             <t t-esc="documents.create_date"/>

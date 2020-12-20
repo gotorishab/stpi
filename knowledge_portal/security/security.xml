@@ -1,0 +1,41 @@
+<odoo>
+     <record model="ir.module.category" id="module_km_task">
+        <field name="name">KM Task</field>
+        <field name="description">Help You For Knowledge Task</field>
+        <field name="sequence">20</field>
+    </record>
+
+    <record id="group_manager_km_task" model="res.groups">
+        <field name="name">KM Task Manager</field>
+        <field name="category_id" ref="module_km_task"/>
+    </record>
+    <record id="group_user_km_task" model="res.groups">
+        <field name="name">KM Task User</field>
+        <field name="category_id" ref="module_km_task"/>
+    </record>
+    <record id="group_approver_km_task" model="res.groups">
+        <field name="name">KM Task Approver</field>
+        <field name="category_id" ref="module_km_task"/>
+    </record>
+
+     <record model="ir.module.category" id="module_km_assignment">
+        <field name="name">KM assignment</field>
+        <field name="description">Help You For Knowledge assignment</field>
+        <field name="sequence">20</field>
+    </record>
+
+    <record id="group_manager_km_assignment" model="res.groups">
+        <field name="name">KM assignment Manager</field>
+        <field name="category_id" ref="module_km_assignment"/>
+    </record>
+    <record id="group_user_km_assignment" model="res.groups">
+        <field name="name">KM assignment User</field>
+        <field name="category_id" ref="module_km_assignment"/>
+    </record>
+    <record id="group_approver_km_assignment" model="res.groups">
+        <field name="name">KM assignment Approver</field>
+        <field name="category_id" ref="module_km_assignment"/>
+    </record>
+
+
+</odoo>

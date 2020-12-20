@@ -1,0 +1,185 @@
+<odoo>
+    <record id="knowledge_create_task_form" model="ir.ui.view">
+        <field name="name">knowledge.create.task.form</field>
+        <field name="model">knowledge.create.task</field>
+        <field name="arch" type="xml">
+            <form string="Create Task">
+                <header>
+                    <button name="button_submit" string="Submit" class="oe_highlight" type="object" states="draft"/>
+                    <button name="button_cancel" string="Cancel" type="object" states="draft"/>
+                     <button name="button_reset_to_draft" string="Reset to draft" type="object" states="submitted"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,submitted" />
+                </header>
+                <sheet>
+                    <h1 class="d-flex">
+                        Create Task
+                    </h1>
+                    <hr/>
+                    <br/>
+                    <group>
+                        <group>
+                            <field name="task_title" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="kaizen_code" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        </group>
+                        <group>
+                            <field name="target_date" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+<!--                            <field name="user_ids" required="1" attrs="{'readonly':[('state','!=','draft')]}" widget="many2many_tags"/>-->
+                        </group>
+                    </group>
+                        <separator string="Description"/>
+                        <field name="description" attrs="{'readonly':[('state','!=','draft')]}"/>
+                    <notebook>
+                        <page name="user" string="User">
+                            <field name="task_user_ids">
+                                <tree editable="bottom">
+                                    <field name="create_task_id" invisible="1"/>
+                                    <field name="unit_id"/>
+                                    <field name="department_id"/>
+                                    <field name="user_id" required="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+            </form>
+        </field>
+    </record>
+    <record id="knowledge_create_task_list" model="ir.ui.view">
+        <field name="name">knowledge.create.task.list</field>
+        <field name="model">knowledge.create.task</field>
+        <field eval="8" name="priority"/>
+        <field name="arch" type="xml">
+            <tree string="Task List" create="0">
+                <field name="task_title"/>
+                <field name="target_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="ir_action_knowledge_create_task_list" model="ir.actions.act_window">
+        <field name="name">Task List</field>
+        <field name="res_model">knowledge.create.task</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="ir_action_knowledge_create_task_create" model="ir.actions.act_window">
+        <field name="name">Create Task</field>
+        <field name="res_model">knowledge.create.task</field>
+        <field name="view_mode">form</field>
+    </record>
+    <menuitem id="menu_knowledge_create_task_master"
+            name="Manage Tasks"
+            />
+
+
+    <menuitem id="menu_knowledge_create_task_list"
+            name="Task List"
+            sequence="2"
+            parent="menu_knowledge_create_task_master"
+            action="ir_action_knowledge_create_task_list"
+              groups="knowledge_portal.group_manager_km_task"
+    />
+
+    <menuitem id="menu_knowledge_create_task_create"
+            name="Create Task"
+            sequence="1"
+            parent="menu_knowledge_create_task_master"
+            action="ir_action_knowledge_create_task_create"
+              groups="knowledge_portal.group_manager_km_task"
+    />
+
+
+
+
+
+    <record id="knowledge_assigned_task_form" model="ir.ui.view">
+        <field name="name">knowledge.assigned.task.form</field>
+        <field name="model">knowledge.assigned.task</field>
+        <field name="arch" type="xml">
+            <form string="Assigned Task">
+                <header>
+                    <button name="button_submit" string="Working" class="oe_highlight" type="object" states="draft"/>
+                    <button name="button_complete" string="Complete" class="oe_highlight" type="object" states="working"/>
+                    <button name="button_cancel" string="Cancel" type="object" states="working"/>
+                     <button name="button_reset_to_draft" string="Reset to draft" type="object" states="working"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,working,completed" />
+                </header>
+                <sheet>
+                    <h1 class="d-flex">
+                        Assigned Task
+                    </h1>
+                    <hr/>
+                    <br/>
+                    <group>
+                        <group>
+                            <field name="task_title" readonly="1"/>
+                            <field name="kaizen_code" readonly="1"/>
+                            <field name="target_date" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="description" readonly="1"/>
+                            <field name="user_id" readonly="1"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+            </form>
+        </field>
+    </record>
+    <record id="knowledge_assigned_task_list" model="ir.ui.view">
+        <field name="name">knowledge.assigned.task.list</field>
+        <field name="model">knowledge.assigned.task</field>
+        <field eval="8" name="priority"/>
+        <field name="arch" type="xml">
+            <tree string="Task List" create="0">
+                <field name="task_title"/>
+                <field name="target_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="ir_action_knowledge_assigned_task_list" model="ir.actions.act_window">
+        <field name="name">Task List</field>
+        <field name="res_model">knowledge.assigned.task</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+<!--    <record id="ir_action_knowledge_assigned_task_create" model="ir.actions.act_window">-->
+<!--        <field name="name">assigned Task</field>-->
+<!--        <field name="res_model">knowledge.assigned.task</field>-->
+<!--        <field name="view_mode">form</field>-->
+<!--    </record>-->
+<!--    <menuitem id="menu_knowledge_assigned_task_master"-->
+<!--            name="Manage Tasks"-->
+<!--            />-->
+
+
+    <menuitem id="menu_knowledge_assigned_task_list"
+            name="Assigned Task List"
+            sequence="3"
+            parent="menu_knowledge_create_task_master"
+            action="ir_action_knowledge_assigned_task_list"
+              groups="knowledge_portal.group_manager_km_assignment"
+    />
+
+<!--    <menuitem id="menu_knowledge_assigned_task_create"-->
+<!--            name="assigned Task"-->
+<!--            sequence="1"-->
+<!--            parent="menu_knowledge_create_task_master"-->
+<!--            action="ir_action_knowledge_assigned_task_create"-->
+<!--    />-->
+
+
+
+
+
+</odoo>

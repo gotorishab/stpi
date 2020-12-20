@@ -1,0 +1,18 @@
+<odoo>
+     <record model="ir.module.category" id="module_health_monthly_incident">
+        <field name="name">Health Monthly Incident Report</field>
+        <field name="description">Help You For Knowledge Documents</field>
+        <field name="sequence">20</field>
+    </record>
+
+    <record id="group_manager_health_monthly_incident" model="res.groups">
+        <field name="name">Health Monthly Incident Report Manager</field>
+        <field name="category_id" ref="module_health_monthly_incident"/>
+    </record>
+    <record id="group_approver_health_monthly_incident" model="res.groups">
+        <field name="name">Health Monthly Incident Report Approver</field>
+        <field name="category_id" ref="module_health_monthly_incident"/>
+    </record>
+
+
+</odoo>

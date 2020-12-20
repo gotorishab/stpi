@@ -6,9 +6,10 @@
             <form string="Near Miss Information">
                 <header>
                     <button name="button_submit" string="Submit" class="oe_highlight" type="object" states="draft"/>
+                    <button name="button_approved" string="Approve" class="oe_highlight" type="object" states="submitted" groups="health_portal.group_approver_health_near_miss_info"/>
                     <button name="button_cancel" string="Cancel" type="object" states="draft"/>
                      <button name="button_reset_to_draft" string="Reset to draft" type="object" states="submitted"/>
-                    <field name="state" widget="statusbar" statusbar_visible="draft" />
+                    <field name="state" widget="statusbar" statusbar_visible="draft,submitted,approved" />
                 </header>
                 <sheet>
                     <h1 class="d-flex">
@@ -77,6 +78,7 @@
     <menuitem id="menu_health_manage_nearmiss_master"
             name="Manage Near Miss Info"
             sequence="8"
+               groups="health_portal.group_manager_health_near_miss_info"
             />
 
 

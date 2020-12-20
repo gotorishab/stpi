@@ -1,0 +1,165 @@
+<odoo>
+    
+            <record id="view_vardhman_slider_links_form" model="ir.ui.view">
+             <field name="name">vardhman.slider.links.form</field>
+             <field name="model">vardhman.slider.links</field>
+             <field name="arch" type="xml">
+                 <form string="slider Links">
+                     <sheet>
+                         <group>
+                             <field name="name" required="1"/>
+                             <field name="mid_date" required="1"/>
+                             <field name="url" required="1"/>
+                             <field name="icon" required="1"/>
+                         </group>
+                     </sheet>
+                 </form>
+             </field>
+         </record>
+
+         <record id="view_vardhman_slider_links_list" model="ir.ui.view">
+             <field name="name">vardhman.slider.links.list</field>
+             <field name="model">vardhman.slider.links</field>
+             <field eval="8" name="priority"/>
+             <field name="arch" type="xml">
+                 <tree string="slider Links" editable="bottom">
+                     <field name="name" required="1"/>
+                     <field name="url" required="1"/>
+                     <field name="icon" required="1"/>
+                 </tree>
+             </field>
+         </record>
+
+         <record id="ir_action_slider_links" model="ir.actions.act_window">
+             <field name="name">slider Links</field>
+             <field name="res_model">vardhman.slider.links</field>
+             <field name="view_mode">tree,form</field>
+         </record>
+    
+    <menuitem id="menu_slider_links"
+            name="slider Links"
+            parent="website.menu_website_configuration"
+              action="intranet_home.ir_action_slider_links"/>
+
+
+
+
+            <record id="view_vardhman_magazine_links_form" model="ir.ui.view">
+             <field name="name">vardhman.magazine.links.form</field>
+             <field name="model">vardhman.magazine.links</field>
+             <field name="arch" type="xml">
+                 <form string="magazine Links">
+                     <sheet>
+                         <group>
+                             <field name="url" required="1"/>
+                             <field name="icon" required="1"/>
+                         </group>
+                     </sheet>
+                 </form>
+             </field>
+         </record>
+
+         <record id="view_vardhman_magazine_links_list" model="ir.ui.view">
+             <field name="name">vardhman.magazine.links.list</field>
+             <field name="model">vardhman.magazine.links</field>
+             <field eval="8" name="priority"/>
+             <field name="arch" type="xml">
+                 <tree string="magazine Links" editable="bottom">
+                     <field name="url" required="1"/>
+                     <field name="icon" required="1"/>
+                 </tree>
+             </field>
+         </record>
+
+         <record id="ir_action_magazine_links" model="ir.actions.act_window">
+             <field name="name">magazine Links</field>
+             <field name="res_model">vardhman.magazine.links</field>
+             <field name="view_mode">tree,form</field>
+         </record>
+
+    <menuitem id="menu_magazine_links"
+            name="magazine Links"
+            parent="website.menu_website_configuration"
+              action="intranet_home.ir_action_magazine_links"/>
+
+
+
+            <record id="view_vardhman_photo_links_form" model="ir.ui.view">
+             <field name="name">vardhman.photo.links.form</field>
+             <field name="model">vardhman.photo.links</field>
+             <field name="arch" type="xml">
+                 <form string="photo Links">
+                     <sheet>
+                         <group>
+                             <field name="url" required="1"/>
+                             <field name="icon" required="1"/>
+                         </group>
+                     </sheet>
+                 </form>
+             </field>
+         </record>
+
+         <record id="view_vardhman_photo_links_list" model="ir.ui.view">
+             <field name="name">vardhman.photo.links.list</field>
+             <field name="model">vardhman.photo.links</field>
+             <field eval="8" name="priority"/>
+             <field name="arch" type="xml">
+                 <tree string="photo Links" editable="bottom">
+                     <field name="url" required="1"/>
+                     <field name="icon" required="1"/>
+                 </tree>
+             </field>
+         </record>
+
+         <record id="ir_action_photo_links" model="ir.actions.act_window">
+             <field name="name">photo Links</field>
+             <field name="res_model">vardhman.photo.links</field>
+             <field name="view_mode">tree,form</field>
+         </record>
+
+    <menuitem id="menu_photo_links"
+            name="photo Links"
+            parent="website.menu_website_configuration"
+              action="intranet_home.ir_action_photo_links"/>
+
+
+
+            <record id="view_vardhman_videos_links_form" model="ir.ui.view">
+             <field name="name">vardhman.videos.links.form</field>
+             <field name="model">vardhman.videos.links</field>
+             <field name="arch" type="xml">
+                 <form string="videos Links">
+                     <sheet>
+                         <group>
+                             <field name="url" required="1"/>
+                             <field name="icon" required="1"/>
+                         </group>
+                     </sheet>
+                 </form>
+             </field>
+         </record>
+
+         <record id="view_vardhman_videos_links_list" model="ir.ui.view">
+             <field name="name">vardhman.videos.links.list</field>
+             <field name="model">vardhman.videos.links</field>
+             <field eval="8" name="priority"/>
+             <field name="arch" type="xml">
+                 <tree string="videos Links" editable="bottom">
+                     <field name="url" required="1"/>
+                     <field name="icon" required="1"/>
+                 </tree>
+             </field>
+         </record>
+
+         <record id="ir_action_videos_links" model="ir.actions.act_window">
+             <field name="name">videos Links</field>
+             <field name="res_model">vardhman.videos.links</field>
+             <field name="view_mode">tree,form</field>
+         </record>
+
+    <menuitem id="menu_videos_links"
+            name="videos Links"
+            parent="website.menu_website_configuration"
+              action="intranet_home.ir_action_videos_links"/>
+
+</odoo>

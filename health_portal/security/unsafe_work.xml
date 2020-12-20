@@ -1,0 +1,18 @@
+<odoo>
+     <record model="ir.module.category" id="module_health_unsafe_work">
+        <field name="name">Health unsafe_work</field>
+        <field name="description">Help You For Knowledge Documents</field>
+        <field name="sequence">20</field>
+    </record>
+
+    <record id="group_manager_health_unsafe_work" model="res.groups">
+        <field name="name">Health Unsafe Work Stop Card Manager</field>
+        <field name="category_id" ref="module_health_unsafe_work"/>
+    </record>
+    <record id="group_approver_health_unsafe_work" model="res.groups">
+        <field name="name">Health Unsafe Work Stop Card Approver</field>
+        <field name="category_id" ref="module_health_unsafe_work"/>
+    </record>
+
+
+</odoo>

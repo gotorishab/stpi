@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_knowledge_create_task,knowledge.create.task,model_knowledge_create_task,base.group_user,1,1,1,1
+access_knowledge_users_task,knowledge.users.task,model_knowledge_users_task,base.group_user,1,1,1,1
+access_knowledge_assigned_task,knowledge.assigned.task,model_knowledge_assigned_task,base.group_user,1,1,1,1
+access_knowledge_create_assignment,knowledge.create.assignment,model_knowledge_create_assignment,base.group_user,1,1,1,1
+access_knowledge_users_assignment,knowledge.users.assignment,model_knowledge_users_assignment,base.group_user,1,1,1,1
+access_knowledge_assigned_assignment,knowledge.assigned.assignment,model_knowledge_assigned_assignment,base.group_user,1,1,1,1

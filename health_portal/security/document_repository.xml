@@ -1,0 +1,18 @@
+<odoo>
+     <record model="ir.module.category" id="module_health_document_repository">
+        <field name="name">Health Document Repository</field>
+        <field name="description">Help You For Knowledge Documents</field>
+        <field name="sequence">20</field>
+    </record>
+
+    <record id="group_manager_health_document_repository" model="res.groups">
+        <field name="name">Health Document Repository Manager</field>
+        <field name="category_id" ref="module_health_document_repository"/>
+    </record>
+    <record id="group_approver_health_document_repository" model="res.groups">
+        <field name="name">Health Document Repository Approver</field>
+        <field name="category_id" ref="module_health_document_repository"/>
+    </record>
+
+
+</odoo>

@@ -20,6 +20,7 @@
         'views/employee_workanniversary.xml',
         'views/employee_marriageanniversary.xml',
         'views/useful_links.xml',
+        'views/slider.xml',
         'views/test.xml',
         'wizard/employee_birthday_wizard.xml',
         'wizard/employee_workanniversary_wizard.xml',

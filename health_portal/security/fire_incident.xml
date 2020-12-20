@@ -1,0 +1,18 @@
+<odoo>
+     <record model="ir.module.category" id="module_health_fire_incident">
+        <field name="name">Health Fire Incident Entry Form</field>
+        <field name="description">Help You For Knowledge Documents</field>
+        <field name="sequence">20</field>
+    </record>
+
+    <record id="group_manager_health_fire_incident" model="res.groups">
+        <field name="name">Health Fire Incident Entry Form Manager</field>
+        <field name="category_id" ref="module_health_fire_incident"/>
+    </record>
+    <record id="group_approver_health_fire_incident" model="res.groups">
+        <field name="name">Health Fire Incident Entry Form Approver</field>
+        <field name="category_id" ref="module_health_fire_incident"/>
+    </record>
+
+
+</odoo>

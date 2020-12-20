@@ -6,6 +6,7 @@
             <form string="bestpractice Information">
                 <header>
                     <button name="button_submit" string="Submit" class="oe_highlight" type="object" states="draft"/>
+                    <button name="button_approved" string="Approve" class="oe_highlight" type="object" states="submitted" groups="health_portal.group_approver_health_bestpractice"/>
                     <button name="button_cancel" string="Cancel" type="object" states="draft"/>
                      <button name="button_reset_to_draft" string="Reset to draft" type="object" states="submitted"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft" />
@@ -64,6 +65,7 @@
     <menuitem id="menu_health_manage_bestpractice_master"
             name="Manage Best Practice"
             sequence="7"
+              groups="health_portal.group_manager_health_bestpractice"
             />
 
 

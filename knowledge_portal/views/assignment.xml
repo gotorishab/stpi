@@ -1,0 +1,181 @@
+<odoo>
+    <record id="knowledge_create_assignment_form" model="ir.ui.view">
+        <field name="name">knowledge.create.assignment.form</field>
+        <field name="model">knowledge.create.assignment</field>
+        <field name="arch" type="xml">
+            <form string="Create Assignment">
+                <header>
+                    <button name="button_submit" string="Submit" class="oe_highlight" type="object" states="draft"/>
+                    <button name="button_cancel" string="Cancel" type="object" states="draft"/>
+                     <button name="button_reset_to_draft" string="Reset to draft" type="object" states="submitted"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,submitted" />
+                </header>
+                <sheet>
+                    <h1 class="d-flex">
+                        Create Assignment
+                    </h1>
+                    <hr/>
+                    <br/>
+                    <group>
+                        <group>
+                            <field name="assignment_title" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="kaizen_code" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        </group>
+                        <group>
+                            <field name="target_date" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+<!--                            <field name="user_ids" required="1" attrs="{'readonly':[('state','!=','draft')]}" widget="many2many_tags"/>-->
+                        </group>
+                    </group>
+                        <separator string="Description"/>
+                        <field name="description" attrs="{'readonly':[('state','!=','draft')]}"/>
+                    <notebook>
+                        <page name="user" string="User">
+                            <field name="assignment_user_ids">
+                                <tree editable="bottom">
+                                    <field name="create_assignment_id" invisible="1"/>
+                                    <field name="unit_id"/>
+                                    <field name="department_id"/>
+                                    <field name="user_id" required="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+            </form>
+        </field>
+    </record>
+    <record id="knowledge_create_assignment_list" model="ir.ui.view">
+        <field name="name">knowledge.create.assignment.list</field>
+        <field name="model">knowledge.create.assignment</field>
+        <field eval="8" name="priority"/>
+        <field name="arch" type="xml">
+            <tree string="assignment List" create="0">
+                <field name="assignment_title"/>
+                <field name="target_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="ir_action_knowledge_create_assignment_list" model="ir.actions.act_window">
+        <field name="name">assignment List</field>
+        <field name="res_model">knowledge.create.assignment</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="ir_action_knowledge_create_assignment_create" model="ir.actions.act_window">
+        <field name="name">Create assignment</field>
+        <field name="res_model">knowledge.create.assignment</field>
+        <field name="view_mode">form</field>
+    </record>
+    <menuitem id="menu_knowledge_create_assignment_master"
+            name="Manage Assignment"
+            />
+
+
+    <menuitem id="menu_knowledge_create_assignment_list"
+            name="Assignment List"
+            sequence="2"
+            parent="menu_knowledge_create_assignment_master"
+            action="ir_action_knowledge_create_assignment_list"
+    />
+
+    <menuitem id="menu_knowledge_create_assignment_create"
+            name="Create Assignment"
+            sequence="1"
+            parent="menu_knowledge_create_assignment_master"
+            action="ir_action_knowledge_create_assignment_create"
+    />
+
+
+
+
+
+    <record id="knowledge_assigned_assignment_form" model="ir.ui.view">
+        <field name="name">knowledge.assigned.assignment.form</field>
+        <field name="model">knowledge.assigned.assignment</field>
+        <field name="arch" type="xml">
+            <form string="Assigned Assignment">
+                <header>
+                    <button name="button_submit" string="Submit" class="oe_highlight" type="object" states="draft"/>
+                    <button name="button_cancel" string="Cancel" type="object" states="draft"/>
+                     <button name="button_reset_to_draft" string="Reset to draft" type="object" states="submitted"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft" />
+                </header>
+                <sheet>
+                    <h1 class="d-flex">
+                        Assigned Assignment
+                    </h1>
+                    <hr/>
+                    <br/>
+                    <group>
+                        <group>
+                            <field name="assignment_title" readonly="1"/>
+                            <field name="kaizen_code" readonly="1"/>
+                            <field name="target_date" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="description" readonly="1"/>
+                            <field name="user_id" readonly="1"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+            </form>
+        </field>
+    </record>
+    <record id="knowledge_assigned_assignment_list" model="ir.ui.view">
+        <field name="name">knowledge.assigned.assignment.list</field>
+        <field name="model">knowledge.assigned.assignment</field>
+        <field eval="8" name="priority"/>
+        <field name="arch" type="xml">
+            <tree string="assignment List" create="0">
+                <field name="assignment_title"/>
+                <field name="target_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="ir_action_knowledge_assigned_assignment_list" model="ir.actions.act_window">
+        <field name="name">Assignment List</field>
+        <field name="res_model">knowledge.assigned.assignment</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+<!--    <record id="ir_action_knowledge_assigned_assignment_create" model="ir.actions.act_window">-->
+<!--        <field name="name">assigned assignment</field>-->
+<!--        <field name="res_model">knowledge.assigned.assignment</field>-->
+<!--        <field name="view_mode">form</field>-->
+<!--    </record>-->
+<!--    <menuitem id="menu_knowledge_assigned_assignment_master"-->
+<!--            name="Manage assignments"-->
+<!--            />-->
+
+
+    <menuitem id="menu_knowledge_assigned_assignment_list"
+            name="Assigned Assignment List"
+            sequence="3"
+            parent="menu_knowledge_create_assignment_master"
+            action="ir_action_knowledge_assigned_assignment_list"
+    />
+
+<!--    <menuitem id="menu_knowledge_assigned_assignment_create"-->
+<!--            name="assigned assignment"-->
+<!--            sequence="1"-->
+<!--            parent="menu_knowledge_create_assignment_master"-->
+<!--            action="ir_action_knowledge_assigned_assignment_create"-->
+<!--    />-->
+
+
+
+
+
+</odoo>
