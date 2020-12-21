@@ -82,6 +82,7 @@
             sequence="2"
             parent="menu_knowledge_create_assignment_master"
             action="ir_action_knowledge_create_assignment_list"
+              groups="knowledge_portal.group_manager_km_assignment"
     />
 
     <menuitem id="menu_knowledge_create_assignment_create"
@@ -89,6 +90,7 @@
             sequence="1"
             parent="menu_knowledge_create_assignment_master"
             action="ir_action_knowledge_create_assignment_create"
+              groups="knowledge_portal.group_manager_km_assignment"
     />
 
 

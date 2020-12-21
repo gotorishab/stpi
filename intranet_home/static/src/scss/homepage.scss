@@ -1,42 +1,406 @@
-/* Container holding the image and the text */
-.container {
-  position: relative;
-  text-align: center;
-  color: white;
-}
-
-/* Bottom left text */
-.bottom-left {
-  position: absolute;
-  bottom: 8px;
-  left: 16px;
-}
-
-/* Top left text */
-.top-left {
-  position: absolute;
-  top: 8px;
-  left: 16px;
-}
-
-/* Top right text */
-.top-right {
-  position: absolute;
-  top: 8px;
-  right: 16px;
-}
-
-/* Bottom right text */
-.bottom-right {
-  position: absolute;
-  bottom: 8px;
-  right: 16px;
-}
-
-/* Centered text */
-.centered {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+main {
+    // python3 ./odoo-bin --addons addons/,/home/munaf/Munaf/v13/portal/,/home/munaf/Munaf/v14/ --limit-time-real 99999 --xmlrpc-port 2222 --db-filte portal_documents -d portal_documents -u intranet_home
+    background:#673768;
+    .oe_main_container {
+        background-color: #efefef;
+        .oe_search {
+            input {
+                border-radius: 30px;
+                width: 100%;
+                font-size: 13px;
+            }
+            .oe_card{
+                box-shadow: 1px 1px 5px 0px #CCC;
+                width: 100%;
+                min-height: 300px;
+                .card-header {
+                    background-color: white;
+                    font-size: 13px;
+                    color: gray;
+                    font-weight: 600;
+                    .oe_all_link{
+                        a {
+                            position: absolute;
+                            right: 5px;
+                            font-size: 13px;
+                            color: blue;
+                            .fa {
+                                font-size: 15px;
+                            }
+                        }
+                    }
+                }
+                .card-body {
+                    padding: 0;
+                    ul {
+                        li {
+                            display: flex;
+                            border: none;
+                            .img {
+                                margin-right: 15px;
+                                height: 15px;
+                                width: 15px;
+                            }
+                            a{
+                                .oe_name {
+                                    font-size: 13px;
+                                    color: #9f9f9f;
+                                    font-weight: bold;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        .oe_birthday {
+            .oe_card{
+                width: 100%;
+                min-height: 300px;
+                box-shadow: 1px 1px 5px 0px #CCC;
+                .card-header {
+                    background-color: white;
+                    font-size: 13px;
+                    color: gray;
+                    font-weight: 600;
+                    .oe_all_link{
+                        a {
+                            position: absolute;
+                            right: 5px;
+                            font-size: 13px;
+                            color: blue;
+                            .fa {
+                                font-size: 15px;
+                            }
+                        }
+                    }
+                }
+                .card-body {
+                    padding: 0;
+                    ul {
+                        li {
+                            display: flex;
+                            border: none;
+                            align-items: center;
+                            div:first-child {
+                                margin-right: 15px;
+                                height: 60px;
+                                width: 60px;
+                                .img {
+                                    max-width: 100%;
+                                    max-height: 100%;
+                                    height: 100%;
+                                    width: 100%;
+                                    border-radius: 50px;
+                                }
+                            }
+                            .oe_name {
+                                font-size: 13px;
+                                color: #9f9f9f;
+                                font-weight: bold;
+                            }
+                            .oe_date {
+                                color: aqua;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        .oe_anniversary {
+            .oe_card{
+                box-shadow: 1px 1px 5px 0px #CCC;
+                width: 100%;
+                min-height: 300px;
+                .card-header {
+                    background-color: white;
+                    font-size: 13px;
+                    color: gray;
+                    font-weight: 600;
+                    .oe_all_link{
+                        a {
+                            position: absolute;
+                            right: 5px;
+                            font-size: 13px;
+                            color: blue;
+                            .fa {
+                                font-size: 15px;
+                            }
+                        }
+                    }
+                }
+                .card-body {
+                    padding: 0;
+                    ul {
+                        li {
+                            display: flex;
+                            border: none;
+                            align-items: center;
+                            .oe_head {
+                                .oe_main_ani {
+                                    border: 1px solid #CCC;
+                                    border-radius: 30px;
+                                    line-height: 17px;
+                                    padding: 5px 20px;
+                                    font-size: 14px;
+                                    height: 45px;
+                                    color: #2e84ac;
+                                    font-weight: 800;
+                                }
+                            }
+                            div:first-child {
+                                margin-right: 15px;
+                                height: 60px;
+                                width: 60px;
+                                .img {
+                                    max-width: 100%;
+                                    max-height: 100%;
+                                    height: 100%;
+                                    width: 100%;
+                                    border-radius: 50px;
+                                }
+                            }
+                            .oe_name {
+                                font-size: 13px;
+                                color: #9f9f9f;
+                                font-weight: bold;
+                            }
+                            .oe_pill {
+                                padding: 2px 12px;
+                                background: #3fadaa;
+                                border-radius: 18px;
+                                color: white;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        .oe_anniversary {
+            .oe_card{
+                box-shadow: 1px 1px 5px 0px #CCC;
+                width: 100%;
+                min-height: 300px;
+                .card-header {
+                    background-color: white;
+                    font-size: 13px;
+                    color: gray;
+                    font-weight: 600;
+                    .oe_all_link{
+                        a {
+                            position: absolute;
+                            right: 5px;
+                            font-size: 13px;
+                            color: blue;
+                            padding: 2px 12px;
+                            background: #3fadaa;
+                            border-radius: 18px;
+                            color: white;
+                            .fa {
+                                font-size: 15px;
+                            }
+                        }
+                    }
+                }
+                .card-body {
+                    padding: 0;
+                    ul {
+                        li {
+                            display: flex;
+                            border: none;
+                            align-items: center;
+                            .oe_head {
+                                .oe_main_ani {
+                                    border: 1px solid #CCC;
+                                    border-radius: 30px;
+                                    line-height: 17px;
+                                    padding: 5px 20px;
+                                    font-size: 14px;
+                                    height: 45px;
+                                    color: #2e84ac;
+                                    font-weight: 800;
+                                }
+                            }
+                            div:first-child {
+                                margin-right: 15px;
+                                height: 60px;
+                                width: 60px;
+                                .img {
+                                    max-width: 100%;
+                                    max-height: 100%;
+                                    height: 100%;
+                                    width: 100%;
+                                    border-radius: 50px;
+                                }
+                            }
+                            .oe_name {
+                                font-size: 13px;
+                                color: #9f9f9f;
+                                font-weight: bold;
+                            }
+                            .oe_pill {
+                                padding: 2px 12px;
+                                background: #3fadaa;
+                                border-radius: 18px;
+                                color: white;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        .oe_slider {
+            .oe_col {
+                max-height: 315px;
+                height: 310px;
+            }
+            .oe_col_key {
+                .oe_title {
+                    padding-left: 30px;
+                    img {
+                        height: 89px;
+                        width: 114px;
+                    }
+                }
+                .oe_desc {
+                    padding: 30px;
+                }
+                .oe_link{
+                    display: flex;
+                    align-items: center;
+                    justify-content: flex-end;
+                    padding-right: 25px;
+                }
+            }
+        }
+        .oe_col_idea {
+            .oe_link {
+                display: flex;
+                justify-content: flex-end;
+                a {
+                    padding: 2px 7px;
+                    color: white;
+                    background: #3fadaa;
+                    border-radius: 18px;
+                    padding-right: 5px;
+                }
+            }
+            .oe_blog {
+                height: 235px;
+                padding-right: 10px;
+                padding-left: 11px;
+                .o_wblog_post {
+                    height: 180px;
+                    a {
+                        height: 100%;
+                        .o_list_cover {
+                                border-radius: unset !important;
+                            .o_record_cover_image {
+                            }
+                        }
+                        .o_wblog_post_list_author {
+                            display: none !important;
+                        }
+                    }
+                    .small {
+                        display: none !important;
+                    }
+                }
+            }
+        }
+        .oe_col_video {
+            ul {
+                li {
+                    a {
+                        position: relative;
+                        display: block;
+                        padding: 10px 15px;
+                        &.active {
+                            border-top: 4px solid green;
+                        }
+                        &:hover {
+                            text-decoration: none !important;
+                        }
+                    }
+                }
+            }
+            .tab-content {
+                .tab-pane {
+                    height: 220px;
+                    .oe_image {
+                        height: 100%;
+                    }
+                }
+            }
+        }
+        .oe_events {
+            .oe_card{
+                box-shadow: 1px 1px 5px 0px #CCC;
+                width: 100%;
+                min-height: 300px;
+                .card-header {
+                    background-color: white;
+                    font-size: 13px;
+                    color: gray;
+                    font-weight: 600;
+                    .oe_all_link{
+                        a {
+                            position: absolute;
+                            right: 5px;
+                            font-size: 13px;
+                            color: blue;
+                            .fa {
+                                font-size: 15px;
+                            }
+                        }
+                    }
+                }
+                .card-body {
+                    padding: 0;
+                    ul {
+                        li {
+                            display: flex;
+                            border: none;
+                            align-items: center;
+                            .oe_head {
+                                .oe_main_ani {
+                                    border: 1px solid #CCC;
+                                    border-radius: 30px;
+                                    line-height: 17px;
+                                    padding: 5px 20px;
+                                    font-size: 14px;
+                                    height: 45px;
+                                    color: #2e84ac;
+                                    font-weight: 800;
+                                }
+                            }
+                            div:first-child {
+                                margin-right: 15px;
+                                height: 60px;
+                                width: 60px;
+                                .img {
+                                    max-width: 100%;
+                                    max-height: 100%;
+                                    height: 100%;
+                                    width: 100%;
+                                    border-radius: 50px;
+                                }
+                            }
+                            .oe_name {
+                                font-size: 13px;
+                                color: #9f9f9f;
+                                font-weight: bold;
+                            }
+                            .oe_pill {
+                                padding: 2px 12px;
+                                background: #3fadaa;
+                                border-radius: 18px;
+                                color: white;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

@@ -3,12 +3,12 @@
         <field name="name">portal.study.files.form</field>
         <field name="model">portal.study.files</field>
         <field name="arch" type="xml">
-            <form string="Documents">
+            <form string="study_files">
                 <header>
                     <button name="button_submit" string="Submit" class="oe_highlight" type="object" states="draft"/>
-                    <button name="button_verify" string="Verify" class="oe_highlight" type="object" states="verification_pending" groups="portal_document_management.group_user_km_document"/>
-                    <button name="button_publish" string="Publish" class="oe_highlight" type="object" states="to_publish" groups="portal_document_management.group_manager_km_document"/>
-                    <button name="button_unpublish" string="Unpublish" class="oe_highlight" type="object" states="published" groups="portal_document_management.group_manager_km_document"/>
+                    <button name="button_verify" string="Verify" class="oe_highlight" type="object" states="verification_pending" groups="knowledge_study_files.group_user_km_study_files"/>
+                    <button name="button_publish" string="Publish" class="oe_highlight" type="object" states="to_publish" groups="knowledge_study_files.group_manager_km_study_files"/>
+                    <button name="button_unpublish" string="Unpublish" class="oe_highlight" type="object" states="published" groups="knowledge_study_files.group_manager_km_study_files"/>
                     <button name="button_cancel" string="Cancel" type="object" states="verification_pending,to_publish"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,verification_pending,to_publish,published" />
                 </header>
@@ -19,7 +19,7 @@
                             <field name="type_id" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
                         </group>
                         <group>
-                            <field name="document" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="study_files" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
                             <field name="is_published" invisible="1"/>
                         </group>
                     </group>
@@ -39,7 +39,7 @@
         <field name="model">portal.study.files</field>
         <field eval="8" name="priority"/>
         <field name="arch" type="xml">
-            <tree string="Documents List">
+            <tree string="study_files List">
                 <field name="type_id"/>
                 <field name="name"/>
                 <field name="description"/>
@@ -47,33 +47,33 @@
         </field>
     </record>
     <record id="ir_action_km_portal_study_files_list" model="ir.actions.act_window">
-        <field name="name">Documents</field>
+        <field name="name">study_files</field>
         <field name="res_model">portal.study.files</field>
         <field name="view_mode">tree,form</field>
     </record>
 
     <record id="ir_action_km_portal_study_files_create" model="ir.actions.act_window">
-        <field name="name">Documents</field>
+        <field name="name">study_files</field>
         <field name="res_model">portal.study.files</field>
         <field name="view_mode">form</field>
     </record>
 
-    <menuitem id="menu_knowledge_documents"
-              name="Manage Documents"
+    <menuitem id="menu_knowledge_study_files"
+              name="Manage study_files"
               />
 
-    <menuitem id="menu_knowledge_documents_create"
-            name="Upload Document"
+    <menuitem id="menu_knowledge_study_files_create"
+            name="Upload study_files"
             sequence="1"
-            parent="menu_knowledge_documents"
+            parent="menu_knowledge_study_files"
             action="ir_action_km_portal_study_files_create"
     />
 
 
-    <menuitem id="menu_knowledge_documents_list"
-            name="Document List"
+    <menuitem id="menu_knowledge_study_files_list"
+            name="study_files List"
             sequence="2"
-            parent="menu_knowledge_documents"
+            parent="menu_knowledge_study_files"
             action="ir_action_km_portal_study_files_list"
     />
 

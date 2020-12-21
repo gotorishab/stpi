@@ -2,11 +2,9 @@
     <template id="new_homepage_vardhman" inherit_id="website.homepage">
         <xpath expr="//div[@id='wrap']" position="replace">
             <div id="wrap" class="oe_structure">
-                <link rel="stylesheet" href="/intranet_home/static/src/scss/cwebsite_shiping.css"/>
-                <br/>
                 <div class="container-fluid;bg-light">
                     <div class="row">
-                        <div class="col-xs-6 mb-3 col-sm-3">
+                        <div class="col-xs-6 col-md-6 mb-3 col-sm-3">
                             <div class="row">
                                 <form action="#" method="#" role="search">
                                     <input class="form-control" placeholder="Search" name="srch-term" id="ed-srch-term" type="text"/>

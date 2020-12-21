@@ -1,7 +1,5 @@
 <odoo>
-
-
-            <record id="view_vardhman_story_form" model="ir.ui.view">
+        <record id="view_vardhman_story_form" model="ir.ui.view">
              <field name="name">wizard.story.category.form</field>
              <field name="model">wizard.story.category</field>
              <field name="arch" type="xml">
@@ -30,15 +28,10 @@
              <field name="res_model">wizard.story.category</field>
              <field name="view_mode">tree,form</field>
          </record>
-
-
-
-    <menuitem id="list_story_wizard_view"
+    <!-- <menuitem id="list_story_wizard_view"
             name="List"
             sequence="2"
             parent="add_story_wizard_view"
             action="ir_action_story_list"
-    />
-
-    
+    /> -->
 </odoo>

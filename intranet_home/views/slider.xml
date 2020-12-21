@@ -8,7 +8,6 @@
                      <sheet>
                          <group>
                              <field name="name" required="1"/>
-                             <field name="mid_date" required="1"/>
                              <field name="url" required="1"/>
                              <field name="icon" required="1"/>
                          </group>
