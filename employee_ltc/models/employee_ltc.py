@@ -310,7 +310,7 @@ class EmployeeLtcAdvance(models.Model):
             if res.advance_ammount and res.single_fare_approved:
                 if res.single_fare_approved > ((res.advance_ammount)*90)/100:
                     raise ValidationError(
-                        _('You are not allowed to take LTC as you have not selected any Relative or self'))
+                        _('Approved Amount	must be less'))
             rep_ids = self.env['ledger.ltc'].sudo().search([
                 ('ltc_id', '=', res.id),
             ])
