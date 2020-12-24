@@ -15,7 +15,7 @@ class EmployeeLtcAdvance(models.Model):
     def change_slect_leave(self):
         return {'domain':
                     {
-                        'slect_leave': [('ltc', '=', True),('ltc_apply_done', '=', False),('state', '!=', 'validate'),('employee_id', '=', self.employee_id.id),('request_date_from', '>=', self.block_year.date_start),('request_date_to', '<=', self.block_year.date_end)],
+                        'slect_leave': [('ltc', '=', True),('ltc_apply_done', '=', False),('state', '=', 'validate'),('employee_id', '=', self.employee_id.id),('request_date_from', '>=', self.block_year.date_start),('request_date_to', '<=', self.block_year.date_end)],
                         'child_block_year': [('child_block_year_id', '=', self.block_year.id)]
                            }}
 
@@ -53,16 +53,17 @@ class EmployeeLtcAdvance(models.Model):
     depart_date=fields.Date('Departue Date',track_visibility='always')
     arrival_date=fields.Date('Arrival Date',track_visibility='always')
     advance_ammount=fields.Float('Advance Amount Required',track_visibility='always')
-    single_fare=fields.Float('Single Train Fair/ Bus Fair from the office to Place of Visit by Shortest Route',track_visibility='always')
+    single_fare=fields.Float('Single Train Fare/ Bus Fare from the office to Place of Visit by Shortest Route',track_visibility='always')
     single_fare_approved=fields.Float('Approved Amount',track_visibility='always')
     attach_file = fields.Binary('Attach a File',track_visibility='always')
     all_particulars_verified=fields.Selection([('yes', 'Yes'), ('no', 'No')], default='yes', string='All particulars verified?', track_visibility='always')
     relative_ids = fields.One2many('family.details.ltc','relative_id', string='Relatives')
-    are_you_coming = fields.Boolean('Are you coming?')
+    are_you_coming = fields.Boolean('Are you Availing?')
     family_details = fields.Many2many('employee.relative', string='Family Details', domain="[('employee_id', '=', employee_id),('ltc', '=', True)]",track_visibility='always')
     partner_working=fields.Selection([('yes', 'Yes'), ('no', 'No')], default='no', string='Whether Wife/ Husband is employed and if so whether entitled to LTC',track_visibility='always')
     mode_of_travel=fields.Selection([('road', 'By Road'),('train', 'By Train'),('air', 'By Air')], default='road', string='Mode of Travel',track_visibility='always')
     el_encashment=fields.Selection([('yes', 'Yes'), ('no', 'No')], default='no', string='Require EL Encashment',track_visibility='always')
+    gender=fields.Selection([('male', 'Male'), ('female', 'Female'), ('transgender', 'Transgender')], default='male', string='Gender',track_visibility='always')
     no_of_days = fields.Float('No. of days', default='10',track_visibility='always')
     amount = fields.Float(string='Amount', compute='_compute_amount',track_visibility='always')
     child_block_year=fields.Many2one('child.block.year', 'Availing LTC for year')
@@ -78,6 +79,7 @@ class EmployeeLtcAdvance(models.Model):
             rec.job_id = rec.employee_id.job_id.id
             rec.department_id = rec.employee_id.department_id.id
             rec.branch_id = rec.employee_id.branch_id.id
+            rec.gender = rec.employee_id.gende
 
     @api.onchange('place_of_trvel')
     def false_everything(self):
@@ -130,6 +132,9 @@ class EmployeeLtcAdvance(models.Model):
     @api.constrains('depart_date','arrival_date')
     def onchange_get_period_leave(self):
         for line in self:
+            if line.depart_date > line.arrival_date:
+                raise ValidationError(
+                    _('Departure date must be less than Arrival date'))
             if line.slect_leave:
                 if type(line.arrival_date - line.depart_date) != int:
                     line.leave_period = (line.arrival_date - line.depart_date).days + 1
@@ -279,8 +284,8 @@ class EmployeeLtcAdvance(models.Model):
             #                 raise ValidationError(
             #                     _(
             #                         'You are not allowed to take LTC for this block year as you are able to take Hometown LTC, twice in 4 years'))
-            if res.single_fare:
-                res.single_fare_approved = ((res.single_fare)*90)/100
+            if res.advance_ammount:
+                res.single_fare_approved = ((res.advance_ammount)*90)/100
             else:
                 res.single_fare_approved = 0
             if res.employee_id.date_of_join and (res.employee_id.date_of_join + relativedelta(years=1)) <= datetime.now().date():
@@ -301,6 +306,10 @@ class EmployeeLtcAdvance(models.Model):
     @api.multi
     def button_approved(self):
         for res in self:
+            if res.advance_ammount and res.single_fare_approved:
+                if res.single_fare_approved > ((res.advance_ammount)*90)/100:
+                    raise ValidationError(
+                        _('You are not allowed to take LTC as you have not selected any Relative or self'))
             rep_ids = self.env['ledger.ltc'].sudo().search([
                 ('ltc_id', '=', res.id),
             ])

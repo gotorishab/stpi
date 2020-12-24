@@ -20,7 +20,7 @@ class EmployeeIndentAdvance(models.Model):
     vendor_info = fields.Text('Vendor Information',track_visibility='always')
     bill_no = fields.Char('Bill Number',track_visibility='always')
     amount = fields.Float('Amount',track_visibility='always')
-    received_by = fields.Char('Received By',track_visibility='always')
+    received_by = fields.Many2one('hr.employee','Received By',track_visibility='always')
     item_checked_by = fields.Char('Item Checked By',track_visibility='always')
     date_of_receive = fields.Date('Date of Receive',track_visibility='always')
 

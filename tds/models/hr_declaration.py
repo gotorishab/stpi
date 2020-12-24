@@ -411,8 +411,6 @@ class HrDeclaration(models.Model):
             sum = 0
             dstart = rec.date_range.date_start
             dend = rec.date_range.date_end
-
-
             proll =  self.env['hr.payslip.line'].sudo().search([('slip_id.employee_id', '=', rec.employee_id.id),
                                                                 ('slip_id.state', '=', 'done'),
                                                                 ('salary_rule_id.taxable_percentage', '>', 0),

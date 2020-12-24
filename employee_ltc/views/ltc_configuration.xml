@@ -48,7 +48,7 @@
             <field name="name">block.year.form</field>
             <field name="model">block.year</field>
             <field name="arch" type="xml">
-                <form string="Child Block Year">
+                <form string="Block Year">
                     <sheet>
                         <group>
                             <group>
@@ -60,7 +60,7 @@
                             </group>
                         </group>
                         <notebook>
-                        <page string="Child Block Year">
+                        <page string="Sub block">
                             <field name="child_block_year_ids">
                                 <tree editable="bottom">
                                     <field name="child_block_year_id" invisible="1"/>
