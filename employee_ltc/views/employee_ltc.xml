@@ -31,25 +31,22 @@
                             <field name="depart_date" attrs="{'readonly': [('state', '!=', 'draft')],'required': [('state', '=', 'draft')],}"/>
                             <field name="arrival_date" attrs="{'readonly': [('state', '!=', 'draft')],'required': [('state', '=', 'draft')]}"/>
                             <field name="leave_period" readonly="1" attrs="{'invisible': [('are_you_coming', '=', False)]}"/>
-                           <field name="advance_ammount" attrs="{'readonly': [('state', '!=', 'draft')],'required': [('state', '=', 'draft')]}"/>
                         </group>
                         <group>
                             <field name="gender" invisible="1"/>
+                           <field name="advance_ammount" attrs="{'readonly': [('state', '!=', 'draft')],'required': [('state', '=', 'draft')]}"/>
                             <field name="single_fare" attrs="{'readonly': [('state', '!=', 'draft')],'required': [('state', '=', 'draft')]}"/>
                             <field name="attach_file" attrs="{'invisible': [('single_fare', '=', False)],'readonly': [('state', '!=', 'draft')]}"/>
                             <field name="single_fare_approved" attrs="{'invisible': [('state', '=', 'draft')]}"/>
-
-
 
 
                             <div class="oe_right">
                             <label for="partner_working" string="Whether Husband is employed and if so whether entitled to LTC" attrs="{'invisible': [('gender', '!=', 'female')]}"/>
                             <label for="partner_working" string="Whether Wife is employed and if so whether entitled to LTC" attrs="{'invisible': [('gender', '!=', 'male')]}"/>
                         </div>
-                            <field name="partner_working" string="Whether Wife is employed and if so whether entitled to LTC" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="partner_working" nolabel="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
 
 
-                            
                             <field name="mode_of_travel" attrs="{'readonly': [('state', '!=', 'draft')],'required': [('state', '=', 'draft')]}"/>
                             <field name="el_encashment" attrs="{'readonly': [('state', '!=', 'draft')],'required': [('state', '=', 'draft')]}"/>
                             <field name="no_of_days" attrs="{'invisible': [('el_encashment', '=', 'no')], 'required': [('el_encashment', '=', 'yes')],'readonly': [('state', '!=', 'draft')]}"/>
