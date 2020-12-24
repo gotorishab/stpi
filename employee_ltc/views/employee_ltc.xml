@@ -41,8 +41,8 @@
 
 
                             <div class="oe_right">
-                            <label for="partner_working" string="Whether Husband is employed and if so whether entitled to LTC" attrs="{'invisible': [('gender', '!=', 'female')]}"/>
-                            <label for="partner_working" string="Whether Wife is employed and if so whether entitled to LTC" attrs="{'invisible': [('gender', '!=', 'male')]}"/>
+                            <label for="partner_working" string="Whether Husband is employed and if so whether entitled to LTC" style="font-weight:bold; margin:0;" attrs="{'invisible': [('gender', '!=', 'female')]}"/>
+                            <label for="partner_working" string="Whether Wife is employed and if so whether entitled to LTC" style="font-weight:bold; margin:0;" attrs="{'invisible': [('gender', '!=', 'male')]}"/>
                         </div>
                             <field name="partner_working" nolabel="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
 
