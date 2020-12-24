@@ -132,9 +132,10 @@ class EmployeeLtcAdvance(models.Model):
     @api.constrains('depart_date','arrival_date')
     def onchange_get_period_leave(self):
         for line in self:
-            if line.depart_date > line.arrival_date:
-                raise ValidationError(
-                    _('Departure date must be less than Arrival date'))
+            if line.depart_date and line.arrival_date:
+                if line.depart_date > line.arrival_date:
+                    raise ValidationError(
+                        _('Departure date must be less than Arrival date'))
             if line.slect_leave:
                 if type(line.arrival_date - line.depart_date) != int:
                     line.leave_period = (line.arrival_date - line.depart_date).days + 1
