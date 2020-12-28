@@ -38,7 +38,9 @@ class teldirData(CustomerPortal):
             'name': {'input': 'name', 'label': _('Search by Name')},
             'unit_id': {'input': 'unit_id', 'label': _('Search by Unit')},
             'department_id': {'input': 'department_id', 'label': _('Search by Department')},
+            'work_mobile': {'input': 'work_mobile', 'label': _('Search by Work Mobile')},
             'work_phone': {'input': 'work_phone', 'label': _('Search by Work Phone')},
+            'work_email': {'input': 'work_email', 'label': _('Search by Work Email')},
         }
 
         if not sortby:
@@ -60,8 +62,12 @@ class teldirData(CustomerPortal):
                 search_domain = OR([search_domain, [('unit_id', 'ilike', search)]])
             if search_in in ('department_id', 'all'):
                 search_domain = OR([search_domain, [('department_id', 'ilike', search)]])
+            if search_in in ('work_mobile', 'all'):
+                search_domain = OR([search_domain, [('work_mobile', 'ilike', search)]])
             if search_in in ('work_phone', 'all'):
                 search_domain = OR([search_domain, [('work_phone', 'ilike', search)]])
+            if search_in in ('work_email', 'all'):
+                search_domain = OR([search_domain, [('work_email', 'ilike', search)]])
             domain += search_domain
 
         pager = portal_pager(
