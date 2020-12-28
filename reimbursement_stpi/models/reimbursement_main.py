@@ -59,7 +59,7 @@ class Reimbursement(models.Model):
     el_taking = fields.Float('EL Taking')
 
     claimed_amount = fields.Float(string='Claimed Amount', track_visibility='always')
-    net_amount = fields.Float(string='Eligible Amount', compute='compute_net_amount', track_visibility='always')
+    net_amount = fields.Float(string='Eligible Amount', store=True, compute='compute_net_amount', track_visibility='always')
     date_range_type = fields.Many2one('date.range.type', string='Applicable Period', track_visibility='always')
     date_range = fields.Many2one('date.range', string='Date Range', track_visibility='always')
 

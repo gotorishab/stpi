@@ -221,6 +221,7 @@ class HrDeclaration(models.Model):
     income_after_house_property = fields.Float(string='Income from House Property')
     income_after_other_sources = fields.Float(string='Income from Other Sources')
     allowance_current = fields.Float('Allowance')
+    el_encashment = fields.Float('EL Encashment(LTC and Reimbursement) and medical reimbursement')
     income_from_home= fields.Float(string='Income from Income from Rent')
     income_dividend= fields.Float(string='Dividend Income')
     income_interest= fields.Float(string='Interest Income')
@@ -345,6 +346,23 @@ class HrDeclaration(models.Model):
 
 
     @api.multi
+    def button_calculate_el_encash(self):
+        for rec in self:
+            encash = 0
+            ltc = 0
+            reimbursement_ids =  self.env['reimbursement'].sudo().search([('employee_id', '=', rec.employee_id.id),('date_range.date_start', '>', rec.date_range.date_start),('date_range.date_end', '<', rec.date_range.date_end),('state', '=', 'approved')])
+            for item in reimbursement_ids:
+                if item.name == 'medical' or item.name == 'el_encashment':
+                    encash += item.net_amount
+            ltc_ids =  self.env['employee.ltc.advance'].sudo().search([('employee_id', '=', rec.employee_id.id),('state', '=', 'approved')])
+            for item in ltc_ids:
+                if item.depart_date and item.arrival_date:
+                    if item.depart_date > rec.date_range.date_start and item.arrival_date < rec.date_range.date_end:
+                        ltc += item.amount
+            rec.el_encashment = encash + ltc
+
+
+    @api.multi
     def button_calculate_allowance(self):
         for rec in self:
             MISC =  0
@@ -462,6 +480,7 @@ class HrDeclaration(models.Model):
             rec.da_salary = round(da)
             rec.sudo().button_forecast_gross()
             rec.sudo().button_calculate_allowance()
+            rec.sudo().button_calculate_el_encash()
             sum = 0
             dstart = rec.date_range.date_start
             dend = rec.date_range.date_end
@@ -508,7 +527,7 @@ class HrDeclaration(models.Model):
             elif currentMonth == 3:
                 month = 1
 
-            rec.tax_salary_final = int(wage + rec.allowance_current)*int(month) +  round(sum) + rec.income_after_house_property + rec.income_after_other_sources
+            rec.tax_salary_final = int(wage + rec.allowance_current)*int(month) +  round(sum) + rec.income_after_house_property + rec.income_after_other_sources + rec.el_encashment
             # rec.income_after_rebate = rec.tax_salary_final - rec.net_allowed_rebate
             age = 0
             # my_emp = self.env['hr.employee'].sudo().search([('id', '=', rec.employee_id.id)], limit=1)
