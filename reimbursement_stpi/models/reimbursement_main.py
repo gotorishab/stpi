@@ -47,12 +47,16 @@ class Reimbursement(models.Model):
         ('tuition_fee', 'Tuition Fee claim'),
         ('briefcase', 'Briefcase Reimbursement'),
         ('quarterly', 'Newspaper Reimbursements'),
+        ('el_encashment', 'EL Encashment'),
     ], string='Reimbursement Type', store=True, track_visibility='always')
     reimbursement_sequence = fields.Char('Reimbursement number', track_visibility='always')
     employee_id = fields.Many2one('hr.employee', store=True, track_visibility='always', string='Requested By')
     job_id = fields.Many2one('hr.job', string='Functional Designation', store=True, track_visibility='always')
     branch_id = fields.Many2one('res.branch', string='Branch', store=True, track_visibility='always')
     department_id = fields.Many2one('hr.department', string='Department', store=True, track_visibility='always')
+
+    el_in_account = fields.Float('Maximum EL')
+    el_taking = fields.Float('EL Taking')
 
     claimed_amount = fields.Float(string='Claimed Amount', track_visibility='always')
     net_amount = fields.Float(string='Eligible Amount', compute='compute_net_amount', track_visibility='always')
@@ -125,6 +129,13 @@ class Reimbursement(models.Model):
             if rec.employee_id:
                 if rec.name == 'telephone' or rec.name == 'mobile':
                     rec.mobile_no = rec.employee_id.mobile_phone
+                if rec.name == 'el_encashment':
+                    sum = 0
+                    serch_id = self.env['hr.leave.report'].search([('employee_id', '=', rec.employee_id.id),('holiday_status_id.name', '=', 'Earned Leave')])
+                    for lv in serch_id:
+                        sum += lv.number_of_days
+                    rec.el_in_account = sum
+
 
     def get_late_coming_report(self):
         lst = []
@@ -195,7 +206,12 @@ class Reimbursement(models.Model):
                     rec.net_amount = (2250 * int(mult))*12
                 else:
                     rec.net_amount = int(rec.claimed_amount)
-
+            elif rec.employee_id and rec.name == 'el_encashment':
+                total_wage = self.env['hr.contract'].sudo().search(
+                    [('employee_id', '=', rec.employee_id.id), ('state', '=', 'open'),
+                     ], limit=1)
+                if total_wage:
+                    rec.net_amount = int(total_wage.updated_basic) * int(rec.el_taking)
 
 
 
@@ -229,6 +245,25 @@ class Reimbursement(models.Model):
                     raise ValidationError(
                         "Amount must be greater than zero")
                 else:
+                    if rec.name == 'el_encashment':
+                        if rec.el_in_account < rec.el_taking:
+                            raise ValidationError(
+                                "Net Earned leave must be greate than Earned leave Taking")
+                        if rec.el_in_account < 60:
+                            raise ValidationError(
+                                "Net Earned leave must be greater than 60")
+                        if rec.el_taking > 30:
+                            raise ValidationError(
+                                "Earned leave Taking must be less than 30")
+                        search_id = self.env['reimbursement'].search(
+                            [('employee_id', '=', rec.employee_id.id), ('name', '=', rec.name),
+                             ('state', 'not in', ['draft', 'rejected'])])
+                        count = 0
+                        for record in search_id:
+                            count+=1
+                        if count > 6:
+                            raise ValidationError(
+                                "Total must be less than 6")
                     gr_id = self.env['reimbursement.configuration'].search(
                         [('name', '=', rec.name),('branch_id', '=', rec.branch_id.id), ('pay_level_ids', '=', rec.employee_id.job_id.pay_level_id.id),('job_ids', '=', rec.employee_id.job_id.id),('employee_type', '=', rec.employee_id.employee_type)],
                         order='name desc',

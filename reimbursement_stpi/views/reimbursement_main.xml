@@ -62,6 +62,8 @@
                                         <group>
                                             <field name="working_days" attrs="{'invisible': [('name', '!=', 'lunch')], 'readonly':[('state','not in',('draft'))]}"/>
                                             <field name="amount_lunch" readonly="1" attrs="{'invisible':[('name','not in',('lunch'))]}"/>
+                                            <field name="el_in_account" readonly="1" attrs="{'invisible':[('name','not in',('el_encashment'))]}"/>
+                                            <field name="el_taking" required="1" attrs="{'invisible':[('name','not in',('el_encashment'))]}"/>
                                             <field name="service_provider" attrs="{'invisible': [('name', '!=', 'telephone'), ('name', '!=', 'mobile')], 'readonly':[('state','not in',('draft'))]}"/>
                                             <field name="mobile_no" attrs="{'invisible': [('name', '!=', 'telephone'), ('name', '!=', 'mobile')]}" readonly="1"/>
                                             <field name="phone" attrs="{'invisible':[('name','not in',('telephone','mobile'))],'required':[('name','in',('telephone','mobile'))], 'readonly':[('state','not in',('draft'))]}"/>
