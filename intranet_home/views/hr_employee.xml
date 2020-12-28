@@ -9,6 +9,9 @@
                 <field name="marriage_anniversary" attrs="{'invisible': [('marital', '!=', 'married')]}"/>
                 <field name="work_anniversary"/>
             </field>
+            <field name="department_id" position="after">
+                <field name="unit_id"/>
+            </field>
         </field>
     </record>
 </odoo>

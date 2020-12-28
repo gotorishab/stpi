@@ -11,7 +11,7 @@ class HrEmployee(models.Model):
 
     marriage_anniversary = fields.Date(string='Marriage Anniversary')
     work_anniversary = fields.Date(string='Work Anniversary')
-    unit_id = fields.Many2one('vardhman.unit.master')
+    unit_id = fields.Many2one('vardhman.unit.master',string='Unit')
 
 
 class VardhmanEmployeeBirthday(models.Model):
