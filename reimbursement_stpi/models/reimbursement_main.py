@@ -167,7 +167,7 @@ class Reimbursement(models.Model):
 
 
 
-    @api.depends('claimed_amount')
+    @api.depends('claimed_amount','el_taking')
     def compute_net_amount(self):
         for rec in self:
             gr_id = self.env['reimbursement.configuration'].search([('name', '=', rec.name),('branch_id', '=', rec.branch_id.id),('pay_level_ids', '=', rec.employee_id.job_id.pay_level_id.id),('job_ids', '=', rec.employee_id.job_id.id),('employee_type', '=', rec.employee_id.employee_type)],order='name desc', limit=1)

@@ -75,7 +75,7 @@
                                             <field name="remarks" attrs="{'readonly':[('state','not in',('draft'))]}"/>
                                         </group>
                                         <group>
-                                            <field name="claimed_amount" attrs="{'readonly':[('state','not in',('draft'))],'invisible':[('name','in',('lunch'))]}"/>
+                                            <field name="claimed_amount" attrs="{'readonly':[('state','not in',('draft'))],'invisible':[('name','in',('lunch','el_encashment'))]}"/>
                                             <field name="net_amount"/>
                                         </group>
                                     </group>
