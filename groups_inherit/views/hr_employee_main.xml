@@ -9,8 +9,8 @@
             <field name="inherit_id" ref="hr.view_employee_form"/>
             <field name="priority">1</field>
             <field name="arch" type="xml">
-                  <xpath expr="//page[@name='personal_information']" position="replace">
-                      <page name="personal_information" string="Private Information">
+                  <xpath expr="//page[@name='personal_information']" position="after">
+                      <page name="personal_information1" string="Private Information">
                           <field name="employee_type" invisible="1"/>
                           <field name="recruitment_type" invisible="1"/>
                           <group>
