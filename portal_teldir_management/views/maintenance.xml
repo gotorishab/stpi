@@ -64,7 +64,7 @@
                             <t t-esc="teldirs.unit_id.name"/>
                         </td>
                         <td>
-                            <t t-esc="teldirs.work_mobile"/>
+                            <t t-esc="teldirs.mobile_phone"/>
                         </td>
                         <td>
                             <t t-esc="teldirs.work_phone"/>
