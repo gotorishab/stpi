@@ -8,10 +8,10 @@
     'depends': ['portal','intranet_home'],
     'description': """ Portal teldirs """,
     "data": [
-        'security/ir.model.access.csv',
-        'security/security.xml',
+        # 'security/ir.model.access.csv',
+        # 'security/security.xml',
         'views/maintenance.xml',
-        'views/portal_teldir.xml',
+        # 'views/portal_teldir.xml',
     ],
     'currency': 'EUR',
     'demo': [],
