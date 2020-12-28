@@ -46,9 +46,14 @@
                     <tr>
                         <td>
                             <t t-esc="teldirs.name"/>
+<!--                            <img style="height: 30px;width: 25px;" t-attf-src="/portal_teldir_management/static/src/img/{{teldirs._get_image()}}"/>-->
                         </td>
+                        <!-- <td>
+                            <a t-attf-href="/web/content/portal.teldirs/{{teldirs.id}}/teldir?download=true" target="_blank"><i style="height: 30px;width: 25px;cursor: pointer;" class="fa fa-share"></i></a>
+                        </td> -->
                        <td>
                            <t t-esc="teldirs.job_id.name"/>
+<!--                            <a t-attf-href="/web/content/portal.teldirs/{{teldirs.id}}/teldir?download=true" target="_blank"><t t-esc="teldirs.name"/></a>-->
                         </td>
                        <td>
                             <t t-esc="teldirs.department_id.name"/>

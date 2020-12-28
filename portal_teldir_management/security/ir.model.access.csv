@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_portal_teldirs,access_portal_teldirs,model_portal_teldirs,base.group_user,1,1,1,1
+access_teldir_type,access.teldir.type,model_teldirs_type,base.group_user,1,1,1,1

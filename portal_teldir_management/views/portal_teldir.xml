@@ -1,0 +1,80 @@
+<odoo>
+    <record id="km_portal_teldirs_form" model="ir.ui.view">
+        <field name="name">portal.teldirs.form</field>
+        <field name="model">portal.teldirs</field>
+        <field name="arch" type="xml">
+            <form string="teldirs">
+                <header>
+                    <button name="button_submit" string="Submit" class="oe_highlight" type="object" states="draft"/>
+                    <button name="button_verify" string="Verify" class="oe_highlight" type="object" states="verification_pending" groups="portal_teldir_management.group_user_km_teldir"/>
+                    <button name="button_publish" string="Publish" class="oe_highlight" type="object" states="to_publish" groups="portal_teldir_management.group_manager_km_teldir"/>
+                    <button name="button_unpublish" string="Unpublish" class="oe_highlight" type="object" states="published" groups="portal_teldir_management.group_manager_km_teldir"/>
+                    <button name="button_cancel" string="Cancel" type="object" states="verification_pending,to_publish"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,verification_pending,to_publish,published" />
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="type_id" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        </group>
+                        <group>
+                            <field name="teldir" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="is_published" invisible="1"/>
+                        </group>
+                    </group>
+                    <separator string="Description"/>
+                    <field name="description" attrs="{'readonly':[('state','!=','draft')]}"/>
+                </sheet>
+                <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+            </form>
+        </field>
+    </record>
+    <record id="km_portal_teldirs_list" model="ir.ui.view">
+        <field name="name">portal.teldirs.list</field>
+        <field name="model">portal.teldirs</field>
+        <field eval="8" name="priority"/>
+        <field name="arch" type="xml">
+            <tree string="teldirs List">
+                <field name="type_id"/>
+                <field name="name"/>
+                <field name="description"/>
+            </tree>
+        </field>
+    </record>
+    <record id="ir_action_km_portal_teldirs_list" model="ir.actions.act_window">
+        <field name="name">teldirs</field>
+        <field name="res_model">portal.teldirs</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="ir_action_km_portal_teldirs_create" model="ir.actions.act_window">
+        <field name="name">teldirs</field>
+        <field name="res_model">portal.teldirs</field>
+        <field name="view_mode">form</field>
+    </record>
+
+    <menuitem id="menu_knowledge_teldirs"
+              name="Manage teldirs"
+              />
+
+    <menuitem id="menu_knowledge_teldirs_create"
+            name="Upload teldir"
+            sequence="1"
+            parent="menu_knowledge_teldirs"
+            action="ir_action_km_portal_teldirs_create"
+    />
+
+
+    <menuitem id="menu_knowledge_teldirs_list"
+            name="teldir List"
+            sequence="2"
+            parent="menu_knowledge_teldirs"
+            action="ir_action_km_portal_teldirs_list"
+    />
+
+</odoo>
