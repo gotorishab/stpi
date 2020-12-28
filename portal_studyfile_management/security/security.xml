@@ -1,0 +1,18 @@
+<odoo>
+     <record model="ir.module.category" id="module_km_studyfile">
+        <field name="name">KM studyfile</field>
+        <field name="description">Help You For Knowledge studyfiles</field>
+        <field name="sequence">20</field>
+    </record>
+
+    <record id="group_manager_km_studyfile" model="res.groups">
+        <field name="name">KM studyfile Manager</field>
+        <field name="category_id" ref="module_km_studyfile"/>
+    </record>
+    <record id="group_user_km_studyfile" model="res.groups">
+        <field name="name">KM studyfile User</field>
+        <field name="category_id" ref="module_km_studyfile"/>
+    </record>
+
+
+</odoo>

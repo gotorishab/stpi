@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="studyfiles_my_home_menu_expense" name="Portal layout: maintenance" inherit_id="portal.portal_breadcrumbs">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'studyfiles' or studyfiles" t-attf-class="breadcrumb-item #{'active ' if not studyfiles else ''}">
+                <a t-if="studyfiles" t-attf-href="/get/studyfiles?{{ keep_query() }}">studyfiles</a>
+                <t t-else="">studyfiles</t>
+            </li>
+        </xpath>
+    </template>
+
+    <!-- menu in my account -->
+    <template id="portal_my_home_sale" name="Portal My Home : sales entries" inherit_id="portal.portal_my_home" priority="20">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-if="studyfiles_count" t-call="portal.portal_docs_entry">
+                <t t-set="title">studyfiles</t>
+                <t t-set="url" t-value="'/get/studyfiles'"/>
+                <t t-set="count" t-value="studyfiles_count"/>
+            </t>
+        </xpath>
+    </template>
+
+    <!-- list view of maintenance -->
+    <template id="portal_my_studyfiles_data" name="My studyfiles">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">studyfiles</t>
+            </t>
+            <t t-if="not studyfiles_ids">
+                 <p>There are currently no 'studyfiles' for your account.</p>
+            </t>
+            <t t-if="studyfiles_ids" t-call="portal.portal_table">
+                <thead>
+                    <tr>
+                        <th><i class="fa fa-file"></i></th>
+                        <!-- <th></th> -->
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Published</th>
+                        <th>Published By</th>
+                        <th>Size</th>
+                    </tr>
+                </thead>
+                <t t-foreach="studyfiles_ids" t-as="studyfiles">
+                    <tr>
+                        <td>
+                            <img style="height: 30px;width: 25px;" t-attf-src="/portal_studyfile_management/static/src/img/{{studyfiles._get_image()}}"/>
+                        </td>
+                        <!-- <td>
+                            <a t-attf-href="/web/content/portal.studyfiles/{{studyfiles.id}}/studyfile?download=true" target="_blank"><i style="height: 30px;width: 25px;cursor: pointer;" class="fa fa-share"></i></a>
+                        </td> -->
+                       <td>
+                            <a t-attf-href="/web/content/portal.studyfiles/{{studyfiles.id}}/studyfile?download=true" target="_blank"><t t-esc="studyfiles.name"/></a>
+                        </td>
+                       <td>
+                            <t t-esc="studyfiles.type_id.name"/>
+                        </td>
+                        <td>
+                            <t t-esc="studyfiles.create_date"/>
+                        </td>
+                        <td>
+                            <t t-esc="studyfiles.create_uid.name"/>
+                        </td>
+                        <td>
+                            <t t-esc="studyfiles._get_size()"/> <span t-if="studyfiles._get_size() > 1">MB</span><span t-else="">Bytes</span>
+                        </td>
+                    </tr>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

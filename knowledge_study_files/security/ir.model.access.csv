@@ -1,3 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_portal_study_files,access_portal_study.files,model_portal_study_files,base.group_user,1,1,1,1
-access_document_study_type,access.document.study.type,model_documents_study_type,base.group_user,1,1,1,1
