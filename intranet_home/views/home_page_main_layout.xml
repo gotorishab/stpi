@@ -84,22 +84,30 @@
                                 <ul class="list-group list-group-flush;bg-light">
                                     <li class="list-group-item pl-0">
                                         <div class="oe_head d-flex w-100">
-                                            <span class="oe_main_ani w-50 m-2">Marriege Aniversary</span>
-                                            <span class="oe_main_ani w-50 m-2">Work Aniversary</span>
+                                            <span class="oe_marriage_ani oe_main_ani w-50 m-2">Marriage Aniversary</span>
+                                            <span class="oe_work_ani oe_main_ani w-50 m-2">Work Aniversary</span>
                                         </div>
                                     </li>
-                                    <t t-foreach='annivarsary_links' t-as='link'>
-                                        <li class="list-group-item">
-                                            <div t-field="link.image" t-options="{'widget': 'image', 'class': 'image_div'}" />
-                                            <div class="oe_div">
-                                                <span class="oe_name oe_pill w-100 d-block" t-esc='link.work_anniversary' />
-                                                <a  target='new'>
-                                                    <span class="oe_name w-100 d-block" t-esc='link.name' />
-                                                </a>
-                                                <span class="oe_name w-100 d-block" t-esc='link.job_title' />
-                                            </div>
-                                        </li>
-                                    </t>
+                                    <li id="oe_work" t-foreach='work_links' t-as='link' class="list-group-item">
+                                        <div t-field="link.image" t-options="{'widget': 'image', 'class': 'image_div'}" />
+                                        <div class="oe_div">
+                                            <span class="oe_name oe_pill w-100 d-block" t-esc='link.work_anniversary' />
+                                            <a  target='new'>
+                                                <span class="oe_name w-100 d-block" t-esc='link.name' />
+                                            </a>
+                                            <span class="oe_name w-100 d-block" t-esc='link.job_title' />
+                                        </div>
+                                    </li>
+                                    <li id="oe_marriage" t-foreach='marriage_links' t-as='link' class="list-group-item d-none">
+                                        <div t-field="link.image" t-options="{'widget': 'image', 'class': 'image_div'}" />
+                                        <div class="oe_div">
+                                            <span class="oe_name oe_pill w-100 d-block" t-esc='link.marriage_anniversary' />
+                                            <a  target='new'>
+                                                <span class="oe_name w-100 d-block" t-esc='link.name' />
+                                            </a>
+                                            <span class="oe_name w-100 d-block" t-esc='link.job_title' />
+                                        </div>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -173,17 +181,15 @@
                                 <a href="google.com">All News</a>
                             </div>
                         </div>
-                        <div class="row" t-foreach="range(0, 5)" t-as="i">
-                            <div class="col-md-3 pt-3 pb-3 oe_title">
-                                <img src="/intranet_home/static/src/img/phone.png"/>
-                            </div>
-                            <div class="col-md-9 oe_desc">
-                                <span><b>Title Back Log For  Disk</b></span>
-                                <p style="font-size: 13px;">Title Back Log For  Disk Title Back Log For  Disk
-                                    Title Back Log For  Disk Title Back Log For  Disk
-                                    Title Back Log For  Disk Title Back Log For  Disk
-                                </p>
-                            </div>
+                        <div class="row" t-foreach="website_ids" t-as="website">
+                                    <div class="col-md-3 pt-3 pb-3 oe_title" t-field="website.front_icon" t-options="{'widget': 'image', 'class': 'image_div h-auto'}"/>
+                                <div class="col-md-9 oe_desc">
+                                    <a t-att-href="website.front_url">
+                                        <span><b><t t-esc="website.front_title"/></b></span>
+                                    </a>
+                                    <p style="font-size: 13px;"><t t-esc="website.front_description"/>
+                                    </p>
+                                </div>
                         </div>
                     </div>
                     <div class="col-md-12 bg-white mt-2  mb-2 oe_col_idea p-0">
@@ -219,30 +225,79 @@
 
                         <div class="tab-content">
                           <div id="magezine" class="tab-pane active">
-                            <t t-foreach="magazine_link" t-as="magazine">
-                                <a class="col-md-4 d-inline-block oe_image" t-att-href="magazine.url">
-                                    <div t-field="magazine.icon" t-options="{'widget': 'image', 'class': 'image_div'}"/>
-                                </a>
-                            </t>
+                            <div class="row h-100">
+                                <t t-foreach="magazine_link" t-as="magazine">
+                                    <a class="col-md-4 d-inline-block oe_image" t-att-href="magazine.url">
+                                        <div t-field="magazine.icon" t-options="{'widget': 'image', 'class': 'image_div h-auto'}"/>
+                                    </a>
+                                </t>
+                            </div>
                           </div>
                           <div id="photo" class="tab-pane fade">
-                            <t t-foreach="photo_link" t-as="photo">
-                                <a class="col-md-4 d-inline-block oe_image" t-att-href="photo.url">
-                                    <div t-field="photo.icon" t-options="{'widget': 'image', 'class': 'image_div h-auto'}"/>
-                                </a>
-                            </t>
+                            <div class="row h-100">
+                                <t t-foreach="photo_link" t-as="photo">
+                                    <a class="col-md-4 d-inline-block oe_image" t-att-href="photo.url">
+                                        <div t-field="photo.icon" t-options="{'widget': 'image', 'class': 'image_div h-auto'}"/>
+                                    </a>
+                                </t>
+                            </div>
                           </div>
                           <div id="video" class="tab-pane fade">
-                            <t t-foreach="video_link" t-as="video">
-                                <a class="col-md-4 d-inline-block oe_image" t-att-href="video.url">
-                                    <div t-field="video.icon" t-options="{'widget': 'image', 'class': 'image_div'}"/>
-                                </a>
-                            </t>
+                            <div class="row h-100">
+                                <t t-foreach="video_link" t-as="video">
+                                    <a class="col-md-4 d-inline-block oe_image" t-att-href="video.url">
+                                        <div t-field="video.icon" t-options="{'widget': 'image', 'class': 'image_div h-auto'}"/>
+                                    </a>
+                                </t>
+                            </div>
                           </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-3 m-0 p-0">
+                    <div class="col-md-12 p-0 oe_calender mb-3 col-sm-3 mt-2 mb-4">
+                        <div class="col-md-12 oe_first pb-1">
+                            <img src="/intranet_home/static/src/img/ceo_image.png"/>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 oe_div pr-2">
+                                <img src="/intranet_home/static/src/img/1_image.png"/>
+                            </div>
+                            <div class="col-md-6 pl-1">
+                                <img src="/intranet_home/static/src/img/worker.png"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 p-0 oe_events mb-3 col-sm-3 mt-2 mb-4">
+                        <div class="card oe_card">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-md-9 oe_title">
+                                    NEWS
+                                    </div>
+                                    <div class="col-md-3 oe_all_link">
+                                        <a href="/blog">All <i class="fa fa-angle-right"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-group list-group-flush;bg-light">
+                                    <t t-foreach='news_posts' t-as='news'>
+                                        <li class="list-group-item">
+                                            <div class="h-100 w-100">
+                                                <a t-attf-href="/blog/#{slug(news.blog_id)}/#{slug(news)}">
+                                                    <span style="font-size: 13px;" class="w-100 d-block" t-esc='news.create_date' />
+                                                </a>
+                                                <a target='new'>
+                                                    <span class="oe_name w-100 d-block" t-esc='news.name' />
+                                                </a>
+                                            </div>
+                                        </li>
+                                    </t>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-md-12 p-0 oe_events mb-3 col-sm-3 mt-2 mb-4">
                         <div class="card oe_card">
                             <div class="card-header">
@@ -251,7 +306,7 @@
                                     LATEST EVENTS
                                     </div>
                                     <div class="col-md-3 oe_all_link">
-                                        <a href="google.com">All <i class="fa fa-angle-right"></i></a>
+                                        <a href="/event">All <i class="fa fa-angle-right"></i></a>
                                     </div>
                                 </div>
                             </div>
@@ -260,13 +315,17 @@
                                     <t t-foreach='event_link' t-as='link'>
                                         <li class="list-group-item">
                                             <!-- <div t-field="link.image" t-options="{'widget': 'image', 'class': 'image_div'}" /> -->
-                                            <!-- <div class="oe_div">
-                                                <span class="oe_name oe_pill w-100 d-block" t-esc='link.work_anniversary' />
-                                                <a  target='new'>
-                                                    <span class="oe_name w-100 d-block" t-esc='link.name' />
+                                            <div class="oe_div w-100">
+                                                <a target='new'>
+                                                    <b><span class="oe_title w-100 d-block" t-esc='link.name' /></b>
                                                 </a>
-                                                <span class="oe_name w-100 d-block" t-esc='link.job_title' />
-                                            </div> -->
+                                                <div class="row tags w-100 text-center pl-3">
+                                                    <t t-foreach="link.tag_ids" t-as="tag">
+                                                        <span class="oe_name col-md-4 oe_pill w-100 d-block" t-esc='tag.name' />
+                                                    </t>
+                                                </div>
+                                                <span class="oe_name w-100 d-block" t-esc='link.note' />
+                                            </div>
                                         </li>
                                     </t>
                                 </ul>

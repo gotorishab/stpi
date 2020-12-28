@@ -76,7 +76,7 @@
     <menuitem id="menu_health_manage_unsafework_master"
             name="Manage Unsafe Work Stop Card"
             sequence="11"
-               groups="health_portal.group_approver_health_accident"
+               groups="health_portal.group_manager_health_unsafe_work"
             />
 
 

@@ -6,4 +6,8 @@ from . import employe_birthday_anniversary
 from . import masters
 from . import slider
 from . import ir_module_module
+from . import blog_confuguration
+from . import website
 from . import res_user
+from . import blog_confuguration
+from . import blog_post_categories

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="website_view_form_inherit_front" model="ir.ui.view">
+        <field name="name">website.view.form.front.inherit</field>
+        <field name="model">website</field>
+        <field name="inherit_id" ref="website.view_website_form"/>
+        <field name="arch" type="xml">
+            <field name="logo" position="after">
+                <field name="front_title" required="1"/>
+                <field name="front_icon" required="1"/>
+                <field name="front_url" required="1"/>
+                <field name="front_description" required="1"/>
+            </field>
+        </field>
+    </record>
+</odoo>

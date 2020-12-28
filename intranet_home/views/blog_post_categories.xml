@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="blog_post_view_form_inherit_front" model="ir.ui.view">
+        <field name="name">blog.post.view.form.front.inherit</field>
+        <field name="model">blog.post</field>
+        <field name="inherit_id" ref="website_blog.view_blog_post_form"/>
+        <field name="arch" type="xml">
+            <field name="subtitle" position="after">
+                <field name="front_type"/>
+            </field>
+            <xpath expr="//sheet" position="before">
+            <header>
+                <button name="button_publish" string="Publish" type="object" groups="intranet_home.group_manager_blog_post_ih"/>
+                <button name="button_unpublish" string="Unpublish" type="object" groups="intranet_home.group_manager_blog_post_ih"/>
+            </header>
+            </xpath>
+        </field>
+    </record>
+
+
+     <record id="ir_action_manage_story" model="ir.actions.act_window">
+         <field name="name">Story List</field>
+         <field name="res_model">blog.post</field>
+         <field name="view_mode">tree,form</field>
+         <field name="domain">[('front_type','=','story')]</field>
+     </record>
+
+    <menuitem id="manage_story_menu_id"
+            name="Manage Story"
+            sequence="3"
+               groups="intranet_home.group_user_blog_post_ih"
+            />
+
+    <menuitem id="list_story_menu_id"
+              name="Story List"
+              sequence="1"
+              parent="manage_story_menu_id"
+              action="ir_action_manage_story"/>
+
+     <record id="ir_action_manage_idea" model="ir.actions.act_window">
+         <field name="name">Idea List</field>
+         <field name="res_model">blog.post</field>
+         <field name="view_mode">tree,form</field>
+         <field name="domain">[('front_type','=','idea')]</field>
+     </record>
+
+    <menuitem id="manage_idea_menu_id"
+            name="Manage Idea"
+            sequence="3"
+              groups="intranet_home.group_user_blog_post_ih"
+            />
+
+    <menuitem id="list_idea_menu_id"
+              name="Idea List"
+              sequence="1"
+              parent="manage_idea_menu_id"
+              action="ir_action_manage_idea"/>
+
+
+     <record id="ir_action_manage_announcement" model="ir.actions.act_window">
+         <field name="name">Announcement List</field>
+         <field name="res_model">blog.post</field>
+         <field name="view_mode">tree,form</field>
+         <field name="domain">[('front_type','=','announcement')]</field>
+     </record>
+
+    <menuitem id="manage_announcement_menu_id"
+            name="Manage Announcement"
+            sequence="3"
+              groups="intranet_home.group_user_blog_post_ih"
+           />
+
+    <menuitem id="list_announcement_menu_id"
+              name="Announcement List"
+              sequence="1"
+              parent="manage_announcement_menu_id"
+              action="ir_action_manage_announcement"/>
+
+
+     <record id="ir_action_manage_news" model="ir.actions.act_window">
+         <field name="name">News List</field>
+         <field name="res_model">blog.post</field>
+         <field name="view_mode">tree,form</field>
+         <field name="domain">[('front_type','=','news')]</field>
+     </record>
+
+    <menuitem id="manage_news_menu_id"
+            name="Manage News"
+            sequence="3"
+              groups="intranet_home.group_user_blog_post_ih"
+            />
+
+    <menuitem id="list_news_menu_id"
+              name="News List"
+              sequence="1"
+              parent="manage_news_menu_id"
+              action="ir_action_manage_news"/>
+
+
+     <record id="ir_action_manage_cmd" model="ir.actions.act_window">
+         <field name="name">CMD List</field>
+         <field name="res_model">blog.post</field>
+         <field name="view_mode">tree,form</field>
+         <field name="domain">[('front_type','=','cmd')]</field>
+     </record>
+
+    <menuitem id="manage_cmd_menu_id"
+            name="Manage CMD"
+            sequence="3"
+              groups="intranet_home.group_user_blog_post_ih"
+            />
+
+    <menuitem id="list_cmd_menu_id"
+              name="CMD List"
+              sequence="1"
+              parent="manage_cmd_menu_id"
+              action="ir_action_manage_cmd"/>
+
+</odoo>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="blog_blog_view_form_inherit_front" model="ir.ui.view">
+        <field name="name">blog.blog.view.form.front.inherit</field>
+        <field name="model">blog.blog</field>
+        <field name="inherit_id" ref="website_blog.view_blog_blog_form"/>
+        <field name="arch" type="xml">
+            <field name="subtitle" position="after">
+                <field name="front_type"/>
+            </field>
+        </field>
+    </record>
+</odoo>
