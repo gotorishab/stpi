@@ -22,7 +22,10 @@ class EmployeeTourClaim(models.Model):
             record.advance_requested = record.tour_request_id.advance_requested
             for line in record.detail_of_journey_lodging:
                 if line:
-                    no_of_days = (line.to_date - line.from_date).days + 1
+                    if line.no_of_days:
+                        no_of_days = line.no_of_days
+                    else:
+                        no_of_days = (line.to_date - line.from_date).days + 1
                     total_claimed += ((line.daily_lodging_charge + line.daily_boarding_charge + line.daily_boarding_lodginf_charge)*no_of_days)
             for line in record.detail_of_journey:
                 if line:
@@ -322,14 +325,17 @@ class JourneyLodgingBoarding(models.Model):
         for rec in self:
             no_of_days = 0.00
             if rec.from_date and rec.to_date:
-                no_of_days = (rec.to_date - rec.from_date).days + 1
+                if rec.no_of_days:
+                    no_of_days = rec.no_of_days
+                else:
+                    no_of_days = (rec.to_date - rec.from_date).days + 1
             rec.total_amount_paid = (rec.daily_lodging_charge + rec.daily_boarding_charge + rec.daily_boarding_lodginf_charge) * no_of_days
 
     employee_journey = fields.Many2one('employee.tour.claim', string='Tour Claim')
     arranged_by = fields.Selection([('self', 'Self'), ('company', 'Company')], string='Arranged By')
     from_date = fields.Date('From Date')
     to_date = fields.Date('To Date')
-    no_of_days = fields.Float('No. of days', compute='compute_no_of_days', store=True)
+    no_of_days = fields.Float('No. of days', store=True)
     travel_entitled = fields.Boolean('Is Travel Mode Entitled?')
     boarding = fields.Boolean('Boarding required?')
     lodging = fields.Boolean('Lodging required?')

@@ -28,6 +28,7 @@
                 <header>
                     <button name="button_to_approve" string="Send for Approval" class="oe_highlight" type="object" states="draft"/>
                      <button name="button_reset_to_draft" string="Cancel" type="object"/>
+                     <button name="button_reschedule" string="Reschedule" type="object" states="waiting_for_approval"/>
 <!--                    <button name="button_forwarded" string="Forward" class="oe_highlight" type="object" states="waiting_for_approval" groups="tour_request.group_employee_manager"/>-->
                     <button name="button_approved" string="Approve" class="oe_highlight" type="object" states="waiting_for_approval" groups="tour_request.group_tour_request_approvere"/>
 <!--                    <button name="button_processed" string="Process" class="oe_highlight" type="object" states="approved" groups="tour_request.group_travel_processor"/>-->

@@ -62,6 +62,11 @@ class TourRequest(models.Model):
         for rec in self:
             rec.write({'state': 'rejected'})
 
+    @api.multi
+    def button_reschedule(self):
+        for rec in self:
+            rec.write({'state': 'draft'})
+
 
     @api.multi
     def unlink(self):
@@ -148,7 +153,7 @@ class TourRequestJourney(models.Model):
     tour_sequence = fields.Char(related='employee_journey.tour_sequence', string='Tour Sequence')
 
     travel_mode = fields.Many2one('travel.mode', string='Mode of Travel')
-    mode_detail = fields.Char('Flight/Train No.')
+    mode_detail = fields.Char('Journey Details')
     mode_of_travlel = fields.Selection([('air', 'By Air'), ('train', 'By Train'), ('road', 'By Road'), ('sea', 'By Sea')], string='Mode of Travel')
     coc_air = fields.Selection([('first', 'First Class'), ('business', 'Business Class'), ('economy', 'Economy Class')], string='Class of Accomodation')
     coc_train = fields.Selection([('ac1', 'AC 1-Tier'), ('ac2', 'AC 2-Tier'), ('ac3', 'AC 3-Tier'), ('1st', 'First Class'), ('ac_chair', 'A.C Chair Class'), ('sleeper', 'Sleeper'), ('2nd_sit', 'Second Sitting')], string='Class of Accomodation')
@@ -165,6 +170,12 @@ class TourRequestJourney(models.Model):
     lodging = fields.Boolean('Lodging required?')
     conveyance = fields.Boolean('Local Conveyance required?')
 
+    @api.constrains('departure_date','arrival_date')
+    def dep_less_arrival(self):
+        for rec in self:
+            if rec.arrival_date < rec.departure_date:
+                raise UserError(
+                    'Arrival date must be greater than departure date')
 
 #
 #

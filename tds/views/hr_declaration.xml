@@ -60,6 +60,7 @@
                             <field name="income_other" invisible="1"/>
                         </group>
                         <group>
+                            <field name="allowance_current" invisible="1"/>
                             <field name="basic_salary" readonly="1" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                             <field name="da_salary" readonly="1" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                             <field name="tax_salary_final" readonly="1" widget="monetary" options="{'currency_field': 'currency_id'}"/>

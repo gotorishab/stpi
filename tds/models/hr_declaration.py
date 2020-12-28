@@ -220,7 +220,7 @@ class HrDeclaration(models.Model):
     # income_after_rebate = fields.Float('Income after Rebate')
     income_after_house_property = fields.Float(string='Income from House Property')
     income_after_other_sources = fields.Float(string='Income from Other Sources')
-
+    allowance_current = fields.Float('Allowance')
     income_from_home= fields.Float(string='Income from Income from Rent')
     income_dividend= fields.Float(string='Dividend Income')
     income_interest= fields.Float(string='Interest Income')
@@ -342,6 +342,60 @@ class HrDeclaration(models.Model):
             for pr in proll:
                 rec.forecast_gross = round(pr.amount*12)
 
+
+
+    @api.multi
+    def button_calculate_allowance(self):
+        for rec in self:
+            MISC =  0
+            HRA =0
+            DA =0
+            TA = 0
+            contrct = self.env['hr.contract'].sudo().search([('employee_id', '=', rec.employee_id.id),
+                                                             ('state', '=', 'open')
+                                                             ], limit=1)
+            for contract in contrct:
+                if ((contract.city_tier != 'other') and (
+                        contract.pay_level.entry_pay_id.name in ['Pay Level 9', 'Pay Level 10', 'Pay Level 11',
+                                                                 'Pay Level 12', 'Pay Level 13', 'Pay Level 13A',
+                                                                 'Pay Level 14', 'Pay Level 15', 'Pay Level 16',
+                                                                 'Pay Level 17', 'Pay Level 18'])):
+                    TA = 7200 + (7200 * contract.da / 100)
+                elif ((contract.city_tier != 'other') and (
+                        contract.pay_level.entry_pay_id.name in ['Pay Level 3', 'Pay Level 4', 'Pay Level 5',
+                                                                 'Pay Level 6', 'Pay Level 7', 'Pay Level 8'])):
+                    TA = 3600 + (3600 * contract.da / 100)
+                elif ((contract.city_tier != 'other') and (
+                        contract.pay_level.entry_pay_id.name in ['Pay Level 1', 'Pay Level 2'])):
+                    TA = 1350 + (1350 * (contract.da / 100))
+                elif ((contract.city_tier == 'other') and (
+                        contract.pay_level.entry_pay_id.name in ['Pay Level 9', 'Pay Level 10', 'Pay Level 11',
+                                                                 'Pay Level 12', 'Pay Level 13', 'Pay Level 13A',
+                                                                 'Pay Level 14', 'Pay Level 15', 'Pay Level 16',
+                                                                 'Pay Level 17', 'Pay Level 18'])):
+                    TA = 3600 + (3600 * (contract.da / 100))
+                elif ((contract.city_tier == 'other') and (
+                        contract.pay_level.entry_pay_id.name in ['Pay Level 3', 'Pay Level 4', 'Pay Level 5',
+                                                                 'Pay Level 6', 'Pay Level 7', 'Pay Level 8'])):
+                    TA = 1800 + (1800 * (contract.da / 100))
+                elif ((contract.city_tier == 'other') and (
+                        contract.pay_level.entry_pay_id.name in ['Pay Level 1', 'Pay Level 2'])):
+                    TA = 900 + (900 * (contract.da / 100))
+                else:
+                    TA = 101
+                DA = ((contract.da/100) * contract.wage)
+                if contract.employee_hra_cat == 'x':
+                    HRA = 0.24 * contract.wage
+                elif contract.employee_hra_cat == 'y':
+                    HRA = 0.16 * contract.wage
+                elif contract.employee_hra_cat == 'z':
+                    HRA = 0.08 * contract.wage
+                else:
+                    HRA = 0
+                MISC = contract.supplementary_allowance
+            rec.allowance_current = MISC + HRA + DA + TA
+
+
     @api.multi
     def button_approved(self):
         for rec in self:
@@ -406,8 +460,8 @@ class HrDeclaration(models.Model):
                     da += pr.amount
             rec.basic_salary = round(bs)
             rec.da_salary = round(da)
-
             rec.sudo().button_forecast_gross()
+            rec.sudo().button_calculate_allowance()
             sum = 0
             dstart = rec.date_range.date_start
             dend = rec.date_range.date_end
@@ -454,7 +508,7 @@ class HrDeclaration(models.Model):
             elif currentMonth == 3:
                 month = 1
 
-            rec.tax_salary_final = int(wage)*int(month) +  round(sum) + rec.income_after_house_property + rec.income_after_other_sources
+            rec.tax_salary_final = int(wage + rec.allowance_current)*int(month) +  round(sum) + rec.income_after_house_property + rec.income_after_other_sources
             # rec.income_after_rebate = rec.tax_salary_final - rec.net_allowed_rebate
             age = 0
             # my_emp = self.env['hr.employee'].sudo().search([('id', '=', rec.employee_id.id)], limit=1)

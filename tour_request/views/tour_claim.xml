@@ -79,7 +79,7 @@
                                         <field name="arranged_by" attrs="{'readonly':[('state','not in',('draft', 'rejected'))],'required':[('state','=','draft')]}"/>
                                         <field name="from_date" attrs="{'readonly':[('state','not in',('draft', 'rejected'))],'required':[('state','=','draft')]}"/>
                                         <field name="to_date" attrs="{'readonly':[('state','not in',('draft', 'rejected'))],'required':[('state','=','draft')]}"/>
-                                        <field name="no_of_days" readonly="1"/>
+                                        <field name="no_of_days"/>
                                         <field name="name_of_hotel" attrs="{'readonly':[('state','not in',('draft', 'rejected'))]}"/>
                                         <field name="claiming_separately" attrs="{'readonly':[('state','not in',('draft', 'rejected'))],'invisible':[('arranged_by','!=','self')],'required':[('arranged_by','=','self')]}"/>
                                         <field name="daily_lodging_charge" attrs="{'readonly':[('state','not in',('draft', 'rejected'))],'invisible':[('claiming_separately','!=','yes')]}"/>
