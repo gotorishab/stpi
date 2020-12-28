@@ -11,7 +11,7 @@
     'maintainer': 'Dexciss Technology Pvt. Ltd,Pune',
     'website': "https://www.dexciss.com",
     'depends': [
-        'hr_holidays','hr','sandwich_rule','hr_branch_company','hr_payroll','hr_employee_stpi','resource','web'
+        'hr_holidays','hr','sandwich_rule','hr_branch_company','hr_payroll','hr_employee_stpi','resource','web','groups_inherit'
     ],
     'data': [
         'data/hr_leave_type_data.xml',
