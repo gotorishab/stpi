@@ -420,7 +420,41 @@ class HrDeclaration(models.Model):
                                                                 ],order ="date_to desc")
             for i in proll:
                 sum += i.taxable_amount
-            rec.tax_salary_final = round(sum) + rec.income_after_house_property + rec.income_after_other_sources
+            contrct = self.env['hr.contract'].sudo().search([('employee_id', '=', rec.employee_id.id),
+                                                               ('state', '=', 'open')
+                                                               ],limit=1)
+            wage = 0
+            month = 1
+            for cnt in contrct:
+                wage = cnt.wage
+            currentMonth = datetime.now().month
+            print(currentMonth)
+            if currentMonth == 4:
+                month = 12
+            elif currentMonth == 5:
+                month = 11
+            elif currentMonth == 6:
+                month = 10
+            elif currentMonth == 7:
+                month = 9
+            elif currentMonth == 8:
+                month = 8
+            elif currentMonth == 9:
+                month = 7
+            elif currentMonth == 10:
+                month = 6
+            elif currentMonth == 11:
+                month = 5
+            elif currentMonth ==12:
+                month = 4
+            elif currentMonth == 1:
+                month = 3
+            elif currentMonth == 2:
+                month = 2
+            elif currentMonth == 3:
+                month = 1
+
+            rec.tax_salary_final = int(wage)*int(month) +  round(sum) + rec.income_after_house_property + rec.income_after_other_sources
             # rec.income_after_rebate = rec.tax_salary_final - rec.net_allowed_rebate
             age = 0
             # my_emp = self.env['hr.employee'].sudo().search([('id', '=', rec.employee_id.id)], limit=1)
