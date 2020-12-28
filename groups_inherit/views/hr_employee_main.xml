@@ -7,7 +7,7 @@
             <field name="name">hr.employee.form</field>
             <field name="model">hr.employee</field>
             <field name="inherit_id" ref="hr.view_employee_form"/>
-            <field name="priority">1</field>
+<!--            <field name="priority">1</field>-->
             <field name="arch" type="xml">
                   <xpath expr="//page[@name='personal_information']" position="after">
                       <page name="personal_information1" string="Private Information">
