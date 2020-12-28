@@ -71,7 +71,7 @@
                                             <field name="no_of_months" attrs="{'invisible': [('name', '!=', 'telephone'), ('name', '!=', 'mobile')], 'readonly':[('state','not in',('draft'))]}"/>
                                             <field name="attach_news" attrs="{'invisible': [('name', '!=', 'quarterly')], 'readonly':[('state','not in',('draft'))]}"/>
                                             <field name="bill_due_date" attrs="{'invisible': [('name', '!=', 'telephone'), ('name', '!=', 'mobile')], 'readonly':[('state','not in',('draft'))]}"/>
-                                            <field name="tution_document" attrs="{'invisible': [('name', '!=', 'tuition_fee')], 'readonly':[('state','not in',('draft'))], 'required':[('state','in',('draft'))]}"/>
+                                            <field name="tution_document" attrs="{'invisible': [('name', '!=', 'tuition_fee')], 'readonly':[('state','not in',('draft'))]}"/>
                                             <field name="remarks" attrs="{'readonly':[('state','not in',('draft'))]}"/>
                                         </group>
                                         <group>
