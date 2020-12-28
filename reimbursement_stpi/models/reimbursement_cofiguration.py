@@ -91,6 +91,7 @@ class ReimbursementConfiguration(models.Model):
         ('tuition_fee', 'Tuition Fee claim'),
         ('briefcase', 'Briefcase Reimbursement'),
         ('quarterly', 'Newspaper Reimbursements'),
+        ('el_encashment', 'EL Encashment'),
     ], string='Reimbursement Type')
     pay_level_ids = fields.Many2many('hr.payslip.paylevel', string='Pay Level')
     grade_pay = fields.Text(string='Grade Pay')
