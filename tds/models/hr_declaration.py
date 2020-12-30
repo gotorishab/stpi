@@ -694,8 +694,12 @@ class HrDeclaration(models.Model):
                     my_allowed_rebate = my_investment
                 else:
                     my_allowed_rebate = ex_hra_id.rebate
+                print('====================rec.rent_paid========================',int(rec.rent_paid))
+                print('====================contrct.xnohrad========================',contrct.xnohra)
                 if int(rec.rent_paid) == 0 or contrct.xnohra == True:
                     my_allowed_rebate = 0
+                    print('====================True========================')
+
                 exemption_ids = []
                 exemption_ids.append((0, 0, {
                     'exemption_id': rec.id,
@@ -1063,7 +1067,8 @@ class SlabDeclarations(models.Model):
     document = fields.Binary(string='Document')
 
 
-class HraDeclarations(models.Model):
+class \
+        Declarations(models.Model):
     _name = 'declaration.hra'
     _description = 'declaration.hra'
 
