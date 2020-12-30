@@ -248,7 +248,7 @@ class Reimbursement(models.Model):
                     if rec.name == 'el_encashment':
                         if rec.el_in_account < rec.el_taking:
                             raise ValidationError(
-                                "Net Earned leave must be greate than Earned leave Taking")
+                                "Net Earned leave must be greater than Earned leave Taking")
                         if rec.el_in_account < 60:
                             raise ValidationError(
                                 "Net Earned leave must be greater than 60")

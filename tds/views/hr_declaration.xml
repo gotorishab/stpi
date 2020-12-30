@@ -137,7 +137,9 @@
                             <tree string="Income from Other Sources" editable="bottom">
                                 <field name="income_other_id" invisible="1"/>
                                 <field name="it_rule" invisible="1"/>
+                                <field name="saving_master_related" invisible="1"/>
                                 <field name="saving_master" options="{'no_create_edit': True, 'no_create': True}" domain="[('it_rule', '=', it_rule)]"/>
+                                <field name="other" attrs="{'invisible':[('saving_master_related','!=','Other')]}"/>
                                 <field name="investment"/>
                                 <field name="document"/>
                             </tree>
