@@ -1195,7 +1195,7 @@ class DonationG(models.Model):
     document = fields.Binary(string='Document')
     it_rule = fields.Selection([
         ('section80g', 'Section 80G'),
-    ], string='IT Rule -Section', default='income_other')
+    ], string='IT Rule -Section', default='section80g')
     saving_master = fields.Many2one('saving.master', string='Saving Type')
     saving_master_related = fields.Char(related='saving_master.saving_type', string='Saving Type Related')
     investment = fields.Float(string='Amount')
