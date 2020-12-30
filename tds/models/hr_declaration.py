@@ -657,6 +657,10 @@ class HrDeclaration(models.Model):
                     'allowed_rebate': my_allowed_rebate,
                 }))
                 rec.exemption_ids = exemption_ids
+            contrct = self.env['hr.contract'].sudo().search([('employee_id', '=', rec.employee_id.id),
+                                                             ('state', '=', 'open')
+                                                             ], limit=1)
+
             ex_hra_id = self.env['saving.master'].sudo().search([('saving_type', '=', 'HRA Exemption'), ('it_rule', '=', 'mus10ale')], limit=1)
             prl_id = self.env['hr.payslip.line'].sudo().search([('slip_id.employee_id', '=', rec.employee_id.id),('slip_id.state', '=', 'done'),('code', '=', 'HRA'),('slip_id.date_from', '>', rec.date_range.date_start),('slip_id.date_to', '<', rec.date_range.date_end)],order ="date_to desc")
             sum_bs = 0.00
@@ -690,7 +694,8 @@ class HrDeclaration(models.Model):
                     my_allowed_rebate = my_investment
                 else:
                     my_allowed_rebate = ex_hra_id.rebate
-
+                if int(rec.rent_paid) == 0 or contrct.xnohra == True:
+                    my_allowed_rebate = 0
                 exemption_ids = []
                 exemption_ids.append((0, 0, {
                     'exemption_id': rec.id,

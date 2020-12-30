@@ -59,7 +59,7 @@ class Reimbursement(models.Model):
     @api.multi
     def button_reject(self):
         exception = self.env['approvals.list'].search([('resource_ref', '=', 'reimbursement' + ',' + str(self.id)),
-                                                       ('state', '=', 'waiting_for_approval')])
+                                                       ('state', '=', 'to_approve')])
         # print("------------------exception",exception)
         if exception:
             raise UserError(_('Do not allow Pending Approval Reimbursement for Cancel.'))
