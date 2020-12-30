@@ -280,6 +280,21 @@
                         <group class="oe_subtotal_footer oe_right" colspan="2" >
                                 <field name="allowed_rebate_under_80mesdr" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                             </group>
+                        <separator string="Deductions on Donations"/>
+                        <field name="deddonation_ids">
+                            <tree string="Deduction on Donations" editable="bottom">
+                                <field name="deddonation_id" invisible="1"/>
+                                <field name="it_rule" invisible="1"/>
+                                <field name="saving_master_related" invisible="1"/>
+                                <field name="saving_master" options="{'no_create_edit': True, 'no_create': True}" domain="[('it_rule', '=', it_rule)]"/>
+                                <field name="other" attrs="{'invisible':[('saving_master_related','!=','Other')]}"/>
+                                <field name="investment"/>
+                                <field name="document"/>
+                            </tree>
+                        </field>
+                        <group class="oe_subtotal_footer oe_right" colspan="2" >
+                                <field name="allowed_rebate_under_donation" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            </group>
                     </page>
                         <page string="Tax Payment" name="tax_payment_g">
                             <field name="tax_payment_ids" attrs="{'invisible':[('tax_payable_zero','=',False)]}">

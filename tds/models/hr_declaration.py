@@ -14,7 +14,7 @@ class HrDeclaration(models.Model):
 
 
     @api.multi
-    @api.depends('slab_ids','med_ins_ids','deduction_saving_ids','tax_home_ids','tax_education_ids','rgess_ids','dedmedical_ids','dedmedical_self_ids')
+    @api.depends('slab_ids','med_ins_ids','deduction_saving_ids','tax_home_ids','tax_education_ids','rgess_ids','dedmedical_ids','dedmedical_self_ids','deddonation_ids')
     def _compute_allowed_rebate(self):
         for rec in self:
             total_approved = 0.0
@@ -124,7 +124,20 @@ class HrDeclaration(models.Model):
                 rec.allowed_rebate_under_80mesdr = round(total_80mesdr)
             else:
                 rec.allowed_rebate_under_80mesdr = round(max_allowed_80mesdr)
-            rec.total_deductions =  rec.allowed_rebate_under_80c + rec.allowed_rebate_under_80b + rec.allowed_rebate_under_80d + rec.allowed_rebate_under_80dsa + rec.allowed_rebate_under_80ee + rec.allowed_rebate_under_24 + rec.allowed_rebate_under_tbhl + rec.allowed_rebate_under_80e+ rec.allowed_rebate_under_80ccg + rec.allowed_rebate_under_80cdd + rec.allowed_rebate_under_80mesdr
+
+            total_donation = 0.00
+            max_allowed_donation = 0.00
+            for line in rec.deddonation_ids:
+                if line.it_rule:
+                    total_donation += line.investment
+                    max_allowed_donation += line.saving_master.rebate
+            if total_donation <= max_allowed_donation:
+                rec.allowed_rebate_under_donation = round(total_donation)
+            else:
+                rec.allowed_rebate_under_donation = round(max_allowed_donation)
+
+
+            rec.total_deductions =  rec.allowed_rebate_under_80c + rec.allowed_rebate_under_80b + rec.allowed_rebate_under_80d + rec.allowed_rebate_under_80dsa + rec.allowed_rebate_under_80ee + rec.allowed_rebate_under_24 + rec.allowed_rebate_under_tbhl + rec.allowed_rebate_under_80e+ rec.allowed_rebate_under_80ccg + rec.allowed_rebate_under_80cdd + rec.allowed_rebate_under_80mesdr + rec.allowed_rebate_under_donation
 
 
     # @api.multi
@@ -214,6 +227,7 @@ class HrDeclaration(models.Model):
     rgess_ids = fields.One2many('declaration.rgess', 'rgess_id', string='Deductions on Rajiv Gandhi Equity Saving Scheme')
     dedmedical_ids = fields.One2many('declaration.dedmedical', 'dedmedical_id', string='Deductions on Medical Expenditure for a Handicapped Relative')
     dedmedical_self_ids = fields.One2many('declaration.dedmedicalself', 'dedmedical_self_id', string='Deductions on Medical Expenditure on Self or Dependent Relative')
+    deddonation_ids = fields.One2many('declaration.donation', 'deddonation_id', string='Deductions on Donation')
     income_house_ids = fields.One2many('income.house','income_house_id','Income from House Property')
     income_other_ids = fields.One2many('income.other','income_other_id','Income from Other Sources')
     # net_allowed_rebate = fields.Float('Net Allowed Rebate', compute='compute_net_allowed_rebate')
@@ -253,6 +267,7 @@ class HrDeclaration(models.Model):
     allowed_rebate_under_80ccg = fields.Float(string='Allowed Rebate under Section 80 CCG', compute='_compute_allowed_rebate')
     allowed_rebate_under_80cdd = fields.Float(string='Allowed Rebate under Section 80 DD', compute='_compute_allowed_rebate')
     allowed_rebate_under_80mesdr = fields.Float(string='Allowed Rebate under Medical Expenditure on Self or Dependent Relative', compute='_compute_allowed_rebate')
+    allowed_rebate_under_donation = fields.Float(string='Allowed Rebate under Donations', compute='_compute_allowed_rebate')
     total_deductions = fields.Float(string='Total Deductions', compute='_compute_allowed_rebate')
 
     currency_id = fields.Many2one('res.currency', string='Currency',
@@ -786,8 +801,8 @@ class HrDeclaration(models.Model):
                 rec.income_after_pro_tax = round(rec.income_after_std_ded - sum_pt)
             else:
                 rec.income_after_pro_tax = 0.00
-            if (rec.income_after_pro_tax - rec.total_tds_paid - (rec.allowed_rebate_under_80c + rec.allowed_rebate_under_80b + rec.allowed_rebate_under_80d + rec.allowed_rebate_under_80dsa + rec.allowed_rebate_under_80e + rec.allowed_rebate_under_80ccg + rec.allowed_rebate_under_tbhl + rec.allowed_rebate_under_80ee + rec.allowed_rebate_under_24 + rec.allowed_rebate_under_80cdd + rec.allowed_rebate_under_80mesdr)) > 0.00:
-                rec.taxable_income = round(rec.income_after_pro_tax - rec.total_tds_paid - (rec.allowed_rebate_under_80c + rec.allowed_rebate_under_80b + rec.allowed_rebate_under_80d + rec.allowed_rebate_under_80dsa + rec.allowed_rebate_under_80e + rec.allowed_rebate_under_80ccg + rec.allowed_rebate_under_tbhl + rec.allowed_rebate_under_80ee + rec.allowed_rebate_under_24 + rec.allowed_rebate_under_80cdd + rec.allowed_rebate_under_80mesdr))
+            if (rec.income_after_pro_tax - rec.total_tds_paid - (rec.allowed_rebate_under_80c + rec.allowed_rebate_under_80b + rec.allowed_rebate_under_80d + rec.allowed_rebate_under_80dsa + rec.allowed_rebate_under_80e + rec.allowed_rebate_under_80ccg + rec.allowed_rebate_under_tbhl + rec.allowed_rebate_under_80ee + rec.allowed_rebate_under_24 + rec.allowed_rebate_under_80cdd + rec.allowed_rebate_under_80mesdr + rec.allowed_rebate_under_donation)) > 0.00:
+                rec.taxable_income = round(rec.income_after_pro_tax - rec.total_tds_paid - (rec.allowed_rebate_under_80c + rec.allowed_rebate_under_80b + rec.allowed_rebate_under_80d + rec.allowed_rebate_under_80dsa + rec.allowed_rebate_under_80e + rec.allowed_rebate_under_80ccg + rec.allowed_rebate_under_tbhl + rec.allowed_rebate_under_80ee + rec.allowed_rebate_under_24 + rec.allowed_rebate_under_80cdd + rec.allowed_rebate_under_80mesdr + rec.allowed_rebate_under_donation))
             else:
                 rec.taxable_income = 0.00
             # ex_rebate_id = self.env['saving.master'].sudo().search(
@@ -1165,13 +1180,26 @@ class dedmedicalselfDeclarations(models.Model):
 
     it_rule = fields.Selection([
         ('80ddb', '80DDB'),
-        ('section80g', 'Section 80G'),
         ('80gg', '80 GG'),
         ('us_194_aa', 'u/s 194A'),
     ], string='IT Rule -Section', default='80ddb')
     saving_master = fields.Many2one('saving.master', string='Saving Type')
     investment = fields.Float(string='Investment')
 
+
+class DonationG(models.Model):
+    _name = 'declaration.donation'
+    _description = 'Declaration donation'
+
+    deddonation_id = fields.Many2one('hr.declaration', string='Donation')
+    document = fields.Binary(string='Document')
+    it_rule = fields.Selection([
+        ('section80g', 'Section 80G'),
+    ], string='IT Rule -Section', default='income_other')
+    saving_master = fields.Many2one('saving.master', string='Saving Type')
+    saving_master_related = fields.Char(related='saving_master.saving_type', string='Saving Type Related')
+    investment = fields.Float(string='Amount')
+    other = fields.Char('Other(If any)')
 
 
 class IncomeHouse(models.Model):
