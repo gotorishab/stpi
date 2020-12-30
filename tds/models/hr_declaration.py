@@ -1208,7 +1208,7 @@ class IncomeOther(models.Model):
         ('income_other', 'Income from other Sources')
     ], string='IT Rule -Section', default='income_other')
     saving_master = fields.Many2one('saving.master', string='Saving Type')
-    saving_master_related = fields.Char(related='saving_master.name', string='Saving Type Related')
+    saving_master_related = fields.Char(related='saving_master.saving_type', string='Saving Type Related')
     investment = fields.Float(string='Amount')
     other = fields.Char('Other(If any)')
 
