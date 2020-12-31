@@ -689,7 +689,7 @@ class HrDeclaration(models.Model):
 
             ex_hra_id = self.env['saving.master'].sudo().search([('saving_type', '=', 'HRA Exemption'), ('it_rule', '=', 'mus10ale')], limit=1)
             prl_id = self.env['hr.payslip.line'].sudo().search([('slip_id.employee_id', '=', rec.employee_id.id),('slip_id.state', '=', 'done'),('code', '=', 'HRA'),('slip_id.date_from', '>', rec.date_range.date_start),('slip_id.date_to', '<', rec.date_range.date_end)],order ="date_to desc")
-            prl_current_id = self.env['hr.payslip.line'].sudo().search([('slip_id.employee_id', '=', rec.employee_id.id),('slip_id.state', '=', 'done'),('code', '=', 'HRA'),('slip_id.date_from.month', '=', datetime.now().month),('slip_id.date_to.month', '=', datetime.now().month)])
+            prl_current_id = self.env['hr.payslip.line'].sudo().search([('slip_id.employee_id', '=', rec.employee_id.id),('slip_id.state', '=', 'done'),('code', '=', 'HRA'),('slip_id.date_from', '=', datetime.now().replace(day=1)),('slip_id.date_to', '=', datetime.now().replace(day=1) + relativedelta(months=1) - relativedelta(days=1))])
             sum_bs = 0.00
             sum_rent = 0.00
             sum_prl = 0.00
@@ -700,8 +700,9 @@ class HrDeclaration(models.Model):
             sum_list = []
             for cc in prl_id:
                 sum_prl+=cc.amount
-            for pc in prl_current_id:
-                sum_prl_current += pc.amount*int(month)
+            if prl_current_id:
+                for pc in prl_current_id:
+                    sum_prl_current += pc.amount*int(month)
             sum_prl = sum_prl + sum_prl_current
             if rec.employee_id.branch_id.city_id.metro == True:
                 sum_bs = ((rec.basic_salary + rec.da_salary)*50)/100
