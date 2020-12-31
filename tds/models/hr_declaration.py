@@ -461,8 +461,6 @@ class HrDeclaration(models.Model):
     def button_compute_tax(self):
         for rec in self:
             month = 1
-            for cnt in contrct:
-                wage = cnt.wage
             currentMonth = datetime.now().month
             print(currentMonth)
             if currentMonth == 4:
@@ -540,10 +538,10 @@ class HrDeclaration(models.Model):
             contrct = self.env['hr.contract'].sudo().search([('employee_id', '=', rec.employee_id.id),
                                                                ('state', '=', 'open')
                                                                ],limit=1)
+
             wage = 0
-            # month = 1
-            # for cnt in contrct:
-            #     wage = cnt.wage
+            for cnt in contrct:
+                wage = cnt.wage
             # currentMonth = datetime.now().month
             # print(currentMonth)
             # if currentMonth == 4:
