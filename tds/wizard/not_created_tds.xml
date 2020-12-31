@@ -34,8 +34,8 @@
         </record>
 
 
-    <menuitem id="hr_menu_nc_tds_wizard_request" name="ITR Exception Report" action="tds.nc_tds_wizard_action"
-            parent="tds.menu_hr_declaration_main" groups="tds.group_manager_hr_declaration" sequence="100"/>
+<!--    <menuitem id="hr_menu_nc_tds_wizard_request" name="ITR Exception Report" action="tds.nc_tds_wizard_action"-->
+<!--            parent="tds.menu_hr_declaration_main" groups="tds.group_manager_hr_declaration" sequence="100"/>-->
 
 
     </data>

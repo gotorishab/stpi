@@ -460,6 +460,35 @@ class HrDeclaration(models.Model):
     @api.multi
     def button_compute_tax(self):
         for rec in self:
+            month = 1
+            for cnt in contrct:
+                wage = cnt.wage
+            currentMonth = datetime.now().month
+            print(currentMonth)
+            if currentMonth == 4:
+                month = 12
+            elif currentMonth == 5:
+                month = 11
+            elif currentMonth == 6:
+                month = 10
+            elif currentMonth == 7:
+                month = 9
+            elif currentMonth == 8:
+                month = 8
+            elif currentMonth == 9:
+                month = 7
+            elif currentMonth == 10:
+                month = 6
+            elif currentMonth == 11:
+                month = 5
+            elif currentMonth == 12:
+                month = 4
+            elif currentMonth == 1:
+                month = 3
+            elif currentMonth == 2:
+                month = 2
+            elif currentMonth == 3:
+                month = 1
             sum = 0
             for line in rec.income_house_ids:
                 sum+=line.investment
@@ -512,36 +541,35 @@ class HrDeclaration(models.Model):
                                                                ('state', '=', 'open')
                                                                ],limit=1)
             wage = 0
-            month = 1
-            for cnt in contrct:
-                wage = cnt.wage
-            currentMonth = datetime.now().month
-            print(currentMonth)
-            if currentMonth == 4:
-                month = 12
-            elif currentMonth == 5:
-                month = 11
-            elif currentMonth == 6:
-                month = 10
-            elif currentMonth == 7:
-                month = 9
-            elif currentMonth == 8:
-                month = 8
-            elif currentMonth == 9:
-                month = 7
-            elif currentMonth == 10:
-                month = 6
-            elif currentMonth == 11:
-                month = 5
-            elif currentMonth ==12:
-                month = 4
-            elif currentMonth == 1:
-                month = 3
-            elif currentMonth == 2:
-                month = 2
-            elif currentMonth == 3:
-                month = 1
-
+            # month = 1
+            # for cnt in contrct:
+            #     wage = cnt.wage
+            # currentMonth = datetime.now().month
+            # print(currentMonth)
+            # if currentMonth == 4:
+            #     month = 12
+            # elif currentMonth == 5:
+            #     month = 11
+            # elif currentMonth == 6:
+            #     month = 10
+            # elif currentMonth == 7:
+            #     month = 9
+            # elif currentMonth == 8:
+            #     month = 8
+            # elif currentMonth == 9:
+            #     month = 7
+            # elif currentMonth == 10:
+            #     month = 6
+            # elif currentMonth == 11:
+            #     month = 5
+            # elif currentMonth ==12:
+            #     month = 4
+            # elif currentMonth == 1:
+            #     month = 3
+            # elif currentMonth == 2:
+            #     month = 2
+            # elif currentMonth == 3:
+            #     month = 1
             rec.tax_salary_final = int(wage + rec.allowance_current)*int(month) +  round(sum) + rec.income_after_house_property + rec.income_after_other_sources + rec.el_encashment
             # rec.income_after_rebate = rec.tax_salary_final - rec.net_allowed_rebate
             age = 0
@@ -663,20 +691,25 @@ class HrDeclaration(models.Model):
 
             ex_hra_id = self.env['saving.master'].sudo().search([('saving_type', '=', 'HRA Exemption'), ('it_rule', '=', 'mus10ale')], limit=1)
             prl_id = self.env['hr.payslip.line'].sudo().search([('slip_id.employee_id', '=', rec.employee_id.id),('slip_id.state', '=', 'done'),('code', '=', 'HRA'),('slip_id.date_from', '>', rec.date_range.date_start),('slip_id.date_to', '<', rec.date_range.date_end)],order ="date_to desc")
+            prl_current_id = self.env['hr.payslip.line'].sudo().search([('slip_id.employee_id', '=', rec.employee_id.id),('slip_id.state', '=', 'done'),('code', '=', 'HRA'),('slip_id.date_from.month', '=', datetime.now().month),('slip_id.date_to.month', '=', datetime.now().month)])
             sum_bs = 0.00
             sum_rent = 0.00
             sum_prl = 0.00
+            sum_prl_current = 0.00
             sum=0.00
             my_investment = 0.00
             my_allowed_rebate = 0.00
             sum_list = []
             for cc in prl_id:
                 sum_prl+=cc.amount
+            for pc in prl_current_id:
+                sum_prl_current += pc.amount*int(month)
+            sum_prl = sum_prl + sum_prl_current
             if rec.employee_id.branch_id.city_id.metro == True:
                 sum_bs = ((rec.basic_salary + rec.da_salary)*50)/100
             else:
                 sum_bs = ((rec.basic_salary + rec.da_salary)*40)/100
-            sum_rent = rec.rent_paid - (((rec.basic_salary + rec.da_salary)*10)/100)
+            sum_rent = rec.rent_paid - (((rec.basic_salary + rec.da_salary + int(wage)*int(month) )*10)/100)
 
             sum_list.append(sum_prl)
             sum_list.append(sum_bs)

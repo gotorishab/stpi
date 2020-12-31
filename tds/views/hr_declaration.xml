@@ -393,7 +393,7 @@
         <field name="res_model">hr.declaration</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
-        <field name="context">{'search_default_mydeclaration': 1}</field>
+<!--        <field name="context">{'search_default_mydeclaration': 1}</field>-->
         <field name="search_view_id" ref="view_hr_declaration_request_search_form"/>
         <field name="domain">[('state','=','to_approve')]</field>
     </record>
