@@ -807,6 +807,7 @@ class HrDeclaration(models.Model):
                 slab_ids = []
                 slab_ids.append((0, 0, {
                     'slab_id': rec.id,
+                    'deduction_id': 'slab_80_declaration',
                     'it_rule': '80_c',
                     'saving_master': ex_80_c_id.id,
                     'investment': my_investment,
