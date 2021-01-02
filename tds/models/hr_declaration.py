@@ -364,17 +364,28 @@ class HrDeclaration(models.Model):
     def button_calculate_el_encash(self):
         for rec in self:
             encash = 0
+            medical = 0
             ltc = 0
             reimbursement_ids =  self.env['reimbursement'].sudo().search([('employee_id', '=', rec.employee_id.id),('date_range.date_start', '>', rec.date_range.date_start),('date_range.date_end', '<', rec.date_range.date_end),('state', '=', 'approved')])
             for item in reimbursement_ids:
-                if item.name == 'medical' or item.name == 'el_encashment':
+                if item.name == 'medical':
+                    medical += item.net_amount
+                if item.name == 'el_encashment':
                     encash += item.net_amount
             ltc_ids =  self.env['employee.ltc.advance'].sudo().search([('employee_id', '=', rec.employee_id.id),('state', '=', 'approved')])
             for item in ltc_ids:
                 if item.depart_date and item.arrival_date:
                     if item.depart_date > rec.date_range.date_start and item.arrival_date < rec.date_range.date_end:
                         ltc += item.amount
-            rec.el_encashment = encash + ltc
+            rec.el_encashment = encash + ltc + medical
+            _body = (_(
+                (
+                    "<ul>Medical Reimbursement: {0} </ul>"
+                    "<ul>EL Encashment - Reimbursement: {1} </ul>"
+                    "<ul>EL Encashment - LTC: {2} </ul>"
+
+                ).format(medical,encash,ltc)))
+            rec.message_post(body=_body)
 
 
     @api.multi
@@ -568,7 +579,19 @@ class HrDeclaration(models.Model):
             #     month = 2
             # elif currentMonth == 3:
             #     month = 1
-            rec.tax_salary_final = int(wage + rec.allowance_current)*int(month) +  round(sum) + rec.income_after_house_property + rec.income_after_other_sources + rec.el_encashment
+            _body = (_(
+                (
+                    "<ul>Gross Salary</ul>"
+                        "<ul>Basic Wage: {0} </ul>"
+                        "<ul>Allowance: {1} </ul>"
+                        "<ul>Actual Gross: {2} </ul>"
+                        "<ul>Income from House Property: {3} </ul>"
+                        "<ul>Income from Other Sources: {4} </ul>"
+                        "<ul>EL Encashment and Medical Reimbursement: {5} </ul>"
+
+                ).format(wage,rec.allowance_current,sum,rec.income_after_house_property,rec.income_after_other_sources,rec.el_encashment)))
+            rec.message_post(body=_body)
+            rec.tax_salary_final = int(wage + rec.allowance_current)*int(month) + round(sum) + rec.income_after_house_property + rec.income_after_other_sources + rec.el_encashment
             # rec.income_after_rebate = rec.tax_salary_final - rec.net_allowed_rebate
             age = 0
             # my_emp = self.env['hr.employee'].sudo().search([('id', '=', rec.employee_id.id)], limit=1)
