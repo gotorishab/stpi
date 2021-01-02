@@ -290,7 +290,7 @@
                         <field name="deddonation_ids">
                             <tree string="Deduction on Donations" editable="bottom">
                                 <field name="deddonation_id" invisible="1"/>
-<!--                                <field name="deduction_id" invisible="1"/>-->
+                                <field name="deduction_id" invisible="1"/>
                                 <field name="it_rule" required="1" domain="[('deduction_id', '=', deduction_id)]"/>
                                 <field name="saving_master_related" invisible="1"/>
                                 <field name="saving_master" options="{'no_create_edit': True, 'no_create': True}" domain="[('it_rule', '=', it_rule)]"/>
