@@ -637,7 +637,7 @@ class HrDeclaration(models.Model):
                 std_ded_ids = []
                 std_ded_ids.append((0, 0, {
                      'std_ded_id': rec.id,
-                    'it_rule': 'mus10ale',
+                    'it_rule': ex_std_id.it_rule.id,
                     'saving_master': ex_std_id.id,
                     'investment': my_investment,
                     'allowed_rebate': my_allowed_rebate,
@@ -677,7 +677,7 @@ class HrDeclaration(models.Model):
                 exemption_ids = []
                 exemption_ids.append((0, 0, {
                     'exemption_id': rec.id,
-                    'it_rule': 'mus10ale',
+                    'it_rule': ex_child_id.it_rule.id,
                     'saving_master': ex_child_id.id,
                     'investment': my_investment,
                     'allowed_rebate': my_allowed_rebate,
@@ -735,7 +735,7 @@ class HrDeclaration(models.Model):
                 exemption_ids = []
                 exemption_ids.append((0, 0, {
                     'exemption_id': rec.id,
-                    'it_rule': 'mus10ale',
+                    'it_rule': ex_hra_id.it_rule.id,
                     'saving_master': ex_hra_id.id,
                     'investment': my_investment,
                     'allowed_rebate': my_allowed_rebate,
@@ -757,7 +757,7 @@ class HrDeclaration(models.Model):
                 exemption_ids = []
                 exemption_ids.append((0, 0, {
                     'exemption_id': rec.id,
-                    'it_rule': 'mus10ale',
+                    'it_rule': ex_lunch_id.it_rule.id,
                     'saving_master': ex_lunch_id.id,
                     'investment': my_investment,
                     'allowed_rebate': my_allowed_rebate,
@@ -922,7 +922,7 @@ class HrDeclaration(models.Model):
                 rebate_ids = []
                 rebate_ids.append((0, 0, {
                     'rebate_id': rec.id,
-                    'it_rule': 'section87a',
+                    'it_rule': ex_rebate_id.it_rule.id,
                     'saving_master': ex_rebate_id.id,
                     'investment': my_investment,
                     'allowed_rebate': my_allowed_rebate,
@@ -1039,10 +1039,10 @@ class StandardDeclarations(models.Model):
 
     std_ded_id = fields.Many2one('hr.declaration', string='Std Deduction')
 
-    it_rule = fields.Selection([
-        ('mus10ale', 'U/S 10 '),
-    ], string='IT Rule -Section ')
-
+    # it_rule = fields.Selection([
+    #     ('mus10ale', 'U/S 10 '),
+    # ], string='IT Rule -Section ')
+    it_rule = fields.Many2one('hr.itrule', string='IT Rule -Section')
     saving_master = fields.Many2one('saving.master', string='Saving Type', domain=[('it_rule', '=', 'mus10ale')])
 
     investment = fields.Float(string='investment')
@@ -1057,10 +1057,10 @@ class ExemptionsDeclarations(models.Model):
 
     exemption_id = fields.Many2one('hr.declaration', string='Exemption')
 
-    it_rule = fields.Selection([
-        ('mus10ale', 'U/S 10 '),
-    ], string='IT Rule -Section ')
-
+    # it_rule = fields.Selection([
+    #     ('mus10ale', 'U/S 10 '),
+    # ], string='IT Rule -Section ')
+    it_rule = fields.Many2one('hr.itrule', string='IT Rule -Section')
     saving_master = fields.Many2one('saving.master', string='Saving Type', domain=[('it_rule.code', '=', 'mus10ale')])
 
     investment = fields.Float(string='Amount Received')
@@ -1075,9 +1075,10 @@ class RebateDeclarations(models.Model):
 
     rebate_id = fields.Many2one('hr.declaration', string='Rebate')
 
-    it_rule = fields.Selection([
-        ('section87a', 'Section 87A '),
-    ], string='IT Rule -Section ')
+    # it_rule = fields.Selection([
+    #     ('section87a', 'Section 87A '),
+    # ], string='IT Rule -Section ')
+    it_rule = fields.Many2one('hr.itrule', string='IT Rule -Section')
     saving_master = fields.Many2one('saving.master', string='Saving Type', domain=[('it_rule.code', '=', 'section87a')])
     investment = fields.Float(string='Investment')
     allowed_rebate = fields.Float(string='Allowed Rebate')
