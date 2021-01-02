@@ -1202,6 +1202,8 @@ class DeductionDeclarations(models.Model):
     #     ('80gg', '80 GG'),
     #     ('80e', '80E'),
     # ], string='IT Rule -Section ')
+    it_rule = fields.Many2one('hr.itrule', string='IT Rule -Section')
+
     saving_master = fields.Many2one('saving.master', string='Saving Type')
 
     investment = fields.Float(string='Investment')
