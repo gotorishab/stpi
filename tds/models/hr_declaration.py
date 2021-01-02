@@ -22,10 +22,10 @@ class HrDeclaration(models.Model):
             max_allowed_approved = 0.00
             max_allowed_app = 0.00
             for line in rec.slab_ids:
-                if line.it_rule == '80_c' or line.it_rule == '80ccd1':
+                if line.it_rule.code == '80_c' or line.it_rule.code == '80ccd1':
                     total_approved += line.investment
                     max_allowed_approved += line.saving_master.rebate
-                if line.it_rule == '80ccd1b':
+                if line.it_rule.code == '80ccd1b':
                     total_app += line.investment
                     max_allowed_app += line.saving_master.rebate
             if total_approved <= max_allowed_approved:
@@ -39,7 +39,7 @@ class HrDeclaration(models.Model):
             total_dd = 0.00
             max_allowed_dd = 0.00
             for line in rec.med_ins_ids:
-                if line.it_rule == '80d':
+                if line.it_rule.code == '80d':
                     total_dd += line.investment
                     max_allowed_dd += line.saving_master.rebate
             if total_dd <= max_allowed_dd:
@@ -49,7 +49,7 @@ class HrDeclaration(models.Model):
             total_dsa = 0.00
             max_allowed_dsa = 0.00
             for line in rec.deduction_saving_ids:
-                if line.it_rule:
+                if line.it_rule.code:
                     total_dsa += line.investment
                     max_allowed_dsa += line.saving_master.rebate
             if total_dsa <= max_allowed_dsa:
@@ -63,10 +63,10 @@ class HrDeclaration(models.Model):
             max_allowed_24 = 0.00
             max_allowed_tbhl = 0.00
             for line in rec.tax_home_ids:
-                if line.it_rule == '80ee':
+                if line.it_rule.code == '80ee':
                     total_ee += line.investment
                     max_allowed_ee += line.saving_master.rebate
-                elif line.it_rule == '24':
+                elif line.it_rule.code == '24':
                     total_24 += line.investment
                     max_allowed_24 += line.saving_master.rebate
                 else:
@@ -87,7 +87,7 @@ class HrDeclaration(models.Model):
             total_tei = 0.00
             max_allowed_tei = 0.00
             for line in rec.tax_education_ids:
-                if line.it_rule:
+                if line.it_rule.code:
                     total_tei += line.investment
                     max_allowed_tei += line.saving_master.rebate
             if total_tei <= max_allowed_tei:
@@ -97,7 +97,7 @@ class HrDeclaration(models.Model):
             total_80ccg = 0.00
             max_allowed_80ccg = 0.00
             for line in rec.rgess_ids:
-                if line.it_rule:
+                if line.it_rule.code:
                     total_80ccg += line.investment
                     max_allowed_80ccg += line.saving_master.rebate
             if total_80ccg <= max_allowed_80ccg:
@@ -107,7 +107,7 @@ class HrDeclaration(models.Model):
             total_80dd = 0.00
             max_allowed_80dd = 0.00
             for line in rec.dedmedical_ids:
-                if line.it_rule:
+                if line.it_rule.code:
                     total_80dd += line.investment
                     max_allowed_80dd += line.saving_master.rebate
             if total_80dd <= max_allowed_80dd:
@@ -117,7 +117,7 @@ class HrDeclaration(models.Model):
             total_80mesdr = 0.00
             max_allowed_80mesdr = 0.00
             for line in rec.dedmedical_self_ids:
-                if line.it_rule:
+                if line.it_rule.code:
                     total_80mesdr += line.investment
                     max_allowed_80mesdr += line.saving_master.rebate
             if total_80mesdr <= max_allowed_80mesdr:
@@ -128,7 +128,7 @@ class HrDeclaration(models.Model):
             total_donation = 0.00
             max_allowed_donation = 0.00
             for line in rec.deddonation_ids:
-                if line.it_rule:
+                if line.it_rule.code:
                     total_donation += line.investment
                     max_allowed_donation += line.saving_master.rebate
             if total_donation <= max_allowed_donation:
@@ -644,7 +644,7 @@ class HrDeclaration(models.Model):
                 }))
                 rec.std_ded_ids = std_ded_ids
             ex_child_id = self.env['saving.master'].sudo().search(
-                [('saving_type', '=', 'Child Education Allowance & Hostel Expenditure Allowance'), ('it_rule', '=', 'mus10ale')], limit=1)
+                [('saving_type', '=', 'Child Education Allowance & Hostel Expenditure Allowance'), ('it_rule.code', '=', 'mus10ale')], limit=1)
             child_id = self.env['employee.relative'].sudo().search(
                 [('employee_id', '=', rec.employee_id.id)])
             prl_id = self.env['hr.payslip.line'].sudo().search([('slip_id.employee_id', '=', rec.employee_id.id),('slip_id.state', '=', 'done'),('code', '=', 'CCA'),('slip_id.date_from', '>', rec.date_range.date_start),('slip_id.date_to', '<', rec.date_range.date_end)],order ="date_to desc")
@@ -687,7 +687,7 @@ class HrDeclaration(models.Model):
                                                              ('state', '=', 'open')
                                                              ], limit=1)
 
-            ex_hra_id = self.env['saving.master'].sudo().search([('saving_type', '=', 'HRA Exemption'), ('it_rule', '=', 'mus10ale')], limit=1)
+            ex_hra_id = self.env['saving.master'].sudo().search([('saving_type', '=', 'HRA Exemption'), ('it_rule.code', '=', 'mus10ale')], limit=1)
             prl_id = self.env['hr.payslip.line'].sudo().search([('slip_id.employee_id', '=', rec.employee_id.id),('slip_id.state', '=', 'done'),('code', '=', 'HRA'),('slip_id.date_from', '>', rec.date_range.date_start),('slip_id.date_to', '<', rec.date_range.date_end)],order ="date_to desc")
             prl_current_id = self.env['hr.payslip.line'].sudo().search([('slip_id.employee_id', '=', rec.employee_id.id),('slip_id.state', '=', 'done'),('code', '=', 'HRA'),('slip_id.date_from', '=', datetime.now().replace(day=1)),('slip_id.date_to', '=', datetime.now().replace(day=1) + relativedelta(months=1) - relativedelta(days=1))])
             sum_bs = 0.00
@@ -741,7 +741,7 @@ class HrDeclaration(models.Model):
                     'allowed_rebate': my_allowed_rebate,
                 }))
                 rec.exemption_ids = exemption_ids
-            ex_lunch_id = self.env['saving.master'].sudo().search([('saving_type', '=', 'Lunch Subsidy Allowance'), ('it_rule', '=', 'mus10ale')], limit=1)
+            ex_lunch_id = self.env['saving.master'].sudo().search([('saving_type', '=', 'Lunch Subsidy Allowance'), ('it_rule.code', '=', 'mus10ale')], limit=1)
             reimbursement_id =  self.env['reimbursement'].sudo().search([('employee_id', '=', rec.employee_id.id),('name', '=', 'lunch'),('date_range.date_start', '>', rec.date_range.date_start),('date_range.date_end', '<', rec.date_range.date_end),('state', '=', 'approved')])
             sum=0.00
             my_investment = 0.00
@@ -785,7 +785,7 @@ class HrDeclaration(models.Model):
             #     }))
             #     rec.rebate_ids = rebate_ids
             ex_80_c_id = self.env['saving.master'].sudo().search(
-                [('saving_type', '=', 'Investment in PPF &  Employee’s share of PF contribution'), ('it_rule', '=', '80_c')], limit=1)
+                [('saving_type', '=', 'Investment in PPF &  Employee’s share of PF contribution')], limit=1)
             prl_80c_id = self.env['hr.payslip.line'].sudo().search(
                 [('slip_id.employee_id', '=', rec.employee_id.id),
                  ('slip_id.state', '=', 'done'),
@@ -808,13 +808,13 @@ class HrDeclaration(models.Model):
                 slab_ids.append((0, 0, {
                     'slab_id': rec.id,
                     'deduction_id': 'slab_80_declaration',
-                    'it_rule': '80_c',
+                    'it_rule': ex_80_c_id.it_rule.id,
                     'saving_master': ex_80_c_id.id,
                     'investment': my_investment,
                     'allowed_rebate': my_allowed_rebate,
                 }))
                 emp_id = self.env['declaration.slab'].sudo().search(
-                    [('saving_master.saving_type', '=', 'Investment in PPF &  Employee’s share of PF contribution'), ('it_rule', '=', '80_c'),
+                    [('saving_master.saving_type', '=', 'Investment in PPF &  Employee’s share of PF contribution'), ('it_rule.code', '=', '80_c'),
                      ('slab_id', '=', rec.id)])
                 if not emp_id:
                     rec.slab_ids = slab_ids
@@ -906,7 +906,7 @@ class HrDeclaration(models.Model):
             else:
                 rec.tax_payable_zero = True
             ex_rebate_id = self.env['saving.master'].sudo().search(
-                [('saving_type', '=', 'Revised Rebate under Section 87A (2019-20)'), ('it_rule', '=', 'section87a')],
+                [('saving_type', '=', 'Revised Rebate under Section 87A (2019-20)'), ('it_rule.code', '=', 'section87a')],
                 limit=1)
             my_investment = 0.00
             my_allowed_rebate = 0.00
@@ -922,7 +922,7 @@ class HrDeclaration(models.Model):
                 rebate_ids = []
                 rebate_ids.append((0, 0, {
                     'rebate_id': rec.id,
-                    'it_rule': ex_rebate_id.it_rule,
+                    'it_rule': ex_rebate_id.it_rule.id,
                     'saving_master': ex_rebate_id.id,
                     'investment': my_investment,
                     'allowed_rebate': my_allowed_rebate,
@@ -1061,7 +1061,7 @@ class ExemptionsDeclarations(models.Model):
         ('mus10ale', 'U/S 10 '),
     ], string='IT Rule -Section ')
 
-    saving_master = fields.Many2one('saving.master', string='Saving Type', domain=[('it_rule', '=', 'mus10ale')])
+    saving_master = fields.Many2one('saving.master', string='Saving Type', domain=[('it_rule.code', '=', 'mus10ale')])
 
     investment = fields.Float(string='Amount Received')
     allowed_rebate = fields.Float(string='Total Exemption')
@@ -1078,7 +1078,7 @@ class RebateDeclarations(models.Model):
     it_rule = fields.Selection([
         ('section87a', 'Section 87A '),
     ], string='IT Rule -Section ')
-    saving_master = fields.Many2one('saving.master', string='Saving Type', domain=[('it_rule', '=', 'section87a')])
+    saving_master = fields.Many2one('saving.master', string='Saving Type', domain=[('it_rule.code', '=', 'section87a')])
     investment = fields.Float(string='Investment')
     allowed_rebate = fields.Float(string='Allowed Rebate')
 
@@ -1103,11 +1103,12 @@ class SlabDeclarations(models.Model):
 
     slab_id = fields.Many2one('hr.declaration', string='Slab')
 
-    it_rule = fields.Selection([
-        ('80_c', '80 C'),
-        ('80ccd1', '80CCD (1)'),
-        ('80ccd1b', '80CCD (1B)'),
-    ], string='IT Rule -Section ')
+    # it_rule = fields.Selection([
+    #     ('80_c', '80 C'),
+    #     ('80ccd1', '80CCD (1)'),
+    #     ('80ccd1b', '80CCD (1B)'),
+    # ], string='IT Rule -Section ')
+    it_rule = fields.Many2one('hr.itrule', string='IT Rule -Section')
     saving_master = fields.Many2one('saving.master', string='Saving Type')
     investment = fields.Float(string='Investment')
     document = fields.Binary(string='Document')
@@ -1133,9 +1134,10 @@ class Declarations(models.Model):
 
     hra_id = fields.Many2one('hr.declaration', string='HRA')
 
-    it_rule = fields.Selection([
-        ('1013a', '10 (13A)'),
-    ], string='IT Rule -Section ')
+    # it_rule = fields.Selection([
+    #     ('1013a', '10 (13A)'),
+    # ], string='IT Rule -Section ')
+    it_rule = fields.Many2one('hr.itrule', string='IT Rule -Section')
     saving_master = fields.Many2one('saving.master', string='Saving Type')
 
     investment = fields.Float(string='Investment')
@@ -1164,9 +1166,10 @@ class MedicalDeclarations(models.Model):
 
     med_ins_id = fields.Many2one('hr.declaration', string='Medical')
     saving_master = fields.Many2one('saving.master', string='Saving Type')
-    it_rule = fields.Selection([
-        ('80d', '80D'),
-    ], string='IT Rule -Section ')
+    # it_rule = fields.Selection([
+    #     ('80d', '80D'),
+    # ], string='IT Rule -Section ')
+    it_rule = fields.Many2one('hr.itrule', string='IT Rule -Section')
 
     investment = fields.Float(string='Investment')
     document = fields.Binary(string='Document')
@@ -1193,12 +1196,12 @@ class DeductionDeclarations(models.Model):
 
     deduction_saving_id = fields.Many2one('hr.declaration', string='Deduction Saving')
 
-    it_rule = fields.Selection([
-        ('80tta', '80 TTA'),
-        ('80ttb', '80 TTB'),
-        ('80gg', '80 GG'),
-        ('80e', '80E'),
-    ], string='IT Rule -Section ')
+    # it_rule = fields.Selection([
+    #     ('80tta', '80 TTA'),
+    #     ('80ttb', '80 TTB'),
+    #     ('80gg', '80 GG'),
+    #     ('80e', '80E'),
+    # ], string='IT Rule -Section ')
     saving_master = fields.Many2one('saving.master', string='Saving Type')
 
     investment = fields.Float(string='Investment')
@@ -1226,12 +1229,13 @@ class taxhomeDeclarations(models.Model):
 
     tax_home_id = fields.Many2one('hr.declaration', string='TaxHome')
 
-    it_rule = fields.Selection([
-        ('80C', '80C'),
-        ('24', '24'),
-        ('80ee', 'Section 80EE'),
-        ('80c', '80c'),
-    ], string='IT Rule -Section ')
+    # it_rule = fields.Selection([
+    #     ('80C', '80C'),
+    #     ('24', '24'),
+    #     ('80ee', 'Section 80EE'),
+    #     ('80c', '80c'),
+    # ], string='IT Rule -Section ')
+    it_rule = fields.Many2one('hr.itrule', string='IT Rule -Section')
     saving_master = fields.Many2one('saving.master', string='Saving Type')
 
     investment = fields.Float(string='Investment')
@@ -1259,9 +1263,10 @@ class taxeducationDeclarations(models.Model):
 
     tax_education_id = fields.Many2one('hr.declaration', string='Tax Education')
 
-    it_rule = fields.Selection([
-        ('80E', '80 E'),
-    ], string='IT Rule -Section ')
+    # it_rule = fields.Selection([
+    #     ('80E', '80 E'),
+    # ], string='IT Rule -Section ')
+    it_rule = fields.Many2one('hr.itrule', string='IT Rule -Section')
     saving_master = fields.Many2one('saving.master', string='Saving Type')
 
     investment = fields.Float(string='Investment')
@@ -1288,9 +1293,10 @@ class rgessDeclarations(models.Model):
 
     rgess_id = fields.Many2one('hr.declaration', string='RGESS')
 
-    it_rule = fields.Selection([
-        ('80ccg', '80 CCG'),
-    ], string='IT Rule -Section ')
+    # it_rule = fields.Selection([
+    #     ('80ccg', '80 CCG'),
+    # ], string='IT Rule -Section ')
+    it_rule = fields.Many2one('hr.itrule', string='IT Rule -Section')
     saving_master = fields.Many2one('saving.master', string='Saving Type')
     investment = fields.Float(string='Investment')
     document = fields.Binary(string='Document')
@@ -1315,9 +1321,10 @@ class dedmedicalDeclarations(models.Model):
 
     dedmedical_id = fields.Many2one('hr.declaration', string='DedMedical')
 
-    it_rule = fields.Selection([
-        ('80dd', '80 DD'),
-    ], string='IT Rule -Section ')
+    # it_rule = fields.Selection([
+    #     ('80dd', '80 DD'),
+    # ], string='IT Rule -Section ')
+    it_rule = fields.Many2one('hr.itrule', string='IT Rule -Section')
     saving_master = fields.Many2one('saving.master', string='Saving Type')
 
     investment = fields.Float(string='Investment')
@@ -1345,11 +1352,12 @@ class dedmedicalselfDeclarations(models.Model):
     dedmedical_self_id = fields.Many2one('hr.declaration', string='Ded Medical Self')
     document = fields.Binary(string='Document')
 
-    it_rule = fields.Selection([
-        ('80ddb', '80DDB'),
-        ('80gg', '80 GG'),
-        ('us_194_aa', 'u/s 194A'),
-    ], string='IT Rule -Section', default='80ddb')
+    # it_rule = fields.Selection([
+    #     ('80ddb', '80DDB'),
+    #     ('80gg', '80 GG'),
+    #     ('us_194_aa', 'u/s 194A'),
+    # ], string='IT Rule -Section', default='80ddb')
+    it_rule = fields.Many2one('hr.itrule', string='IT Rule -Section')
     saving_master = fields.Many2one('saving.master', string='Saving Type')
     investment = fields.Float(string='Investment')
 
@@ -1373,9 +1381,10 @@ class DonationG(models.Model):
 
     deddonation_id = fields.Many2one('hr.declaration', string='Donation')
     document = fields.Binary(string='Document')
-    it_rule = fields.Selection([
-        ('section80g', 'Section 80G'),
-    ], string='IT Rule -Section', default='section80g')
+    # it_rule = fields.Selection([
+    #     ('section80g', 'Section 80G'),
+    # ], string='IT Rule -Section', default='section80g')
+    it_rule = fields.Many2one('hr.itrule', string='IT Rule -Section')
     saving_master = fields.Many2one('saving.master', string='Saving Type')
     saving_master_related = fields.Char(related='saving_master.saving_type', string='Saving Type Related')
     investment = fields.Float(string='Amount')
@@ -1388,9 +1397,10 @@ class IncomeHouse(models.Model):
 
     income_house_id = fields.Many2one('hr.declaration', string='Income from House Property')
     document = fields.Binary(string='Document')
-    it_rule = fields.Selection([
-        ('income_house', 'Income from House Property')
-    ], string='IT Rule -Section', default='income_house')
+    # it_rule = fields.Selection([
+    #     ('income_house', 'Income from House Property')
+    # ], string='IT Rule -Section', default='income_house')
+    it_rule = fields.Many2one('hr.itrule', string='IT Rule -Section')
     saving_master = fields.Many2one('saving.master', string='Saving Type')
     investment = fields.Float(string='Amount')
 
@@ -1412,9 +1422,10 @@ class IncomeOther(models.Model):
 
     income_other_id = fields.Many2one('hr.declaration', string='Income from other Sources')
     document = fields.Binary(string='Document')
-    it_rule = fields.Selection([
-        ('income_other', 'Income from other Sources')
-    ], string='IT Rule -Section', default='income_other')
+    # it_rule = fields.Selection([
+    #     ('income_other', 'Income from other Sources')
+    # ], string='IT Rule -Section', default='income_other')
+    it_rule = fields.Many2one('hr.itrule', string='IT Rule -Section')
     saving_master = fields.Many2one('saving.master', string='Saving Type')
     saving_master_related = fields.Char(related='saving_master.saving_type', string='Saving Type Related')
     investment = fields.Float(string='Amount')
@@ -1437,43 +1448,45 @@ class SavingsMaster(models.Model):
     _name = 'saving.master'
     _description = 'Saving Master'
 
-    deduction_id = fields.Selection([
-        ('slab_80_declaration','Slab - 80 Declaration'),
-        ('Medical Insurance Premium paid','Medical Insurance Premium paid'),
-        ('Deductions on Interest on Savings Account','Deductions on Interest on Savings Account'),
-        ('Tax Benefits on Home Loan','Tax Benefits on Home Loan'),
-        ('Tax benefit on Education Loan (80E)','Tax benefit on Education Loan (80E)'),
-        ('RGESS','RGESS'),
-        ('Deductions on Medical Expenditure for a Handicapped Relative','Deductions on Medical Expenditure for a Handicapped Relative'),
-        ('Deductions on Medical Expenditure on Self or Dependent Relative','Deductions on Medical Expenditure on Self or Dependent Relative'),
-        ('Deductions on Donations','Deductions on Donations'),
-    ],string='Deduction')
-    it_rule = fields.Selection([
-        ('mus10ale', 'U/S 10 '),
-        ('section87a', 'Section 87A '),
-        ('80_c', '80 C'),
-        ('80ccd1', '80CCD (1)'),
-        ('80ccd1b', '80CCD (1B)'),
-        ('1013a', '10 (13A)'),
-        ('80d', '80D'),
-        ('80tta', '80 TTA'),
-        ('80ttb', '80 TTB'),
-        ('80gg', '80 GG'),
-        ('80e', '80E'),
-        ('80C', '80C'),
-        ('24', '24'),
-        ('80ee', 'Section 80EE'),
-        ('80c', '80c'),
-        ('80E', '80 E'),
-        ('80ccg', '80 CCG'),
-        ('80dd', '80 DD'),
-        ('80ddb', '80DDB'),
-        ('section80g', 'Section 80G'),
-        ('80gg', '80 GG'),
-        ('us_194_aa', 'u/s 194A'),
-        ('income_house', 'Income from House Property'),
-        ('income_other', 'Income from other Sources'),
-    ], string='IT Rule -Section ')
+    # deduction_id = fields.Selection([
+    #     ('slab_80_declaration','Slab - 80 Declaration'),
+    #     ('Medical Insurance Premium paid','Medical Insurance Premium paid'),
+    #     ('Deductions on Interest on Savings Account','Deductions on Interest on Savings Account'),
+    #     ('Tax Benefits on Home Loan','Tax Benefits on Home Loan'),
+    #     ('Tax benefit on Education Loan (80E)','Tax benefit on Education Loan (80E)'),
+    #     ('RGESS','RGESS'),
+    #     ('Deductions on Medical Expenditure for a Handicapped Relative','Deductions on Medical Expenditure for a Handicapped Relative'),
+    #     ('Deductions on Medical Expenditure on Self or Dependent Relative','Deductions on Medical Expenditure on Self or Dependent Relative'),
+    #     ('Deductions on Donations','Deductions on Donations'),
+    # ],string='Deduction')
+    # it_rule = fields.Selection([
+    #     ('mus10ale', 'U/S 10 '),
+    #     ('section87a', 'Section 87A '),
+    #     ('80_c', '80 C'),
+    #     ('80ccd1', '80CCD (1)'),
+    #     ('80ccd1b', '80CCD (1B)'),
+    #     ('1013a', '10 (13A)'),
+    #     ('80d', '80D'),
+    #     ('80tta', '80 TTA'),
+    #     ('80ttb', '80 TTB'),
+    #     ('80gg', '80 GG'),
+    #     ('80e', '80E'),
+    #     ('80C', '80C'),
+    #     ('24', '24'),
+    #     ('80ee', 'Section 80EE'),
+    #     ('80c', '80c'),
+    #     ('80E', '80 E'),
+    #     ('80ccg', '80 CCG'),
+    #     ('80dd', '80 DD'),
+    #     ('80ddb', '80DDB'),
+    #     ('section80g', 'Section 80G'),
+    #     ('80gg', '80 GG'),
+    #     ('us_194_aa', 'u/s 194A'),
+    #     ('income_house', 'Income from House Property'),
+    #     ('income_other', 'Income from other Sources'),
+    # ], string='IT Rule -Section ')
+
+    it_rule = fields.Many2one('hr.itrule', string='IT Rule -Section')
     saving_type = fields.Char('Saving Type')
     description = fields.Text('Description')
     rebate = fields.Float('Max. Allowed Limit', store=True)

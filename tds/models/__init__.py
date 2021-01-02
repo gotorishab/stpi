@@ -1,5 +1,6 @@
 from . import hr_payslip
 from . import tds
+from . import it_rule_master
 from . import hr_declaration
 # from . import hr_payroll
 from . import date_range
