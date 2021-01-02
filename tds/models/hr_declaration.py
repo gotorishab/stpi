@@ -922,7 +922,7 @@ class HrDeclaration(models.Model):
                 rebate_ids = []
                 rebate_ids.append((0, 0, {
                     'rebate_id': rec.id,
-                    'it_rule': ex_rebate_id.it_rule.id,
+                    'it_rule': 'section87a',
                     'saving_master': ex_rebate_id.id,
                     'investment': my_investment,
                     'allowed_rebate': my_allowed_rebate,
