@@ -348,7 +348,7 @@
         <field name="model">saving.master</field>
         <field name="arch" type="xml">
             <tree string="Savings Type" editable="bottom">
-                  <field name="deduction_id"/>
+<!--                  <field name="deduction_id"/>-->
                   <field name="it_rule" required="1"/>
                   <field name="saving_type" required="1"/>
                   <field name="description"/>
