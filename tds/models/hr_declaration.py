@@ -581,7 +581,7 @@ class HrDeclaration(models.Model):
             #     month = 1
             _body = (_(
                 (
-                    "<ul>Gross Salary</ul>"
+                    "<ul><b>Gross Salary -:</b></ul>"
                         "<ul>Basic Wage: {0} </ul>"
                         "<ul>Allowance: {1} </ul>"
                         "<ul>Actual Gross: {2} </ul>"
