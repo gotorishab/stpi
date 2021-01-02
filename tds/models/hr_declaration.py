@@ -620,7 +620,7 @@ class HrDeclaration(models.Model):
             rec.rebate_ids.unlink()
             # rec.slab_ids.unlink()
             ex_std_id = self.env['saving.master'].sudo().search(
-                [('saving_type', '=', 'Std. Deduction'), ('it_rule', '=', 'mus10ale')], limit=1)
+                [('saving_type', '=', 'Std. Deduction')], limit=1)
             my_investment = 0.00
             if ex_std_id:
                 my_investment = 0.00
@@ -644,7 +644,7 @@ class HrDeclaration(models.Model):
                 }))
                 rec.std_ded_ids = std_ded_ids
             ex_child_id = self.env['saving.master'].sudo().search(
-                [('saving_type', '=', 'Child Education Allowance & Hostel Expenditure Allowance'), ('it_rule.code', '=', 'mus10ale')], limit=1)
+                [('saving_type', '=', 'Child Education Allowance & Hostel Expenditure Allowance')], limit=1)
             child_id = self.env['employee.relative'].sudo().search(
                 [('employee_id', '=', rec.employee_id.id)])
             prl_id = self.env['hr.payslip.line'].sudo().search([('slip_id.employee_id', '=', rec.employee_id.id),('slip_id.state', '=', 'done'),('code', '=', 'CCA'),('slip_id.date_from', '>', rec.date_range.date_start),('slip_id.date_to', '<', rec.date_range.date_end)],order ="date_to desc")
@@ -687,7 +687,7 @@ class HrDeclaration(models.Model):
                                                              ('state', '=', 'open')
                                                              ], limit=1)
 
-            ex_hra_id = self.env['saving.master'].sudo().search([('saving_type', '=', 'HRA Exemption'), ('it_rule.code', '=', 'mus10ale')], limit=1)
+            ex_hra_id = self.env['saving.master'].sudo().search([('saving_type', '=', 'HRA Exemption')], limit=1)
             prl_id = self.env['hr.payslip.line'].sudo().search([('slip_id.employee_id', '=', rec.employee_id.id),('slip_id.state', '=', 'done'),('code', '=', 'HRA'),('slip_id.date_from', '>', rec.date_range.date_start),('slip_id.date_to', '<', rec.date_range.date_end)],order ="date_to desc")
             prl_current_id = self.env['hr.payslip.line'].sudo().search([('slip_id.employee_id', '=', rec.employee_id.id),('slip_id.state', '=', 'done'),('code', '=', 'HRA'),('slip_id.date_from', '=', datetime.now().replace(day=1)),('slip_id.date_to', '=', datetime.now().replace(day=1) + relativedelta(months=1) - relativedelta(days=1))])
             sum_bs = 0.00
@@ -741,7 +741,7 @@ class HrDeclaration(models.Model):
                     'allowed_rebate': my_allowed_rebate,
                 }))
                 rec.exemption_ids = exemption_ids
-            ex_lunch_id = self.env['saving.master'].sudo().search([('saving_type', '=', 'Lunch Subsidy Allowance'), ('it_rule.code', '=', 'mus10ale')], limit=1)
+            ex_lunch_id = self.env['saving.master'].sudo().search([('saving_type', '=', 'Lunch Subsidy Allowance')], limit=1)
             reimbursement_id =  self.env['reimbursement'].sudo().search([('employee_id', '=', rec.employee_id.id),('name', '=', 'lunch'),('date_range.date_start', '>', rec.date_range.date_start),('date_range.date_end', '<', rec.date_range.date_end),('state', '=', 'approved')])
             sum=0.00
             my_investment = 0.00

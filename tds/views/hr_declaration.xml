@@ -357,6 +357,19 @@
         </field>
     </record>
 
+        <!--=======Tree view of HR Declaration=======-->
+    <record id="hr_it_rule_tree_view" model="ir.ui.view">
+        <field name="name">hr.itrule.tree</field>
+        <field name="model">hr.itrule</field>
+        <field name="arch" type="xml">
+            <tree string="IT Rule" editable="bottom">
+                  <field name="deduction_id"/>
+                  <field name="code" required="1"/>
+                  <field name="name" required="1"/>
+            </tree>
+        </field>
+    </record>
+
 
         <!--IT Declaration search view-->
     <record id="view_hr_declaration_request_search_form" model="ir.ui.view">
@@ -486,6 +499,14 @@
         <field name="view_mode">tree,form</field>
     </record>
 
+    <!--============Action view of hr.saving.type rejected============-->
+    <record id="hr_declaration_it_rule_action" model="ir.actions.act_window">
+        <field name="name">HR IT Rule</field>
+        <field name="res_model">hr.itrule</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
 
 
       <menuitem id="menu_hr_declaration_main"
@@ -572,6 +593,12 @@
                   name = "Savings Master"
                   parent ="menu_hr_declaration_configuration"
                   action ="hr_declaration_saving_master_action"
+                  />
+
+        <menuitem id = "hr_declaration_it_rule_menu_id"
+                  name = "IT Rule"
+                  parent ="menu_hr_declaration_configuration"
+                  action ="hr_declaration_it_rule_action"
                   />
 
 
