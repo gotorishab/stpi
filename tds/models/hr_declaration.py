@@ -906,7 +906,7 @@ class HrDeclaration(models.Model):
             else:
                 rec.tax_payable_zero = True
             ex_rebate_id = self.env['saving.master'].sudo().search(
-                [('saving_type', '=', 'Revised Rebate under Section 87A (2019-20)'), ('it_rule.code', '=', 'section87a')],
+                [('saving_type', '=', 'Revised Rebate under Section 87A (2019-20)')],
                 limit=1)
             my_investment = 0.00
             my_allowed_rebate = 0.00
