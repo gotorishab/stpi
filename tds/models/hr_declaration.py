@@ -1043,7 +1043,7 @@ class StandardDeclarations(models.Model):
     #     ('mus10ale', 'U/S 10 '),
     # ], string='IT Rule -Section ')
     it_rule = fields.Many2one('hr.itrule', string='IT Rule -Section')
-    saving_master = fields.Many2one('saving.master', string='Saving Type', domain=[('it_rule', '=', 'mus10ale')])
+    saving_master = fields.Many2one('saving.master', string='Saving Type')
 
     investment = fields.Float(string='investment')
     allowed_rebate = fields.Float(string='Total Std. Deduction')
@@ -1079,7 +1079,7 @@ class RebateDeclarations(models.Model):
     #     ('section87a', 'Section 87A '),
     # ], string='IT Rule -Section ')
     it_rule = fields.Many2one('hr.itrule', string='IT Rule -Section')
-    saving_master = fields.Many2one('saving.master', string='Saving Type', domain=[('it_rule.code', '=', 'section87a')])
+    saving_master = fields.Many2one('saving.master', string='Saving Type')
     investment = fields.Float(string='Investment')
     allowed_rebate = fields.Float(string='Allowed Rebate')
 
