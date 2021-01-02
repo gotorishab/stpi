@@ -1086,6 +1086,19 @@ class SlabDeclarations(models.Model):
     _name = 'declaration.slab'
     _description = 'declaration.slab'
 
+    deduction_id = fields.Selection([
+        ('slab_80_declaration', 'Slab - 80 Declaration'),
+        ('Medical Insurance Premium paid', 'Medical Insurance Premium paid'),
+        ('Deductions on Interest on Savings Account', 'Deductions on Interest on Savings Account'),
+        ('Tax Benefits on Home Loan', 'Tax Benefits on Home Loan'),
+        ('Tax benefit on Education Loan (80E)', 'Tax benefit on Education Loan (80E)'),
+        ('RGESS', 'RGESS'),
+        ('Deductions on Medical Expenditure for a Handicapped Relative',
+         'Deductions on Medical Expenditure for a Handicapped Relative'),
+        ('Deductions on Medical Expenditure on Self or Dependent Relative',
+         'Deductions on Medical Expenditure on Self or Dependent Relative'),
+        ('Deductions on Donations', 'Deductions on Donations'),
+    ], string='Deduction', default='slab_80_declaration')
 
     slab_id = fields.Many2one('hr.declaration', string='Slab')
 
@@ -1099,10 +1112,23 @@ class SlabDeclarations(models.Model):
     document = fields.Binary(string='Document')
 
 
-class \
-        Declarations(models.Model):
+class Declarations(models.Model):
     _name = 'declaration.hra'
     _description = 'declaration.hra'
+
+    deduction_id = fields.Selection([
+        ('slab_80_declaration', 'Slab - 80 Declaration'),
+        ('Medical Insurance Premium paid', 'Medical Insurance Premium paid'),
+        ('Deductions on Interest on Savings Account', 'Deductions on Interest on Savings Account'),
+        ('Tax Benefits on Home Loan', 'Tax Benefits on Home Loan'),
+        ('Tax benefit on Education Loan (80E)', 'Tax benefit on Education Loan (80E)'),
+        ('RGESS', 'RGESS'),
+        ('Deductions on Medical Expenditure for a Handicapped Relative',
+         'Deductions on Medical Expenditure for a Handicapped Relative'),
+        ('Deductions on Medical Expenditure on Self or Dependent Relative',
+         'Deductions on Medical Expenditure on Self or Dependent Relative'),
+        ('Deductions on Donations', 'Deductions on Donations'),
+    ], string='Deduction')
 
     hra_id = fields.Many2one('hr.declaration', string='HRA')
 
@@ -1121,6 +1147,20 @@ class MedicalDeclarations(models.Model):
     _name = 'declaration.medical'
     _description = 'declaration.medical'
 
+    deduction_id = fields.Selection([
+        ('slab_80_declaration', 'Slab - 80 Declaration'),
+        ('Medical Insurance Premium paid', 'Medical Insurance Premium paid'),
+        ('Deductions on Interest on Savings Account', 'Deductions on Interest on Savings Account'),
+        ('Tax Benefits on Home Loan', 'Tax Benefits on Home Loan'),
+        ('Tax benefit on Education Loan (80E)', 'Tax benefit on Education Loan (80E)'),
+        ('RGESS', 'RGESS'),
+        ('Deductions on Medical Expenditure for a Handicapped Relative',
+         'Deductions on Medical Expenditure for a Handicapped Relative'),
+        ('Deductions on Medical Expenditure on Self or Dependent Relative',
+         'Deductions on Medical Expenditure on Self or Dependent Relative'),
+        ('Deductions on Donations', 'Deductions on Donations'),
+    ], string='Deduction', default='Medical Insurance Premium paid')
+
     med_ins_id = fields.Many2one('hr.declaration', string='Medical')
     saving_master = fields.Many2one('saving.master', string='Saving Type')
     it_rule = fields.Selection([
@@ -1135,6 +1175,20 @@ class MedicalDeclarations(models.Model):
 class DeductionDeclarations(models.Model):
     _name = 'declaration.deduction'
     _description = 'declaration.deduction'
+
+    deduction_id = fields.Selection([
+        ('slab_80_declaration', 'Slab - 80 Declaration'),
+        ('Medical Insurance Premium paid', 'Medical Insurance Premium paid'),
+        ('Deductions on Interest on Savings Account', 'Deductions on Interest on Savings Account'),
+        ('Tax Benefits on Home Loan', 'Tax Benefits on Home Loan'),
+        ('Tax benefit on Education Loan (80E)', 'Tax benefit on Education Loan (80E)'),
+        ('RGESS', 'RGESS'),
+        ('Deductions on Medical Expenditure for a Handicapped Relative',
+         'Deductions on Medical Expenditure for a Handicapped Relative'),
+        ('Deductions on Medical Expenditure on Self or Dependent Relative',
+         'Deductions on Medical Expenditure on Self or Dependent Relative'),
+        ('Deductions on Donations', 'Deductions on Donations'),
+    ], string='Deduction', default='Deductions on Interest on Savings Account')
 
     deduction_saving_id = fields.Many2one('hr.declaration', string='Deduction Saving')
 
@@ -1155,6 +1209,20 @@ class taxhomeDeclarations(models.Model):
     _name = 'declaration.taxhome'
     _description = 'declaration.taxhome'
 
+    deduction_id = fields.Selection([
+        ('slab_80_declaration', 'Slab - 80 Declaration'),
+        ('Medical Insurance Premium paid', 'Medical Insurance Premium paid'),
+        ('Deductions on Interest on Savings Account', 'Deductions on Interest on Savings Account'),
+        ('Tax Benefits on Home Loan', 'Tax Benefits on Home Loan'),
+        ('Tax benefit on Education Loan (80E)', 'Tax benefit on Education Loan (80E)'),
+        ('RGESS', 'RGESS'),
+        ('Deductions on Medical Expenditure for a Handicapped Relative',
+         'Deductions on Medical Expenditure for a Handicapped Relative'),
+        ('Deductions on Medical Expenditure on Self or Dependent Relative',
+         'Deductions on Medical Expenditure on Self or Dependent Relative'),
+        ('Deductions on Donations', 'Deductions on Donations'),
+    ], string='Deduction', default='Tax Benefits on Home Loan')
+
     tax_home_id = fields.Many2one('hr.declaration', string='TaxHome')
 
     it_rule = fields.Selection([
@@ -1174,6 +1242,20 @@ class taxeducationDeclarations(models.Model):
     _name = 'declaration.taxeducation'
     _description = 'declaration.taxhome'
 
+    deduction_id = fields.Selection([
+        ('slab_80_declaration', 'Slab - 80 Declaration'),
+        ('Medical Insurance Premium paid', 'Medical Insurance Premium paid'),
+        ('Deductions on Interest on Savings Account', 'Deductions on Interest on Savings Account'),
+        ('Tax Benefits on Home Loan', 'Tax Benefits on Home Loan'),
+        ('Tax benefit on Education Loan (80E)', 'Tax benefit on Education Loan (80E)'),
+        ('RGESS', 'RGESS'),
+        ('Deductions on Medical Expenditure for a Handicapped Relative',
+         'Deductions on Medical Expenditure for a Handicapped Relative'),
+        ('Deductions on Medical Expenditure on Self or Dependent Relative',
+         'Deductions on Medical Expenditure on Self or Dependent Relative'),
+        ('Deductions on Donations', 'Deductions on Donations'),
+    ], string='Deduction', default='Tax benefit on Education Loan (80E)')
+
     tax_education_id = fields.Many2one('hr.declaration', string='Tax Education')
 
     it_rule = fields.Selection([
@@ -1189,6 +1271,20 @@ class rgessDeclarations(models.Model):
     _name = 'declaration.rgess'
     _description = 'declaration.rgess'
 
+    deduction_id = fields.Selection([
+        ('slab_80_declaration', 'Slab - 80 Declaration'),
+        ('Medical Insurance Premium paid', 'Medical Insurance Premium paid'),
+        ('Deductions on Interest on Savings Account', 'Deductions on Interest on Savings Account'),
+        ('Tax Benefits on Home Loan', 'Tax Benefits on Home Loan'),
+        ('Tax benefit on Education Loan (80E)', 'Tax benefit on Education Loan (80E)'),
+        ('RGESS', 'RGESS'),
+        ('Deductions on Medical Expenditure for a Handicapped Relative',
+         'Deductions on Medical Expenditure for a Handicapped Relative'),
+        ('Deductions on Medical Expenditure on Self or Dependent Relative',
+         'Deductions on Medical Expenditure on Self or Dependent Relative'),
+        ('Deductions on Donations', 'Deductions on Donations'),
+    ], string='Deduction', default='RGESS')
+
     rgess_id = fields.Many2one('hr.declaration', string='RGESS')
 
     it_rule = fields.Selection([
@@ -1201,6 +1297,20 @@ class rgessDeclarations(models.Model):
 class dedmedicalDeclarations(models.Model):
     _name = 'declaration.dedmedical'
     _description = 'declaration.dedmedical'
+
+    deduction_id = fields.Selection([
+        ('slab_80_declaration', 'Slab - 80 Declaration'),
+        ('Medical Insurance Premium paid', 'Medical Insurance Premium paid'),
+        ('Deductions on Interest on Savings Account', 'Deductions on Interest on Savings Account'),
+        ('Tax Benefits on Home Loan', 'Tax Benefits on Home Loan'),
+        ('Tax benefit on Education Loan (80E)', 'Tax benefit on Education Loan (80E)'),
+        ('RGESS', 'RGESS'),
+        ('Deductions on Medical Expenditure for a Handicapped Relative',
+         'Deductions on Medical Expenditure for a Handicapped Relative'),
+        ('Deductions on Medical Expenditure on Self or Dependent Relative',
+         'Deductions on Medical Expenditure on Self or Dependent Relative'),
+        ('Deductions on Donations', 'Deductions on Donations'),
+    ], string='Deduction', default='Deductions on Medical Expenditure for a Handicapped Relative')
 
     dedmedical_id = fields.Many2one('hr.declaration', string='DedMedical')
 
@@ -1217,6 +1327,20 @@ class dedmedicalselfDeclarations(models.Model):
     _name = 'declaration.dedmedicalself'
     _description = 'declaration.dedmedicalself'
 
+    deduction_id = fields.Selection([
+        ('slab_80_declaration', 'Slab - 80 Declaration'),
+        ('Medical Insurance Premium paid', 'Medical Insurance Premium paid'),
+        ('Deductions on Interest on Savings Account', 'Deductions on Interest on Savings Account'),
+        ('Tax Benefits on Home Loan', 'Tax Benefits on Home Loan'),
+        ('Tax benefit on Education Loan (80E)', 'Tax benefit on Education Loan (80E)'),
+        ('RGESS', 'RGESS'),
+        ('Deductions on Medical Expenditure for a Handicapped Relative',
+         'Deductions on Medical Expenditure for a Handicapped Relative'),
+        ('Deductions on Medical Expenditure on Self or Dependent Relative',
+         'Deductions on Medical Expenditure on Self or Dependent Relative'),
+        ('Deductions on Donations', 'Deductions on Donations'),
+    ], string='Deduction', default='Deductions on Medical Expenditure on Self or Dependent Relative')
+
     dedmedical_self_id = fields.Many2one('hr.declaration', string='Ded Medical Self')
     document = fields.Binary(string='Document')
 
@@ -1232,6 +1356,19 @@ class dedmedicalselfDeclarations(models.Model):
 class DonationG(models.Model):
     _name = 'declaration.donation'
     _description = 'Declaration donation'
+
+
+    deduction_id = fields.Selection([
+        ('slab_80_declaration','Slab - 80 Declaration'),
+        ('Medical Insurance Premium paid','Medical Insurance Premium paid'),
+        ('Deductions on Interest on Savings Account','Deductions on Interest on Savings Account'),
+        ('Tax Benefits on Home Loan','Tax Benefits on Home Loan'),
+        ('Tax benefit on Education Loan (80E)','Tax benefit on Education Loan (80E)'),
+        ('RGESS','RGESS'),
+        ('Deductions on Medical Expenditure for a Handicapped Relative','Deductions on Medical Expenditure for a Handicapped Relative'),
+        ('Deductions on Medical Expenditure on Self or Dependent Relative','Deductions on Medical Expenditure on Self or Dependent Relative'),
+        ('Deductions on Donations','Deductions on Donations'),
+    ],string='Deduction',default='Deductions on Donations')
 
     deddonation_id = fields.Many2one('hr.declaration', string='Donation')
     document = fields.Binary(string='Document')
@@ -1299,6 +1436,17 @@ class SavingsMaster(models.Model):
     _name = 'saving.master'
     _description = 'Saving Master'
 
+    deduction_id = fields.Selection([
+        ('slab_80_declaration','Slab - 80 Declaration'),
+        ('Medical Insurance Premium paid','Medical Insurance Premium paid'),
+        ('Deductions on Interest on Savings Account','Deductions on Interest on Savings Account'),
+        ('Tax Benefits on Home Loan','Tax Benefits on Home Loan'),
+        ('Tax benefit on Education Loan (80E)','Tax benefit on Education Loan (80E)'),
+        ('RGESS','RGESS'),
+        ('Deductions on Medical Expenditure for a Handicapped Relative','Deductions on Medical Expenditure for a Handicapped Relative'),
+        ('Deductions on Medical Expenditure on Self or Dependent Relative','Deductions on Medical Expenditure on Self or Dependent Relative'),
+        ('Deductions on Donations','Deductions on Donations'),
+    ],string='Deduction')
     it_rule = fields.Selection([
         ('mus10ale', 'U/S 10 '),
         ('section87a', 'Section 87A '),

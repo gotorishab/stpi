@@ -157,7 +157,8 @@
                         <field name="slab_ids" attrs="{'readonly':[('state','=','verified')]}">
                             <tree string="Slab - 80 Declaration" editable="bottom">
                                 <field name="slab_id" invisible="1"/>
-                                <field name="it_rule" required="1"/>
+                                <field name="deduction_id" invisible="1"/>
+                                <field name="it_rule" required="1" domain="[('deduction_id', '=', deduction_id)]"/>
                                 <field name="saving_master" options="{'no_create_edit': True, 'no_create': True}" required="1" domain="[('it_rule', '=', it_rule)]"/>
                                 <field name="investment" sum="Total"/>
                                 <field name="document"/>
@@ -171,7 +172,7 @@
 <!--                        <field name="hra_ids">-->
 <!--                            <tree string="HRA - House Rent Allowances " editable="bottom">-->
 <!--                                <field name="hra_id" invisible="1"/>-->
-<!--                                <field name="it_rule" required="1"/>-->
+<!--                                <field name="it_rule" required="1" domain="[('deduction_id', '=', deduction_id)]"/>-->
 <!--                                <field name="saving_master" options="{'no_create_edit': True, 'no_create': True}" required="1"/>-->
 <!-- -->
 <!-- -->
@@ -184,7 +185,8 @@
                         <field name="med_ins_ids" attrs="{'readonly':[('state','=','verified')]}">
                             <tree string="Medical Insurance Premium paid" editable="bottom">
                                 <field name="med_ins_id" invisible="1"/>
-                                <field name="it_rule" required="1"/>
+                                <field name="deduction_id" invisible="1"/>
+                                <field name="it_rule" required="1" domain="[('deduction_id', '=', deduction_id)]"/>
                                 <field name="saving_master" options="{'no_create_edit': True, 'no_create': True}" required="1" domain="[('it_rule', '=', it_rule)]"/>
                                 <field name="investment" sum="Total"/>
                                 <field name="document"/>
@@ -197,7 +199,8 @@
                         <field name="deduction_saving_ids" attrs="{'readonly':[('state','=','verified')]}">
                             <tree string="Deductions on Interest on Savings Account" editable="bottom">
                                 <field name="deduction_saving_id" invisible="1"/>
-                                <field name="it_rule" required="1"/>
+                                <field name="deduction_id" invisible="1"/>
+                                <field name="it_rule" required="1" domain="[('deduction_id', '=', deduction_id)]"/>
                                 <field name="saving_master" options="{'no_create_edit': True, 'no_create': True}" required="1" domain="[('it_rule', '=', it_rule)]"/>
 <!--                                <field name="saving_type" required="1" readonly="1"/>-->
 
@@ -213,7 +216,8 @@
                         <field name="tax_home_ids" attrs="{'readonly':[('state','=','verified')]}">
                             <tree string="Tax Benefits on Home Loan" editable="bottom">
                                 <field name="tax_home_id" invisible="1"/>
-                                <field name="it_rule" required="1"/>
+                                <field name="deduction_id" invisible="1"/>
+                                <field name="it_rule" required="1" domain="[('deduction_id', '=', deduction_id)]"/>
                                 <field name="saving_master" options="{'no_create_edit': True, 'no_create': True}" required="1" domain="[('it_rule', '=', it_rule)]"/>
 <!--                                <field name="saving_type" required="1" readonly="1"/>-->
                                 <field name="investment" sum="Total"/>
@@ -230,7 +234,8 @@
                         <field name="tax_education_ids" attrs="{'readonly':[('state','=','verified')]}">
                             <tree string="Tax benefit on Education Loan (80E) " editable="bottom">
                                 <field name="tax_education_id" invisible="1"/>
-                                <field name="it_rule" required="1"/>
+                                <field name="deduction_id" invisible="1"/>
+                                <field name="it_rule" required="1" domain="[('deduction_id', '=', deduction_id)]"/>
                                 <field name="saving_master" options="{'no_create_edit': True, 'no_create': True}" required="1" domain="[('it_rule', '=', it_rule)]"/>
                                 <field name="investment" sum="Total"/>
                                 <field name="document"/>
@@ -243,10 +248,9 @@
                         <field name="rgess_ids" attrs="{'readonly':[('state','=','verified')]}">
                             <tree string="RGESS" editable="bottom">
                                 <field name="rgess_id" invisible="1"/>
-                                <field name="it_rule" required="1"/>
+                                <field name="deduction_id" invisible="1"/>
+                                <field name="it_rule" required="1" domain="[('deduction_id', '=', deduction_id)]"/>
                                 <field name="saving_master" options="{'no_create_edit': True, 'no_create': True}" required="1" domain="[('it_rule', '=', it_rule)]"/>
-
-
                                 <field name="investment" sum="Total"/>
                                  <field name="document"/>
                             </tree>
@@ -258,7 +262,8 @@
                         <field name="dedmedical_ids" attrs="{'readonly':[('state','=','verified')]}">
                             <tree string="Deductions on Medical Expenditure for a Handicapped Relative" editable="bottom">
                                 <field name="dedmedical_id" invisible="1"/>
-                                <field name="it_rule" required="1"/>
+                                <field name="deduction_id" invisible="1"/>
+                                <field name="it_rule" required="1" domain="[('deduction_id', '=', deduction_id)]"/>
                                 <field name="saving_master" options="{'no_create_edit': True, 'no_create': True}" required="1" domain="[('it_rule', '=', it_rule)]"/>
                                 <field name="investment" sum="Total"/>
                                 <field name="document"/>
@@ -271,7 +276,8 @@
                         <field name="dedmedical_self_ids" attrs="{'readonly':[('state','=','verified')]}">
                             <tree string="Deductions on Medical Expenditure on Self or Dependent Relative" editable="bottom">
                                 <field name="dedmedical_self_id" invisible="1"/>
-                                <field name="it_rule" required="1"/>
+                                <field name="deduction_id" invisible="1"/>
+                                <field name="it_rule" required="1" domain="[('deduction_id', '=', deduction_id)]"/>
                                 <field name="saving_master" options="{'no_create_edit': True, 'no_create': True}" required="1" domain="[('it_rule', '=', it_rule)]"/>
                                 <field name="investment" sum="Total"/>
                                 <field name="document"/>
@@ -284,7 +290,8 @@
                         <field name="deddonation_ids">
                             <tree string="Deduction on Donations" editable="bottom">
                                 <field name="deddonation_id" invisible="1"/>
-                                <field name="it_rule" invisible="1"/>
+                                <field name="deduction_id" invisible="1"/>
+                                <field name="it_rule" required="1" domain="[('deduction_id', '=', deduction_id)]"/>
                                 <field name="saving_master_related" invisible="1"/>
                                 <field name="saving_master" options="{'no_create_edit': True, 'no_create': True}" domain="[('it_rule', '=', it_rule)]"/>
                                 <field name="other" attrs="{'invisible':[('saving_master_related','!=','Other')]}"/>
@@ -341,6 +348,7 @@
         <field name="model">saving.master</field>
         <field name="arch" type="xml">
             <tree string="Savings Type" editable="bottom">
+                  <field name="deduction_id"/>
                   <field name="it_rule" required="1"/>
                   <field name="saving_type" required="1"/>
                   <field name="description"/>
