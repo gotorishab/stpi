@@ -27,7 +27,7 @@
 <!--                            <field name="are_you_coming"/>-->
 
 
-                            <div class="oe_left">
+                            <div class="oe_right">
                             <label for="are_you_coming" string="Are you availing" style="font-weight:bold; margin:0;" attrs="{'invisible': [('state', '=', 'to_approve')]}"/>
                             <label for="are_you_coming" string="Is Employee Coming" style="font-weight:bold; margin:0;" attrs="{'invisible': [('state', '!=', 'to_approve')]}"/>
                         </div>
