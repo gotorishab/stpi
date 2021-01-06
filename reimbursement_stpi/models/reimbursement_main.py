@@ -3,6 +3,7 @@ from odoo.exceptions import ValidationError,UserError
 import re
 from datetime import datetime, date
 from dateutil.relativedelta import relativedelta
+import calendar
 
 
 class Reimbursement(models.Model):
@@ -226,11 +227,13 @@ class Reimbursement(models.Model):
                 else:
                     rec.net_amount = int(rec.claimed_amount)
             elif rec.employee_id and rec.name == 'el_encashment':
+                now = datetime.now()
+                day = int(calendar.monthrange(now.year, now.month)[1])
                 total_wage = self.env['hr.contract'].sudo().search(
                     [('employee_id', '=', rec.employee_id.id), ('state', '=', 'open'),
                      ], limit=1)
                 if total_wage:
-                    rec.net_amount = int(total_wage.updated_basic) * int(rec.el_taking)
+                    rec.net_amount = int((total_wage.updated_basic)/day) * int(rec.el_taking)
 
 
 
