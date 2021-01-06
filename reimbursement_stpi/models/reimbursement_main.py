@@ -198,6 +198,7 @@ class Reimbursement(models.Model):
                     rec.net_amount = int(rec.claimed_amount)
             else:
                 rec.net_amount = int(rec.claimed_amount)
+                maximum_eligible_amount = 'No Limit'
             if rec.employee_id and rec.name == 'medical':
                 total_wage = self.env['hr.contract'].sudo().search(
                     [('employee_id', '=', rec.employee_id.id), ('state', '=', 'open'),
