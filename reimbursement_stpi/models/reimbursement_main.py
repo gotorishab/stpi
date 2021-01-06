@@ -43,6 +43,7 @@ class Reimbursement(models.Model):
     name = fields.Selection([
         ('lunch', 'Lunch Subsidy'),
         ('telephone', 'Telephone Reimbursement'),
+        ('broadband', 'Broadband Reimbursement'),
         ('mobile', 'Mobile Reimbursement'),
         ('medical', 'Medical Reimbursement'),
         ('tuition_fee', 'Tuition Fee claim'),
@@ -73,7 +74,7 @@ class Reimbursement(models.Model):
     # amount_tel = fields.Float(string='Claimed Amount')
     # amount_mob = fields.Float(string='Claimed Amount')
     service_provider = fields.Many2one('reimbursement.service.provider',string='Service Provider', track_visibility='always')
-    phone = fields.Binary(string='Telephone or Landline Attachment', track_visibility='always')
+    phone = fields.Binary(string='Attachment', track_visibility='always')
     bill_no = fields.Char(string='Bill number', track_visibility='always')
     bill_due_date = fields.Date(string='Bill Due Date', track_visibility='always')
     mobile_no = fields.Char(string='Telephone or Landline number')

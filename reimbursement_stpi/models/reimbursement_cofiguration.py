@@ -86,6 +86,7 @@ class ReimbursementConfiguration(models.Model):
     name = fields.Selection([
         ('lunch', 'Lunch Subsidy'),
         ('telephone', 'Telephone Reimbursement'),
+        ('broadband', 'Broadband Reimbursement'),
         ('mobile', 'Mobile Reimbursement'),
         ('medical', 'Medical Reimbursement'),
         ('tuition_fee', 'Tuition Fee claim'),
