@@ -255,6 +255,9 @@ class Reimbursement(models.Model):
                         if rec.el_taking > 30:
                             raise ValidationError(
                                 "Earned leave Taking must be less than 30")
+                        if int(rec.el_in_account - rec.el_taking) < 30:
+                            raise ValidationError(
+                                "After deduction, Earned leave must be greater than 30")
                         search_id = self.env['reimbursement'].search(
                             [('employee_id', '=', rec.employee_id.id), ('name', '=', rec.name),
                              ('state', 'not in', ['draft', 'rejected'])])

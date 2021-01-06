@@ -59,6 +59,7 @@ class EmployeeLtcAdvance(models.Model):
     all_particulars_verified=fields.Selection([('yes', 'Yes'), ('no', 'No')], default='yes', string='All particulars verified?', track_visibility='always')
     relative_ids = fields.One2many('family.details.ltc','relative_id', string='Relatives')
     are_you_coming = fields.Boolean('Are you Availing?')
+    el_in_account = fields.Float('Maximum EL')
     family_details = fields.Many2many('employee.relative', string='Family Details', domain="[('employee_id', '=', employee_id),('ltc', '=', True)]",track_visibility='always')
     partner_working=fields.Selection([('yes', 'Yes'), ('no', 'No')], default='no', string='Whether Wife/ Husband is employed and if so whether entitled to LTC',track_visibility='always')
     mode_of_travel=fields.Selection([('road', 'By Road'),('train', 'By Train'),('air', 'By Air')], default='road', string='Mode of Travel',track_visibility='always')
@@ -88,6 +89,18 @@ class EmployeeLtcAdvance(models.Model):
             line.leave_period = False
             line.depart_date = False
             line.arrival_date = False
+
+
+    @api.constrains('el_encashment')
+    @api.onchange('el_encashment')
+    def onchng_el_encash(self):
+        for rec in self:
+                if rec.el_encashment == 'yes':
+                    sum = 0
+                    serch_id = self.env['hr.leave.report'].search([('employee_id', '=', rec.employee_id.id),('holiday_status_id.name', '=', 'Earned Leave')])
+                    for lv in serch_id:
+                        sum += lv.number_of_days
+                    rec.el_in_account = sum
 
     @api.onchange('employee_id','place_of_trvel')
     @api.constrains('employee_id','place_of_trvel')
@@ -285,6 +298,31 @@ class EmployeeLtcAdvance(models.Model):
             #                 raise ValidationError(
             #                     _(
             #                         'You are not allowed to take LTC for this block year as you are able to take Hometown LTC, twice in 4 years'))
+            if res.el_encashment == 'yes':
+                if res.el_in_account < res.no_of_days:
+                    raise ValidationError(
+                        "Net Earned leave must be greater than Earned leave Taking")
+                if res.el_in_account < 30:
+                    raise ValidationError(
+                        "Net Earned leave must be greater than 30")
+                if res.no_of_days > 30:
+                    raise ValidationError(
+                        "Earned leave Taking must be less than 30")
+                if int(res.el_in_account - res.no_of_days) < 30:
+                    raise ValidationError(
+                        "After deduction, Earned leave must be greater than 30")
+                val_ids = self.env['employee.ltc.advance'].sudo().search([
+                    ('employee_id','=',res.employee_id.id),
+                    ('state','=','approved'),
+                    ('el_encashment','=','yes')
+                    ])
+                summ = 0
+                for ltcid in val_ids:
+                    summ+=ltcid.no_of_days
+                if int(summ) > 60:
+                    raise ValidationError(
+                        "You are not able to take more than 60 60 days of EL throughout the career ")
+
             if res.advance_ammount:
                 res.single_fare_approved = ((res.advance_ammount)*90)/100
             else:
