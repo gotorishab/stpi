@@ -120,9 +120,9 @@ class Reimbursement(models.Model):
                 rec.working_days = count
                 rec.claimed_amount = float(count * 75)
                 rec.lunch_tds_amt = float(count * 50)
-            previous = self.env['reimbursement'].search([('employee_id', '=', rec.employee_id.id),('state', '!=', 'rejected'),('name', '=' 'briefcase')],limit=1,order="brief_date desc")
-            if previous.brief_date:
-                rec.last_brief_date = previous.brief_date
+            # previous = self.env['reimbursement'].search([('employee_id', '=', rec.employee_id.id),('state', '!=', 'rejected'),('name', '=' 'briefcase')],limit=1,order="brief_date desc")
+            # if previous.brief_date:
+            #     rec.last_brief_date = previous.brief_date
 
     @api.constrains('name','employee_id','date_range')
     @api.onchange('name','employee_id','date_range')
