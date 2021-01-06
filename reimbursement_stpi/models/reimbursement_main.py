@@ -188,13 +188,13 @@ class Reimbursement(models.Model):
                 gr_id = self.env['reimbursement.configuration'].search([('name', '=', rec.name),('branch_id', '=', rec.branch_id.id),('pay_level_ids', '=', rec.employee_id.job_id.pay_level_id.id)],order='name desc', limit=1)
             if gr_id:
                 if gr_id.full == False:
-                    maximum_eligible_amount = str(gr_id.allowed)
+                    rec.maximum_eligible_amount = str(gr_id.allowed)
                     if int(rec.claimed_amount) > int(gr_id.allowed):
                         rec.net_amount = gr_id.allowed
                     else:
                         rec.net_amount = int(rec.claimed_amount)
                 else:
-                    maximum_eligible_amount = 'No Limit'
+                    rec.maximum_eligible_amount = 'No Limit'
                     rec.net_amount = int(rec.claimed_amount)
             else:
                 rec.net_amount = int(rec.claimed_amount)
