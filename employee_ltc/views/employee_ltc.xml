@@ -24,14 +24,14 @@
                             <field name="hometown_address" attrs="{'readonly':[('place_of_trvel','=','hometown')]}"/>
                             <field name="block_year" attrs="{'readonly': [('state', '!=', 'draft')],'required': [('state', '=', 'draft')]}" options="{'no_create_edit': True}"/>
                             <field name="child_block_year"  attrs="{'readonly': [('state', '!=', 'draft')],'required': [('state', '=', 'draft')]}" options="{'no_create_edit': True}"/>
-<!--                            <field name="are_you_coming"/>-->
+                            <field name="are_you_coming" attrs="{'invisible': [('state', 'not in', ['draft','approved'])],'required': [('state', '=', 'draft')]}"/>
 
 
-                            <div>
-                            <label for="are_you_coming" string="Are you availing" style="font-weight:bold; margin:0;" attrs="{'invisible': [('state', '=', 'to_approve')]}"/>
-                            <label for="are_you_coming" string="Is Employee Coming" style="font-weight:bold; margin:0;" attrs="{'invisible': [('state', '!=', 'to_approve')]}"/>
-                        </div>
-                            <field name="are_you_coming" nolabel="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+<!--                            <div>-->
+<!--                            <label for="are_you_coming" string="Are you Availing" style="font-weight:bold; margin:0;" attrs="{'invisible': [('state', '=', 'to_approve')]}"/>-->
+<!--                            <label for="are_you_coming" string="Is Employee Availing" style="font-weight:bold; margin:0;" attrs="{'invisible': [('state', '!=', 'to_approve')]}"/>-->
+<!--                        </div>-->
+<!--                            <field name="are_you_coming" nolabel="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>-->
 
 
 
@@ -475,7 +475,7 @@
                 <field name="distance"/>
                 <field name="fair_paid"/>
                 <field name="ticket_no"/>
-                <field name="ticket_attach"/>
+                <field name="ticket_attach" required="1"/>
             </tree>
         </field>
     </record>

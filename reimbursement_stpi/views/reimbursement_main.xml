@@ -60,15 +60,20 @@
                                 <tree>
                                     <group>
                                         <group>
+                                            <field name="invoice_number" attrs="{'invisible':[('name','not in',('briefcase'))],'required':[('name','in',('briefcase'))],'readonly':[('state','not in',('draft'))]}"/>
+                                            <field name="invoice_date" attrs="{'invisible':[('name','not in',('briefcase'))],'required':[('name','in',('briefcase'))],'readonly':[('state','not in',('draft'))]}"/>
+                                            <field name="last_brief_date" attrs="{'invisible':[('name','not in',('briefcase'))],'readonly':[('name','in',('briefcase'))]}"/>
                                             <field name="working_days" attrs="{'invisible': [('name', '!=', 'lunch')], 'readonly':[('state','not in',('draft'))]}"/>
                                             <field name="amount_lunch" readonly="1" attrs="{'invisible':[('name','not in',('lunch'))]}"/>
                                             <field name="el_in_account" readonly="1" attrs="{'invisible':[('name','not in',('el_encashment'))]}"/>
                                             <field name="el_taking" required="1" attrs="{'invisible':[('name','not in',('el_encashment'))]}"/>
-                                            <field name="service_provider" attrs="{'invisible': [('name', '!=', 'telephone'), ('name', '!=', 'mobile')], 'readonly':[('state','not in',('draft'))]}"/>
+                                            <field name="service_provider" attrs="{'invisible': [('name', '!=', 'telephone'), ('name', '!=', 'mobile')], 'readonly':[('state','not in',('draft'))]}" options="{'no_create_edit': True}"/>
                                             <field name="mobile_no" attrs="{'invisible': [('name', '!=', 'telephone'), ('name', '!=', 'mobile')]}" readonly="1"/>
                                             <field name="phone" attrs="{'invisible':[('name','not in',('telephone','mobile'))],'required':[('name','in',('telephone','mobile'))], 'readonly':[('state','not in',('draft'))]}"/>
                                             <field name="bill_no" attrs="{'invisible': [('name', '!=', 'telephone'), ('name', '!=', 'mobile'), ('name', '!=', 'quarterly')], 'readonly':[('state','not in',('draft'))]}"/>
-                                            <field name="no_of_months" attrs="{'invisible': [('name', '!=', 'telephone'), ('name', '!=', 'mobile')], 'readonly':[('state','not in',('draft'))]}"/>
+                                            <field name="no_of_months" invisible="1"/>
+                                            <field name="billing_from" attrs="{'invisible': [('name', '!=', 'telephone'), ('name', '!=', 'mobile')], 'readonly':[('state','not in',('draft'))]}"/>
+                                            <field name="billing_to" attrs="{'invisible': [('name', '!=', 'telephone'), ('name', '!=', 'mobile')], 'readonly':[('state','not in',('draft'))]}"/>
                                             <field name="attach_news" attrs="{'invisible': [('name', '!=', 'quarterly')], 'readonly':[('state','not in',('draft'))]}"/>
                                             <field name="bill_due_date" attrs="{'invisible': [('name', '!=', 'telephone'), ('name', '!=', 'mobile')], 'readonly':[('state','not in',('draft'))]}"/>
                                             <field name="tution_document" attrs="{'invisible': [('name', '!=', 'tuition_fee')], 'readonly':[('state','not in',('draft'))]}"/>
@@ -77,6 +82,7 @@
                                         <group>
                                             <field name="claimed_amount" attrs="{'readonly':[('state','not in',('draft'))],'invisible':[('name','in',('lunch','el_encashment'))]}"/>
                                             <field name="net_amount"/>
+                                            <field name="maximum_eligible_amount"/>
                                         </group>
                                     </group>
                                 </tree>

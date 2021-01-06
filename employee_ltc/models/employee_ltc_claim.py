@@ -157,10 +157,10 @@ class JourneyDetails(models.Model):
     from_l = fields.Many2one('res.city', string='From City')
     to_l = fields.Many2one('res.city', string='To City')
     distance = fields.Char('Distance(in Kms.)')
-    travel_mode = fields.Many2one('travel.mode.ltc', string='Mode of Travel')
+    travel_mode = fields.Many2many('travel.mode.ltc', string='Mode of Travel')
     ticket_no = fields.Char('Ticket Number')
     fair_paid = fields.Float('Fair')
-    ticket_attach = fields.Binary('Attach Ticket')
+    ticket_attach = fields.Binary('Attachment')
 
 
 class JourneyDetailsGov(models.Model):
@@ -169,7 +169,7 @@ class JourneyDetailsGov(models.Model):
 
     employee_id = fields.Many2one('hr.employee', string='Employee')
     relate_to_ltc = fields.Many2one('employee.ltc.claim')
-    travel_mode = fields.Many2one('travel.mode.ltc', string='Mode of Travel')
+    travel_mode = fields.Many2many('travel.mode.ltc', string='Mode of Travel')
     from_l = fields.Many2one('res.city', string='From City')
     to_l = fields.Many2one('res.city', string='To City')
     fair_paid = fields.Float('Fair')
@@ -180,7 +180,7 @@ class JourneyDetailsconnected(models.Model):
 
     employee_id = fields.Many2one('hr.employee', string='Employee')
     relate_to_ltc = fields.Many2one('employee.ltc.claim')
-    travel_mode = fields.Many2one('travel.mode.ltc', string='Mode of Travel')
+    travel_mode = fields.Many2many('travel.mode.ltc', string='Mode of Travel')
     from_l = fields.Many2one('res.city', string='From City')
     to_l = fields.Many2one('res.city', string='To City')
     remarks = fields.Char('Remarks')

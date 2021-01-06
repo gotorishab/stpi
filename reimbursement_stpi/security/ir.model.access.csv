@@ -3,3 +3,4 @@ access_reimbursement,reimbursement,model_reimbursement,base.group_user,1,1,1,1
 access_reimbursement_configuration,reimbursement.configuration,model_reimbursement_configuration,base.group_user,1,1,1,1
 access_reimbursement_attendence,reimbursement.attendence,model_reimbursement_attendence,base.group_user,1,1,1,1
 access_reimbursement_model_report,reimbursement.model.report,model_reimbursement_model_report,base.group_user,1,1,1,1
+access_reimbursement_service_provider,reimbursement.service.provider,model_reimbursement_service_provider,base.group_user,1,1,1,1

@@ -4,6 +4,7 @@ import re
 from datetime import datetime, date
 from dateutil.relativedelta import relativedelta
 
+
 class Reimbursement(models.Model):
 
     _name = "reimbursement"
@@ -64,20 +65,27 @@ class Reimbursement(models.Model):
     date_range = fields.Many2one('date.range', string='Date Range', track_visibility='always')
 
     amount_lunch = fields.Float(string='Daily Eligible Amount', track_visibility='always')
+    maximum_eligible_amount = fields.Char(string='Maximum Eligible Amount', track_visibility='always', compute='compute_net_amount')
     lunch_tds_amt = fields.Float('Amount for TDS', track_visibility='always')
     working_days = fields.Char(string='Number of days: ', track_visibility='always')
     tution_document = fields.Binary(string='Document', track_visibility='always')
 
     # amount_tel = fields.Float(string='Claimed Amount')
     # amount_mob = fields.Float(string='Claimed Amount')
-    service_provider = fields.Char(string='Service Provider', track_visibility='always')
+    service_provider = fields.Many2one('reimbursement.service.provider',string='Service Provider', track_visibility='always')
     phone = fields.Binary(string='Telephone or Landline Attachment', track_visibility='always')
     bill_no = fields.Char(string='Bill number', track_visibility='always')
     bill_due_date = fields.Date(string='Bill Due Date', track_visibility='always')
     mobile_no = fields.Char(string='Telephone or Landline number')
 
+    invoice_number = fields.Char('Invoice Number')
+    invoice_date = fields.Date('Invoice Date')
+    last_brief_date = fields.Date('Previous Claim Date')
+    billing_from = fields.Date('Billing From')
+    billing_to = fields.Date('Billing To')
+
     brief_date = fields.Date(string='Date')
-    no_of_months = fields.Char(string='No of months', track_visibility='always')
+    no_of_months = fields.Char(string='No of months')
     attach_news = fields.Binary(string='Attanhment')
     remarks = fields.Text(string='Remarks: ', track_visibility='always')
 
@@ -111,6 +119,9 @@ class Reimbursement(models.Model):
                 rec.working_days = count
                 rec.claimed_amount = float(count * 75)
                 rec.lunch_tds_amt = float(count * 50)
+            previous = self.env['reimbursement'].search([('employee_id', '=', rec.employee_id.id),('state', '!=', 'rejected'),('name', '=' 'briefcase')],limit=1,order="brief_date desc")
+            if previous.brief_date:
+                rec.last_brief_date = previous.brief_date
 
     @api.constrains('name','employee_id','date_range')
     @api.onchange('name','employee_id','date_range')
@@ -174,9 +185,14 @@ class Reimbursement(models.Model):
             if not gr_id:
                 gr_id = self.env['reimbursement.configuration'].search([('name', '=', rec.name),('branch_id', '=', rec.branch_id.id),('pay_level_ids', '=', rec.employee_id.job_id.pay_level_id.id)],order='name desc', limit=1)
             if gr_id:
-                if int(rec.claimed_amount) > int(gr_id.allowed) and gr_id.full == False:
-                    rec.net_amount = gr_id.allowed
+                if gr_id.full == False:
+                    maximum_eligible_amount = str(gr_id.allowed)
+                    if int(rec.claimed_amount) > int(gr_id.allowed):
+                        rec.net_amount = gr_id.allowed
+                    else:
+                        rec.net_amount = int(rec.claimed_amount)
                 else:
+                    maximum_eligible_amount = 'No Limit'
                     rec.net_amount = int(rec.claimed_amount)
             else:
                 rec.net_amount = int(rec.claimed_amount)
@@ -368,3 +384,11 @@ class Reimbursement(models.Model):
             self.rejected_date = datetime.now().date()
             self.write({'state': 'draft'})
             return mw
+
+
+class ReimbursementServiceProvider(models.Model):
+
+    _name = "reimbursement.service.provider"
+    _description = "Reimbursement Service Provider"
+
+    name = fields.Char('Name')
