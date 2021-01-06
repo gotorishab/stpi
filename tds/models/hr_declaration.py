@@ -204,7 +204,7 @@ class HrDeclaration(models.Model):
     pan_card = fields.Binary(string = 'Attach Pan Card')
     owner_address = fields.Char(string='Address of the owner')
 
-    tax_salary_final = fields.Float(string='Gross Salary', store=True, track_visibility='always')
+    tax_salary_final = fields.Float(string='Yearly Gross', store=True, track_visibility='always')
     forecast_gross = fields.Float(string='Forecast Gross')
     basic_salary = fields.Float(string='Basic Salary')
     da_salary = fields.Float(string='DA')
@@ -551,8 +551,10 @@ class HrDeclaration(models.Model):
                                                                ],limit=1)
 
             wage = 0
+            updated_basic = 0
             for cnt in contrct:
                 wage = cnt.wage
+                updated_basic = cnt.updated_basic
             # currentMonth = datetime.now().month
             # print(currentMonth)
             # if currentMonth == 4:
@@ -581,7 +583,7 @@ class HrDeclaration(models.Model):
             #     month = 1
             _body = (_(
                 (
-                    "<ul><b>Gross Salary -:</b></ul>"
+                    "<ul><b>Yearly Gross -:</b></ul>"
                         "<ul>Basic Wage: {0} </ul>"
                         "<ul>Allowance: {1} </ul>"
                         "<ul>Actual Gross: {2} </ul>"
@@ -728,10 +730,10 @@ class HrDeclaration(models.Model):
                     sum_prl_current += pc.amount*int(month)
             sum_prl = sum_prl + sum_prl_current
             if rec.employee_id.branch_id.city_id.metro == True:
-                sum_bs = ((rec.basic_salary + rec.da_salary)*50)/100
+                sum_bs = ((rec.basic_salary + rec.da_salary + int(updated_basic)*int(month))*50)/100
             else:
-                sum_bs = ((rec.basic_salary + rec.da_salary)*40)/100
-            sum_rent = rec.rent_paid - (((rec.basic_salary + rec.da_salary + int(wage)*int(month) )*10)/100)
+                sum_bs = ((rec.basic_salary + rec.da_salary + int(updated_basic)*int(month))*40)/100
+            sum_rent = rec.rent_paid - (((rec.basic_salary + rec.da_salary + int(updated_basic)*int(month) )*10)/100)
 
             sum_list.append(sum_prl)
             sum_list.append(sum_bs)
