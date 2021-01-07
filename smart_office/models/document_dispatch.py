@@ -102,11 +102,11 @@ class DispatchDocument(models.Model):
                             },
             }
             return value
-
-    @api.model
-    def create(self, vals):
-        res = super(DispatchDocument, self).create(vals)
-        res.version = res.id
+    #
+    # @api.model
+    # def create(self, vals):
+    #     res = super(DispatchDocument, self).create(vals)
+    #     res.version = res.id
 
 
     @api.multi
@@ -140,7 +140,7 @@ class DispatchDocument(models.Model):
             #     'state': 'draft',
             #     'cooespondence_ids': rec.cooespondence_ids.ids,
             # })
-            # dd.version = dd.id
+            rec.version = rec.id
             form_view = self.env.ref('smart_office.foldermaster_form_view')
             tree_view = self.env.ref('smart_office.foldermaster_tree_view1')
             value = {
