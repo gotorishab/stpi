@@ -6,7 +6,7 @@
             <field name="arch" type="xml">
                 <form string="File">
                     <header>
-                        <button name="create_dispath_file" string="Create" class="oe_highlight" type="object" states="draft"/>
+                        <button name="create_dispath_file" string="Open File" class="oe_highlight" type="object" states="draft"/>
                         <button name="button_ready_for_dispatch" string="Request Approval" class="oe_highlight" type="object" states="draft"/>
                         <button name="button_dispatch" string="Dispatch" class="oe_highlight" type="object" states="ready_for_dispatched" groups="smart_office.outward_dispatch_smart_office"/>
                         <button name="print_dispatch_document" string="Print Details" type="object" states="dispatched" class="oe_highlight"/>
