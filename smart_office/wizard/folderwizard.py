@@ -48,6 +48,8 @@ class FileWizard(models.Model):
             if rec.user.id == False:
                 raise UserError(_("%s is not configured to owned this file") % rec.employee.name)
             else:
+                print('======================rec.defid.current_owner_id.id=========================',rec.defid.current_owner_id.id)
+                print('======================rec.env.user.id=========================',rec.env.user.id)
                 if rec.defid.current_owner_id.id == rec.env.user.id:
                     file_count = 0
                     sec_own = []
