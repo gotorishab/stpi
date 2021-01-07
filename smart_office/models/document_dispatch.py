@@ -149,7 +149,7 @@ class DispatchDocument(models.Model):
                           (tree_view and tree_view.id or False, 'tree')],
                 'type': 'ir.actions.act_window',
                 'res_id': rec.folder_id.id,
-                'target': 'new',
+                'target': 'current',
                 'nodestroy': True,
             }
             return value
