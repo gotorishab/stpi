@@ -51,6 +51,74 @@ class DispatchDocument(models.Model):
                 name = 1
             else:
                 name = rec.name
+            # dd = self.env['dispatch.document'].create({
+            #     'name': name + 0.001,
+            #     'basic_version': int(rec.name),
+            #     'print_heading': rec.print_heading,
+            #     'previousversion': rec.id,
+            #     'dispatch_mode': rec.dispatch_mode,
+            #     'template_html': rec.template_html,
+            #     'select_template': rec.select_template.id,
+            #     'current_user_id': current_employee.user_id.id,
+            #     'department_id': current_employee.department_id.id,
+            #     'job_id': current_employee.job_id.id,
+            #     'branch_id': current_employee.branch_id.id,
+            #     'created_on': datetime.now().date(),
+            #     'folder_id': rec.folder_id.id,
+            #     'state': 'draft',
+            #     'cooespondence_ids': rec.cooespondence_ids.ids,
+            # })
+            # dd.version = dd.id
+            form_view = self.env.ref('smart_office.document_dispatch_form_view')
+            tree_view = self.env.ref('smart_office.dispatch_document_tree_view1')
+            value = {
+                # 'domain': str([('id', '=', dd.id)]),
+                'view_type': 'form',
+                'view_mode': 'tree, form',
+                'res_model': 'dispatch.document',
+                'view_id': False,
+                'views': [(form_view and form_view.id or False, 'form'),
+                          (tree_view and tree_view.id or False, 'tree')],
+                'type': 'ir.actions.act_window',
+                # 'res_id': dd.id,
+                'target': 'new',
+                'nodestroy': True,
+                'context': {
+                    'name': name + 0.001,
+                    'basic_version': int(rec.name),
+                    'print_heading': rec.print_heading,
+                    'previousversion': rec.id,
+                    'dispatch_mode': rec.dispatch_mode,
+                    'template_html': rec.template_html,
+                    'select_template': rec.select_template.id,
+                    'current_user_id': current_employee.user_id.id,
+                    'department_id': current_employee.department_id.id,
+                    'job_id': current_employee.job_id.id,
+                    'branch_id': current_employee.branch_id.id,
+                    'created_on': datetime.now().date(),
+                    'folder_id': rec.folder_id.id,
+                    'state': 'draft',
+                    'cooespondence_ids': rec.cooespondence_ids.ids,
+                            },
+            }
+            return value
+
+
+
+    @api.multi
+    def create_dispath_file(self):
+        for rec in self:
+            cout = 0
+            current_employee = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+            dis_name = self.env['dispatch.document'].sudo().search(
+                [('folder_id', '=', self.folder_id.id), ('basic_version', '=', self.basic_version)])
+            m_name = self.env['dispatch.document'].sudo().search([('folder_id', '=', self.folder_id.id)])
+            for ct in m_name:
+                cout += 1
+            if cout < 1:
+                name = 1
+            else:
+                name = rec.name
             dd = self.env['dispatch.document'].create({
                 'name': name + 0.001,
                 'basic_version': int(rec.name),
@@ -69,24 +137,22 @@ class DispatchDocument(models.Model):
                 'cooespondence_ids': rec.cooespondence_ids.ids,
             })
             dd.version = dd.id
-            # rec.sudo().button_obsellete()
-            form_view = self.env.ref('smart_office.document_dispatch_form_view')
-            tree_view = self.env.ref('smart_office.dispatch_document_tree_view1')
+            form_view = self.env.ref('smart_office.foldermaster_form_view')
+            tree_view = self.env.ref('smart_office.foldermaster_tree_view1')
             value = {
-                'domain': str([('id', '=', dd.id)]),
+                'domain': str([('id', '=', rec.folder_id.id)]),
                 'view_type': 'form',
                 'view_mode': 'tree, form',
-                'res_model': 'dispatch.document',
+                'res_model': 'folder.master',
                 'view_id': False,
                 'views': [(form_view and form_view.id or False, 'form'),
                           (tree_view and tree_view.id or False, 'tree')],
                 'type': 'ir.actions.act_window',
-                'res_id': dd.id,
+                'res_id': rec.folder_id.id,
                 'target': 'new',
-                'nodestroy': True
+                'nodestroy': True,
             }
             return value
-
 
     @api.multi
     def button_obsellete(self):

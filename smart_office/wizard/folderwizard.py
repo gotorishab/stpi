@@ -20,6 +20,7 @@ class FileWizard(models.Model):
 
 
 
+
     @api.onchange('department','jobposition')
     def _onchange_user(self):
         for rec in self:

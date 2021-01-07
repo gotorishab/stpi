@@ -22,4 +22,4 @@ class CreateFolder(models.TransientModel):
                 for letter in file.document_dispatch:
                     letter.folder_id = self.deffolderid.id
                     self.deffolderid.document_dispatch = [(4, letter.id)]
-                file.sudo().button_close()
+                file.sudo().button_close_part()

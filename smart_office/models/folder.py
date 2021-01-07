@@ -60,7 +60,7 @@ class FolderMaster(models.Model):
     my_dash = fields.Html('My Dash Html')
     dashboard_view = fields.Many2one('ir.ui.view')
     state = fields.Selection(
-        [('draft', 'Draft'), ('in_progress', 'In Progress'), ('closed', 'Action Completed')
+        [('draft', 'Draft'), ('in_progress', 'In Progress'), ('closed', 'Action Completed'), ('closed_part', 'Action Part Completed')
          ], required=True, default='draft', string='Status',track_visibility='always')
     # green_ids = fields.Many2many('green.sheets','folder_id', string = 'Green Sheets')
 
@@ -325,6 +325,11 @@ class FolderMaster(models.Model):
     def button_submit(self):
         for rec in self:
             rec.write({'state': 'in_progress'})
+
+    @api.multi
+    def button_close_part(self):
+        for rec in self:
+            rec.write({'state': 'closed_part'})
 
     @api.multi
     def button_close(self):
