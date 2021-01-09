@@ -10,6 +10,7 @@
     'depends': ['website','hr','board'],
     'data': [
         'security/ir.model.access.csv',
+        'security/health_portal.xml',
         'security/accidents.xml',
         'security/fire_incident.xml',
         'security/audit.xml',

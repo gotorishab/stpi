@@ -15,8 +15,19 @@ class BlogPost(models.Model):
         ('story', 'Story'),
         ('announcement', 'Announcement'),
         ('idea', 'Idea'),
-        ('cmd', 'CMD Message'),
+        ('calendar_1', 'Calendar Image First'),
+        ('calendar_2', 'Calendar Image Second'),
+        ('calendar_3', 'Calendar Image Third'),
     ], string='Front Type')
+
+    state = fields.Selection([
+        ('draft', 'Draft'),
+        ('pending_approval', 'Approval Pending'),
+        ('approved', 'Approved'),
+        ('published', 'Published'),
+        ('unpublished', 'Unpublished'),
+    ], string='state',default='draft')
+
 
     @api.onchange('blog_id')
     @api.constrains('blog_id')
@@ -26,9 +37,23 @@ class BlogPost(models.Model):
                 if rec.blog_id.front_type:
                     rec.front_type = rec.blog_id.front_type
 
+
+    def button_send_for_approval(self):
+        for rec in self:
+            rec.write({'state': 'pending_approval'})
+
+
+    def button_approved(self):
+        for rec in self:
+            rec.write({'state': 'approved'})
+
+
+
     def button_publish(self):
         for rec in self:
             rec.is_published = True
+            rec.write({'state': 'approved'})
+
 
     def button_unpublish(self):
         for rec in self:

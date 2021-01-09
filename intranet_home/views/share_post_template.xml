@@ -1,0 +1,49 @@
+<odoo>
+    <template id="share_post_template">
+        <t t-call="website.layout">
+            <div class="container website_forum oe_main_container d-flex pt-4 pb-4">
+                <div class="col-md-3 m-0 p-0">
+                    <div class="col-md-12 p-0 oe_search mb-3 col-sm-3">
+                        <form class="form-inline my-4 my-lg-0">
+                            <input class="form-control" type="search" placeholder="Search" aria-label="Search"/>
+                        </form>
+                        <div class="card oe_card mt-2">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-sm oe_title">
+                                    USEFUL LINKS
+                                    </div>
+                                    <div class="col-sm oe_all_link">
+                                        <a href="/usefull/links">All Links <i class="fa fa-angle-right"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-group list-group-flush;bg-light">
+                                    <t t-foreach='usefull_links' t-as='link'>
+                                        <i class="fa fa-bars" aria-hidden="true"></i>
+                                        <li class="list-group-item">
+                                             <div t-field="link.icon" t-options="{'widget': 'image'}" />
+                                            <a t-att-href="link.url" target='new'>
+                                                <span class="oe_name" t-esc='link.name' />
+                                            </a>
+                                        </li>
+                                    </t>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-9 m-0 p-0">
+                     <form t-attf-action="/" method="post" role="form" class="tag_text js_website_submit_form js_wforum_submit_form o_wforum_readable">
+                        <div class="form-group pl-2">
+                            <input type="hidden" name="karma" value="30" id="karma"/>
+                            <textarea name="content" required="required" id="content" class="form-control o_wysiwyg_loader" data-karma="30">
+                            </textarea>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

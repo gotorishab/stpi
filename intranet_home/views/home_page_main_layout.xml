@@ -2,11 +2,31 @@
     <template id="assets_frontend" name="website assets" inherit_id="web.assets_frontend">
         <xpath expr="." position="inside">
             <link rel="stylesheet" href="/intranet_home/static/src/scss/homepage.scss"/>
+            <script type="text/javascript" src="/intranet_home/static/src//js/employee_move_line.js"></script>
+        </xpath>
+    </template>
+    <template id="website_publisher_inherit" inherit_id="website.website_publisher">
+         <xpath expr="//t" position="replace">
+            <t groups="website.group_website_publisher" t-if="'website_published' in main_object.fields_get() and ('can_publish' not in main_object.fields_get() or main_object.can_publish)">
+                <li t-attf-class="js_publish_management #{extra_classes} #{main_object.website_published and 'css_published' or 'css_unpublished'}" t-att-data-description="env['ir.model']._get(main_object._name).display_name" t-att-data-id="main_object.id" t-att-data-object="main_object._name" t-att-data-controller="publish_controller">
+                    <label class="o_switch o_switch_danger js_publish_btn" t-att-accesskey="desktop_navbar and 'p'" t-att-class="'d-none o_switch o_switch_danger js_publish_btn' if main_object._name == 'blog.post' and website.theme_id and website.theme_id.name == 'intranet_home' else 'o_switch o_switch_danger js_publish_btn'">
+                        <input type="checkbox" t-att-checked="main_object.website_published"/>
+                        <span/>
+                        <span class="css_publish">Unpublished</span>
+                        <span class="css_unpublish">Published</span>
+                    </label>
+                </li>
+            </t>
         </xpath>
     </template>
     <template id="new_homepage_vardhman" inherit_id="website.homepage">
         <xpath expr="//div[@id='wrap']" position="replace">
-            <div class="container oe_main_container d-flex pt-4 pb-4">
+            <div t-if="not is_intranet" t-name="website.homepage_editor_welcome_message" class="container text-center o_homepage_editor_welcome_message">
+                <h2 class="mt0">Welcome to your <b>Homepage</b>!</h2>
+                <p class="lead d-none d-md-block">Click on <b>Edit</b> in the top right corner to start designing.</p>
+            </div>
+
+            <div t-if="is_intranet" class="container oe_main_container d-flex pt-4 pb-4">
                 <div class="col-md-3 m-0 p-0">
                     <div class="col-md-12 p-0 oe_search mb-3 col-sm-3">
                         <form class="form-inline my-4 my-lg-0">
@@ -19,7 +39,7 @@
                                     USEFUL LINKS
                                     </div>
                                     <div class="col-sm oe_all_link">
-                                        <a href="google.com">All Links <i class="fa fa-angle-right"></i></a>
+                                        <a href="/usefull/links">All Links <i class="fa fa-angle-right"></i></a>
                                     </div>
                                 </div>
                             </div>
@@ -46,7 +66,7 @@
                                     UPCOMING BIRTHDAYS
                                     </div>
                                     <div class="col-md-3 oe_all_link">
-                                        <a href="google.com">All <i class="fa fa-angle-right"></i></a>
+                                        <a href="/birthday/links">All <i class="fa fa-angle-right"></i></a>
                                     </div>
                                 </div>
                             </div>
@@ -76,7 +96,7 @@
                                     ANNIVERSARIES
                                     </div>
                                     <div class="col-md-3 oe_all_link">
-                                        <a href="google.com">All <i class="fa fa-angle-right"></i></a>
+                                        <a href="/anniversary/links">All <i class="fa fa-angle-right"></i></a>
                                     </div>
                                 </div>
                             </div>
@@ -120,21 +140,21 @@
                                     DISCUSSION FORUM
                                     </div>
                                     <div class="col-md-5 oe_all_link">
-                                        <a href="google.com">Create Forum</a>
+                                        <a href="/forum">Create Forum</a>
                                     </div>
                                 </div>
                             </div>
                             <div class="card-body">
                                 <ul class="list-group list-group-flush;bg-light">
-                                    <t t-foreach='annivarsary_links' t-as='link'>
+                                    <t t-foreach='forum_links' t-as='link'>
                                         <li class="list-group-item">
-                                            <div t-field="link.image" t-options="{'widget': 'image', 'class': 'image_div'}" />
+                                            <div t-field="link.image_1920" t-options="{'widget': 'image', 'class': 'image_div'}" />
                                             <div class="oe_div">
-                                                <span class="oe_name oe_pill w-100 d-block" t-esc='link.work_anniversary' />
-                                                <a  target='new'>
+                                                <span t-if="link.default_order == 'create_date desc'" class="w-100 d-block" style="color: red;"><i class="fa fa-fire pr-2"></i> hot</span>
+                                                <a target='new' t-attf-href="/forum/{{slug(link)}}">
                                                     <span class="oe_name w-100 d-block" t-esc='link.name' />
                                                 </a>
-                                                <span class="oe_name w-100 d-block" t-esc='link.job_title' />
+                                               <!--  <span class="oe_name w-100 d-block" t-esc='link.description' /> -->
                                             </div>
                                         </li>
                                     </t>
@@ -150,26 +170,26 @@
                             <div class="carousel-inner">
                                 <!-- #01 -->
                                 <t t-set="i" t-value="1"/>
-                                <div t-foreach="slider_link" t-as="slider" t-att-class="'carousel-item oe_img_bg pt16 active pb16' if i == 1 else 'carousel-item oe_img_bg pt16 pb16'" data-name="Slide">
+                                <div t-foreach="slider_link" t-as="slider" t-att-class="'carousel-item oe_img_bg pt8 active pb16' if i == 1 else 'carousel-item oe_img_bg pt8 pb16'" data-name="Slide">
                                     <t t-set="i" t-value="i+1"/>
-                                    <div class="container h-100" t-attf-style="background-image:url('/web/image/vardhman.slider.links/{{slider.id}}/icon/')">
-                                        <div class="row content h-100">
-                                            <div class="col-md-4" style="background-image: linear-gradient(#d8d8d8, #dcdcdc7d 47%, #ffffff47 66%);">
-                                                <h4 class="pl-2 mt-2"><t t-esc="slider.name"/></h4>
-                                                <p class="pl-2 mt-5 m-0"><t t-esc="slider.name"/></p>
-<!--                                                 <ol class="carousel-indicators pt-3" style="bottom: 0;top: 90%;">
-                                                    <li t-foreach="slider_link" t-as="slider" data-target="#myCarouselVerdhman" data-slide-to="0" class="active"/>
-                                                </ol> -->
+                                    <a class="d-block h-100 w-100" t-att-href="slider.url">
+                                        <div class="container h-100" t-attf-style="background-image:url('/web/image/vardhman.slider.links/{{slider.id}}/icon/')">
+                                            <div class="row content h-100">
+                                                    <div class="col-md-4" style="background-image: linear-gradient(#d8d8d8, #dcdcdc7d 47%, #ffffff47 66%);">
+                                                        <h4 class="pl-2 mt-2"><t t-esc="slider.name"/></h4>
+                                                        <p class="pl-2 mt-5 m-0"><t t-esc="slider.name"/></p>
+                                                    </div>
                                             </div>
-                                            <!-- <div class="col-md-8">
-                                                <a class="oe_image" t-att-href="slider.url">
-                                                    <div t-field="slider.icon" t-options="{'widget': 'image', 'class': 'image_div h-100'}"/>
-                                                </a>
-                                            </div> -->
                                         </div>
-                                    </div>
+                                    </a>
                                 </div>
                             </div>
+                            <ol class="carousel-indicators" style="bottom: 0;">
+                                <t t-set="i" t-value="0"/>
+                                <li t-foreach="slider_link" t-as="slider" data-target="#myCarouselVerdhman" t-attf-data-slide-to="{{i}}" t-att-class="'active' if i == 0 else ''">
+                                    <t t-set="i" t-value="i+1"/>
+                                </li>
+                            </ol>
                         </div>
                     </div>
                     <div class="col-md-12 bg-white mt-2  mb-2 oe_col_key p-0">
@@ -177,12 +197,12 @@
                             <div class="col-md-6 pt-3 oe_title">
                                 <h4><strong>KEY MODULES</strong></h4>
                             </div>
-                            <div class="col-md-6 oe_link">
+                            <!-- <div class="col-md-6 oe_link">
                                 <a href="google.com">All News</a>
-                            </div>
+                            </div> -->
                         </div>
                         <div class="row" t-foreach="website_ids" t-as="website">
-                                    <div class="col-md-3 pt-3 pb-3 oe_title" t-field="website.front_icon" t-options="{'widget': 'image', 'class': 'image_div h-auto'}"/>
+                                    <div class="col-md-3 pt-3 pb-3 oe_title" t-field="website.front_icon" t-options="{'widget': 'image', 'class': 'image_div h-100'}"/>
                                 <div class="col-md-9 oe_desc">
                                     <a t-att-href="website.front_url">
                                         <span><b><t t-esc="website.front_title"/></b></span>
@@ -193,12 +213,12 @@
                         </div>
                     </div>
                     <div class="col-md-12 bg-white mt-2  mb-2 oe_col_idea p-0">
-                        <div class="row">
-                            <div class="col-md-6 pl-4 pt-2 oe_idea">
+                        <div class="row ml-0 mr-0">
+                            <div class="col-md-6 pl-4 pb-2 pt-2 oe_idea">
                                 <span style="font-size: 12px;" class="text-muted"><strong>TOP IDEAS &amp; SUGGESSIONS </strong></span>
                             </div>
-                            <div class="col-md-6 pr-4 pt-2 oe_link">
-                                <a style="font-size: 12px;" href="google.com">Share Idea</a>
+                            <div class="col-md-6 pr-4 pt-2 pb-2 oe_link">
+                                <a style="font-size: 12px;" href="/blog">Share Idea</a>
                             </div>
                         </div>
                         <div class="row p-0 m-0 pt-2">
@@ -207,7 +227,9 @@
                                 <div class="pb-4 col-4 oe_blog">
                                     <article class="o_wblog_post position-relative" name="blog_post">
                                         <!-- Grid-View Design -->
-                                        <t t-call="website_blog.post_cover_image"/>
+                                         <a class="col-md-12 p-0 d-inline-block oe_image" t-att-href="blog_post.website_url">
+                                            <div class="w-100 h-100" t-field="blog_post.image" t-options="{'widget': 'image', 'class': 'image_div h-100'}"/>
+                                        </a>
                                         <div t-att-class="opt_blog_cards_design and 'card-body py-3'">
                                             <t t-call="website_blog.post_heading"/>
                                         </div>
@@ -256,15 +278,15 @@
                 </div>
                 <div class="col-md-3 m-0 p-0">
                     <div class="col-md-12 p-0 oe_calender mb-3 col-sm-3 mt-2 mb-4">
-                        <div class="col-md-12 oe_first pb-1">
-                            <img src="/intranet_home/static/src/img/ceo_image.png"/>
+                        <div t-if="calendar_first" class="col-md-12 oe_first pb-1">
+                            <a t-att-href="calendar_first.website_url" t-field="calendar_first.image" t-options="{'widget': 'image', 'class': 'image_div'}"/>
                         </div>
                         <div class="row">
-                            <div class="col-md-6 oe_div pr-2">
-                                <img src="/intranet_home/static/src/img/1_image.png"/>
+                            <div t-if="calendar_second" class="col-md-6 oe_div pr-2">
+                                <a t-att-href="calendar_second.website_url" t-field="calendar_second.image" t-options="{'widget': 'image', 'class': 'image_div'}"/>
                             </div>
-                            <div class="col-md-6 pl-1">
-                                <img src="/intranet_home/static/src/img/worker.png"/>
+                            <div t-if="calendar_third" class="col-md-6 pl-1">
+                                <a t-att-href="calendar_third.website_url" t-field="calendar_third.image" t-options="{'widget': 'image', 'class': 'image_div'}"/>
                             </div>
                         </div>
                     </div>
@@ -314,9 +336,9 @@
                                 <ul class="list-group list-group-flush;bg-light">
                                     <t t-foreach='event_link' t-as='link'>
                                         <li class="list-group-item">
-                                            <!-- <div t-field="link.image" t-options="{'widget': 'image', 'class': 'image_div'}" /> -->
+                                            <div t-field="link.image" t-options="{'widget': 'image', 'class': 'image_div'}" />
                                             <div class="oe_div w-100">
-                                                <a target='new'>
+                                                <a target='new' t-att-href="link.website_url">
                                                     <b><span class="oe_title w-100 d-block" t-esc='link.name' /></b>
                                                 </a>
                                                 <div class="row tags w-100 text-center pl-3">
@@ -329,6 +351,77 @@
                                         </li>
                                     </t>
                                 </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 p-0 oe_events mb-3 col-sm-3 mt-2 mb-4">
+                        <div class="card oe_card">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-md-9 oe_title">
+                                    ANNOUNCEMENT
+                                    </div>
+                                    <div class="col-md-3 oe_all_link">
+                                        <a href="/blog">All <i class="fa fa-angle-right"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-group list-group-flush;bg-light">
+                                    <t t-foreach='announcement_posts' t-as='announcement'>
+                                        <li class="list-group-item">
+                                            <div class="h-100 w-100">
+                                                <!-- <a t-attf-href="/blog/#{slug(announcement.blog_id)}/#{slug(announcement)}">
+                                                    <span style="font-size: 13px;" class="w-100 d-block" t-esc='announcement.create_date' />
+                                                </a> -->
+                                                <a target='new' t-att-href="announcement.website_url">
+                                                    <span class="oe_name w-100 d-block" t-esc='announcement.name' />
+                                                </a>
+                                            </div>
+                                        </li>
+                                    </t>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 p-0 oe_events mb-3 col-sm-3 mt-2 mb-4">
+                        <div class="card oe_card">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-md-7 oe_title">
+                                    TOP STORY
+                                    </div>
+                                    <div class="col-md-5 oe_pill">
+                                        <a href="/forum">ADD STORY</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-group list-group-flush;bg-light">
+                                    <t t-foreach='story_posts' t-as='link'>
+                                        <li class="list-group-item">
+                                            <div t-field="link.image" t-options="{'widget': 'image'}" />
+                                            <div class="oe_div w-100">
+                                                <a target='new' t-att-href="link.website_url">
+                                                    <b><span class="oe_title w-100 d-block" t-esc='link.name' /></b>
+                                                </a>
+                                                <div class="row tags w-100 text-center pl-3">
+                                                    <t t-foreach="link.tag_ids" t-as="tag">
+                                                        <span class="oe_name col-md-4 oe_pill w-100 d-block" t-esc='tag.name' />
+                                                    </t>
+                                                </div>
+                                                <!-- <span class="oe_name w-100 d-block" t-esc='link.note' /> -->
+                                            </div>
+                                        </li>
+                                    </t>
+                                </ul>
+                            </div>
+                            <div class="card-header pb-4 pr-0">
+                                <div class="col-md-3 pull-right oe_all_link">
+                                    <a href="/blog">All <i class="fa fa-angle-right"></i></a>
+                                </div>
                             </div>
                         </div>
                     </div>

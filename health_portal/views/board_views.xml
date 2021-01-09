@@ -33,6 +33,51 @@
             id="menu_board_health_dash"
             parent="base.menu_board_root"
             action="open_board_health_dash_action"
+            groups="health_portal.group_health_and_safety_admin_health"
             sequence="1"/>
+
+
+
+
+
+        <!--My Dashboard-->
+        <record model="ir.ui.view" id="board_health_user_dash_view">
+            <field name="name">Dashboard</field>
+            <field name="model">board.board</field>
+            <field name="arch" type="xml">
+                <form string="Dashboard">
+                    <board style="1-2">
+                        <column>
+                            <action string="Fire Incidents"
+                                    name="%(health_portal.health_manage_accidents_list)d"/>
+                        </column>
+                    </board>
+                </form>
+            </field>
+        </record>
+
+        <!--My Dashboard Action-->
+        <record model="ir.actions.act_window" id="open_board_health_user_dash_action">
+            <field name="name">Dashboard</field>
+            <field name="res_model">board.board</field>
+            <field name="view_mode">form</field>
+            <field name="usage">menu</field>
+            <field name="view_id" ref="board_health_user_dash_view"/>
+        </record>
+    </data>
+    <data>
+
+        <!--My Dashboard Menu-->
+        <menuitem
+            id="menu_board_health_user_dash"
+            parent="base.menu_board_root"
+            action="open_board_health_user_dash_action"
+            groups="health_portal.group_unit_level_user_health"
+            sequence="2"/>
+
+
+
+
+
     </data>
 </odoo>

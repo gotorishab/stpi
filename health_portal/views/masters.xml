@@ -17,17 +17,8 @@
                         <group>
                             <field name="description" placeholder="Description" required="1"/>
                         </group>
-
                     </group>
-<!--                    <div class="oe_title">-->
-<!--                        <label for="name"/>-->
-<!--                        <h4><field name="name" placeholder="Enter your  Business." required="1"/></h4>-->
-<!--                    </div>-->
                     <br/>
-<!--                    <div class="oe_title">-->
-<!--                        <label for="description"/>-->
-<!--                        <field name="description" required="1"/>-->
-<!--                    </div>-->
                 </sheet>
             </form>
         </field>
@@ -59,7 +50,9 @@
     <menuitem id="menu_health_business_type_master"
             name="Business Type"
             sequence="1"
-            parent="menu_health_all_master"/>
+            parent="menu_health_all_master"
+            groups="health_portal.group_analysis_admin_health"
+    />
 
 
     <menuitem id="menu_health_business_type_list"
@@ -128,7 +121,9 @@
     <menuitem id="menu_health_unit_master_master"
             name="Unit Master"
             sequence="2"
-            parent="menu_health_all_master"/>
+            parent="menu_health_all_master"
+              groups="health_portal.group_analysis_admin_health"
+    />
 
 
     <menuitem id="menu_health_unit_master_list"
@@ -144,12 +139,6 @@
             parent="menu_health_unit_master_master"
             action="ir_action_health_unit_master_create"
     />
-
-
-
-
-
-
 
 
 
@@ -201,6 +190,7 @@
     <menuitem id="menu_health_section_master_master"
             name="Section Master"
             sequence="4"
+              groups="health_portal.group_analysis_admin_health"
             parent="menu_health_all_master"/>
 
 
@@ -276,6 +266,7 @@
     <menuitem id="menu_health_incident_master_master"
             name="Add Incident Reason"
             sequence="2"
+              groups="health_portal.group_analysis_admin_health"
             parent="menu_health_all_master"/>
 
 
@@ -355,6 +346,7 @@
     <menuitem id="menu_health_accident_master_master"
             name="Accident Reason"
             sequence="5"
+              groups="health_portal.group_analysis_admin_health,health_portal.group_health_and_safety_admin_health,health_portal.group_health_auditor_health"
             parent="menu_health_all_master"/>
 
 

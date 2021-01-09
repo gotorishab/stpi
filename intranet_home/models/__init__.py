@@ -11,3 +11,4 @@ from . import website
 from . import res_user
 from . import blog_confuguration
 from . import blog_post_categories
+from . import event
