@@ -36,8 +36,8 @@ class BlogBlog(models.Model):
                     ('front_type', '=', rec.front_type),
                     ('id', '!=', rec.id)
                 ])
-            if search_id:
-                raise ValidationError("You have already applied for this front type")
+            # if search_id:
+            #     raise ValidationError("You have already applied for this front type")
 
 
 class ForumPost(models.Model):
