@@ -9,20 +9,12 @@ class IndentLedger(models.Model):
     _name = 'issue.request'
     _description = "Issue Request"
 
-    # def default_issue_type(self):
-    #     for rec in self:
-    #         if rec.indent_type == 'grn':
-    #             return rec.env['indent.serialnumber'].sudo().search([('grn', '=', False),('issue', '=', False)], limit=1)
-    #         if rec.indent_type == 'issue':
-    #             return rec.env['indent.serialnumber'].sudo().search([('issue', '=', False),('grn', '=', True)], limit=1)
-
-    @api.onchange('serial_number')
     def default_issue_type(self):
         for rec in self:
             if rec.indent_type == 'grn':
-                return rec.env['indent.serialnumber'].sudo().search([('grn', '=', False),('issue', '=', False)], limit=1)
+                return rec.env['indent.serialnumber'].sudo().search([('grn', '!=', True),('issue', '!=', True)])
             if rec.indent_type == 'issue':
-                return rec.env['indent.serialnumber'].sudo().search([('issue', '=', False),('grn', '=', True)], limit=1)
+                return rec.env['indent.serialnumber'].sudo().search([('issue', '!=', True),('grn', '=', True)])
 
 
     Indent_id = fields.Many2one('indent.request', string='Indent/GRN')
@@ -34,7 +26,7 @@ class IndentLedger(models.Model):
     specification = fields.Text('Specifications')
     serial_bool = fields.Boolean(string='Serial Number')
     # serial_number = fields.Char(string='Serial Number')
-    serial_number = fields.Many2one('indent.serialnumber',string='Serial Number')
+    serial_number = fields.Many2one('indent.serialnumber',string='Serial Number', default=default_issue_type)
     asset = fields.Boolean('is Asset?')
     requested_quantity = fields.Integer('Requested Quantity')
     approved_quantity = fields.Integer('Approved Quantity')
