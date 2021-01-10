@@ -9,12 +9,29 @@ class IndentLedger(models.Model):
     _name = 'issue.request'
     _description = "Issue Request"
 
-    def default_issue_type(self):
+    # def default_issue_type(self):
+    #     for rec in self:
+    #         if rec.indent_type == 'grn':
+    #             return rec.env['indent.serialnumber'].sudo().search([('grn', '!=', True),('issue', '!=', True)])
+    #
+    #         if rec.indent_type == 'issue':
+    #             return rec.env['indent.serialnumber'].sudo().search([('issue', '!=', True),('grn', '=', True)])
+
+
+    @api.onchange('serial_number')
+    def change_slect_leave(self):
         for rec in self:
             if rec.indent_type == 'grn':
-                return rec.env['indent.serialnumber'].sudo().search([('grn', '!=', True),('issue', '!=', True)])
+                return {'domain':
+                            {
+                                'serial_number': [('grn', '!=', True),('issue', '!=', True)],
+                                   }}
             if rec.indent_type == 'issue':
-                return rec.env['indent.serialnumber'].sudo().search([('issue', '!=', True),('grn', '=', True)])
+                return {'domain':
+                            {
+                                'serial_number': [('issue', '!=', True),('grn', '=', True)],
+                                   }}
+
 
 
     Indent_id = fields.Many2one('indent.request', string='Indent/GRN')

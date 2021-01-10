@@ -9,7 +9,7 @@ class SerialNumber(models.Model):
 
     name = fields.Char('Serial Number')
     grn = fields.Boolean('GRN')
-    issue = fields.Boolean('Boolean')
+    issue = fields.Boolean('Issue')
 
 class ItemMaster(models.Model):
     _name = 'indent.stock'
