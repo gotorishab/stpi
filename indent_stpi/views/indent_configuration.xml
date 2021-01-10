@@ -63,6 +63,31 @@
 
 
 
+        <record model='ir.ui.view' id='Indent_configuration_sn_tree_view'>
+            <field name="name">indent.serialnumber.tree</field>
+            <field name="model">indent.serialnumber</field>
+            <field name="arch" type="xml">
+                <tree string="Item Master" editable="bottom">
+                    <field name="name" required="1"/>
+                    <field name="grn" required="1"/>
+                    <field name="issue" required="1"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <!--Indent Item Master Action-->
+        <record id="Indent_configuration_sn_action_id" model="ir.actions.act_window">
+            <field name="name">Serial Number</field>
+            <field name="res_model">indent.serialnumber</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+
+
+
+
  <menuitem name="Configuration"
            id="menu_Indent_configuration" parent="menu_Indent"
            groups="indent_stpi.group_Indent_store_manager"
@@ -72,6 +97,11 @@
     <menuitem name="Item Master"
                 id="menu_Indent_configuration_id" parent="menu_Indent_configuration"
                  action="Indent_configuration_action_id"
+                 />
+
+    <menuitem name="Serial Number"
+                id="menu_Indent_configuration_sn_id" parent="menu_Indent_configuration"
+                 action="Indent_configuration_sn_action_id"
                  />
 
     </data>

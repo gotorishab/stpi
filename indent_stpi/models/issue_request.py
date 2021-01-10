@@ -10,10 +10,11 @@ class IndentLedger(models.Model):
     _description = "Issue Request"
 
     def default_issue_type(self):
-        if self.indent_type == 'grn':
-            return self.env['indent.serialnumber'].sudo().search([('grn', '=', False),('issue', '=', False)], limit=1)
-        if self.indent_type == 'issue':
-            return self.env['indent.serialnumber'].sudo().search([('issue', '=', False),('grn', '=', True)], limit=1)
+        for rec in self:
+            if rec.indent_type == 'grn':
+                return rec.env['indent.serialnumber'].sudo().search([('grn', '=', False),('issue', '=', False)], limit=1)
+            if rec.indent_type == 'issue':
+                return rec.env['indent.serialnumber'].sudo().search([('issue', '=', False),('grn', '=', True)], limit=1)
 
     Indent_id = fields.Many2one('indent.request', string='Indent/GRN')
     Indent_item_id = fields.Many2one('indent.request.items', string='Indent Item')
