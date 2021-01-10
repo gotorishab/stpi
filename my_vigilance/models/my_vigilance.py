@@ -30,8 +30,8 @@ class MyVigilance(models.Model):
 
 
     mode_of_complaint = fields.Selection([('oral', 'Oral'), ('written', 'Written')], string='Mode of Complaint', default='oral', track_visibility='always')
-    name_of_complaint = fields.Many2one('res.partner', string='Name of Complainant')
-    complaint_against = fields.Many2one('hr.employee', string='Complaint Against')
+    name_of_complaint = fields.Many2many('res.partner', string='Name of Complainant')
+    complaint_against = fields.Many2many('hr.employee', string='Complaint Against')
     address = fields.Char(string="Address of the Complainant",track_visibility='always')
     reg_no = fields.Char(string = 'Communication Number',track_visibility='always')
     allegation_in_brief = fields.Text(string = 'Allegation (in brief)',track_visibility='always')

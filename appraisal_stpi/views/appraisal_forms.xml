@@ -39,6 +39,7 @@
                             <field name="branch_id" readonly="1"/>
                             <field name="category_id" readonly="1"/>
                             <field name="If_not_happy" attrs="{'required':[('state','in',('raise_query'))],'readonly':[('state','not in',('raise_query'))]}"/>
+                            <field name="If_not_happy" attrs="{'required':[('state','in',('raise_query'))],'readonly':[('state','not in',('raise_query'))]}"/>
 <!--                            <field name="dob" readonly="1"/>-->
                         </group>
                         <group>

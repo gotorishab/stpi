@@ -3,6 +3,14 @@ from odoo.exceptions import ValidationError, UserError
 from dateutil.relativedelta import relativedelta
 from datetime import datetime, date
 
+class SerialNumber(models.Model):
+    _name = 'indent.serialnumber'
+    _description = "Indent Serial number"
+
+    name = fields.Char('Serial Number')
+    grn = fields.Boolean('GRN')
+    issue = fields.Boolean('Boolean')
+
 class ItemMaster(models.Model):
     _name = 'indent.stock'
     _description = "Item Master"

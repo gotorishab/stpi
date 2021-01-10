@@ -5,11 +5,15 @@ from datetime import datetime, date
 import jwt
 import xmlrpc.client
 
-
-
 class IndentLedger(models.Model):
     _name = 'issue.request'
     _description = "Issue Request"
+
+    def default_issue_type(self):
+        if self.indent_type == 'grn':
+            return self.env['indent.serialnumber'].sudo().search([('grn', '=', False),('issue', '=', False)], limit=1)
+        if self.indent_type == 'issue':
+            return self.env['indent.serialnumber'].sudo().search([('issue', '=', False),('grn', '=', True)], limit=1)
 
     Indent_id = fields.Many2one('indent.request', string='Indent/GRN')
     Indent_item_id = fields.Many2one('indent.request.items', string='Indent Item')
@@ -19,7 +23,8 @@ class IndentLedger(models.Model):
     item_id = fields.Many2one('child.indent.stock', string='Item')
     specification = fields.Text('Specifications')
     serial_bool = fields.Boolean(string='Serial Number')
-    serial_number = fields.Char(string='Serial Number')
+    # serial_number = fields.Char(string='Serial Number')
+    serial_number = fields.Many2one('indent.serialnumber',string='Serial Number', default=default_issue_type)
     asset = fields.Boolean('is Asset?')
     requested_quantity = fields.Integer('Requested Quantity')
     approved_quantity = fields.Integer('Approved Quantity')
@@ -69,7 +74,7 @@ class IndentLedger(models.Model):
                         'item_category_id': res.item_category_id.id,
                         'item_id': res.item_id.id,
                         'serial_bool': res.serial_bool,
-                        'serial_number': res.serial_number,
+                        'serial_number': res.serial_number.name,
                         'specification': res.specification,
                         'requested_quantity': res.requested_quantity,
                         'requested_date': res.requested_date,
@@ -109,7 +114,7 @@ class IndentLedger(models.Model):
             password = 'admin'
             id = models.execute_kw(db, uid, password, 'account.asset.asset', 'create',
                                    [{"name": self.item_id.name,
-                                     "serial_number": self.serial_number,
+                                     "serial_number": self.serial_number.name,
                                      "invoice_no": self.Indent_id.bill_no,
                                      "purchase_date": self.Indent_id.date_of_receive,
                                      # "first_depreciation_manual_date": self.Indent_id.date_of_receive,
