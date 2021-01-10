@@ -9,16 +9,14 @@ class IndentLedger(models.Model):
     _name = 'issue.request'
     _description = "Issue Request"
 
-    def default_issue_type(self):
+    @api.multi
+    def _default_issue_type(self):
         for rec in self:
             ab = []
             if rec.indent_type == 'grn':
                 return [('grn', '!=', True), ('issue', '!=', True)]
-                # ab = rec.env['indent.serialnumber'].sudo().search([('grn', '!=', True),('issue', '!=', True)])
             else:
                 return [('issue', '!=', True),('grn', '=', True)]
-                # ab = rec.env['x`indent.serialnumber'].sudo().search([('issue', '!=', True),('grn', '=', True)])
-            # return [('grn', '!=', True),('issue', '!=', True)]
 
     # @api.onchange('serial_number')
     # def change_slect_leave(self):
@@ -45,7 +43,7 @@ class IndentLedger(models.Model):
     specification = fields.Text('Specifications')
     serial_bool = fields.Boolean(string='Serial Number')
     # serial_number = fields.Char(string='Serial Number')
-    serial_number = fields.Many2one('indent.serialnumber',string='Serial Number', domain=default_issue_type)
+    serial_number = fields.Many2one('indent.serialnumber',string='Serial Number', domain=_default_issue_type)
     asset = fields.Boolean('is Asset?')
     requested_quantity = fields.Integer('Requested Quantity')
     approved_quantity = fields.Integer('Approved Quantity')
