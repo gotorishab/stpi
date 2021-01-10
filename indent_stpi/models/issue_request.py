@@ -16,7 +16,9 @@ class IndentLedger(models.Model):
                 ab = rec.env['indent.serialnumber'].sudo().search([('grn', '!=', True),('issue', '!=', True)])
             else:
                 ab = rec.env['x`indent.serialnumber'].sudo().search([('issue', '!=', True),('grn', '=', True)])
+            print('============ab==================',ab)
             return ab
+
     # @api.onchange('serial_number')
     # def change_slect_leave(self):
     #     for rec in self:
