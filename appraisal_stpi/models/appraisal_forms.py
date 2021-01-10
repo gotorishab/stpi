@@ -37,6 +37,9 @@ class AppraisalForms(models.Model):
     ag_no = fields.Selection([('yes', 'Yes'),
                                        ('no', 'No'),
                               ], 'Ag No', track_visibility='always')
+    agree_dis = fields.Selection([('Agreed', 'Agreed'),
+                                       ('Disagree', 'Disagree'),
+                              ], 'Agreed?', track_visibility='always')
     dis_mod = fields.Text('Dis Mod', track_visibility='always')
     If_not_happy = fields.Text('If not happy, Query')
     pen_pic_rev = fields.Text('Pen Picture of review officer', track_visibility='always')
@@ -228,6 +231,15 @@ class AppraisalForms(models.Model):
             rec.write({'state': 'raise_query'})
             for line in rec.kpia_ids:
                 line.write({'state': 'raise_query'})
+    @api.multi
+    def agreed(self):
+        for rec in self:
+            rec.agree_dis = 'Agreed'
+
+    @api.multi
+    def disagree(self):
+        for rec in self:
+            rec.agree_dis = 'Disagree'
 
 
 class KPIForm(models.Model):
