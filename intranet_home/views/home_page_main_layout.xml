@@ -63,7 +63,7 @@
                             <div class="card-header">
                                 <div class="row">
                                     <div class="col-md-9 oe_title">
-                                    UPCOMING BIRTHDAYS
+                                    UPCOMING 
                                     </div>
                                     <div class="col-md-3 oe_all_link">
                                         <a href="/birthday/links">All <i class="fa fa-angle-right"></i></a>
@@ -76,7 +76,10 @@
                                         <li class="list-group-item">
                                             <div t-field="link.image" t-options="{'widget': 'image', 'class': 'image_div'}" />
                                             <div class="oe_div">
-                                                <span class="oe_name oe_date w-100 d-block" t-esc='link.birthday' />
+                                                <span class="d-flex align-items-center">
+                                                    <i class="oe_name pr-1 oe_date fa fa-birthday-cake"></i>
+                                                    <span class="oe_name pr-1 oe_date d-block" t-esc='link.birthday.strftime("%b")' /><span class="oe_name pr-1 oe_date d-block" t-esc="link.birthday.day"></span>
+                                                </span>
                                                 <a  target='new'>
                                                     <span class="oe_name w-100 d-block" t-esc='link.name' />
                                                 </a>
@@ -297,8 +300,8 @@
                                     <div class="col-md-9 oe_title">
                                     NEWS
                                     </div>
-                                    <div class="col-md-3 oe_all_link">
-                                        <a href="/blog">All <i class="fa fa-angle-right"></i></a>
+                                    <div t-if="news_posts" class="col-md-3 oe_all_link">
+                                        <a t-attf-href="/blog/{{slug(news_posts[0].blog_id)}}">All <i class="fa fa-angle-right"></i></a>
                                     </div>
                                 </div>
                             </div>
@@ -362,8 +365,8 @@
                                     <div class="col-md-9 oe_title">
                                     ANNOUNCEMENT
                                     </div>
-                                    <div class="col-md-3 oe_all_link">
-                                        <a href="/blog">All <i class="fa fa-angle-right"></i></a>
+                                    <div t-if="announcement_posts" class="col-md-3 oe_all_link">
+                                        <a t-attf-href="/blog/{{slug(announcement_posts[0].blog_id)}}">All <i class="fa fa-angle-right"></i></a>
                                     </div>
                                 </div>
                             </div>
@@ -419,8 +422,8 @@
                                 </ul>
                             </div>
                             <div class="card-header pb-4 pr-0">
-                                <div class="col-md-3 pull-right oe_all_link">
-                                    <a href="/blog">All <i class="fa fa-angle-right"></i></a>
+                                <div t-if="story_posts" class="col-md-3 pull-right oe_all_link">
+                                    <a t-attf-href="/blog/{{slug(story_posts[0].blog_id)}}">All <i class="fa fa-angle-right"></i></a>
                                 </div>
                             </div>
                         </div>
