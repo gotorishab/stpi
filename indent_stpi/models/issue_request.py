@@ -9,28 +9,27 @@ class IndentLedger(models.Model):
     _name = 'issue.request'
     _description = "Issue Request"
 
-    # def default_issue_type(self):
+    def default_issue_type(self):
+        for rec in self:
+            ab = []
+            if rec.indent_type == 'grn':
+                ab = rec.env['indent.serialnumber'].sudo().search([('grn', '!=', True),('issue', '!=', True)])
+            else:
+                ab = rec.env['x`indent.serialnumber'].sudo().search([('issue', '!=', True),('grn', '=', True)])
+            return ab
+    # @api.onchange('serial_number')
+    # def change_slect_leave(self):
     #     for rec in self:
     #         if rec.indent_type == 'grn':
-    #             return rec.env['indent.serialnumber'].sudo().search([('grn', '!=', True),('issue', '!=', True)])
-    #
+    #             return {'domain':
+    #                         {
+    #                             'serial_number': [('grn', '!=', True),('issue', '!=', True)],
+    #                                }}
     #         if rec.indent_type == 'issue':
-    #             return rec.env['indent.serialnumber'].sudo().search([('issue', '!=', True),('grn', '=', True)])
-
-
-    @api.onchange('serial_number')
-    def change_slect_leave(self):
-        for rec in self:
-            if rec.indent_type == 'grn':
-                return {'domain':
-                            {
-                                'serial_number': [('grn', '!=', True),('issue', '!=', True)],
-                                   }}
-            if rec.indent_type == 'issue':
-                return {'domain':
-                            {
-                                'serial_number': [('issue', '!=', True),('grn', '=', True)],
-                                   }}
+    #             return {'domain':
+    #                         {
+    #                             'serial_number': [('issue', '!=', True),('grn', '=', True)],
+    #                                }}
 
 
 
@@ -43,7 +42,7 @@ class IndentLedger(models.Model):
     specification = fields.Text('Specifications')
     serial_bool = fields.Boolean(string='Serial Number')
     # serial_number = fields.Char(string='Serial Number')
-    serial_number = fields.Many2one('indent.serialnumber',string='Serial Number')
+    serial_number = fields.Many2one('indent.serialnumber',string='Serial Number', default=default_issue_type)
     asset = fields.Boolean('is Asset?')
     requested_quantity = fields.Integer('Requested Quantity')
     approved_quantity = fields.Integer('Approved Quantity')
