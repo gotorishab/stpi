@@ -58,9 +58,11 @@ class IndentLedger(models.Model):
             else:
                 qty = res.approved_quantity
                 if res.indent_type == 'issue':
+                    res.serial_number.issue = True
                     balance = sum - qty
                     res.item_id.issue += qty
                 else:
+                    res.serial_number.grn = True
                     balance = sum + qty
                     res.item_id.received += qty
                 res.item_id.balance = res.item_id.received - res.item_id.issue
