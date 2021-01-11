@@ -248,6 +248,96 @@ main {
                 }
             }
         }
+        .oe_event_slider {
+            max-height: 350px;
+            height: 350px;
+            .s_carousel{
+                .carousel-inner {
+                    .carousel-item {  
+                        article {
+                            .row {
+                                header {
+                                    height: 200px;
+
+                                    .o_wevent_event_date {
+                                        top: $card-spacer-x;
+                                        right: $card-spacer-x;
+                                        display: flex;
+                                        flex-direction: column;
+                                        justify-content: center;
+                                        @include size(4rem);
+                                        border-radius: 50%;
+                                        text-align: center;
+
+                                        .o_wevent_event_day {
+                                            font-size: 1.125rem;
+                                            font-weight: 300;
+                                            line-height: 1;
+                                        }
+                                        .o_wevent_event_month {
+                                            font-size: 0.75rem;
+                                            font-weight: $font-weight-bold;
+                                            text-transform: uppercase;
+                                        }
+                                    }
+                                    .o_wevent_participating,
+                                    .o_wevent_unpublished {
+                                        position: absolute;
+                                        bottom: 0;
+                                        width: 100%;
+                                        padding: $card-spacer-y $card-spacer-x;
+                                        text-align: right;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                .carousel-control-prev{
+                    .carousel-control-prev-icon {
+                        &:before {
+                            margin-left:0px !important; 
+                        }
+                    }
+                }
+                .carousel-control-next{
+                    .carousel-control-next-icon {
+                        &:before {
+                            margin-right:0px !important; 
+                        }
+                    }
+                }
+            }
+            .oe_col {
+            }
+            // .oe_col_key {
+            //     .oe_title {
+            //         padding-left: 30px;
+            //         img {
+            //             height: 89px;
+            //             width: 114px;
+            //         }
+            //     }
+            //     .oe_desc {
+            //         padding: 30px;
+            //     }
+            //     .oe_link{
+            //         display: flex;
+            //         align-items: center;
+            //         justify-content: flex-end;
+            //         padding-right: 25px;
+            //     }
+            // }
+            .carousel-indicators {
+                margin: 0;
+                margin-bottom: 20px;
+                right: 78%;
+                & > li {
+                    height: 10px !important;
+                    width: 10px !important;
+                }
+            }
+        }
         .oe_slider {
             .s_carousel{
                 .carousel-inner {

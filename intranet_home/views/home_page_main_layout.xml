@@ -293,6 +293,97 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-md-12 oe_col oe_event_slider p-0">
+                        <div id="myCarouselEventVerdhman" class="s_carousel s_carousel_default carousel h-100 slide" data-interval="10000">
+                            <!-- Content -->
+                            <div class="carousel-inner">
+                                <!-- #01 -->
+                                <t t-set="i" t-value="1"/>
+                                <div t-foreach="event_ids" t-as="event" t-att-class="'carousel-item oe_img_bg active pb16' if i == 1 else 'carousel-item oe_img_bg pb16'" data-name="Slide">
+                                    <t t-set="i" t-value="i+1"/>
+                                     <a t-attf-href="/event/#{ slug(event) }/#{(not event.menu_id) and 'register'}" class="text-decoration-none">
+                                        <article t-attf-class="h-100 h-100 card border-0" itemscope="itemscope" itemtype="http://schema.org/Event">
+                                            <div class="h-100 row no-gutters">
+                                                <!-- Header -->
+                                                <header t-attf-class="overflow-hidden bg-secondary col-md-12 col-lg-12 rounded-left'}  #{(not opt_events_list_cards and not opt_events_list_columns)}">
+                                                    <!-- Image + Link -->
+                                                    <div class="d-block h-100 w-100">
+                                                        <t t-call="website.record_cover">
+                                                            <t t-set="_record" t-value="event"/>
+
+                                                            <!-- Short Date -->
+                                                            <div class="o_wevent_event_date position-absolute bg-white shadow-sm text-dark">
+                                                                <span t-field="event.with_context(tz=event.date_tz).date_begin" t-options="{'format': 'LLL'}" class="o_wevent_event_month"/>
+                                                                <span t-field="event.with_context(tz=event.date_tz).date_begin" t-options="{'format': 'dd'}" class="o_wevent_event_day"/>
+                                                            </div>
+                                                            <!-- Participating -->
+                                                            <small t-if="event.is_participating" class="o_wevent_participating bg-success">
+                                                                <i class="fa fa-check mr-2"/>Registered
+                                                            </small>
+                                                            <!-- Unpublished -->
+                                                            <small t-if="not event.website_published" class="o_wevent_unpublished bg-danger">
+                                                                <i class="fa fa-ban mr-2"/>Unpublished
+                                                            </small>
+                                                        </t>
+                                                    </div>
+                                                </header>
+                                                <div t-att-class="'%s %s' % (
+                                                    opt_events_list_columns and 'col-12' or 'col',
+                                                    opt_events_list_columns and event.event_registrations_open and not event.event_registrations_sold_out and 'h-100' or '')">
+                                                    <!-- Body -->
+                                                    <main t-attf-class="#{opt_events_list_cards and 'card-body' or (opt_events_list_columns and 'py-3' or 'px-4')}">
+                                                        <!-- Title -->
+                                                        <h5 t-attf-class="card-title mt-2 mb-0 text-truncate #{(not event.website_published) and 'text-danger'}">
+                                                            <span t-field="event.name" itemprop="name"/>
+                                                        </h5>
+                                                        <!-- Start Date & Time -->
+                                                        <time itemprop="startDate" t-att-datetime="event.date_begin">
+                                                            <span t-field="event.with_context(tz=event.date_tz).date_begin" t-options="{'date_only': 'true', 'format': 'long'}"/> -
+                                                            <span t-field="event.with_context(tz=event.date_tz).date_begin" t-options="{'time_only': 'true', 'format': 'short'}"/>
+                                                        </time>
+                                                        <!-- Location -->
+                                                        <div itemprop="location" t-field="event.address_id" t-options="{'widget': 'contact', 'fields': ['city'], 'no_marker': 'true'}"/>
+                                                        <!-- <div t-if="event and event.tag_ids" class="mt8 d-flex align-items-center">
+                                                            <t t-foreach="event.tag_ids" t-as="tag">
+                                                                <span t-if="tag.color"
+                                                                    t-attf-class="badge mr8 #{'badge-primary' if tag in search_tags else 'badge-light'} #{'o_tag_color_%s' % tag.color if tag.color else ''}">
+                                                                    <span t-esc="tag.name"/>
+                                                                </span>
+                                                            </t>
+                                                        </div> -->
+                                                    </main>
+                                                </div>
+                                                <!-- Footer -->
+                                                <footer t-if="not event.event_registrations_open or event.event_registrations_sold_out"
+                                                    class="small align-self-end w-100 card-footer border-top">
+                                                    <span t-if="not event.event_registrations_open" class="text-danger">
+                                                        <t t-if="event.start_sale_date and event.start_sale_date &gt; datetime.date.today()">
+                                                            Registrations not yet open
+                                                        </t>
+                                                        <t t-elif="event.event_registrations_sold_out">
+                                                            Sold Out
+                                                        </t>
+                                                        <t t-else="">
+                                                            Registrations Closed
+                                                        </t>
+                                                    </span>
+                                                </footer>
+                                            </div>
+                                        </article>
+                                    </a>
+                                </div>
+                            </div>
+                            <!-- Controls -->
+                            <div class="carousel-control-prev" data-target="#myCarouselEventVerdhman" data-slide="prev" role="img" aria-label="Previous" title="Previous">
+                                <span class="carousel-control-prev-icon"/>
+                                <span class="sr-only">Previous</span>
+                            </div>
+                            <div class="carousel-control-next" data-target="#myCarouselEventVerdhman" data-slide="next" role="img" aria-label="Next" title="Next">
+                                <span class="carousel-control-next-icon"/>
+                                <span class="sr-only">Next</span>
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-md-12 p-0 oe_events mb-3 col-sm-3 mt-2 mb-4">
                         <div class="card oe_card">
                             <div class="card-header">

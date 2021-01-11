@@ -7,6 +7,8 @@ class Website(Home):
 
     @http.route('/', type='http', auth="public", website=True, sitemap=True)
     def index(self, **kw):
+        Event = request.env['event.event']
+        events = Event.search([])
         # prefetch all menus (it will prefetch website.page too)
         website = request.env['website'].get_current_website()
         usefull_links = request.env['vardhman.useful.links'].sudo().search([], limit=6)
@@ -43,6 +45,7 @@ class Website(Home):
                 'video_link': video_link,
                 'magazine_link': magazine_link,
                 'story_posts': story_posts,
+                'event_ids': events,
                 'announcement_posts': announcement_posts,
                 'calendar_first': calendar_first,
                 'calendar_second': calendar_second,
