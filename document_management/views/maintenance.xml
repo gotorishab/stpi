@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="assets_frontend_inherit" name="website assets inherit" inherit_id="web.assets_frontend">
+        <xpath expr="." position="inside">
+            <link rel="stylesheet" href="/document_management/static/src/scss/portal_layout.scss"/>
+        </xpath>
+    </template>
+    <template id="documents_my_home_menu_expense" name="Portal layout: maintenance" inherit_id="portal.portal_breadcrumbs">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'documents' or documents" t-attf-class="breadcrumb-item #{'active ' if not documents else ''}">
+                <a t-if="documents" t-attf-href="/get/documents?{{ keep_query() }}">Documents</a>
+                <t t-else="">Documents</t>
+            </li>
+        </xpath>
+    </template>
+
+    <!-- menu in my account -->
+    <template id="portal_my_home_sale" name="Portal My Home : sales entries" inherit_id="portal.portal_my_home" priority="20">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-if="documents_count" t-call="portal.portal_docs_entry">
+                <t t-set="title">Documents</t>
+                <t t-set="url" t-value="'/get/documents'"/>
+                <t t-set="count" t-value="documents_count"/>
+            </t>
+        </xpath>
+    </template>
+
+    <!-- list view of maintenance -->
+    <template id="portal_my_documents_data" name="My Documents">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Documents</t>
+            </t>
+            <t t-if="not documents_ids">
+                 <p>There are currently no 'Documents' for your account.</p>
+            </t>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="col-md-12 p-0 oe_search mb-3 col-sm-3">
+                        <form class="form-inline my-4 my-lg-0">
+                            <input class="form-control" type="search" placeholder="Search" aria-label="Search"/>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    <a class="mb-2 pl-0" style="font-size: 24px;text-decoration: none;" href="javascript: window.history.back()"><i class="pl-2 fa fa-angle-left"></i>
+                    </a>
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn mb-2" data-toggle="modal" data-target="#newFolderModal">
+                      <i class="fa fa-plus pr-2"></i> New <i class="pl-2 fa fa-angle-down"></i>
+                    </button>
+
+                    <button type="button" class="btn mb-2" data-toggle="modal" data-target="#newDocumentModal">
+                      <i class="fa fa-arrow-up pr-2"></i> Upload <i class="pl-2 fa fa-angle-down"></i>
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="newDocumentModal" tabindex="-1" role="dialog" aria-labelledby="New Folder Upload" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Add a document</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&amp;times</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                                <form  action="/upload/document" method="post" role="form" enctype="multipart/form-data">
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label class="col-md-4" for="totp_token">Choose document
+                                            </label>
+                                            <input type="file" id="uploadImage" class="form-control col-md-7 o_forum_file_upload" name="ufile" accept="image/*,application/pdf"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                       <div class="row">
+                                            <label class="col-md-4" for="totp_token">Destination folder
+                                            </label>
+                                            <select class="form-control col-md-7 mb-2" required="required" name="parent_id">
+                                                <option value="" selected="selected">
+                                                </option>
+                                                <option t-foreach="folder_ids" t-as="folder" t-att-value="folder.id">
+                                                    <t t-esc="folder.name"/>
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row pull-right">
+                                        <button type="submit" class="btn btn-primary mr-2 ml-2">
+                                            Save
+                                        </button>
+                                        <button type="button" class="btn btn-secondary mr-5" data-dismiss="modal">Close</button>
+                                    </div>
+                                </form>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="newFolderModal" tabindex="-1" role="dialog" aria-labelledby="New Folder Upload" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Add a folder</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&amp;times</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                                <form method="GET" action="/create/folder" class="">
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label class="col-md-4" for="totp_token">Folder Name
+                                            </label>
+                                            <input id="totp_token" name="name" class="form-control col-md-7 mb-2"
+                                                   autofocus="autofocus" required="required"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                       <div class="row">
+                                            <label class="col-md-4" for="totp_token">Parent Directory
+                                            </label>
+                                            <select class="form-control col-md-7 mb-2" name="parent_id">
+                                                <option value="" selected="selected">
+                                                </option>
+                                                <option t-foreach="folder_ids" t-as="folder" t-att-value="folder.id">
+                                                    <t t-esc="folder.name"/>
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row pull-right">
+                                        <button type="submit" class="btn btn-primary mr-2 ml-2">
+                                            Save
+                                        </button>
+                                        <button type="button" class="btn btn-secondary mr-5" data-dismiss="modal">Close</button>
+                                    </div>
+                                </form>
+                          </div>
+                          <!-- <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
+                          </div> -->
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="col-md-12 p-0 oe_search mb-3 col-sm-3">
+                        <div class="card oe_card">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-sm oe_title">
+                                    USEFUL LINKS
+                                    </div>
+                                    <div class="col-sm oe_all_link">
+                                        <a href="/usefull/links">All Links <i class="fa fa-angle-right"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-group list-group-flush;bg-light">
+                                    <t t-foreach='usefull_links' t-as='link'>
+                                        <i class="fa fa-bars" aria-hidden="true"></i>
+                                        <li class="list-group-item">
+                                             <div t-field="link.icon" t-options="{'widget': 'image'}" />
+                                            <a t-att-href="link.url" target='new'>
+                                                <span class="oe_name" t-esc='link.name' />
+                                            </a>
+                                        </li>
+                                    </t>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    <t t-if="documents_ids" t-call="portal.portal_table">
+                        <thead>
+                            <tr>
+                                <th><i class="fa fa-file"></i></th>
+                                <th>Name</th>
+                                <!-- <th></th> -->
+                                <th>Modified</th>
+                                <th>Modified By</th>
+                                <th>Size</th>
+                            </tr>
+                        </thead>
+                        <t t-foreach="parent_folder_ids" t-as="folder">
+                            <tr>
+                                <td>
+                                    <t t-if="folder">
+                                        <a t-attf-href='/get/documents/{{slug(folder)}}'><img style="height: 30px;width: 25px;" t-attf-src="/document_management/static/src/img/folder.png"/></a>
+                                    </t>
+                                </td>
+                               <td>
+                                    <a><t t-esc="folder.name"/></a>
+                                </td>
+                                <td>
+                                    <t t-esc="folder.create_date"/>
+                                </td>
+                                <td>
+                                    <t t-esc="folder.create_uid.name"/>
+                                </td>
+                                <td>
+                                    <!-- <t t-if="documents and documents.document">
+                                        <t t-esc="documents._get_size()"/> <span t-if="documents._get_size() > 1">MB</span><span t-else="">Bytes</span>
+                                    </t> -->
+                                </td>
+                            </tr>
+                        </t>
+                        <t t-foreach="parent_folder_ids.mapped('document_ids')" t-as="documents">
+                            <tr>
+                                <td>
+                                    <img style="height: 30px;width: 25px;" t-attf-src="/document_management/static/src/img/{{documents._get_image()}}"/>
+                                </td>
+                                <!-- <td>
+                                    <a t-attf-href="/web/content/portal.documents/{{documents.id}}/document?download=true" target="_blank"><i style="height: 30px;width: 25px;cursor: pointer;" class="fa fa-share"></i></a>
+                                </td> -->
+                               <td>
+                                    <a t-attf-href="/web/content/documents.attachment/{{documents.id}}/document?download=true" target="_blank"><t t-esc="documents.name"/></a>
+                                </td>
+                                <td>
+                                    <t t-esc="documents.create_date"/>
+                                </td>
+                                <td>
+                                    <t t-esc="documents.create_uid.name"/>
+                                </td>
+                                <td>
+                                    <t t-esc="documents._get_size()"/> <span t-if="documents._get_size() > 1">MB</span><span t-else="">Bytes</span>
+                                </td>
+                            </tr>
+                        </t>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

@@ -1,0 +1,94 @@
+.o_portal_wrap{
+	.container{
+        .oe_search {
+            input {
+                border-radius: 30px;
+                width: 100%;
+                font-size: 13px;
+            }
+            .oe_card{
+                box-shadow: 1px 1px 5px 0px #CCC;
+                width: 100%;
+                min-height: 300px;
+                .card-header {
+                    background-color: white;
+                    font-size: 13px;
+                    color: gray;
+                    font-weight: 600;
+                    .oe_all_link{
+                        a {
+                            position: absolute;
+                            right: 5px;
+                            font-size: 13px;
+                            color: green;
+                            .fa {
+                                font-size: 15px;
+                            }
+                        }
+                    }
+                }
+                .card-body {
+                    padding: 0;
+                    ul {
+                        li {
+                            display: flex;
+                            border: none;
+                            .img {
+                                margin-right: 15px;
+                                height: 25px;
+                                width: 25px;
+                            }
+                            a{
+                                .oe_name {
+                                    font-size: 13px;
+                                    color: #9f9f9f;
+                                    font-weight: bold;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+		& > button {
+			&:focus {
+				box-shadow: none;
+			}
+		}
+		#newFolderModal {
+			.modal-dialog{
+    			.modal-content {
+    				border-radius: unset;
+    				.modal-header {
+    					border: none;
+    				}
+    				.modal-body {
+    					form {
+	    					.form-group {
+	    						.row {
+	    							& > label {
+	    								font-size: 14px;
+	    							}
+		    						& > input, select {
+										height: 25px;
+						    			border-radius: 0px;
+						    			font-size: 13px;
+    									padding: 0;
+		    						}
+		    						& > .btn {
+		    							border-radius: unset;
+		    						}
+	    						}
+	    					}
+	    					.row {
+	    						& > .btn {
+	    							border-radius: unset;
+	    						}
+    						}
+    					}
+    				}
+    			}
+			}
+		}
+	}
+}
