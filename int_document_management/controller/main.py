@@ -16,7 +16,7 @@ class IntranetDocument(CustomerPortal):
         values = super(IntranetDocument, self)._prepare_portal_layout_values()
         documents_count = request.env['intranett.portal.documents'].sudo().search_count([('parent_id', '=', False)])
         values['intranet_documents_count'] = documents_count
-        values['page_name'] = 'intranet'
+        values['page_name'] = 'intranet_homepage'
         return values
 
     @http.route(['/get/intportal/documents', '/get/intportal/documents/<model("intranett.portal.documents"):folder>', '/get/intportal/documents/page/<int:page>'], type='http', auth="user", website=True)
@@ -75,7 +75,7 @@ class IntranetDocument(CustomerPortal):
         values.update({
             'parent_folder_ids': parent_folder_ids,
             'documents_ids': documents_ids,
-            'page_name': 'intranet',
+            'page_name': 'intranet_homepage',
             'documents_count': documents_count,
             'pager': pager,
             'documents_rec': documents_rec,

@@ -7,7 +7,7 @@
     </template>
     <template id="documents_int_my_home_menu_intranet_document" name="Portal layout: document" inherit_id="portal.portal_breadcrumbs">
         <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
-            <li t-if="page_name == 'intranet' or inner_folder" t-attf-class="breadcrumb-item #{'active ' if inner_folder else ''}">
+            <li t-if="page_name == 'intranet_homepage' or inner_folder" t-attf-class="breadcrumb-item #{'active ' if inner_folder else ''}">
                 <a t-if="inner_folder" t-attf-href="/get/intportal/documents?{{ keep_query() }}">Intranet Document</a>
                 <t t-else="">Intranet Document</t>
             </li>
