@@ -34,7 +34,7 @@
     </template>
 
     <!-- list view of maintenance -->
-    <template id="portal_my_intranet_document_data" name="My Intranet Document">
+    <template id="portal_my_intranet_document_int" name="My Intranet Document">
         <t t-call="portal.portal_layout">
             <t t-set="breadcrumbs_searchbar" t-value="True"/>
             <t t-call="portal.portal_searchbar">
@@ -74,7 +74,7 @@
                             </button>
                           </div>
                           <div class="modal-body">
-                                <form  action="/upload/document" method="post" role="form" enctype="multipart/form-data">
+                                <form  action="/upload/intdocument" method="post" role="form" enctype="multipart/form-data">
                                     <div class="form-group">
                                         <div class="row">
                                             <label class="col-md-4" for="totp_token">Choose document
@@ -117,7 +117,7 @@
                             </button>
                           </div>
                           <div class="modal-body">
-                                <form method="GET" action="/create/folder" class="">
+                                <form method="GET" action="/create/intfolder" class="">
                                     <div class="form-group">
                                         <div class="row">
                                             <label class="col-md-4" for="totp_token">Folder Name

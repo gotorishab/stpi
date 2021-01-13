@@ -88,10 +88,10 @@ class IntranetDocument(CustomerPortal):
             'folder_ids': folder_ids,
             'usefull_links': usefull_links,
         })
-        return request.render("int_document_management.portal_my_intranet_document_data", values)
+        return request.render("int_document_management.portal_my_intranet_document_int", values)
 
 
-    @http.route(['/create/folder'], type='http', auth="user", website=True, csrf=False)
+    @http.route(['/create/intfolder'], type='http', auth="user", website=True, csrf=False)
     def portal_int_create_folder(self, access_token=None, **kw):
 
         if kw:
@@ -99,7 +99,7 @@ class IntranetDocument(CustomerPortal):
             return request.redirect('/get/intportal/documents/%s' % slug(folder_id))
 
 
-    @http.route(['/upload/document'], type='http', auth="user", website=True, csrf=False)
+    @http.route(['/upload/intdocument'], type='http', auth="user", website=True, csrf=False)
     def portal_int_upload_document(self, access_token=None, **kw):
         folder_id = False
         rec = request.redirect('/get/intportal/documents/')
