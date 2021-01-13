@@ -2,10 +2,10 @@
 <odoo>
     <template id="assets_frontend_inherit" name="website assets inherit" inherit_id="web.assets_frontend">
         <xpath expr="." position="inside">
-            <link rel="stylesheet" href="/document_management/static/src/scss/portal_layout.scss"/>
+            <link rel="stylesheet" href="/int_document_management/static/src/scss/portal_layout.scss"/>
         </xpath>
     </template>
-    <template id="documents_my_home_menu_intranet_document" name="Portal layout: document" inherit_id="portal.portal_breadcrumbs">
+    <template id="documents_int_my_home_menu_intranet_document" name="Portal layout: document" inherit_id="portal.portal_breadcrumbs">
         <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
             <li t-if="page_name == 'intranet' or inner_folder" t-attf-class="breadcrumb-item #{'active ' if inner_folder else ''}">
                 <a t-if="inner_folder" t-attf-href="/get/intportal/documents?{{ keep_query() }}">Intranet Document</a>
@@ -202,7 +202,7 @@
                             <a t-if="folder" t-attf-href='/get/intportal/documents/{{slug(folder)}}'>
                                 <tr>
                                     <td>
-                                        <a t-attf-href='/get/intportal/documents/{{slug(folder)}}'><img style="height: 30px;width: 25px;" t-attf-src="/document_management/static/src/img/folder.png"/></a>
+                                        <a t-attf-href='/get/intportal/documents/{{slug(folder)}}'><img style="height: 30px;width: 25px;" t-attf-src="/int_document_management/static/src/img/folder.png"/></a>
                                     </td>
                                    <td>
                                         <a t-attf-href='/get/intportal/documents/{{slug(folder)}}'><t t-esc="folder.name"/></a>
@@ -225,7 +225,7 @@
                             <t t-foreach="inner_folder.mapped('document_ids')" t-as="inner">
                                 <tr>
                                     <td>
-                                        <img style="height: 30px;width: 25px;" t-attf-src="/document_management/static/src/img/{{inner._get_image()}}"/>
+                                        <img style="height: 30px;width: 25px;" t-attf-src="/int_document_management/static/src/img/{{inner._get_image()}}"/>
                                     </td>
                                     <!-- <td>
                                         <a t-attf-href="/web/content/portal.documents/{{documents.id}}/document?download=true" target="_blank"><i style="height: 30px;width: 25px;cursor: pointer;" class="fa fa-share"></i></a>
@@ -248,7 +248,7 @@
                         <t t-foreach="documents_rec" t-as="rec">
                             <tr>
                                 <td>
-                                    <img style="height: 30px;width: 25px;" t-attf-src="/document_management/static/src/img/{{rec._get_image()}}"/>
+                                    <img style="height: 30px;width: 25px;" t-attf-src="/int_document_management/static/src/img/{{rec._get_image()}}"/>
                                 </td>
                                 <!-- <td>
                                     <a t-attf-href="/web/content/portal.documents/{{documents.id}}/document?download=true" target="_blank"><i style="height: 30px;width: 25px;cursor: pointer;" class="fa fa-share"></i></a>

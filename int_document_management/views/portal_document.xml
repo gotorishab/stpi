@@ -72,7 +72,7 @@
                         <t t-name="kanban-box">
                             <div style="width: 200px !important;" class="oe_kanban_global_click o_kanban_record_has_image_fill o_res_partner_kanban">
                                     <div style="overflow: hidden;" class="o_kanban_image_fill_left d-md-block">
-                                        <img style="top: 0px;left: 0;right: 0;bottom: 0;max-height: 100%;width: 100%;max-width: 100%;"  src="/document_management/static/src/img/folder.png"/>
+                                        <img style="top: 0px;left: 0;right: 0;bottom: 0;max-height: 100%;width: 100%;max-width: 100%;"  src="/int_document_management/static/src/img/folder.png"/>
                                     </div>
                                 <div class="oe_kanban_details d-flex flex-column">
                                     <strong class="o_kanban_record_title oe_partner_heading" style="font-weight: 900;"><field name="name"/></strong>
