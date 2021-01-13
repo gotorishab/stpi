@@ -11,7 +11,7 @@
         'security/ir.model.access.csv',
         'security/security.xml',
         'views/document_list_view.xml',
-        'views/portal_document.xml',
+        # 'views/portal_document.xml',
         # /forum/discussion-forum-4/ask
     ],
     'currency': 'EUR',
