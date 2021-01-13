@@ -20,7 +20,7 @@ class IntranetDocument(CustomerPortal):
         return values
 
     @http.route(['/get/inportal/documents', '/get/inportal/documents/<model("intranett.portal.documents"):folder>', '/get/inportal/documents/page/<int:page>'], type='http', auth="user", website=True)
-    def portal_my_intranet_document(self, folder=False, page=1, access_token=None, search=None, search_in='all', sortby=None, groupby='none', **kw):
+    def portal_int_my_intranet_document(self, folder=False, page=1, access_token=None, search=None, search_in='all', sortby=None, groupby='none', **kw):
         values = self._prepare_portal_layout_values()
         document_obj = request.env['intranett.portal.documents']
         documents_count = 0
@@ -92,7 +92,7 @@ class IntranetDocument(CustomerPortal):
 
 
     @http.route(['/create/folder'], type='http', auth="user", website=True, csrf=False)
-    def portal_create_folder(self, access_token=None, **kw):
+    def portal_int_create_folder(self, access_token=None, **kw):
 
         if kw:
             folder_id = request.env['intranett.portal.documents'].create({'name': kw.get('name'), 'parent_id': kw.get('parent_id', False)})
@@ -100,7 +100,7 @@ class IntranetDocument(CustomerPortal):
 
 
     @http.route(['/upload/document'], type='http', auth="user", website=True, csrf=False)
-    def portal_upload_document(self, access_token=None, **kw):
+    def portal_int_upload_document(self, access_token=None, **kw):
         folder_id = False
         rec = request.redirect('/get/inportal/documents/')
         if kw.get('parent_id'):
