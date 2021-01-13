@@ -9,20 +9,20 @@ from odoo.osv.expression import OR
 from odoo.tools import groupby as groupbyelem
 from odoo.addons.portal.controllers.portal import CustomerPortal, pager as portal_pager, get_records_pager
 
-class DocumentData(CustomerPortal):
+class IntranetDocument(CustomerPortal):
 
     def _prepare_portal_layout_values(self):
         documents_count = 0
-        values = super(DocumentData, self)._prepare_portal_layout_values()
-        documents_count = request.env['portal.documents'].sudo().search_count([('parent_id', '=', False)])
-        values['documents_count'] = documents_count
-        values['page_name'] = 'documents'
+        values = super(IntranetDocument, self)._prepare_portal_layout_values()
+        documents_count = request.env['intranet.portal.documents'].sudo().search_count([('parent_id', '=', False)])
+        values['intranet_documents_count'] = documents_count
+        values['page_name'] = 'intranet'
         return values
 
-    @http.route(['/get/documents', '/get/documents/<model("portal.documents"):folder>', '/get/documents/page/<int:page>'], type='http', auth="user", website=True)
-    def portal_my_document(self, folder=None, page=1, access_token=None, search=None, search_in='all', sortby=None, groupby='none', **kw):
+    @http.route(['/get/portal/documents', '/get/portal/documents/<model("intranet.portal.documents"):folder>', '/get/portal/documents/page/<int:page>'], type='http', auth="user", website=True)
+    def portal_my_intranet_document(self, folder=None, page=1, access_token=None, search=None, search_in='all', sortby=None, groupby='none', **kw):
         values = self._prepare_portal_layout_values()
-        document_obj = request.env['portal.documents']
+        document_obj = request.env['intranet.portal.documents']
         documents_count = 0
         domain = [('parent_id', '=', False)]
 
@@ -55,49 +55,50 @@ class DocumentData(CustomerPortal):
             domain += search_domain
 
         pager = portal_pager(
-            url="/get/documents",
+            url="/get/portal/documents",
             total=documents_count,
             page=page,
-            url_args={'search_in': search_in, 'search': search},
+            url_args={'search_in': search_in, 'search': search, 'folder': folder},
             step=12
         )
 
         # content according to pager and archive selected
         documents_ids = document_obj.search(domain, order=order, limit=12, offset=pager['offset'])
-        folder_ids = request.env['portal.documents'].search([])
-        parent_folder_ids = request.env['portal.documents'].search([('parent_id', '=', False)])
+        folder_ids = request.env['intranet.portal.documents'].search([])
+        parent_folder_ids = request.env['intranet.portal.documents'].search([('parent_id', '=', False)])
         if folder:
-            parent_folder_ids = request.env['portal.documents'].search([('parent_id', '=', folder.id)])
+            parent_folder_ids = request.env['intranet.portal.documents'].search([('parent_id', '=', folder.id)])
         usefull_links = request.env['vardhman.useful.links'].sudo().search([], limit=6)
         values.update({
             'parent_folder_ids': parent_folder_ids,
             'documents_ids': documents_ids,
-            'page_name': 'documents',
+            'page_name': 'intranet',
             'documents_count': documents_count,
             'pager': pager,
-            'default_url': '/get/documents',
+            'default_url': '/get/portal/documents',
             # 'searchbar_sortings': searchbar_sortings,
             # 'sortby': sortby,
             # 'search_in': search_in,
             # 'searchbar_inputs': searchbar_inputs,
+            'folder': folder,
             'folder_ids': folder_ids,
             'usefull_links': usefull_links,
         })
-        return request.render("document_management.portal_my_documents_data", values)
+        return request.render("document_management.portal_my_intranet_document_data", values)
 
 
     @http.route(['/create/folder'], type='http', auth="user", website=True, csrf=False)
     def portal_create_folder(self, access_token=None, **kw):
 
         if kw:
-            folder_id = request.env['portal.documents'].create({'name': kw.get('name'), 'parent_id': kw.get('parent_id', False)})
-        return request.redirect('/get/documents')
+            folder_id = request.env['intranet.portal.documents'].create({'name': kw.get('name'), 'parent_id': kw.get('parent_id', False)})
+            return request.redirect('/get/portal/documents/%s' % slug(folder_id))
 
 
     @http.route(['/upload/document'], type='http', auth="user", website=True, csrf=False)
     def portal_upload_document(self, access_token=None, **kw):
-        folder_id = request.env['portal.documents'].browse(int(kw.get('parent_id')))
+        folder_id = request.env['intranet.portal.documents'].browse(int(kw.get('parent_id')))
         if kw:
             ufile = kw.get('ufile').read()
             attachment_id = request.env['documents.attachment'].create({'name': kw.get('ufile').filename, 'document': base64.b64encode(ufile), 'parent_id': folder_id.id})
-        return request.redirect('/get/documents/%s' % slug(folder_id))
+        return request.redirect('/get/portal/documents/%s' % slug(folder_id))

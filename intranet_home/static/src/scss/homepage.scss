@@ -134,6 +134,10 @@ main {
                             display: flex;
                             border: none;
                             align-items: center;
+                            .active {
+                                background: green;
+                                color: white !important;
+                            }
                             .oe_head {
                                 .oe_main_ani {
                                     border: 1px solid #CCC;
@@ -142,7 +146,7 @@ main {
                                     padding: 5px 20px;
                                     font-size: 14px;
                                     height: 45px;
-                                    color: #2e84ac;
+                                    color: green;
                                     font-weight: 800;
                                     cursor: pointer;
                                 }

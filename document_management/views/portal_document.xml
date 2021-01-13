@@ -1,7 +1,7 @@
 <odoo>
     <record id="km_portal_documents_form" model="ir.ui.view">
-        <field name="name">portal.documents.form</field>
-        <field name="model">portal.documents</field>
+        <field name="name">intranet.portal.documents.form</field>
+        <field name="model">intranet.portal.documents</field>
         <field name="arch" type="xml">
             <form string="Documents">
                 <header>
@@ -47,8 +47,8 @@
         </field>
     </record>
     <record id="km_portal_documents_list" model="ir.ui.view">
-        <field name="name">portal.documents.list</field>
-        <field name="model">portal.documents</field>
+        <field name="name">intranet.portal.documents.list</field>
+        <field name="model">intranet.portal.documents</field>
         <field eval="8" name="priority"/>
         <field name="arch" type="xml">
             <tree string="Documents List">
@@ -60,8 +60,8 @@
     </record>
 
     <record id="km_portal_documents_kanban" model="ir.ui.view">
-        <field name="name">portal.documents.kanban</field>
-        <field name="model">portal.documents</field>
+        <field name="name">intranet.portal.documents.kanban</field>
+        <field name="model">intranet.portal.documents</field>
         <field eval="8" name="priority"/>
         <field name="arch" type="xml">
             <kanban class="o_res_partner_kanban" sample="1">
@@ -86,26 +86,26 @@
 
     <record id="ir_action_km_portal_documents_list" model="ir.actions.act_window">
         <field name="name">Documents</field>
-        <field name="res_model">portal.documents</field>
+        <field name="res_model">intranet.portal.documents</field>
         <field name="view_mode">kanban,tree,form</field>
     </record>
 
     <record id="ir_action_km_portal_documents_create" model="ir.actions.act_window">
         <field name="name">Documents</field>
-        <field name="res_model">portal.documents</field>
+        <field name="res_model">intranet.portal.documents</field>
         <field name="view_mode">form</field>
     </record>
 
     <menuitem id="menu_knowledge_documents"
-              name="Manage Documents"
+              name="Intranet Documents"
               />
 
-    <menuitem id="menu_knowledge_documents_create"
+    <!-- <menuitem id="menu_knowledge_documents_create"
             name="Upload Document"
             sequence="1"
             parent="menu_knowledge_documents"
             action="ir_action_km_portal_documents_create"
-    />
+    /> -->
 
 
     <menuitem id="menu_knowledge_documents_list"

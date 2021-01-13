@@ -10,6 +10,7 @@
                              <field name="name" required="1"/>
                              <field name="url" required="1"/>
                              <field name="icon" required="1"/>
+                             <field name="description"/>
                          </group>
                      </sheet>
                  </form>
@@ -24,6 +25,7 @@
                  <tree string="slider Links" editable="bottom">
                      <field name="name" required="1"/>
                      <field name="url" required="1"/>
+                     <field name="description"/>
                      <field name="icon" required="1"/>
                  </tree>
              </field>

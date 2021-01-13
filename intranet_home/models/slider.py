@@ -10,7 +10,7 @@ class VardhmanUsefulLinks(models.Model):
     _description = "vardhman Slider links"
 
     name = fields.Char(string="Name", store=True)
-    mid_date = fields.Char(string="Data", store=True)
+    description = fields.Char(string="Data", store=True)
     url = fields.Char(string="URL", store=True)
     icon = fields.Binary(string="Image", store=True)
 

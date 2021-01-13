@@ -63,7 +63,7 @@
                             <div class="card-header">
                                 <div class="row">
                                     <div class="col-md-9 oe_title">
-                                    UPCOMING 
+                                    UPCOMING BIRTHDAY
                                     </div>
                                     <div class="col-md-3 oe_all_link">
                                         <a href="/birthday/links">All <i class="fa fa-angle-right"></i></a>
@@ -74,7 +74,7 @@
                                 <ul class="list-group list-group-flush;bg-light">
                                     <t t-foreach='birthday_links' t-as='link'>
                                         <li class="list-group-item">
-                                            <div t-field="link.image" t-options="{'widget': 'image', 'class': 'image_div'}" />
+                                            <div t-field="link.image_1920" t-options="{'widget': 'image', 'class': 'image_div'}" />
                                             <div class="oe_div">
                                                 <span class="d-flex align-items-center">
                                                     <i class="oe_name pr-1 oe_date fa fa-birthday-cake"></i>
@@ -108,27 +108,27 @@
                                     <li class="list-group-item pl-0">
                                         <div class="oe_head d-flex w-100">
                                             <span class="oe_marriage_ani oe_main_ani w-50 m-2">Marriage Aniversary</span>
-                                            <span class="oe_work_ani oe_main_ani w-50 m-2">Work Aniversary</span>
+                                            <span class="oe_work_ani oe_main_ani active w-50 m-2">Work Aniversary</span>
                                         </div>
                                     </li>
-                                    <li id="oe_work" t-foreach='work_links' t-as='link' class="list-group-item">
-                                        <div t-field="link.image" t-options="{'widget': 'image', 'class': 'image_div'}" />
+                                    <li id="oe_work" t-foreach='work_links' t-as='link' class="list-group-item oe_work">
+                                        <div t-field="link.image_1920" t-options="{'widget': 'image', 'class': 'image_div'}" />
                                         <div class="oe_div">
-                                            <span class="oe_name oe_pill w-100 d-block" t-esc='link.work_anniversary' />
+                                            <span class="oe_name oe_pill w-100 d-block" t-esc='link.work_anniversary.strftime("%d-%m-%Y")'/>
                                             <a  target='new'>
                                                 <span class="oe_name w-100 d-block" t-esc='link.name' />
                                             </a>
                                             <span class="oe_name w-100 d-block" t-esc='link.job_title' />
                                         </div>
                                     </li>
-                                    <li id="oe_marriage" t-foreach='marriage_links' t-as='link' class="list-group-item d-none">
-                                        <div t-field="link.image" t-options="{'widget': 'image', 'class': 'image_div'}" />
+                                    <li id="oe_marriage" t-foreach='marriage_links' t-as='marriage' class="list-group-item oe_marriage d-none">
+                                        <div t-field="marriage.image_1920" t-options="{'widget': 'image', 'class': 'image_div'}" />
                                         <div class="oe_div">
-                                            <span class="oe_name oe_pill w-100 d-block" t-esc='link.marriage_anniversary' />
+                                            <span class="oe_name oe_pill w-100 d-block" t-esc='marriage.marriage_anniversary.strftime("%d-%m-%Y")' />
                                             <a  target='new'>
-                                                <span class="oe_name w-100 d-block" t-esc='link.name' />
+                                                <span class="oe_name w-100 d-block" t-esc='marriage.name' />
                                             </a>
-                                            <span class="oe_name w-100 d-block" t-esc='link.job_title' />
+                                            <span class="oe_name w-100 d-block" t-esc='marriage.job_title' />
                                         </div>
                                     </li>
                                 </ul>
@@ -142,22 +142,62 @@
                                     <div class="col-md-7 oe_title">
                                     DISCUSSION FORUM
                                     </div>
-                                    <div class="col-md-5 oe_all_link">
-                                        <a href="/forum">Create Forum</a>
+                                    <div t-if="forum_links" class="col-md-5 oe_all_link">
+                                        <a  t-attf-href="/forum/{{slug(forum_links[0])}}/ask">Create Forum</a>
                                     </div>
                                 </div>
                             </div>
                             <div class="card-body">
                                 <ul class="list-group list-group-flush;bg-light">
                                     <t t-foreach='forum_links' t-as='link'>
-                                        <li class="list-group-item">
-                                            <div t-field="link.image_1920" t-options="{'widget': 'image', 'class': 'image_div'}" />
-                                            <div class="oe_div">
-                                                <span t-if="link.default_order == 'create_date desc'" class="w-100 d-block" style="color: red;"><i class="fa fa-fire pr-2"></i> hot</span>
-                                                <a target='new' t-attf-href="/forum/{{slug(link)}}">
-                                                    <span class="oe_name w-100 d-block" t-esc='link.name' />
-                                                </a>
-                                               <!--  <span class="oe_name w-100 d-block" t-esc='link.description' /> -->
+                                        <li class="list-group-item d-block">
+                                            <div class="o_wforum_index_entry_title w-100" style="height: 45px !important;">
+                                                <a t-attf-href="/forum/#{slug(link.forum_id)}/#{slug(link)}#{answer and ('/#answer-%s' % answer.id)}"
+                                                t-attf-title="Read: #{link.name}"
+                                                class="text-reset"
+                                                t-esc="link.name"/>
+                                            </div>
+                                           <div t-attf-class="o_wforum_index_entry_tags w-100 mb-1" t-if="len(link.tag_ids) > 0">
+                                                <t t-foreach="link.tag_ids" t-as="link_tag">
+
+                                                    <!-- Toggle Tags on click -->
+                                                    <t t-if="tag and tag.name == link_tag.name" t-set="click_action"
+                                                        t-value="'/forum/' + slug(link_tag.forum_id) + '?' + keep_query( 'search', 'sorting', 'my')"/>
+                                                    <t t-else="" t-set="click_action"
+                                                        t-value="'/forum/' + slug(link_tag.forum_id) + '/tag/' + slug(link_tag) + '/links?' + keep_query( 'search', 'sorting', 'my', filters='tag')"/>
+
+                                                    <a t-att-href="click_action"
+                                                        t-attf-class="badge #{tag and tag.name == link_tag.name and 'badge-secondary' or 'border text-600 badge-light'} #{ not link_tag_first and 'ml-lg-1 mt-lg-1'}"
+                                                        t-field="link_tag.name"/>
+                                                </t>
+                                            </div>
+
+                                            <div style="height: 32px;" class="d-flex align-items-center justify-content-between justify-content-sm-start small text-muted w-100">
+                                                <div>
+                                                    <t t-call="website_forum.vote">
+                                                        <t t-set="post" t-value="link"/>
+                                                    </t>
+                                                </div>
+                                                <div>
+                                                    <span class="mx-1 d-none d-sm-inline">&amp;nbsp;|</span>
+                                                    <a t-if="link.child_count" class="font-weight-bold" t-attf-href="/forum/#{ slug(link.forum_id) }/#{ slug(link) }">
+                                                        <t t-esc="link.child_count"/>
+                                                        <t t-if="link.child_count == 1">Answer</t>
+                                                        <t t-else="">Answers</t>
+                                                    </a>
+                                                    <span t-else="">
+                                                        0 Answers
+                                                    </span>
+                                                    <span class="d-none d-sm-inline">
+                                                        <span class="mx-1">|</span>
+                                                        <span t-field="link.views" /> <t t-if="link.views&lt;=1">View</t><t t-else="">Views</t>
+                                                        <span t-if="link.favourite_count &gt; 0">
+                                                            <span class="mx-1">|</span>
+                                                            <i class="fa fa-star"/>
+                                                            <t t-esc="link.favourite_count"/>
+                                                        </span></span>
+                                                    <span t-if="link.state == 'flagged'" class="text-black"> | Flagged</span>
+                                                </div>
                                             </div>
                                         </li>
                                     </t>
@@ -180,7 +220,7 @@
                                             <div class="row content h-100">
                                                     <div class="col-md-4" style="background-image: linear-gradient(#d8d8d8, #dcdcdc7d 47%, #ffffff47 66%);">
                                                         <h4 class="pl-2 mt-2"><t t-esc="slider.name"/></h4>
-                                                        <p class="pl-2 mt-5 m-0"><t t-esc="slider.name"/></p>
+                                                        <p class="pl-2 mt-5 m-0"><t t-esc="slider.description"/></p>
                                                     </div>
                                             </div>
                                         </div>
@@ -386,7 +426,7 @@
                     </div>
                     <div class="col-md-12 p-0 oe_events mb-3 col-sm-3 mt-2 mb-4">
                         <div class="card oe_card">
-                            <div class="card-header">
+                            <div class="card-header mb-1">
                                 <div class="row">
                                     <div class="col-md-9 oe_title">
                                     NEWS
@@ -398,15 +438,16 @@
                             </div>
                             <div class="card-body">
                                 <ul class="list-group list-group-flush;bg-light">
-                                    <t t-foreach='news_posts' t-as='news'>
-                                        <li class="list-group-item">
+                                    <t t-foreach='news_posts' t-as='blog_post'>
+                                        <li class="list-group-item" style="align-items: inherit; padding: 0px 1.25rem;">
+                                            <div t-field="blog_post.image" t-options="{'widget': 'image', 'class': 'image_div'}" />
                                             <div class="h-100 w-100">
-                                                <a t-attf-href="/blog/#{slug(news.blog_id)}/#{slug(news)}">
-                                                    <span style="font-size: 13px;" class="w-100 d-block" t-esc='news.create_date' />
-                                                </a>
-                                                <a target='new'>
-                                                    <span class="oe_name w-100 d-block" t-esc='news.name' />
-                                                </a>
+                                            <div class="w-100" style="font-size: 13px;">
+                                                <t t-call="website_blog.post_heading"/>
+                                            </div>
+                                            <div class="py-1" style="font-size: 11px;">
+                                                <t t-call="website_blog.post_info"></t>
+                                            </div>
                                             </div>
                                         </li>
                                     </t>
@@ -487,8 +528,8 @@
                                     <div class="col-md-7 oe_title">
                                     TOP STORY
                                     </div>
-                                    <div class="col-md-5 oe_pill">
-                                        <a href="/forum">ADD STORY</a>
+                                    <div t-if="story_posts" class="col-md-5 oe_pill">
+                                        <a tt-attf-href="/blog/{{slug(story_posts[0].blog_id)}}">ADD STORY</a>
                                     </div>
                                 </div>
                             </div>

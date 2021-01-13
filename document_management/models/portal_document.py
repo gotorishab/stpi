@@ -8,7 +8,7 @@ from odoo.tools.mimetypes import guess_mimetype
 
 
 class PortalDocuments(models.Model):
-    _name = 'portal.documents'
+    _name = 'intranet.portal.documents'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _parent_store = True
     _description = 'Portal Documents'
@@ -18,12 +18,12 @@ class PortalDocuments(models.Model):
     description = fields.Text(string='Discription', track_visibility='always')
     is_published = fields.Boolean(string='Is Published', Default=False)
     document = fields.Binary(string='Document', attachment=True, track_visibility='always')
-    # child_ids = fields.Many2many('portal.documents', 'chield_directory_rel')
-    # parent_id = fields.Many2one('portal.documents', 'Parent Directory')
+    # child_ids = fields.Many2many('intranet.portal.documents', 'chield_directory_rel')
+    # parent_id = fields.Many2one('intranet.portal.documents', 'Parent Directory')
 
-    parent_id = fields.Many2one('portal.documents', string='Parent Directory', index=True, ondelete="cascade")
+    parent_id = fields.Many2one('intranet.portal.documents', string='Parent Directory', index=True, ondelete="cascade")
     parent_path = fields.Char(index=True)
-    child_ids = fields.One2many('portal.documents', 'parent_id', string='Children Directory')
+    child_ids = fields.One2many('intranet.portal.documents', 'parent_id', string='Children Directory')
 
     state = fields.Selection(
         [('draft', 'Draft'), ('verification_pending', 'Verification Pending'), ('to_publish', 'To Publish'), ('published', 'Published'), ('cancelled', 'Cancelled')
@@ -62,13 +62,28 @@ class PortalDocuments(models.Model):
         for rec in self:
             rec.write({'state': 'cancelled'})
 
+    def get_path(self):
+        folders = self.env['intranet.portal.documents']
+        most_parent = False
+        category_id = self
+        if category_id:
+            while not most_parent:
+                if category_id.parent_id:
+                    folders += category_id
+                    category_id = category_id.parent_id
+                else:
+                    most_parent = category_id
+                    folders += category_id
+        print('>>>>>>>>>>>>>>>>>>>', folders)
+        return folders.sorted()
+
 
 class Documents(models.Model):
     _name = 'documents.attachment'
 
     name = fields.Char(string='Name')
     document = fields.Binary(string='Document', attachment=True, track_visibility='always')
-    parent_id = fields.Many2one('portal.documents', string='Parent Directory')
+    parent_id = fields.Many2one('intranet.portal.documents', string='Parent Directory')
 
 
     def _get_image(self):
