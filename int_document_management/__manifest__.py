@@ -2,7 +2,7 @@
 # Part of Synconics. See LICENSE file for full copyright and licensing details.
 
 {
-    'name': 'Intranet Documents',
+    'name': 'Intranet Portal Documents',
     'version': '1.0',
     'category': 'System',
     'depends': ['portal'],

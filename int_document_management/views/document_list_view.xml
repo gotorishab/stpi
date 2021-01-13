@@ -8,13 +8,13 @@
     <template id="documents_my_home_menu_intranet_document" name="Portal layout: document" inherit_id="portal.portal_breadcrumbs">
         <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
             <li t-if="page_name == 'intranet' or folder" t-attf-class="breadcrumb-item #{'active ' if folder else ''}">
-                <a t-if="folder" t-attf-href="/get/portal/documents?{{ keep_query() }}">Intranet Document</a>
+                <a t-if="folder" t-attf-href="/get/inportal/documents?{{ keep_query() }}">Intranet Document</a>
                 <t t-else="">Intranet Document</t>
             </li>
             <t t-if="folder">
                 <t t-set="folder_path" t-value="folder.get_path()"/>
                 <li t-foreach="folder_path" t-as="folder_id" t-attf-class="breadcrumb-item #{'active' if folder_id.id != folder.id else ''}">
-                    <a  t-attf-href="/get/portal/documents?{{ keep_query() }}">
+                    <a  t-attf-href="/get/inportal/documents?{{ keep_query() }}">
                         <t t-esc="folder_id.name"></t>
                     </a>
                 </li>
@@ -27,7 +27,7 @@
         <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
             <t t-call="portal.portal_docs_entry">
                 <t t-set="title">Intranet Document</t>
-                <t t-set="url" t-value="'/get/portal/documents'"/>
+                <t t-set="url" t-value="'/get/inportal/documents'"/>
                 <t t-set="count" t-value="intranet_documents_count"/>
             </t>
         </xpath>
@@ -200,19 +200,19 @@
                             </tr>
                         </thead>
                         <t t-foreach="parent_folder_ids" t-as="folder">
-                            <a t-if="folder" t-attf-href='/get/portal/documents/{{slug(folder)}}'>
+                            <a t-if="folder" t-attf-href='/get/inportal/documents/{{slug(folder)}}'>
                                 <tr>
                                     <td>
-                                        <a t-attf-href='/get/portal/documents/{{slug(folder)}}'><img style="height: 30px;width: 25px;" t-attf-src="/document_management/static/src/img/folder.png"/></a>
+                                        <a t-attf-href='/get/inportal/documents/{{slug(folder)}}'><img style="height: 30px;width: 25px;" t-attf-src="/document_management/static/src/img/folder.png"/></a>
                                     </td>
                                    <td>
-                                        <a t-attf-href='/get/portal/documents/{{slug(folder)}}'><t t-esc="folder.name"/></a>
+                                        <a t-attf-href='/get/inportal/documents/{{slug(folder)}}'><t t-esc="folder.name"/></a>
                                     </td>
                                     <td>
-                                        <a t-attf-href='/get/portal/documents/{{slug(folder)}}'><t t-esc="folder.create_date.strftime('%d-%m-%Y')"/></a>
+                                        <a t-attf-href='/get/inportal/documents/{{slug(folder)}}'><t t-esc="folder.create_date.strftime('%d-%m-%Y')"/></a>
                                     </td>
                                     <td>
-                                        <a t-attf-href='/get/portal/documents/{{slug(folder)}}'><t t-esc="folder.create_uid.name"/></a>
+                                        <a t-attf-href='/get/inportal/documents/{{slug(folder)}}'><t t-esc="folder.create_uid.name"/></a>
                                     </td>
                                     <td>
                                         <!-- <t t-if="documents and documents.document">

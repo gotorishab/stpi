@@ -8,7 +8,7 @@ from odoo.tools.mimetypes import guess_mimetype
 
 
 class PortalDocuments(models.Model):
-    _name = 'intranet.portal.documents'
+    _name = 'intranett.portal.documents'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _parent_store = True
     _description = 'Portal Documents'
@@ -18,12 +18,12 @@ class PortalDocuments(models.Model):
     description = fields.Text(string='Discription', track_visibility='always')
     is_published = fields.Boolean(string='Is Published', Default=False)
     document = fields.Binary(string='Document', attachment=True, track_visibility='always')
-    # child_ids = fields.Many2many('intranet.portal.documents', 'chield_directory_rel')
-    # parent_id = fields.Many2one('intranet.portal.documents', 'Parent Directory')
+    # child_ids = fields.Many2many('intranett.portal.documents', 'chield_directory_rel')
+    # parent_id = fields.Many2one('intranett.portal.documents', 'Parent Directory')
 
-    parent_id = fields.Many2one('intranet.portal.documents', string='Parent Directory', index=True, ondelete="cascade")
+    parent_id = fields.Many2one('intranett.portal.documents', string='Parent Directory', index=True, ondelete="cascade")
     parent_path = fields.Char(index=True)
-    child_ids = fields.One2many('intranet.portal.documents', 'parent_id', string='Children Directory')
+    child_ids = fields.One2many('intranett.portal.documents', 'parent_id', string='Children Directory')
 
     state = fields.Selection(
         [('draft', 'Draft'), ('verification_pending', 'Verification Pending'), ('to_publish', 'To Publish'), ('published', 'Published'), ('cancelled', 'Cancelled')
@@ -63,7 +63,7 @@ class PortalDocuments(models.Model):
             rec.write({'state': 'cancelled'})
 
     def get_path(self):
-        folders = self.env['intranet.portal.documents']
+        folders = self.env['intranett.portal.documents']
         most_parent = False
         category_id = self
         if category_id:
@@ -83,7 +83,7 @@ class Documents(models.Model):
 
     name = fields.Char(string='Name')
     document = fields.Binary(string='Document', attachment=True, track_visibility='always')
-    parent_id = fields.Many2one('intranet.portal.documents', string='Parent Directory')
+    parent_id = fields.Many2one('intranett.portal.documents', string='Parent Directory')
 
 
     def _get_image(self):
