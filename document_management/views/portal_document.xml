@@ -1,51 +1,51 @@
 <odoo>
-    <record id="km_portal_documents_form" model="ir.ui.view">
-        <field name="name">intranet.portal.documents.form</field>
-        <field name="model">intranet.portal.documents</field>
-        <field name="arch" type="xml">
-            <form string="Documents">
-                <header>
-                    <!-- <button name="button_submit" string="Submit" class="oe_highlight" type="object" states="draft"/>
-                    <button name="button_verify" string="Verify" class="oe_highlight" type="object" states="verification_pending" groups="portal_document_management.group_user_km_document"/>
-                    <button name="button_publish" string="Publish" class="oe_highlight" type="object" states="to_publish" groups="portal_document_management.group_manager_km_document"/>
-                    <button name="button_unpublish" string="Unpublish" class="oe_highlight" type="object" states="published" groups="portal_document_management.group_manager_km_document"/>
-                    <button name="button_cancel" string="Cancel" type="object" states="verification_pending,to_publish"/> -->
-                    <!-- <field name="state" widget="statusbar" statusbar_visible="draft,verification_pending,to_publish,published" /> -->
-                </header>
-                <sheet>
-                    <group>
-                        <group>
-                            <field name="name" required="1"/>
-                            <!-- <field name="type_id" required="1"/> -->
-                        </group>
-                        <group>
-                            <field name="parent_id"/>
-                            <!-- <field name="document"/> -->
-                            <field name="is_published" invisible="1"/>
-                        </group>
-                    </group>
-                    <notebook>
-                        <page string="Child Directory">
-                            <field name="child_ids" mode="kanban" nolabel="1"/>
-                        </page>
-                        <page string="Documents">
-                            <field name="document_ids">
-                                <tree editable="bottom">
-                                    <field name="name"></field>
-                                    <field name="document" widget="binary"></field>
-                                </tree>
-                            </field>
-                        </page>
-                    </notebook>
-                </sheet>
-                <div class="oe_chatter">
-                        <field name="message_follower_ids" widget="mail_followers"/>
-                        <field name="activity_ids" widget="mail_activity"/>
-                        <field name="message_ids" widget="mail_thread"/>
-                    </div>
-            </form>
-        </field>
-    </record>
+<!--    <record id="ih_portal_documents_form" model="ir.ui.view">-->
+<!--        <field name="name">intranet.portal.documents.form</field>-->
+<!--        <field name="model">intranet.portal.documents</field>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <form string="Documents">-->
+<!--                <header>-->
+<!--                    &lt;!&ndash; <button name="button_submit" string="Submit" class="oe_highlight" type="object" states="draft"/>-->
+<!--                    <button name="button_verify" string="Verify" class="oe_highlight" type="object" states="verification_pending" groups="portal_document_management.group_user_km_document"/>-->
+<!--                    <button name="button_publish" string="Publish" class="oe_highlight" type="object" states="to_publish" groups="portal_document_management.group_manager_km_document"/>-->
+<!--                    <button name="button_unpublish" string="Unpublish" class="oe_highlight" type="object" states="published" groups="portal_document_management.group_manager_km_document"/>-->
+<!--                    <button name="button_cancel" string="Cancel" type="object" states="verification_pending,to_publish"/> &ndash;&gt;-->
+<!--                    &lt;!&ndash; <field name="state" widget="statusbar" statusbar_visible="draft,verification_pending,to_publish,published" /> &ndash;&gt;-->
+<!--                </header>-->
+<!--                <sheet>-->
+<!--                    <group>-->
+<!--                        <group>-->
+<!--                            <field name="name" required="1"/>-->
+<!--                            &lt;!&ndash; <field name="type_id" required="1"/> &ndash;&gt;-->
+<!--                        </group>-->
+<!--                        <group>-->
+<!--                            <field name="parent_id"/>-->
+<!--                            &lt;!&ndash; <field name="document"/> &ndash;&gt;-->
+<!--                            <field name="is_published" invisible="1"/>-->
+<!--                        </group>-->
+<!--                    </group>-->
+<!--                    <notebook>-->
+<!--                        <page string="Child Directory">-->
+<!--                            <field name="child_ids" mode="kanban" nolabel="1"/>-->
+<!--                        </page>-->
+<!--                        <page string="Documents">-->
+<!--                            <field name="document_ids">-->
+<!--                                <tree editable="bottom">-->
+<!--                                    <field name="name"></field>-->
+<!--                                    <field name="document" widget="binary"></field>-->
+<!--                                </tree>-->
+<!--                            </field>-->
+<!--                        </page>-->
+<!--                    </notebook>-->
+<!--                </sheet>-->
+<!--                <div class="oe_chatter">-->
+<!--                        <field name="message_follower_ids" widget="mail_followers"/>-->
+<!--                        <field name="activity_ids" widget="mail_activity"/>-->
+<!--                        <field name="message_ids" widget="mail_thread"/>-->
+<!--                    </div>-->
+<!--            </form>-->
+<!--        </field>-->
+<!--    </record>-->
     <record id="km_portal_documents_list" model="ir.ui.view">
         <field name="name">intranet.portal.documents.list</field>
         <field name="model">intranet.portal.documents</field>
@@ -59,7 +59,7 @@
         </field>
     </record>
 
-    <record id="km_portal_documents_kanban" model="ir.ui.view">
+    <record id="ih_portal_documents_kanban" model="ir.ui.view">
         <field name="name">intranet.portal.documents.kanban</field>
         <field name="model">intranet.portal.documents</field>
         <field eval="8" name="priority"/>
@@ -84,19 +84,19 @@
         </field>
     </record>
 
-    <record id="ir_action_km_portal_documents_list" model="ir.actions.act_window">
+    <record id="ir_action_ih_portal_documents_list" model="ir.actions.act_window">
         <field name="name">Documents</field>
         <field name="res_model">intranet.portal.documents</field>
         <field name="view_mode">kanban,tree,form</field>
     </record>
 
-    <record id="ir_action_km_portal_documents_create" model="ir.actions.act_window">
+    <record id="ir_action_ih_portal_documents_create" model="ir.actions.act_window">
         <field name="name">Documents</field>
         <field name="res_model">intranet.portal.documents</field>
         <field name="view_mode">form</field>
     </record>
 
-    <menuitem id="menu_knowledge_documents"
+    <menuitem id="menu_intranethome_documents"
               name="Intranet Documents"
               />
 
@@ -108,11 +108,11 @@
     /> -->
 
 
-    <menuitem id="menu_knowledge_documents_list"
+    <menuitem id="menu_intranet_home_documents_list"
             name="Document List"
             sequence="2"
-            parent="menu_knowledge_documents"
-            action="ir_action_km_portal_documents_list"
+            parent="menu_intranethome_documents"
+            action="ir_action_ih_portal_documents_list"
     />
 
 </odoo>
