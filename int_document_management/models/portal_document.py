@@ -74,7 +74,6 @@ class PortalDocuments(models.Model):
                 else:
                     most_parent = category_id
                     folders += category_id
-        print('>>>>>>>>>>>>>>>>>>>', folders)
         return folders.sorted()
 
 
@@ -87,15 +86,21 @@ class Documents(models.Model):
 
 
     def _get_image(self):
-        image_base64 = base64.b64decode(self.document)
-        mimetype = guess_mimetype(image_base64)
-        imgext = '.' + mimetype.split('/')[1]
-        final_name = 'file_%s.png' % imgext.replace('.', '')
+        print(">>>>>>>>>>>>.....", self)
+        final_name = ''
+        if self.document:
+            image_base64 = base64.b64decode(self.document)
+            mimetype = guess_mimetype(image_base64)
+            imgext = '.' + mimetype.split('/')[1]
+            final_name = 'file_%s.png' % imgext.replace('.', '')
         return final_name
 
     def _get_size(self):
-        image_base64 = base64.b64decode(self.document)
-        return round(len(image_base64) / 1000000, 2)
+        size = 0
+        if self.document:
+            image_base64 = base64.b64decode(self.document)
+            size = round(len(image_base64) / 1000000, 2)
+        return size
 
 
 

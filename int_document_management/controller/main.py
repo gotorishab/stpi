@@ -20,12 +20,11 @@ class IntranetDocument(CustomerPortal):
         return values
 
     @http.route(['/get/inportal/documents', '/get/inportal/documents/<model("intranett.portal.documents"):folder>', '/get/inportal/documents/page/<int:page>'], type='http', auth="user", website=True)
-    def portal_my_intranet_document(self, folder=None, page=1, access_token=None, search=None, search_in='all', sortby=None, groupby='none', **kw):
+    def portal_my_intranet_document(self, folder=False, page=1, access_token=None, search=None, search_in='all', sortby=None, groupby='none', **kw):
         values = self._prepare_portal_layout_values()
         document_obj = request.env['intranett.portal.documents']
         documents_count = 0
         domain = [('parent_id', '=', False)]
-
         searchbar_sortings = {
             'name': {'label': _('Name'), 'order': 'name asc'},
             # 'type': {'label': _('Type'), 'order': 'type_id desc'},
@@ -66,25 +65,30 @@ class IntranetDocument(CustomerPortal):
         documents_ids = document_obj.search(domain, order=order, limit=12, offset=pager['offset'])
         folder_ids = request.env['intranett.portal.documents'].search([])
         parent_folder_ids = request.env['intranett.portal.documents'].search([('parent_id', '=', False)])
+        documents_rec = []
         if folder:
             parent_folder_ids = request.env['intranett.portal.documents'].search([('parent_id', '=', folder.id)])
+        else:
+            documents_rec = request.env['documents.attachment'].search([('parent_id', '=', False)])
         usefull_links = request.env['vardhman.useful.links'].sudo().search([], limit=6)
+        print(">>>>>>>....", folder, documents_rec)
         values.update({
             'parent_folder_ids': parent_folder_ids,
             'documents_ids': documents_ids,
             'page_name': 'intranet',
             'documents_count': documents_count,
             'pager': pager,
+            'documents_rec': documents_rec,
             'default_url': '/get/inportal/documents',
             # 'searchbar_sortings': searchbar_sortings,
             # 'sortby': sortby,
             # 'search_in': search_in,
             # 'searchbar_inputs': searchbar_inputs,
-            'folder': folder,
+            'inner_folder': folder,
             'folder_ids': folder_ids,
             'usefull_links': usefull_links,
         })
-        return request.render("document_management.portal_my_intranet_document_data", values)
+        return request.render("int_document_management.portal_my_intranet_document_data", values)
 
 
     @http.route(['/create/folder'], type='http', auth="user", website=True, csrf=False)
@@ -97,8 +101,12 @@ class IntranetDocument(CustomerPortal):
 
     @http.route(['/upload/document'], type='http', auth="user", website=True, csrf=False)
     def portal_upload_document(self, access_token=None, **kw):
-        folder_id = request.env['intranett.portal.documents'].browse(int(kw.get('parent_id')))
-        if kw:
-            ufile = kw.get('ufile').read()
-            attachment_id = request.env['documents.attachment'].create({'name': kw.get('ufile').filename, 'document': base64.b64encode(ufile), 'parent_id': folder_id.id})
-        return request.redirect('/get/inportal/documents/%s' % slug(folder_id))
+        folder_id = False
+        rec = request.redirect('/get/inportal/documents/')
+        if kw.get('parent_id'):
+            folder_id = request.env['intranett.portal.documents'].browse(int(kw.get('parent_id')))
+        if folder_id:
+            rec = request.redirect('/get/inportal/documents/%s' % slug(folder_id))
+        ufile = kw.get('ufile').read()
+        attachment_id = request.env['documents.attachment'].create({'name': kw.get('ufile').filename, 'document': base64.b64encode(ufile), 'parent_id': folder_id and folder_id.id or False})
+        return rec

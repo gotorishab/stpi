@@ -7,14 +7,14 @@
     </template>
     <template id="documents_my_home_menu_intranet_document" name="Portal layout: document" inherit_id="portal.portal_breadcrumbs">
         <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
-            <li t-if="page_name == 'intranet' or folder" t-attf-class="breadcrumb-item #{'active ' if folder else ''}">
-                <a t-if="folder" t-attf-href="/get/inportal/documents?{{ keep_query() }}">Intranet Document</a>
+            <li t-if="page_name == 'intranet' or inner_folder" t-attf-class="breadcrumb-item #{'active ' if inner_folder else ''}">
+                <a t-if="inner_folder" t-attf-href="/get/inportal/documents?{{ keep_query() }}">Intranet Document</a>
                 <t t-else="">Intranet Document</t>
             </li>
-            <t t-if="folder">
-                <t t-set="folder_path" t-value="folder.get_path()"/>
-                <li t-foreach="folder_path" t-as="folder_id" t-attf-class="breadcrumb-item #{'active' if folder_id.id != folder.id else ''}">
-                    <a  t-attf-href="/get/inportal/documents?{{ keep_query() }}">
+            <t t-if="inner_folder">
+                <t t-set="folder_path" t-value="inner_folder.get_path()"/>
+                <li t-foreach="folder_path" t-as="folder_id" t-attf-class="breadcrumb-item #{'active' if folder_id.id != inner_folder.id else ''}">
+                    <a  t-attf-href="/get/inportal/documents/{{slug(folder_id)}}">
                         <t t-esc="folder_id.name"></t>
                     </a>
                 </li>
@@ -86,10 +86,9 @@
                                        <div class="row">
                                             <label class="col-md-4" for="totp_token">Destination folder
                                             </label>
-                                            <select class="form-control col-md-7 mb-2" required="required" name="parent_id">
-                                                <option value="" selected="selected">
-                                                </option>
-                                                <option t-foreach="folder_ids" t-as="folder_id" t-att-value="folder_id.id" t-att-selected="folder and folder.id == folder_id.id">
+                                            <select class="form-control col-md-7 mb-2" name="parent_id">
+                                                <option value="">select....</option>
+                                                <option t-foreach="folder_ids" t-as="folder_id" t-att-value="folder_id.id" t-att-selected="inner_folder and inner_folder.id == folder_id.id">
                                                     <t t-esc="folder_id.name"/>
                                                 </option>
                                             </select>
@@ -134,7 +133,7 @@
                                             <select class="form-control col-md-7 mb-2" name="parent_id">
                                                 <option value="" selected="selected">
                                                 </option>
-                                                <option t-foreach="folder_ids" t-as="folder_id" t-att-value="folder_id.id" t-att-selected="folder and folder.id == folder_id.id">
+                                                <option t-foreach="folder_ids" t-as="folder_id" t-att-value="folder_id.id" t-att-selected="inner_folder and inner_folder.id == folder_id.id">
                                                     <t t-esc="folder_id.name"/>
                                                 </option>
                                             </select>
@@ -222,25 +221,49 @@
                                 </tr>
                             </a>
                         </t>
-                        <t t-foreach="parent_folder_ids.mapped('document_ids')" t-as="documents">
+                        <t t-if="inner_folder">
+                            <t t-foreach="inner_folder.mapped('document_ids')" t-as="inner">
+                                <tr>
+                                    <td>
+                                        <img style="height: 30px;width: 25px;" t-attf-src="/document_management/static/src/img/{{inner._get_image()}}"/>
+                                    </td>
+                                    <!-- <td>
+                                        <a t-attf-href="/web/content/portal.documents/{{documents.id}}/document?download=true" target="_blank"><i style="height: 30px;width: 25px;cursor: pointer;" class="fa fa-share"></i></a>
+                                    </td> -->
+                                   <td>
+                                        <a t-attf-href="/web/content/documents.attachment/{{inner.id}}/document?download=true" target="_blank"><t t-esc="inner.name"/></a>
+                                    </td>
+                                    <td>
+                                        <t t-esc="inner.create_date"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="inner.create_uid.name"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="inner._get_size()"/> <span t-if="inner._get_size() > 1">MB</span><span t-else="">Bytes</span>
+                                    </td>
+                                </tr>
+                            </t>
+                        </t>
+                        <t t-foreach="documents_rec" t-as="rec">
                             <tr>
                                 <td>
-                                    <img style="height: 30px;width: 25px;" t-attf-src="/document_management/static/src/img/{{documents._get_image()}}"/>
+                                    <img style="height: 30px;width: 25px;" t-attf-src="/document_management/static/src/img/{{rec._get_image()}}"/>
                                 </td>
                                 <!-- <td>
                                     <a t-attf-href="/web/content/portal.documents/{{documents.id}}/document?download=true" target="_blank"><i style="height: 30px;width: 25px;cursor: pointer;" class="fa fa-share"></i></a>
                                 </td> -->
                                <td>
-                                    <a t-attf-href="/web/content/documents.attachment/{{documents.id}}/document?download=true" target="_blank"><t t-esc="documents.name"/></a>
+                                    <a t-attf-href="/web/content/documents.attachment/{{rec.id}}/document?download=true" target="_blank"><t t-esc="rec.name"/></a>
                                 </td>
                                 <td>
-                                    <t t-esc="documents.create_date"/>
+                                    <t t-esc="rec.create_date"/>
                                 </td>
                                 <td>
-                                    <t t-esc="documents.create_uid.name"/>
+                                    <t t-esc="rec.create_uid.name"/>
                                 </td>
                                 <td>
-                                    <t t-esc="documents._get_size()"/> <span t-if="documents._get_size() > 1">MB</span><span t-else="">Bytes</span>
+                                    <t t-esc="rec._get_size()"/> <span t-if="rec._get_size() > 1">MB</span><span t-else="">Bytes</span>
                                 </td>
                             </tr>
                         </t>
