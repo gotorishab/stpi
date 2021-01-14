@@ -290,10 +290,13 @@
 
                         <div class="tab-content">
                           <div id="magezine" class="tab-pane active">
-                            <div class="row h-100">
+                            <div class="row h-100 m-0">
                                 <t t-foreach="magazine_link" t-as="magazine">
-                                    <a class="col-md-4 d-inline-block oe_image" t-att-href="magazine.url">
-                                        <div t-field="magazine.icon" t-options="{'widget': 'image', 'class': 'image_div h-auto'}"/>
+                                    <a t-if="magazine._get_mimetype() != 'png'" class="col-md-4 d-inline-block oe_image" t-attf-href="/web/content/documents.attachment/{{magazine.id}}/document?download=true" target="_blank">
+                                        <img class="h-100 w-100" t-attf-src="/document_management/static/src/img/{{magazine._get_image()}}"/>
+                                    </a>
+                                    <a t-else="" t-attf-href="/web/content/documents.attachment/{{magazine.id}}/document?download=true" class="col-md-4 d-inline-block oe_image" >
+                                        <div t-field="magazine.document" t-options="{'widget': 'image', 'class': 'image_div h-auto'}"/>
                                     </a>
                                 </t>
                             </div>
