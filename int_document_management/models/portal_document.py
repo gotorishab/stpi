@@ -94,6 +94,14 @@ class Documents(models.Model):
             imgext = '.' + mimetype.split('/')[1]
             final_name = 'file_%s.png' % imgext.replace('.', '')
         return final_name
+        
+    def _get_mimetype(self):
+        imgext = ''
+        if self.document:
+            image_base64 = base64.b64decode(self.document)
+            mimetype = guess_mimetype(image_base64)
+            imgext = mimetype.split('/')[1]
+        return imgext
 
     def _get_size(self):
         size = 0
