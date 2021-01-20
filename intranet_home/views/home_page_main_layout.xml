@@ -142,8 +142,8 @@
                                     <div class="col-md-7 oe_title">
                                     DISCUSSION FORUM
                                     </div>
-                                    <div t-if="forum_links" class="col-md-5 oe_all_link">
-                                        <a  t-attf-href="/forum/{{slug(forum_links[0])}}/ask">Create Forum</a>
+                                    <div t-if="forum_id" class="col-md-5 oe_all_link">
+                                        <a  t-attf-href="/forum/{{slug(forum_id)}}/ask">Create Forum</a>
                                     </div>
                                 </div>
                             </div>
@@ -531,9 +531,9 @@
                                     <div class="col-md-7 oe_title">
                                     TOP STORY
                                     </div>
-                                    <div t-if="story_posts" class="col-md-5 oe_pill">
+                                    <!-- <div t-if="story_posts" class="col-md-5 oe_pill">
                                         <a tt-attf-href="/blog/{{slug(story_posts[0].blog_id)}}">ADD STORY</a>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                             <div class="card-body">

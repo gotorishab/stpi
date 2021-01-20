@@ -22,7 +22,8 @@ class Website(Home):
         slider_link = request.env['vardhman.slider.links'].search([], limit=3)
         event_link = request.env['event.event'].search([], limit=3)
         website_ids = request.env['website'].search([], limit=6)
-        forum_links = request.env['forum.post'].search([], limit=3)
+        forum_links = request.env['forum.post'].search([('forum_id.mode', '=', 'discussions')], limit=3)
+        forum_id = request.env['forum.forum'].search([('mode', '=', 'discussions')], limit=1)
         posts = BlogPost.search([('blog_id.front_type', '=', 'idea')], limit=3, order="is_published desc, post_date desc, id asc")
         calendar_first = BlogPost.search([('blog_id.front_type', '=', 'calendar_1')], limit=1, order="is_published desc, post_date desc, id asc")
         calendar_second = BlogPost.search([('blog_id.front_type', '=', 'calendar_2')], limit=1, order="is_published desc, post_date desc, id asc")
@@ -37,6 +38,7 @@ class Website(Home):
                 'marriage_links': marriage_links,
                 'is_intranet': True,
                 'posts': posts,
+                'forum_id': forum_id,
                 'news_posts': news_posts,
                 'website_ids': website_ids,
                 'event_link': event_link,
