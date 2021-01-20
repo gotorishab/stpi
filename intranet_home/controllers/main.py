@@ -17,7 +17,7 @@ class Website(Home):
         marriage_links = request.env['hr.employee'].sudo().search([], limit=3).filtered(lambda e: e.marriage_anniversary and e.marriage_anniversary.month == fields.Date.today().month and e.marriage_anniversary.day > fields.Date.today().day)
         BlogPost = request.env['blog.post']
         video_link = request.env['vardhman.videos.links'].search([], limit=3)
-        magazine_link = request.env['vardhman.magazine.links'].search([], limit=3)
+        magazine_link = request.env['documents.attachment'].search([], order="id desc", limit=3)
         photo_link = request.env['vardhman.photo.links'].search([], limit=3)
         slider_link = request.env['vardhman.slider.links'].search([], limit=3)
         event_link = request.env['event.event'].search([], limit=3)
