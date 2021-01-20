@@ -1,0 +1,135 @@
+<odoo>
+
+    <menuitem id="discussion_forum_ih"
+            name="Discussion Forum"
+              />
+
+    <menuitem id="list_Forum_p_vardhman_all_view"
+            name="Forumiscussion Forum"
+            sequence="1"
+            parent="discussion_forum_ih"
+              />
+
+    <record id="view_vardhman_create_disforum_form" model="ir.ui.view">
+         <field name="name">vardhman.create.disforum.form</field>
+         <field name="model">vardhman.create.disforum</field>
+         <field name="arch" type="xml">
+             <form string="Post a Forum">
+                 <header>
+                         <button name="button_send_for_approval" string="Send for Approval"  states="draft" type="object"/>
+                         <button name="button_approved" string="Approve" states="pending_approval" type="object"/>
+                         <button name="button_reject" string="Reject" states="pending_approval" type="object"/>
+                         <field name="state" widget="statusbar" statusbar_visible="draft,pending_approval,approved" />
+
+            </header>
+                 <sheet>
+                     <group>
+                         <group>
+                             <field name="discussion_group_type" required="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                             <field name="name" required="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+<!--                             <field name="description" required="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>-->
+                             <field name="department_id" required="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                             <field name="unit_id" required="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+<!--                               <field name="tag_ids" required="1" widget="many2many_tags" domain="[('front_type','=',front_type)]" attrs="{'readonly': [('state', '!=', 'draft')]}"/>-->
+                              <field name="front_type" invisible="1"/>
+                         </group>
+                         <group>
+                             <field name="forum_id" attrs="{'invisible': [('state', '!=', 'approved')],'readonly': [('state', '=', 'approved')]}"/>
+                         </group>
+                         <field name="description" required="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                     </group>
+                 </sheet>
+                 <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+             </form>
+         </field>
+     </record>
+
+         <record id="view_vardhman_create_disforum_list" model="ir.ui.view">
+             <field name="name">vardhman.create.disforum.list</field>
+             <field name="model">vardhman.create.disforum</field>
+             <field eval="8" name="priority"/>
+             <field name="arch" type="xml">
+                 <tree string="Idea/Suggestion Rejection Reason">
+                     <field name="name" required="1"/>
+<!--                     <field name="tag_ids"  widget="many2many_tags"/>-->
+                     <field name="description"/>
+                 </tree>
+             </field>
+         </record>
+
+
+         <record id="ir_action_vardhman_create_disforum_all" model="ir.actions.act_window">
+             <field name="name">Post a Forum</field>
+             <field name="res_model">vardhman.create.disforum</field>
+             <field name="view_mode">tree,form</field>
+         </record>
+
+
+    <menuitem id="list_create_disforum_vardhman_all_view"
+            name="All"
+            sequence="6"
+            parent="list_Forum_p_vardhman_all_view"
+            action="ir_action_vardhman_create_disforum_all"
+              />
+
+
+
+         <record id="ir_action_vardhman_create_disforum_draft" model="ir.actions.act_window">
+             <field name="name">Post a Forum</field>
+             <field name="res_model">vardhman.create.disforum</field>
+             <field name="view_mode">tree,form</field>
+             <field name="domain">[('state','=','draft')]</field>
+         </record>
+    <menuitem id="list_create_disforum_vardhman_draft_view"
+            name="Post a Forum"
+            sequence="2"
+            parent="list_Forum_p_vardhman_all_view"
+            action="ir_action_vardhman_create_disforum_draft"
+              />
+
+
+         <record id="ir_action_vardhman_create_disforum_pending_approval" model="ir.actions.act_window">
+             <field name="name">Post a Forum</field>
+             <field name="res_model">vardhman.create.disforum</field>
+             <field name="view_mode">tree,form</field>
+             <field name="domain">[('state','=','pending_approval')]</field>
+         </record>
+    <menuitem id="list_create_disforum_vardhman_pending_approval_view"
+            name="Pending Approval Forum list"
+            sequence="3"
+            parent="list_Forum_p_vardhman_all_view"
+            action="ir_action_vardhman_create_disforum_pending_approval"
+              />
+
+
+         <record id="ir_action_vardhman_create_disforum_approved" model="ir.actions.act_window">
+             <field name="name">Post a Forum</field>
+             <field name="res_model">vardhman.create.disforum</field>
+             <field name="view_mode">tree,form</field>
+             <field name="domain">[('state','=','approved')]</field>
+         </record>
+    <menuitem id="list_create_disforum_vardhman_approved_view"
+            name="Approved Forum list"
+            sequence="4"
+            parent="list_Forum_p_vardhman_all_view"
+            action="ir_action_vardhman_create_disforum_approved"
+              />
+
+         <record id="ir_action_vardhman_create_disforum_reject" model="ir.actions.act_window">
+             <field name="name">Post a Forum</field>
+             <field name="res_model">vardhman.create.disforum</field>
+             <field name="view_mode">tree,form</field>
+             <field name="domain">[('state','=','rejected')]</field>
+         </record>
+    <menuitem id="list_create_disforum_vardhman_reject_view"
+            name="Rejected Forum list"
+            sequence="5"
+            parent="list_Forum_p_vardhman_all_view"
+            action="ir_action_vardhman_create_disforum_reject"
+              />
+
+</odoo>

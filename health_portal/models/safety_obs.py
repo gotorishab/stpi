@@ -12,7 +12,7 @@ class HealthBusinessType(models.Model):
     observer_name = fields.Char('Observer Name :')
     plant = fields.Char('Plant :')
     date = fields.Date('Date :')
-    department_id = fields.Many2one('hr.department :')
+    department_id = fields.Many2one('vhr.department :')
     Observed_name = fields.Char('Observed Name :')
 
     housekeeping = fields.Boolean('Housekeeping')

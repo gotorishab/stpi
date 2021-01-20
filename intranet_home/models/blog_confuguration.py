@@ -7,7 +7,7 @@ from datetime import datetime
 from odoo.exceptions import ValidationError, UserError
 
 
-class BlogBlog(models.Model):
+class BlogPost(models.Model):
     _inherit = "blog.post"
 
 
@@ -38,6 +38,14 @@ class BlogBlog(models.Model):
                 ])
             # if search_id:
             #     raise ValidationError("You have already applied for this front type")
+
+
+class ForumForum(models.Model):
+    _inherit = "forum.forum"
+
+    front_type = fields.Selection([
+        ('discussion_forum', 'Discussion Forum')
+    ], string='Front Type')
 
 
 class ForumPost(models.Model):

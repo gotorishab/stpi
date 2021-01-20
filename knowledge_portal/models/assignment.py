@@ -53,7 +53,7 @@ class KnowledgeUsersassignments(models.Model):
 
     create_assignment_id = fields.Many2one('knowledge.create.assignment')
     unit_id = fields.Many2one('vardhman.unit.master',string='Unit')
-    department_id = fields.Many2one('hr.department',string='Department')
+    department_id = fields.Many2one('vhr.department',string='Department')
     user_id = fields.Many2one('res.users', string='Assigned To')
 
 

@@ -12,3 +12,6 @@ from . import res_user
 from . import blog_confuguration
 from . import blog_post_categories
 from . import event
+from . import user_management
+from . import story_management
+from . import discussion_forum

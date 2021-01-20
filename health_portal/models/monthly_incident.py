@@ -42,7 +42,7 @@ class HealthAccidentCause(models.Model):
     _description = "Health Monthly Incident Details"
 
     health_incident_id = fields.Many2one('health.manage.monthlyincident',string='Select incident :')
-    department_id = fields.Many2one('hr.department',string='Name of Department :')
+    department_id = fields.Many2one('vhr.department',string='Name of Department :')
     no_employees_ytd = fields.Float('No of Employees (YTD)')
     no_employees_month = fields.Float('No of Employees (Month)')
     man_hrs_worked_ytd = fields.Float('Man hours Worked (YTD)')

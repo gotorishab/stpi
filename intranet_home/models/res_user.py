@@ -10,4 +10,4 @@ class ResUsers(models.Model):
     _inherit = "res.users"
 
     unit_id = fields.Many2one('vardhman.unit.master',string='Unit')
-    department_id = fields.Many2one('hr.department',string='Department')
+    department_id = fields.Many2one('vhr.department',string='Department')

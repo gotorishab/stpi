@@ -19,7 +19,7 @@ class HealthBusinessType(models.Model):
     description = fields.Char('Description :', track_visibility='always')
     reported_by = fields.Char('Reported by :')
     employee_id = fields.Char('Employee Id :')
-    department_id = fields.Many2one('hr.department')
+    department_id = fields.Many2one('vhr.department')
 
     state = fields.Selection(
         [('draft', 'Draft'), ('submitted', 'Submitted'), ('approved', 'Approved'), ('cancelled', 'Cancelled')

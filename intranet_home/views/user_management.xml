@@ -1,0 +1,130 @@
+<odoo>
+
+    <menuitem id="user_management_ih"
+            name="User Management"
+              />
+
+
+         <record id="ir_action_vardhman_users_all" model="ir.actions.act_window">
+             <field name="name">Users</field>
+             <field name="res_model">res.users</field>
+             <field name="view_mode">tree,form</field>
+         </record>
+
+    <menuitem id="list_users_vardhman_all_view"
+            name="Users"
+            sequence="1"
+            parent="user_management_ih"
+            action="ir_action_vardhman_users_all"
+              />
+
+
+         <record id="ir_action_vardhman_groups_all" model="ir.actions.act_window">
+             <field name="name">Users</field>
+             <field name="res_model">res.groups</field>
+             <field name="view_mode">tree,form</field>
+         </record>
+
+    <menuitem id="list_groups_vardhman_all_view"
+            name="Groups"
+            sequence="1"
+            parent="user_management_ih"
+            action="ir_action_vardhman_groups_all"
+              />
+
+
+
+
+        <record id="view_vardhman_block_user_form" model="ir.ui.view">
+             <field name="name">vardhman.block.user.form</field>
+             <field name="model">vardhman.block.user</field>
+             <field name="arch" type="xml">
+                 <form string="Idea/Suggestion Rejection Reason">
+                     <sheet>
+                         <group>
+                             <group>
+                                 <field name="user_id" required="1"/>
+                                 <field name="activity" required="1"/>
+                             </group>
+                         </group>
+                     </sheet>
+                 </form>
+             </field>
+         </record>
+
+         <record id="view_vardhman_block_user_list" model="ir.ui.view">
+             <field name="name">vardhman.block.user.list</field>
+             <field name="model">vardhman.block.user</field>
+             <field eval="8" name="priority"/>
+             <field name="arch" type="xml">
+                 <tree string="Idea/Suggestion Rejection Reason">
+                     <field name="user_id" required="1"/>
+                     <field name="activity" required="1"/>
+                 </tree>
+             </field>
+         </record>
+
+
+         <record id="ir_action_vardhman_block_user_all" model="ir.actions.act_window">
+             <field name="name">Block Users</field>
+             <field name="res_model">vardhman.block.user</field>
+             <field name="view_mode">tree,form</field>
+         </record>
+
+    <menuitem id="list_block_user_vardhman_all_view"
+            name="Block User"
+            sequence="3"
+            parent="user_management_ih"
+            action="ir_action_vardhman_block_user_all"
+              />
+
+
+
+        <record id="view_vardhman_handle_issue_sugg_form" model="ir.ui.view">
+             <field name="name">vardhman.handle.ideasugg.form</field>
+             <field name="model">vardhman.handle.ideasugg</field>
+             <field name="arch" type="xml">
+                 <form string="Handle Ideas and Suggestions">
+                     <sheet>
+                         <group>
+                             <group>
+                                 <field name="ideasugg_id" required="1" domain="[('front_type','=','idea')]"/>
+                                 <field name="subtype_id" required="1" domain="[('front_type','=','subidea'),('parent_tag_id','=',ideasugg_id)]"/>
+                             </group>
+                             <group>
+                                 <field name="user_ids" required="1" widget="many2many_tags"/>
+                             </group>
+                         </group>
+                     </sheet>
+                 </form>
+             </field>
+         </record>
+
+         <record id="view_vardhman_handle_issue_sugg_list" model="ir.ui.view">
+             <field name="name">vardhman.handle.ideasugg.list</field>
+             <field name="model">vardhman.handle.ideasugg</field>
+             <field eval="8" name="priority"/>
+             <field name="arch" type="xml">
+                 <tree string="Idea/Suggestion Rejection Reason">
+                     <field name="ideasugg_id"/>
+                     <field name="subtype_id"/>
+                     <field name="user_ids" widget="many2many_tags"/>
+                 </tree>
+             </field>
+         </record>
+
+
+         <record id="ir_action_vardhman_handle_issue_sugg" model="ir.actions.act_window">
+             <field name="name">Handle Ideas and Suggestions</field>
+             <field name="res_model">vardhman.handle.ideasugg</field>
+             <field name="view_mode">tree,form</field>
+         </record>
+
+    <menuitem id="list_handle_issue_sugg_vardhman_view"
+            name="Handle Ideas and Suggestions"
+            sequence="2"
+            parent="user_management_ih"
+            action="ir_action_vardhman_handle_issue_sugg"
+              />
+
+</odoo>

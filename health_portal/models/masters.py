@@ -43,7 +43,7 @@ class HealthDepartmentSection(models.Model):
     _name = "health.department.section"
     _description = "Health Department Section :"
 
-    department_id = fields.Many2one('hr.department', string='Select Department :')
+    department_id = fields.Many2one('vhr.department', string='Select Department :')
     section_id = fields.Many2one('health.section.master', string='Select Section :')
 
 
