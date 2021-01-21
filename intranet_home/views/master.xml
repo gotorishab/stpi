@@ -360,7 +360,7 @@
                      <sheet>
                          <group>
                              <group>
-                                 <field name="user_id" required="1"/>
+                                 <field name="user_id"/>
                              </group>
                              <group>
                              <field name="enable_security" required="1"/>

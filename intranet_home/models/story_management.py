@@ -32,6 +32,17 @@ class VardhmanStoryCategory(models.Model):
 
     def button_send_for_approval(self):
         for rec in self:
+            ct = 0
+            b_id = self.env['vardhman.story.postuser'].sudo().search(
+                [
+                    ('enable_security', '=', True),
+                ], limit=1)
+            if b_id:
+                for wc in rec.description:
+                    ct+=1
+                if ct > b_id.word_limit:
+                    raise ValidationError(
+                        _('Word count should be low'))
             blog_id = self.env['vardhman.block.user'].sudo().search(
                 [
                     ('user_id', '=', rec.env.user.id),
