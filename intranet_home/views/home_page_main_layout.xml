@@ -261,7 +261,7 @@
                                 <span style="font-size: 12px;" class="text-muted"><strong>TOP IDEAS &amp; SUGGESSIONS </strong></span>
                             </div>
                             <div t-if="posts" class="col-md-6 pr-4 pt-2 pb-2 oe_link">
-                                <a style="font-size: 12px;" t-attf-href="/blog{{slug(posts[0].blog_id)}}">Share Idea</a>
+                                <a style="font-size: 12px;" t-attf-href="/blog/{{slug(posts[0].blog_id)}}">Share Idea</a>
                             </div>
                         </div>
                         <div class="row p-0 m-0 pt-2">
