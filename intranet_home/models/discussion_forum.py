@@ -54,9 +54,10 @@ class VardhmanStoryCategory(models.Model):
                     bl_id = bl.id
             grp = self.env['forum.post'].create({
                 'name': str(rec.name),
-                'blog_id': bl_id,
+                'forum_id': bl_id,
             })
             # for user in self.tag_ids:
             #     grp.tag_ids = [(4, user.id)]
-            # rec.post_id = grp.id
+            rec.forum_id = grp.id
+            grp.state='active'
             rec.write({'state': 'approved'})

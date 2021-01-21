@@ -87,7 +87,7 @@
          </record>
 
     <menuitem id="manage_masters_ih"
-            name="Manage Masters IH"
+            name="Intranet Homepage"
               groups="intranet_home.group_intranet_home_admin"
               />
 

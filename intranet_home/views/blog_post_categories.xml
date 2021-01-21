@@ -13,8 +13,8 @@
             </field>
             <xpath expr="//sheet" position="before">
             <header>
-                <button name="button_publish" string="Publish" type="object" groups="intranet_home.group_manager_blog_post_ih"/>
-                <button name="button_unpublish" string="Unpublish" type="object" groups="intranet_home.group_manager_blog_post_ih"/>
+                <button name="button_publish" string="Publish" type="object" groups="intranet_home.group_intranet_home_content_moderator"/>
+                <button name="button_unpublish" string="Unpublish" type="object" groups="intranet_home.group_intranet_home_content_moderator"/>
             </header>
             </xpath>
         </field>

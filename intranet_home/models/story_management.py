@@ -56,6 +56,7 @@ class VardhmanStoryCategory(models.Model):
             for user in self.tag_ids:
                 grp.tag_ids = [(4, user.id)]
             rec.post_id = grp.id
+            grp.is_published = True
             rec.write({'state': 'approved'})
 
 
@@ -114,6 +115,7 @@ class VardhmanAnnouncement(models.Model):
             for user in self.tag_ids:
                 grp.tag_ids = [(4, user.id)]
             rec.post_id = grp.id
+            grp.is_published = True
             rec.write({'state': 'approved'})
 
 
@@ -172,4 +174,5 @@ class VardhmanIdeaShare(models.Model):
             grp.tag_ids = [(4, rec.ideasugg_id.id)]
             grp.tag_ids = [(4, rec.subtype_id.id)]
             rec.post_id = grp.id
+            grp.is_published = True
             rec.write({'state': 'approved'})
