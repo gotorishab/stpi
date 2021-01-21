@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+<!-- Editor custom -->
+<template id="assets_editor" inherit_id="website.assets_editor" name="Forum Editor Assets">
+    <xpath expr="." position="inside">
+        <script type="text/javascript" src="/custom_forum/static/src/js/website_forum_extended.js"/>
+    </xpath>
+    <xpath expr="script[@src='/website_forum/static/src/js/website_forum.editor.js']" position="replace">
+        <script type="text/javascript" src="/custom_forum/static/src/js/website_forum.editor.js"/>
+    </xpath>
+</template>
+
+    </data>
+</odoo>
