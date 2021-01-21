@@ -21,6 +21,8 @@ class HrItRule(models.Model):
         ('Deductions on Medical Expenditure on Self or Dependent Relative',
          'Deductions on Medical Expenditure on Self or Dependent Relative'),
         ('Deductions on Donations', 'Deductions on Donations'),
+        ('Income from House Property', 'Income from House Property'),
+        ('Income from Other Sources', 'Income from Other Sources'),
     ], string='Deduction')
     code = fields.Char('Code')
     name = fields.Char('IT Rule Section')

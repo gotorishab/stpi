@@ -7,8 +7,8 @@
             <form string="Indent">
                 <header>
                     <button name="button_to_approve" string="Send for Approval" class="oe_highlight" type="object" states="draft"/>
-                     <button name="button_reset_to_draft" string="Reset to draft" type="object" states="to_approve"/>
-                    <button name="button_approved" string="Approve" class="oe_highlight" type="object" states="to_approve" groups="indent_stpi.group_Indent_request_manager"/>
+                     <button name="button_reset_to_draft" string="Send Back" type="object" states="to_approve"/>
+                    <button name="button_approved" string="Forward" class="oe_highlight" type="object" states="to_approve" groups="indent_stpi.group_Indent_request_manager"/>
                     <button name="button_reject" string="Reject" type="object" states="to_approve" groups="indent_stpi.group_Indent_request_manager"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,to_approve,approved,rejected" />
                 </header>

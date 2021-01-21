@@ -139,7 +139,7 @@ class IndentLedger(models.Model):
                                      "invoice_no": self.Indent_id.bill_no,
                                      "purchase_date": self.Indent_id.date_of_receive,
                                      # "first_depreciation_manual_date": self.Indent_id.date_of_receive,
-                                     "code": str(self.Indent_id.vendor_info + ' - ' + self.specification),
+                                     "code": str(str(self.Indent_id.vendor_info) + ' - ' + str(self.specification)),
                                      "salvage_value": 1,
                                      "category_id": 1,
                                      "value": 1,

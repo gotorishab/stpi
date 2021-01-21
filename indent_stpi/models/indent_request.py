@@ -17,7 +17,7 @@ class EmployeeIndentAdvance(models.Model):
 
     indent_sequence = fields.Char('Number',track_visibility='always')
 
-    vendor_info = fields.Text('Vendor Information',track_visibility='always')
+    vendor_info = fields.Text('Vendor Details',track_visibility='always')
     bill_no = fields.Char('Bill Number',track_visibility='always')
     amount = fields.Float('Amount',track_visibility='always')
     received_by = fields.Many2one('hr.employee','Received By',track_visibility='always')

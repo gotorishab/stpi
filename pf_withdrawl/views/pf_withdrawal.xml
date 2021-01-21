@@ -42,7 +42,7 @@
             <form string="PF">
                 <header>
                     <button name="button_to_approve" string="Send for Approval" class="oe_highlight" type="object" states="draft" groups="pf_withdrawl.group_pf_withdraw_user"/>
-                     <button name="button_reset_to_draft" string="Reset to draft" type="object" states="to_approve" groups="pf_withdrawl.group_pf_withdraw_user"/>
+                     <button name="button_reset_to_draft" string="Send Back" type="object" states="to_approve" groups="pf_withdrawl.group_pf_withdraw_user"/>
                     <button name="button_approved" string="Approve" class="oe_highlight" type="object" states="to_approve" groups="pf_withdrawl.group_pf_withdraw_approver"/>
                     <button name="button_reject" string="Reject" type="object" states="to_approve" groups="pf_withdrawl.group_pf_withdraw_approver"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,to_approve,approved,rejected" />

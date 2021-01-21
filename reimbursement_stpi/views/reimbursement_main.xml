@@ -17,8 +17,8 @@
                 <field name="__last_update"/>
                 <field name="write_uid"/>
                 <button name="button_submit" string="Submit" type="object" states="draft"/>
-                     <button name="button_reset_to_draft" string="Revert" type="object" states="waiting_for_approval"/>
-                    <button name="button_approved" string="Approve" type="object" states="waiting_for_approval" groups ="reimbursement_stpi.group_approving_authority"/>
+                     <button name="button_reset_to_draft" string="Send Back" type="object" states="waiting_for_approval"/>
+                    <button name="button_approved" string="Forward" type="object" states="waiting_for_approval" groups ="reimbursement_stpi.group_approving_authority"/>
                     <button name="button_reject" string="Reject" type="object" attrs="{'invisible':[('state','not in',('waiting_for_approval'))]}"/>
             </tree>
         </field>

@@ -24,8 +24,8 @@
                 <header>
                     <button name="button_to_approve" string="Send for Approval" class="oe_highlight" type="object" states="draft"/>
                     <button name="button_forecast_gross" string="Forecast Gross" class="oe_highlight" type="object" states="draft"/>
-                     <button name="button_reset_to_draft" string="Revert" type="object" states="to_approve"/>
-                    <button name="button_approved" string="Approve" class="oe_highlight" type="object" states="to_approve" groups="tds.group_manager_hr_declaration"/>
+                     <button name="button_reset_to_draft" string="Send Back" type="object" states="to_approve"/>
+                    <button name="button_approved" string="Forward" class="oe_highlight" type="object" states="to_approve" groups="tds.group_manager_hr_declaration"/>
                     <button name="button_reject" string="Reject" type="object" states="to_approve" groups="tds.group_manager_hr_declaration"/>
                     <button name="button_compute_tax" string="Compute Tax" class="oe_highlight" type="object"/>
                     <button name="button_payment_tax" string="Tax Payment" class="oe_highlight" type="object" invisible="1"/>
@@ -123,7 +123,8 @@
                         <field name="income_house_ids">
                             <tree string="Income from House Property" editable="bottom">
                                 <field name="income_house_id" invisible="1"/>
-                                <field name="it_rule" invisible="1"/>
+                                <field name="deduction_id" invisible="1"/>
+                                <field name="it_rule" required="1" domain="[('deduction_id', '=', deduction_id)]"/>
                                 <field name="saving_master" options="{'no_create_edit': True, 'no_create': True}" domain="[('it_rule', '=', it_rule)]"/>
                                 <field name="investment"/>
                                 <field name="document"/>
@@ -136,7 +137,8 @@
                         <field name="income_other_ids">
                             <tree string="Income from Other Sources" editable="bottom">
                                 <field name="income_other_id" invisible="1"/>
-                                <field name="it_rule" invisible="1"/>
+                                <field name="deduction_id" invisible="1"/>
+                                <field name="it_rule" required="1" domain="[('deduction_id', '=', deduction_id)]"/>
                                 <field name="saving_master_related" invisible="1"/>
                                 <field name="saving_master" options="{'no_create_edit': True, 'no_create': True}" domain="[('it_rule', '=', it_rule)]"/>
                                 <field name="other" attrs="{'invisible':[('saving_master_related','!=','Other')]}"/>

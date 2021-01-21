@@ -715,6 +715,21 @@ class HrDeclaration(models.Model):
             ex_hra_id = self.env['saving.master'].sudo().search([('saving_type', '=', 'HRA Exemption')], limit=1)
             prl_id = self.env['hr.payslip.line'].sudo().search([('slip_id.employee_id', '=', rec.employee_id.id),('slip_id.state', '=', 'done'),('code', '=', 'HRA'),('slip_id.date_from', '>', rec.date_range.date_start),('slip_id.date_to', '<', rec.date_range.date_end)],order ="date_to desc")
             prl_current_id = self.env['hr.payslip.line'].sudo().search([('slip_id.employee_id', '=', rec.employee_id.id),('slip_id.state', '=', 'done'),('code', '=', 'HRA'),('slip_id.date_from', '=', datetime.now().replace(day=1)),('slip_id.date_to', '=', datetime.now().replace(day=1) + relativedelta(months=1) - relativedelta(days=1))])
+            HRA = 0
+            DA = 0
+            TA = 0
+            contrct = self.env['hr.contract'].sudo().search([('employee_id', '=', rec.employee_id.id),
+                                                             ('state', '=', 'open')
+                                                             ], limit=1)
+            for contract in contrct:
+                if contract.employee_hra_cat == 'x':
+                    HRA = 0.24 * contract.wage
+                elif contract.employee_hra_cat == 'y':
+                    HRA = 0.16 * contract.wage
+                elif contract.employee_hra_cat == 'z':
+                    HRA = 0.08 * contract.wage
+                else:
+                    HRA = 0
             sum_bs = 0.00
             sum_rent = 0.00
             sum_prl = 0.00
@@ -725,9 +740,9 @@ class HrDeclaration(models.Model):
             sum_list = []
             for cc in prl_id:
                 sum_prl+=cc.amount
-            if prl_current_id:
-                for pc in prl_current_id:
-                    sum_prl_current += pc.amount*int(month)
+            # if prl_current_id:
+            #     for pc in prl_current_id:
+            sum_prl_current = int(HRA) *int(month)
             sum_prl = sum_prl + sum_prl_current
             if rec.employee_id.branch_id.city_id.metro == True:
                 sum_bs = ((rec.basic_salary + rec.da_salary + int(updated_basic)*int(month))*50)/100
@@ -1425,6 +1440,21 @@ class IncomeHouse(models.Model):
 
     income_house_id = fields.Many2one('hr.declaration', string='Income from House Property')
     document = fields.Binary(string='Document')
+    deduction_id = fields.Selection([
+        ('slab_80_declaration', 'Slab - 80 Declaration'),
+        ('Medical Insurance Premium paid', 'Medical Insurance Premium paid'),
+        ('Deductions on Interest on Savings Account', 'Deductions on Interest on Savings Account'),
+        ('Tax Benefits on Home Loan', 'Tax Benefits on Home Loan'),
+        ('Tax benefit on Education Loan (80E)', 'Tax benefit on Education Loan (80E)'),
+        ('RGESS', 'RGESS'),
+        ('Deductions on Medical Expenditure for a Handicapped Relative',
+         'Deductions on Medical Expenditure for a Handicapped Relative'),
+        ('Deductions on Medical Expenditure on Self or Dependent Relative',
+         'Deductions on Medical Expenditure on Self or Dependent Relative'),
+        ('Deductions on Donations', 'Deductions on Donations'),
+        ('Income from House Property', 'Income from House Property'),
+        ('Income from Other Sources', 'Income from Other Sources'),
+    ], string='Deduction', default='Income from House Property')
     # it_rule = fields.Selection([
     #     ('income_house', 'Income from House Property')
     # ], string='IT Rule -Section', default='income_house')
@@ -1449,6 +1479,21 @@ class IncomeOther(models.Model):
     _description = 'Income from other Sources'
 
     income_other_id = fields.Many2one('hr.declaration', string='Income from other Sources')
+    deduction_id = fields.Selection([
+        ('slab_80_declaration', 'Slab - 80 Declaration'),
+        ('Medical Insurance Premium paid', 'Medical Insurance Premium paid'),
+        ('Deductions on Interest on Savings Account', 'Deductions on Interest on Savings Account'),
+        ('Tax Benefits on Home Loan', 'Tax Benefits on Home Loan'),
+        ('Tax benefit on Education Loan (80E)', 'Tax benefit on Education Loan (80E)'),
+        ('RGESS', 'RGESS'),
+        ('Deductions on Medical Expenditure for a Handicapped Relative',
+         'Deductions on Medical Expenditure for a Handicapped Relative'),
+        ('Deductions on Medical Expenditure on Self or Dependent Relative',
+         'Deductions on Medical Expenditure on Self or Dependent Relative'),
+        ('Deductions on Donations', 'Deductions on Donations'),
+        ('Income from House Property', 'Income from House Property'),
+        ('Income from Other Sources', 'Income from Other Sources'),
+    ], string='Deduction', default='Income from Other Sources')
     document = fields.Binary(string='Document')
     # it_rule = fields.Selection([
     #     ('income_other', 'Income from other Sources')

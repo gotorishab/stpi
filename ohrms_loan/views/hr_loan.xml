@@ -27,8 +27,8 @@
             <form string="Loan Request">
                 <header>
                     <button name="action_submit" type="object" string="Submit" states="draft" class="oe_highlight"/>
-                    <button name="action_cancel" type="object" string="Revert" states="waiting_approval_1" />
-                    <button name="action_approve" type="object" string="Forward the recommendation" states="waiting_approval_1" class="oe_highlight" groups="ohrms_loan.group_loan_approver"/>
+                    <button name="action_cancel" type="object" string="Send Back" states="waiting_approval_1" />
+                    <button name="action_approve" type="object" string="Forward" states="waiting_approval_1" class="oe_highlight" groups="ohrms_loan.group_loan_approver"/>
                     <button name="action_double_approve" type="object" string="Approve" states="waiting_approval_2" class="oe_highlight" groups="ohrms_loan.group_loan_approver"/>
                     <button name="action_refuse" type="object" string="Refuse" states="waiting_approval_1,waiting_approval_2" class="oe_highlight" groups="ohrms_loan.group_loan_approver"/>
 <!--                    <button name="action_reset_to_draft" type="object" string="Reset to Draft" states="refuse" class="oe_highlight" groups="ohrms_loan.group_loan_approver"/>-->
