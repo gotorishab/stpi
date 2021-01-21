@@ -12,9 +12,9 @@ class Website(Home):
         # prefetch all menus (it will prefetch website.page too)
         website = request.env['website'].get_current_website()
         usefull_links = request.env['vardhman.useful.links'].sudo().search([], limit=6)
-        birthday_links = request.env['hr.employee'].sudo().search([], limit=3).filtered(lambda e: e.birthday and e.birthday.month == fields.Date.today().month and e.birthday.day > fields.Date.today().day)
-        work_links = request.env['hr.employee'].sudo().search([], limit=3).filtered(lambda e: e.work_anniversary and e.work_anniversary.month == fields.Date.today().month and e.work_anniversary.day > fields.Date.today().day)
-        marriage_links = request.env['hr.employee'].sudo().search([], limit=3).filtered(lambda e: e.marriage_anniversary and e.marriage_anniversary.month == fields.Date.today().month and e.marriage_anniversary.day > fields.Date.today().day)
+        birthday_links = request.env['hr.employee'].sudo().search([], limit=3).filtered(lambda e: e.birthday and e.birthday.month == fields.Date.today().month and e.birthday.day == fields.Date.today().day)
+        work_links = request.env['hr.employee'].sudo().search([], limit=3).filtered(lambda e: e.work_anniversary and e.work_anniversary.month == fields.Date.today().month and e.work_anniversary.day == fields.Date.today().day)
+        marriage_links = request.env['hr.employee'].sudo().search([], limit=3).filtered(lambda e: e.marriage_anniversary and e.marriage_anniversary.month == fields.Date.today().month and e.marriage_anniversary.day == fields.Date.today().day)
         BlogPost = request.env['blog.post']
         video_link = request.env['vardhman.videos.links'].search([], limit=3)
         magazine_link = request.env['documents.attachment'].search([], order="id desc", limit=3)
@@ -66,15 +66,15 @@ class Website(Home):
     @http.route('/birthday/links', type='http', auth="public", website=True, sitemap=True)
     def birthday_links(self, **kw):
         # prefetch all menus (it will prefetch website.page too)
-        birthday_links = request.env['vardhman.employee.birthday'].sudo().search([], )
-        return request.render('intranet_home.birthday_links', {'birthday_links': birthday_links})
+        birthday_links = request.env['hr.employee'].sudo().search([]).filtered(lambda e: e.birthday and e.birthday.month == fields.Date.today().month)
+        return request.render('intranet_home.birthday_links', {'birthday_links': birthday_links.sorted()})
 
     @http.route('/anniversary/links', type='http', auth="public", website=True, sitemap=True)
     def anniversary_links(self, **kw):
         # prefetch all menus (it will prefetch website.page too)
-        anniversary_links = request.env['vardhman.employee.workanniversary'].sudo().search([], )
-        marriage_links = request.env['vardhman.employee.marriageanniversary'].sudo().search([], )
-        return request.render('intranet_home.anniversary_links', {'anniversary_links': anniversary_links, 'marriage_links': marriage_links})
+        anniversary_links = request.env['hr.employee'].sudo().search([]).filtered(lambda e: e.work_anniversary and e.work_anniversary.month == fields.Date.today().month)
+        marriage_links = request.env['hr.employee'].sudo().search([]).filtered(lambda e: e.marriage_anniversary and e.marriage_anniversary.month == fields.Date.today().month)
+        return request.render('intranet_home.anniversary_links', {'anniversary_links': anniversary_links.sorted(), 'marriage_links': marriage_links.sorted()})
 
     @http.route('/share/post', type='http', auth="public", website=True, sitemap=True)
     def share_post(self, **kw):
