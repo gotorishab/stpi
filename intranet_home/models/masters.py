@@ -71,7 +71,7 @@ class VardhmanStoryPostSetting(models.Model):
     _description = "Vardhman Story Post for user"
 
     user_id = fields.Many2one('res.users',string='User :')
-    enable_security = fields.Boolean('Enable Security Post')
+    enable_security = fields.Boolean('Enable Story Post')
     word_limit = fields.Integer('Word Limit(Text)')
 
 class VardhmanIdeaSharing(models.Model):
@@ -79,7 +79,7 @@ class VardhmanIdeaSharing(models.Model):
     _description = "Vardhman Idea/Suggestion Sharing"
 
     user_id = fields.Many2one('res.users',string='User :')
-    enable_security = fields.Boolean('Enable Security Sharing')
+    enable_security = fields.Boolean('Enable Idea/Suggestion Sharing')
     word_limit = fields.Integer('Word Limit for Idea(Text)')
 
 

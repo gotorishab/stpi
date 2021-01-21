@@ -87,7 +87,7 @@
          </record>
 
     <menuitem id="manage_masters_ih"
-            name="Manage Masters IH"
+            name="Intranet Masters"
               groups="intranet_home.group_intranet_home_admin"
               />
 
@@ -360,7 +360,7 @@
                      <sheet>
                          <group>
                              <group>
-                                 <field name="user_id" required="1"/>
+                                 <field name="user_id"/>
                              </group>
                              <group>
                              <field name="enable_security" required="1"/>

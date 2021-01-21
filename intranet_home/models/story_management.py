@@ -1,5 +1,7 @@
 from odoo import api, fields, models, _
 from odoo.http import request
+from odoo.exceptions import ValidationError
+
 
 
 class VardhmanStoryCategory(models.Model):
@@ -30,7 +32,27 @@ class VardhmanStoryCategory(models.Model):
 
     def button_send_for_approval(self):
         for rec in self:
-            rec.write({'state': 'pending_approval'})
+            ct = 0
+            b_id = self.env['vardhman.story.postuser'].sudo().search(
+                [
+                    ('enable_security', '=', True),
+                ], limit=1)
+            if b_id:
+                for wc in rec.description:
+                    ct+=1
+                if ct > b_id.word_limit:
+                    raise ValidationError(
+                        _('Word count should be low'))
+            blog_id = self.env['vardhman.block.user'].sudo().search(
+                [
+                    ('user_id', '=', rec.env.user.id),
+                    ('activity', '=', 'blog'),
+                ], limit=1)
+            if blog_id:
+                raise ValidationError(
+                    _('You are blocked from posting.'))
+            else:
+                rec.write({'state': 'pending_approval'})
 
 
     def button_reject(self):
@@ -56,6 +78,7 @@ class VardhmanStoryCategory(models.Model):
             for user in self.tag_ids:
                 grp.tag_ids = [(4, user.id)]
             rec.post_id = grp.id
+            grp.is_published = True
             rec.write({'state': 'approved'})
 
 
@@ -88,7 +111,16 @@ class VardhmanAnnouncement(models.Model):
 
     def button_send_for_approval(self):
         for rec in self:
-            rec.write({'state': 'pending_approval'})
+            blog_id = self.env['vardhman.block.user'].sudo().search(
+                [
+                    ('user_id', '=', rec.env.user.id),
+                    ('activity', '=', 'blog'),
+                ], limit=1)
+            if blog_id:
+                raise ValidationError(
+                    _('You are blocked from posting.'))
+            else:
+                rec.write({'state': 'pending_approval'})
 
 
     def button_reject(self):
@@ -114,6 +146,7 @@ class VardhmanAnnouncement(models.Model):
             for user in self.tag_ids:
                 grp.tag_ids = [(4, user.id)]
             rec.post_id = grp.id
+            grp.is_published = True
             rec.write({'state': 'approved'})
 
 
@@ -146,7 +179,16 @@ class VardhmanIdeaShare(models.Model):
 
     def button_send_for_approval(self):
         for rec in self:
-            rec.write({'state': 'pending_approval'})
+            blog_id = self.env['vardhman.block.user'].sudo().search(
+                [
+                    ('user_id', '=', rec.env.user.id),
+                    ('activity', '=', 'blog'),
+                ], limit=1)
+            if blog_id:
+                raise ValidationError(
+                    _('You are blocked from posting.'))
+            else:
+                rec.write({'state': 'pending_approval'})
 
 
     def button_reject(self):
@@ -172,4 +214,5 @@ class VardhmanIdeaShare(models.Model):
             grp.tag_ids = [(4, rec.ideasugg_id.id)]
             grp.tag_ids = [(4, rec.subtype_id.id)]
             rec.post_id = grp.id
+            grp.is_published = True
             rec.write({'state': 'approved'})

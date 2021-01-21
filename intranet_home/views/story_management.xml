@@ -17,8 +17,8 @@
              <form string="Post a Story">
                  <header>
                          <button name="button_send_for_approval" string="Send for Approval"  states="draft" type="object"/>
-                         <button name="button_approved" string="Approve" states="pending_approval" type="object"/>
-                         <button name="button_reject" string="Reject" states="pending_approval" type="object"/>
+                         <button name="button_approved" string="Approve" states="pending_approval" type="object" groups="intranet_home.group_intranet_home_content_moderator"/>
+                         <button name="button_reject" string="Reject" states="pending_approval" type="object" groups="intranet_home.group_intranet_home_content_moderator"/>
                          <field name="state" widget="statusbar" statusbar_visible="draft,pending_approval,approved" />
 
             </header>
@@ -147,8 +147,8 @@
              <form string="Post a Story">
                  <header>
                          <button name="button_send_for_approval" string="Send for Approval"  states="draft" type="object"/>
-                         <button name="button_approved" string="Approve" states="pending_approval" type="object"/>
-                         <button name="button_reject" string="Reject" states="pending_approval" type="object"/>
+                         <button name="button_approved" string="Approve" states="pending_approval" type="object" groups="intranet_home.group_intranet_home_content_moderator"/>
+                         <button name="button_reject" string="Reject" states="pending_approval" type="object" groups="intranet_home.group_intranet_home_content_moderator"/>
                          <field name="state" widget="statusbar" statusbar_visible="draft,pending_approval,approved" />
 
             </header>
@@ -281,8 +281,8 @@
              <form string="Post a Announcement">
                  <header>
                          <button name="button_send_for_approval" string="Send for Approval"  states="draft" type="object"/>
-                         <button name="button_approved" string="Approve" states="pending_approval" type="object"/>
-                         <button name="button_reject" string="Reject" states="pending_approval" type="object"/>
+                         <button name="button_approved" string="Approve" states="pending_approval" type="object" groups="intranet_home.group_intranet_home_content_moderator"/>
+                         <button name="button_reject" string="Reject" states="pending_approval" type="object" groups="intranet_home.group_intranet_home_content_moderator"/>
                          <field name="state" widget="statusbar" statusbar_visible="draft,pending_approval,approved" />
 
             </header>

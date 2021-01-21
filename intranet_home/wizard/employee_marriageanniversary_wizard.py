@@ -10,6 +10,7 @@ class marriage_anniversaryChequeRequest(models.TransientModel):
     _name = 'employee.marriageanniversary.wizard'
     _description = 'Wizard of marriage Anniversary Selection'
 
+    no_of_years = fields.Integer('Number of Years')
 
     def button_current_month(self):
         if self:
@@ -88,6 +89,47 @@ class marriage_anniversaryChequeRequest(models.TransientModel):
             return {
                 'domain': [('id', 'in', my_ids)],
                 'name': 'Employees - Next Month marriage_anniversary',
+                'view_type': 'form',
+                'view_mode': 'kanban,tree,form',
+                'res_model': 'vardhman.employee.marriageanniversary',
+                'view_id': False,
+                'views': [(self.env.ref('intranet_home.view_vardhman_marriageanniversary_kanban').id, 'kanban'),
+                          (self.env.ref('intranet_home.view_vardhman_marriageanniversary_list').id, 'tree'),
+                          (self.env.ref('intranet_home.view_vardhman_marriageanniversary_form').id, 'form')],
+                'type': 'ir.actions.act_window'
+            }
+
+
+
+
+    def button_custom_year(self):
+        if self:
+            my_ids = []
+            employee = self.env['hr.employee'].sudo().search([])
+            for emp in employee:
+                if relativedelta(datetime.date.today(), emp.marriage_anniversary).years <= self.no_of_years:
+                    print('-------emp.birthday----------', emp.marriage_anniversary)
+                    print('---------datetime.date.today()--------', datetime.date.today())
+                    print('---------relativedelta(emp.marriage_anniversary, datetime.date.today()).years--------',
+                          relativedelta(emp.marriage_anniversary, datetime.date.today()).years)
+                if emp.marriage_anniversary:
+                    if relativedelta(datetime.date.today(), emp.marriage_anniversary).years <= self.no_of_years:
+                        print('-------emp.birthday----------', emp.marriage_anniversary)
+                        print('---------datetime.date.today()--------', datetime.date.today())
+                        print('---------relativedelta(emp.birthday, datetime.date.today()).years--------',
+                          relativedelta(emp.marriage_anniversary, datetime.date.today()).years)
+                    # if (datetime.datetime.now().replace(day=15)+ relativedelta(months=1)).strftime("%m") == emp.marriage_anniversary.strftime("%m"):
+                        employee_birth = self.env['vardhman.employee.marriageanniversary'].create({
+                            'name': emp.name,
+                            'image': emp.image_1920,
+                            'job_title': emp.job_title,
+                            'marriage_anniversary': emp.marriage_anniversary,
+                        })
+                        my_ids.append(employee_birth.id)
+            print('==================my_ids========================', my_ids)
+            return {
+                'domain': [('id', 'in', my_ids)],
+                'name': 'Employees - Marriage Anniversary',
                 'view_type': 'form',
                 'view_mode': 'kanban,tree,form',
                 'res_model': 'vardhman.employee.marriageanniversary',
