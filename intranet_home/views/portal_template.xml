@@ -68,6 +68,7 @@
                     <tr class="active">
                         <th>Name</th>
                         <th>Job Title</th>
+                        <th>Type</th>
                         <th>Anniversary</th>
                     </tr>
                 </thead>
@@ -75,6 +76,7 @@
                     <tr>
                         <td><t t-esc="link.name"/></td>
                         <td><t t-esc="link.job_title"/></td>
+                        <td>Work Anniversary</td>
                         <td><t t-esc="link.work_anniversary"/></td>
                     </tr>
                 </t>
@@ -82,6 +84,7 @@
                     <tr>
                         <td><t t-esc="link.name"/></td>
                         <td><t t-esc="link.job_title"/></td>
+                        <td>Marriage Anniversary</td>
                         <td><t t-esc="link.marriage_anniversary"/></td>
                     </tr>
                 </t>
