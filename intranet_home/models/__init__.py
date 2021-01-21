@@ -15,3 +15,4 @@ from . import event
 from . import user_management
 from . import story_management
 from . import discussion_forum
+from . import res_config_settings

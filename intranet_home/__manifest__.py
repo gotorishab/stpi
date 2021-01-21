@@ -18,6 +18,7 @@
         'wizard/create_from_master.xml',
         'views/master.xml',
         'views/res_user.xml',
+        'views/res_config_setting.xml',
         'views/user_management.xml',
         'views/story_management.xml',
         'views/discussion_forum.xml',

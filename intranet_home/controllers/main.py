@@ -2,6 +2,7 @@ from odoo import http, fields
 from odoo.addons.website.controllers.main import Website
 from odoo.http import request
 from odoo.addons.portal.controllers.web import Home
+from dateutil.relativedelta import relativedelta
 
 class Website(Home):
 
@@ -13,7 +14,9 @@ class Website(Home):
         website = request.env['website'].get_current_website()
         usefull_links = request.env['vardhman.useful.links'].sudo().search([], limit=6)
         birthday_links = request.env['hr.employee'].sudo().search([], limit=3).filtered(lambda e: e.birthday and e.birthday.month == fields.Date.today().month and e.birthday.day == fields.Date.today().day)
-        work_links = request.env['hr.employee'].sudo().search([], limit=3).filtered(lambda e: e.work_anniversary and e.work_anniversary.month == fields.Date.today().month and e.work_anniversary.day == fields.Date.today().day)
+        work_config = request.env["ir.config_parameter"].sudo().get_param("intranet_home.work_anniversary_year")
+        print(">>>>>>>>>>>>>>>>>>>", work_config)
+        work_links = request.env['hr.employee'].sudo().search([], limit=3).filtered(lambda e: e.work_anniversary and work_config and int(relativedelta(fields.Date.today(), e.work_anniversary).years) == int(work_config))
         marriage_links = request.env['hr.employee'].sudo().search([], limit=3).filtered(lambda e: e.marriage_anniversary and e.marriage_anniversary.month == fields.Date.today().month and e.marriage_anniversary.day == fields.Date.today().day)
         BlogPost = request.env['blog.post']
         video_link = request.env['vardhman.videos.links'].search([], limit=3)
