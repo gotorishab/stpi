@@ -1,5 +1,7 @@
 from odoo import api, fields, models, _
 from odoo.http import request
+from odoo.exceptions import ValidationError
+
 
 
 class VardhmanStoryCategory(models.Model):
@@ -34,7 +36,16 @@ class VardhmanStoryCategory(models.Model):
 
     def button_send_for_approval(self):
         for rec in self:
-            rec.write({'state': 'pending_approval'})
+            blog_id = self.env['vardhman.block.user'].sudo().search(
+                [
+                    ('user_id', '=', rec.env.user.id),
+                    ('activity', '=', 'forum'),
+                ], limit=1)
+            if blog_id:
+                raise ValidationError(
+                    _('You are blocked from posting.'))
+            else:
+                rec.write({'state': 'pending_approval'})
 
 
     def button_reject(self):
