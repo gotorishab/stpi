@@ -83,6 +83,19 @@ class EmployeeIndentAdvance(models.Model):
                         }
                     )
                 else:
+                    serial_number = False
+                    if res.indent_type != 'grn':
+                        search_id = self.env['indent.serialnumber'].sudo().search(
+                            [('grn', '=', True), ('issue', '!=', True), ('branch_id', '=', res.branch_id.id),
+                             ('item_category_id', '=', item.item_category_id.id), ('item_id', '=', item.item_id.id),
+                             ('state', '=', 'approved')]
+
+                        )
+                        if search_id:
+                            for sr in search_id:
+                                serial_number = sr.id
+                        else:
+                            serial_number = False
                     n = item.requested_quantity
                     for i in range(n):
                         create_ledger_family = self.env['issue.request'].sudo().create(
@@ -95,6 +108,7 @@ class EmployeeIndentAdvance(models.Model):
                                 'item_category_id': item.item_category_id.id,
                                 'item_id': item.item_id.id,
                                 'serial_bool': item.item_id.serial_bool,
+                                'serial_number': serial_number,
                                 'asset': item.item_id.asset,
                                 'specification': item.specification,
                                 'requested_quantity': 1,
