@@ -33,6 +33,13 @@
                         <field name="document_proof"/>
                         <field name="remarks" attrs="{'readonly':[('state','!=','draft')],'required':[('state','=','draft')]}"/>
                     </group>
+                    <group>
+                        <field name="total_loan_taken" readonly="1"/>
+                        <field name="total_amount_paid" readonly="1"/>
+                        <field name="total_principal_remaining" readonly="1"/>
+                        <field name="total_interest_as_today" readonly="1"/>
+                        <field name="foreclosure_amount" readonly="1"/>
+                    </group>
                 </group>
                     <notebook>
                         <page name="installments" string="Installments">
