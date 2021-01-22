@@ -115,7 +115,35 @@
                  />
 
 
+        
 
+        <record model='ir.ui.view' id='srn_request_tree_view'>
+            <field name="name">issue.request.grn.tree</field>
+            <field name="model">issue.request</field>
+            <field name="arch" type="xml">
+                <tree string="GRN" editable="bottom" create="0">
+                    <field name="Indent_id" readonly="1"/>
+                    <field name="employee_id" readonly="1"/>
+                    <field name="branch_id" readonly="1"/>
+                    <field name="indent_type" readonly="1"/>
+                    <field name="item_category_id" readonly="1"/>
+                    <field name="item_id" readonly="1"/>
+                    <field name="specification" readonly="1"/>
+                    <field name="serial_bool" readonly="1"/>
+                    <field name="serial_number" attrs="{'required': [('serial_bool', '=', True)],'invisible': ['|',('serial_bool', '=', False)],'readonly': [('state', '!=', 'to_approve')]}"/>
+                    <field name="asset" readonly="1"/>
+                    <button name="fill_asset_details" string="Fill Asset Details" type="object"  attrs="{'invisible': ['|',('asset', '=', False),('state', '!=', 'approved')]}"/>
+                    <field name="requested_quantity" readonly="1"/>
+                    <field name="requested_date" readonly="1"/>
+                    <field name="indent_state" invisible="1"/>
+                    <field name="approved_quantity" attrs="{'readonly':[('state','!=', 'to_approve')]}"/>
+                    <field name="approved_date" required="1" attrs="{'readonly':[('state','!=', 'to_approve')]}"/>
+                    <button name="button_approved" string="Approve" type="object" icon = "fa-thumbs-o-up" states="to_approve"/>
+                    <button name="button_reject" string="Reject" type="object" icon = "fa-ban" states="to_approve"/>
+                    <field name="state" readonly="1"/>
+                </tree>
+            </field>
+        </record>
 
 
     <!--============Action view of Employee Indent Advance To Approve============-->
