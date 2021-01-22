@@ -29,7 +29,7 @@
                     </group>
                     <group>
                         <field name="loan_id" domain="[('state','=','approve'),('employee_id','=',employee_id),('balance_amount','!=',0.00)]" options="{'no_create_edit': True,'no_create': True}" attrs="{'readonly':[('state','!=','draft')],'required':[('state','=','draft')]}"/>
-                        <field name="loan_amount"/>
+                        <field name="loan_amount" invisible="1"/>
                         <field name="document_proof"/>
                         <field name="remarks" attrs="{'readonly':[('state','!=','draft')],'required':[('state','=','draft')]}"/>
                     </group>
@@ -42,7 +42,7 @@
                     </group>
                 </group>
                     <notebook>
-                        <page name="installments" string="Installments">
+                        <page name="installments" string="Installments" invisible="1">
                             <field name="unpaid_loan_lines">
                     <tree editable="1" create="0" default_order="date asc">
                         <field name="date" readonly="1"/>
