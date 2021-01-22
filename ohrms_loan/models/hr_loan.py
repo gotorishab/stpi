@@ -118,7 +118,7 @@ class HrLoan(models.Model):
         loan_count = self.env['hr.loan'].search_count([('employee_id', '=', values['employee_id']),('balance_amount', '!=', 0)
                                                        ])
         if loan_count:
-            raise ValidationError(_("You are not allowed to save this loan"))
+            raise ValidationError(_("You are not allowed to save this loan, as you already have pending Loan"))
         else:
             values['name'] = self.env['ir.sequence'].get('hr.loan.seq') or ' '
             res = super(HrLoan, self).create(values)

@@ -176,5 +176,37 @@
                   parent ="menu_hr_loan_close_request"
                   action ="hr_loan_close_rejected_action"
                   />
-    
+
+
+
+
+        <record id="loan_close_analysis_view_pivot" model="ir.ui.view">
+            <field name="name">hr.loan.close.pivot</field>
+            <field name="model">hr.loan.close</field>
+            <field name="arch" type="xml">
+                <pivot string="Loan Closure Analysis">
+                    <field name="employee_id" type="row"/>
+                    <field name="loan_amount" type="col"/>
+                    <field name="loan_id" type="col"/>
+                </pivot>
+            </field>
+        </record>
+
+
+        <record id="loan_close_analysis_action" model="ir.actions.act_window">
+            <field name="name">:Loan Closure Pivot</field>
+            <field name="res_model">hr.loan.close</field>
+            <field name="view_mode">pivot,tree</field>
+        </record>
+
+
+    <menuitem id = "loan_close_analysis_id"
+              name = "Loan Closure Analysis"
+              parent ="ohrms_loan.loan_reporting_menu_id"
+              action="loan_close_analysis_action"
+              />
+
+
+
+
 </odoo>
