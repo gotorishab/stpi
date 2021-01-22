@@ -8,15 +8,15 @@ import xmlrpc.client
 class IndentLedger(models.Model):
     _name = 'issue.request'
     _description = "Issue Request"
-
-    @api.multi
-    def _default_issue_type(self):
-        for rec in self:
-            ab = []
-            if rec.indent_type == 'grn':
-                return [('grn', '!=', True), ('issue', '!=', True)]
-            else:
-                return [('issue', '!=', True),('grn', '=', True)]
+    #
+    # @api.multi
+    # def _default_issue_type(self):
+    #     for rec in self:
+    #         ab = []
+    #         if rec.indent_type == 'grn':
+    #             return [('grn', '!=', True), ('issue', '!=', True)]
+    #         else:
+    #             return [('issue', '!=', True),('grn', '=', True)]
 
     # @api.onchange('serial_number')
     # def change_slect_leave(self):
@@ -43,7 +43,7 @@ class IndentLedger(models.Model):
     specification = fields.Text('Specifications')
     serial_bool = fields.Boolean(string='Serial Number')
     # serial_number = fields.Char(string='Serial Number')
-    serial_number = fields.Many2one('indent.serialnumber',string='Serial Number', domain=_default_issue_type)
+    serial_number = fields.Many2one('indent.serialnumber',string='Serial Number')
     asset = fields.Boolean('is Asset?')
     requested_quantity = fields.Integer('Requested Quantity')
     approved_quantity = fields.Integer('Approved Quantity')
