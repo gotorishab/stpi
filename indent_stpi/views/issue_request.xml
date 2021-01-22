@@ -119,8 +119,6 @@
                  />
 
 
-
-
         <record model='ir.ui.view' id='srn_request_tree_view'>
             <field name="name">issue.request.grn.tree</field>
             <field name="model">issue.request</field>
@@ -143,6 +141,7 @@
                     <field name="document"/>
                     <field name="approved_quantity" attrs="{'readonly':[('state','!=', 'to_approve')]}"/>
                     <field name="approved_date" required="1" attrs="{'readonly':[('state','!=', 'to_approve')]}"/>
+                    <button name="proceed_further" string="Proceed" type="object" icon = "fa-forward" states="to_approve_proceed"/>
                     <button name="button_approved" string="Approve" type="object" icon = "fa-thumbs-o-up" states="to_approve"/>
                     <button name="button_reject" string="Reject" type="object" icon = "fa-ban" states="to_approve"/>
                     <field name="state" readonly="1"/>
