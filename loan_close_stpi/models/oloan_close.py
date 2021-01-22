@@ -29,7 +29,8 @@ class LoanClose(models.Model):
                     cb+=i.cb_interest
                     amount+=i.amount
             rec.total_principal_remaining = rec.total_loan_taken - amount
-            rem_in = ((rec.total_principal_remaining * rec.loan_id.interest)/100)/365
+            days = int((date.today() - date.today().replace(day=1)).days)
+            rem_in = ((rec.total_principal_remaining * rec.loan_id.interest)/100)/365 * int(days)
             rec.total_interest_as_today = cb + rem_in
             rec.foreclosure_amount = rec.total_principal_remaining + cb + rem_in
 
