@@ -29,7 +29,7 @@ class SerialNumber(models.Model):
     @api.multi
     def button_approved(self):
         for res in self:
-            res.write({'state': 'to_approve'})
+            res.write({'state': 'approved'})
 
 
     @api.multi
