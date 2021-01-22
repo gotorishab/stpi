@@ -28,6 +28,7 @@
                         <group>
                             <field name="vendor_info" attrs="{'invisible':[('indent_type','=', 'issue')], 'readonly':[('state','!=', 'draft')]}"/>
                             <field name="bill_no" attrs="{'invisible':[('indent_type','=', 'issue')], 'readonly':[('state','!=', 'draft')]}"/>
+                            <field name="upload_invoice" attrs="{'invisible':[('indent_type','=', 'issue')],'required':[('indent_type','!=', 'issue')], 'readonly':[('state','!=', 'draft')]}"/>
                             <field name="amount" attrs="{'invisible':[('indent_type','=', 'issue')], 'readonly':[('state','!=', 'draft')]}"/>
                             <field name="received_by" attrs="{'invisible':[('indent_type','=', 'issue')], 'readonly':[('state','!=', 'draft')]}"/>
                             <field name="item_checked_by" attrs="{'invisible':[('indent_type','=', 'issue')], 'readonly':[('state','!=', 'draft')]}"/>
@@ -45,6 +46,7 @@
                                     <field name="item_id" required="1" options="{'no_create_edit': True}"  domain="[('child_indent_stock','=',item_category_id)]"/>
                                     <field name="specification" required="1"/>
                                     <field name="requested_quantity" required="1"/>
+                                    <field name="amount" required="1"/>
                                     <field name="requested_date" required="1"/>
                                     <field name="issue_approved" invisible="1"/>
                                     <field name="approved_quantity" attrs="{'invisible': [('issue_approved', '=', False)],'readonly': [('issue_approved', '!=', False)]}"/>

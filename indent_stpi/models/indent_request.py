@@ -19,6 +19,7 @@ class EmployeeIndentAdvance(models.Model):
 
     vendor_info = fields.Text('Vendor Details',track_visibility='always')
     bill_no = fields.Char('Bill Number',track_visibility='always')
+    upload_invoice = fields.Binary('Upload Invoice',track_visibility='always')
     amount = fields.Float('Amount',track_visibility='always')
     received_by = fields.Many2one('hr.employee','Received By',track_visibility='always')
     item_checked_by = fields.Char('Item Checked By',track_visibility='always')
@@ -162,6 +163,7 @@ class FamilyDetails(models.Model):
     specification = fields.Text('Specifications')
     requested_quantity = fields.Integer('Qty.')
     approved_quantity = fields.Integer('Approved Qty.')
+    amount = fields.Float('Amount')
     issue_approved = fields.Boolean('Issue approved')
     requested_date = fields.Date('Required Date', default=fields.Date.today())
     approved_date = fields.Date('Approved Date')

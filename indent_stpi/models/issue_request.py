@@ -50,6 +50,7 @@ class IndentLedger(models.Model):
     requested_date = fields.Date('Requested Date')
     approved_date = fields.Date('Approved Date', default=fields.Date.today())
     coe_asset_id = fields.Char('Asset id')
+    document = fields.Binary('Document')
 
 
     indent_type = fields.Selection([('issue', 'Issue'), ('grn', 'GRN')
