@@ -53,6 +53,7 @@
         <field name="view_type">form</field>
         <field name="view_mode">tree</field>
         <field name="search_view_id" ref="view_issue_grn_request_status_filter_report"/>
+        <field name="view_id" ref="issue_request_tree_view"/>
         <field name="domain">[('state','=','to_approve'),('indent_type','=','issue')]</field>
     </record>
 
@@ -115,7 +116,7 @@
                  />
 
 
-        
+
 
         <record model='ir.ui.view' id='srn_request_tree_view'>
             <field name="name">issue.request.grn.tree</field>
@@ -163,6 +164,7 @@
         <field name="view_type">form</field>
         <field name="view_mode">tree</field>
         <field name="search_view_id" ref="view_issue_grn_request_status_filter_report"/>
+        <field name="view_id" ref="srn_request_tree_view"/>
         <field name="domain">[('state','=','to_approve'),('indent_type','=','grn')]</field>
     </record>
 
