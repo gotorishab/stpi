@@ -9,6 +9,13 @@
     </record>
 
 
+    <record id="group_issue_request_forward" model="res.groups">
+        <field name="name">Indent Issue Request Forwarder</field>
+        <field name="stpi">1</field>
+        <field name="category_id" ref="module_Indent"/>
+    </record>
+
+
     <record id="group_issue_request_manager" model="res.groups">
         <field name="name">Indent Issue Request Manager</field>
         <field name="stpi">1</field>
