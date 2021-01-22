@@ -69,8 +69,15 @@
             <field name="arch" type="xml">
                 <tree string="Item Master" editable="bottom">
                     <field name="name" required="1"/>
+                    <field name="branch_id" required="1"/>
+                    <field name="item_category_id" required="1"/>
+                    <field name="item_id" required="1"/>
                     <field name="grn" required="1"/>
                     <field name="issue" required="1"/>
+                    <button name="send_for_approval" string="Send for Approval" type="object" icon = "fa-forward" states="draft" groups="indent_stpi.group_serial_number_user"/>
+                        <button name="button_send_back" string="Send Back" type="object" icon = "fa-undo" states="to_approve" groups="indent_stpi.group_serial_number_manager"/>
+                    <button name="button_approved" string="Approve" type="object" icon = "fa-thumbs-o-up" states="to_approve" groups="indent_stpi.group_serial_number_manager"/>
+                    <button name="button_reject" string="Reject" type="object" icon = "fa-ban" states="to_approve" groups="indent_stpi.group_serial_number_manager"/>
                 </tree>
             </field>
         </record>

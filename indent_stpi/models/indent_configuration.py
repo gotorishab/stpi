@@ -10,6 +10,38 @@ class SerialNumber(models.Model):
     name = fields.Char('Serial Number')
     grn = fields.Boolean('GRN')
     issue = fields.Boolean('Issue')
+    branch_id = fields.Many2one('res.branch', string='Branch', store=True)
+    item_category_id = fields.Many2one('indent.stock', string='Item Category')
+    item_id = fields.Many2one('child.indent.stock', string='Item')
+
+
+    state = fields.Selection(
+        [('draft', 'Draft'), ('to_approve', 'To Approve'), ('approved', 'Approved'), ('rejected', 'Rejected')
+         ], string='Status', default='draft')
+
+
+    @api.multi
+    def send_for_approval(self):
+        for res in self:
+            res.write({'state': 'to_approve'})
+
+
+    @api.multi
+    def button_approved(self):
+        for res in self:
+            res.write({'state': 'to_approve'})
+
+
+    @api.multi
+    def button_reject(self):
+        for res in self:
+            res.write({'state': 'rejected'})
+
+    @api.multi
+    def button_send_back(self):
+        for res in self:
+            res.write({'state': 'draft'})
+
 
 class ItemMaster(models.Model):
     _name = 'indent.stock'

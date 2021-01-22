@@ -16,7 +16,7 @@
                     <field name="item_id" readonly="1"/>
                     <field name="specification" readonly="1"/>
                     <field name="serial_bool" readonly="1"/>
-                    <field name="serial_number" attrs="{'required': [('serial_bool', '=', True)],'invisible': ['|',('serial_bool', '=', False)],'readonly': [('state', '!=', 'to_approve')]}" domain="[('grn', '=', True), ('issue', '!=', True)]" options="{'no_create_edit': True}"/>
+                    <field name="serial_number" attrs="{'required': [('serial_bool', '=', True)],'invisible': ['|',('serial_bool', '=', False)],'readonly': [('state', '!=', 'to_approve')]}" domain="[('grn', '=', True), ('issue', '!=', True), ('branch_id', '=', branch_id), ('item_category_id', '=', item_category_id), ('item_id', '=', item_id), ('state', '=', 'approved')]" options="{'no_create_edit': True}"/>
                     <field name="asset" readonly="1"/>
                     <button name="fill_asset_details" string="Fill Asset Details" type="object"  attrs="{'invisible': ['|',('asset', '=', False),('state', '!=', 'approved')]}"/>
                     <field name="requested_quantity" readonly="1"/>
@@ -134,7 +134,7 @@
                     <field name="item_id" readonly="1"/>
                     <field name="specification" readonly="1"/>
                     <field name="serial_bool" readonly="1"/>
-                    <field name="serial_number" attrs="{'required': [('serial_bool', '=', True)],'invisible': ['|',('serial_bool', '=', False)],'readonly': [('state', '!=', 'to_approve_proceed')]}" domain="[('grn', '!=', True), ('issue', '!=', True)]"/>
+                    <field name="serial_number" attrs="{'required': [('serial_bool', '=', True)],'invisible': ['|',('serial_bool', '=', False)],'readonly': [('state', '!=', 'to_approve_proceed')]}" domain="[('grn', '!=', True), ('issue', '!=', True), ('branch_id', '=', branch_id), ('item_category_id', '=', item_category_id), ('item_id', '=', item_id), ('state', '=', 'approved')]"/>
                     <field name="asset" readonly="1"/>
                     <button name="fill_asset_details" string="Fill Asset Details" type="object"  attrs="{'invisible': ['|',('asset', '=', False),('state', '!=', 'approved')]}"/>
                     <field name="requested_quantity" readonly="1"/>
