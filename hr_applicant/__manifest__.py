@@ -14,7 +14,7 @@
     'data': [
         'security/ir.model.access.csv',
         # 'security/applicant_security.xml',
-        # 'data/formio_job_demo_data.xml',
+        'data/ir_sequence.xml',
         'wizard/select_training_view.xml',
         'views/hr_recruitment_views.xml',
         'views/hr_recruitment_employee_views.xml',

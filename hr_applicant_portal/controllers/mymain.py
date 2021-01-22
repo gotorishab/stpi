@@ -45,13 +45,35 @@ class HrPortalRecruitment(http.Controller):
     @http.route(['/Apply/jobs'], type='http', auth="public", website=True)
     def ApplyJobs(self, **post):
         # try:
+        
         post.update({'job_id': literal_eval(post.get('job_id'))})
+        address_id = self.slicedict(post, 'street_')
         from_date_id = self.slicedict(post, 'from_date_')
         edducation_id = self.slicedict(post, 'date_start_')
-        operation_rec, education_rec = [], []
+        address_rec, operation_rec, education_rec = [], [], []
+        for item in address_id.keys():
+            address_dic = {}
+            rec = int(item.split('_')[1])
+            if post.get('address_type_id_{}'.format(rec)):
+                address_dic.update({'address_type': post.pop('address_type_id_{}'.format(rec))})
+            if post.get('street_{}'.format(rec)):
+                address_dic.update({'street': post.pop('street_{}'.format(rec))})
+            if post.get('street2_{}'.format(rec)):
+                address_dic.update({'street2': post.pop('street2_{}'.format(rec))})
+            if post.get('city_{}'.format(rec)):
+                address_dic.update({'city': post.pop('city_{}'.format(rec))})
+            if post.get('state_id_{}'.format(rec)):
+                address_dic.update({'state_id': int(post.pop('state_id_{}'.format(rec)))})
+            if post.get('country_id_{}'.format(rec)):
+                address_dic.update({'country_id': int(post.pop('country_id_{}'.format(rec)))})
+            if post.get('zip_{}'.format(rec)):
+                address_dic.update({'zip': post.pop('zip_{}'.format(rec))})
+            if post.get('isCorrespondence_{}'.format(rec)):
+                address_dic.update({'is_correspondence_address': bool(post.pop('isCorrespondence_{}'.format(rec)))})
+            if address_dic:
+                address_rec.append(address_dic)
         for item in from_date_id.keys():
             operations_dic = {}
-            print(">>>>>>>>>>>>>>>>>>", item.split('_')[1])
             rec = int(item.split('_')[2])
             if post.get('from_date_{}'.format(rec)):
                 operations_dic.update({'from_date': post.pop('from_date_{}'.format(rec))})
@@ -72,8 +94,8 @@ class HrPortalRecruitment(http.Controller):
         for item in edducation_id.keys():
             operations_dic = {}
             rec = int(item.split('_')[2])
-            print(">>>>line_type_id_1,>>>>>>>>>>>>>>", post)
-            print(">>>>line_type_id_1,>>>>>>>>>>>>>>", rec, post.get('line_type_id_{}'.format(rec)))
+            # print(">>>>line_type_id_1,>>>>>>>>>>>>>>", post)
+            # print(">>>>line_type_id_1,>>>>>>>>>>>>>>", rec, post.get('line_type_id_{}'.format(rec)))
             if post.get('line_type_id_{}'.format(rec)):
                 operations_dic.update({'line_type_id': int(post.pop('line_type_id_{}'.format(rec)))})
             if post.get('date_start_{}'.format(rec)):
@@ -83,17 +105,21 @@ class HrPortalRecruitment(http.Controller):
             if post.get('description_{}'.format(rec)):
                 operations_dic.update({'description': post.pop('description_{}'.format(rec))})
             if post.get('name_{}'.format(rec)):
-                operations_dic.update({'title': post.pop('name_{}'.format(rec))})
+                operations_dic.update({'name': post.pop('name_{}'.format(rec))})
             if post.get('specialization_{}'.format(rec)):
                 operations_dic.update({'specialization': post.pop('specialization_{}'.format(rec))})
             if operations_dic:
                 education_rec.append(operations_dic)
-        print(">>>>>>>>>>>>>>>>", education_rec)
-        print('====================post===================', post)
+        print("\naddress_rec>>>>>>>>>>>>>>>>", address_rec)
+        print("\nperation_rec>>>>>>>>>>>>>>>>", operation_rec)
+        print("\neducation_rec>>>>>>>>>>>>>>>>", education_rec)
+        print('\n====================post===================', post)
         applicant_id = request.env['hr.applicant'].sudo().create(post)
         print('====================app===================', applicant_id.id)
-        if operation_rec or education_rec:
+        if address_rec or operation_rec or education_rec:
             try:
+                if address_rec:
+                    applicant_id.write({'address_ids': [(0, 0, f) for f in address_rec]})
                 if education_rec:
                     applicant_id.write({'resume_line_applicant_ids': [(0, 0, f) for f in education_rec]})
                 if operation_rec:
@@ -110,8 +136,14 @@ class HrPortalRecruitment(http.Controller):
     @http.route(['/get/type'],type='json', auth='public', website=True)
     def GetType(self, **post):
         line_type_ids = request.env['hr.resume.line.type'].sudo().search_read([], ['id', 'name'])
-        print(">>>>>>>>>>>>", line_type_ids)
-        return {'line_type_ids': line_type_ids}
+        state_ids = request.env['res.country.state'].sudo().search_read([], ['id', 'name'])
+        country_ids = request.env['res.country'].sudo().search_read([], ['id', 'name'])
+        address_type_ids = request.env['applicant.address']._fields['address_type']._description_selection(request.env)
+        return {'line_type_ids': line_type_ids,
+                'state_ids': state_ids,
+                'country_ids': country_ids,
+                'address_type_ids': address_type_ids,
+                }
         # admission = request.env['admission.admission'].sudo()
         # redirect = ("/my/admissions")
         # try:
@@ -125,17 +157,18 @@ class HrPortalRecruitment(http.Controller):
         # post['datepicker'] = 1
         # return request.render("sync_ems_admission_website.apply4admission", post, {})
 
-
-    # @http.route('/getJobName', type='http', auth="public", website=True, csrf=False)
-    # def getJobName(self, **kw):
-    #     if kw.get('advertisement_ids'):
-    #         # institute_id = request.env['res.branch'].sudo().search([('id', '=', int(kw.get('institute_id')))])
-    #         job_id = request.env['advertisement.line'].sudo().search(
-    #             [('id', '=', int(kw.get('advertisement_ids'))),
-    #              ])
-    #         result = []
-    #         print('=================================id===============================', job_id)
-    #         if job_id:
-    #             for course in job_id:
-    #                 result.append((course.job_id.id, course.job_id.name))
-    #             return json.dumps(dict(result=result))
+    @http.route(['/getJobName'],type='http', auth='public', website=True)
+    def getJobName(self, **kw):
+        if kw.get('advertisement_ids'):
+            # institute_id = request.env['res.branch'].sudo().search([('id', '=', int(kw.get('institute_id')))])
+            job_id = request.env['advertisement.line'].sudo().search(
+                [('id', '=', int(kw.get('advertisement_ids'))),
+                 ])
+            result = []
+            print('=================================id===============================', job_id)
+            if job_id:
+                for course in job_id:
+                    result.append((course.job_id.id, course.job_id.name))
+                return json.dumps(dict(result=result))
+        else:
+            return False

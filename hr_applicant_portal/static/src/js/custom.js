@@ -1,9 +1,22 @@
 
 $(document).ready(function(){
-    $('#advertisement_ids').on('change', function(){
+
+    $('#dob').on('change', function(){
+        var dateString = $(this).val();
+        var myDate = new Date(dateString);
+        var today = new Date();
+        if ( myDate > today ) { 
+            alert("You cannot enter a date in the future!");
+            $('#dob')[0].value = '';
+            return false;
+        }
+        return true;
+    });
+
+    $('.advertisement_line_id').on('change', function(){
         $.ajax({
             url: '/getJobName',
-            type: 'POST',
+            type: 'GET',
             data : {'advertisement_ids': $(this).val()},
             beforeSend : function() {
 //                    $("#loader").css('display', 'block');
@@ -18,12 +31,13 @@ $(document).ready(function(){
                     var response_data = JSON.parse(response)['result'];
                     var html_content = "<option value=''>Select</option>";
                     for(var i=0;i<response_data.length;i++){
-                        html_content += "<option name='courses.id' value='"+response_data[i][0]+"'>"+response_data[i][1]+"</option>";
+                        html_content += "<option id='course_id' name='courses.id' value='"+response_data[i][0]+"'>"+response_data[i][1]+"</option>";
                     }
-                    document.getElementById('job_id').innerHTML = html_content;
+                    $(".job_id").append(html_content);
                 }
                 else{
-                    document.getElementById('advertisement_ids').innerHTML = "<option value=''/>";
+                    $("option").remove("#course_id");
+                    $(".job_id").append("<option value=''/>");
                 }
 
             },

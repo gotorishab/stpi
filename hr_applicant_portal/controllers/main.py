@@ -109,8 +109,12 @@ class HrPortalRecruitment(http.Controller):
     @http.route(['/get/type'],type='json', auth='public', website=True)
     def GetType(self, **post):
         line_type_ids = request.env['hr.resume.line.type'].sudo().search_read([], ['id', 'name'])
-        print(">>>>>>>>>>>>", line_type_ids)
-        return {'line_type_ids': line_type_ids}
+        state_ids = request.env['res.country.state'].sudo().search_read([], ['id', 'name'])
+        country_ids = request.env['res.country'].sudo().search_read([], ['id', 'name'])
+        return {'line_type_ids': line_type_ids,
+                'state_ids': state_ids,
+                'country_ids': country_ids
+                }
         # admission = request.env['admission.admission'].sudo()
         # redirect = ("/my/admissions")
         # try:

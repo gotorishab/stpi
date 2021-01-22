@@ -4,6 +4,7 @@
         <xpath expr="." position="inside">
         <link rel="stylesheet" href="/hr_applicant_portal/static/src/scss/website_shiping.scss"/>
          <script type="text/javascript" src="/hr_applicant_portal/static/src/js/employee_move_line.js"></script>
+         <script type="text/javascript" src="/hr_applicant_portal/static/src/js/custom.js"></script>
         </xpath>
     </template>
     <template id="header_layout" inherit_id="website.layout" name="Jobs">
@@ -24,7 +25,7 @@
         <t t-call="website.layout">
             <div class="oe_structure"/>
             <div class="container oe_website_sale s_website_form apply4jobs">
-                <form class="mb32 mt32 apply4jobs_form" action="/Apply/jobs" role="form" method="post" data-model_name="hr.applicant" enctype="multipart/form-data">
+                <form id="form" class="mb32 mt32 apply4jobs_form" action="/Apply/jobs" role="form" method="post" data-model_name="hr.applicant" enctype="multipart/form-data">
                     <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                     <div class="row text-center">
                         <div class="col-md-12">
@@ -83,7 +84,7 @@
                                         <div class="form-group">
                                             <label class="col-md-4 pl0 col-sm-6 o_label" for="birth_date">Applicant Name *</label>
                                             <div class="col-md-8 col-sm-12 input-group">
-                                                 <input type="text" class="form-control" name="name" placeholder="Applicant Name........." value=""/>
+                                                 <input type="text" class="form-control" name="name" placeholder="Applicant Name........." value="" pattern="[A-Za-z ]{1,32}"/>
                                             </div>
                                         </div>
                                     </div>
@@ -92,7 +93,7 @@
                                             <label class="col-md-4 pl0 col-sm-6 o_label" for="business_address">Father's Name
                                             </label>
                                             <div class="col-md-8 col-sm-12">
-                                                <input   type="text" class="form-control" name="name" placeholder="Father's Name........." value=""/>
+                                                <input type="text" class="form-control" name="name" placeholder="Father's Name........." value="" pattern="[A-Za-z ]{1,32}"/>
                                             </div>
                                         </div>
                                     </div>
@@ -101,7 +102,7 @@
                                             <label class="col-md-4 pl0 col-sm-6 o_label" for="motheer_name">Mother's Name
                                             </label>
                                             <div class="col-md-8 col-sm-12">
-                                                <input   type="text" class="form-control" name="name" placeholder="Mother's Name........." value=""/>
+                                                <input type="text" class="form-control" name="name" placeholder="Mother's Name........." value="" pattern="[A-Za-z ]{1,32}"/>
                                             </div>
                                         </div>
                                     </div>
@@ -110,7 +111,7 @@
                                             <label class="col-md-4 pl0 col-sm-6 o_label" for="dob">Date of Birth (DoB)
                                             </label>
                                             <div class="col-md-8 col-sm-12">
-                                                <input type="date" class="form-control" name="dob" value=""/>
+                                                <input type="date" class="form-control" id="dob" name="dob" value=""/>
                                             </div>
                                         </div>
                                     </div>
@@ -119,7 +120,7 @@
                                             <label class="col-md-4 pl0 col-sm-6 o_label" for="business_address">Email
                                             </label>
                                             <div class="col-md-8 col-sm-12">
-                                                <input   type="text" class="form-control" name="personal_email" placeholder="Email........." value=""/>
+                                                <input type="text" class="form-control" name="personal_email" placeholder="Email........." value="" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"/>
                                             </div>
                                         </div>
                                     </div>
@@ -127,7 +128,7 @@
                                         <div class="form-group">
                                             <label class="col-md-4 pl0 col-sm-6 o_label" for="birth_date">Aadhar Card No *</label>
                                             <div class="col-md-8 col-sm-12 input-group">
-                                                 <input   type="text" class="form-control" name="aadhar_no" placeholder="Aadhar Card No........." value=""/>
+                                                 <input type="text" class="form-control" name="aadhar_no" placeholder="Aadhar Card No........." value="" pattern="[0-9]{12,16}"/>
                                             </div>
                                         </div>
                                     </div>
@@ -136,7 +137,7 @@
                                             <label class="col-md-4 pl0 col-sm-6 o_label" for="business_address">PAN Card No
                                             </label>
                                             <div class="col-md-8 col-sm-12">
-                                                <input   type="text" class="form-control" name="pan_no" placeholder="PAN Card No........." value=""/>
+                                                <input type="text" class="form-control" name="pan_no" placeholder="PAN Card No........." value="" pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}"/>
                                             </div>
                                         </div>
                                     </div>
@@ -283,12 +284,12 @@
                                                     </label>
                                                     <div class="col-md-8 col-sm-12">
                                                         <select class="form-control job_id" name="job_id">
-                                                            <option value="" t-attf-selected="selected">Select...</option>
+                                                            <!-- <option value="" t-attf-selected="selected">Select...</option>
                                                             <t t-foreach="job_ids" t-as="job_id">
                                                                 <option t-att-value="job_id.id">
                                                                    <t t-esc="job_id.name"/>
                                                                 </option>
-                                                            </t>
+                                                            </t> -->
                                                         </select>
                                                     </div>
                                                 </div>
@@ -308,10 +309,12 @@
                                         </h4>
                                     </div>
                                     <div class="oe_box mt-3">
+                                        <input type="hidden" id="address_rec" name="addreess_rec" class="hidden" value="0"/>
                                         <table id="previous_academic_info"
                                                class="oe_list_content table table-sm">
                                             <thead>
                                                 <tr>
+                                                    <th>Address Type</th>
                                                     <th>Street</th>
                                                     <th>Street2</th>
                                                     <th>City</th>
@@ -325,7 +328,7 @@
                                             <tbody>
                                                 <tr class="oe_button o_add_an_item_tr">
                                                     <td colspan="7" class="text-left o_add_an_item">
-                                                        <a href="#"
+                                                        <a
                                                            id="add_move_line_ids">Add Item
                                                         </a>
                                                     </td>

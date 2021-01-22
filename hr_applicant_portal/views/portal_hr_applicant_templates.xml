@@ -304,6 +304,7 @@
                                         </h4>
                                     </div>
                                     <div class="oe_box mt-3">
+                                        <input type="hidden" id="address_rec" name="addreess_rec" class="hidden" value="0"/>
                                         <table id="previous_academic_info"
                                                class="oe_list_content table table-sm">
                                             <thead>
@@ -321,7 +322,7 @@
                                             <tbody>
                                                 <tr class="oe_button o_add_an_item_tr">
                                                     <td colspan="7" class="text-left o_add_an_item">
-                                                        <a href="#"
+                                                        <a
                                                            id="add_move_line_ids">Add Item
                                                         </a>
                                                     </td>
