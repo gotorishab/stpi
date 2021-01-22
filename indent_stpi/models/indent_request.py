@@ -56,6 +56,11 @@ class EmployeeIndentAdvance(models.Model):
     def button_approved(self):
         for res in self:
             res.write({'state': 'approved'})
+            state = 'to_approve'
+            if res.indent_type == 'grn':
+                state = 'to_approve_proceed'
+            else:
+                state = 'to_approve'
             for item in res.item_ids:
                 if not item.item_id.serial_bool:
                     create_ledger_family = self.env['issue.request'].sudo().create(
@@ -74,7 +79,7 @@ class EmployeeIndentAdvance(models.Model):
                             'requested_date': item.requested_date,
                             'indent_state': res.state,
                             'indent_type': res.indent_type,
-                            'state': 'to_approve',
+                            'state': state,
                         }
                     )
                 else:
@@ -97,7 +102,7 @@ class EmployeeIndentAdvance(models.Model):
                                 'requested_date': item.requested_date,
                                 'indent_state': res.state,
                                 'indent_type': res.indent_type,
-                                'state': 'to_approve',
+                                'state': state,
                             }
                         )
 

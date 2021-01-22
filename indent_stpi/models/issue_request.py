@@ -61,8 +61,13 @@ class IndentLedger(models.Model):
          ], string='Indent Status')
 
     state = fields.Selection(
-        [('draft', 'Draft'), ('to_approve', 'To Approve'), ('approved', 'Approved'), ('rejected', 'Rejected')
+        [('draft', 'Draft'), ('to_approve_proceed', 'To Approve 1'), ('to_approve', 'To Approve'), ('approved', 'Approved'), ('rejected', 'Rejected')
          ], string='Status')
+
+    @api.multi
+    def proceed_further(self):
+        for res in self:
+            res.write({'state': 'to_approve'})
 
     @api.multi
     def button_approved(self):

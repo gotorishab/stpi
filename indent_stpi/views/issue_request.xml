@@ -134,7 +134,7 @@
                     <field name="item_id" readonly="1"/>
                     <field name="specification" readonly="1"/>
                     <field name="serial_bool" readonly="1"/>
-                    <field name="serial_number" attrs="{'required': [('serial_bool', '=', True)],'invisible': ['|',('serial_bool', '=', False)],'readonly': [('state', '!=', 'to_approve')]}" domain="[('grn', '!=', True), ('issue', '!=', True)]"/>
+                    <field name="serial_number" attrs="{'required': [('serial_bool', '=', True)],'invisible': ['|',('serial_bool', '=', False)],'readonly': [('state', '!=', 'to_approve_proceed')]}" domain="[('grn', '!=', True), ('issue', '!=', True)]"/>
                     <field name="asset" readonly="1"/>
                     <button name="fill_asset_details" string="Fill Asset Details" type="object"  attrs="{'invisible': ['|',('asset', '=', False),('state', '!=', 'approved')]}"/>
                     <field name="requested_quantity" readonly="1"/>
@@ -164,6 +164,17 @@
 
     <!--============Action view of Employee Indent Advance To Approve============-->
     <record id="indent_grn_request_action_to_approve" model="ir.actions.act_window">
+        <field name="name">GRN Request</field>
+        <field name="res_model">issue.request</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree</field>
+        <field name="search_view_id" ref="view_issue_grn_request_status_filter_report"/>
+        <field name="view_id" ref="srn_request_tree_view"/>
+        <field name="domain">[('state','=','to_approve_proceed'),('indent_type','=','grn')]</field>
+    </record>
+
+    <!--============Action view of Employee Indent Advance To Approve============-->
+    <record id="indent_grn_request_action_received" model="ir.actions.act_window">
         <field name="name">GRN Request</field>
         <field name="res_model">issue.request</field>
         <field name="view_type">form</field>
@@ -209,10 +220,18 @@
               action="indent_grn_request_action_all"
                  />
 
+
+        <menuitem name="Received"
+                id="menu_grn_request_apply_proceed_further" parent="menu_grn_request_id"
+                 action="indent_grn_request_action_received"
+                 />
+
         <menuitem name="To Approve"
                 id="menu_grn_request_apply_to_approve" parent="menu_grn_request_id"
                  action="indent_grn_request_action_to_approve"
                  />
+
+
     <menuitem name="Approved"
                 id="menu_grn_request_apply_approved" parent="menu_grn_request_id"
                  action="indent_grn_request_action_approved"
