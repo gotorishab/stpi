@@ -39,7 +39,8 @@ class EventTag(models.Model):
     _inherit = "event.tag"
 
     front_type = fields.Selection([
-        ('subevent', 'Event SubIdea'),
+        ('event', 'Event'),
+        ('subevent', 'SubEvent'),
     ], string='Front Type')
 
-    parent_tag_id = fields.Many2one('event.tag', string='Parent')
+    parent_tag_id = fields.Many2one('event.tag', string='Event Category')

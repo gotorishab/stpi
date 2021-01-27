@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.hr</field>
+        <field name="model">res.config.settings</field>
+        <!-- <field name="priority" eval="70"/> -->
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('settings')]" position="inside">
+                 <div class="app_settings_block" data-string="Employees" string="Employees" data-key="hr" groups="hr.group_hr_manager">
+                    <h2>Employees work anniversary year</h2>
+                    <div class="row mt16 o_settings_container" name="employees_setting_container">
+                        <div class="col-12 col-lg-6 o_setting_box" id="default_company_schedule_setting">
+                            <div class="o_setting_right_pane">
+                                <label for="work_anniversary_year"/>
+                                <span class="fa fa-lg fa-building-o" title="Values set here are company-specific." role="img" aria-label="Values set here are company-specific." groups="base.group_multi_company"/>
+                                <div class="row">
+                                    <div class="text-muted col-lg-8">
+                                        Set work anniversary year for employee
+                                    </div>
+                                </div>
+                                <div class="content-group">
+                                    <div class="mt16">
+                                        <field name="work_anniversary_year" required="1"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        <xpath expr="//div[hasclass('settings')]" position="inside">
+                 <div class="app_settings_block" data-string="General Settings" string="General Settings" data-key="general_settings">
+                    <h2>Enable/Disable Story Post for users along with maximum word limit for story</h2>
+                    <div class="row mt16 o_settings_container" name="users_setting_container">
+                        <div class="col-12 col-lg-6 o_setting_box" id="default_company_schedule_setting">
+                            <div class="o_setting_right_pane">
+<!--                                <label for="enable_story_post"/>-->
+                                <span class="fa fa-lg fa-building-o" title="Values set here are related to story" role="img" aria-label="Values set here are related to story"/>
+                                <div class="row">
+                                    <div class="text-muted col-lg-8">
+                                        Set Maximum word limit
+                                    </div>
+                                </div>
+                                <div class="content-group">
+                                    <div class="mt16">
+                                        <label for="enable_story_post"/>
+                                        <field name="enable_story_post" required="1"/>
+                                        <label for="max_word_limit_story"/>
+                                        <field name="max_word_limit_story" required="1"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+            <xpath expr="//div[hasclass('settings')]" position="inside">
+                 <div class="app_settings_block" data-string="General Settings" string="General Settings" data-key="general_settings">
+                    <h2>Enable/Disable Ideas and Suggestion sharing feature for portal users along with maximum word limit for ideas and Suggestions</h2>
+                    <div class="row mt16 o_settings_container" name="users_setting_container">
+                        <div class="col-12 col-lg-6 o_setting_box" id="default_company_schedule_setting">
+                            <div class="o_setting_right_pane">
+<!--                                <label for="enable_idea_post"/>-->
+                                <span class="fa fa-lg fa-building-o" title="Values set here are related to Idea/Suggestion" role="img" aria-label="Values set here are related to Idea/Suggestion"/>
+                                <div class="row">
+                                    <div class="text-muted col-lg-8">
+                                        Set Maximum word limit
+                                    </div>
+                                </div>
+                                <div class="content-group">
+                                    <div class="mt16">
+                                        <label for="enable_idea_post"/>
+                                        <field name="enable_idea_post" required="1"/>
+                                        <label for="max_word_limit_idea"/>
+                                        <field name="max_word_limit_idea" required="1"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+            <xpath expr="//div[hasclass('settings')]" position="inside">
+                 <div class="app_settings_block" data-string="General Settings" string="General Settings" data-key="general_settings">
+                    <h2>Enable Likes and Comments feature for posted stories</h2>
+                    <div class="row mt16 o_settings_container" name="users_setting_container">
+                        <div class="col-12 col-lg-6 o_setting_box" id="default_company_schedule_setting">
+                            <div class="o_setting_right_pane">
+<!--                                <label for="enable_idea_post"/>-->
+                                <span class="fa fa-lg fa-building-o" title="Values set here are related to Idea/Suggestion" role="img" aria-label="Values set here are related to Idea/Suggestion"/>
+                                <div class="row">
+                                    <div class="text-muted col-lg-8">
+                                        Enable Likes and Comments feature for posted stories
+                                    </div>
+                                </div>
+                                <div class="content-group">
+                                    <div class="mt16">
+                                        <label for="enable_like_stories"/>
+                                        <field name="enable_like_stories" required="1"/>
+                                        <label for="enable_comments_stories"/>
+                                        <field name="enable_comments_stories" required="1"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -36,3 +36,4 @@ access_vardhman_create_blogpost,vardhman.create.blogpost,model_vardhman_create_b
 access_vardhman_create_announcement,vardhman.create.announcement,model_vardhman_create_announcement,base.group_user,1,1,1,1
 access_vardhman_create_blogidea,vardhman.create.blogidea,model_vardhman_create_blogidea,base.group_user,1,1,1,1
 access_vardhman_create_disforum,vardhman.create.disforum,model_vardhman_create_disforum,base.group_user,1,1,1,1
+access_rejectstory_wizard,rejectstory.wizard,model_rejectstory_wizard,base.group_user,1,1,1,1

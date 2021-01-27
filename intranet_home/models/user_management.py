@@ -14,6 +14,8 @@ class VardhmanStoryCategory(models.Model):
     ], string='Activity')
 
 
+
+
 class VardhmanIdeaSuggestion(models.Model):
     _name = "vardhman.handle.ideasugg"
     _description = "Handle Idea/Suggestion Block User"
@@ -21,6 +23,20 @@ class VardhmanIdeaSuggestion(models.Model):
     ideasugg_id = fields.Many2one('blog.tag', string='Idea/Suggestion Type')
     subtype_id = fields.Many2one('blog.tag', string='Idea/Suggestion SubType')
     user_ids = fields.Many2many('res.users', string='User')
+    group_id = fields.Many2one('res.groups', string='Select Role')
+    state = fields.Selection([
+        ('draft', 'Draft'),
+        ('submitted', 'Submitted'),
+    ], string='state', default='draft')
+
+    def button_submit(self):
+        for res in self:
+            if res.group_id:
+                for user in res.user_ids:
+                    res.group_id.users = [(4, user.id)]
+            res.write({'state': 'submitted'})
+
+
 
 
 

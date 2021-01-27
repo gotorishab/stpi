@@ -85,6 +85,11 @@
              <field name="model">vardhman.handle.ideasugg</field>
              <field name="arch" type="xml">
                  <form string="Handle Ideas and Suggestions">
+                      <header>
+                         <button name="button_submit" string="Submit"  states="draft" type="object"/>
+                         <field name="state" widget="statusbar" statusbar_visible="draft,submitted" />
+
+            </header>
                      <sheet>
                          <group>
                              <group>
@@ -93,6 +98,7 @@
                              </group>
                              <group>
                                  <field name="user_ids" required="1" widget="many2many_tags"/>
+                                 <field name="group_id" required="1"/>
                              </group>
                          </group>
                      </sheet>

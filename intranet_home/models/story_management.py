@@ -7,12 +7,19 @@ from odoo.exceptions import ValidationError
 class VardhmanStoryCategory(models.Model):
     _name = "vardhman.create.blogpost"
     _inherit = ['mail.thread', 'mail.activity.mixin']
-    _description = "Vardhman Create Blog Post"
+    _description = "Create Blog Post"
 
+
+    def _default_unit(self):
+        return self.env['vardhman.unit.master'].sudo().search([('id', '=', self.env.user.unit_id.id)], limit=1)
+
+
+    unit_id = fields.Many2one('vardhman.unit.master',string='Unit', default=_default_unit)
     tag_ids = fields.Many2many('blog.tag', string='Story Category')
     name = fields.Char('Title')
     description = fields.Html('Description')
     post_id = fields.Many2one('blog.post', string='Story')
+    reason_des = fields.Many2one('vardhman.story.rejection', string='Reason for Rejection')
     front_type = fields.Selection([
         ('news', 'News'),
         ('story', 'Story'),
@@ -25,9 +32,11 @@ class VardhmanStoryCategory(models.Model):
     state = fields.Selection([
         ('draft', 'Draft'),
         ('pending_approval', 'Approval Pending'),
+        ('pending_approval1', 'Reviewed by Unit Level Moderator'),
+        ('pending_approval2', 'Reviewed by Central Level Moderator'),
         ('approved', 'Approved'),
         ('rejected', 'Rejected'),
-    ], string='state', default='draft')
+    ], string='state', default='draft', track_visibility='always')
 
 
     def button_send_for_approval(self):
@@ -48,16 +57,42 @@ class VardhmanStoryCategory(models.Model):
                     ('user_id', '=', rec.env.user.id),
                     ('activity', '=', 'blog'),
                 ], limit=1)
-            if blog_id:
-                raise ValidationError(
-                    _('You are blocked from posting.'))
-            else:
-                rec.write({'state': 'pending_approval'})
+            # if blog_id:
+            #     raise ValidationError(
+            #         _('You are blocked from posting.'))
+            # else:
+            rec.write({'state': 'pending_approval'})
+
+
+
+    def button_review_unit(self):
+        for rec in self:
+            rec.write({'state': 'pending_approval1'})
+
+
+
+    def button_review_central(self):
+        for rec in self:
+            rec.write({'state': 'pending_approval2'})
 
 
     def button_reject(self):
         for rec in self:
-            rec.write({'state': 'rejected'})
+            rc = {
+                'name': 'Reason for Rejection',
+                'view_type': 'form',
+                'view_mode': 'form',
+                'view_id': self.env.ref('intranet_home.view_reason_revert_story_wizard').id,
+                'res_model': 'rejectstory.wizard',
+                'type': 'ir.actions.act_window',
+                'target': 'new',
+                'context': {
+                    'default_res_model': self._name,
+                    'default_res_id': self.id,
+                }
+            }
+            return rc
+            # rec.write({'state': 'rejected'})
 
 
     def button_approved(self):
@@ -81,6 +116,18 @@ class VardhmanStoryCategory(models.Model):
             grp.is_published = True
             rec.write({'state': 'approved'})
 
+    def delete_story(self):
+        for rec in self:
+            rec.post_id.sudo().unlink()
+            rec.sudo().unlink()
+            return {
+                'name': 'Story - Approved',
+                'view_mode': 'tree,form',
+                'res_model': 'vardhman.create.blogpost',
+                'type': 'ir.actions.act_window',
+                'target': 'current',
+                'domain': [('state', '=', 'approved')],
+            }
 
 
 class VardhmanAnnouncement(models.Model):
@@ -156,9 +203,9 @@ class VardhmanIdeaShare(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = "Share Ideas and Suggestions"
 
-    ideasugg_id = fields.Many2one('blog.tag', string='Idea/Suggestion Type')
-    subtype_id = fields.Many2one('blog.tag', string='Idea/Suggestion SubType')
-    name = fields.Char('Title')
+    ideasugg_id = fields.Many2one('blog.tag', string='Idea Category')
+    subtype_id = fields.Many2one('blog.tag', string='Idea Sub-Category')
+    name = fields.Char('Ideas and Suggestions')
     post_id = fields.Many2one('blog.post', string='Idea/Suggestion')
     front_type = fields.Selection([
         ('news', 'News'),
@@ -179,14 +226,22 @@ class VardhmanIdeaShare(models.Model):
 
     def button_send_for_approval(self):
         for rec in self:
-            blog_id = self.env['vardhman.block.user'].sudo().search(
+            cout = 0
+            max_word_limit_idea = 0
+            blog_id = self.env['es.config.settings'].sudo().search(
                 [
-                    ('user_id', '=', rec.env.user.id),
-                    ('activity', '=', 'blog'),
+                    ('enable_idea_post', '=', True),
                 ], limit=1)
             if blog_id:
-                raise ValidationError(
-                    _('You are blocked from posting.'))
+                for numb in blog_id:
+                    max_word_limit_idea = numb.max_word_limit_idea
+                for ct in rec.name:
+                    cout+=1
+                if cout > max_word_limit_idea:
+                    raise ValidationError(
+                        _('Word Limit Exceeded'))
+                else:
+                    rec.write({'state': 'pending_approval'})
             else:
                 rec.write({'state': 'pending_approval'})
 

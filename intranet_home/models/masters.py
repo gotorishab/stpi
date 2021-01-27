@@ -22,7 +22,7 @@ class BlogTag(models.Model):
         ('calendar_3', 'Calendar Image Third'),
     ], string='Front Type')
 
-    parent_tag_id = fields.Many2one('blog.tag', string='Parent')
+    parent_tag_id = fields.Many2one('blog.tag', string='Idea Category')
 
 
 class HrDepartment(models.Model):

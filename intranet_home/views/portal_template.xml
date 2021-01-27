@@ -47,7 +47,7 @@
                     <tr>
                         <td><t t-esc="link.name"/></td>
                         <td><t t-esc="link.job_title"/></td>
-                        <td><t t-esc="link.birthday"/></td>
+                        <td class="d-flex"><span class="oe_name pr-1 oe_date d-block" t-esc='link.birthday.strftime("%b")' /><span class="oe_name pr-1 oe_date d-block" t-esc="link.birthday.day"></span></td>
                     </tr>
                 </t>
             </t>
@@ -68,6 +68,7 @@
                     <tr class="active">
                         <th>Name</th>
                         <th>Job Title</th>
+                        <th>Type</th>
                         <th>Anniversary</th>
                     </tr>
                 </thead>
@@ -75,14 +76,16 @@
                     <tr>
                         <td><t t-esc="link.name"/></td>
                         <td><t t-esc="link.job_title"/></td>
-                        <td><t t-esc="link.work_anniversary"/></td>
+                        <td>Work Anniversary</td>
+                        <td class="d-flex"><span class="oe_name pr-1 oe_date d-block" t-esc='link.work_anniversary.strftime("%b")' /><span class="oe_name pr-1 oe_date d-block" t-esc="link.work_anniversary.day"></span></td>
                     </tr>
                 </t>
                 <t t-foreach="marriage_links" t-as="link">
                     <tr>
                         <td><t t-esc="link.name"/></td>
                         <td><t t-esc="link.job_title"/></td>
-                        <td><t t-esc="link.marriage_anniversary"/></td>
+                        <td>Marriage Anniversary</td>
+                        <td class="d-flex"><span class="oe_name pr-1 oe_date d-block" t-esc='link.marriage_anniversary.strftime("%b")' /><span class="oe_name pr-1 oe_date d-block" t-esc="link.marriage_anniversary.day"></span></td>
                     </tr>
                 </t>
             </t>

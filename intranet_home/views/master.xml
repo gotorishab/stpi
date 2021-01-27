@@ -109,6 +109,13 @@
          </record>
 
 
+         <record id="ir_action_vardhman_suggestion_subtype" model="ir.actions.act_window">
+             <field name="name">Idea/Suggestion SubType</field>
+             <field name="res_model">blog.tag</field>
+             <field name="view_mode">tree,form</field>
+             <field name="context">{'default_front_type': 'subidea'}</field>
+             <field name="domain">[('front_type','=','subidea')]</field>
+         </record>
     <menuitem id="list_suggestion_type_view"
             name="Idea/Suggestion Type"
             sequence="2"
@@ -118,20 +125,80 @@
 
 
 
-         <record id="ir_action_vardhman_suggestion_subtype" model="ir.actions.act_window">
-             <field name="name">Idea/Suggestion SubType</field>
-             <field name="res_model">blog.tag</field>
-             <field name="view_mode">tree,form</field>
-             <field name="context">{'default_front_type': 'subidea'}</field>
-             <field name="domain">[('front_type','=','subidea')]</field>
-         </record>
-
-
     <menuitem id="list_suggestion_subtype_view"
             name="Idea/Suggestion SubType"
             sequence="3"
             parent="manage_masters_ih"
             action="ir_action_vardhman_suggestion_subtype"
+              />
+
+
+
+
+
+  <record id="view_vardhman_event_tags_form" model="ir.ui.view">
+             <field name="name">event.tag.form</field>
+             <field name="model">event.tag</field>
+             <field name="arch" type="xml">
+                 <form string="Tags">
+                     <sheet>
+                         <group>
+                             <group>
+                                 <field name="name" required="1"/>
+                                 <field name="front_type" invisible="1"/>
+                                <field name="parent_tag_id" domain="[('front_type','=','event')]" attrs="{'invisible': [('front_type', '!=', 'subevent')],'required': [('front_type', '=', 'subevent')]}"/>
+                             </group>
+                         </group>
+                     </sheet>
+                 </form>
+             </field>
+         </record>
+
+         <record id="view_vardhman_event_tags_list" model="ir.ui.view">
+             <field name="name">event.tag.list</field>
+             <field name="model">event.tag</field>
+             <field eval="8" name="priority"/>
+             <field name="arch" type="xml">
+                 <tree string="Tags">
+                     <field name="name"/>
+                 </tree>
+             </field>
+         </record>
+
+
+
+         <record id="ir_action_vardhman_event_type" model="ir.actions.act_window">
+             <field name="name">Event Type</field>
+             <field name="res_model">event.tag</field>
+             <field name="view_mode">tree,form</field>
+             <field name="context">{'default_front_type': 'event'}</field>
+             <field name="domain">[('front_type','=','event')]</field>
+         </record>
+
+
+    <menuitem id="list_event_type_view"
+            name="Event Category"
+            sequence="4"
+            parent="manage_masters_ih"
+            action="ir_action_vardhman_event_type"
+              />
+
+
+
+         <record id="ir_action_vardhman_event_subtype" model="ir.actions.act_window">
+             <field name="name">Event SubCategory</field>
+             <field name="res_model">event.tag</field>
+             <field name="view_mode">tree,form</field>
+             <field name="context">{'default_front_type': 'subevent'}</field>
+             <field name="domain">[('front_type','=','subevent')]</field>
+         </record>
+
+
+    <menuitem id="list_event_subtype_view"
+            name="Event SubCategory"
+            sequence="4"
+            parent="manage_masters_ih"
+            action="ir_action_vardhman_event_subtype"
               />
 
 
@@ -227,86 +294,86 @@
 
 
 
-        <record id="view_vardhman_event_category_form" model="ir.ui.view">
-             <field name="name">vardhman.event.category.form</field>
-             <field name="model">vardhman.event.category</field>
-             <field name="arch" type="xml">
-                 <form string="Story List">
-                     <sheet>
-                         <group>
-                             <field name="name" required="1"/>
-                         </group>
-                     </sheet>
-                 </form>
-             </field>
-         </record>
+<!--        <record id="view_vardhman_event_category_form" model="ir.ui.view">-->
+<!--             <field name="name">vardhman.event.category.form</field>-->
+<!--             <field name="model">vardhman.event.category</field>-->
+<!--             <field name="arch" type="xml">-->
+<!--                 <form string="Story List">-->
+<!--                     <sheet>-->
+<!--                         <group>-->
+<!--                             <field name="name" required="1"/>-->
+<!--                         </group>-->
+<!--                     </sheet>-->
+<!--                 </form>-->
+<!--             </field>-->
+<!--         </record>-->
 
-         <record id="view_vardhman_event_category_list" model="ir.ui.view">
-             <field name="name">vardhman.event.category.list</field>
-             <field name="model">vardhman.event.category</field>
-             <field eval="8" name="priority"/>
-             <field name="arch" type="xml">
-                 <tree string="Create Story">
-                     <field name="name" required="1"/>
-                 </tree>
-             </field>
-         </record>
+<!--         <record id="view_vardhman_event_category_list" model="ir.ui.view">-->
+<!--             <field name="name">vardhman.event.category.list</field>-->
+<!--             <field name="model">vardhman.event.category</field>-->
+<!--             <field eval="8" name="priority"/>-->
+<!--             <field name="arch" type="xml">-->
+<!--                 <tree string="Create Story">-->
+<!--                     <field name="name" required="1"/>-->
+<!--                 </tree>-->
+<!--             </field>-->
+<!--         </record>-->
 
-         <record id="ir_action_vardhman_event_category" model="ir.actions.act_window">
-             <field name="name">Event Category</field>
-             <field name="res_model">vardhman.event.category</field>
-             <field name="view_mode">tree,form</field>
-         </record>
+<!--         <record id="ir_action_vardhman_event_category" model="ir.actions.act_window">-->
+<!--             <field name="name">Event Category</field>-->
+<!--             <field name="res_model">vardhman.event.category</field>-->
+<!--             <field name="view_mode">tree,form</field>-->
+<!--         </record>-->
 
-    <menuitem id="list_event_category_view"
-            name="Event Category"
-            sequence="4"
-            parent="manage_masters_ih"
-            action="ir_action_vardhman_event_category"
-              />
-
-
+<!--    <menuitem id="list_event_category_view"-->
+<!--            name="Event Category"-->
+<!--            sequence="4"-->
+<!--            parent="manage_masters_ih"-->
+<!--            action="ir_action_vardhman_event_category"-->
+<!--              />-->
 
 
-        <record id="view_vardhman_event_subcategory_form" model="ir.ui.view">
-             <field name="name">vardhman.event.subcategory.form</field>
-             <field name="model">vardhman.event.subcategory</field>
-             <field name="arch" type="xml">
-                 <form string="Event SubCategory">
-                     <sheet>
-                         <group>
-                             <field name="name" required="1"/>
-                             <field name="event" required="1"/>
-                         </group>
-                     </sheet>
-                 </form>
-             </field>
-         </record>
 
-         <record id="view_vardhman_event_subcategory_list" model="ir.ui.view">
-             <field name="name">vardhman.event.subcategory.list</field>
-             <field name="model">vardhman.event.subcategory</field>
-             <field eval="8" name="priority"/>
-             <field name="arch" type="xml">
-                 <tree string="Create Story">
-                     <field name="name" required="1"/>
-                     <field name="event" required="1"/>
-                 </tree>
-             </field>
-         </record>
 
-         <record id="ir_action_vardhman_event_subcategory" model="ir.actions.act_window">
-             <field name="name">Event Subcategory</field>
-             <field name="res_model">vardhman.event.subcategory</field>
-             <field name="view_mode">tree,form</field>
-         </record>
+<!--        <record id="view_vardhman_event_subcategory_form" model="ir.ui.view">-->
+<!--             <field name="name">vardhman.event.subcategory.form</field>-->
+<!--             <field name="model">vardhman.event.subcategory</field>-->
+<!--             <field name="arch" type="xml">-->
+<!--                 <form string="Event SubCategory">-->
+<!--                     <sheet>-->
+<!--                         <group>-->
+<!--                             <field name="name" required="1"/>-->
+<!--                             <field name="event" required="1"/>-->
+<!--                         </group>-->
+<!--                     </sheet>-->
+<!--                 </form>-->
+<!--             </field>-->
+<!--         </record>-->
 
-    <menuitem id="list_event_subcategory_view"
-            name="Event Subcategory"
-            sequence="5"
-            parent="manage_masters_ih"
-            action="ir_action_vardhman_event_subcategory"
-              />
+<!--         <record id="view_vardhman_event_subcategory_list" model="ir.ui.view">-->
+<!--             <field name="name">vardhman.event.subcategory.list</field>-->
+<!--             <field name="model">vardhman.event.subcategory</field>-->
+<!--             <field eval="8" name="priority"/>-->
+<!--             <field name="arch" type="xml">-->
+<!--                 <tree string="Create Story">-->
+<!--                     <field name="name" required="1"/>-->
+<!--                     <field name="event" required="1"/>-->
+<!--                 </tree>-->
+<!--             </field>-->
+<!--         </record>-->
+
+<!--         <record id="ir_action_vardhman_event_subcategory" model="ir.actions.act_window">-->
+<!--             <field name="name">Event Subcategory</field>-->
+<!--             <field name="res_model">vardhman.event.subcategory</field>-->
+<!--             <field name="view_mode">tree,form</field>-->
+<!--         </record>-->
+
+<!--    <menuitem id="list_event_subcategory_view"-->
+<!--            name="Event Subcategory"-->
+<!--            sequence="5"-->
+<!--            parent="manage_masters_ih"-->
+<!--            action="ir_action_vardhman_event_subcategory"-->
+<!--              />-->
 
 
 
