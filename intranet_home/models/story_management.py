@@ -205,7 +205,7 @@ class VardhmanIdeaShare(models.Model):
 
     ideasugg_id = fields.Many2one('blog.tag', string='Idea Category')
     subtype_id = fields.Many2one('blog.tag', string='Idea Sub-Category')
-    name = fields.Char('Ideas and Suggestions')
+    name = fields.Text('Ideas and Suggestions')
     post_id = fields.Many2one('blog.post', string='Idea/Suggestion')
     front_type = fields.Selection([
         ('news', 'News'),
@@ -228,23 +228,27 @@ class VardhmanIdeaShare(models.Model):
         for rec in self:
             cout = 0
             max_word_limit_idea = 0
-            blog_id = self.env['es.config.settings'].sudo().search(
+            blog_id = self.env['res.company'].sudo().search(
                 [
-                    # ('enable_idea_post', '=', True),
-                ], limit=1)
-            for numb in blog_id:
-                if numb.enable_idea_post == True:
-                    max_word_limit_idea = numb.max_word_limit_idea
-                    for ct in rec.name:
-                        cout+=1
-                    if cout > max_word_limit_idea:
-                        raise ValidationError(
-                            _('Word Limit Exceeded'))
+                    ('id', '=', rec.env.user.company_id.id),
+                ],limit=1)
+            print('=======================================',blog_id)
+            # for numb in blog_id:
+            if blog_id:
+                for numb in blog_id:
+                    print('=======================================', blog_id)
+                    if numb.enable_idea_post == True:
+                        max_word_limit_idea = blog_id.max_word_limit_idea
+                        for ct in rec.name:
+                            cout+=1
+                        if cout > max_word_limit_idea:
+                            raise ValidationError(
+                                _('Word Limit Exceeded'))
+                        else:
+                            rec.write({'state': 'pending_approval'})
                     else:
-                        rec.write({'state': 'pending_approval'})
-                else:
-                    raise ValidationError(
-                        _('Idea sharing is not allowed'))
+                        raise ValidationError(
+                            _('Idea sharing is not allowed'))
 
 
     def button_reject(self):
