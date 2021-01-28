@@ -30,6 +30,10 @@
                             <field name="enable_idea_post"/>
                     <field name="max_word_limit_idea"/>
                         </group>
+                        <group>
+                            <field name="enable_story_post"/>
+                    <field name="max_word_limit_story"/>
+                        </group>
                     </group>
 
                 </page>

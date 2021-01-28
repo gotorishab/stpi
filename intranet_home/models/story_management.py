@@ -158,16 +158,29 @@ class VardhmanAnnouncement(models.Model):
 
     def button_send_for_approval(self):
         for rec in self:
-            blog_id = self.env['vardhman.block.user'].sudo().search(
+            cout = 0
+            max_word_limit_idea = 0
+            blog_id = self.env['res.company'].sudo().search(
                 [
-                    ('user_id', '=', rec.env.user.id),
-                    ('activity', '=', 'blog'),
+                    ('id', '=', rec.env.user.company_id.id),
                 ], limit=1)
+            print('=======================================', blog_id)
+            # for numb in blog_id:
             if blog_id:
-                raise ValidationError(
-                    _('You are blocked from posting.'))
-            else:
-                rec.write({'state': 'pending_approval'})
+                for numb in blog_id:
+                    print('=======================================', blog_id)
+                    if numb.enable_story_post == True:
+                        max_word_limit_idea = blog_id.max_word_limit_story
+                        for ct in rec.description:
+                            cout += 1
+                        if cout > max_word_limit_idea:
+                            raise ValidationError(
+                                _('Word Limit Exceeded'))
+                        else:
+                            rec.write({'state': 'pending_approval'})
+                    else:
+                        raise ValidationError(
+                            _('Story Posting is not allowed'))
 
 
     def button_reject(self):
