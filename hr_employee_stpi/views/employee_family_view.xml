@@ -17,9 +17,9 @@
                 <field name="tuition" attrs="{'readonly':['|',('age','>','18'),('relate_type_name','not in',('Son','Daughter'))]}"/>
                 <field name="ltc"/>
                 <field name="status"/>
-                <field name="prec_pf" sum="Total PF"/>
-                <field name="prec_gratuity" sum="Total Gratuity"/>
-                <field name="prec_pension" sum="Total Pension"/>
+                <field name="prec_pf" sum="Total PF" attrs="{'readonly':[('status','not in',('dependant'))]}"/>
+                <field name="prec_gratuity" sum="Total Gratuity" attrs="{'readonly':[('status','not in',('dependant'))]}"/>
+                <field name="prec_pension" sum="Total Pension" attrs="{'readonly':[('status','not in',('dependant'))]}"/>
 
             </field>
             <xpath expr = "//field[@name='relative_type']" position="attributes">
