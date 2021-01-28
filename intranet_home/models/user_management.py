@@ -9,8 +9,8 @@ class VardhmanStoryCategory(models.Model):
     user_id = fields.Many2one('res.users', string='User')
 
     activity = fields.Selection([
-        ('forum', 'Forum'),
-        ('blog', 'Blog')
+        ('story', 'Story'),
+        ('idea', 'Idea')
     ], string='Activity')
 
 
