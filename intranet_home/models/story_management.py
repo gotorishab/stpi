@@ -230,20 +230,21 @@ class VardhmanIdeaShare(models.Model):
             max_word_limit_idea = 0
             blog_id = self.env['es.config.settings'].sudo().search(
                 [
-                    ('enable_idea_post', '=', True),
+                    # ('enable_idea_post', '=', True),
                 ], limit=1)
-            if blog_id:
-                for numb in blog_id:
+            for numb in blog_id:
+                if numb.enable_idea_post == True:
                     max_word_limit_idea = numb.max_word_limit_idea
-                for ct in rec.name:
-                    cout+=1
-                if cout > max_word_limit_idea:
-                    raise ValidationError(
-                        _('Word Limit Exceeded'))
+                    for ct in rec.name:
+                        cout+=1
+                    if cout > max_word_limit_idea:
+                        raise ValidationError(
+                            _('Word Limit Exceeded'))
+                    else:
+                        rec.write({'state': 'pending_approval'})
                 else:
-                    rec.write({'state': 'pending_approval'})
-            else:
-                rec.write({'state': 'pending_approval'})
+                    raise ValidationError(
+                        _('Idea sharing is not allowed'))
 
 
     def button_reject(self):
