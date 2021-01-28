@@ -95,8 +95,39 @@ class VardhmanUnitMaster(models.Model):
     _description = "Vardhman unit master"
 
     name = fields.Char('Unit Name:')
+    description = fields.Char('Description')
+
+
+class VardhmanBusinessTMaster(models.Model):
+    _name = "vardhman.businesstype.master"
+    _description = "Vardhman Business Type master"
+
+    name = fields.Char('Name:')
     Description = fields.Char('Description')
 
+
+
+class VardhmanSectionTMaster(models.Model):
+    _name = "vardhman.sectiontype.master"
+    _description = "Vardhman section Type master"
+
+    name = fields.Char('Name:')
+    Description = fields.Char('Description')
+
+
+class VardhmanSectionTDepartment(models.Model):
+    _name = "vardhman.department.section"
+    _description = "Vardhman department section mapping"
+
+    department_id = fields.Many2one('hr.department',string='Department')
+    section_id = fields.Many2one('vardhman.sectiontype.master',string='Section')
+
+class VardhmanBusinessUnit(models.Model):
+    _name = "vardhman.business.unit"
+    _description = "Business and Unit mapping"
+
+    business_id = fields.Many2one('vardhman.businesstype.master',string='Business Type')
+    unit_id = fields.Many2one('vardhman.unit.master',string='Unit')
 
 class VardhmanDepartmentMaster(models.Model):
     _name = "vardhman.department.master"
