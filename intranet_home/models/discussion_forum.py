@@ -17,7 +17,10 @@ class VardhmanStoryCategory(models.Model):
     name = fields.Char('Title')
     description = fields.Text('Description')
     department_id = fields.Many2one('hr.department',string='Department')
+    dept_user_ids = fields.Many2many('res.users',string='Users')
     unit_id = fields.Many2one('vardhman.unit.master',string='Unit')
+    # unit_user_ids = fields.Many2many('res.users',string='Users')
+
     # tag_ids = fields.Many2many('blog.tag', string='Story Category')
 
     forum_id = fields.Many2one('forum.post', string='Story')

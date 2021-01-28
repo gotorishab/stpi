@@ -13,3 +13,11 @@ class ResConfigSettings(models.TransientModel):
     max_word_limit_idea = fields.Integer('Maximum word limit ', default=1, config_parameter='intranet_home.max_word_limit_idea')
     enable_like_stories = fields.Boolean('Enable Likes ', config_parameter='intranet_home.enable_like')
     enable_comments_stories = fields.Boolean('Enable Comments ', config_parameter='intranet_home.enable_comments')
+
+class ResCompany(models.Model):
+    _inherit = 'res.company'
+
+    enable_idea_post = fields.Boolean('Enable Idea/Suggestion Post ', default=False)
+    max_word_limit_idea = fields.Integer('Maximum word limit ', default=1)
+    enable_story_post = fields.Boolean('Enable Story Post ', default=False)
+    max_word_limit_story = fields.Integer('Maximum word limit ', default=1)

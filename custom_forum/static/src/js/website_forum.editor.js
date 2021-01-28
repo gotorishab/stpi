@@ -26,6 +26,7 @@ var GroupCreateDialog = Dialog.extend({
                     text: _t("Create"),
                     classes: 'btn-primary',
                     click: this.onCreateGroup.bind(this),
+                    close: true
                 },
                 {
                     text: _t("Discard"),
@@ -90,8 +91,6 @@ var GroupCreateDialog = Dialog.extend({
             },
         }).then(function (data) {
             return
-            // console.log("********************",$dialog);
-            // $dialog.close();
         });
     },
 });
@@ -169,6 +168,7 @@ var ForumCreateDialog = Dialog.extend({
         });
     },
     _onCreateGroup: function () {
+        $("#group_id")[0].required = true
         var self = this;
         var def = new Promise(function (resolve) {
             var dialog = new GroupCreateDialog(self, {});

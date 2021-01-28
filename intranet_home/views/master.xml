@@ -601,6 +601,95 @@
 
 
 
+
+        <record id="view_vardhman_sectiontype_master_form" model="ir.ui.view">
+             <field name="name">vardhman.sectiontype.master.form</field>
+             <field name="model">vardhman.sectiontype.master</field>
+             <field name="arch" type="xml">
+                 <form string="sectiontype">
+                     <sheet>
+                         <group>
+                             <group>
+                                 <field name="name" required="1"/>
+                             </group>
+                         </group>
+                     </sheet>
+                 </form>
+             </field>
+         </record>
+
+         <record id="view_vardhman_sectiontype_master_tree" model="ir.ui.view">
+             <field name="name">vardhman.sectiontype.master.list</field>
+             <field name="model">vardhman.sectiontype.master</field>
+             <field eval="8" name="priority"/>
+             <field name="arch" type="xml">
+                 <tree string="sectiontype">
+                     <field name="name" required="1"/>
+                 </tree>
+             </field>
+         </record>
+
+         <record id="ir_action_vardhman_sectiontype_master" model="ir.actions.act_window">
+             <field name="name">sectiontype</field>
+             <field name="res_model">vardhman.sectiontype.master</field>
+             <field name="view_mode">tree,form</field>
+         </record>
+
+    <menuitem id="list_sectiontype_master_view"
+            name="sectiontype"
+            sequence="9"
+            parent="manage_masters_ih"
+            action="ir_action_vardhman_sectiontype_master"
+              />
+
+
+
+
+
+
+        <record id="view_vardhman_businesstype_master_form" model="ir.ui.view">
+             <field name="name">vardhman.businesstype.master.form</field>
+             <field name="model">vardhman.businesstype.master</field>
+             <field name="arch" type="xml">
+                 <form string="businesstype">
+                     <sheet>
+                         <group>
+                             <group>
+                                 <field name="name" required="1"/>
+                             </group>
+                         </group>
+                     </sheet>
+                 </form>
+             </field>
+         </record>
+
+         <record id="view_vardhman_businesstype_master_tree" model="ir.ui.view">
+             <field name="name">vardhman.businesstype.master.list</field>
+             <field name="model">vardhman.businesstype.master</field>
+             <field eval="8" name="priority"/>
+             <field name="arch" type="xml">
+                 <tree string="businesstype">
+                     <field name="name" required="1"/>
+                 </tree>
+             </field>
+         </record>
+
+         <record id="ir_action_vardhman_businesstype_master" model="ir.actions.act_window">
+             <field name="name">businesstype</field>
+             <field name="res_model">vardhman.businesstype.master</field>
+             <field name="view_mode">tree,form</field>
+         </record>
+
+    <menuitem id="list_businesstype_master_view"
+            name="businesstype"
+            sequence="9"
+            parent="manage_masters_ih"
+            action="ir_action_vardhman_businesstype_master"
+              />
+
+
+
+
 <!--        <record id="view_vardhman_department_master_form" model="ir.ui.view">-->
 <!--             <field name="name">hr.department.form</field>-->
 <!--             <field name="model">hr.department</field>-->

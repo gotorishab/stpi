@@ -41,27 +41,38 @@ class VardhmanStoryCategory(models.Model):
 
     def button_send_for_approval(self):
         for rec in self:
-            ct = 0
-            b_id = self.env['vardhman.story.postuser'].sudo().search(
+            cout = 0
+            max_word_limit_idea = 0
+            blog_id = self.env['res.company'].sudo().search(
                 [
-                    ('enable_security', '=', True),
+                    ('id', '=', rec.env.user.company_id.id),
                 ], limit=1)
-            if b_id:
-                for wc in rec.description:
-                    ct+=1
-                if ct > b_id.word_limit:
-                    raise ValidationError(
-                        _('Word count should be low'))
-            blog_id = self.env['vardhman.block.user'].sudo().search(
-                [
-                    ('user_id', '=', rec.env.user.id),
-                    ('activity', '=', 'blog'),
-                ], limit=1)
-            # if blog_id:
-            #     raise ValidationError(
-            #         _('You are blocked from posting.'))
-            # else:
-            rec.write({'state': 'pending_approval'})
+            print('=======================================', blog_id)
+            # for numb in blog_id:
+            if blog_id:
+                for numb in blog_id:
+                    print('=======================================', blog_id)
+                    if numb.enable_story_post == True:
+                        max_word_limit_idea = blog_id.max_word_limit_story
+                        for ct in rec.description:
+                            cout += 1
+                        if cout > max_word_limit_idea:
+                            raise ValidationError(
+                                _('Word Limit Exceeded'))
+                        else:
+                            bg_id = self.env['vardhman.block.user'].sudo().search(
+                                [
+                                    ('user_id', '=', rec.env.user.id),
+                                    ('activity', '=', 'story'),
+                                ], limit=1)
+                            if bg_id:
+                                raise ValidationError(
+                                    _('You are blocked from posting.'))
+                            else:
+                                rec.write({'state': 'pending_approval'})
+                    else:
+                        raise ValidationError(
+                            _('Story Posting is not allowed'))
 
 
 
@@ -205,7 +216,7 @@ class VardhmanIdeaShare(models.Model):
 
     ideasugg_id = fields.Many2one('blog.tag', string='Idea Category')
     subtype_id = fields.Many2one('blog.tag', string='Idea Sub-Category')
-    name = fields.Char('Ideas and Suggestions')
+    name = fields.Text('Ideas and Suggestions')
     post_id = fields.Many2one('blog.post', string='Idea/Suggestion')
     front_type = fields.Selection([
         ('news', 'News'),
@@ -228,22 +239,37 @@ class VardhmanIdeaShare(models.Model):
         for rec in self:
             cout = 0
             max_word_limit_idea = 0
-            blog_id = self.env['es.config.settings'].sudo().search(
+            blog_id = self.env['res.company'].sudo().search(
                 [
-                    ('enable_idea_post', '=', True),
-                ], limit=1)
+                    ('id', '=', rec.env.user.company_id.id),
+                ],limit=1)
+            print('=======================================',blog_id)
+            # for numb in blog_id:
             if blog_id:
                 for numb in blog_id:
-                    max_word_limit_idea = numb.max_word_limit_idea
-                for ct in rec.name:
-                    cout+=1
-                if cout > max_word_limit_idea:
-                    raise ValidationError(
-                        _('Word Limit Exceeded'))
-                else:
-                    rec.write({'state': 'pending_approval'})
-            else:
-                rec.write({'state': 'pending_approval'})
+                    print('=======================================', blog_id)
+                    if numb.enable_idea_post == True:
+                        max_word_limit_idea = blog_id.max_word_limit_idea
+                        for ct in rec.name:
+                            cout+=1
+                        if cout > max_word_limit_idea:
+                            raise ValidationError(
+                                _('Word Limit Exceeded'))
+                        else:
+                            bg_id = self.env['vardhman.block.user'].sudo().search(
+                                [
+                                    ('user_id', '=', rec.env.user.id),
+                                    ('activity', '=', 'idea'),
+                                ], limit=1)
+                            if bg_id:
+                                raise ValidationError(
+                                    _('You are blocked from posting.'))
+                            else:
+                                rec.write({'state': 'pending_approval'})
+                            # rec.write({'state': 'pending_approval'})
+                    else:
+                        raise ValidationError(
+                            _('Idea sharing is not allowed'))
 
 
     def button_reject(self):

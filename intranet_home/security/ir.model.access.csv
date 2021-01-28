@@ -16,6 +16,11 @@ access_vardhman_story_postuser,vardhman.story.postuser,model_vardhman_story_post
 access_vardhman_idea_reason,vardhman.idea.reason,model_vardhman_idea_reason,base.group_user,1,1,1,1
 access_vardhman_idea_rejection,vardhman.idea.rejection,model_vardhman_idea_rejection,base.group_user,1,1,1,1
 access_vardhman_unit_master,vardhman.unit.master,model_vardhman_unit_master,base.group_user,1,1,1,1
+access_vardhman_businesstype_master,vardhman.businesstype.master,model_vardhman_businesstype_master,base.group_user,1,1,1,1
+access_vardhman_department_section,vardhman.department.section,model_vardhman_department_section,base.group_user,1,1,1,1
+access_vardhman_business_unit,vardhman.business.unit,model_vardhman_business_unit,base.group_user,1,1,1,1
+
+
 access_vardhman_department_master,vardhman.department.master,model_vardhman_department_master,base.group_user,1,1,1,1
 access_wizard_story_category,wizard.story.category,model_wizard_story_category,base.group_user,1,1,1,1
 access_wizard_suggestion_type,wizard.suggestion.type,model_wizard_suggestion_type,base.group_user,1,1,1,1
