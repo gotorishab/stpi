@@ -10,6 +10,22 @@ from odoo.exceptions import ValidationError, UserError
 class BlogPost(models.Model):
     _inherit = "blog.post"
 
+
+    def _get_user_vote(self):
+        votes = self.env['blog.post.vote'].search_read([('blog_id', 'in', self._ids), ('user_id', '=', self._uid)], ['vote', 'blog_id'])
+        mapped_vote = dict([(v['blog_id'][0], v['vote']) for v in votes])
+        for vote in self:
+            vote.user_vote = mapped_vote.get(vote.id, 0)
+
+    @api.depends('vote_ids.vote')
+    def _get_vote_count(self):
+        read_group_res = self.env['blog.post.vote'].read_group([('blog_id', 'in', self._ids)], ['blog_id', 'vote'], ['blog_id', 'vote'], lazy=False)
+        result = dict.fromkeys(self._ids, 0)
+        for data in read_group_res:
+            result[data['blog_id'][0]] += data['__count'] * int(data['vote'])
+        for post in self:
+            post.vote_count = result[post.id]
+
     front_type = fields.Selection([
         ('news', 'News'),
         ('story', 'Story'),
@@ -28,6 +44,29 @@ class BlogPost(models.Model):
         ('unpublished', 'Unpublished'),
     ], string='state',default='draft')
 
+    # vote
+    vote_ids = fields.One2many('blog.post.vote', 'blog_id', string='Votes')
+    user_vote = fields.Integer('My Vote', compute='_get_user_vote')
+    vote_count = fields.Integer('Total Votes', compute='_get_vote_count', store=True)
+
+    def vote(self, upvote=True):
+        Vote = self.env['blog.post.vote']
+        vote_ids = Vote.search([('blog_id', 'in', self._ids), ('user_id', '=', self._uid)])
+        new_vote = '1' if upvote else '-1'
+        voted_blog_ids = set()
+        if vote_ids:
+            for vote in vote_ids:
+                if upvote:
+                    new_vote = '0' if vote.vote == '-1' else '1'
+                else:
+                    new_vote = '0' if vote.vote == '1' else '-1'
+                vote.vote = new_vote
+                voted_blog_ids.add(vote.blog_id.id)
+        for blog_id in set(self._ids) - voted_blog_ids:
+            for blog_id in self._ids:
+                Vote.create({'blog_id': blog_id, 'vote': new_vote})
+        return {'vote_count': self.vote_count, 'user_vote': new_vote}
+    
 
     @api.onchange('blog_id')
     @api.constrains('blog_id')
@@ -58,3 +97,20 @@ class BlogPost(models.Model):
     def button_unpublish(self):
         for rec in self:
             rec.is_published = False
+
+
+class BlogVote(models.Model):
+    _name = 'blog.post.vote'
+    _description = 'Blog Vote'
+    _order = 'create_date desc, id desc'
+
+    blog_id = fields.Many2one('blog.post', string='Post', ondelete='cascade', required=True)
+    user_id = fields.Many2one('res.users', string='User', required=True, default=lambda self: self._uid)
+    vote = fields.Selection([('1', '1'), ('-1', '-1'), ('0', '0')], string='Vote', required=True, default='1')
+    create_date = fields.Datetime('Create Date', index=True, readonly=True)
+    blog_blog_id = fields.Many2one('blog.blog', string='Blog', related="blog_id.blog_id", store=True, readonly=False)
+    recipient_id = fields.Many2one('res.users', string='To', related="blog_id.create_uid", store=True, readonly=False)
+
+    _sql_constraints = [
+        ('vote_uniq', 'unique (blog_id, user_id)', "Vote already exists !"),
+    ]

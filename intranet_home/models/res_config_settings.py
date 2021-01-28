@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from odoo import fields, models
+from odoo import fields, models, api
 
 
 class ResConfigSettings(models.TransientModel):
@@ -11,5 +11,5 @@ class ResConfigSettings(models.TransientModel):
     max_word_limit_story = fields.Integer('Maximum word limit ', default=1, config_parameter='intranet_home.max_word_limit_story')
     enable_idea_post = fields.Boolean('Enable Idea/Suggestion Post ', default=False, config_parameter='intranet_home.enable_idea_post')
     max_word_limit_idea = fields.Integer('Maximum word limit ', default=1, config_parameter='intranet_home.max_word_limit_idea')
-    enable_like_stories = fields.Boolean('Enable Likes ', default=1, config_parameter='intranet_home.enable_like')
-    enable_comments_stories = fields.Boolean('Enable Comments ', default=1, config_parameter='intranet_home.enable_comments')
+    enable_like_stories = fields.Boolean('Enable Likes ', config_parameter='intranet_home.enable_like')
+    enable_comments_stories = fields.Boolean('Enable Comments ', config_parameter='intranet_home.enable_comments')
