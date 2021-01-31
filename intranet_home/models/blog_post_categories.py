@@ -50,6 +50,8 @@ class BlogPost(models.Model):
     vote_count = fields.Integer('Total Votes', compute='_get_vote_count', store=True)
     can_upvote = fields.Boolean('Can Upvote', compute='_get_post_karma_rights', compute_sudo=False)
     can_downvote = fields.Boolean('Can Downvote', compute='_get_post_karma_rights', compute_sudo=False)
+    date_from = fields.Date(strign="From Date", default=fields.Date.today())
+    date_to = fields.Date(strign="To Date", default=fields.Date.today())
 
 
     @api.depends_context('uid')

@@ -20,6 +20,8 @@
             </group>
             <field name="subtitle" position="after">
                 <field name="front_type"/>
+                <field name="date_from" attrs="{'invisible':[('front_type', '!=', 'calendar_1')],'required':[('front_type', '=', 'calendar_1')]}"/>
+                <field name="date_to" attrs="{'invisible':[('front_type', '!=', 'calendar_1')],'required':[('front_type', '=', 'calendar_1')]}"/>
             </field>
             <xpath expr="//sheet" position="before">
             <header>

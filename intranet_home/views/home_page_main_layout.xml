@@ -7,7 +7,7 @@
     </template>
     <template id="post_teaser_inherit" inherit_id="website_blog.blog_post_content" name="Allow Like">
         <xpath expr="//div[hasclass('css_editable_mode_hidden')]" position="after">
-            <t t-set="own_vote" t-value="post.user_vote"/>
+            <t t-set="own_vote" t-value="blog_post.user_vote"/>
             <t t-set="can_upvote" t-value="blog_post.can_upvote"/>
             <t t-set="can_downvote" t-value="blog_post.can_downvote"/>
             <t t-set="enable_like" t-value="request.env['ir.config_parameter'].sudo().get_param('intranet_home.enable_like')"/>
@@ -25,6 +25,16 @@
                     t-att-disabled="own_vote == -1 and 'disabled'"
                     aria-label="Negative vote" title="Negative vote"
                     t-att-data-can-downvote="can_downvote"/>
+            </div>
+        </xpath>
+    </template>
+     <template id="post_info_inherit" name="Allow Comments" inherit_id="website_blog.post_info" priority="1">
+        <xpath expr="//div[hasclass('small')]" position="after">
+            <div class="small mb-1 w-100">
+                <div t-attf-class="#{opt_blog_list_view and 'flex-grow-0 w-auto mw-100' or 'flex-grow-1' }">
+                    <span class="badge badge-primary" style="font-size:13px;">From</span><time t-field="blog_post.date_from" class="text-nowrap font-weight-bold px-2" t-options='{"format": "MMM d, yyyy"}'/>
+                    <span class="badge badge-primary" style="font-size:13px;">To</span> <time t-field="blog_post.date_to" class="text-nowrap font-weight-bold px-2" t-options='{"format": "MMM d, yyyy"}'/>
+                </div>
             </div>
         </xpath>
     </template>
