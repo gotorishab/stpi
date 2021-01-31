@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+    <template id="assets_frontend" inherit_id="website_blog.assets_frontend" name="Blog Front-end assets">
+	    <xpath expr="script[@src='/website_blog/static/src/js/website_blog.js']" position="replace">
+	        <script type="text/javascript" src="/custom_blogpost/static/src/js/website_blog.js"/>
+	    </xpath>
+	</template>
+
+
+
+	<template id="blog_post_short_extended" inherit_id="website_blog.blog_post_short" name="BlogPost">
+	    <xpath expr="//t/section[@id='o_wblog_index_content']/div/div" position="before">
+	    	<t t-if="blog and blog.front_type == 'story'">
+		    	<div class="d-flex justify-content-end flex-md-grow-1 col-md-auto order-md-3" style="margin-bottom: 1%;">
+		        	<a role="button" type="button" class="btn btn-primary btn-block o_forum_ask_btn mb-3 mb-md-0" style="width: 200px;" t-attf-href="/blog/#{ slug(blog) }/blogpost">New Post</a>
+		        </div>
+		    </t>
+	    </xpath>
+	</template>
+
+	<template id="new_blogpost">
+	    <t t-call="website_blog.index">
+	    	<section id="o_wblog_index_content" t-att-class="opt_blog_cards_design and 'o_wblog_page_cards_bg'">
+	            <div class="container py-4">
+	                <div t-attf-class="row">
+				        <form t-attf-action="/blog/#{slug(blog)}/new" method="post" role="form" class="tag_text js_website_submit_form js_wblog_submit_form o_wblog_readable o_wprofile_editor_form" style="width: 60%;">
+				            <div class="form-group">
+				                <label for="content">Title</label>
+				                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+				                <input type="text" name="post_name" required="required" pattern=".*\S.*" t-attf-value="#{post_name}"
+				                    class="form-control form-control-lg" placeholder="A clear, explicit and concise title" title="Title must not be empty"/>
+				                <input type="hidden" name="karma" t-attf-value="#{user.karma}" id="karma"/>
+				            </div>
+				            <div class="form-group">
+				                <label for="content">Description</label>
+				                <style>
+					                .note-editable{
+					                	height:200px;
+					                }
+					            </style>
+				                 <textarea name="content" required="required" id="content" class="form-control o_wysiwyg_loader">
+				                </textarea>
+				            </div>
+				            <div class="form-group">
+				                <label for="post_tags">Category</label>
+				                <input type="hidden" name="karma_tag_create" value="30" id="karma_tag_create"/>
+                				<input type="hidden" name="karma_edit_retag" value="75" id="karma_edit_retag"/>
+				                <input type="hidden" name="post_tags" placeholder="Tags" class="form-control js_select2"/>
+				            </div>
+				            <p class="alert alert-danger" t-if="error" role="alert">
+			                    <t t-esc="error"/>
+			                </p>
+				            <div class="mb-5">
+				                <button type="submit" t-attf-class="btn btn-primary o_wblog_submit_post">Post</button>
+				                <a class="btn btn-secondary" title="Cancel" t-attf-href="/blog/#{ slug(blog) }"> Discard</a>
+				            </div>
+				        </form>
+		    		</div>
+		    	</div>
+		    </section>
+	    </t>
+	</template>
+
+
+    </data>
+</odoo>
