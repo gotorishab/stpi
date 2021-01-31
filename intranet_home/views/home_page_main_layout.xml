@@ -5,6 +5,58 @@
             <script type="text/javascript" src="/intranet_home/static/src//js/employee_move_line.js"></script>
         </xpath>
     </template>
+    <template id="post_teaser_inherit" inherit_id="website_blog.blog_post_content" name="Allow Like">
+        <xpath expr="//div[hasclass('css_editable_mode_hidden')]" position="after">
+            <t t-set="own_vote" t-value="blog_post.user_vote"/>
+            <t t-set="can_upvote" t-value="blog_post.can_upvote"/>
+            <t t-set="can_downvote" t-value="blog_post.can_downvote"/>
+            <t t-set="enable_like" t-value="request.env['ir.config_parameter'].sudo().get_param('intranet_home.enable_like')"/>
+            <div t-if="blog_post.blog_id.front_type == 'story' and enable_like" class="vote css_editable_mode_hidden text-center d-inline-flex align-items-center">
+                <t t-set="own_vote" t-value="blog_post.user_vote"/>
+                <button type="button" t-attf-data-href="/blog/{{slug(blog_post)}}/upvote"
+                    class="btn btn-link vote_up fa fa-caret-up pl-0"
+                    t-att-disabled="own_vote == 1 and 'disabled'"
+                    aria-label="Positive vote" title="Positive vote"
+                    t-att-data-can-upvote="can_upvote"/>
+                <b class="vote_count"
+                   t-esc="blog_post.vote_count"/>
+                <button type="button" t-attf-data-href="/blog/{{slug(blog_post)}}/downvote"
+                    class="btn btn-link vote_down fa fa-caret-down"
+                    t-att-disabled="own_vote == -1 and 'disabled'"
+                    aria-label="Negative vote" title="Negative vote"
+                    t-att-data-can-downvote="can_downvote"/>
+            </div>
+        </xpath>
+    </template>
+     <template id="post_info_inherit" name="Allow Comments" inherit_id="website_blog.post_info" priority="1">
+        <xpath expr="//div[hasclass('small')]" position="after">
+            <div class="small mb-1 w-100">
+                <div t-attf-class="#{opt_blog_list_view and 'flex-grow-0 w-auto mw-100' or 'flex-grow-1' }">
+                    <span class="badge badge-primary" style="font-size:13px;">From</span><time t-field="blog_post.date_from" class="text-nowrap font-weight-bold px-2" t-options='{"format": "MMM d, yyyy"}'/>
+                    <span class="badge badge-primary" style="font-size:13px;">To</span> <time t-field="blog_post.date_to" class="text-nowrap font-weight-bold px-2" t-options='{"format": "MMM d, yyyy"}'/>
+                </div>
+            </div>
+        </xpath>
+    </template>
+    <template id="website_blog.opt_blog_post_comment" name="Allow Comments" inherit_id="website_blog.blog_post_complete" priority="1">
+    <xpath expr="//section[@id='o_wblog_post_main']" position="inside">
+        <t t-set="readableClass" t-if="opt_blog_post_readable and opt_blog_post_sidebar" t-value="'o_wblog_read_with_sidebar'"/>
+        <t t-set="readableClass" t-elif="opt_blog_post_readable" t-value="'o_container_small'"/>
+        <t t-set="enable_comment" t-value="request.env['ir.config_parameter'].sudo().get_param('intranet_home.enable_comments')"/>
+        <div t-if="enable_comment" class="container">
+            <div t-attf-class="mx-auto #{readableClass}">
+                <div id="o_wblog_post_comments" t-attf-class="pt-4 o_container_small">
+                    <div groups="base.group_public" class="small mb-4">
+                        <a t-attf-href="/web/login?redirect=/blog/{{slug(blog_post.blog_id)}}/{{slug(blog_post)}}#discussion" class="btn btn-sm btn-primary"><b>Sign in</b></a> to leave a comment
+                    </div>
+                    <t t-call="portal.message_thread">
+                        <t t-set="object" t-value="blog_post"/>
+                    </t>
+                </div>
+            </div>
+        </div>
+    </xpath>
+</template>
     <template id="website_publisher_inherit" inherit_id="website.website_publisher">
          <xpath expr="//t" position="replace">
             <t groups="website.group_website_publisher" t-if="'website_published' in main_object.fields_get() and ('can_publish' not in main_object.fields_get() or main_object.can_publish)">

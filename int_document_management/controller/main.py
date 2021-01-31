@@ -71,7 +71,6 @@ class IntranetDocument(CustomerPortal):
         else:
             documents_rec = request.env['documents.attachment'].search([('parent_id', '=', False)])
         usefull_links = request.env['vardhman.useful.links'].sudo().search([], limit=6)
-        print(">>>>>>>....", folder, documents_rec)
         values.update({
             'parent_folder_ids': parent_folder_ids,
             'documents_ids': documents_ids,
