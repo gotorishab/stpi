@@ -33,7 +33,7 @@ class Website(Home):
             calendar_second = BlogPost.search([('blog_id.front_type', '=', 'calendar_2')], limit=1, order="is_published desc, post_date desc, id asc")
             calendar_third = BlogPost.search([('blog_id.front_type', '=', 'calendar_3')], limit=1, order="is_published desc, post_date desc, id asc")
             news_posts = BlogPost.search([('blog_id.front_type', '=', 'news')], limit=3, order="is_published desc, post_date desc, id asc")
-            story_posts = BlogPost.search([('blog_id.front_type', '=', 'story'),('post_date.month', '=', fields.Date.today().month)], limit=3, order="is_published desc, post_date desc, id asc, user_vote asc")
+            story_posts = BlogPost.search([('blog_id.front_type', '=', 'story')], limit=3, order="is_published desc, post_date desc, id asc, user_vote asc").filtered(lambda x: x.post_date.month == fields.Date.today().month)
             announcement_posts = BlogPost.search([('blog_id.front_type', '=', 'announcement')], limit=3, order="is_published desc, post_date desc, id asc")    
             if website.theme_id.name == 'intranet_home':
                 return request.render('intranet_home.new_homepage_vardhman', {'usefull_links': usefull_links,
