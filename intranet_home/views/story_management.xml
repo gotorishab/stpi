@@ -317,10 +317,11 @@
          <field name="arch" type="xml">
              <form string="Post a Announcement">
                  <header>
-                         <button name="button_send_for_approval" string="Send for Approval"  states="draft" type="object"/>
-                         <button name="button_approved" string="Approve" states="pending_approval" type="object" groups="intranet_home.group_intranet_home_content_moderator"/>
-                         <button name="button_reject" string="Reject" states="pending_approval" type="object" groups="intranet_home.group_intranet_home_content_moderator"/>
-                         <field name="state" widget="statusbar" statusbar_visible="draft,pending_approval,approved" />
+<!--                         <button name="button_send_for_approval" string="Send for Approval"  states="draft" type="object"/>-->
+                         <button name="button_approved" string="Publish" states="draft" type="object"/>
+                         <button name="create_notification" string="pp" states="draft" type="object"/>
+<!--                         <button name="button_reject" string="Reject" states="pending_approval" type="object" groups="intranet_home.group_intranet_home_content_moderator"/>-->
+                         <field name="state" widget="statusbar" statusbar_visible="draft,approved" />
 
             </header>
                  <sheet>
@@ -328,9 +329,11 @@
                          <group>
                              <field name="name" required="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                              <field name="front_type" invisible="1"/>
-                               <field name="tag_ids" required="1" widget="many2many_tags" domain="[('front_type','=',front_type)]" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+<!--                               <field name="tag_ids" required="1" widget="many2many_tags" domain="[('front_type','=',front_type)]" attrs="{'readonly': [('state', '!=', 'draft')]}"/>-->
                          </group>
                          <group>
+                             <field name="indent_user_type"/>
+                             <field name="indent_user_type"/>
                              <field name="post_id" attrs="{'invisible': [('state', '!=', 'approved')],'readonly': [('state', '=', 'approved')]}"/>
                          </group>
                          <field name="description" required="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>

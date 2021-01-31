@@ -119,6 +119,7 @@ class VardhmanStoryCategory(models.Model):
             grp = self.env['blog.post'].create({
                 'name': str(rec.name),
                 'front_type': rec.front_type,
+                'content': rec.description,
                 'blog_id': bl_id,
             })
             for user in self.tag_ids:
@@ -159,27 +160,38 @@ class VardhmanAnnouncement(models.Model):
         ('calendar_2', 'Calendar Image Second'),
         ('calendar_3', 'Calendar Image Third'),
     ], string='Front Type',default='announcement')
+    indent_user_type = fields.Selection([
+        ('all', 'All Individual Users'),
+        ('specific', 'Specific Group of users'),
+    ], string='Intended User Type',default='all')
+    group_ids = fields.Many2many('res.groups',string='Groups')
+
     state = fields.Selection([
         ('draft', 'Draft'),
         ('pending_approval', 'Approval Pending'),
-        ('approved', 'Approved'),
+        ('approved', 'Published'),
         ('rejected', 'Rejected'),
     ], string='state', default='draft')
 
 
     def button_send_for_approval(self):
         for rec in self:
-            blog_id = self.env['vardhman.block.user'].sudo().search(
-                [
-                    ('user_id', '=', rec.env.user.id),
-                    ('activity', '=', 'blog'),
-                ], limit=1)
-            if blog_id:
-                raise ValidationError(
-                    _('You are blocked from posting.'))
-            else:
-                rec.write({'state': 'pending_approval'})
+            rec.write({'state': 'pending_approval'})
 
+    #
+    # def button_send_for_approval(self):
+    #     for rec in self:
+    #         blog_id = self.env['vardhman.block.user'].sudo().search(
+    #             [
+    #                 ('user_id', '=', rec.env.user.id),
+    #                 ('activity', '=', 'blog'),
+    #             ], limit=1)
+    #         if blog_id:
+    #             raise ValidationError(
+    #                 _('You are blocked from posting.'))
+    #         else:
+    #             rec.write({'state': 'pending_approval'})
+    #
 
     def button_reject(self):
         for rec in self:
@@ -201,13 +213,57 @@ class VardhmanAnnouncement(models.Model):
                 'front_type': rec.front_type,
                 'blog_id': bl_id,
             })
-            for user in self.tag_ids:
-                grp.tag_ids = [(4, user.id)]
+            # for user in self.tag_ids:
+            #     grp.tag_ids = [(4, user.id)]
+            if rec.indent_user_type =='all':
+                grp_id = self.env['res.groups'].sudo().search(
+                    [
+                        ('name', '=', 'Internal User')
+                    ], limit=1)
+                if grp_id:
+                    for group in grp_id:
+                        for user in group.users:
+                            user.notify_danger(message='Announcement created')
             rec.post_id = grp.id
             grp.is_published = True
             rec.write({'state': 'approved'})
 
 
+    def create_notification(self):
+        return {
+
+            'effect': {
+
+                'fadeout': 'slow',
+
+                'message': 'Enter your custom message here',
+
+                'type': 'rainbow_man',
+
+            }
+
+        }
+    #
+    # def create_notification(self):
+    #    message = {
+    #
+    #        'type': 'ir.actions.client',
+    #
+    #        'tag': 'display_notification',
+    #
+    #        'params': {
+    #
+    #            'title': _('Announcement!'),
+    #
+    #            'message': 'You have an announcement. Please open latest appointment to see',
+    #
+    #            'sticky': False,
+    #
+    #        }
+    #
+    #    }
+    #
+    #    return message
 
 class VardhmanIdeaShare(models.Model):
     _name = "vardhman.create.blogidea"

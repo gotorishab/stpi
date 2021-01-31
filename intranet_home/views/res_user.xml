@@ -11,6 +11,7 @@
                         <group>
                             <field name="unit_id"/>
                     <field name="department_id"/>
+                    <field name="business_type"/>
                         </group>
                     </group>
 
