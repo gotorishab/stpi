@@ -12,6 +12,7 @@ class ResUsers(models.Model):
     unit_id = fields.Many2one('vardhman.unit.master',string='Unit')
     department_id = fields.Many2one('hr.department',string='Department')
     business_type = fields.Many2one('vardhman.businesstype.master',string='Business Type')
+    description = fields.Html('Description')
 
 
 

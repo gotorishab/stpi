@@ -333,7 +333,7 @@
                          </group>
                          <group>
                              <field name="indent_user_type"/>
-                             <field name="indent_user_type"/>
+                             <field name="group_ids" widget="many2many_tags" attrs="{'invisible': [('indent_user_type', '!=', 'specific')]}"/>
                              <field name="post_id" attrs="{'invisible': [('state', '!=', 'approved')],'readonly': [('state', '=', 'approved')]}"/>
                          </group>
                          <field name="description" required="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>

@@ -7,11 +7,12 @@
 """,
     'category': 'Theme',
     'author': '',
-    'depends': ['website','hr', 'website_blog', 'mass_mailing', 'website_event', 'website_slides_forum'],
+    'depends': ['website','hr', 'website_blog', 'mass_mailing', 'website_event', 'website_slides_forum', 'mail'],
     'data': [
         'security/ir.model.access.csv',
         'security/blog_post_categories.xml',
         'security/intranet_home.xml',
+        'data/mail_template.xml',
         'wizard/employee_birthday_wizard.xml',
         'wizard/employee_workanniversary_wizard.xml',
         'wizard/employee_marriageanniversary_wizard.xml',

@@ -1,7 +1,8 @@
 from odoo import api, fields, models, _
 from odoo.http import request
 from odoo.exceptions import ValidationError
-
+from odoo.http import request
+from odoo import http
 
 
 class VardhmanStoryCategory(models.Model):
@@ -197,36 +198,59 @@ class VardhmanAnnouncement(models.Model):
         for rec in self:
             rec.write({'state': 'rejected'})
 
+    # def publish_announcement(self):
+    #     for rec in self:
+    #         if rec.indent_user_type == 'specific':
+    #             for line in self.env['res.users'].search([('groups_id', 'in', rec.group_ids.ids), ('id', '!=', self.env.user.id)]):
+    #                 template = self.env.ref('intranet_home.email_template_edi_announcement', raise_if_not_found=False)
+    #                 if template:
+    #                     ctx = {'description': rec.description, 'name': rec.name, 'partner_name': line.name,}
+    #                     template.with_context(ctx).send_mail(line.id, force_send=False, raise_exception=False)
+
+
+
 
     def button_approved(self):
         for rec in self:
-            bl_id = 1
-            blog_id = self.env['blog.blog'].sudo().search(
-                [
-                    ('front_type', '=', rec.front_type)
-                ], limit=1)
-            if blog_id:
-                for bl in blog_id:
-                    bl_id = bl.id
-            grp = self.env['blog.post'].create({
-                'name': str(rec.name),
-                'front_type': rec.front_type,
-                'blog_id': bl_id,
-            })
+            if rec.indent_user_type == 'specific':
+                user_ids = self.env['res.users'].search([('groups_id', 'in', rec.group_ids.ids), ('id', '!=', self.env.user.id)])
+            elif rec.indent_user_type == 'all':
+                user_ids = self.env['res.users'].search([('id', '!=', self.env.user.id)])
+            for line in user_ids:
+                template = self.env.ref('intranet_home.email_template_edi_announcement', raise_if_not_found=False)
+                if template:
+                    ctx = {'description': rec.description, 'rec':rec, 'name': rec.name, 'partner_name': line.name}
+                    template.with_context(ctx).send_mail(line.id, force_send=False, raise_exception=False)
+            # bl_id = 1
+            # blog_id = self.env['blog.blog'].sudo().search(
+            #     [
+            #         ('front_type', '=', rec.front_type)
+            #     ], limit=1)
+            # if blog_id:
+            #     for bl in blog_id:
+            #         bl_id = bl.id
+            # grp = self.env['blog.post'].create({
+            #     'name': str(rec.name),
+            #     'front_type': rec.front_type,
+            #     'blog_id': bl_id,
+            # })
+
+
             # for user in self.tag_ids:
             #     grp.tag_ids = [(4, user.id)]
-            if rec.indent_user_type =='all':
-                grp_id = self.env['res.groups'].sudo().search(
-                    [
-                        ('name', '=', 'Internal User')
-                    ], limit=1)
-                if grp_id:
-                    for group in grp_id:
-                        for user in group.users:
-                            user.notify_danger(message='Announcement created')
-            rec.post_id = grp.id
-            grp.is_published = True
-            rec.write({'state': 'approved'})
+            # if rec.indent_user_type =='all':
+            #     grp_id = self.env['res.groups'].sudo().search(
+            #         [
+            #             ('name', '=', 'Internal User')
+            #         ], limit=1)
+            #     if grp_id:
+            #         for group in grp_id:
+            #             for user in group.users:
+            #                 user.notify_danger(message='Announcement created')
+            # rec.post_id = grp.id
+            # grp.is_published = True
+            # rec.write({'state': 'approved'})
+
 
 
     def create_notification(self):

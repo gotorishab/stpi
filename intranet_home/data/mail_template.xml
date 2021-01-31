@@ -1,0 +1,29 @@
+<?xml version="1.0" ?>
+<odoo>
+
+    <!-- Mail template are declared in a NOUPDATE block
+         so users can freely customize/delete them -->
+    <data>
+        <!--Email template -->
+        <record id="email_template_edi_announcement" model="mail.template">
+            <field name="name">Announcement Email</field>
+            <field name="model_id" ref="base.model_res_users"/>
+            <field name="email_from">${(object.email_formatted or user.email_formatted) |safe}</field>
+            <field name="partner_to">${object.partner_id.id}</field>
+            <field name="subject">${ctx['name']}</field>
+            <field name="body_html" type="html">
+			<div style="margin: 0px; padding: 0px;">
+			    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+			        Dear,
+			            ${ctx['partner_name']},
+			        <br /><br />
+			            ${ctx['description']},
+			        <br /><br />
+			        Thank you.
+			    </p>
+			</div>
+            </field>
+            <field name="auto_delete" eval="True"/>
+        </record>
+    </data>
+</odoo>
