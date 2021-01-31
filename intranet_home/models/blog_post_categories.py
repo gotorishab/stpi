@@ -48,6 +48,20 @@ class BlogPost(models.Model):
     vote_ids = fields.One2many('blog.post.vote', 'blog_id', string='Votes')
     user_vote = fields.Integer('My Vote', compute='_get_user_vote')
     vote_count = fields.Integer('Total Votes', compute='_get_vote_count', store=True)
+    can_upvote = fields.Boolean('Can Upvote', compute='_get_post_karma_rights', compute_sudo=False)
+    can_downvote = fields.Boolean('Can Downvote', compute='_get_post_karma_rights', compute_sudo=False)
+
+
+    @api.depends_context('uid')
+    def _get_post_karma_rights(self):
+        user = self.env.user
+        is_admin = self.env.is_admin()
+        # sudoed recordset instead of individual posts so values can be
+        # prefetched in bulk
+        for post, post_sudo in zip(self, self.sudo()):
+            is_creator = post.create_uid == user
+            post.can_upvote = is_admin or user.karma >= 1 or post.user_vote == -1
+            post.can_downvote = is_admin or user.karma >= 1 or post.user_vote == 1
 
     def vote(self, upvote=True):
         Vote = self.env['blog.post.vote']

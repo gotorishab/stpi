@@ -55,7 +55,7 @@
                     <a class="mb-2 pl-0" style="font-size: 24px;text-decoration: none;" href="javascript: window.history.back()"><i class="pl-2 fa fa-angle-left"></i>
                     </a>
                     <!-- Button trigger modal -->
-                    <button type="button" class="btn mb-2" data-toggle="modal" data-target="#newFolderModal">
+                    <button groups="int_document_management.group_manager_we_document" type="button" class="btn mb-2" data-toggle="modal" data-target="#newFolderModal">
                       <i class="fa fa-plus pr-2"></i> New <i class="pl-2 fa fa-angle-down"></i>
                     </button>
 

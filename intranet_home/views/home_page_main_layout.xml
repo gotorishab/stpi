@@ -7,17 +7,24 @@
     </template>
     <template id="post_teaser_inherit" inherit_id="website_blog.blog_post_content" name="Allow Like">
         <xpath expr="//div[hasclass('css_editable_mode_hidden')]" position="after">
+            <t t-set="own_vote" t-value="post.user_vote"/>
+            <t t-set="can_upvote" t-value="blog_post.can_upvote"/>
+            <t t-set="can_downvote" t-value="blog_post.can_downvote"/>
             <t t-set="enable_like" t-value="request.env['ir.config_parameter'].sudo().get_param('intranet_home.enable_like')"/>
             <div t-if="blog_post.blog_id.front_type == 'story' and enable_like" class="vote css_editable_mode_hidden text-center d-inline-flex align-items-center">
                 <t t-set="own_vote" t-value="blog_post.user_vote"/>
                 <button type="button" t-attf-data-href="/blog/{{slug(blog_post)}}/upvote"
                     class="btn btn-link vote_up fa fa-caret-up pl-0"
-                    aria-label="Positive vote" title="Positive vote"/>
+                    t-att-disabled="own_vote == 1 and 'disabled'"
+                    aria-label="Positive vote" title="Positive vote"
+                    t-att-data-can-upvote="can_upvote"/>
                 <b class="vote_count"
                    t-esc="blog_post.vote_count"/>
                 <button type="button" t-attf-data-href="/blog/{{slug(blog_post)}}/downvote"
                     class="btn btn-link vote_down fa fa-caret-down"
-                    aria-label="Negative vote" title="Negative vote"/>
+                    t-att-disabled="own_vote == -1 and 'disabled'"
+                    aria-label="Negative vote" title="Negative vote"
+                    t-att-data-can-downvote="can_downvote"/>
             </div>
         </xpath>
     </template>
