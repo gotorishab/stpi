@@ -78,7 +78,7 @@
                 <p class="lead d-none d-md-block">Click on <b>Edit</b> in the top right corner to start designing.</p>
             </div>
 
-            <div t-if="is_intranet" class="container oe_main_container d-flex pt-4 pb-4">
+            <div t-if="is_intranet" class="container-fluid oe_main_container d-flex pt-4 pb-4">
                 <div class="col-md-3 m-0 p-0">
                     <div class="col-md-12 p-0 oe_search mb-3 col-sm-3">
                         <form class="form-inline my-4 my-lg-0">
