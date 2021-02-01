@@ -52,6 +52,7 @@ class BlogPost(models.Model):
     can_downvote = fields.Boolean('Can Downvote', compute='_get_post_karma_rights', compute_sudo=False)
     date_from = fields.Date(strign="From Date", default=fields.Date.today())
     date_to = fields.Date(strign="To Date", default=fields.Date.today())
+    announcement_id = fields.Many2one('vardhman.create.announcement')
 
 
     @api.depends_context('uid')

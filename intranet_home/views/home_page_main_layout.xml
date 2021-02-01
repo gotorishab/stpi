@@ -28,10 +28,152 @@
             </div>
         </xpath>
     </template>
+    <template id="posts_loop_inherit" name="Allow Comments" inherit_id="website_blog.posts_loop" priority="1">
+        <xpath expr="//div[contains(@t-attf-class, 'pb-4 col-12 #{colWidth}')]" position="attributes">
+            <attribute name="name">main_row</attribute>
+        </xpath>
+        <xpath expr="//div[@name='main_row']" position="replace">
+            <!-- <div t-if="blog_post and blog_post.front_type == 'calendar_1'" class="small mb-1 w-100">
+            </div> -->
+            <!-- <attribute name="t-if">blog_post and blog_post.announcement_id and blog_post.announcement_id.indent_user_type == 'specific' and request.env.user.groups_id.ids == blog_post.announcement_id.group_ids.id</attribute> -->
+             <div t-if="blog_post and blog_post.sudo().announcement_id and blog_post.sudo().announcement_id.indent_user_type == 'all'" t-attf-class="pb-4 main_row col-12 #{colWidth}">
+                <article t-attf-class="o_wblog_post position-relative #{'card h-100' if opt_blog_cards_design else ''}" name="blog_post">
+                    <!-- List-View Design -->
+                    <t t-if="opt_blog_list_view">
+                        <div t-att-class="opt_blog_cards_design and 'card-body py-3'">
+                            <t t-call="website_blog.post_heading"/>
+                        </div>
+                        <div t-if="not opt_blog_cards_design" class="py-2">
+                            <t t-call="website_blog.post_info"></t>
+                        </div>
+                        <div t-if="opt_posts_loop_show_cover">
+                            <t t-call="website_blog.post_cover_image"/>
+                        </div>
+                        <div t-if="is_view_active('website_blog.opt_posts_loop_show_teaser')" t-att-class="opt_blog_cards_design and 'card-body pt-0'">
+                            <t t-call="website_blog.post_teaser"/>
+                        </div>
+                        <div t-if="opt_blog_cards_design" t-attf-class="opt_blog_cards_design and 'card-body pt-0 pb-2'}">
+                            <t t-call="website_blog.post_info"></t>
+                        </div>
+                        <div t-else="" class="mt-3">
+                            <a t-attf-href="/blog/#{slug(blog_post.blog_id)}/#{slug(blog_post)}" class="btn btn-primary">
+                                Read more <i class="fa fa-chevron-right ml-2"/>
+                            </a>
+                        </div>
+                    </t>
+                    <!-- Grid-View Design -->
+                    <t t-if="not opt_blog_list_view">
+                        <t t-if="opt_posts_loop_show_cover" t-call="website_blog.post_cover_image"/>
+                        <div t-att-class="opt_blog_cards_design and 'card-body px-2 py-0 mb-2'">
+                            <t t-call="website_blog.post_heading"/>
+                            <div t-if="is_view_active('website_blog.opt_posts_loop_show_teaser')">
+                                <t t-call="website_blog.post_teaser"/>
+                            </div>
+                        </div>
+                        <div t-attf-class="o_wblog_normalize_font #{'card-footer px-2 pb-2' if opt_blog_cards_design else 'pr-2 pb-2'}">
+                            <t t-call="website_blog.post_info"></t>
+                        </div>
+                    </t>
+                    <!-- Add 'unpublished' badge -->
+                    <span t-if="not blog_post.website_published" class="bg-danger small py-1 px-2 position-absolute o_not_editable" style="top:0; right:0">unpublished</span>
+                </article>
+            </div>
+
+
+            <div  t-elif="blog_post and blog_post.sudo().announcement_id and blog_post.sudo().announcement_id.indent_user_type == 'specific' and request.env.user.groups_id.filtered(lambda x: x.id in blog_post.sudo().announcement_id.group_ids.ids)" t-attf-class="pb-4 main_row col-12 #{colWidth}">
+                <article t-attf-class="o_wblog_post position-relative #{'card h-100' if opt_blog_cards_design else ''}" name="blog_post">
+                    <!-- List-View Design -->
+                    <t t-if="opt_blog_list_view">
+                        <div t-att-class="opt_blog_cards_design and 'card-body py-3'">
+                            <t t-call="website_blog.post_heading"/>
+                        </div>
+                        <div t-if="not opt_blog_cards_design" class="py-2">
+                            <t t-call="website_blog.post_info"></t>
+                        </div>
+                        <div t-if="opt_posts_loop_show_cover">
+                            <t t-call="website_blog.post_cover_image"/>
+                        </div>
+                        <div t-if="is_view_active('website_blog.opt_posts_loop_show_teaser')" t-att-class="opt_blog_cards_design and 'card-body pt-0'">
+                            <t t-call="website_blog.post_teaser"/>
+                        </div>
+                        <div t-if="opt_blog_cards_design" t-attf-class="opt_blog_cards_design and 'card-body pt-0 pb-2'}">
+                            <t t-call="website_blog.post_info"></t>
+                        </div>
+                        <div t-else="" class="mt-3">
+                            <a t-attf-href="/blog/#{slug(blog_post.blog_id)}/#{slug(blog_post)}" class="btn btn-primary">
+                                Read more <i class="fa fa-chevron-right ml-2"/>
+                            </a>
+                        </div>
+                    </t>
+                    <!-- Grid-View Design -->
+                    <t t-if="not opt_blog_list_view">
+                        <t t-if="opt_posts_loop_show_cover" t-call="website_blog.post_cover_image"/>
+                        <div t-att-class="opt_blog_cards_design and 'card-body px-2 py-0 mb-2'">
+                            <t t-call="website_blog.post_heading"/>
+                            <div t-if="is_view_active('website_blog.opt_posts_loop_show_teaser')">
+                                <t t-call="website_blog.post_teaser"/>
+                            </div>
+                        </div>
+                        <div t-attf-class="o_wblog_normalize_font #{'card-footer px-2 pb-2' if opt_blog_cards_design else 'pr-2 pb-2'}">
+                            <t t-call="website_blog.post_info"></t>
+                        </div>
+                    </t>
+                    <!-- Add 'unpublished' badge -->
+                    <span t-if="not blog_post.website_published" class="bg-danger small py-1 px-2 position-absolute o_not_editable" style="top:0; right:0">unpublished</span>
+                </article>
+            </div>
+
+            <div  t-elif="blog_post and not blog_post.sudo().announcement_id" t-attf-class="pb-4 main_row col-12 #{colWidth}">
+                <article t-attf-class="o_wblog_post position-relative #{'card h-100' if opt_blog_cards_design else ''}" name="blog_post">
+                    <!-- List-View Design -->
+                    <t t-if="opt_blog_list_view">
+                        <div t-att-class="opt_blog_cards_design and 'card-body py-3'">
+                            <t t-call="website_blog.post_heading"/>
+                        </div>
+                        <div t-if="not opt_blog_cards_design" class="py-2">
+                            <t t-call="website_blog.post_info"></t>
+                        </div>
+                        <div t-if="opt_posts_loop_show_cover">
+                            <t t-call="website_blog.post_cover_image"/>
+                        </div>
+                        <div t-if="is_view_active('website_blog.opt_posts_loop_show_teaser')" t-att-class="opt_blog_cards_design and 'card-body pt-0'">
+                            <t t-call="website_blog.post_teaser"/>
+                        </div>
+                        <div t-if="opt_blog_cards_design" t-attf-class="opt_blog_cards_design and 'card-body pt-0 pb-2'}">
+                            <t t-call="website_blog.post_info"></t>
+                        </div>
+                        <div t-else="" class="mt-3">
+                            <a t-attf-href="/blog/#{slug(blog_post.blog_id)}/#{slug(blog_post)}" class="btn btn-primary">
+                                Read more <i class="fa fa-chevron-right ml-2"/>
+                            </a>
+                        </div>
+                    </t>
+                    <!-- Grid-View Design -->
+                    <t t-if="not opt_blog_list_view">
+                        <t t-if="opt_posts_loop_show_cover" t-call="website_blog.post_cover_image"/>
+                        <div t-att-class="opt_blog_cards_design and 'card-body px-2 py-0 mb-2'">
+                            <t t-call="website_blog.post_heading"/>
+                            <div t-if="is_view_active('website_blog.opt_posts_loop_show_teaser')">
+                                <t t-call="website_blog.post_teaser"/>
+                            </div>
+                        </div>
+                        <div t-attf-class="o_wblog_normalize_font #{'card-footer px-2 pb-2' if opt_blog_cards_design else 'pr-2 pb-2'}">
+                            <t t-call="website_blog.post_info"></t>
+                        </div>
+                    </t>
+                    <!-- Add 'unpublished' badge -->
+                    <span t-if="not blog_post.website_published" class="bg-danger small py-1 px-2 position-absolute o_not_editable" style="top:0; right:0">unpublished</span>
+                </article>
+            </div>
+
+            
+        </xpath>
+    </template>
      <template id="post_info_inherit" name="Allow Comments" inherit_id="website_blog.post_info" priority="1">
         <xpath expr="//div[hasclass('small')]" position="after">
-            <div class="small mb-1 w-100">
+            <div t-if="blog_post and blog_post.front_type == 'calendar_1'" class="small mb-1 w-100">
                 <div t-attf-class="#{opt_blog_list_view and 'flex-grow-0 w-auto mw-100' or 'flex-grow-1' }">
+                    <t t-esc="intranet_home"/>
                     <span class="badge badge-primary" style="font-size:13px;">From</span><time t-field="blog_post.date_from" class="text-nowrap font-weight-bold px-2" t-options='{"format": "MMM d, yyyy"}'/>
                     <span class="badge badge-primary" style="font-size:13px;">To</span> <time t-field="blog_post.date_to" class="text-nowrap font-weight-bold px-2" t-options='{"format": "MMM d, yyyy"}'/>
                 </div>

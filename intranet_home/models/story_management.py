@@ -233,6 +233,7 @@ class VardhmanAnnouncement(models.Model):
                 'name': str(rec.name),
                 'front_type': rec.front_type,
                 'blog_id': bl_id,
+                'announcement_id': rec.id,
                 'content': rec.description,
             })
             rec.post_id = grp.id
