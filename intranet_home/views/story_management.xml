@@ -196,6 +196,18 @@
                          </group>
 <!--                         <field name="description" required="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>-->
                      </group>
+
+                     <notebook>
+                         <page name="tan_non" string="Type">
+                             <group>
+                                 <group>
+                                     <field name="idea_description"/>
+                                     <field name="tan_nontan"/>
+                                     <field name="benefits"/>
+                                 </group>
+                             </group>
+                         </page>
+                     </notebook>
                  </sheet>
                  <div class="oe_chatter">
                         <field name="message_follower_ids" widget="mail_followers"/>

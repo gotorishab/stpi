@@ -286,6 +286,12 @@ class VardhmanIdeaShare(models.Model):
     ideasugg_id = fields.Many2one('blog.tag', string='Idea Category')
     subtype_id = fields.Many2one('blog.tag', string='Idea Sub-Category')
     name = fields.Text('Ideas and Suggestions')
+    idea_description = fields.Text('Idea Description')
+    tan_nontan = fields.Selection([
+        ('Tangible', 'Tangible'),
+        ('non_tan', 'Non-Tangible'),
+    ], string='Benefit Type')
+    benefits = fields.Text('Benefit')
     post_id = fields.Many2one('blog.post', string='Idea/Suggestion')
     front_type = fields.Selection([
         ('news', 'News'),
@@ -358,8 +364,8 @@ class VardhmanIdeaShare(models.Model):
                     bl_id = bl.id
             grp = self.env['blog.post'].create({
                 'name': str(rec.name),
+                'content': str(rec.name),
                 'front_type': rec.front_type,
-                'content': rec.description,
                 'blog_id': bl_id,
             })
             grp.tag_ids = [(4, rec.ideasugg_id.id)]
