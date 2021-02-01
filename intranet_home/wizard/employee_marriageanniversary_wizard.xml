@@ -36,7 +36,7 @@
     <menuitem id="marriage_anniversary_cheque_wizard_view"
             name="Employee Marriage Anniversary"
             sequence="2"
-            parent="anniversary_cheque_wizard_view"
+            parent="intranet_home.manage_anniversary_view"
               action="marriage_anniversary_cheque_action_call"/>
 
     </data>

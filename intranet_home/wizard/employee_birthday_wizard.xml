@@ -33,10 +33,14 @@
         </record>
 
 
+    <menuitem id="manage_anniversary_view"
+            name="Manage Anniversary"/>
+
+
     <menuitem id="birthday_cheque_wizard_view"
             name="Employee Birthday"
             sequence="2"
-            parent="website.menu_website_configuration"
+            parent="intranet_home.manage_anniversary_view"
               action="birthday_cheque_action_call"/>
 
     </data>

@@ -306,9 +306,8 @@
 
 
     <menuitem id="list_announcement_p_vardhman_all_view"
-            name="Announcement"
-            sequence="3"
-            parent="story_management_ih"
+            name="Manage Announcements ("
+             groups="intranet_home.group_intranet_announcement_authorised_user"
               />
 
     <record id="view_vardhman_create_announcement_form" model="ir.ui.view">
@@ -319,7 +318,7 @@
                  <header>
 <!--                         <button name="button_send_for_approval" string="Send for Approval"  states="draft" type="object"/>-->
                          <button name="button_approved" string="Publish" states="draft" type="object"/>
-                         <button name="create_notification" string="pp" states="draft" type="object"/>
+<!--                         <button name="create_notification" string="pp" states="draft" type="object"/>-->
 <!--                         <button name="button_reject" string="Reject" states="pending_approval" type="object" groups="intranet_home.group_intranet_home_content_moderator"/>-->
                          <field name="state" widget="statusbar" statusbar_visible="draft,approved" />
 
@@ -354,9 +353,10 @@
              <field eval="8" name="priority"/>
              <field name="arch" type="xml">
                  <tree string="Announcement">
-                     <field name="name" required="1"/>
-                     <field name="tag_ids"  widget="many2many_tags"/>
-                     <field name="description"/>
+                     <field name="name"/>
+                     <field name="indent_user_type"/>
+<!--                     <field name="tag_ids"  widget="many2many_tags"/>-->
+<!--                     <field name="description"/>-->
                  </tree>
              </field>
          </record>
@@ -391,21 +391,6 @@
             action="ir_action_vardhman_create_announcement_draft"
               />
 
-
-         <record id="ir_action_vardhman_create_announcement_pending_approval" model="ir.actions.act_window">
-             <field name="name">Post a announcement</field>
-             <field name="res_model">vardhman.create.announcement</field>
-             <field name="view_mode">tree,form</field>
-             <field name="domain">[('state','=','pending_approval')]</field>
-         </record>
-    <menuitem id="list_create_announcement_vardhman_pending_approval_view"
-            name="Pending Approval Announcement list"
-            sequence="3"
-            parent="list_announcement_p_vardhman_all_view"
-            action="ir_action_vardhman_create_announcement_pending_approval"
-              />
-
-
          <record id="ir_action_vardhman_create_announcement_approved" model="ir.actions.act_window">
              <field name="name">Post a Announcement</field>
              <field name="res_model">vardhman.create.announcement</field>
@@ -418,20 +403,5 @@
             parent="list_announcement_p_vardhman_all_view"
             action="ir_action_vardhman_create_announcement_approved"
               />
-
-         <record id="ir_action_vardhman_create_announcement_reject" model="ir.actions.act_window">
-             <field name="name">Post a Announcement</field>
-             <field name="res_model">vardhman.create.announcement</field>
-             <field name="view_mode">tree,form</field>
-             <field name="domain">[('state','=','rejected')]</field>
-         </record>
-    <menuitem id="list_create_announcement_vardhman_reject_view"
-            name="Rejected Announcement list"
-            sequence="5"
-            parent="list_announcement_p_vardhman_all_view"
-            action="ir_action_vardhman_create_announcement_reject"
-              />
-
-
 
 </odoo>

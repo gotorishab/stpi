@@ -38,9 +38,9 @@
          </record>
     
     <menuitem id="menu_useful_links"
-            name="Useful Links"
+            name="Manage Quick Links"
             sequence="1"
-            parent="website.menu_website_configuration"
-              action="intranet_home.ir_action_useful_links"/>
+              action="intranet_home.ir_action_useful_links"
+              groups="intranet_home.group_intranet_quicklinks_authorised_user"/>
 
 </odoo>

@@ -17,7 +17,8 @@
 			        Dear,
 			            ${ctx['partner_name']},
 			        <br /><br />
-			            ${ctx['description']},
+                    Announcement has been created. Please visit your Homepage
+<!--			            ${ctx['description']},-->
 			        <br /><br />
 			        Thank you.
 			    </p>
