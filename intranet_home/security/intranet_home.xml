@@ -47,4 +47,10 @@
     </record>
 
 
+    <record id="group_intranet_cmd_authorised_user" model="res.groups">
+        <field name="name">CMD Authorised User</field>
+        <field name="category_id" ref="module_vardhman_intranet_home"/>
+    </record>
+
+
 </odoo>

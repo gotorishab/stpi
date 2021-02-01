@@ -9,14 +9,16 @@
               <field name="image" widget="image" class="oe_avatar" nolable="1" options="{'size': [100, 100]}"/>
             </group>
             <group name="publishing_details" position="before">
-                <field name="vote_ids">
+                <field name="vote_ids" attrs="{'invisible':[('front_type', '!=', 'story')]}">
                   <tree editable="bottom">
                     <field name="vote"/>
                     <field name="blog_blog_id"/>
                   </tree>
                 </field>
-                <field name="user_vote"/>
-                <field name="vote_count"/>
+                <group>
+                    <field name="user_vote" attrs="{'invisible':[('front_type', '!=', 'story')]}"/>
+                <field name="vote_count" attrs="{'invisible':[('front_type', '!=', 'story')]}"/>
+                </group>
             </group>
             <field name="subtitle" position="after">
                 <field name="front_type"/>

@@ -37,6 +37,7 @@ access_vardhman_block_user,vardhman.block.user,model_vardhman_block_user,base.gr
 access_vardhman_handle_ideasugg,vardhman.handle.ideasugg,model_vardhman_handle_ideasugg,base.group_user,1,1,1,1
 access_vardhman_create_blogpost,vardhman.create.blogpost,model_vardhman_create_blogpost,base.group_user,1,1,1,1
 access_vardhman_create_newspost,vardhman.create.newspost,model_vardhman_create_newspost,base.group_user,1,1,1,1
+access_vardhman_create_cmdpost,vardhman.create.cmdpost,model_vardhman_create_cmdpost,base.group_user,1,1,1,1
 access_vardhman_employee_anniversarymail,vardhman.employee.anniversarymail,model_vardhman_employee_anniversarymail,base.group_user,1,1,1,1
 access_vardhman_create_announcement,vardhman.create.announcement,model_vardhman_create_announcement,base.group_user,1,1,1,1
 access_vardhman_create_blogidea,vardhman.create.blogidea,model_vardhman_create_blogidea,base.group_user,1,1,1,1
