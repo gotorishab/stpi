@@ -38,6 +38,8 @@
         'views/employee_marriageanniversary.xml',
         'views/useful_links.xml',
         'views/test.xml',
+        'views/news_management.xml',
+        'views/anniversary_mail.xml',
     ],
     'demo': [],
     'images': [],

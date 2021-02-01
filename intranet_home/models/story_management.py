@@ -8,7 +8,7 @@ from odoo import http
 class VardhmanStoryCategory(models.Model):
     _name = "vardhman.create.blogpost"
     _inherit = ['mail.thread', 'mail.activity.mixin']
-    _description = "Create Blog Post"
+    _description = "Create Story Post"
 
 
     def _default_unit(self):
@@ -221,35 +221,23 @@ class VardhmanAnnouncement(models.Model):
                 if template:
                     ctx = {'description': rec.description, 'rec':rec, 'name': rec.name, 'partner_name': line.name}
                     template.with_context(ctx).send_mail(line.id, force_send=False, raise_exception=False)
-            # bl_id = 1
-            # blog_id = self.env['blog.blog'].sudo().search(
-            #     [
-            #         ('front_type', '=', rec.front_type)
-            #     ], limit=1)
-            # if blog_id:
-            #     for bl in blog_id:
-            #         bl_id = bl.id
-            # grp = self.env['blog.post'].create({
-            #     'name': str(rec.name),
-            #     'front_type': rec.front_type,
-            #     'blog_id': bl_id,
-            # })
-
-
-            # for user in self.tag_ids:
-            #     grp.tag_ids = [(4, user.id)]
-            # if rec.indent_user_type =='all':
-            #     grp_id = self.env['res.groups'].sudo().search(
-            #         [
-            #             ('name', '=', 'Internal User')
-            #         ], limit=1)
-            #     if grp_id:
-            #         for group in grp_id:
-            #             for user in group.users:
-            #                 user.notify_danger(message='Announcement created')
-            # rec.post_id = grp.id
-            # grp.is_published = True
-            # rec.write({'state': 'approved'})
+            bl_id = 1
+            blog_id = self.env['blog.blog'].sudo().search(
+                [
+                    ('front_type', '=', rec.front_type)
+                ], limit=1)
+            if blog_id:
+                for bl in blog_id:
+                    bl_id = bl.id
+            grp = self.env['blog.post'].create({
+                'name': str(rec.name),
+                'front_type': rec.front_type,
+                'blog_id': bl_id,
+                'content': rec.description,
+            })
+            rec.post_id = grp.id
+            grp.is_published = True
+            rec.write({'state': 'approved'})
 
 
 
@@ -377,3 +365,56 @@ class VardhmanIdeaShare(models.Model):
             rec.post_id = grp.id
             grp.is_published = True
             rec.write({'state': 'approved'})
+
+
+class VardhmanNewsCategory(models.Model):
+    _name = "vardhman.create.newspost"
+    _inherit = ['mail.thread', 'mail.activity.mixin']
+    _description = "Create news Post"
+
+
+    def _default_unit(self):
+        return self.env['vardhman.unit.master'].sudo().search([('id', '=', self.env.user.unit_id.id)], limit=1)
+
+
+    unit_id = fields.Many2one('vardhman.unit.master',string='Unit', default=_default_unit)
+    # tag_ids = fields.Many2many('blog.tag', string='Story Category')
+    name = fields.Char('Title')
+    description = fields.Html('Description')
+    post_id = fields.Many2one('blog.post', string='News')
+    # reason_des = fields.Many2one('vardhman.story.rejection', string='Reason for Rejection')
+    front_type = fields.Selection([
+        ('news', 'News'),
+        ('story', 'Story'),
+        ('announcement', 'Announcement'),
+        ('idea', 'Idea'),
+        ('calendar_1', 'Calendar Image First'),
+        ('calendar_2', 'Calendar Image Second'),
+        ('calendar_3', 'Calendar Image Third'),
+    ], string='Front Type',default='news')
+    state = fields.Selection([
+        ('draft', 'Draft'),
+        ('published', 'Published'),
+        ('deleted', 'Deleted'),
+    ], string='state', default='draft', track_visibility='always')
+
+
+    def button_publish(self):
+        for rec in self:
+            rec.write({'state': 'published'})
+
+
+    def button_delete(self):
+        for rec in self:
+            rec.post_id.sudo().unlink()
+            rec.write({'state': 'deleted'})
+            rec.sudo().unlink()
+            return {
+                'name': 'Story - Approved',
+                'view_mode': 'tree,form',
+                'res_model': 'vardhman.create.newspost',
+                'type': 'ir.actions.act_window',
+                'target': 'current',
+                'domain': [('state', '=', 'approved')],
+            }
+

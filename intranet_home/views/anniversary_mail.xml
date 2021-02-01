@@ -1,0 +1,566 @@
+<odoo>
+
+
+        <record id="view_vardhman_anniversary_mail_form" model="ir.ui.view">
+             <field name="name">vardhman.employee.anniversarymail.form</field>
+             <field name="model">vardhman.employee.anniversarymail</field>
+             <field name="arch" type="xml">
+                 <form string="Anniversary Mail">
+                     <header>
+                         <button name="button_create_activities" string="Send"  states="draft" type="object"/>
+                         <field name="state" widget="statusbar" statusbar_visible="draft,mail_sent" />
+
+            </header>
+                     <sheet>
+                         <group>
+                             <field name="name" required="1"/>
+                         </group>
+                         <field name="email" required="1"/>
+                     </sheet>
+                 </form>
+             </field>
+         </record>
+
+         <record id="view_vardhman_anniversary_mail_list" model="ir.ui.view">
+             <field name="name">vardhman.employee.anniversarymail.list</field>
+             <field name="model">vardhman.employee.anniversarymail</field>
+             <field eval="8" name="priority"/>
+             <field name="arch" type="xml">
+                 <tree string="Anniversary Mail">
+                     <field name="name" required="1"/>
+                 </tree>
+             </field>
+         </record>
+
+         <record id="ir_action_vardhman_anniversary_mail" model="ir.actions.act_window">
+             <field name="name">Anniversary Mail</field>
+             <field name="res_model">vardhman.employee.anniversarymail</field>
+             <field name="view_mode">tree,form</field>
+         </record>
+
+    <menuitem id="list_anniversary_mail_view"
+            name="Anniversary Mail"
+            sequence="1"
+            parent="intranet_home.manage_anniversary_view"
+            action="ir_action_vardhman_anniversary_mail"
+              />
+
+
+
+
+        <record id="view_vardhman_story_postuser_form" model="ir.ui.view">
+             <field name="name">vardhman.story.postuser.form</field>
+             <field name="model">vardhman.story.postuser</field>
+             <field name="arch" type="xml">
+                 <form string="Story List">
+                     <sheet>
+                         <group>
+                             <group>
+                                 <field name="user_id"/>
+                             </group>
+                             <group>
+                             <field name="enable_security" required="1"/>
+                             <field name="word_limit" required="1"/>
+                                 </group>
+                         </group>
+                     </sheet>
+                 </form>
+             </field>
+         </record>
+
+         <record id="view_vardhman_story_postuser_list" model="ir.ui.view">
+             <field name="name">vardhman.story.postuser.list</field>
+             <field name="model">vardhman.story.postuser</field>
+             <field eval="8" name="priority"/>
+             <field name="arch" type="xml">
+                 <tree string="Story Post for user">
+                     <field name="user_id" required="1"/>
+                     <field name="enable_security" required="1"/>
+                     <field name="word_limit" required="1"/>
+                 </tree>
+             </field>
+         </record>
+
+         <record id="ir_action_vardhman_story_postuser" model="ir.actions.act_window">
+             <field name="name">Story Post for user</field>
+             <field name="res_model">vardhman.story.postuser</field>
+             <field name="view_mode">tree,form</field>
+         </record>
+
+    <menuitem id="list_postuser_reason_view"
+            name="Story Post for user"
+            sequence="8"
+            parent="manage_masters_ih"
+            action="ir_action_vardhman_story_postuser"
+              />
+
+
+
+        <record id="view_vardhman_idea_reason_form" model="ir.ui.view">
+             <field name="name">vardhman.idea.reason.form</field>
+             <field name="model">vardhman.idea.reason</field>
+             <field name="arch" type="xml">
+                 <form string="Idea/Suggestion Sharing">
+                     <sheet>
+                         <group>
+                             <group>
+                                 <field name="user_id" required="1"/>
+                             </group>
+                             <group>
+                             <field name="enable_security" required="1"/>
+                             <field name="word_limit" required="1"/>
+                             </group>
+                         </group>
+                     </sheet>
+                 </form>
+             </field>
+         </record>
+
+         <record id="view_vardhman_idea_reason_list" model="ir.ui.view">
+             <field name="name">vardhman.idea.reason.list</field>
+             <field name="model">vardhman.idea.reason</field>
+             <field eval="8" name="priority"/>
+             <field name="arch" type="xml">
+                 <tree string="Vardhman Idea/Suggestion Sharing">
+                     <field name="user_id" required="1"/>
+                     <field name="enable_security" required="1"/>
+                     <field name="word_limit" required="1"/>
+                 </tree>
+             </field>
+         </record>
+
+         <record id="ir_action_vardhman_idea_reason" model="ir.actions.act_window">
+             <field name="name">Idea/Suggestion Sharing</field>
+             <field name="res_model">vardhman.idea.reason</field>
+             <field name="view_mode">tree,form</field>
+         </record>
+
+    <menuitem id="list_idea_reason_view"
+            name="Idea/Suggestion Sharing"
+            sequence="8"
+            parent="manage_masters_ih"
+            action="ir_action_vardhman_idea_reason"
+              />
+
+
+
+        <record id="view_vardhman_idea_rejection_form" model="ir.ui.view">
+             <field name="name">vardhman.idea.rejection.form</field>
+             <field name="model">vardhman.idea.rejection</field>
+             <field name="arch" type="xml">
+                 <form string="Idea/Suggestion Rejection Reason">
+                     <sheet>
+                         <group>
+                             <group>
+                                 <field name="name" required="1"/>
+                             </group>
+                         </group>
+                     </sheet>
+                 </form>
+             </field>
+         </record>
+
+         <record id="view_vardhman_idea_rejection_list" model="ir.ui.view">
+             <field name="name">vardhman.idea.rejection.list</field>
+             <field name="model">vardhman.idea.rejection</field>
+             <field eval="8" name="priority"/>
+             <field name="arch" type="xml">
+                 <tree string="Idea/Suggestion Rejection Reason">
+                     <field name="name" required="1"/>
+                 </tree>
+             </field>
+         </record>
+
+         <record id="ir_action_vardhman_idea_rejection" model="ir.actions.act_window">
+             <field name="name">Idea/Suggestion Rejection Reason</field>
+             <field name="res_model">vardhman.idea.rejection</field>
+             <field name="view_mode">tree,form</field>
+         </record>
+
+    <menuitem id="list_idea_rejection_view"
+            name="Idea/Suggestion Rejection Reason"
+            sequence="9"
+            parent="manage_masters_ih"
+            action="ir_action_vardhman_idea_rejection"
+              />
+
+
+
+
+        <record id="view_vardhman_unit_master_form" model="ir.ui.view">
+             <field name="name">vardhman.unit.master.form</field>
+             <field name="model">vardhman.unit.master</field>
+             <field name="arch" type="xml">
+                 <form string="Unit">
+                     <sheet>
+                         <group>
+                             <group>
+                                 <field name="name" required="1"/>
+                             </group>
+                         </group>
+                     </sheet>
+                 </form>
+             </field>
+         </record>
+
+         <record id="view_vardhman_unit_master_tree" model="ir.ui.view">
+             <field name="name">vardhman.unit.master.list</field>
+             <field name="model">vardhman.unit.master</field>
+             <field eval="8" name="priority"/>
+             <field name="arch" type="xml">
+                 <tree string="Unit">
+                     <field name="name" required="1"/>
+                 </tree>
+             </field>
+         </record>
+
+         <record id="ir_action_vardhman_unit_master" model="ir.actions.act_window">
+             <field name="name">Unit</field>
+             <field name="res_model">vardhman.unit.master</field>
+             <field name="view_mode">tree,form</field>
+         </record>
+
+    <menuitem id="list_unit_master_view"
+            name="Unit"
+            sequence="9"
+            parent="manage_masters_ih"
+            action="ir_action_vardhman_unit_master"
+              />
+
+
+
+
+
+        <record id="view_vardhman_sectiontype_master_form" model="ir.ui.view">
+             <field name="name">vardhman.sectiontype.master.form</field>
+             <field name="model">vardhman.sectiontype.master</field>
+             <field name="arch" type="xml">
+                 <form string="sectiontype">
+                     <sheet>
+                         <group>
+                             <group>
+                                 <field name="name" required="1"/>
+                             </group>
+                         </group>
+                     </sheet>
+                 </form>
+             </field>
+         </record>
+
+         <record id="view_vardhman_sectiontype_master_tree" model="ir.ui.view">
+             <field name="name">vardhman.sectiontype.master.list</field>
+             <field name="model">vardhman.sectiontype.master</field>
+             <field eval="8" name="priority"/>
+             <field name="arch" type="xml">
+                 <tree string="sectiontype">
+                     <field name="name" required="1"/>
+                 </tree>
+             </field>
+         </record>
+
+         <record id="ir_action_vardhman_sectiontype_master" model="ir.actions.act_window">
+             <field name="name">sectiontype</field>
+             <field name="res_model">vardhman.sectiontype.master</field>
+             <field name="view_mode">tree,form</field>
+         </record>
+
+    <menuitem id="list_sectiontype_master_view"
+            name="sectiontype"
+            sequence="9"
+            parent="manage_masters_ih"
+            action="ir_action_vardhman_sectiontype_master"
+              />
+
+
+
+
+
+
+        <record id="view_vardhman_businesstype_master_form" model="ir.ui.view">
+             <field name="name">vardhman.businesstype.master.form</field>
+             <field name="model">vardhman.businesstype.master</field>
+             <field name="arch" type="xml">
+                 <form string="businesstype">
+                     <sheet>
+                         <group>
+                             <group>
+                                 <field name="name" required="1"/>
+                             </group>
+                         </group>
+                     </sheet>
+                 </form>
+             </field>
+         </record>
+
+         <record id="view_vardhman_businesstype_master_tree" model="ir.ui.view">
+             <field name="name">vardhman.businesstype.master.list</field>
+             <field name="model">vardhman.businesstype.master</field>
+             <field eval="8" name="priority"/>
+             <field name="arch" type="xml">
+                 <tree string="businesstype">
+                     <field name="name" required="1"/>
+                 </tree>
+             </field>
+         </record>
+
+         <record id="ir_action_vardhman_businesstype_master" model="ir.actions.act_window">
+             <field name="name">businesstype</field>
+             <field name="res_model">vardhman.businesstype.master</field>
+             <field name="view_mode">tree,form</field>
+         </record>
+
+    <menuitem id="list_businesstype_master_view"
+            name="businesstype"
+            sequence="9"
+            parent="manage_masters_ih"
+            action="ir_action_vardhman_businesstype_master"
+              />
+
+
+
+
+<!--        <record id="view_vardhman_department_master_form" model="ir.ui.view">-->
+<!--             <field name="name">hr.department.form</field>-->
+<!--             <field name="model">hr.department</field>-->
+<!--             <field name="arch" type="xml">-->
+<!--                 <form string="department">-->
+<!--                     <sheet>-->
+<!--                         <group>-->
+<!--                             <group>-->
+<!--                                 <field name="unit_id" required="1"/>-->
+<!--                             </group>-->
+<!--                             <group>-->
+<!--                                 <field name="name" required="1"/>-->
+<!--                             </group>-->
+<!--                         </group>-->
+<!--                     </sheet>-->
+<!--                 </form>-->
+<!--             </field>-->
+<!--         </record>-->
+
+         <record id="view_vardhman_department_master_list" model="ir.ui.view">
+             <field name="name">hr.department.list</field>
+             <field name="model">hr.department</field>
+             <field eval="8" name="priority"/>
+             <field name="arch" type="xml">
+                 <tree string="department" editable="bottom">
+                     <field name="unit_id" required="1"/>
+                     <field name="name" required="1"/>
+                 </tree>
+             </field>
+         </record>
+
+         <record id="ir_action_vardhman_department_master" model="ir.actions.act_window">
+             <field name="name">Department</field>
+             <field name="res_model">hr.department</field>
+             <field name="view_mode">tree</field>
+         </record>
+
+    <menuitem id="list_menu_department_view"
+            name="Department"
+            sequence="10"
+            parent="manage_masters_ih"
+            action="ir_action_vardhman_department_master"
+              />
+
+
+
+<!--        <record id="view_vardhman_department_master_form" model="ir.ui.view">-->
+<!--             <field name="name">vardhman.department.master.form</field>-->
+<!--             <field name="model">vardhman.department.master</field>-->
+<!--             <field name="arch" type="xml">-->
+<!--                 <form string="department">-->
+<!--                     <sheet>-->
+<!--                         <group>-->
+<!--                             <group>-->
+<!--                                 <field name="unit_id" required="1"/>-->
+<!--                             </group>-->
+<!--                             <group>-->
+<!--                                 <field name="name" required="1"/>-->
+<!--                             </group>-->
+<!--                         </group>-->
+<!--                     </sheet>-->
+<!--                 </form>-->
+<!--             </field>-->
+<!--         </record>-->
+
+<!--         <record id="view_vardhman_department_master_list" model="ir.ui.view">-->
+<!--             <field name="name">vardhman.department.master.list</field>-->
+<!--             <field name="model">vardhman.department.master</field>-->
+<!--             <field eval="8" name="priority"/>-->
+<!--             <field name="arch" type="xml">-->
+<!--                 <tree string="department">-->
+<!--                     <field name="unit_id" required="1"/>-->
+<!--                     <field name="name" required="1"/>-->
+<!--                 </tree>-->
+<!--             </field>-->
+<!--         </record>-->
+
+<!--         <record id="ir_action_vardhman_department_master" model="ir.actions.act_window">-->
+<!--             <field name="name">Department</field>-->
+<!--             <field name="res_model">vardhman.department.master</field>-->
+<!--             <field name="view_mode">tree,form</field>-->
+<!--         </record>-->
+
+<!--    <menuitem id="list_menu_department_view"-->
+<!--            name="Department"-->
+<!--            sequence="10"-->
+<!--            parent="manage_masters_ih"-->
+<!--            action="ir_action_vardhman_department_master"-->
+<!--              />-->
+
+
+
+
+
+        <record id="view_vardhman_disfor_group_form" model="ir.ui.view">
+             <field name="name">vardhman.disfor.group.form</field>
+             <field name="model">vardhman.disfor.group</field>
+             <field name="arch" type="xml">
+                 <form string="Discussion Forum Group Type">
+                     <header>
+                         <button name="create_group" string="Create Group" attrs="{'invisible': [('state', '!=', 'draft')]}" type="object"/>
+                         <field name="state" widget="statusbar" statusbar_visible="draft,group_created" />
+
+            </header>
+                     <sheet>
+                         <group>
+                             <group>
+                                 <field name="name" required="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                 <field name="user_ids" required="1" widget="many2many_tags" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                             </group>
+                             <group>
+                                 <field name="group_id" attrs="{'invisible': [('state', '=', 'draft')],'readonly': [('state', '!=', 'draft')],}"/>
+                             </group>
+                         </group>
+                     </sheet>
+                 </form>
+             </field>
+         </record>
+
+         <record id="view_vardhman_disfor_group_list" model="ir.ui.view">
+             <field name="name">vardhman.disfor.group.list</field>
+             <field name="model">vardhman.disfor.group</field>
+             <field eval="8" name="priority"/>
+             <field name="arch" type="xml">
+                 <tree string="department">
+                     <field name="user_ids" required="1"/>
+                     <field name="name" required="1"/>
+                 </tree>
+             </field>
+         </record>
+
+         <record id="ir_action_vardhman_disfor_group" model="ir.actions.act_window">
+             <field name="name">Discussion Forum Group Type</field>
+             <field name="res_model">vardhman.disfor.group</field>
+             <field name="view_mode">tree,form</field>
+         </record>
+
+    <menuitem id="list_discussion_form_group_type_view"
+            name="Discussion Forum Group Type"
+            sequence="11"
+            parent="manage_masters_ih"
+            action="ir_action_vardhman_disfor_group"
+              />
+
+
+
+
+
+
+
+
+
+
+        <record id="view_vardhman_event_photograph_form" model="ir.ui.view">
+             <field name="name">vardhman.event.photograph.form</field>
+             <field name="model">vardhman.event.photograph</field>
+             <field name="arch" type="xml">
+                 <form string="Event Photograph">
+                     <sheet>
+                         <group>
+                             <group>
+                                 <field name="documents_binary_min_size" required="1"/>
+                             </group>
+                             <group>
+                                 <field name="documents_binary_max_size" required="1"/>
+                             </group>
+                         </group>
+                     </sheet>
+                 </form>
+             </field>
+         </record>
+
+         <record id="view_vardhman_event_photograph_list" model="ir.ui.view">
+             <field name="name">vardhman.event.photograph.list</field>
+             <field name="model">vardhman.event.photograph</field>
+             <field eval="8" name="priority"/>
+             <field name="arch" type="xml">
+                 <tree string="Event Photograph">
+                     <field name="documents_binary_min_size" required="1"/>
+                     <field name="documents_binary_max_size" required="1"/>
+                 </tree>
+             </field>
+         </record>
+
+         <record id="ir_action_vardhman_event_photograph" model="ir.actions.act_window">
+             <field name="name">Event Photograph</field>
+             <field name="res_model">vardhman.event.photograph</field>
+             <field name="view_mode">tree,form</field>
+         </record>
+
+    <menuitem id="list_event_photograph_view"
+            name="Event Photograph"
+            sequence="12"
+            parent="manage_masters_ih"
+            action="ir_action_vardhman_event_photograph"
+              />
+
+
+        <record id="view_vardhman_limit_photograph_form" model="ir.ui.view">
+             <field name="name">vardhman.limit.photograph.form</field>
+             <field name="model">vardhman.limit.photograph</field>
+             <field name="arch" type="xml">
+                 <form string="limit Photograph">
+                     <sheet>
+                         <group>
+                             <group>
+                                 <field name="user_id" required="1"/>
+                             </group>
+                             <group>
+                                 <field name="documents_binary_max_size" required="1"/>
+                             </group>
+                         </group>
+                     </sheet>
+                 </form>
+             </field>
+         </record>
+
+         <record id="view_vardhman_limit_photograph_list" model="ir.ui.view">
+             <field name="name">vardhman.limit.photograph.list</field>
+             <field name="model">vardhman.limit.photograph</field>
+             <field eval="8" name="priority"/>
+             <field name="arch" type="xml">
+                 <tree string="limit Photograph">
+                     <field name="user_id" required="1"/>
+                     <field name="documents_binary_max_size" required="1"/>
+                 </tree>
+             </field>
+         </record>
+
+         <record id="ir_action_vardhman_limit_photograph" model="ir.actions.act_window">
+             <field name="name">limit Photograph</field>
+             <field name="res_model">vardhman.limit.photograph</field>
+             <field name="view_mode">tree,form</field>
+         </record>
+
+    <menuitem id="list_limit_photograph_view"
+            name="limit of Photograph"
+            sequence="13"
+            parent="manage_masters_ih"
+            action="ir_action_vardhman_limit_photograph"
+              />
+
+
+
+</odoo>

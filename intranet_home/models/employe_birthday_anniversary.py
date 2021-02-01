@@ -111,3 +111,27 @@ class VardhmanEmployeeWorkAniversary(models.Model):
             'target': 'new',
             'context': ctx,
         }
+
+class VardhmanEmployeeMail(models.Model):
+    _name = "vardhman.employee.anniversarymail"
+    _description = "Vardhman Employee Mail Anniversary"
+
+    name = fields.Selection([
+        ('birthday', 'Birth Anniversary'),
+        ('work', 'Work Anniversary'),
+        ('marriage', 'Marriage Anniversary')
+    ], string='Name')
+
+    email = fields.Html(string="E-Mail")
+
+    state = fields.Selection([
+        ('draft', 'Draft'),
+        ('mail_sent', 'Mail Sent'),
+    ], string='state',default='draft')
+
+
+
+    def button_create_activities(self):
+        for rec in self:
+            rec.write({'state': 'pending_approval'})
+

@@ -19,8 +19,6 @@ access_vardhman_unit_master,vardhman.unit.master,model_vardhman_unit_master,base
 access_vardhman_businesstype_master,vardhman.businesstype.master,model_vardhman_businesstype_master,base.group_user,1,1,1,1
 access_vardhman_department_section,vardhman.department.section,model_vardhman_department_section,base.group_user,1,1,1,1
 access_vardhman_business_unit,vardhman.business.unit,model_vardhman_business_unit,base.group_user,1,1,1,1
-
-
 access_vardhman_department_master,vardhman.department.master,model_vardhman_department_master,base.group_user,1,1,1,1
 access_wizard_story_category,wizard.story.category,model_wizard_story_category,base.group_user,1,1,1,1
 access_wizard_suggestion_type,wizard.suggestion.type,model_wizard_suggestion_type,base.group_user,1,1,1,1
@@ -38,6 +36,8 @@ access_vardhman_limit_photograph,vardhman.limit.photograph,model_vardhman_limit_
 access_vardhman_block_user,vardhman.block.user,model_vardhman_block_user,base.group_user,1,1,1,1
 access_vardhman_handle_ideasugg,vardhman.handle.ideasugg,model_vardhman_handle_ideasugg,base.group_user,1,1,1,1
 access_vardhman_create_blogpost,vardhman.create.blogpost,model_vardhman_create_blogpost,base.group_user,1,1,1,1
+access_vardhman_create_newspost,vardhman.create.newspost,model_vardhman_create_newspost,base.group_user,1,1,1,1
+access_vardhman_employee_anniversarymail,vardhman.employee.anniversarymail,model_vardhman_employee_anniversarymail,base.group_user,1,1,1,1
 access_vardhman_create_announcement,vardhman.create.announcement,model_vardhman_create_announcement,base.group_user,1,1,1,1
 access_vardhman_create_blogidea,vardhman.create.blogidea,model_vardhman_create_blogidea,base.group_user,1,1,1,1
 access_vardhman_create_disforum,vardhman.create.disforum,model_vardhman_create_disforum,base.group_user,1,1,1,1

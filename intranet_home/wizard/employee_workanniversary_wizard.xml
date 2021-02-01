@@ -41,7 +41,7 @@
     <menuitem id="work_anniversary_cheque_wizard_view"
             name="Employee Work Anniversary"
             sequence="1"
-            parent="anniversary_cheque_wizard_view"
+            parent="intranet_home.manage_anniversary_view"
               action="work_anniversary_cheque_action_call"/>
 
     </data>

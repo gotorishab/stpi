@@ -1,0 +1,109 @@
+<odoo>
+
+    <menuitem id="news_management_ih"
+            name="news Management"
+              />
+
+    <menuitem id="list_news_p_vardhman_all_view"
+            name="news"
+            sequence="1"
+            parent="news_management_ih"
+              />
+
+    <record id="view_vardhman_create_newspost_form" model="ir.ui.view">
+         <field name="name">vardhman.create.newspost.form</field>
+         <field name="model">vardhman.create.newspost</field>
+         <field name="arch" type="xml">
+             <form string="Post a news">
+                 <header>
+                         <button name="button_publish" string="Publish"  states="draft" type="object" groups="intranet_home.group_intranet_news_authorised_user"/>
+                         <button name="button_delete" string="Delete"  states="published" type="object" groups="intranet_home.group_intranet_news_authorised_user"/>
+                         <field name="state" widget="statusbar" statusbar_visible="draft,published" />
+
+            </header>
+                 <sheet>
+                     <group>
+                         <group>
+                             <field name="name" required="1" attrs="{'readonly': [('state', 'not in', ('draft'))]}"/>
+<!--                               <field name="tag_ids" required="1" widget="many2many_tags" domain="[('front_type','=',front_type)]" attrs="{'readonly': [('state', 'not in', ('draft', 'pending_approval2'))]}"/>-->
+                              <field name="front_type" invisible="1"/>
+                         </group>
+                         <group>
+                             <field name="unit_id" readonly="1"/>
+                             <field name="post_id" attrs="{'invisible': [('state', '!=', 'published')],'readonly': [('state', '=', 'published')]}"/>
+<!--                             <field name="reason_des" attrs="{'invisible': [('state', '!=', 'rejected')],'readonly': [('state', '=', 'rejected')]}"/>-->
+                         </group>
+                         <field name="description" required="1" attrs="{'readonly': [('state', 'not in', ('draft'))]}"/>
+                     </group>
+                 </sheet>
+                 <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+             </form>
+         </field>
+     </record>
+
+         <record id="view_vardhman_create_newspost_list" model="ir.ui.view">
+             <field name="name">vardhman.create.newspost.list</field>
+             <field name="model">vardhman.create.newspost</field>
+             <field eval="8" name="priority"/>
+             <field name="arch" type="xml">
+                 <tree string="Idea/Suggestion Rejection Reason">
+                     <field name="name" required="1"/>
+                     <field name="unit_id"/>
+<!--                     <field name="description"/>-->
+                 </tree>
+             </field>
+         </record>
+
+
+         <record id="ir_action_vardhman_create_newspost_all" model="ir.actions.act_window">
+             <field name="name">Post a news</field>
+             <field name="res_model">vardhman.create.newspost</field>
+             <field name="view_mode">tree,form</field>
+         </record>
+
+
+    <menuitem id="list_create_newspost_vardhman_all_view"
+            name="All"
+            sequence="6"
+            parent="list_news_p_vardhman_all_view"
+            action="ir_action_vardhman_create_newspost_all"
+              groups="intranet_home.group_intranet_news_authorised_user"
+              />
+
+
+
+         <record id="ir_action_vardhman_create_newspost_draft" model="ir.actions.act_window">
+             <field name="name">Post a news</field>
+             <field name="res_model">vardhman.create.newspost</field>
+             <field name="view_mode">tree,form</field>
+             <field name="domain">[('state','=','draft')]</field>
+         </record>
+    <menuitem id="list_create_newspost_vardhman_draft_view"
+            name="Post a news"
+            sequence="2"
+            parent="list_news_p_vardhman_all_view"
+            action="ir_action_vardhman_create_newspost_draft"
+              />
+
+
+         <record id="ir_action_vardhman_create_newspost_pending_approval" model="ir.actions.act_window">
+             <field name="name">Post a news</field>
+             <field name="res_model">vardhman.create.newspost</field>
+             <field name="view_mode">tree,form</field>
+             <field name="domain">[('state','=','published')]</field>
+         </record>
+    <menuitem id="list_create_newspost_vardhman_pending_approval_view"
+            name="Published"
+            sequence="3"
+            parent="list_news_p_vardhman_all_view"
+            action="ir_action_vardhman_create_newspost_pending_approval"
+               groups="intranet_home.group_intranet_news_authorised_user"
+              />
+
+
+
+</odoo>
