@@ -306,7 +306,7 @@
 
 
     <menuitem id="list_announcement_p_vardhman_all_view"
-            name="Manage Announcements ("
+            name="Manage Announcements"
              groups="intranet_home.group_intranet_announcement_authorised_user"
               />
 

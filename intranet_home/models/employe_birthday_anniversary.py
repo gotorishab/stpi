@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-# Part of Odoo. See COPYRIGHT & LICENSE files for full copyright and licensing details.
-
 from odoo import api, fields, models, _
 from odoo.http import request
 from datetime import datetime
@@ -12,6 +9,53 @@ class HrEmployee(models.Model):
     marriage_anniversary = fields.Date(string='Marriage Anniversary')
     work_anniversary = fields.Date(string='Work Anniversary')
     unit_id = fields.Many2one('vardhman.unit.master',string='Unit')
+
+    def action_wish_scheduler(self):
+        employee_ids = self.env['hr.employee'].search([])
+        current_date = datetime.now().date()
+        mail_mail = request.env['mail.mail'].sudo()
+        email_from = request.env.user.login or ''
+        for rec in employee_ids:
+            email_to =  rec.work_email
+            if rec.marriage_anniversary and rec.marriage_anniversary == current_date:
+                anniversarymail_obj = self.env['vardhman.employee.anniversarymail'].search([('name', '=', 'marriage')], limit=1)
+                if anniversarymail_obj:
+                    body = anniversarymail_obj.email
+                    body = body.replace("$[employee_name]", rec.name)
+                    mail_values = {
+                        'email_from': email_from,
+                        'email_to':email_to,
+                        'subject': anniversarymail_obj.title,
+                        'body_html': body,
+                    }
+                    mail_id = mail_mail.create(mail_values)
+                    mail_id.send()
+            if rec.birthday and rec.birthday == current_date:
+                anniversarymail_obj = self.env['vardhman.employee.anniversarymail'].search([('name', '=', 'birthday')], limit=1)
+                if anniversarymail_obj:
+                    body = anniversarymail_obj.email
+                    body = body.replace("$[employee_name]", rec.name)
+                    mail_values = {
+                        'email_from': email_from,
+                        'email_to':email_to,
+                        'subject': anniversarymail_obj.title,
+                        'body_html': body,
+                    }
+                    mail_id = mail_mail.create(mail_values)
+                    mail_id.send()
+            if rec.work_anniversary and rec.work_anniversary == current_date:
+                anniversarymail_obj = self.env['vardhman.employee.anniversarymail'].search([('name', '=', 'work')], limit=1)
+                if anniversarymail_obj:
+                    body = anniversarymail_obj.email
+                    body = body.replace("$[employee_name]", rec.name)
+                    mail_values = {
+                        'email_from': email_from,
+                        'email_to':email_to,
+                        'subject': anniversarymail_obj.title,
+                        'body_html': body,
+                    }
+                    mail_id = mail_mail.create(mail_values)
+                    mail_id.send()
 
 
 class VardhmanEmployeeBirthday(models.Model):
@@ -122,7 +166,8 @@ class VardhmanEmployeeMail(models.Model):
         ('marriage', 'Marriage Anniversary')
     ], string='Name')
 
-    email = fields.Html(string="E-Mail")
+    email = fields.Html(string="E-Mail", default="$[employee_name]")
+    title = fields.Char(string="Title")
 
     state = fields.Selection([
         ('draft', 'Draft'),
@@ -132,6 +177,50 @@ class VardhmanEmployeeMail(models.Model):
 
 
     def button_create_activities(self):
-        for rec in self:
-            rec.write({'state': 'pending_approval'})
+        employee_ids = self.env['hr.employee'].search([])
+        current_date = datetime.now().date()
+        mail_mail = request.env['mail.mail'].sudo()
+        email_from = request.env.user.login or ''
+        for rec in employee_ids:
+            email_to =  rec.work_email
+            if self.name == 'marriage' and rec.marriage_anniversary and rec.marriage_anniversary == current_date:
+                anniversarymail_obj = self
+                if anniversarymail_obj:
+                    body = anniversarymail_obj.email
+                    body = body.replace("$[employee_name]", rec.name)
+                    mail_values = {
+                        'email_from': email_from,
+                        'email_to':email_to,
+                        'subject': anniversarymail_obj.title,
+                        'body_html': body,
+                    }
+                    mail_id = mail_mail.create(mail_values)
+                    mail_id.send()
+            if self.name == 'birthday' and rec.birthday and rec.birthday == current_date:
+                anniversarymail_obj = self
+                if anniversarymail_obj:
+                    body = anniversarymail_obj.email
+                    body = body.replace("$[employee_name]", rec.name)
+                    mail_values = {
+                        'email_from': email_from,
+                        'email_to':email_to,
+                        'subject': anniversarymail_obj.title,
+                        'body_html': body,
+                    }
+                    mail_id = mail_mail.create(mail_values)
+                    mail_id.send()
+            if self.name == 'work' and rec.work_anniversary and rec.work_anniversary == current_date:
+                anniversarymail_obj = self
+                if anniversarymail_obj:
+                    body = anniversarymail_obj.email
+                    body = body.replace("$[employee_name]", rec.name)
+                    mail_values = {
+                        'email_from': email_from,
+                        'email_to':email_to,
+                        'subject': anniversarymail_obj.title,
+                        'body_html': body,
+                    }
+                    mail_id = mail_mail.create(mail_values)
+                    mail_id.send()
+        self.write({'state': 'mail_sent'})
 

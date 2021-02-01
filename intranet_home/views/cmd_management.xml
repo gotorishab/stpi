@@ -1,23 +1,24 @@
 <odoo>
 
-    <menuitem id="news_management_ih"
-            name="News Management"
+    <menuitem id="cmd_management_ih"
+            name="CMD Management"
+              groups="intranet_home.group_intranet_cmd_authorised_user"
               />
 
-    <menuitem id="list_news_p_vardhman_all_view"
-            name="News"
+    <menuitem id="list_cmd_p_vardhman_all_view"
+            name="cmd"
             sequence="1"
-            parent="news_management_ih"
+            parent="cmd_management_ih"
               />
 
-    <record id="view_vardhman_create_newspost_form" model="ir.ui.view">
-         <field name="name">vardhman.create.newspost.form</field>
-         <field name="model">vardhman.create.newspost</field>
+    <record id="view_vardhman_create_cmdpost_form" model="ir.ui.view">
+         <field name="name">vardhman.create.cmdpost.form</field>
+         <field name="model">vardhman.create.cmdpost</field>
          <field name="arch" type="xml">
-             <form string="Post a news">
+             <form string="Post a cmd">
                  <header>
-                         <button name="button_publish" string="Publish"  states="draft" type="object" groups="intranet_home.group_intranet_news_authorised_user"/>
-                         <button name="button_delete" string="Delete"  states="published" type="object" groups="intranet_home.group_intranet_news_authorised_user"/>
+                         <button name="button_publish" string="Publish"  states="draft" type="object" groups="intranet_home.group_intranet_cmd_authorised_user"/>
+                         <button name="button_delete" string="Delete"  states="published" type="object" groups="intranet_home.group_intranet_cmd_authorised_user"/>
                          <field name="state" widget="statusbar" statusbar_visible="draft,published" />
 
             </header>
@@ -29,6 +30,8 @@
                               <field name="front_type" invisible="1"/>
                          </group>
                          <group>
+                             <field name="date_from" required="1"/>
+                             <field name="date_to" required="1"/>
                              <field name="unit_id" readonly="1"/>
                              <field name="post_id" attrs="{'invisible': [('state', '!=', 'published')],'readonly': [('state', '=', 'published')]}"/>
 <!--                             <field name="reason_des" attrs="{'invisible': [('state', '!=', 'rejected')],'readonly': [('state', '=', 'rejected')]}"/>-->
@@ -45,9 +48,9 @@
          </field>
      </record>
 
-         <record id="view_vardhman_create_newspost_list" model="ir.ui.view">
-             <field name="name">vardhman.create.newspost.list</field>
-             <field name="model">vardhman.create.newspost</field>
+         <record id="view_vardhman_create_cmdpost_list" model="ir.ui.view">
+             <field name="name">vardhman.create.cmdpost.list</field>
+             <field name="model">vardhman.create.cmdpost</field>
              <field eval="8" name="priority"/>
              <field name="arch" type="xml">
                  <tree string="Idea/Suggestion Rejection Reason">
@@ -59,49 +62,48 @@
          </record>
 
 
-         <record id="ir_action_vardhman_create_newspost_all" model="ir.actions.act_window">
-             <field name="name">Post a news</field>
-             <field name="res_model">vardhman.create.newspost</field>
+         <record id="ir_action_vardhman_create_cmdpost_all" model="ir.actions.act_window">
+             <field name="name">Post a CMD</field>
+             <field name="res_model">vardhman.create.cmdpost</field>
              <field name="view_mode">tree,form</field>
          </record>
 
 
-    <menuitem id="list_create_newspost_vardhman_all_view"
+    <menuitem id="list_create_cmdpost_vardhman_all_view"
             name="All"
             sequence="6"
-            parent="list_news_p_vardhman_all_view"
-            action="ir_action_vardhman_create_newspost_all"
-              groups="intranet_home.group_intranet_news_authorised_user"
+            parent="list_cmd_p_vardhman_all_view"
+            action="ir_action_vardhman_create_cmdpost_all"
               />
 
 
 
-         <record id="ir_action_vardhman_create_newspost_draft" model="ir.actions.act_window">
-             <field name="name">Post a news</field>
-             <field name="res_model">vardhman.create.newspost</field>
+         <record id="ir_action_vardhman_create_cmdpost_draft" model="ir.actions.act_window">
+             <field name="name">Post a cmd</field>
+             <field name="res_model">vardhman.create.cmdpost</field>
              <field name="view_mode">tree,form</field>
              <field name="domain">[('state','=','draft')]</field>
          </record>
-    <menuitem id="list_create_newspost_vardhman_draft_view"
-            name="Post a news"
+    <menuitem id="list_create_cmdpost_vardhman_draft_view"
+            name="Post a cmd"
             sequence="2"
-            parent="list_news_p_vardhman_all_view"
-            action="ir_action_vardhman_create_newspost_draft"
+            parent="list_cmd_p_vardhman_all_view"
+            action="ir_action_vardhman_create_cmdpost_draft"
               />
 
 
-         <record id="ir_action_vardhman_create_newspost_pending_approval" model="ir.actions.act_window">
-             <field name="name">Post a news</field>
-             <field name="res_model">vardhman.create.newspost</field>
+         <record id="ir_action_vardhman_create_cmdpost_pending_approval" model="ir.actions.act_window">
+             <field name="name">Post a cmd</field>
+             <field name="res_model">vardhman.create.cmdpost</field>
              <field name="view_mode">tree,form</field>
              <field name="domain">[('state','=','published')]</field>
          </record>
-    <menuitem id="list_create_newspost_vardhman_pending_approval_view"
+    <menuitem id="list_create_cmdpost_vardhman_pending_approval_view"
             name="Published"
             sequence="3"
-            parent="list_news_p_vardhman_all_view"
-            action="ir_action_vardhman_create_newspost_pending_approval"
-               groups="intranet_home.group_intranet_news_authorised_user"
+            parent="list_cmd_p_vardhman_all_view"
+            action="ir_action_vardhman_create_cmdpost_pending_approval"
+
               />
 
 

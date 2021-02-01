@@ -12,7 +12,7 @@ Create groups in forum
         """,
     'website': 'https://www.odoo.com/page/community-builder',
     'depends': [
-        'website_forum',
+        'website_forum', 'hr', 'intranet_home'
     ],
     'data': [
         'views/website_forum.xml',

@@ -358,6 +358,7 @@ class VardhmanIdeaShare(models.Model):
             grp = self.env['blog.post'].create({
                 'name': str(rec.name),
                 'front_type': rec.front_type,
+                'content': rec.description,
                 'blog_id': bl_id,
             })
             grp.tag_ids = [(4, rec.ideasugg_id.id)]
@@ -401,6 +402,22 @@ class VardhmanNewsCategory(models.Model):
 
     def button_publish(self):
         for rec in self:
+            bl_id = 1
+            blog_id = self.env['blog.blog'].sudo().search(
+                [
+                    ('front_type', '=', rec.front_type)
+                ], limit=1)
+            if blog_id:
+                for bl in blog_id:
+                    bl_id = bl.id
+            grp = self.env['blog.post'].create({
+                'name': str(rec.name),
+                'front_type': rec.front_type,
+                'blog_id': bl_id,
+                'content': rec.description,
+            })
+            rec.post_id = grp.id
+            grp.is_published = True
             rec.write({'state': 'published'})
 
 
@@ -413,6 +430,78 @@ class VardhmanNewsCategory(models.Model):
                 'name': 'Story - Approved',
                 'view_mode': 'tree,form',
                 'res_model': 'vardhman.create.newspost',
+                'type': 'ir.actions.act_window',
+                'target': 'current',
+                'domain': [('state', '=', 'approved')],
+            }
+
+
+class VardhmanCmdCategory(models.Model):
+    _name = "vardhman.create.cmdpost"
+    _inherit = ['mail.thread', 'mail.activity.mixin']
+    _description = "Create cmd Post"
+
+
+    def _default_unit(self):
+        return self.env['vardhman.unit.master'].sudo().search([('id', '=', self.env.user.unit_id.id)], limit=1)
+
+
+    unit_id = fields.Many2one('vardhman.unit.master',string='Unit', default=_default_unit)
+    # tag_ids = fields.Many2many('blog.tag', string='Story Category')
+    name = fields.Char('Title')
+    description = fields.Html('Description')
+    post_id = fields.Many2one('blog.post', string='cmd')
+    # reason_des = fields.Many2one('vardhman.story.rejection', string='Reason for Rejection')
+    front_type = fields.Selection([
+        ('news', 'News'),
+        ('story', 'Story'),
+        ('announcement', 'Announcement'),
+        ('idea', 'Idea'),
+        ('calendar_1', 'Calendar Image First'),
+        ('calendar_2', 'Calendar Image Second'),
+        ('calendar_3', 'Calendar Image Third'),
+    ], string='Front Type',default='calendar_1')
+    date_from = fields.Date(strign="From Date")
+    date_to = fields.Date(strign="To Date")
+    state = fields.Selection([
+        ('draft', 'Draft'),
+        ('published', 'Published'),
+        ('deleted', 'Deleted'),
+    ], string='state', default='draft', track_visibility='always')
+
+
+    def button_publish(self):
+        for rec in self:
+            bl_id = 1
+            blog_id = self.env['blog.blog'].sudo().search(
+                [
+                    ('front_type', '=', rec.front_type)
+                ], limit=1)
+            if blog_id:
+                for bl in blog_id:
+                    bl_id = bl.id
+            grp = self.env['blog.post'].create({
+                'name': str(rec.name),
+                'front_type': rec.front_type,
+                'blog_id': bl_id,
+                'content': rec.description,
+                'date_from': rec.date_from,
+                'date_to': rec.date_to,
+            })
+            rec.post_id = grp.id
+            grp.is_published = True
+            rec.write({'state': 'published'})
+
+
+    def button_delete(self):
+        for rec in self:
+            rec.post_id.sudo().unlink()
+            rec.write({'state': 'deleted'})
+            rec.sudo().unlink()
+            return {
+                'name': 'Story - Approved',
+                'view_mode': 'tree,form',
+                'res_model': 'vardhman.create.cmdpost',
                 'type': 'ir.actions.act_window',
                 'target': 'current',
                 'domain': [('state', '=', 'approved')],

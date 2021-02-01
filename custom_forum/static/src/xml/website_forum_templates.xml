@@ -58,6 +58,24 @@
     <t t-name="custom_forum.create_group_template">
         <form id="create_new_group">
             <div class="form-group row">
+                <label for="page-name" class="col-md-4 col-form-label">Unit</label>
+                <div class="col-md-8">
+                    <input type="text" name="unit_id" id="unit_id" class="form-control"/>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="page-name" class="col-md-4 col-form-label">Department</label>
+                <div class="col-md-8">
+                    <input type="text" name="department_id" id="department_id" class="form-control"/>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="page-name" class="col-md-4 col-form-label">Business Type</label>
+                <div class="col-md-8">
+                    <input type="text" name="business_type" id="business_type" class="form-control"/>
+                </div>
+            </div>
+            <div class="form-group row">
                 <label for="page-name" class="col-md-4 col-form-label">Name</label>
                 <div class="col-md-8">
                     <input type="text" name="name" class="form-control" required="required"/>
@@ -66,7 +84,10 @@
             <div class="form-group row">
                 <label for="page-name" class="col-md-4 col-form-label">Users</label>
                 <div class="col-md-8">
-                    <input type="text" class="form-control" name="user_ids" id="user_ids" placeholder="Select Users"/>
+                    <input type="hidden" name="karma_tag_create" value="30" id="karma_tag_create"/>
+                    <input type="hidden" name="karma_edit_retag" value="75" id="karma_edit_retag"/>
+                    <input type="hidden" name="user_ids" id="user_ids" placeholder="Select Users" class="form-control js_select2"/>
+                    <!-- <input type="text" class="form-control" name="user_ids" id="user_ids" placeholder="Select Users"/> -->
                     <p id="group-required" class="text-danger mt-1 mb-0 d-none">Please fill in this field</p>
                 </div>
             </div>
