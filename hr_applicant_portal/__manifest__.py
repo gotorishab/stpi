@@ -7,11 +7,12 @@
 """,
     'category': 'Human Resources',
     'author': '',
-    'depends': ['hr_applicant','website'],
+    'depends': ['hr_recruitment', 'hr_applicant','website'],
     'data': [
         # 'security/ir.model.access.csv',
         'views/myportal_hr_applicant_templates.xml',
-        # 'views/portal_hr_applicant_templates.xml',
+        'data/ir_sequence.xml',
+        'views/hr_applicant.xml'
     ],
     'demo': [],
     'images': [],

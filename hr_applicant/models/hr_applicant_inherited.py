@@ -174,15 +174,6 @@ class HRApplicant(models.Model):
     phone = fields.Char('Phone (Home)', track_visibility='always')
 
     address_ids = fields.One2many('applicant.address', 'applicant_id', string='Address', track_visibility='always')
-    reference_no = fields.Char("Reference No.", copy=False, track_visibility='always')
-
-    @api.model
-    def create(self, vals):
-        if vals.get('reference_no', _('New')) == _('New'):
-            if 'company_id' in vals:
-                vals['reference_no'] = self.env['ir.sequence'].with_context(force_company=vals['company_id']).next_by_code('hr.applicant') or _('New')
-        result = super(HRApplicant, self).create(vals)
-        return result
 
     @api.constrains('parent_id')
     def _check_parent_id(self):

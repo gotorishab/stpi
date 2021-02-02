@@ -11,9 +11,6 @@
                 <field name="recruitment_type" attrs="{'invisible': [('employee_type', '!=', 'regular')], 'required': [('employee_type', '=', 'regular')]}"/>
             </field>
 
-            <xpath expr="//field[@name='type_id']" position="before">
-                <field name="reference_no" readonly="1"/>
-            </xpath>
             <xpath expr="//label[@for='salary_expected']" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
