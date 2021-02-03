@@ -48,6 +48,7 @@ class Reimbursement(models.Model):
         ('mobile', 'Mobile Reimbursement'),
         ('medical', 'Medical Reimbursement'),
         ('tuition_fee', 'Tuition Fee claim'),
+        ('hostel', 'Hostel claim'),
         ('briefcase', 'Briefcase Reimbursement'),
         ('quarterly', 'Newspaper Reimbursements'),
         ('el_encashment', 'EL Encashment'),
@@ -87,8 +88,8 @@ class Reimbursement(models.Model):
     billing_to = fields.Date('Billing To')
 
     brief_date = fields.Date(string='Date')
-    no_of_months = fields.Char(string='No of months')
-    attach_news = fields.Binary(string='Attanhment')
+    no_of_months = fields.Integer(string='No of months', default=12)
+    attach_news = fields.Binary(string='Attachment')
     remarks = fields.Text(string='Remarks: ', track_visibility='always')
 
     state = fields.Selection([('draft', 'Draft'), ('waiting_for_approval', 'Submitted'), ('forwarded', 'Forwarded'),
@@ -222,8 +223,8 @@ class Reimbursement(models.Model):
                     mult = 2
                 else:
                     mult = count
-                if int(rec.claimed_amount) > (2250 * int(mult))*12:
-                    rec.net_amount = (2250 * int(mult))*12
+                if int(rec.claimed_amount) > (2250 * int(mult))*int(rec.no_of_months):
+                    rec.net_amount = (2250 * int(mult))*int(rec.no_of_months)
                 else:
                     rec.net_amount = int(rec.claimed_amount)
             elif rec.employee_id and rec.name == 'el_encashment':

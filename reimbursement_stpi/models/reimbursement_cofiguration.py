@@ -90,6 +90,7 @@ class ReimbursementConfiguration(models.Model):
         ('mobile', 'Mobile Reimbursement'),
         ('medical', 'Medical Reimbursement'),
         ('tuition_fee', 'Tuition Fee claim'),
+        ('hostel', 'Hostel claim'),
         ('briefcase', 'Briefcase Reimbursement'),
         ('quarterly', 'Newspaper Reimbursements'),
         ('el_encashment', 'EL Encashment'),

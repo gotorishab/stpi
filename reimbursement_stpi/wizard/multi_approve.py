@@ -12,7 +12,7 @@ class ReimburementApprove(models.TransientModel):
     def reimbursement_approve_action_button(self):
         context = dict(self._context or {})
         active_ids = context.get('active_ids', []) or []
-        for rei in self.env['reimbursement'].browse(active_ids):
+        for rei in self.env['reimbursement'] .browse(active_ids):
             if rei.state == 'waiting_for_approval':
                 rei.sudo().button_approved()
 
