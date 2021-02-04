@@ -16,3 +16,4 @@ class Reason_wizard(models.TransientModel):
                 "Reason of Reverting: <ul><b>{0}</b></ul> ").format(self.reason_des)))
         model_id.message_post(body=_body)
         model_id.write({'state':'draft'})
+        model_id.onchange_loan_state()

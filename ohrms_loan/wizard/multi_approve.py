@@ -15,6 +15,7 @@ class loanmburementApprove(models.TransientModel):
         for loan in self.env['hr.loan'].browse(active_ids):
             if loan.state == 'waiting_approval_1' or loan.state == 'waiting_approval_2':
                 loan.sudo().action_approve()
+                loan.onchange_loan_state()
 
 
     @api.multi
@@ -24,3 +25,4 @@ class loanmburementApprove(models.TransientModel):
         for loan in self.env['hr.loan'].browse(active_ids):
             if loan.state == 'waiting_approval_1' or loan.state == 'waiting_approval_2':
                 loan.sudo().action_refuse()
+                loan.onchange_loan_state()

@@ -39,8 +39,6 @@ class HrLoan(models.Model):
                 loan.balance_amount = 0.00
             else:
                 loan.balance_amount = round(loan.balance_amount)
-
-
                 
 #     @api.multi
 #     @api.depends('loan_lines.paid')
@@ -122,8 +120,31 @@ class HrLoan(models.Model):
         else:
             values['name'] = self.env['ir.sequence'].get('hr.loan.seq') or ' '
             res = super(HrLoan, self).create(values)
+            res.onchange_loan_state()
             return res
 
+    def onchange_loan_state(self):
+        group_id = self.env.ref('ohrms_loan.group_loan_approver')
+        resUsers = self.env['res.users'].sudo().search([]).filtered(lambda r: group_id.id in r.groups_id.ids and self.branch_id.id in r.branch_ids.ids).mapped('partner_id')
+        if resUsers:
+            employee_partner = self.employee_id.user_id.partner_id
+            if employee_partner:
+                resUsers += employee_partner
+            message = "Loan %s is move to %s"%(self.name, dict(self._fields['state'].selection).get(self.state))
+            self.env['mail.message'].create({'message_type':"notification",
+                "subtype_id": self.env.ref("mail.mt_comment").id,
+                'body': message,
+                'subject': "Loan request",
+                'needaction_partner_ids': [(4, p.id, None) for p in resUsers],
+                'model': self._name,
+                'res_id': self.id,
+                })
+            self.env['mail.thread'].message_post(
+                body=message,
+                partner_ids=[(4, p.id, None) for p in resUsers],
+                subtype='mail.mt_comment',
+                notif_layout='mail.mail_notification_light',
+            )
 
     @api.onchange('dis_date')
     def onchange_dis_rate(self):
@@ -164,17 +185,19 @@ class HrLoan(models.Model):
         for loan in self:
             loan.loan_lines.unlink()
             loan.write({'state': 'draft'})
+            loan.onchange_loan_state()
 
     @api.multi
     def action_refuse(self):
-        return self.write({'state': 'refuse'})
-
+        self.write({'state': 'refuse'})
+        return True
 
     @api.multi
     def action_submit(self):
         for line in self:
             line.sudo().compute_installment()
         self.write({'state': 'waiting_approval_1'})
+        self.onchange_loan_state()
         return True
 
     @api.multi
@@ -334,6 +357,7 @@ class HrLoan(models.Model):
         #     self.write({'state': 'waiting_approval_2'})
         # else:
         self.write({'state': 'approve'})
+        self.onchange_loan_state()
         return True
 
 
