@@ -42,7 +42,8 @@ class Employeefamily(models.Model):
     @api.onchange('twins')
     def onchange_twins_type(self):
         if self.twins == True:
-            self.env['employee.relative'].create({
+            self.env['employee.relative'].sudo().create({
+                'name': 'Twin Name',
                 'birthday': self.birthday,
                 'place_of_birth': self.place_of_birth,
                 'employee_id': self.employee_id.id,
