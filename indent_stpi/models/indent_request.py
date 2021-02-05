@@ -2,6 +2,7 @@ from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError, UserError
 from dateutil.relativedelta import relativedelta
 from datetime import datetime, date
+import base64
 
 class GrnNumber(models.Model):
     _name = 'grn.seqid'
@@ -192,7 +193,6 @@ class EmployeeIndentAdvance(models.Model):
                 name = 'IR'
             res.append((record.id, name))
         return res
-
 
 
 class FamilyDetails(models.Model):

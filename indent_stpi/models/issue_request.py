@@ -4,6 +4,8 @@ from dateutil.relativedelta import relativedelta
 from datetime import datetime, date
 import jwt
 import xmlrpc.client
+from odoo import modules
+import base64
 
 class IndentLedger(models.Model):
     _name = 'issue.request'
@@ -191,3 +193,22 @@ class IndentLedger(models.Model):
             'target': 'new',
         }
         return action
+
+    def button_barcode(self):
+        return {
+                    'name'      : _('Barcode'),
+                    'type'      : 'ir.actions.act_window',
+                    'res_model' : 'barcode.barcode',
+                    'view_mode' : 'form',
+                    'target'    : 'new'
+                }
+
+class Barcode(models.TransientModel):
+    _name = 'barcode.barcode'
+
+    def get_default_img():
+        with open(modules.get_module_resource('indent_stpi', 'static/img', 'img1.png'),
+              'rb') as f:
+            return base64.b64encode(f.read())
+
+    image_data = fields.Binary("Barcode", default=get_default_img())
