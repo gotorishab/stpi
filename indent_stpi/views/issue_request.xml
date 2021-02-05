@@ -2,6 +2,15 @@
 <odoo>
     <data>
         
+        <record model='ir.ui.view' id='barcode_barcode_form_view'>
+            <field name="name">barcode.barcode.form</field>
+            <field name="model">barcode.barcode</field>
+            <field name="arch" type="xml">
+                <form>
+                    <field name="image_data" widget="image" readonly="1"/>
+                </form>
+            </field>
+        </record>        
 
         <record model='ir.ui.view' id='issue_request_tree_view'>
             <field name="name">issue.request.tree</field>
@@ -144,6 +153,7 @@
                     <button name="proceed_further" string="Proceed" type="object" icon = "fa-forward" states="to_approve_proceed" groups="indent_stpi.group_issue_request_forward"/>
                     <button name="button_approved" string="Approve" type="object" icon = "fa-thumbs-o-up" states="to_approve"/>
                     <button name="button_reject" string="Reject" type="object" icon = "fa-ban" states="to_approve"/>
+                    <button name="button_barcode" string="Barcode" type="object" icon = "fa-barcode" states="to_approve"/>
                     <field name="state" readonly="1"/>
                 </tree>
             </field>
