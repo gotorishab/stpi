@@ -47,7 +47,7 @@
     ],
     'data': [
         'security/security.xml',
-        'data/foreclosure_amt_cron.xml'
+        'data/foreclosure_amt_cron.xml',
         # 'security/pf_withdrawal_security.xml',
         'security/ir.model.access.csv',
         'views/hr_loan_seq.xml',
