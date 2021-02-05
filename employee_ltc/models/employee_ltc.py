@@ -539,7 +539,7 @@ class EmployeeLtcAdvance(models.Model):
                             raise ValidationError(
                                 _('You are not allowed to take LTC for Hometown'))
 
-                        if res.block_year and res.block_year.date_end and res.block_year.date_end.year >= datetime.today().year and res.place_of_trvel == 'india':
+                        if res.block_year and res.block_year.date_end and res.block_year.date_end.year > datetime.today().year and res.place_of_trvel == 'india':
                             raise ValidationError(
                                 _('You are not allowed to take LTC for India'))
                         # if ltc_pre.place_of_trvel == 'india':
