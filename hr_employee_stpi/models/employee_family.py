@@ -27,6 +27,8 @@ class Employeefamily(models.Model):
     medical = fields.Boolean('Medical',default=False)
     tuition = fields.Boolean('Tuition',default=False)
     ltc = fields.Boolean('LTC',default=False)
+    twins = fields.Boolean('Twins',default=False)
+    divyang = fields.Boolean('Divyang',default=False)
     status = fields.Selection([('dependant','Dependant'),
                                ('non_dependant','Non-Dependant')
                                ],string='Status')
@@ -35,6 +37,16 @@ class Employeefamily(models.Model):
     prec_pension =fields.Float('Pension%')
 
     age= fields.Float('Age')
+
+
+    @api.onchange('twins')
+    def onchange_twins_type(self):
+        if self.twins == True:
+            self.env['employee.relative'].create({
+                'birthday': self.birthday,
+                'place_of_birth': self.place_of_birth,
+                'employee_id': self.employee_id.id,
+                })
 
 
     @api.onchange('prec_pf')

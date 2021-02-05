@@ -17,6 +17,8 @@
                 <field name="tuition" attrs="{'readonly':['|',('age','>','18'),('relate_type_name','not in',('Son','Daughter'))]}"/>
                 <field name="ltc"/>
                 <field name="status"/>
+                <field name="twins"/>
+                <field name="divyang"/>
                 <field name="prec_pf" sum="Total PF" attrs="{'readonly':[('status','not in',('dependant'))]}"/>
                 <field name="prec_gratuity" sum="Total Gratuity" attrs="{'readonly':[('status','not in',('dependant'))]}"/>
                 <field name="prec_pension" sum="Total Pension" attrs="{'readonly':[('status','not in',('dependant'))]}"/>

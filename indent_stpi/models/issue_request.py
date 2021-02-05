@@ -121,6 +121,29 @@ class IndentLedger(models.Model):
                     })
                 res.write({'state': 'approved'})
 
+    def onchange_indent_state(self):
+        group_id = self.env.ref('indent_stpi.group_issue_request_manager')
+        resUsers = self.env['res.users'].sudo().search([]).filtered(
+            lambda r: group_id.id in r.groups_id.ids and self.branch_id.id in r.branch_ids.ids).mapped('partner_id')
+        if resUsers:
+            employee_partner = self.employee_id.user_id.partner_id
+            if employee_partner:
+                resUsers += employee_partner
+            message = "%s is move to %s" % (self.name, dict(self._fields['state'].selection).get(self.state))
+            self.env['mail.message'].create({'message_type': "notification",
+                                             "subtype_id": self.env.ref("mail.mt_comment").id,
+                                             'body': message,
+                                             'subject': "Invent request",
+                                             'needaction_partner_ids': [(4, p.id, None) for p in resUsers],
+                                             'model': self._name,
+                                             'res_id': self.id,
+                                             })
+            self.env['mail.thread'].message_post(
+                body=message,
+                partner_ids=[(4, p.id, None) for p in resUsers],
+                subtype='mail.mt_comment',
+                notif_layout='mail.mail_notification_light',
+            )
 
     @api.multi
     def button_reject(self):

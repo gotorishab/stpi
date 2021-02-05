@@ -89,7 +89,11 @@ class HrLoan(models.Model):
     payslip_id = fields.Many2one('hr.payslip', string="Payslip Ref.")
     paid = fields.Boolean(string="Paid")
     total_interest = fields.Float(string="Total Interest", compute='_compute_loan_amount')
-
+    total_loan_taken = fields.Float('Total Loan Taken')
+    total_amount_paid = fields.Float('Total Amount Paid')
+    total_principal_remaining = fields.Float('Total Principal Remaining')
+    total_interest_as_today = fields.Float('Total Interest as on today')
+    foreclosure_amount = fields.Float('Foreclosure Amount')
     dis_date = fields.Date(string='Disbursement Date')
     pro_ins = fields.Float(string='Prorated Installment')
     calculate_bool = fields.Boolean(string='Check Bool', default=False)
@@ -346,7 +350,6 @@ class HrLoan(models.Model):
             i = self.env["hr.loan.line"].browse(id)
             i.approval_d = payment_date
             i.date = payment_date
-            i.foreclosure_amount = i.closing_blance_principle + i.cb_interest
             payment_date = payment_date + relativedelta(months=1)
         # loan_approve = self.env['ir.config_parameter'].sudo().get_param('account.loan_approve')
         contract_obj = self.env['hr.contract'].search([('employee_id', '=', self.employee_id.id),('state', '=', 'open')])
@@ -360,6 +363,24 @@ class HrLoan(models.Model):
         self.write({'state': 'approve'})
         self.onchange_loan_state()
         return True
+
+    def get_loan_details_onch(self):
+        search_id = self.env['hr.loan'].search(
+            [('state', '!=', 'rejected'),('balance_amount', '!=', 0)])
+        for rec in search_id:
+            cb = 0
+            amount = 0
+            rec.total_loan_taken = rec.total_amount
+            rec.total_amount_paid = rec.total_paid_amount
+            for i in rec.loan_lines:
+                if i.paid == True:
+                    cb+=i.cb_interest
+                    amount+=i.amount
+            rec.total_principal_remaining = rec.total_loan_taken - amount
+            days = int((date.today() - date.today().replace(day=1)).days)
+            rem_in = ((rec.total_principal_remaining * rec.interest)/100)/365 * int(days)
+            rec.total_interest_as_today = cb + rem_in
+            rec.foreclosure_amount = rec.total_principal_remaining + cb + rem_in
 
 
 class InstallmentLine(models.Model):
@@ -378,7 +399,7 @@ class InstallmentLine(models.Model):
     yearly_interest_amount=fields.Float(string="Yearly Interest Amount")
     monthly_interest_amount = fields.Float(string="Monthly Interest Amount")
     cb_interest=fields.Float(string="C/B Interest")
-    foreclosure_amount = fields.Float('Foreclosure Amount')
+
     employee_id = fields.Many2one('hr.employee', string="Requested By")
     pending_amount = fields.Float(string="Total Pending Recovery")
     amount = fields.Float(string="EMI")

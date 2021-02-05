@@ -295,7 +295,7 @@
                     <field name="no_of_medical" widget="statinfo" string="Medical Details" />
                 </button>
                 <button name="%(action_emp_relatives_list)d" type="action" class="oe_inline oe_stat_button" icon="fa-users" help="Add/Edit/Review Relative details of employee" context = "{'default_employee_id': id}">
-                    <field name="no_of_relative" widget="statinfo" string="Relatives" />
+                    <field name="no_of_relative" widget="statinfo" string="Family/Dependents" />
                 </button>
                 <button name="%(action_emp_prev_occupation_list)d" type="action" style="width:198px !important" class="oe_inline oe_stat_button" icon="fa-history" help="Add/Edit/Review Previous Occupation details of employee">
                     <field name="no_of_prev_occu" widget="statinfo" string="Previous Occupations" />

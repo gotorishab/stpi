@@ -15,6 +15,6 @@ class resUsers(models.Model):
 
     @api.model
     def create(self, vals):
-    	res = super(resUsers, self).create(vals)
-    	res.tz = 'Asia/Kolkata'
-    	return res
+        res = super(resUsers, self).create(vals)
+        res.tz = 'Asia/Kolkata'
+        return res

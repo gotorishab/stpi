@@ -46,15 +46,42 @@ class EmployeeIndentAdvance(models.Model):
             rec.department_id = rec.employee_id.department_id.id
             rec.branch_id = rec.employee_id.branch_id.id
 
+    def onchange_indent_state(self):
+        group_id = self.env.ref('indent_stpi.group_Indent_request_manager')
+        resUsers = self.env['res.users'].sudo().search([]).filtered(
+            lambda r: group_id.id in r.groups_id.ids and self.branch_id.id in r.branch_ids.ids).mapped('partner_id')
+        if resUsers:
+            employee_partner = self.employee_id.user_id.partner_id
+            if employee_partner:
+                resUsers += employee_partner
+            message = "%s is move to %s" % (self.name, dict(self._fields['state'].selection).get(self.state))
+            self.env['mail.message'].create({'message_type': "notification",
+                                             "subtype_id": self.env.ref("mail.mt_comment").id,
+                                             'body': message,
+                                             'subject': "Invent request",
+                                             'needaction_partner_ids': [(4, p.id, None) for p in resUsers],
+                                             'model': self._name,
+                                             'res_id': self.id,
+                                             })
+            self.env['mail.thread'].message_post(
+                body=message,
+                partner_ids=[(4, p.id, None) for p in resUsers],
+                subtype='mail.mt_comment',
+                notif_layout='mail.mail_notification_light',
+            )
+
+
     @api.multi
     def button_to_approve(self):
         for res in self:
+            res.onchange_indent_state()
             res.write({'state': 'to_approve'})
           
           
     @api.multi
     def button_approved(self):
         for res in self:
+            res.onchange_indent_state()
             res.write({'state': 'approved'})
             state = 'to_approve'
             if res.indent_type == 'grn':
@@ -125,11 +152,13 @@ class EmployeeIndentAdvance(models.Model):
     @api.multi
     def button_reject(self):
         for rec in self:
+            rec.onchange_indent_state()
             rec.write({'state': 'rejected'})
 
     @api.multi
     def button_reset_to_draft(self):
         for rec in self:
+            rec.onchange_indent_state()
             rec.write({'state': 'draft'})
 
     @api.model
@@ -142,7 +171,7 @@ class EmployeeIndentAdvance(models.Model):
             seq = self.env['ir.sequence'].next_by_code('grn.seqid')
             sequence = 'GRN' + str(seq)
         res.indent_sequence = sequence
-
+        res.onchange_indent_state()
         search_id = self.env['indent.request'].sudo().search(
             [('employee_id', '=', res.employee_id.id),
              ('state', 'not in', ['approved','rejected']), ('id', '!=', res.id)])

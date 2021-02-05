@@ -215,12 +215,20 @@ class Reimbursement(models.Model):
                 child_id = self.env['employee.relative'].sudo().search(
                     [('employee_id', '=', rec.employee_id.id)])
                 count = 0
+                ff = 0
                 for cc in child_id:
                     if cc.relate_type_name == 'Son' or cc.relate_type_name == 'Daughter':
-                        if cc.tuition:
+                        if cc.tuition and cc.divyang == False:
                             count += 1
-                if count > 2:
+                        if cc.tuition and cc.divyang == True:
+                            count += 2
+                        if cc.twins == True:
+                            ff = 1
+
+                if count > 2 and ff!=1:
                     mult = 2
+                elif count > 2 and ff==1:
+                    mult = 3
                 else:
                     mult = count
                 if int(rec.claimed_amount) > (2250 * int(mult))*int(rec.no_of_months):
