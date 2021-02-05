@@ -82,7 +82,7 @@ class EmployeeLtcAdvance(models.Model):
             rec.department_id = rec.employee_id.department_id.id
             rec.branch_id = rec.employee_id.branch_id.id
             rec.gender = rec.employee_id.gende
-            if rec.employee_id.date_of_join + relativedelta(year=8) >= datetime.now().date():
+            if rec.employee_id.date_of_join + relativedelta(years=8) >= datetime.now().date():
                 rec.crossed_eight = 'No'
             else:
                 rec.crossed_eight = 'Yes'
@@ -522,7 +522,7 @@ class EmployeeLtcAdvance(models.Model):
 
 
                 
-            if res.employee_id.date_of_join + relativedelta(year=8) >= datetime.now().date():
+            if res.employee_id.date_of_join + relativedelta(years=8) >= datetime.now().date():
                 count_india = 0
                 count_home = 0
                 for ltc_pre in val_ids:
@@ -586,7 +586,7 @@ class EmployeeLtcAdvance(models.Model):
                 ('relative_name', '=', lines.name.name),
                 ('ltc_date', '>=', pp),
             ])
-            if res.employee_id.date_of_join + relativedelta(year=8) >= datetime.now().date():
+            if res.employee_id.date_of_join + relativedelta(years=8) >= datetime.now().date():
                 count_india = 0
                 count_home = 0
                 for ltc_pre in rel_ids:
