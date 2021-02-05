@@ -520,13 +520,7 @@ class EmployeeLtcAdvance(models.Model):
                 ('ltc_date', '>=', pp),
             ])
 
-            if block_year and block_year.date_end and block_year.date_end.year == datetime.today().year and place_of_trvel == 'hometown':
-                raise ValidationError(
-                                    _('You are not allowed to take LTC for Hometown'))
-            
-            if block_year and block_year.date_end and block_year.date_end.year >= datetime.today().year and place_of_trvel == 'india':
-                raise ValidationError(
-                                    _('You are not allowed to take LTC for India'))
+
                 
             if res.employee_id.date_of_join + relativedelta(year=8) >= datetime.now().date():
                 count_india = 0
@@ -541,18 +535,25 @@ class EmployeeLtcAdvance(models.Model):
                         if ltc_pre.block_year == res.block_year and ltc_pre.child_block_year == res.child_block_year:
                                 raise ValidationError(
                                     _('You are not allowed to take LTC for this block year, as you have already applied for this block year'))
-                        if ltc_pre.place_of_trvel == 'india':
-                            count_india += 1
-                        if res.place_of_trvel == 'india' and count_india > 1:
+                        if res.block_year and res.block_year.date_end and res.block_year.date_end.year == datetime.today().year and res.place_of_trvel == 'hometown':
                             raise ValidationError(
-                                _(
-                                    'You are not allowed to take LTC for this block year as you are able to take Anywhere in India LTC, once in 4 years'))
-                        if ltc_pre.place_of_trvel == 'hometown':
-                            count_home += 1
-                        if res.place_of_trvel == 'hometown' and count_home > 3 :
+                                _('You are not allowed to take LTC for Hometown'))
+
+                        if res.block_year and res.block_year.date_end and res.block_year.date_end.year >= datetime.today().year and res.place_of_trvel == 'india':
                             raise ValidationError(
-                                _(
-                                    'You are not allowed to take LTC for this block year as you are able to take Hometown LTC, maximum of 4 times in 4 years'))
+                                _('You are not allowed to take LTC for India'))
+                        # if ltc_pre.place_of_trvel == 'india':
+                        #     count_india += 1
+                        # if res.place_of_trvel == 'india' and count_india > 1:
+                        #     raise ValidationError(
+                        #         _(
+                        #             'You are not allowed to take LTC for this block year as you are able to take Anywhere in India LTC, once in 4 years'))
+                        # if ltc_pre.place_of_trvel == 'hometown':
+                        #     count_home += 1
+                        # if res.place_of_trvel == 'hometown' and count_home > 3 :
+                        #     raise ValidationError(
+                        #         _(
+                        #             'You are not allowed to take LTC for this block year as you are able to take Hometown LTC, maximum of 4 times in 4 years'))
             else:
                 count_total = 0
                 count_india = 0
