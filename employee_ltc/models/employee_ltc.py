@@ -535,7 +535,7 @@ class EmployeeLtcAdvance(models.Model):
                                     'You are not allowed to take LTC for this block year as you are able to take Anywhere in India LTC, once in 4 years'))
                         if ltc_pre.place_of_trvel == 'hometown':
                             count_home += 1
-                        if res.place_of_trvel == 'hometown' and count_home > 4 :
+                        if res.place_of_trvel == 'hometown' and count_home > 3 :
                             raise ValidationError(
                                 _(
                                     'You are not allowed to take LTC for this block year as you are able to take Hometown LTC, maximum of 4 times in 4 years'))
@@ -561,7 +561,7 @@ class EmployeeLtcAdvance(models.Model):
                                     'You are not allowed to take LTC for this block year as you are able to take Anywhere in India LTC, once in 4 years'))
                         if ltc_pre.place_of_trvel == 'hometown':
                                     count_india += 1
-                        if res.place_of_trvel == 'hometown' and count_india > 2:
+                        if res.place_of_trvel == 'hometown' and count_india > 1:
                             raise ValidationError(
                                 _(
                                     'You are not allowed to take LTC for this block year as you are able to take Hometown LTC, twice in 4 years'))

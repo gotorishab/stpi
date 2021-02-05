@@ -86,6 +86,7 @@
                                     <field name="cb_interest"/>
                                     <field name="pending_amount" invisible="1"/>
                                     <field name="amount" sum="Total EMI"/>
+                                    <field name="foreclosure_amount"/>
                                     <field name="paid" readonly="1"/>
                                     <field name="loan_payslip_ref_id"/>
                                     <!--<field name="paid" readonly="1" invisible="1"/>-->

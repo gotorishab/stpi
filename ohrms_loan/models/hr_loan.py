@@ -346,6 +346,7 @@ class HrLoan(models.Model):
             i = self.env["hr.loan.line"].browse(id)
             i.approval_d = payment_date
             i.date = payment_date
+            i.foreclosure_amount = i.closing_blance_principle + i.cb_interest
             payment_date = payment_date + relativedelta(months=1)
         # loan_approve = self.env['ir.config_parameter'].sudo().get_param('account.loan_approve')
         contract_obj = self.env['hr.contract'].search([('employee_id', '=', self.employee_id.id),('state', '=', 'open')])
@@ -377,7 +378,7 @@ class InstallmentLine(models.Model):
     yearly_interest_amount=fields.Float(string="Yearly Interest Amount")
     monthly_interest_amount = fields.Float(string="Monthly Interest Amount")
     cb_interest=fields.Float(string="C/B Interest")
-
+    foreclosure_amount = fields.Float('Foreclosure Amount')
     employee_id = fields.Many2one('hr.employee', string="Requested By")
     pending_amount = fields.Float(string="Total Pending Recovery")
     amount = fields.Float(string="EMI")
