@@ -40,6 +40,7 @@ class EmployeeLtcAdvance(models.Model):
     ltc_sequence = fields.Char('LTC number',track_visibility='always')
     employee_id = fields.Many2one('hr.employee', string='Requested By', default=_default_employee,track_visibility='always')
     branch_id = fields.Many2one('res.branch', string='Branch', store=True)
+    crossed_eight = fields.Char(string='Crossed 8 Years', store=True)
     job_id = fields.Many2one('hr.job', string='Functional Designation', store=True)
     department_id = fields.Many2one('hr.department', string='Department', store=True)
     date = fields.Date(string="Requested Date", default=datetime.now().date(),track_visibility='always')
@@ -81,6 +82,10 @@ class EmployeeLtcAdvance(models.Model):
             rec.department_id = rec.employee_id.department_id.id
             rec.branch_id = rec.employee_id.branch_id.id
             rec.gender = rec.employee_id.gende
+            if rec.employee_id.date_of_join + relativedelta(year=8) >= datetime.now().date():
+                rec.crossed_eight = 'No'
+            else:
+                rec.crossed_eight = 'Yes'
 
     @api.onchange('place_of_trvel')
     def false_everything(self):

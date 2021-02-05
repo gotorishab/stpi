@@ -17,6 +17,7 @@
                         <group>
                             <field name="ltc_sequence" invisible="True"/>
                             <field name="employee_id" readonly="1" required="1"/>
+                            <field name="crossed_eight" readonly="1"/>
                             <field name="branch_id" readonly="1"/>
                             <field name="job_id" readonly="1"/>
                             <field name="department_id" readonly="1"/>
