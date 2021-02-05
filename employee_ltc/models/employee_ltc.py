@@ -519,6 +519,15 @@ class EmployeeLtcAdvance(models.Model):
                 ('relative_name', '=', res.employee_id.name),
                 ('ltc_date', '>=', pp),
             ])
+
+            if block_year and block_year.date_end and block_year.date_end.year == datetime.today().year and place_of_trvel == 'hometown':
+                raise ValidationError(
+                                    _('You are not allowed to take LTC for Hometown'))
+            
+            if block_year and block_year.date_end and block_year.date_end.year >= datetime.today().year and place_of_trvel == 'india':
+                raise ValidationError(
+                                    _('You are not allowed to take LTC for India'))
+                
             if res.employee_id.date_of_join + relativedelta(year=8) >= datetime.now().date():
                 count_india = 0
                 count_home = 0
