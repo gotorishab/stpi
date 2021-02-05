@@ -148,14 +148,43 @@ class EmployeeTourClaim(models.Model):
             rec.department = rec.employee_id.department_id.id
             rec.branch_id = rec.employee_id.branch_id.id
 
+    def onchange_tour_claim_state(self):
+        group_id = self.env.ref('tour_request.group_tour_request_approvere')
+        resUsers = self.env['res.users'].sudo().search([]).filtered(
+            lambda r: group_id.id in r.groups_id.ids and self.branch_id.id in r.branch_ids.ids).mapped('partner_id')
+        if resUsers:
+            employee_partner = self.employee_id.user_id.partner_id
+            if employee_partner:
+                resUsers += employee_partner
+            message = "Tour Request %s is move to %s" % (
+            self.name, dict(self._fields['state'].selection).get(self.state))
+            self.env['mail.message'].create({'message_type': "notification",
+                                             "subtype_id": self.env.ref("mail.mt_comment").id,
+                                             'body': message,
+                                             'subject': "Tour request",
+                                             'needaction_partner_ids': [(4, p.id, None) for p in resUsers],
+                                             'model': self._name,
+                                             'res_id': self.id,
+                                             })
+            self.env['mail.thread'].message_post(
+                body=message,
+                partner_ids=[(4, p.id, None) for p in resUsers],
+                subtype='mail.mt_comment',
+                notif_layout='mail.mail_notification_light',
+            )
+
+
     @api.multi
     def button_submit(self):
         for rec in self:
+            rec.onchange_tour_claim_state()
             rec.write({'state': 'submitted'})
 
     @api.multi
     def button_reject(self):
         for rec in self:
+            rec.onchange_tour_claim_state()
+
             rec.write({'state': 'rejected'})
 
     @api.multi
@@ -185,6 +214,7 @@ class EmployeeTourClaim(models.Model):
         if datetime.now().date() < tdat:
             raise ValidationError(
                 "You are not allowed to claim this")
+        res.onchange_tour_claim_state()
         return res
 
 
@@ -215,12 +245,14 @@ class EmployeeTourClaim(models.Model):
     @api.multi
     def button_approved(self):
         for rec in self:
+            rec.onchange_tour_claim_state()
             rec.write({'state': 'approved'})
 
     def button_pay(self):
         for rec in self:
             rec.amount_paid = rec.total_claimed_amount - rec.advance_requested
             rec.tour_request_id.claimed = True
+            rec.onchange_tour_claim_state()
             rec.write({'state': 'paid'})
 
 

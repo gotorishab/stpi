@@ -37,9 +37,34 @@ class TourRequest(models.Model):
     state = fields.Selection([('draft', 'Draft'), ('waiting_for_approval', 'Waiting for Approval'), ('approved', 'Approved'), ('rejected', 'Rejected')
                                ], required=True, string='Status', default='draft',track_visibility='always')
 
+
+    def onchange_tour_request_state(self):
+        group_id = self.env.ref('tour_request.group_tour_claim_approvere')
+        resUsers = self.env['res.users'].sudo().search([]).filtered(lambda r: group_id.id in r.groups_id.ids and self.branch_id.id in r.branch_ids.ids).mapped('partner_id')
+        if resUsers:
+            employee_partner = self.employee_id.user_id.partner_id
+            if employee_partner:
+                resUsers += employee_partner
+            message = "Tour Request %s is move to %s"%(self.name, dict(self._fields['state'].selection).get(self.state))
+            self.env['mail.message'].create({'message_type':"notification",
+                "subtype_id": self.env.ref("mail.mt_comment").id,
+                'body': message,
+                'subject': "Tour request",
+                'needaction_partner_ids': [(4, p.id, None) for p in resUsers],
+                'model': self._name,
+                'res_id': self.id,
+                })
+            self.env['mail.thread'].message_post(
+                body=message,
+                partner_ids=[(4, p.id, None) for p in resUsers],
+                subtype='mail.mt_comment',
+                notif_layout='mail.mail_notification_light',
+            )
+
     @api.multi
     def button_to_approve(self):
         for rec in self:
+            rec.onchange_tour_request_state()
             rec.write({'state': 'waiting_for_approval'})
     #
     # @api.multi
@@ -50,6 +75,7 @@ class TourRequest(models.Model):
     @api.multi
     def button_approved(self):
         for rec in self:
+            rec.onchange_tour_request_state()
             rec.write({'state': 'approved'})
 
     # @api.multi
@@ -60,11 +86,13 @@ class TourRequest(models.Model):
     @api.multi
     def button_reject(self):
         for rec in self:
+            rec.onchange_tour_request_state()
             rec.write({'state': 'rejected'})
 
     @api.multi
     def button_reschedule(self):
         for rec in self:
+            rec.onchange_tour_request_state()
             rec.write({'state': 'draft'})
 
 
@@ -128,6 +156,7 @@ class TourRequest(models.Model):
         seq = self.env['ir.sequence'].next_by_code('tour.request')
         sequence = 'Tour Request - ' + seq
         res.tour_sequence = sequence
+        res.onchange_tour_request_state()
         return res
 
     @api.multi
