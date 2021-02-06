@@ -21,7 +21,7 @@
                          <button name="button_review_central" string="Accept"  states="pending_approval1" type="object" groups="intranet_home.group_intranet_home_content_moderator"/>
                          <button name="button_approved" string="Approve" states="pending_approval2" type="object" groups="intranet_home.group_intranet_home_admin"/>
                          <button name="delete_story" string="Delete" states="approved" type="object" groups="intranet_home.group_intranet_home_admin"/>
-                         <button name="button_reject" string="Reject" states="pending_approval,pending_approval1,pending_approval2" type="object" groups="intranet_home.group_intranet_home_admin"/>
+                         <button name="button_reject" string="Reject" states="pending_approval,pending_approval1,pending_approval2" type="object"/>
                          <field name="state" widget="statusbar" statusbar_visible="draft,pending_approval,approved" />
 
             </header>
@@ -184,6 +184,11 @@
 
             </header>
                  <sheet>
+                     <div class="oe_button_box" name="button_box" states="approved" groups="intranet_home.group_intranet_home_admin">
+                        <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                            <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+                        </button>
+                     </div>
                      <group>
                          <group>
                              <field name="name" required="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
@@ -198,12 +203,14 @@
                      </group>
 
                      <notebook>
-                         <page name="tan_non" string="Type">
+                         <page name="tan_non" string="Type" attrs="{'invisible': [('state', '=', 'draft')]}" groups="intranet_home.group_intranet_home_admin,intranet_home.group_intranet_home_idea_auth_user">
                              <group>
                                  <group>
-                                     <field name="idea_description"/>
-                                     <field name="tan_nontan"/>
-                                     <field name="benefits"/>
+                                     <field name="idea_description" attrs="{'readonly': [('state', '=', 'approved')]}"/>
+                                 </group>
+                                 <group>
+                                     <field name="tan_nontan" attrs="{'readonly': [('state', '=', 'approved')]}"/>
+                                     <field name="benefits" attrs="{'readonly': [('state', '=', 'approved')]}"/>
                                  </group>
                              </group>
                          </page>
@@ -233,7 +240,7 @@
 
 
          <record id="ir_action_vardhman_create_blogidea_all" model="ir.actions.act_window">
-             <field name="name">Post a Story</field>
+             <field name="name">Share Ideas and Suggestion</field>
              <field name="res_model">vardhman.create.blogidea</field>
              <field name="view_mode">tree,form</field>
          </record>

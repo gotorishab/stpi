@@ -44,3 +44,18 @@ class EventTag(models.Model):
     ], string='Front Type')
 
     parent_tag_id = fields.Many2one('event.tag', string='Event Category')
+
+    @api.onchange('name')
+    @api.constrains('name')
+    def get_category_f_name(self):
+        for rec in self:
+            votes = self.env['event.tag.category'].search([('name', '=', 'Activity')], limit=1
+                                                           )
+            print('============================',votes)
+            if votes:
+                for isss in votes:
+                    rec.category_id=isss.id
+
+
+    def name_get(self):
+        return [(tag.id, "%s" % (tag.name)) for tag in self]

@@ -1,0 +1,21 @@
+<odoo>
+         <record id="pull_into_action_confirm_view" model="ir.ui.view">
+            <field name="name">create.user.employee.form</field>
+            <field name="model">create.user.employee</field>
+            <field name="arch" type="xml">
+                <form string="Create User">
+                    <footer>
+                        <button string="Confirm" name="create_user_action" type="object" default_focus="1" class="btn-primary"/>
+<!--                        <button string="Reject" name="pull_intos_action_reject_button" type="object" default_focus="1" class="btn-primary"/>-->
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+    <act_window id="action_pull_intos_action_confirm"
+            key2="client_action_multi" name="Create User"
+                res_model="create.user.employee" src_model="hr.employee"
+            view_mode="form" target="new"/>
+
+</odoo>

@@ -14,11 +14,11 @@
         <field name="category_id" ref="module_vardhman_intranet_home"/>
     </record>
     <record id="group_intranet_home_unit_content_moderator" model="res.groups">
-        <field name="name">Intranet Unit Content Moderator</field>
+        <field name="name">Intranet Story Unit Content Moderator</field>
         <field name="category_id" ref="module_vardhman_intranet_home"/>
     </record>
     <record id="group_intranet_home_content_moderator" model="res.groups">
-        <field name="name">Intranet Content Moderator</field>
+        <field name="name">Intranet Story Content Moderator</field>
         <field name="category_id" ref="module_vardhman_intranet_home"/>
     </record>
 

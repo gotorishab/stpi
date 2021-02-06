@@ -14,6 +14,7 @@
         'security/intranet_home.xml',
         'data/mail_template.xml',
         'data/ir_cron_data.xml',
+        # 'wizard/pull_into.xml',
         'wizard/employee_birthday_wizard.xml',
         'wizard/employee_workanniversary_wizard.xml',
         'wizard/employee_marriageanniversary_wizard.xml',
