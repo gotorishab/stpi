@@ -51,14 +51,14 @@ sAnimation.registry.HrJobLine = sAnimation.Class.extend({
                 $isCorrespondence.attr('name', 'isCorrespondence_' + (index + 1))
             });
         })
-        $AddressLine.find('.state_id').on('change', function (ev) {
-                console.log($(ev).closest('.name'))
-                alert($(ev.currentTarge).val())
-            });
-        $AddressLine.find('.country_id').on('change', function (ev) {
-                console.log($(ev).closest('.name'))
-                alert($(ev.currentTarge).val())
-            });
+        // $AddressLine.find('.state_id').on('change', function (ev) {
+        //         console.log($(ev).closest('.name'))
+        //         alert($(ev.currentTarge).val())
+        //     });
+        // $AddressLine.find('.country_id').on('change', function (ev) {
+        //         console.log($(ev).closest('.name'))
+        //         alert($(ev.currentTarge).val())
+        //     });
         });
     },
     _onClickAddButton: function () {
@@ -112,10 +112,10 @@ sAnimation.registry.HrJobLine = sAnimation.Class.extend({
                     $specialization.attr('name', 'specialization_' + (index + 1))
                 });
             })
-            $EducationLine.find('.line_type_id').on('change', function (ev) {
-                console.log($(ev).closest('.name'))
-                alert($(ev.currentTarge).val())
-            });
+            // $EducationLine.find('.line_type_id').on('change', function (ev) {
+            //     console.log($(ev).closest('.name'))
+            //     alert($(ev.currentTarge).val())
+            // });
         });
     },
     });

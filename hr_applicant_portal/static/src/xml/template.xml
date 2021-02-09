@@ -57,7 +57,7 @@
           </td>
           <td colspan="1">
               <div class="form-field isCorrespondence">
-                  <input required="required" type="checkbox"  class="form-control o_required_modifier text-left" value="True" t-attf-name="isCorrespondence_#{add_id}"/>
+                  <input type="checkbox" class="form-control text-left" value="True" t-attf-name="isCorrespondence_#{add_id}"/>
               </div>
           </td>
           <td class="line_address_delete" width="50px">
@@ -101,7 +101,7 @@
           </td>
           <td colspan="1">
               <div class="form-field ref_phone">
-                  <input required="required" type="text"  class="form-control o_required_modifier text-left" pattern="[0-9]{10}"  t-attf-name="ref_phone_#{id}"/>
+                  <input required="required" type="text"  class="form-control o_required_modifier text-left" pattern="[0-9]{10}"  t-attf-name="ref_phone_#{id}" oninvalid="this.setCustomValidity('Please Enter Correct Phone No')" onvalid="this.setCustomValidity('')"/>
               </div>
           </td>
           <td class="line_record_delete" width="50px">
