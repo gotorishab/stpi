@@ -131,7 +131,7 @@ class IndentLedger(models.Model):
             employee_partner = self.employee_id.user_id.partner_id
             if employee_partner:
                 resUsers += employee_partner
-            message = "%s is move to %s" % (self.name, dict(self._fields['state'].selection).get(self.state))
+            message = "Request of %s is move to %s" % (self.employee_id.name, dict(self._fields['state'].selection).get(self.state))
             self.env['mail.message'].create({'message_type': "notification",
                                              "subtype_id": self.env.ref("mail.mt_comment").id,
                                              'body': message,
