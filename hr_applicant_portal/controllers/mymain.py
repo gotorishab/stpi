@@ -46,7 +46,7 @@ class HrPortalRecruitment(http.Controller):
     def ApplyJobs(self, **post):
         # try:
         # post = {'line_type_id_1': '1', 'category_id': '15', 'blood_group': 'b+', 'zip_1': '250001', 'date_end_1': '2019-02-02', 'name': 'Rajneta', 'addreess_rec': '1', 'ref_name_1': 'TEst', 'description_1': 'CSE', 'ref_phone_1': '9865321470', 'position_1': 'O2b', 'organization_1': 'Software Developer', 'aadhar_no': '145236521452', 'ufile': <FileStorage: '' ('application/octet-stream')>, 'employeement_rec': '1', 'personal_email': 'goelarpit1997@gmail.com', 'job_id': '9', 'country_id': '104', 'title': '8', 'street2_1': 'Site-4 Industrial Area, Sahibabad', 'pan_no': 'ABCDE1234F', 'is_out_talent': 'on', 'dob': '2001-01-01', 'education_line_rec': '0', 'country_id_1': '104', 'to_date_1': '2021-02-01', 'city_1': 'Ghaziabad', 'from_date_1': '2020-02-02', 'street_1': 'A-16/29, Site-4 Industrial Area, Sahibabad', 'date_start_1': '2015-02-02', 'is_fail': 'on', 'advertisement_line_id': '21', 'specialization_1': 'CSE', 'address_type_id_1': 'permanent_add', 'name_1': 'B.tech', 'gende': 'male', 'is_difficulty_subject': 'on', 'ref_position_1': 'Test', 'state_id_1': '610', 'religion_id': '8'}
-        post.update({'advertisement_line_id': literal_eval(post.get('advertisement_line_id'))})
+        post.update({'advertisement_line_id': int(post.get('advertisement_line_id'))})
         post.update({'job_id': literal_eval(post.get('job_id'))})
         address_id = self.slicedict(post, 'street_')
         from_date_id = self.slicedict(post, 'from_date_')
