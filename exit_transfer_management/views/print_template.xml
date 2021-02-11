@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="exit_transfer_noc">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div>
+                            <br/>
+                            <p>
+                                Dear Sir/Madam, <br></br>
+                                The <span t-field="o.employee_id.name"/> has been Resigned/Tranfered <span t-field="o.name"/> all Dept.'s are requested to provide their NOC.
+                            </p>
+                        </div>
+                        <div>
+                            <table class="table table-bordered">
+                                <tr>
+                                    <th colspan = "1">
+                                        No Dues
+                                    </th>
+                                    <th colspan = "3">
+                                        <t t-if="o.leave_no_dues">
+                                             <b>Yes</b>
+                                        </t>
+                                        <t t-else="">
+                                            <b>No</b>
+                                        </t>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th colspan = "1">
+                                        Remarks
+                                    </th>
+                                    <th colspan = "3">
+                                        <span t-field="o.leave_remark"/>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th colspan = "1">
+                                    </th>
+                                    <th colspan = "1">
+                                        Name of The Employee
+                                    </th>
+                                    <th colspan = "2">
+                                        <span t-field="o.employee_id.name"/>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th colspan = "1">
+                                    </th>
+                                    <th colspan = "1">
+                                        Designation
+                                    </th>
+                                    <th colspan = "2">
+                                        <span t-field="o.job_id.name"/>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th colspan = "1">
+                                    </th>
+                                    <th colspan = "1">
+                                        Department
+                                    </th>
+                                    <th colspan = "2">
+                                        <span t-field="o.department_id.name"/>
+                                    </th>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <report
+    id="noc_exit_id"
+    string="NOC"
+    model="exit.transfer.management"
+    report_type="qweb-pdf"
+    file="exit_transfer_management.exit_transfer_noc"
+    name="exit_transfer_management.exit_transfer_noc"/>
+</odoo>

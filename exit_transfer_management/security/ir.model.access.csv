@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_exit_transfer_management,exit.transfer.management,model_exit_transfer_management,base.group_user,1,1,1,1
+access_leave_lines,leave.lines,model_leave_lines,base.group_user,1,1,1,1
+access_pending_leave_lines,pending.leave.lines,model_pending_leave_lines,base.group_user,1,1,1,1
+access_upcoming_leave_lines,upcoming.leave.lines,model_upcoming_leave_lines,base.group_user,1,1,1,1
+access_pending_tour_request,pending.tour.request,model_pending_tour_request,base.group_user,1,1,1,1
+access_submitted_tour_request,submitted.tour.request,model_submitted_tour_request,base.group_user,1,1,1,1
+access_upcoming_tour_request,upcoming.tour.request,model_upcoming_tour_request,base.group_user,1,1,1,1
+access_claim_lines1,claim_lines1,model_claim_lines1,base.group_user,1,1,1,1

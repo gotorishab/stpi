@@ -1,0 +1,172 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="exit_transfer_management.list">
+            <field name="name">Exit Transfer Management list</field>
+            <field name="model">exit.transfer.management</field>
+            <field name="arch" type="xml">
+                <tree string ="Exit/Transfer Management">
+                  <field name="name"/>
+                  <field name="employee_id" required="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="exit_transfer_management.from">
+            <field name="name">Exit Transfer Management from</field>
+            <field name="model">exit.transfer.management</field>
+            <field name="arch" type="xml">
+                <form string="Exit/Transfer Management">
+                  <header>
+                      <button name="button_verify" string="Send for Verify" class="oe_highlight" type="object" states="draft"/>
+                      <button name="button_send_for_approval" string="Send for Approval" class="oe_highlight" type="object" states="verify"/>
+                       <button name="button_confirm" string="Completed" class="oe_highlight" type="object" states="send_for_approval"/>
+                      <button name="button_cancel" string="Cancel" type="object" states="complete"/>
+                      <button name="button_redraft" string="Redraft" class="oe_highlight" type="object" states="cancel"/>
+                      <field name="state" widget="statusbar" statusbar_visible="draft,verify,send_for_approval"/>
+                  </header>
+                  <sheet>
+                    <div class="oe-tittle">
+                         <h1>
+                             <field name="name" readonly="1" class="oe_inline"/>
+                         </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name ="employee_id" attrs="{'readonly': [('state', '!=', 'draft')]}" required="1" options="{'no_create': True}"/>
+                            <field name ="employee_no"/>
+                            <field name ="job_id" options="{'no_create': True}"/>
+                            <field name ="department_id" options="{'no_create': True}"/>
+                            <field name ="branch_id" options="{'no_create': True}"/>
+                        </group>
+                        <group>
+                            <field name="date" required="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="exit_reason" required="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                        </group>
+                    </group>
+                        <notebook>
+                            <page string="Leaves">
+                                <br/>
+                                    <div><h2>Pending Leaves</h2></div>
+                                <br/>
+                                <field name="pending_leave_line_ids" readonly="1" options='{"no_open": True}'>
+                                    <tree edittable="bottom">
+                                        <field name="leave_type_id"/>
+                                        <field name="from_date"/>
+                                        <field name="to_date"/>
+                                        <field name="state"/>
+                                        <button name="leave_approved" type="object" string='Approved' icon="fa-check-circle"/>
+                                        <button name="leave_rejected" type="object" string='Rejected' icon="fa-times-circle"/>
+                                    </tree>
+                                </field>
+                                <br/>
+                                    <div><h2>Submitted Leaves</h2></div>
+                                <br/>
+                                <field name="leave_line_ids" readonly="1" options='{"no_open": True}'>
+                                    <tree edittable="bottom">
+                                        <field name="leave_type_id"/>
+                                        <field name="from_date"/>
+                                        <field name="to_date"/>
+                                        <field name="state"/>
+                                        <button name="leave_cancel" type="object" string='Cancelled' icon="fa-window-close"/>
+                                    </tree>
+                                </field>
+                                <br/>
+                                    <div><h2>Upcoming Leaves</h2></div>
+                                <br/>
+                                <field name="upcoming_leave_line_ids" readonly="1" options='{"no_open": True}'>
+                                    <tree edittable="bottom">
+                                        <field name="leave_type_id"/>
+                                        <field name="from_date"/>
+                                        <field name="to_date"/>
+                                    </tree>
+                                </field>
+                                <group string="Remarks" groups="exit_transfer_management.general_exit_transfer">
+                                    <group>
+                                        <field name="leave_no_dues" string="No Dues" attrs="{'readonly': [('state', '!=', 'verify')]}"/>
+                                    </group>
+                                    <group>
+                                        <field name="leave_remark" string="Remark" attrs="{'readonly': [('state', '!=', 'verify')]}"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Travels and Tour">
+                                <br/>
+                                    <div><h2>Pending Tour Request</h2></div>
+                                <br/>
+                                <field name="pending_tour_req_ids" readonly="1" options='{"no_open": True}'>
+                                    <tree edittable="bottom">
+                                        <field name="tour_request_id"/>
+                                        <field name="request_date"/>
+                                        <field name="purpose"/>
+                                        <field name="state"/>
+                                        <button name="tour_approved" type="object" string='Approved' icon="fa-check-circle"/>
+                                        <button name="tour_rejected" type="object" string='Rejected' icon="fa-times-circle"/>
+                                    </tree>
+                                </field>
+                                <br/>
+                                    <div><h2>Submitted Tour Request</h2></div>
+                                <br/>
+                                <field name="submitted_tour_req_ids" readonly="1" options='{"no_open": True}'>
+                                    <tree edittable="bottom">
+                                        <field name="tour_request_id"/>
+                                        <field name="request_date"/>
+                                        <field name="purpose"/>
+                                        <field name="state"/>
+                                        <button name="tour_cancel" type="object" string='Cancelled' icon="fa-window-close"/>
+                                    </tree>
+                                </field>
+                                <br/>
+                                    <div><h2>Upcoming Tour Request</h2></div>
+                                <br/>
+                                <field name="upcoming_tour_req_ids" readonly="1" options='{"no_open": True}'>
+                                    <tree edittable="bottom">
+                                        <field name="tour_request_id"/>
+                                        <field name="request_date"/>
+                                        <field name="purpose"/>
+                                        <field name="state"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Reimbursement">
+                                <field name="claim_lines1_ids" readonly="1" options='{"no_open": True}'/>
+                            </page>
+                            <page string="LTC Request and Claim Request">
+                                <field name="claim_lines1_ids" readonly="1" options='{"no_open": True}'/>
+                            </page>
+                            <page string="Loan">
+                                <field name="claim_lines1_ids" readonly="1" options='{"no_open": True}'/>
+                            </page>
+                            <page string="PF Withdrawal">
+                                <field name="claim_lines1_ids" readonly="1" options='{"no_open": True}'/>
+                            </page>
+                            <page string="Income Tax">
+                                <field name="claim_lines1_ids" readonly="1" options='{"no_open": True}'/>
+                            </page>
+                            <page string="eFile">
+                                <field name="claim_lines1_ids" readonly="1" options='{"no_open": True}'/>
+                            </page>
+                            <page string="Indent">
+                                <field name="claim_lines1_ids" readonly="1" options='{"no_open": True}'/>
+                            </page>
+                        </notebook>
+                  </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+
+            </field>
+        </record>
+
+
+    <record model="ir.actions.act_window" id="exit_transfer_management.action_window">
+      <field name="name">Exit/transfer Management</field>
+      <field name="res_model">exit.transfer.management</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem name="Exit/transfer Management" id="exit_transfer_management.menu_1_list" action="exit_transfer_management.action_window"/>
+  </data>
+</odoo>
