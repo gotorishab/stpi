@@ -66,9 +66,9 @@
                             <field name="basic_salary" readonly="1" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                             <field name="da_salary" readonly="1" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                             <field name="tax_salary_final" readonly="1" widget="monetary" options="{'currency_field': 'currency_id'}"/>
-                            <field name="income_after_exemption" readonly="1" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="income_after_exemption" readonly="1" widget="monetary" options="{'currency_field': 'currency_id'}" attrs="{'invisible':[('which_it','=','new')]}"/>
                             <field name="income_after_std_ded" readonly="1" widget="monetary" options="{'currency_field': 'currency_id'}"/>
-                            <field name="income_after_pro_tax" readonly="1" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="income_after_pro_tax" readonly="1" widget="monetary" options="{'currency_field': 'currency_id'}" attrs="{'invisible':[('which_it','=','new')]}"/>
                             <field name="taxable_income" readonly="1" widget="monetary" options="{'currency_field': 'currency_id'}"/>
 <!--                            <field name="net_allowed_rebate" readonly="1"/>-->
 <!--                            <field name="income_after_rebate" readonly="1"/>-->
