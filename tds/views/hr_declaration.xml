@@ -66,8 +66,8 @@
                             <field name="basic_salary" readonly="1" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                             <field name="da_salary" readonly="1" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                             <field name="tax_salary_final" readonly="1" widget="monetary" options="{'currency_field': 'currency_id'}"/>
-                            <field name="income_after_exemption" readonly="1" widget="monetary" options="{'currency_field': 'currency_id'}" attrs="{'invisible':[('which_it','=','new')]}"/>
-                            <field name="income_after_std_ded" readonly="1" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="income_after_exemption" readonly="1" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="income_after_std_ded" readonly="1" widget="monetary" options="{'currency_field': 'currency_id'}" attrs="{'invisible':[('which_it','=','new')]}"/>
                             <field name="income_after_pro_tax" readonly="1" widget="monetary" options="{'currency_field': 'currency_id'}" attrs="{'invisible':[('which_it','=','new')]}"/>
                             <field name="taxable_income" readonly="1" widget="monetary" options="{'currency_field': 'currency_id'}"/>
 <!--                            <field name="net_allowed_rebate" readonly="1"/>-->
@@ -77,7 +77,7 @@
                         </group>
                     </group>
                     <notebook>
-                    <page string="Exemption" attrs="{'invisible':[('which_it','=','new')]}">
+                    <page string="Exemption">
                         <separator string="Exemption"/>
                         <field name="exemption_ids" readonly="1">
                             <tree string="Exemption" editable="bottom">
@@ -90,7 +90,7 @@
                         </field>
                     </page>
 
-                    <page string="Std. Deduction">
+                    <page string="Std. Deduction" attrs="{'invisible':[('which_it','=','new')]}">
                         <separator string="Std. Deduction"/>
                         <field name="std_ded_ids" readonly="1">
                             <tree string="Exemption" editable="bottom">
@@ -168,7 +168,7 @@
                             </tree>
                         </field>
                         <group class="oe_subtotal_footer oe_right" colspan="2" >
-                                <field name="allowed_rebate_under_80c" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                <field name="allowed_rebate_under_80c" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}" attrs="{'invisible':[('which_it','=','new')]}"/>
                                 <field name="allowed_rebate_under_80b" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                             </group>
                         </group>
@@ -185,7 +185,7 @@
 <!--                                <field name="allowed_rebate" sum="Total"/>-->
 <!--                            </tree>-->
 <!--                        </field>-->
-                         <group string="Medical Insurance Premium paid">
+                         <group string="Medical Insurance Premium paid" attrs="{'invisible':[('which_it','=','new')]}">
                         <field name="med_ins_ids" attrs="{'readonly':[('state','=','verified')]}">
                             <tree string="Medical Insurance Premium paid" editable="bottom">
                                 <field name="med_ins_id" invisible="1"/>
@@ -196,11 +196,11 @@
                                 <field name="document"/>
                             </tree>
                         </field>
-                        <group class="oe_subtotal_footer oe_right" colspan="2" >
+                        <group class="oe_subtotal_footer oe_right" colspan="2" attrs="{'invisible':[('which_it','=','new')]}">
                                 <field name="allowed_rebate_under_80d" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                             </group>
                          </group>
-                         <group string="Deductions on Interest on Savings Account">
+                         <group string="Deductions on Interest on Savings Account" attrs="{'invisible':[('which_it','=','new')]}">
                         <field name="deduction_saving_ids" attrs="{'readonly':[('state','=','verified')]}">
                             <tree string="Deductions on Interest on Savings Account" editable="bottom">
                                 <field name="deduction_saving_id" invisible="1"/>
@@ -214,7 +214,7 @@
                                 <field name="document"/>
                             </tree>
                         </field>
-                        <group class="oe_subtotal_footer oe_right" colspan="2" >
+                        <group class="oe_subtotal_footer oe_right" colspan="2" attrs="{'invisible':[('which_it','=','new')]}">
                                 <field name="allowed_rebate_under_80dsa" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                             </group>
                          </group>
@@ -252,7 +252,7 @@
                                 <field name="allowed_rebate_under_80e" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                             </group>
                         </group>
-                         <group string="RGESS">
+                         <group string="RGESS" attrs="{'invisible':[('which_it','=','new')]}">
                         <field name="rgess_ids" attrs="{'readonly':[('state','=','verified')]}">
                             <tree string="RGESS" editable="bottom">
                                 <field name="rgess_id" invisible="1"/>
@@ -267,7 +267,7 @@
                                 <field name="allowed_rebate_under_80ccg" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                             </group>
                          </group>
-                         <group string="Deductions on Medical Expenditure for a Handicapped Relative">
+                         <group string="Deductions on Medical Expenditure for a Handicapped Relative" attrs="{'invisible':[('which_it','=','new')]}">
                         <field name="dedmedical_ids" attrs="{'readonly':[('state','=','verified')]}">
                             <tree string="Deductions on Medical Expenditure for a Handicapped Relative" editable="bottom">
                                 <field name="dedmedical_id" invisible="1"/>
@@ -282,7 +282,7 @@
                                 <field name="allowed_rebate_under_80cdd" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                             </group>
                          </group>
-                        <group string="Deductions on Medical Expenditure on Self or Dependent Relative">
+                        <group string="Deductions on Medical Expenditure on Self or Dependent Relative" attrs="{'invisible':[('which_it','=','new')]}">
                         <field name="dedmedical_self_ids" attrs="{'readonly':[('state','=','verified')]}">
                             <tree string="Deductions on Medical Expenditure on Self or Dependent Relative" editable="bottom">
                                 <field name="dedmedical_self_id" invisible="1"/>
@@ -297,7 +297,7 @@
                                 <field name="allowed_rebate_under_80mesdr" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                             </group>
                             </group>
-                        <group string="Deductions on Donations">
+                        <group string="Deductions on Donations" attrs="{'invisible':[('which_it','=','new')]}">
                         <field name="deddonation_ids">
                             <tree string="Deduction on Donations" editable="bottom">
                                 <field name="deddonation_id" invisible="1"/>

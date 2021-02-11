@@ -1182,6 +1182,20 @@ class HrDeclaration(models.Model):
                         'allowed_rebate': my_allowed_rebate,
                     }))
                     rec.std_ded_ids = std_ded_ids
+                employee = self.env['hr.employee'].sudo().search([('id', '=', rec.employee_id.id),
+                                                                  ], limit=1)
+                if employee.differently_abled == True:
+                    ex_trans_id = self.env['saving.master'].sudo().search([('saving_type', '=', 'Transport Allowance')],
+                                                                          limit=1)
+                    exemption_ids = []
+                    exemption_ids.append((0, 0, {
+                        'exemption_id': rec.id,
+                        'it_rule': ex_trans_id.it_rule.id,
+                        'saving_master': ex_trans_id.id,
+                        'investment': 38400,
+                        'allowed_rebate': 38400,
+                    }))
+                    rec.exemption_ids = exemption_ids
                 ex_child_id = self.env['saving.master'].sudo().search(
                     [('saving_type', '=', 'Child Education Allowance & Hostel Expenditure Allowance')], limit=1)
                 child_id = self.env['employee.relative'].sudo().search(
@@ -1221,7 +1235,7 @@ class HrDeclaration(models.Model):
                         'investment': my_investment,
                         'allowed_rebate': my_allowed_rebate,
                     }))
-                    rec.exemption_ids = exemption_ids
+                    # rec.exemption_ids = exemption_ids
                 contrct = self.env['hr.contract'].sudo().search([('employee_id', '=', rec.employee_id.id),
                                                                  ('state', '=', 'open')
                                                                  ], limit=1)
@@ -1294,7 +1308,7 @@ class HrDeclaration(models.Model):
                         'investment': my_investment,
                         'allowed_rebate': my_allowed_rebate,
                     }))
-                    rec.exemption_ids = exemption_ids
+                    # rec.exemption_ids = exemption_ids
                 ex_lunch_id = self.env['saving.master'].sudo().search([('saving_type', '=', 'Lunch Subsidy Allowance')], limit=1)
                 reimbursement_id =  self.env['reimbursement'].sudo().search([('employee_id', '=', rec.employee_id.id),('name', '=', 'lunch'),('date_range.date_start', '>', rec.date_range.date_start),('date_range.date_end', '<', rec.date_range.date_end),('state', '=', 'approved')])
                 sum=0.00
@@ -1316,7 +1330,7 @@ class HrDeclaration(models.Model):
                         'investment': my_investment,
                         'allowed_rebate': my_allowed_rebate,
                     }))
-                    rec.exemption_ids = exemption_ids
+                    # rec.exemption_ids = exemption_ids
                 # ex_rebate_id = self.env['saving.master'].sudo().search([('saving_type', '=', 'Revised Rebate under Section 87A (2019-20)'), ('it_rule', '=', 'section87a')], limit=1)
                 # my_investment = 0.00
                 # my_allowed_rebate = 0.00
@@ -1389,7 +1403,7 @@ class HrDeclaration(models.Model):
                     rec.income_after_exemption = round(rec.tax_salary_final + rec.previous_employer_income - exempt_am)
                 else:
                     rec.income_after_exemption = 0.00
-                rec.income_after_exemption = rec.tax_salary_final
+                # rec.income_after_exemption = rec.tax_salary_final
                 if rec.income_after_exemption - std_am > 0.00:
                     rec.income_after_std_ded = round(rec.income_after_exemption - std_am)
                 else:
