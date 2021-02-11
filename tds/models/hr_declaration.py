@@ -1184,7 +1184,7 @@ class HrDeclaration(models.Model):
                     rec.std_ded_ids = std_ded_ids
                 employee = self.env['hr.employee'].sudo().search([('id', '=', rec.employee_id.id),
                                                                   ], limit=1)
-                if employee.differently_abled == True:
+                if employee.differently_abled == 'yes':
                     ex_trans_id = self.env['saving.master'].sudo().search([('saving_type', '=', 'Transport Allowance')],
                                                                           limit=1)
                     exemption_ids = []
