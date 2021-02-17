@@ -940,6 +940,7 @@ class HrDeclaration(models.Model):
                             ("salary to: {0} - salary from: {1} - total tax amount: {2} - remaining amt: {3}").format(
                                 inc.salary_to, inc.salary_from, total_tax_amt,
                                 remaining_amt)))
+                        rec.message_post(body=_body)
                         if remaining_amt <= 0:
                             break
 
@@ -962,9 +963,9 @@ class HrDeclaration(models.Model):
 
                     n_sur = (total_tax_amt*surcharge/100)
                     n_ces = (total_tax_amt*cess/100)
-                    _body = (_(
-                        ("{0} - {1} -{2}").format(n_ces, n_sur, total_tax_amt)))
-                    rec.message_post(body=_body)
+                    # _body = (_(
+                    #     ("{0} - {1} -{2}").format(n_ces, n_sur, total_tax_amt)))
+                    # rec.message_post(body=_body)
                     total_tax_amt += (n_sur + n_ces)
                 rec.tax_payable = round(total_tax_amt)
                 # tax_salary_final = 0.00
