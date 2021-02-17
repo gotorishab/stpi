@@ -933,11 +933,12 @@ class HrDeclaration(models.Model):
                             (" BEFORE salary to: {0} - salary from: {1} - total tax amount: {2} - remaining amt: {3}").format(inc.salary_to, inc.salary_from, total_tax_amt,
                                                              remaining_amt)))
                         rec.message_post(body=_body)
-                        if remaining_amt > 0 and remaining_amt >= inc.salary_to:
+                        if remaining_amt > 0 and rec.taxable_income >= inc.salary_to and remaining_amt <= inc.salary_from:
                             tax_amt = (((inc.salary_to - inc.salary_from) * inc.tax_rate) / 100)
                             total_tax_amt += tax_amt
                         elif remaining_amt > 0:
-                            tax_amt = (((remaining_amt - inc.salary_from) * inc.tax_rate) / 100)
+                            if remaining_amt >= inc.salary_from:
+                                tax_amt = ((remaining_amt * inc.tax_rate) / 100)
                             total_tax_amt += tax_amt
 
                         surcharge = inc.surcharge
