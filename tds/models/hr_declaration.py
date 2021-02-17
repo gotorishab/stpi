@@ -938,6 +938,7 @@ class HrDeclaration(models.Model):
 
                         surcharge = inc.surcharge
                         cess = inc.cess
+                        
                         remaining_amt = (remaining_amt - (inc.salary_to - inc.salary_from))
                         if remaining_amt <= 0:
                             break
