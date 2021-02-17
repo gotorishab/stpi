@@ -936,6 +936,12 @@ class HrDeclaration(models.Model):
                             tax_amt = ((inc.salary_to - inc.salary_from) * inc.tax_rate) /100
                             total_tax_amt += tax_amt
                         remaining_amt = remaining_amt - (inc.salary_to - inc.salary_from)
+                        _body = (_(
+                            ("salary to: {0} - salary from: {1} - total tax amount: {2} - remaining amt: {3}").format(
+                                inc.salary_to, inc.salary_from, total_tax_amt,
+                                remaining_amt)))
+                        if remaining_amt <= 0:
+                            break
 
                         #
                         # if remaining_amt > 0 and rec.taxable_income >= inc.salary_to and remaining_amt <= inc.salary_from:
@@ -947,17 +953,13 @@ class HrDeclaration(models.Model):
                         #     total_tax_amt += tax_amt
                         #
                         # remaining_amt = (remaining_amt - (inc.salary_to - inc.salary_from))
-                        _body = (_(
-                            ("salary to: {0} - salary from: {1} - total tax amount: {2} - remaining amt: {3}").format(
-                                inc.salary_to, inc.salary_from, total_tax_amt,
-                                remaining_amt)))
+
                         # rec.message_post(body=_body)
                         #
                         # surcharge = inc.surcharge
                         # cess = inc.cess
                         #
-                        if remaining_amt <= 0:
-                            break
+
                     n_sur = (total_tax_amt*surcharge/100)
                     n_ces = (total_tax_amt*cess/100)
                     _body = (_(
