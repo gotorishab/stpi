@@ -937,7 +937,7 @@ class HrDeclaration(models.Model):
                             tax_amt = (((inc.salary_to - inc.salary_from) * inc.tax_rate) / 100)
                             total_tax_amt += tax_amt
                         elif remaining_amt > 0:
-                            tax_amt = ((remaining_amt * inc.tax_rate) / 100)
+                            tax_amt = (((remaining_amt - inc.salary_from) * inc.tax_rate) / 100)
                             total_tax_amt += tax_amt
 
                         surcharge = inc.surcharge
