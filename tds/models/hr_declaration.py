@@ -949,9 +949,8 @@ class HrDeclaration(models.Model):
                     n_ces = (total_tax_amt*cess/100)
                     _body = (_(
                         ("{0} - {1} -{2}").format(n_ces, n_sur, total_tax_amt)))
+                    rec.message_post(body=_body)
                     total_tax_amt += (n_sur + n_ces)
-                _body = (_(
-                    ("{0}").format(total_tax_amt)))
                 rec.tax_payable = round(total_tax_amt)
                 # tax_salary_final = 0.00
                 # if rec.taxable_income <= 250000.00:
