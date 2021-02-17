@@ -929,6 +929,11 @@ class HrDeclaration(models.Model):
                 if income_slab:
                     remaining_amt = rec.taxable_income
                     for inc in income_slab:
+                        _body = (_(
+                            ("salary to: {0} - salary from: {1} - total tax amount: {2} - remaining amt: {3}").format(
+                                inc.salary_to, inc.salary_from, total_tax_amt,
+                                remaining_amt)))
+                        rec.message_post(body=_body)
                         if remaining_amt < inc.salary_to:
                             tax_amt = (remaining_amt * inc.tax_rate) / 100
                             total_tax_amt += tax_amt
@@ -936,11 +941,7 @@ class HrDeclaration(models.Model):
                             tax_amt = ((inc.salary_to - inc.salary_from) * inc.tax_rate) /100
                             total_tax_amt += tax_amt
                         remaining_amt = remaining_amt - (inc.salary_to - inc.salary_from)
-                        _body = (_(
-                            ("salary to: {0} - salary from: {1} - total tax amount: {2} - remaining amt: {3}").format(
-                                inc.salary_to, inc.salary_from, total_tax_amt,
-                                remaining_amt)))
-                        rec.message_post(body=_body)
+
                         if remaining_amt <= 0:
                             break
 
