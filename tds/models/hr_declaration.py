@@ -940,7 +940,7 @@ class HrDeclaration(models.Model):
                         else:
                             tax_amt = ((inc.salary_to - inc.salary_from) * inc.tax_rate) /100
                             total_tax_amt += tax_amt
-                        remaining_amt = remaining_amt - (inc.salary_to - inc.salary_from)
+                        remaining_amt = remaining_amt - inc.salary_from
 
                         if remaining_amt <= 0:
                             break
