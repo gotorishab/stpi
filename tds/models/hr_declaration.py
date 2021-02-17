@@ -924,23 +924,31 @@ class HrDeclaration(models.Model):
                     [('salary_to', '>=', rec.taxable_income)],
                     order ="salary_from")
                 total_tax_amt = 0
+                surcharge = 0
+                cess = 0
                 if income_slab:
                     remaining_amt = rec.taxable_income
                     for inc in income_slab:
                         if remaining_amt > 0 and remaining_amt >= inc.salary_to:
                             tax_amt = (((inc.salary_to - inc.salary_from) * inc.tax_rate) / 100)
-                            surcharge_amt = ((tax_amt * inc.surcharge)/100)
-                            cess_amt = (surcharge_amt * inc.cess)/100
-                            total_tax_amt += tax_amt + surcharge_amt + cess_amt
+                            total_tax_amt += tax_amt
+                            # surcharge_amt = ((tax_amt * inc.surcharge)/100)
+                            # cess_amt = (surcharge_amt * inc.cess)/100
+                            # total_tax_amt += tax_amt + surcharge_amt + cess_amt
                         elif remaining_amt > 0 and remaining_amt < inc.salary_to:
                             tax_amt = ((remaining_amt * inc.tax_rate) / 100)
-                            surcharge_amt = ((tax_amt * inc.surcharge) / 100)
-                            cess_amt = (surcharge_amt * inc.cess) / 100
-                            total_tax_amt += tax_amt + surcharge_amt + cess_amt
-
+                            total_tax_amt += tax_amt
+                            # surcharge_amt = ((tax_amt * inc.surcharge) / 100)
+                            # cess_amt = (surcharge_amt * inc.cess) / 100
+                            # total_tax_amt += tax_amt + surcharge_amt + cess_amt
+                        surcharge = inc.surcharge
+                        cess = inc.cess
                         remaining_amt = (remaining_amt - inc.salary_to)
                         if remaining_amt <= 0:
                             break
+                    n_sur = (total_tax_amt*surcharge/100)
+                    n_ces = (total_tax_amt*cess/100)
+                    total_tax_amt += (n_sur + n_ces)
                 rec.tax_payable = round(total_tax_amt)
                 # tax_salary_final = 0.00
                 # if rec.taxable_income <= 250000.00:
