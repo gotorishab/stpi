@@ -929,7 +929,6 @@ class HrDeclaration(models.Model):
                 if income_slab:
                     remaining_amt = rec.taxable_income
                     for inc in income_slab:
-                        remaining_amt = (remaining_amt - (inc.salary_to - inc.salary_from))
                         _body = (_(
                             (" BEFORE salary to: {0} - salary from: {1} - total tax amount: {2} - remaining amt: {3}").format(inc.salary_to, inc.salary_from, total_tax_amt,
                                                              remaining_amt)))
@@ -941,6 +940,8 @@ class HrDeclaration(models.Model):
                             if remaining_amt >= inc.salary_from:
                                 tax_amt = ((remaining_amt * inc.tax_rate) / 100)
                             total_tax_amt += tax_amt
+
+                        remaining_amt = (remaining_amt - (inc.salary_to - inc.salary_from))
 
                         surcharge = inc.surcharge
                         cess = inc.cess
