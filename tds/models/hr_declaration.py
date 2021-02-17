@@ -921,7 +921,7 @@ class HrDeclaration(models.Model):
                 #     rec.rebate_ids = rebate_ids
 
                 income_slab = self.env['income.tax.slab'].sudo().search(
-                    [('salary_to', '>=', rec.taxable_income)],
+                    [('salary_from', '<=', rec.taxable_income)],
                     order ="salary_from")
                 total_tax_amt = 0
                 surcharge = 0
@@ -938,7 +938,7 @@ class HrDeclaration(models.Model):
                             total_tax_amt += tax_amt
                         elif remaining_amt > 0:
                             tax_amt = ((remaining_amt * inc.tax_rate) / 100)
-                            total_tax_amt += tax_amt                      
+                            total_tax_amt += tax_amt
                         surcharge = inc.surcharge
                         cess = inc.cess
 
