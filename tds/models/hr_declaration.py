@@ -809,7 +809,7 @@ class HrDeclaration(models.Model):
                     last_slab = 0
                     for inc in income_slab:
                         if remaining_amt < inc.salary_to:
-                            tax_amt = ((remaining_amt - inc.salary_from)* inc.tax_rate) / 100
+                            tax_amt = ((remaining_amt - last_slab)* inc.tax_rate) / 100
                             total_tax_amt += tax_amt
                         else:
                             tax_amt = ((inc.salary_to - inc.salary_from) * inc.tax_rate) /100
@@ -1218,14 +1218,14 @@ class HrDeclaration(models.Model):
                     remaining_amt = rec.taxable_income
                     last_slab = 0
                     for inc in income_slab:
-                        if remaining_amt < inc.salary_to:
-                            tax_amt = ((remaining_amt - inc.salary_from) * inc.tax_rate) / 100
+                        if remaining_amt < (inc.salary_to - inc.salary_from):
+                            tax_amt = ((remaining_amt) * inc.tax_rate) / 100
                             total_tax_amt += tax_amt
                         else:
                             tax_amt = ((inc.salary_to - inc.salary_from) * inc.tax_rate) / 100
                             total_tax_amt += tax_amt
                         last_slab = inc.salary_from
-                        remaining_amt = remaining_amt - inc.salary_from
+                        remaining_amt = remaining_amt - (inc.salary_to - inc.salary_from)
                         _body = (_(" total tax amount: {0}  ---   salary from: {1}  ----   salary to: {2}  ---  remaining amount: {3}").format(total_tax_amt,inc.salary_from,inc.salary_to,remaining_amt))
                         rec.message_post(body=_body)
                         surcharge = inc.surcharge
