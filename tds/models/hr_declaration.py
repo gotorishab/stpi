@@ -1203,10 +1203,6 @@ class HrDeclaration(models.Model):
                     rec.taxable_income = round(rec.income_after_pro_tax - rec.total_tds_paid)
                 else:
                     rec.taxable_income = 0.00
-
-
-
-
                 employee = self.env['hr.employee'].sudo().search([('id', '=', rec.employee_id.id),
                                                                   ], limit=1)
                 years = 30
@@ -1230,7 +1226,7 @@ class HrDeclaration(models.Model):
                             total_tax_amt += tax_amt
                         last_slab = inc.salary_from
                         remaining_amt = remaining_amt - inc.salary_from
-                        _body = (_(" total tax amount: {0}").format(total_tax_amt))
+                        _body = (_(" total tax amount: {0}  ---   salary from: {1}  ----   salary to: {2}  ---  remaining amount: {3}").format(total_tax_amt,inc.salary_from,inc.salary_to,remaining_amt))
                         rec.message_post(body=_body)
                         surcharge = inc.surcharge
                         cess = inc.cess
