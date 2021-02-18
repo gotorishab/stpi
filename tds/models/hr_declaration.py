@@ -812,10 +812,17 @@ class HrDeclaration(models.Model):
                         if rec.taxable_income < inc.salary_to:
                             tax_amt = (rec.taxable_income - last_slab) * (inc.tax_rate / 100)
                             total_tax_amt += tax_amt
+                            _body = (
+                                _(" 111 --- {0} - {1} - {2}").format((rec.taxable_income - last_slab),tax_amt,total_tax_amt))
+                            rec.message_post(body=_body)
                             break
                         else:
                             tax_amt = (inc.salary_to - inc.salary_from) *  (inc.tax_rate / 100)
                             total_tax_amt += tax_amt
+                            _body = (
+                                _(" 222 --- {0} - {1} - {2}").format((rec.taxable_income - last_slab), tax_amt,
+                                                                     total_tax_amt))
+                            rec.message_post(body=_body)
                         last_slab = inc.salary_to
                         _body = (_("{0} - {1} - {2} - {3} ").format(rec.taxable_income, inc.salary_from, inc.salary_to,
                                                                     total_tax_amt))
