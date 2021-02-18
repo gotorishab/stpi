@@ -806,17 +806,19 @@ class HrDeclaration(models.Model):
                 cess = 0
                 if income_slab:
                     remaining_amt = rec.taxable_income
+                    last_slab = 0
                     # remaining_amt = rec.taxable_income - inc.salary_from
                     for inc in income_slab:
                         if rec.taxable_income < inc.salary_to:
-                            tax_amt = ((rec.taxable_income - inc.salary_from) * inc.tax_rate) / 100
+                            tax_amt = (rec.taxable_income - last_slab) * (inc.tax_rate / 100)
                             total_tax_amt += tax_amt
                             break
                         else:
-                            tax_amt = ((inc.salary_to - inc.salary_from) * inc.tax_rate) / 100
+                            tax_amt = (inc.salary_to - inc.salary_from) *  (inc.tax_rate / 100)
                             total_tax_amt += tax_amt
-
-                        _body = (_(" total tax amount: {0}").format( total_tax_amt))
+                        last_slab = inc.salary_to
+                        _body = (_("{0} - {1} - {2} - {4} ").format(rec.taxable_income, inc.salary_from, inc.salary_to,
+                                                                    total_tax_amt))
                         rec.message_post(body=_body)
                         surcharge = inc.surcharge
                         cess = inc.cess
