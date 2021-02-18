@@ -807,13 +807,13 @@ class HrDeclaration(models.Model):
                 if income_slab:
                     for inc in income_slab:
                         if rec.taxable_income < inc.salary_to:
-                            tax_amt = (rec.taxable_income - inc.salary_from - 1) * (inc.tax_rate / 100)
+                            tax_amt = (rec.taxable_income - inc.salary_from) * (inc.tax_rate / 100)
                             total_tax_amt += tax_amt
                             _body = (
                                 _(" 111 --- {0} - {1} - {2} - {3}").format(rec.taxable_income,inc.salary_from,tax_amt,total_tax_amt))
                             rec.message_post(body=_body)
                         else:
-                            tax_amt = (inc.salary_to - inc.salary_from - 1) *  (inc.tax_rate / 100)
+                            tax_amt = (inc.salary_to - inc.salary_from) *  (inc.tax_rate / 100)
                             total_tax_amt += tax_amt
                             _body = (
                                 _(" 222 --- {0} - {1} - {2} - {3}").format(rec.taxable_income,inc.salary_from, tax_amt,
@@ -821,9 +821,7 @@ class HrDeclaration(models.Model):
                             rec.message_post(body=_body)
                         surcharge = inc.surcharge
                         cess = inc.cess
-                    # n_sur = (total_tax_amt*surcharge/100)
-                    # n_ces = (total_tax_amt*cess/100)
-                    # total_tax_amt += (n_sur + n_ces)
+
                 rec.tax_payable = round(total_tax_amt)
                 income_charge = self.env['income.tax.charge'].sudo().search(
                     [('salary_from', '<=', rec.taxable_income),('salary_to', '>=', rec.taxable_income), ('age_from', '<=', years), ('age_to', '>=', years)],limit=1
@@ -1197,7 +1195,7 @@ class HrDeclaration(models.Model):
                     rec.income_after_exemption = round(rec.tax_salary_final + rec.previous_employer_income - exempt_am)
                 else:
                     rec.income_after_exemption = 0.00
-                # rec.income_after_exemption = rec.tax_salary_final
+
                 if rec.income_after_exemption - std_am > 0.00:
                     rec.income_after_std_ded = round(rec.income_after_exemption - std_am)
                 else:
@@ -1240,9 +1238,6 @@ class HrDeclaration(models.Model):
                             rec.message_post(body=_body)
                         surcharge = inc.surcharge
                         cess = inc.cess
-                    # n_sur = (total_tax_amt*surcharge/100)
-                    # n_ces = (total_tax_amt*cess/100)
-                    # total_tax_amt += (n_sur + n_ces)
                 rec.tax_payable = round(total_tax_amt)
                 income_charge = self.env['income.tax.newcharge'].sudo().search(
                     [('salary_from', '<=', rec.taxable_income), ('salary_to', '>=', rec.taxable_income),
@@ -1250,83 +1245,10 @@ class HrDeclaration(models.Model):
                 )
                 if income_charge:
                     for inc in income_charge:
-                        n_sur = (rec.tax_payable * surcharge / 100)
-                        n_ces = (rec.tax_payable * cess / 100)
+                        n_sur = (rec.tax_payable * inc.surcharge / 100)
+                        n_ces = (rec.tax_payable * inc.cess / 100)
                         rec.tax_payable += (n_sur + n_ces)
                     rec.tax_payable = round(rec.tax_payable)
-                # years = 30
-                # if employee and employee.birthday:
-                #     years = relativedelta(date.today(), employee.birthday).years
-                # income_slab = self.env['income.tax.newslab'].sudo().search(
-                #     [('salary_from', '<=', rec.taxable_income), ('age_from', '<=', years), ('age_to', '>=', years)],
-                #     order="salary_from")
-                # total_tax_amt = 0
-                # surcharge = 0
-                # cess = 0
-                # if income_slab:
-                #     remaining_amt = rec.taxable_income
-                #     last_slab = 0
-                #     for inc in income_slab:
-                #         if rec.taxable_income < inc.salary_to:
-                #             tax_amt = (rec.taxable_income - inc.salary_from) * (inc.tax_rate / 100)
-                #             total_tax_amt += tax_amt
-                #             _body = (
-                #                 _(" 111 --- {0} - {1} - {2} - {3}").format(rec.taxable_income, inc.salary_from, tax_amt,
-                #                                                            total_tax_amt))
-                #             rec.message_post(body=_body)
-                #         else:
-                #             tax_amt = (inc.salary_to - inc.salary_from) * (inc.tax_rate / 100)
-                #             total_tax_amt += tax_amt
-                #             _body = (
-                #                 _(" 222 --- {0} - {1} - {2} - {3}").format(rec.taxable_income, inc.salary_from, tax_amt,
-                #                                                            total_tax_amt))
-                #             rec.message_post(body=_body)
-                #         surcharge = inc.surcharge
-                #         cess = inc.cess
-                #         if remaining_amt <= 0:
-                #             break
-                #     n_sur = (total_tax_amt * surcharge / 100)
-                #     n_ces = (total_tax_amt * cess / 100)
-                #     total_tax_amt += (n_sur + n_ces)
-                # rec.tax_payable = round(total_tax_amt)
-
-
-                # tax_salary_final = 0.00
-                # if rec.taxable_income <= 250000.00:
-                #     tax_salary_final = 0.00
-                # elif rec.taxable_income > 250000.00 and rec.taxable_income <= 500000.00:
-                #     tax_salary_final = (rec.taxable_income - 250000.00) * 5 / 100
-                #     tax_salary_final = tax_salary_final + (tax_salary_final * 4 / 100)
-                # elif rec.taxable_income > 500000.00 and rec.taxable_income <= 750000.00:
-                #     tax_salary_final = (rec.taxable_income - 500000.00) * 10 / 100
-                #     tax_salary_final = tax_salary_final + (tax_salary_final * 4 / 100)
-                # elif rec.taxable_income > 750000.00 and rec.taxable_income <= 1000000.00:
-                #     tax_salary_final = ((rec.taxable_income - 750000.00) * 15 / 100)
-                #     tax_salary_final = tax_salary_final + (tax_salary_final * 4 / 100)
-                #     tax_salary_final = tax_salary_final + 13000.00
-                # elif rec.taxable_income > 1000000.00 and rec.taxable_income <= 1250000.00:
-                #     tax_salary_final = ((rec.taxable_income - 1000000.00) * 20 / 100)
-                #     tax_salary_final = tax_salary_final + (tax_salary_final * 4 / 100)
-                #     tax_salary_final = tax_salary_final + 13000.00
-                # elif rec.taxable_income > 1250000.00 and rec.taxable_income <= 1500000.00:
-                #     tax_salary_final = ((rec.taxable_income - 1250000.00) * 25 / 100)
-                #     tax_salary_final = tax_salary_final + (tax_salary_final * 4 / 100)
-                #     tax_salary_final = tax_salary_final + 13000.00
-                # elif rec.taxable_income > 1500000.00 and rec.taxable_income <= 5000000.00:
-                #     tax_salary_final = ((rec.taxable_income - 1000000.00) * 30 / 100)
-                #     tax_salary_final = tax_salary_final + (tax_salary_final * 4 / 100)
-                #     tax_salary_final = tax_salary_final + 13000.00 + 104000.00
-                # elif rec.taxable_income > 5000000.00 and rec.taxable_income <= 10000000.00:
-                #     tax_salary_final = ((rec.taxable_income - 5000000.00) * 30 / 100)
-                #     tax_salary_final = tax_salary_final + (tax_salary_final * 4 / 100)
-                #     tax_salary_final = tax_salary_final + (tax_salary_final * 10 / 100)
-                #     tax_salary_final = tax_salary_final + 13000.00 + 104000.00 + 1248000.00
-                # elif rec.taxable_income > 10000000.00:
-                #     tax_salary_final = ((rec.taxable_income - 10000000.00) * 30 / 100)
-                #     tax_salary_final = tax_salary_final + (tax_salary_final * 4 / 100)
-                #     tax_salary_final = tax_salary_final + (tax_salary_final * 15 / 100)
-                #     tax_salary_final = tax_salary_final + 13000.00 + 104000.00 + 1248000.00 + 1716000.00
-                # rec.tax_payable = round(tax_salary_final)
                 if rec.tax_payable <= 0.00:
                     rec.tax_payable_zero = False
                     rec.tax_payable = 0.00
