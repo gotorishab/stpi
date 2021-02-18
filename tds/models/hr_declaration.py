@@ -826,7 +826,7 @@ class HrDeclaration(models.Model):
                     # total_tax_amt += (n_sur + n_ces)
                 rec.tax_payable = round(total_tax_amt)
                 income_charge = self.env['income.tax.charge'].sudo().search(
-                    [('salary_from', '<=', rec.tax_payable),('salary_to', '>=', rec.tax_payable), ('age_from', '<=', years), ('age_to', '>=', years)],limit=1
+                    [('salary_from', '<=', rec.taxable_income),('salary_to', '>=', rec.taxable_income), ('age_from', '<=', years), ('age_to', '>=', years)],limit=1
                     )
                 if income_charge:
                     for inc in income_charge:
@@ -1245,7 +1245,7 @@ class HrDeclaration(models.Model):
                     # total_tax_amt += (n_sur + n_ces)
                 rec.tax_payable = round(total_tax_amt)
                 income_charge = self.env['income.tax.newcharge'].sudo().search(
-                    [('salary_from', '<=', rec.tax_payable), ('salary_to', '>=', rec.tax_payable),
+                    [('salary_from', '<=', rec.taxable_income), ('salary_to', '>=', rec.taxable_income),
                      ('age_from', '<=', years), ('age_to', '>=', years)], limit=1
                 )
                 if income_charge:
