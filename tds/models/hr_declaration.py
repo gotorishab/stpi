@@ -823,7 +823,7 @@ class HrDeclaration(models.Model):
                                 _(" 222 --- {0} - {1} - {2} - {3}").format(rec.taxable_income,last_slab, tax_amt,
                                                                      total_tax_amt))
                             rec.message_post(body=_body)
-                        last_slab = inc.salary_to
+                        last_slab = inc.salary_from
                         # _body = (_("{0} - {1} - {2} - {3} ").format(rec.taxable_income, inc.salary_from, inc.salary_to,
                         #                                             total_tax_amt))
                         # rec.message_post(body=_body)
