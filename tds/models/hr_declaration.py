@@ -808,9 +808,10 @@ class HrDeclaration(models.Model):
                     remaining_amt = rec.taxable_income
                     # remaining_amt = rec.taxable_income - inc.salary_from
                     for inc in income_slab:
-                        if inc.salary_from < (inc.salary_to - inc.salary_from):
+                        if rec.taxable_income < inc.salary_to:
                             tax_amt = ((rec.taxable_income - inc.salary_from) * inc.tax_rate) / 100
                             total_tax_amt += tax_amt
+                            break
                         else:
                             tax_amt = ((inc.salary_to - inc.salary_from) * inc.tax_rate) / 100
                             total_tax_amt += tax_amt
