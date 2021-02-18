@@ -48,6 +48,45 @@ class IncomeTaxNewSlab(models.Model):
 
 
 
+class IncomeTaxCharge(models.Model):
+    _name = "income.tax.charge"
+    _description = "Income Tax charge"
+
+    salary_from = fields.Float(string='Salary From')
+    salary_to = fields.Float(string='Salary To')
+    tax_rate = fields.Float(string='Tax Rate(%)')
+    gender = fields.Selection([
+        ('male', 'Male'),
+        ('female', 'Female'),
+        ('both', 'Both'),
+    ], string='Gender')
+    age_from = fields.Integer(string='Age From')
+    age_to = fields.Integer(string='Age To')
+    surcharge = fields.Float(string='Surcharge (%)')
+    cess = fields.Float(string='Cess (%)')
+
+
+
+
+class IncomeTaxNewCharge(models.Model):
+    _name = "income.tax.newcharge"
+    _description = "Income Tax New charge"
+
+    salary_from = fields.Float(string='Salary From')
+    salary_to = fields.Float(string='Salary To')
+    tax_rate = fields.Float(string='Tax Rate(%)')
+    gender = fields.Selection([
+        ('male', 'Male'),
+        ('female', 'Female'),
+        ('both', 'Both'),
+    ], string='Gender')
+    age_from = fields.Integer(string='Age From')
+    age_to = fields.Integer(string='Age To')
+    surcharge = fields.Float(string='Surcharge (%)')
+    cess = fields.Float(string='Cess (%)')
+
+
+
 class SalaryRules_inh(models.Model):
     _inherit = "hr.salary.rule"
     _description = "Salary Rule"

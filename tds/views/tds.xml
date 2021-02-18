@@ -66,8 +66,8 @@
                   <field name="gender" required="1"/>
                   <field name="age_from" required="1"/>
                   <field name="age_to" required="1"/>
-                  <field name="surcharge" required="1"/>
-                  <field name="cess" required="1"/>
+                  <field name="surcharge" invisible="1"/>
+                  <field name="cess" invisible="1"/>
             </tree>
         </field>
     </record>
@@ -107,8 +107,8 @@
                   <field name="gender" required="1"/>
                   <field name="age_from" required="1"/>
                   <field name="age_to" required="1"/>
-                  <field name="surcharge" required="1"/>
-                  <field name="cess" required="1"/>
+                  <field name="surcharge" invisible="1"/>
+                  <field name="cess" invisible="1"/>
             </tree>
         </field>
     </record>
@@ -126,6 +126,73 @@
                 name="Income Tax New Slab"
                 parent="tds.menu_hr_declaration_configuration"
                 action="income_tax_newslab_action_view"
+      />
+
+
+
+    <!--=======Tree view of Income Tax Slabs=======-->
+    <record id="income_tax_charge_tree_view" model="ir.ui.view">
+        <field name="name">income.tax.charge.tree</field>
+        <field name="model">income.tax.charge</field>
+        <field name="arch" type="xml">
+            <tree string="Income Tax charge" editable="bottom">
+                  <field name="salary_from" required="1"/>
+                  <field name="salary_to" required="1"/>
+                  <field name="gender" required="1"/>
+                  <field name="age_from" required="1"/>
+                  <field name="age_to" required="1"/>
+                  <field name="surcharge" required="1"/>
+                  <field name="cess" required="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <!--============Action view of Income Tax charge============-->
+    <record id="income_tax_charge_action_view" model="ir.actions.act_window">
+        <field name="name">Income Tax charge</field>
+        <field name="res_model">income.tax.charge</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+      <menuitem id="menu_income_tax_charge_configuration_id"
+                name="Income Tax Charge"
+                parent="tds.menu_hr_declaration_configuration"
+                action="income_tax_charge_action_view"
+      />
+
+
+    <!--=======Tree view of Income Tax charges=======-->
+    <record id="income_tax_newcharge_tree_view" model="ir.ui.view">
+        <field name="name">income.tax.newcharge.tree</field>
+        <field name="model">income.tax.newcharge</field>
+        <field name="arch" type="xml">
+            <tree string="Income Tax charge" editable="bottom">
+                  <field name="salary_from" required="1"/>
+                  <field name="salary_to" required="1"/>
+                  <field name="gender" required="1"/>
+                  <field name="age_from" required="1"/>
+                  <field name="age_to" required="1"/>
+                  <field name="surcharge" required="1"/>
+                  <field name="cess" required="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <!--============Action view of Income Tax charge============-->
+    <record id="income_tax_newcharge_action_view" model="ir.actions.act_window">
+        <field name="name">Income Tax charge</field>
+        <field name="res_model">income.tax.newcharge</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+      <menuitem id="menu_income_tax_newcharge_configuration_id"
+                name="Income Tax New Charge"
+                parent="tds.menu_hr_declaration_configuration"
+                action="income_tax_newcharge_action_view"
       />
 
 </odoo>

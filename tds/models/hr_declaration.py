@@ -821,10 +821,19 @@ class HrDeclaration(models.Model):
                             rec.message_post(body=_body)
                         surcharge = inc.surcharge
                         cess = inc.cess
-                    n_sur = (total_tax_amt*surcharge/100)
-                    n_ces = (total_tax_amt*cess/100)
-                    total_tax_amt += (n_sur + n_ces)
+                    # n_sur = (total_tax_amt*surcharge/100)
+                    # n_ces = (total_tax_amt*cess/100)
+                    # total_tax_amt += (n_sur + n_ces)
                 rec.tax_payable = round(total_tax_amt)
+                income_charge = self.env['income.tax.charge'].sudo().search(
+                    [('salary_from', '<=', rec.tax_payable),('salary_to', '>=', rec.tax_payable), ('age_from', '<=', years), ('age_to', '>=', years)],limit=1
+                    )
+                if income_charge:
+                    for inc in income_charge:
+                        n_sur = (rec.tax_payable * surcharge / 100)
+                        n_ces = (rec.tax_payable * cess / 100)
+                        rec.tax_payable += (n_sur + n_ces)
+                    rec.tax_payable = round(rec.tax_payable)
                 if rec.tax_payable <= 0.00:
                     rec.tax_payable_zero = False
                     rec.tax_payable = 0.00
@@ -1214,8 +1223,6 @@ class HrDeclaration(models.Model):
                 surcharge = 0
                 cess = 0
                 if income_slab:
-                    remaining_amt = rec.taxable_income
-                    last_slab = 0
                     for inc in income_slab:
                         if rec.taxable_income < inc.salary_to:
                             tax_amt = (rec.taxable_income - inc.salary_from) * (inc.tax_rate / 100)
@@ -1233,12 +1240,55 @@ class HrDeclaration(models.Model):
                             rec.message_post(body=_body)
                         surcharge = inc.surcharge
                         cess = inc.cess
-                        if remaining_amt <= 0:
-                            break
-                    n_sur = (total_tax_amt * surcharge / 100)
-                    n_ces = (total_tax_amt * cess / 100)
-                    total_tax_amt += (n_sur + n_ces)
+                    # n_sur = (total_tax_amt*surcharge/100)
+                    # n_ces = (total_tax_amt*cess/100)
+                    # total_tax_amt += (n_sur + n_ces)
                 rec.tax_payable = round(total_tax_amt)
+                income_charge = self.env['income.tax.newcharge'].sudo().search(
+                    [('salary_from', '<=', rec.tax_payable), ('salary_to', '>=', rec.tax_payable),
+                     ('age_from', '<=', years), ('age_to', '>=', years)], limit=1
+                )
+                if income_charge:
+                    for inc in income_charge:
+                        n_sur = (rec.tax_payable * surcharge / 100)
+                        n_ces = (rec.tax_payable * cess / 100)
+                        rec.tax_payable += (n_sur + n_ces)
+                    rec.tax_payable = round(rec.tax_payable)
+                # years = 30
+                # if employee and employee.birthday:
+                #     years = relativedelta(date.today(), employee.birthday).years
+                # income_slab = self.env['income.tax.newslab'].sudo().search(
+                #     [('salary_from', '<=', rec.taxable_income), ('age_from', '<=', years), ('age_to', '>=', years)],
+                #     order="salary_from")
+                # total_tax_amt = 0
+                # surcharge = 0
+                # cess = 0
+                # if income_slab:
+                #     remaining_amt = rec.taxable_income
+                #     last_slab = 0
+                #     for inc in income_slab:
+                #         if rec.taxable_income < inc.salary_to:
+                #             tax_amt = (rec.taxable_income - inc.salary_from) * (inc.tax_rate / 100)
+                #             total_tax_amt += tax_amt
+                #             _body = (
+                #                 _(" 111 --- {0} - {1} - {2} - {3}").format(rec.taxable_income, inc.salary_from, tax_amt,
+                #                                                            total_tax_amt))
+                #             rec.message_post(body=_body)
+                #         else:
+                #             tax_amt = (inc.salary_to - inc.salary_from) * (inc.tax_rate / 100)
+                #             total_tax_amt += tax_amt
+                #             _body = (
+                #                 _(" 222 --- {0} - {1} - {2} - {3}").format(rec.taxable_income, inc.salary_from, tax_amt,
+                #                                                            total_tax_amt))
+                #             rec.message_post(body=_body)
+                #         surcharge = inc.surcharge
+                #         cess = inc.cess
+                #         if remaining_amt <= 0:
+                #             break
+                #     n_sur = (total_tax_amt * surcharge / 100)
+                #     n_ces = (total_tax_amt * cess / 100)
+                #     total_tax_amt += (n_sur + n_ces)
+                # rec.tax_payable = round(total_tax_amt)
 
 
                 # tax_salary_final = 0.00
