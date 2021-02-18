@@ -94,4 +94,38 @@
       />
 
 
+
+    <!--=======Tree view of Income Tax Slabs=======-->
+    <record id="income_tax_newslab_tree_view" model="ir.ui.view">
+        <field name="name">income.tax.newslab.tree</field>
+        <field name="model">income.tax.newslab</field>
+        <field name="arch" type="xml">
+            <tree string="Income Tax Slab" editable="bottom">
+                  <field name="salary_from" required="1"/>
+                  <field name="salary_to" required="1"/>
+                  <field name="tax_rate" required="1"/>
+                  <field name="gender" required="1"/>
+                  <field name="age_from" required="1"/>
+                  <field name="age_to" required="1"/>
+                  <field name="surcharge" required="1"/>
+                  <field name="cess" required="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <!--============Action view of Income Tax Slab============-->
+    <record id="income_tax_newslab_action_view" model="ir.actions.act_window">
+        <field name="name">Income Tax Slab</field>
+        <field name="res_model">income.tax.slab</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+      <menuitem id="menu_income_tax_newslab_configuration_id"
+                name="Income Tax New Slab"
+                parent="tds.menu_hr_declaration_configuration"
+                action="income_tax_newslab_action_view"
+      />
+
 </odoo>

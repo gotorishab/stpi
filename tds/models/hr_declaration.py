@@ -560,32 +560,7 @@ class HrDeclaration(models.Model):
                 for cnt in contrct:
                     wage = cnt.wage
                     updated_basic = cnt.updated_basic
-                # currentMonth = datetime.now().month
-                # print(currentMonth)
-                # if currentMonth == 4:
-                #     month = 12
-                # elif currentMonth == 5:
-                #     month = 11
-                # elif currentMonth == 6:
-                #     month = 10
-                # elif currentMonth == 7:
-                #     month = 9
-                # elif currentMonth == 8:
-                #     month = 8
-                # elif currentMonth == 9:
-                #     month = 7
-                # elif currentMonth == 10:
-                #     month = 6
-                # elif currentMonth == 11:
-                #     month = 5
-                # elif currentMonth ==12:
-                #     month = 4
-                # elif currentMonth == 1:
-                #     month = 3
-                # elif currentMonth == 2:
-                #     month = 2
-                # elif currentMonth == 3:
-                #     month = 1
+
                 _body = (_(
                     (
                         "<ul><b>Yearly Gross -:</b></ul>"
@@ -599,56 +574,10 @@ class HrDeclaration(models.Model):
                     ).format(wage,rec.allowance_current,sum,rec.income_after_house_property,rec.income_after_other_sources,rec.el_encashment)))
                 rec.message_post(body=_body)
                 rec.tax_salary_final = int(wage + rec.allowance_current)*int(month) + round(sum) + rec.income_after_house_property + rec.income_after_other_sources + rec.el_encashment
-                # rec.income_after_rebate = rec.tax_salary_final - rec.net_allowed_rebate
                 age = 0
-                # my_emp = self.env['hr.employee'].sudo().search([('id', '=', rec.employee_id.id)], limit=1)
-                # for emp in my_emp:
-                #     age = ((datetime.now().date() - emp.birthday).days) / 365
-
-                # inc_tax_slab =  self.env['income.tax.slab'].sudo().search([('salary_from', '<=', rec.tax_salary_final),
-                #                                                     ('salary_to', '>=', rec.tax_salary_final),
-                #                                                     ('age_from', '<=', age),
-                #                                                     ('age_to', '>=', age)],order ="create_date desc",
-                #                                                    limit=1)
-                # for tax_slab in inc_tax_slab:
-                #     t1 = (tax_slab.tax_rate * (rec.tax_salary_final/100))
-                #     t2 = (t1 * (1 + tax_slab.surcharge / 100))
-                #     t3 = (t2 * (1 + tax_slab.cess / 100))
-                #     rec.tax_payable = round(t3)
-                # tax_salary_final = 0.00
-                # if rec.tax_salary_final <= 250000.00:
-                #     tax_salary_final = 0.00
-                # elif rec.tax_salary_final > 250000.00 and rec.tax_salary_final <= 500000.00 :
-                #     tax_salary_final = (rec.tax_salary_final - 250000.00) * 5/100
-                #     tax_salary_final = tax_salary_final + (tax_salary_final * 4/100)
-                # elif rec.tax_salary_final > 500000.00 and rec.tax_salary_final <= 1000000.00:
-                #     tax_salary_final = ((rec.tax_salary_final - 500000.00) * 20/100)
-                #     tax_salary_final = tax_salary_final + (tax_salary_final *4/100)
-                #     tax_salary_final = tax_salary_final + 13000.00
-                # elif rec.tax_salary_final > 1000000.00 and rec.tax_salary_final <= 5000000.00:
-                #     tax_salary_final = ((rec.tax_salary_final - 1000000.00) * 30 / 100)
-                #     tax_salary_final = tax_salary_final + (tax_salary_final * 4/100)
-                #     tax_salary_final = tax_salary_final + 13000.00 + 104000.00
-                # elif rec.tax_salary_final > 5000000.00 and rec.tax_salary_final <= 10000000.00:
-                #     tax_salary_final = ((rec.tax_salary_final - 5000000.00) * 30 / 100)
-                #     tax_salary_final = tax_salary_final + (tax_salary_final * 4/100)
-                #     tax_salary_final = tax_salary_final + (tax_salary_final * 10/100)
-                #     tax_salary_final = tax_salary_final + 13000.00 + 104000.00 + 1248000.00
-                # elif rec.tax_salary_final > 10000000.00:
-                #     tax_salary_final = ((rec.tax_salary_final - 10000000.00) * 30 / 100)
-                #     tax_salary_final = tax_salary_final + (tax_salary_final * 4 / 100)
-                #     tax_salary_final = tax_salary_final + (tax_salary_final * 15 / 100)
-                #     tax_salary_final = tax_salary_final + 13000.00 + 104000.00 + 1248000.00 + 1716000.00
-                # rec.tax_payable = round(tax_salary_final)
-                # if rec.tax_payable <= 0.00:
-                #     rec.tax_payable_zero = False
-                #     rec.tax_payable = 0.00
-                # else:
-                #     rec.tax_payable_zero = True
                 rec.std_ded_ids.unlink()
                 rec.exemption_ids.unlink()
                 rec.rebate_ids.unlink()
-                # rec.slab_ids.unlink()
                 ex_std_id = self.env['saving.master'].sudo().search(
                     [('saving_type', '=', 'Std. Deduction')], limit=1)
                 my_investment = 0.00
@@ -745,8 +674,6 @@ class HrDeclaration(models.Model):
                 sum_list = []
                 for cc in prl_id:
                     sum_prl+=cc.amount
-                # if prl_current_id:
-                #     for pc in prl_current_id:
                 sum_prl_current = int(HRA) *int(month)
                 sum_prl = sum_prl + sum_prl_current
                 if rec.employee_id.branch_id.city_id.metro == True:
@@ -758,7 +685,6 @@ class HrDeclaration(models.Model):
                 sum_list.append(sum_prl)
                 sum_list.append(sum_bs)
                 sum_list.append(sum_rent)
-                # print('=============================================================================',sum_list)
                 compare = 0.00
                 compare_value = 10000000000000.00
                 for i in sum_list:
@@ -771,12 +697,8 @@ class HrDeclaration(models.Model):
                         my_allowed_rebate = my_investment
                     else:
                         my_allowed_rebate = ex_hra_id.rebate
-                    print('====================rec.rent_paid========================',int(rec.rent_paid))
-                    print('====================contrct.xnohrad========================',contrct.xnohra)
                     if int(rec.rent_paid) == 0 or contrct.xnohra == True:
                         my_allowed_rebate = 0
-                        print('====================True========================')
-
                     exemption_ids = []
                     exemption_ids.append((0, 0, {
                         'exemption_id': rec.id,
@@ -808,27 +730,6 @@ class HrDeclaration(models.Model):
                         'allowed_rebate': my_allowed_rebate,
                     }))
                     rec.exemption_ids = exemption_ids
-                # ex_rebate_id = self.env['saving.master'].sudo().search([('saving_type', '=', 'Revised Rebate under Section 87A (2019-20)'), ('it_rule', '=', 'section87a')], limit=1)
-                # my_investment = 0.00
-                # my_allowed_rebate = 0.00
-                # if ex_rebate_id:
-                #     if rec.tax_salary_final <= 500000:
-                #         my_investment = ex_rebate_id.rebate
-                #     else:
-                #         my_investment = 0.00
-                #     if my_investment <= ex_rebate_id.rebate:
-                #         my_allowed_rebate = my_investment
-                #     else:
-                #         my_allowed_rebate = ex_rebate_id.rebate
-                #     rebate_ids = []
-                #     rebate_ids.append((0, 0, {
-                #         'rebate_id': rec.id,
-                #         'it_rule': ex_rebate_id.it_rule,
-                #         'saving_master': ex_rebate_id.id,
-                #         'investment': my_investment,
-                #         'allowed_rebate': my_allowed_rebate,
-                #     }))
-                #     rec.rebate_ids = rebate_ids
                 ex_80_c_id = self.env['saving.master'].sudo().search(
                     [('saving_type', '=', 'Investment in PPF &  Employee’s share of PF contribution')], limit=1)
                 prl_80c_id = self.env['hr.payslip.line'].sudo().search(
@@ -892,36 +793,13 @@ class HrDeclaration(models.Model):
                     rec.taxable_income = round(rec.income_after_pro_tax - rec.total_tds_paid - (rec.allowed_rebate_under_80c + rec.allowed_rebate_under_80b + rec.allowed_rebate_under_80d + rec.allowed_rebate_under_80dsa + rec.allowed_rebate_under_80e + rec.allowed_rebate_under_80ccg + rec.allowed_rebate_under_tbhl + rec.allowed_rebate_under_80ee + rec.allowed_rebate_under_24 + rec.allowed_rebate_under_80cdd + rec.allowed_rebate_under_80mesdr + rec.allowed_rebate_under_donation))
                 else:
                     rec.taxable_income = 0.00
-                # ex_rebate_id = self.env['saving.master'].sudo().search(
-                #     [('saving_type', '=', 'Revised Rebate under Section 87A (2019-20)'), ('it_rule', '=', 'section87a')],
-                #     limit=1)
-                # print('=======================================================1==========================')
-                # my_investment = 0.00
-                # my_allowed_rebate = 0.00
-                # if ex_rebate_id:
-                #     print('=======================================================2==========================')
-                #     if rec.taxable_income <= 500000:
-                #         my_investment = rec.taxable_income
-                #         my_allowed_rebate = my_investment
-                #     else:
-                #         my_investment = 0.00
-                #         my_allowed_rebate = 0.00
-                #     # if my_investment <= ex_rebate_id.rebate:
-                #     #     my_allowed_rebate = my_investment
-                #     # else:
-                #     #     my_allowed_rebate = ex_rebate_id.rebate
-                #     rebate_ids = []
-                #     rebate_ids.append((0, 0, {
-                #         'rebate_id': rec.id,
-                #         'it_rule': ex_rebate_id.it_rule,
-                #         'saving_master': ex_rebate_id.id,
-                #         'investment': my_investment,
-                #         'allowed_rebate': my_allowed_rebate,
-                #     }))
-                #     rec.rebate_ids = rebate_ids
-
+                employee = self.env['hr.employee'].sudo().search([('id', '=', rec.employee_id.id),
+                                                                  ], limit=1)
+                years = 30
+                if employee and employee.birthday:
+                    years = relativedelta(date.today(), employee.birthday).years
                 income_slab = self.env['income.tax.slab'].sudo().search(
-                    [('salary_from', '<=', rec.taxable_income)],
+                    [('salary_from', '<=', rec.taxable_income),('age_from', '<=', years),('age_to', '>=', years)],
                     order ="salary_from")
                 total_tax_amt = 0
                 surcharge = 0
@@ -930,11 +808,6 @@ class HrDeclaration(models.Model):
                     remaining_amt = rec.taxable_income
                     last_slab = 0
                     for inc in income_slab:
-                        _body = (_(
-                            ("salary to: {0} - salary from: {1} - total tax amount: {2} - remaining amt: {3}").format(
-                                inc.salary_to, inc.salary_from, total_tax_amt,
-                                remaining_amt)))
-                        rec.message_post(body=_body)
                         if remaining_amt < inc.salary_to:
                             tax_amt = ((remaining_amt - last_slab)* inc.tax_rate) / 100
                             total_tax_amt += tax_amt
@@ -953,31 +826,6 @@ class HrDeclaration(models.Model):
                     n_ces = (total_tax_amt*cess/100)
                     total_tax_amt += (n_sur + n_ces)
                 rec.tax_payable = round(total_tax_amt)
-                # tax_salary_final = 0.00
-                # if rec.taxable_income <= 250000.00:
-                #     tax_salary_final = 0.00
-                # elif rec.taxable_income > 250000.00 and rec.taxable_income <= 500000.00:
-                #     tax_salary_final = (rec.taxable_income - 250000.00) * 5 / 100
-                #     tax_salary_final = tax_salary_final + (tax_salary_final * 4 / 100)
-                # elif rec.taxable_income > 500000.00 and rec.taxable_income <= 1000000.00:
-                #     tax_salary_final = ((rec.taxable_income - 500000.00) * 20 / 100)
-                #     tax_salary_final = tax_salary_final + (tax_salary_final * 4 / 100)
-                #     tax_salary_final = tax_salary_final + 13000.00
-                # elif rec.taxable_income > 1000000.00 and rec.taxable_income <= 5000000.00:
-                #     tax_salary_final = ((rec.taxable_income - 1000000.00) * 30 / 100)
-                #     tax_salary_final = tax_salary_final + (tax_salary_final * 4 / 100)
-                #     tax_salary_final = tax_salary_final + 13000.00 + 104000.00
-                # elif rec.taxable_income > 5000000.00 and rec.taxable_income <= 10000000.00:
-                #     tax_salary_final = ((rec.taxable_income - 5000000.00) * 30 / 100)
-                #     tax_salary_final = tax_salary_final + (tax_salary_final * 4 / 100)
-                #     tax_salary_final = tax_salary_final + (tax_salary_final * 10 / 100)
-                #     tax_salary_final = tax_salary_final + 13000.00 + 104000.00 + 1248000.00
-                # elif rec.taxable_income > 10000000.00:
-                #     tax_salary_final = ((rec.taxable_income - 10000000.00) * 30 / 100)
-                #     tax_salary_final = tax_salary_final + (tax_salary_final * 4 / 100)
-                #     tax_salary_final = tax_salary_final + (tax_salary_final * 15 / 100)
-                #     tax_salary_final = tax_salary_final + 13000.00 + 104000.00 + 1248000.00 + 1716000.00
-
                 if rec.tax_payable <= 0.00:
                     rec.tax_payable_zero = False
                     rec.tax_payable = 0.00
@@ -1230,8 +1078,6 @@ class HrDeclaration(models.Model):
                 sum_list = []
                 for cc in prl_id:
                     sum_prl+=cc.amount
-                # if prl_current_id:
-                #     for pc in prl_current_id:
                 sum_prl_current = int(HRA) *int(month)
                 sum_prl = sum_prl + sum_prl_current
                 if rec.employee_id.branch_id.city_id.metro == True:
@@ -1243,7 +1089,6 @@ class HrDeclaration(models.Model):
                 sum_list.append(sum_prl)
                 sum_list.append(sum_bs)
                 sum_list.append(sum_rent)
-                # print('=============================================================================',sum_list)
                 compare = 0.00
                 compare_value = 10000000000000.00
                 for i in sum_list:
@@ -1292,28 +1137,7 @@ class HrDeclaration(models.Model):
                         'investment': my_investment,
                         'allowed_rebate': my_allowed_rebate,
                     }))
-                    # rec.exemption_ids = exemption_ids
-                # ex_rebate_id = self.env['saving.master'].sudo().search([('saving_type', '=', 'Revised Rebate under Section 87A (2019-20)'), ('it_rule', '=', 'section87a')], limit=1)
-                # my_investment = 0.00
-                # my_allowed_rebate = 0.00
-                # if ex_rebate_id:
-                #     if rec.tax_salary_final <= 500000:
-                #         my_investment = ex_rebate_id.rebate
-                #     else:
-                #         my_investment = 0.00
-                #     if my_investment <= ex_rebate_id.rebate:
-                #         my_allowed_rebate = my_investment
-                #     else:
-                #         my_allowed_rebate = ex_rebate_id.rebate
-                #     rebate_ids = []
-                #     rebate_ids.append((0, 0, {
-                #         'rebate_id': rec.id,
-                #         'it_rule': ex_rebate_id.it_rule,
-                #         'saving_master': ex_rebate_id.id,
-                #         'investment': my_investment,
-                #         'allowed_rebate': my_allowed_rebate,
-                #     }))
-                #     rec.rebate_ids = rebate_ids
+
                 ex_80_c_id = self.env['saving.master'].sudo().search(
                     [('saving_type', '=', 'Investment in PPF &  Employee’s share of PF contribution')], limit=1)
                 prl_80c_id = self.env['hr.payslip.line'].sudo().search(
@@ -1379,70 +1203,81 @@ class HrDeclaration(models.Model):
                     rec.taxable_income = round(rec.income_after_pro_tax - rec.total_tds_paid)
                 else:
                     rec.taxable_income = 0.00
-                # ex_rebate_id = self.env['saving.master'].sudo().search(
-                #     [('saving_type', '=', 'Revised Rebate under Section 87A (2019-20)'), ('it_rule', '=', 'section87a')],
-                #     limit=1)
-                # print('=======================================================1==========================')
-                # my_investment = 0.00
-                # my_allowed_rebate = 0.00
-                # if ex_rebate_id:
-                #     print('=======================================================2==========================')
-                #     if rec.taxable_income <= 500000:
-                #         my_investment = rec.taxable_income
-                #         my_allowed_rebate = my_investment
-                #     else:
-                #         my_investment = 0.00
-                #         my_allowed_rebate = 0.00
-                #     # if my_investment <= ex_rebate_id.rebate:
-                #     #     my_allowed_rebate = my_investment
-                #     # else:
-                #     #     my_allowed_rebate = ex_rebate_id.rebate
-                #     rebate_ids = []
-                #     rebate_ids.append((0, 0, {
-                #         'rebate_id': rec.id,
-                #         'it_rule': ex_rebate_id.it_rule,
-                #         'saving_master': ex_rebate_id.id,
-                #         'investment': my_investment,
-                #         'allowed_rebate': my_allowed_rebate,
-                #     }))
-                #     rec.rebate_ids = rebate_ids
 
-                tax_salary_final = 0.00
-                if rec.taxable_income <= 250000.00:
-                    tax_salary_final = 0.00
-                elif rec.taxable_income > 250000.00 and rec.taxable_income <= 500000.00:
-                    tax_salary_final = (rec.taxable_income - 250000.00) * 5 / 100
-                    tax_salary_final = tax_salary_final + (tax_salary_final * 4 / 100)
-                elif rec.taxable_income > 500000.00 and rec.taxable_income <= 750000.00:
-                    tax_salary_final = (rec.taxable_income - 500000.00) * 10 / 100
-                    tax_salary_final = tax_salary_final + (tax_salary_final * 4 / 100)
-                elif rec.taxable_income > 750000.00 and rec.taxable_income <= 1000000.00:
-                    tax_salary_final = ((rec.taxable_income - 750000.00) * 15 / 100)
-                    tax_salary_final = tax_salary_final + (tax_salary_final * 4 / 100)
-                    tax_salary_final = tax_salary_final + 13000.00
-                elif rec.taxable_income > 1000000.00 and rec.taxable_income <= 1250000.00:
-                    tax_salary_final = ((rec.taxable_income - 1000000.00) * 20 / 100)
-                    tax_salary_final = tax_salary_final + (tax_salary_final * 4 / 100)
-                    tax_salary_final = tax_salary_final + 13000.00
-                elif rec.taxable_income > 1250000.00 and rec.taxable_income <= 1500000.00:
-                    tax_salary_final = ((rec.taxable_income - 1250000.00) * 25 / 100)
-                    tax_salary_final = tax_salary_final + (tax_salary_final * 4 / 100)
-                    tax_salary_final = tax_salary_final + 13000.00
-                elif rec.taxable_income > 1500000.00 and rec.taxable_income <= 5000000.00:
-                    tax_salary_final = ((rec.taxable_income - 1000000.00) * 30 / 100)
-                    tax_salary_final = tax_salary_final + (tax_salary_final * 4 / 100)
-                    tax_salary_final = tax_salary_final + 13000.00 + 104000.00
-                elif rec.taxable_income > 5000000.00 and rec.taxable_income <= 10000000.00:
-                    tax_salary_final = ((rec.taxable_income - 5000000.00) * 30 / 100)
-                    tax_salary_final = tax_salary_final + (tax_salary_final * 4 / 100)
-                    tax_salary_final = tax_salary_final + (tax_salary_final * 10 / 100)
-                    tax_salary_final = tax_salary_final + 13000.00 + 104000.00 + 1248000.00
-                elif rec.taxable_income > 10000000.00:
-                    tax_salary_final = ((rec.taxable_income - 10000000.00) * 30 / 100)
-                    tax_salary_final = tax_salary_final + (tax_salary_final * 4 / 100)
-                    tax_salary_final = tax_salary_final + (tax_salary_final * 15 / 100)
-                    tax_salary_final = tax_salary_final + 13000.00 + 104000.00 + 1248000.00 + 1716000.00
-                rec.tax_payable = round(tax_salary_final)
+
+
+
+                employee = self.env['hr.employee'].sudo().search([('id', '=', rec.employee_id.id),
+                                                                  ], limit=1)
+                years = 30
+                if employee and employee.birthday:
+                    years = relativedelta(date.today(), employee.birthday).years
+                income_slab = self.env['income.tax.newslab'].sudo().search(
+                    [('salary_from', '<=', rec.taxable_income), ('age_from', '<=', years), ('age_to', '>=', years)],
+                    order="salary_from")
+                total_tax_amt = 0
+                surcharge = 0
+                cess = 0
+                if income_slab:
+                    remaining_amt = rec.taxable_income
+                    last_slab = 0
+                    for inc in income_slab:
+                        if remaining_amt < inc.salary_to:
+                            tax_amt = ((remaining_amt - last_slab) * inc.tax_rate) / 100
+                            total_tax_amt += tax_amt
+                        else:
+                            tax_amt = ((inc.salary_to - inc.salary_from) * inc.tax_rate) / 100
+                            total_tax_amt += tax_amt
+                        last_slab = inc.salary_from
+                        remaining_amt = remaining_amt - inc.salary_from
+                        _body = (_(" total tax amount: {0}").format(total_tax_amt))
+                        rec.message_post(body=_body)
+                        surcharge = inc.surcharge
+                        cess = inc.cess
+                        if remaining_amt <= 0:
+                            break
+                    n_sur = (total_tax_amt * surcharge / 100)
+                    n_ces = (total_tax_amt * cess / 100)
+                    total_tax_amt += (n_sur + n_ces)
+                rec.tax_payable = round(total_tax_amt)
+
+
+                # tax_salary_final = 0.00
+                # if rec.taxable_income <= 250000.00:
+                #     tax_salary_final = 0.00
+                # elif rec.taxable_income > 250000.00 and rec.taxable_income <= 500000.00:
+                #     tax_salary_final = (rec.taxable_income - 250000.00) * 5 / 100
+                #     tax_salary_final = tax_salary_final + (tax_salary_final * 4 / 100)
+                # elif rec.taxable_income > 500000.00 and rec.taxable_income <= 750000.00:
+                #     tax_salary_final = (rec.taxable_income - 500000.00) * 10 / 100
+                #     tax_salary_final = tax_salary_final + (tax_salary_final * 4 / 100)
+                # elif rec.taxable_income > 750000.00 and rec.taxable_income <= 1000000.00:
+                #     tax_salary_final = ((rec.taxable_income - 750000.00) * 15 / 100)
+                #     tax_salary_final = tax_salary_final + (tax_salary_final * 4 / 100)
+                #     tax_salary_final = tax_salary_final + 13000.00
+                # elif rec.taxable_income > 1000000.00 and rec.taxable_income <= 1250000.00:
+                #     tax_salary_final = ((rec.taxable_income - 1000000.00) * 20 / 100)
+                #     tax_salary_final = tax_salary_final + (tax_salary_final * 4 / 100)
+                #     tax_salary_final = tax_salary_final + 13000.00
+                # elif rec.taxable_income > 1250000.00 and rec.taxable_income <= 1500000.00:
+                #     tax_salary_final = ((rec.taxable_income - 1250000.00) * 25 / 100)
+                #     tax_salary_final = tax_salary_final + (tax_salary_final * 4 / 100)
+                #     tax_salary_final = tax_salary_final + 13000.00
+                # elif rec.taxable_income > 1500000.00 and rec.taxable_income <= 5000000.00:
+                #     tax_salary_final = ((rec.taxable_income - 1000000.00) * 30 / 100)
+                #     tax_salary_final = tax_salary_final + (tax_salary_final * 4 / 100)
+                #     tax_salary_final = tax_salary_final + 13000.00 + 104000.00
+                # elif rec.taxable_income > 5000000.00 and rec.taxable_income <= 10000000.00:
+                #     tax_salary_final = ((rec.taxable_income - 5000000.00) * 30 / 100)
+                #     tax_salary_final = tax_salary_final + (tax_salary_final * 4 / 100)
+                #     tax_salary_final = tax_salary_final + (tax_salary_final * 10 / 100)
+                #     tax_salary_final = tax_salary_final + 13000.00 + 104000.00 + 1248000.00
+                # elif rec.taxable_income > 10000000.00:
+                #     tax_salary_final = ((rec.taxable_income - 10000000.00) * 30 / 100)
+                #     tax_salary_final = tax_salary_final + (tax_salary_final * 4 / 100)
+                #     tax_salary_final = tax_salary_final + (tax_salary_final * 15 / 100)
+                #     tax_salary_final = tax_salary_final + 13000.00 + 104000.00 + 1248000.00 + 1716000.00
+                # rec.tax_payable = round(tax_salary_final)
                 if rec.tax_payable <= 0.00:
                     rec.tax_payable_zero = False
                     rec.tax_payable = 0.00

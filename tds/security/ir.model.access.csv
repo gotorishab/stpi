@@ -1,6 +1,7 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_tds,tds,model_tds,base.group_user,1,1,1,1
 access_income_tax_slab,income.tax.slab,model_income_tax_slab,base.group_user,1,1,1,1
+access_income_tax_newslab,income.tax.newslab,model_income_tax_newslab,base.group_user,1,1,1,1
 access_hr_declaration,hr.declaration,model_hr_declaration,base.group_user,1,1,1,1
 access_hr_itrule,hr.itrule,model_hr_itrule,base.group_user,1,1,1,1
 access_declaration_exemption,declaration.exemption,model_declaration_exemption,base.group_user,1,1,1,1
