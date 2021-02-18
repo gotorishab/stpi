@@ -830,8 +830,8 @@ class HrDeclaration(models.Model):
                     )
                 if income_charge:
                     for inc in income_charge:
-                        n_sur = (rec.tax_payable * surcharge / 100)
-                        n_ces = (rec.tax_payable * cess / 100)
+                        n_sur = (rec.tax_payable * inc.surcharge / 100)
+                        n_ces = (rec.tax_payable * inc.cess / 100)
                         rec.tax_payable += (n_sur + n_ces)
                     rec.tax_payable = round(rec.tax_payable)
                 if rec.tax_payable <= 0.00:
