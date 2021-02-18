@@ -116,7 +116,7 @@
     <!--============Action view of Income Tax Slab============-->
     <record id="income_tax_newslab_action_view" model="ir.actions.act_window">
         <field name="name">Income Tax Slab</field>
-        <field name="res_model">income.tax.slab</field>
+        <field name="res_model">income.tax.newslab</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
     </record>
