@@ -807,7 +807,7 @@ class HrDeclaration(models.Model):
                 if income_slab:
                     for inc in income_slab:
                         if rec.taxable_income < inc.salary_to:
-                            tax_amt = (rec.taxable_income - inc.salary_from) * (inc.tax_rate / 100)
+                            tax_amt = (rec.taxable_income - inc.salary_from - 1) * (inc.tax_rate / 100)
                             total_tax_amt += tax_amt
                             _body = (
                                 _(" 111 --- {0} - {1} - {2} - {3}").format(rec.taxable_income,inc.salary_from,tax_amt,total_tax_amt))
