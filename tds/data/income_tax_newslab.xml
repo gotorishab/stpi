@@ -3,7 +3,7 @@
     <data noupdate="1">
 
 
-        <record model="income.tax.slab" id="income_tax_slab_0_2500_demo">
+        <record model="income.tax.newslab" id="income_tax_newslab_0_2500_demo">
             <field name="salary_from">0.00</field>
             <field name="salary_to">250000.00</field>
             <field name="tax_rate">0.00</field>
@@ -14,7 +14,7 @@
             <field name="cess">0.00</field>
         </record>
 
-        <record model="income.tax.slab" id="income_tax_slab_25_30_demo">
+        <record model="income.tax.newslab" id="income_tax_newslab_25_30_demo">
             <field name="salary_from">250001.00</field>
             <field name="salary_to">300000.00</field>
             <field name="tax_rate">5.00</field>
@@ -25,7 +25,7 @@
             <field name="cess">4.00</field>
         </record>
 
-        <record model="income.tax.slab" id="income_tax_slab_30_50_demo">
+        <record model="income.tax.newslab" id="income_tax_newslab_30_50_demo">
             <field name="salary_from">300001.00</field>
             <field name="salary_to">500000.00</field>
             <field name="tax_rate">5.00</field>
@@ -39,7 +39,7 @@
 
 
 
-        <record model="income.tax.slab" id="income_tax_slab_500_750_demo">
+        <record model="income.tax.newslab" id="income_tax_newslab_500_750_demo">
             <field name="salary_from">500001.00</field>
             <field name="salary_to">750000.00</field>
             <field name="tax_rate">10.00</field>
@@ -51,7 +51,7 @@
         </record>
 
 
-        <record model="income.tax.slab" id="income_tax_slab_750_100_demo">
+        <record model="income.tax.newslab" id="income_tax_newslab_750_100_demo">
             <field name="salary_from">750001.00</field>
             <field name="salary_to">1000000.00</field>
             <field name="tax_rate">15.00</field>
@@ -63,7 +63,7 @@
         </record>
 
 
-        <record model="income.tax.slab" id="income_tax_slab_1000_125_demo">
+        <record model="income.tax.newslab" id="income_tax_newslab_1000_125_demo">
             <field name="salary_from">1000001.00</field>
             <field name="salary_to">1250000.00</field>
             <field name="tax_rate">20.00</field>
@@ -75,7 +75,7 @@
         </record>
 
 
-        <record model="income.tax.slab" id="income_tax_slab_125_150_demo">
+        <record model="income.tax.newslab" id="income_tax_newslab_125_150_demo">
             <field name="salary_from">1250001.00</field>
             <field name="salary_to">1500000.00</field>
             <field name="tax_rate">25.00</field>
@@ -86,7 +86,7 @@
             <field name="cess">4.00</field>
         </record>
 
-        <record model="income.tax.slab" id="income_tax_slab_15_20_demo">
+        <record model="income.tax.newslab" id="income_tax_newslab_15_20_demo">
             <field name="salary_from">1500001.00</field>
             <field name="salary_to">5000001.00</field>
             <field name="tax_rate">25.00</field>
@@ -98,7 +98,7 @@
         </record>
 
 
-        <record model="income.tax.slab" id="income_tax_slab_5_10_demo">
+        <record model="income.tax.newslab" id="income_tax_newslab_5_10_demo">
             <field name="salary_from">5000001.00</field>
             <field name="salary_to">10000000.00</field>
             <field name="tax_rate">30.00</field>
@@ -111,7 +111,7 @@
 
 
 
-        <record model="income.tax.slab" id="income_tax_slab_1_2_demo">
+        <record model="income.tax.newslab" id="income_tax_newslab_1_2_demo">
             <field name="salary_from">10000001.00</field>
             <field name="salary_to">20000000.00</field>
             <field name="tax_rate">30.00</field>
@@ -123,7 +123,7 @@
         </record>
 
 
-        <record model="income.tax.slab" id="income_tax_slab_2_5_demo">
+        <record model="income.tax.newslab" id="income_tax_newslab_2_5_demo">
             <field name="salary_from">20000001.00</field>
             <field name="salary_to">50000000.00</field>
             <field name="tax_rate">30.00</field>
@@ -138,7 +138,7 @@
 
 
 
-        <record model="income.tax.slab" id="income_tax_slab_5_u_demo">
+        <record model="income.tax.newslab" id="income_tax_newslab_5_u_demo">
             <field name="salary_from">50000001.00</field>
             <field name="salary_to">5000000000000.00</field>
             <field name="tax_rate">30.00</field>
