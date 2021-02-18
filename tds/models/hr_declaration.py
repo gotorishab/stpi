@@ -815,7 +815,7 @@ class HrDeclaration(models.Model):
                             tax_amt = ((inc.salary_to - inc.salary_from) * inc.tax_rate) / 100
                             total_tax_amt += tax_amt
                         last_slab = inc.salary_from
-                        remaining_amt = remaining_amt - (inc.salary_to - inc.salary_from)
+                        remaining_amt = remaining_amt - (inc.salary_from)
                         _body = (_(" total tax amount: {0}").format( total_tax_amt))
                         rec.message_post(body=_body)
                         surcharge = inc.surcharge
