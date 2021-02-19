@@ -350,7 +350,6 @@
                                 <field name="it_rule" required="1" domain="[('deduction_id', '=', deduction_id)]"/>
                                 <field name="saving_master_related" invisible="1"/>
                                 <field name="saving_master" options="{'no_create_edit': True, 'no_create': True}" domain="[('it_rule', '=', it_rule)]"/>
-                                <field name="other" attrs="{'invisible':[('saving_master_related','!=','Other')]}"/>
                                 <field name="investment"/>
                                 </tree>
                             </field>
