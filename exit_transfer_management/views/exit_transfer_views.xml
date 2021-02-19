@@ -127,6 +127,48 @@
                                     </tree>
                                 </field>
                             </page>
+
+                            <page string="LTC Request and Claim Request">
+                                <br/>
+                                    <div><h2>Pending LTC Request</h2></div>
+                                <br/>
+                                <field name="ltc_sequence_ids" readonly="1" options='{"no_open": True}'>
+                                    <tree edittable="bottom">
+                                        <field name="ltc_sequence_id"/>
+                                        <field name="employee_id"/>
+                                        <field name="place_of_trvel"/>
+                                        <field name="block_year_id"/>
+                                        <field name="state"/>
+                                        <button name="leave_approved" type="object" string='Approved' icon="fa-check-circle"/>
+                                        <button name="leave_rejected" type="object" string='Rejected' icon="fa-times-circle"/>
+                                    </tree>
+                                </field>
+                                <br/>
+                                    <div><h2>Submitted LTC Request</h2></div>
+                                <br/>
+                                <field name="pending_ltc_sequence_ids" readonly="1" options='{"no_open": True}'>
+                                    <tree edittable="bottom">
+<!--                                        <field name="ltc_sequence_id"/>-->
+                                        <field name="employee_id"/>
+                                        <field name="place_of_trvel"/>
+                                        <field name="block_year_id"/>
+                                        <field name="state"/>
+                                        <button name="leave_cancel" type="object" string='Cancelled' icon="fa-window-close"/>
+                                    </tree>
+                                </field>
+                                <br/>
+                                    <div><h2>Upcoming LTC Request</h2></div>
+                                <br/>
+                                <field name="upcoming_ltc_sequence_ids" readonly="1" options='{"no_open": True}'>
+                                    <tree edittable="bottom">
+                                        <field name="ltc_sequence_id"/>
+                                        <field name="employee_id"/>
+                                        <field name="place_of_trvel"/>
+                                        <field name="block_year_id"/>
+                                        <field name="state"/>
+                                    </tree>
+                                </field>
+                            </page>
                             <page string="Reimbursement">
                                 <field name="claim_lines1_ids" readonly="1" options='{"no_open": True}'/>
                             </page>
