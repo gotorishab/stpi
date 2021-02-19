@@ -46,7 +46,7 @@
                         <notebook>
                             <page string="Leaves">
                                 <br/>
-                                    <div><h2>Pending Leaves</h2></div>
+                                    <div><h2>Pending for Approval Leaves</h2></div>
                                 <br/>
                                 <field name="pending_leave_line_ids" readonly="1" options='{"no_open": True}'>
                                     <tree edittable="bottom">

@@ -70,7 +70,7 @@ class ExitTransferManagement(models.Model):
                                                   ("state","in",['draft','confirm'])])
 
         submitted_leaves_ids = self.env['hr.leave'].search([("employee_id","=",self.employee_id.id),
-                                                  ("state","in",['validate','validate1'])])
+                                                  ("state","in",['draft','confirm','validate1'])])
 
         upcoming_leave_line_ids = self.env['hr.leave'].search([("employee_id","=",self.employee_id.id),
                                                   ("request_date_from",">=",self.date),
