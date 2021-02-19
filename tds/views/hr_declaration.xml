@@ -345,7 +345,7 @@
                         <page string="Deduction" name="deduction_new" attrs="{'invisible':[('which_it','!=','new')]}">
                             <field name="dednew_rule_ids" attrs="{'readonly':[('state','=','verified')]}">
                                 <tree string="80 C" editable="bottom">
-                                    <field name="deddonation_id" invisible="1"/>
+                                    <field name="deduction_id" invisible="1"/>
                                 <field name="dednew_rule_id" invisible="1"/>
                                 <field name="it_rule" required="1" domain="[('deduction_id', '=', deduction_id)]"/>
                                 <field name="saving_master_related" invisible="1"/>
