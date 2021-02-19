@@ -228,6 +228,7 @@ class HrDeclaration(models.Model):
     dedmedical_ids = fields.One2many('declaration.dedmedical', 'dedmedical_id', string='Deductions on Medical Expenditure for a Handicapped Relative')
     dedmedical_self_ids = fields.One2many('declaration.dedmedicalself', 'dedmedical_self_id', string='Deductions on Medical Expenditure on Self or Dependent Relative')
     deddonation_ids = fields.One2many('declaration.donation', 'deddonation_id', string='Deductions on Donation')
+    dednew_rule_ids = fields.One2many('declaration.80c.newded', 'dednew_rule_id', string='Deductions on Donation')
     income_house_ids = fields.One2many('income.house','income_house_id','Income from House Property')
     income_other_ids = fields.One2many('income.other','income_other_id','Income from Other Sources')
     # net_allowed_rebate = fields.Float('Net Allowed Rebate', compute='compute_net_allowed_rebate')
@@ -1003,13 +1004,24 @@ class HrDeclaration(models.Model):
                 if employee.differently_abled == 'yes':
                     ex_trans_id = self.env['saving.master'].sudo().search([('saving_type', '=', 'Transport Allowance')],
                                                                           limit=1)
+                    dis_paytrans = self.env['hr.payslip.line'].sudo().search(
+                        [('slip_id.employee_id', '=', rec.employee_id.id),
+                         ('slip_id.state', '=', 'done'),
+                         ('code', '=', 'TA'),
+                         ('slip_id.date_from', '>=', dstart),
+                         ('slip_id.date_to', '<=', dend),
+                         ], order="date_to desc")
+                    coun=0
+                    for ct in dis_paytrans:
+                        coun+=1
+                    amt = coun*3200
                     exemption_ids = []
                     exemption_ids.append((0, 0, {
                         'exemption_id': rec.id,
                         'it_rule': ex_trans_id.it_rule.id,
                         'saving_master': ex_trans_id.id,
-                        'investment': 38400,
-                        'allowed_rebate': 38400,
+                        'investment': amt,
+                        'allowed_rebate': amt,
                     }))
                     rec.exemption_ids = exemption_ids
                 ex_child_id = self.env['saving.master'].sudo().search(
@@ -1741,6 +1753,36 @@ class DonationG(models.Model):
     saving_master_related = fields.Char(related='saving_master.saving_type', string='Saving Type Related')
     investment = fields.Float(string='Amount')
     other = fields.Char('Other(If any)')
+
+
+
+class DeductionNew(models.Model):
+    _name = 'declaration.80c.newded'
+    _description = 'Declaration New Deduction'
+
+
+    deduction_id = fields.Selection([
+        ('slab_80_declaration','Slab - 80 Declaration'),
+        ('Medical Insurance Premium paid','Medical Insurance Premium paid'),
+        ('Deductions on Interest on Savings Account','Deductions on Interest on Savings Account'),
+        ('Tax Benefits on Home Loan','Tax Benefits on Home Loan'),
+        ('Tax benefit on Education Loan (80E)','Tax benefit on Education Loan (80E)'),
+        ('RGESS','RGESS'),
+        ('Deductions on Medical Expenditure for a Handicapped Relative','Deductions on Medical Expenditure for a Handicapped Relative'),
+        ('Deductions on Medical Expenditure on Self or Dependent Relative','Deductions on Medical Expenditure on Self or Dependent Relative'),
+        ('Deductions on Donations','Deductions on Donations'),
+        ('Deduction - Pension Scheme under section 80CCD(2)', 'Deduction - Pension Scheme under section 80CCD(2)'),
+    ],string='Deduction',default='Deduction - Pension Scheme under section 80CCD(2)')
+
+    dednew_rule_id = fields.Many2one('hr.declaration', string='Donation')
+    document = fields.Binary(string='Document')
+    # it_rule = fields.Selection([
+    #     ('section80g', 'Section 80G'),
+    # ], string='IT Rule -Section', default='section80g')
+    it_rule = fields.Many2one('hr.itrule', string='IT Rule -Section')
+    saving_master = fields.Many2one('saving.master', string='Saving Type')
+    saving_master_related = fields.Char(related='saving_master.saving_type', string='Saving Type Related')
+    investment = fields.Float(string='Amount')
 
 
 class IncomeHouse(models.Model):

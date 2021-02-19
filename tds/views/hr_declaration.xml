@@ -42,7 +42,7 @@
                              <field name="department_id" readonly="1"/>
                              <field name="which_it" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
                             <field name="date_range" options="{'no_create_edit': True, 'no_create': True}" attrs="{'readonly':[('state','!=','draft')], 'required':[('state','=','draft')]}" domain="[('tds', '=', True)]"/>
-                            <field name="rent_paid" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="rent_paid" widget="monetary" options="{'currency_field': 'currency_id'}" attrs="{'invisible':[('which_it','=','new')],'readonly':[('which_it','!=','new'),('state','!=','draft')]}"/>
                             <field name="rent_paid_attach_files" invisible="1"/>
                             <field name="pan_card" attrs="{'invisible':[('rent_paid_attach_files','!=',True)], 'required':[('rent_paid_attach_files','!=',False)]}"/>
                             <field name="owner_address" attrs="{'invisible':[('rent_paid_attach_files','!=',True)], 'required':[('rent_paid_attach_files','!=',False)]}"/>
@@ -151,7 +151,7 @@
 <!--                            </group>-->
                     </page>
 
-                    <page string="Deducations">
+                    <page string="Deducations" attrs="{'invisible':[('which_it','=','new')]}">
                         <group class="oe_subtotal_header oe_right" colspan="2" >
                                 <field name="total_deductions" class="oe_subtotal_header_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                             </group>
@@ -168,7 +168,7 @@
                             </tree>
                         </field>
                         <group class="oe_subtotal_footer oe_right" colspan="2" >
-                                <field name="allowed_rebate_under_80c" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}" attrs="{'invisible':[('which_it','=','new')]}"/>
+                                <field name="allowed_rebate_under_80c" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                                 <field name="allowed_rebate_under_80b" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                             </group>
                         </group>
@@ -185,7 +185,7 @@
 <!--                                <field name="allowed_rebate" sum="Total"/>-->
 <!--                            </tree>-->
 <!--                        </field>-->
-                         <group string="Medical Insurance Premium paid" attrs="{'invisible':[('which_it','=','new')]}">
+                         <group string="Medical Insurance Premium paid">
                         <field name="med_ins_ids" attrs="{'readonly':[('state','=','verified')]}">
                             <tree string="Medical Insurance Premium paid" editable="bottom">
                                 <field name="med_ins_id" invisible="1"/>
@@ -196,11 +196,11 @@
                                 <field name="document"/>
                             </tree>
                         </field>
-                        <group class="oe_subtotal_footer oe_right" colspan="2" attrs="{'invisible':[('which_it','=','new')]}">
+                        <group class="oe_subtotal_footer oe_right" colspan="2">
                                 <field name="allowed_rebate_under_80d" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                             </group>
                          </group>
-                         <group string="Deductions on Interest on Savings Account" attrs="{'invisible':[('which_it','=','new')]}">
+                         <group string="Deductions on Interest on Savings Account">
                         <field name="deduction_saving_ids" attrs="{'readonly':[('state','=','verified')]}">
                             <tree string="Deductions on Interest on Savings Account" editable="bottom">
                                 <field name="deduction_saving_id" invisible="1"/>
@@ -214,7 +214,7 @@
                                 <field name="document"/>
                             </tree>
                         </field>
-                        <group class="oe_subtotal_footer oe_right" colspan="2" attrs="{'invisible':[('which_it','=','new')]}">
+                        <group class="oe_subtotal_footer oe_right" colspan="2">
                                 <field name="allowed_rebate_under_80dsa" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                             </group>
                          </group>
@@ -252,7 +252,7 @@
                                 <field name="allowed_rebate_under_80e" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                             </group>
                         </group>
-                         <group string="RGESS" attrs="{'invisible':[('which_it','=','new')]}">
+                         <group string="RGESS">
                         <field name="rgess_ids" attrs="{'readonly':[('state','=','verified')]}">
                             <tree string="RGESS" editable="bottom">
                                 <field name="rgess_id" invisible="1"/>
@@ -267,7 +267,7 @@
                                 <field name="allowed_rebate_under_80ccg" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                             </group>
                          </group>
-                         <group string="Deductions on Medical Expenditure for a Handicapped Relative" attrs="{'invisible':[('which_it','=','new')]}">
+                         <group string="Deductions on Medical Expenditure for a Handicapped Relative">
                         <field name="dedmedical_ids" attrs="{'readonly':[('state','=','verified')]}">
                             <tree string="Deductions on Medical Expenditure for a Handicapped Relative" editable="bottom">
                                 <field name="dedmedical_id" invisible="1"/>
@@ -282,7 +282,7 @@
                                 <field name="allowed_rebate_under_80cdd" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                             </group>
                          </group>
-                        <group string="Deductions on Medical Expenditure on Self or Dependent Relative" attrs="{'invisible':[('which_it','=','new')]}">
+                        <group string="Deductions on Medical Expenditure on Self or Dependent Relative">
                         <field name="dedmedical_self_ids" attrs="{'readonly':[('state','=','verified')]}">
                             <tree string="Deductions on Medical Expenditure on Self or Dependent Relative" editable="bottom">
                                 <field name="dedmedical_self_id" invisible="1"/>
@@ -297,7 +297,7 @@
                                 <field name="allowed_rebate_under_80mesdr" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                             </group>
                             </group>
-                        <group string="Deductions on Donations" attrs="{'invisible':[('which_it','=','new')]}">
+                        <group string="Deductions on Donations">
                         <field name="deddonation_ids">
                             <tree string="Deduction on Donations" editable="bottom">
                                 <field name="deddonation_id" invisible="1"/>
@@ -331,7 +331,7 @@
                                 <field name="pending_tax" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                             </group>
                         </page>
-                        <page string="Rent Paid" name="rent_paid_g">
+                        <page string="Rent Paid" name="rent_paid_g" attrs="{'invisible':[('which_it','=','new')]}">
                             <field name="rent_paid_ids" attrs="{'readonly':[('state','=','verified')]}">
                                 <tree string="Rent Paid" editable="bottom">
                                     <field name="rent_paid_id" invisible="1"/>
@@ -339,6 +339,19 @@
                                     <field name="date_to" required="1"/>
                                     <field name="amount" required="1" sum="Amount"/>
                                     <field name="attchment"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Deduction" name="deduction_new" attrs="{'invisible':[('which_it','!=','new')]}">
+                            <field name="dednew_rule_ids" attrs="{'readonly':[('state','=','verified')]}">
+                                <tree string="80 C" editable="bottom">
+                                    <field name="deddonation_id" invisible="1"/>
+                                <field name="dednew_rule_id" invisible="1"/>
+                                <field name="it_rule" required="1" domain="[('deduction_id', '=', deduction_id)]"/>
+                                <field name="saving_master_related" invisible="1"/>
+                                <field name="saving_master" options="{'no_create_edit': True, 'no_create': True}" domain="[('it_rule', '=', it_rule)]"/>
+                                <field name="other" attrs="{'invisible':[('saving_master_related','!=','Other')]}"/>
+                                <field name="investment"/>
                                 </tree>
                             </field>
                         </page>

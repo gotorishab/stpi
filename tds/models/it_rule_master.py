@@ -23,6 +23,7 @@ class HrItRule(models.Model):
         ('Deductions on Donations', 'Deductions on Donations'),
         ('Income from House Property', 'Income from House Property'),
         ('Income from Other Sources', 'Income from Other Sources'),
+        ('Deduction - Pension Scheme under section 80CCD(2)', 'Deduction - Pension Scheme under section 80CCD(2)'),
     ], string='Deduction')
     code = fields.Char('Code')
     name = fields.Char('IT Rule Section')
