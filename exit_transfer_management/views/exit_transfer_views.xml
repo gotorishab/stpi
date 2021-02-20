@@ -54,8 +54,8 @@
                                         <field name="from_date"/>
                                         <field name="to_date"/>
                                         <field name="state"/>
-                                        <button name="leave_approved" type="object" string='Approved' icon="fa-check-circle"/>
-                                        <button name="leave_rejected" type="object" string='Rejected' icon="fa-times-circle"/>
+                                        <button name="ltc_approved" type="object" string='Approved' icon="fa-check-circle"/>
+                                        <button name="ltc_rejected" type="object" string='Rejected' icon="fa-times-circle"/>
                                     </tree>
                                 </field>
                                 <br/>
@@ -67,7 +67,7 @@
                                         <field name="from_date"/>
                                         <field name="to_date"/>
                                         <field name="state"/>
-                                        <button name="leave_cancel" type="object" string='Cancelled' icon="fa-window-close"/>
+                                        <button name="ltc_cancel" type="object" string='Cancelled' icon="fa-window-close"/>
                                     </tree>
                                 </field>
                                 <br/>
