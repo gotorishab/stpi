@@ -168,6 +168,53 @@
                                         <field name="state"/>
                                     </tree>
                                 </field>
+
+                                <br/>
+                                    <div><h2>Pending LTC Claim Request</h2></div>
+                                <br/>
+                                <field name="pending_ltc_claim_ids" readonly="1" options='{"no_open": True}'>
+                                    <tree edittable="bottom">
+                                        <field name="ltc_availed_for_id"/>
+                                        <field name="employee_id"/>
+                                        <field name="place_of_trvel"/>
+                                        <field name="total_claimed_amount"/>
+                                        <field name="balance_left"/>
+                                        <field name="ltc_availed_for_m2o"/>
+                                        <field name="state"/>
+                                        <button name="claim_approved" type="object" string='Approved' icon="fa-check-circle"/>
+                                        <button name="claim_rejected" type="object" string='Rejected' icon="fa-times-circle"/>
+                                    </tree>
+                                </field>
+                                <br/>
+                                    <div><h2>Submitted LTC Claim Request</h2></div>
+                                <br/>
+                                <field name="submitted_ltc_claim_ids" readonly="1" options='{"no_open": True}'>
+                                    <tree edittable="bottom">
+                                        <field name="ltc_availed_for_id"/>
+                                        <field name="employee_id"/>
+                                        <field name="place_of_trvel"/>
+                                        <field name="total_claimed_amount"/>
+                                        <field name="balance_left"/>
+                                        <field name="ltc_availed_for_m2o"/>
+                                        <field name="state"/>
+                                        <button name="claim_cancel" type="object" string='Cancelled' icon="fa-window-close"/>
+                                    </tree>
+                                </field>
+
+                                <br/>
+                                    <div><h2>Upcoming LTC Claim Request</h2></div>
+                                <br/>
+                                <field name="upcoming_ltc_claim_ids" readonly="1" options='{"no_open": True}'>
+                                    <tree edittable="bottom">
+                                        <field name="ltc_availed_for_id"/>
+                                        <field name="employee_id"/>
+                                        <field name="place_of_trvel"/>
+                                        <field name="total_claimed_amount"/>
+                                        <field name="balance_left"/>
+                                        <field name="ltc_availed_for_m2o"/>
+                                        <field name="state"/>
+                                    </tree>
+                                </field>
                             </page>
                             <page string="Reimbursement">
                                 <field name="claim_lines1_ids" readonly="1" options='{"no_open": True}'/>

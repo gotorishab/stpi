@@ -39,13 +39,18 @@ class ExitTransferManagement(models.Model):
     submitted_tour_req_ids = fields.One2many("submitted.tour.request","exit_transfer_id", string="Upcoming Lines")
     upcoming_tour_req_ids = fields.One2many("upcoming.tour.request","exit_transfer_id", string="Upcoming Lines")
 
-    # LTC and Claim
+    # LTC and Advance
     pending_ltc_sequence_ids = fields.One2many("pending.employee.ltc.request", "exit_transfer_id",
                                                string="Pending for Approval LTC Advance")
     submitted_ltc_sequence_ids = fields.One2many("employee.ltc.request", "exit_transfer_id", string="Submitted LTC Advance")
     upcoming_ltc_sequence_ids = fields.One2many("upcoming.employee.ltc.request", "exit_transfer_id", string="Upcoming LTC Advance")
 
-    claim_lines1_ids = fields.One2many("claim.lines1","exit_transfer_id", string="Upcoming Lines")
+    # LTC Claim
+    pending_ltc_claim_ids = fields.One2many("pending.ltc.claim.request", "exit_transfer_id", string="Pending  LTC Claim")
+    submitted_ltc_claim_ids = fields.One2many("ltc.claim.request", "exit_transfer_id", string="Submitted  LTC Claim")
+    upcoming_ltc_claim_ids = fields.One2many("upcoming.ltc.claim.request", "exit_transfer_id", string="Upcoming  LTC Claim")
+
+    claim_lines1_ids = fields.One2many("claim.lines1","exit_transfer_id", string="1`Upcoming Lines")
 
     leave_no_dues = fields.Boolean()
     leave_remark = fields.Text()
@@ -166,13 +171,13 @@ class ExitTransferManagement(models.Model):
                     "state": res.state
                 })
 
-        # LTC and Claim
+        # LTC Advance
         if self.pending_ltc_sequence_ids:
             for line in self.pending_ltc_sequence_ids:
                 line.unlink()
 
-        if self.sumbitted_sequence_ids:
-            for line in self.sumbitted_sequence_ids:
+        if self.submitted_ltc_sequence_ids:
+            for line in self.submitted_ltc_sequence_ids:
                 line.unlink()
 
         if self.upcoming_ltc_sequence_ids:
@@ -218,6 +223,65 @@ class ExitTransferManagement(models.Model):
                     "employee_id": res.employee_id.id,
                     "place_of_trvel": res.place_of_trvel,
                     "block_year_id": res.block_year.id,
+                    "state": res.state
+                })
+
+        if self.pending_ltc_claim_ids:
+            for line in self.pending_ltc_claim_ids:
+                line.unlink()
+
+        if self.submitted_ltc_claim_ids:
+            for line in self.submitted_ltc_claim_ids:
+                line.unlink()
+
+        if self.upcoming_ltc_claim_ids:
+            for line in self.upcoming_ltc_claim_ids:
+                line.unlink()
+
+        pending_ltc_claim_ids = self.env["employee.ltc.claim"].search([("employee_id", "=", self.employee_id.id),
+                                                                       ("state", "in", ['to_approve'])])
+        if pending_ltc_claim_ids:
+            for res in pending_ltc_claim_ids:
+                self.pending_ltc_claim_ids.create({
+                    "exit_transfer_id": self.id,
+                    "ltc_availed_for_id": res.id,
+                    "employee_id": res.employee_id.id,
+                    "ltc_availed_for_m2o": res.ltc_availed_for_m2o.id,
+                    "place_of_trvel": res.place_of_trvel,
+                    "total_claimed_amount": res.total_claimed_amount,
+                    "balance_left": res.balance_left,
+                    "state": res.state
+                })
+
+        submitted_ltc_claim_ids = self.env['employee.ltc.claim'].search([("employee_id", "=", self.employee_id.id),
+                                                                         ("state", "in", ['draft', 'to_approve'])])
+
+        if submitted_ltc_claim_ids:
+            for res in submitted_ltc_claim_ids:
+                self.submitted_ltc_claim_ids.create({
+                    "exit_transfer_id": self.id,
+                    "ltc_availed_for_id": res.id,
+                    "ltc_availed_for_m2o": res.ltc_availed_for_m2o.id,
+                    "employee_id": res.employee_id.id,
+                    "place_of_trvel": res.place_of_trvel,
+                    "total_claimed_amount": res.total_claimed_amount,
+                    "balance_left": res.balance_left,
+                    "state": res.state
+                })
+
+        upcoming_ltc_claim_ids = self.env['employee.ltc.claim'].search([("employee_id", "=", self.employee_id.id),
+                                                                        ("depart_date", ">=", self.date),
+                                                                        ("state", "in", ['approved'])])
+        if upcoming_ltc_claim_ids:
+            for res in upcoming_ltc_claim_ids:
+                self.upcoming_ltc_claim_ids.create({
+                    "exit_transfer_id": self.id,
+                    "ltc_availed_for_id": res.id,
+                    "ltc_availed_for_m2o": res.ltc_availed_for_m2o.id,
+                    "employee_id": res.employee_id.id,
+                    "place_of_trvel": res.place_of_trvel,
+                    "total_claimed_amount": res.total_claimed_amount,
+                    "balance_left": res.balance_left,
                     "state": res.state
                 })
 
@@ -314,3 +378,86 @@ class UpcomingEmployeeLeave(models.Model):
         if self.leave_id:
             self.leave_id.update({"state":"cancel"})
             self.update({"state":"cancel"})
+
+
+class PendingLTCClaimRequest(models.Model):
+    _name = 'pending.ltc.claim.request'
+    _description = 'Pending Ltc Claim Request'
+
+    exit_transfer_id = fields.Many2one("exit.transfer.management", string="Exit/Transfer Id", readonly=True)
+    ltc_availed_for_id = fields.Many2one('employee.ltc.claim','LTC Claim ID',readonly=True)
+    employee_id = fields.Many2one('hr.employee', string='Requested By')
+    place_of_trvel = fields.Selection(
+        [('hometown', 'Hometown'), ('india', 'Anywhere in India'), ('conversion', 'Conversion of Hometown')],
+         string='Place of Travel')
+    total_claimed_amount = fields.Float('Total Claimed Amount')
+    balance_left = fields.Float('Balance Left')
+    ltc_availed_for_m2o = fields.Many2one('employee.ltc.advance','LTC availed for')
+    state = fields.Selection([
+        ('draft', 'Draft'),
+        ('to_approve', 'To Approve'),
+        ('approved', 'Approved'),
+        ('cancelled', 'Cancelled'),
+        ('rejected', 'Rejected')
+    ], string='Status')
+
+    def claim_approved(self):
+        if self.ltc_availed_for_id:
+            self.ltc_availed_for_id.sudo().button_approved()
+            self.update({"state": "approved"})
+
+    def claim_rejected(self):
+        if self.ltc_availed_for_id:
+            self.ltc_availed_for_id.sudo().button_reject()
+            self.update({"state": "rejected"})
+
+
+class LTCClaimRequest(models.Model):
+    _name = 'ltc.claim.request'
+    _description = 'Ltc Claim Request'
+
+    exit_transfer_id = fields.Many2one("exit.transfer.management", string="Exit/Transfer Id", readonly=True)
+    ltc_availed_for_id = fields.Many2one('employee.ltc.claim','LTC_Claim_ID',readonly=True)
+    employee_id = fields.Many2one('hr.employee', string='Requested By')
+    place_of_trvel = fields.Selection(
+        [('hometown', 'Hometown'), ('india', 'Anywhere in India'), ('conversion', 'Conversion of Hometown')],
+         string='Place of Travel')
+    total_claimed_amount = fields.Float('Total Claimed Amount')
+    balance_left = fields.Float('Balance Left')
+    ltc_availed_for_m2o = fields.Many2one('employee.ltc.advance','LTC availed for')
+
+    state = fields.Selection([
+        ('draft', 'Draft'),
+        ('to_approve', 'To Approve'),
+        ('approved', 'Approved'),
+        ('cancelled', 'Cancelled'),
+        ('rejected', 'Rejected')
+    ], string='Status')
+
+    def claim_cancel(self):
+        if self.ltc_availed_for_id:
+            self.ltc_availed_for_id.sudo().button_cancel()
+            self.update({"state": "cancelled"})
+
+
+
+class UpcomingLTCClaimRequest(models.Model):
+    _name = 'upcoming.ltc.claim.request'
+    _description = 'Upcoming Ltc Claim Request'
+
+    exit_transfer_id = fields.Many2one("exit.transfer.management", string="Exit/Transfer Id", readonly=True)
+    ltc_availed_for_id = fields.Many2one('employee.ltc.claim','LTC_Claim_ID',readonly=True)
+    employee_id = fields.Many2one('hr.employee', string='Requested By')
+    place_of_trvel = fields.Selection(
+        [('hometown', 'Hometown'), ('india', 'Anywhere in India'), ('conversion', 'Conversion of Hometown')],
+         string='Place of Travel')
+    total_claimed_amount = fields.Float('Total Claimed Amount')
+    ltc_availed_for_m2o = fields.Many2one('employee.ltc.advance','LTC availed for')
+    balance_left = fields.Float('Balance Left')
+    state = fields.Selection([
+        ('draft', 'Draft'),
+        ('to_approve', 'To Approve'),
+        ('approved', 'Approved'),
+        ('cancelled', 'Cancelled'),
+        ('rejected', 'Rejected')
+    ], string='Status')
