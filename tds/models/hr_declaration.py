@@ -1024,115 +1024,115 @@ class HrDeclaration(models.Model):
                         'allowed_rebate': amt,
                     }))
                     rec.exemption_ids = exemption_ids
-                ex_child_id = self.env['saving.master'].sudo().search(
-                    [('saving_type', '=', 'Child Education Allowance & Hostel Expenditure Allowance')], limit=1)
-                child_id = self.env['employee.relative'].sudo().search(
-                    [('employee_id', '=', rec.employee_id.id)])
-                prl_id = self.env['hr.payslip.line'].sudo().search([('slip_id.employee_id', '=', rec.employee_id.id),('slip_id.state', '=', 'done'),('code', '=', 'CCA'),('slip_id.date_from', '>', rec.date_range.date_start),('slip_id.date_to', '<', rec.date_range.date_end)],order ="date_to desc")
-                count = 0
-                my_investment = 0.00
-                my_allowed_rebate = 0.00
-                pl_amount = 0.00
-                count_paylines = 0.00
-                if ex_child_id:
-                    for cc in child_id:
-                        if cc.relate_type_name == 'Son' or cc.relate_type_name == 'Daughter':
-                            count += 1
-                    for pl in prl_id:
-                        count_paylines += 1
-                        pl_amount += pl.amount
-                    if rec.employee_id.date_of_join and rec.date_range.date_start < rec.employee_id.date_of_join <= rec.date_range.date_end:
-                        nm = ((rec.date_range.date_end - rec.employee_id.date_of_join).days)/30
-                        relative_sum = count * 100 * round(nm)
-                    else:
-                        relative_sum = count * 100 * round(count_paylines)
-                    if pl_amount < relative_sum:
-                        my_investment = pl_amount
-                    else:
-                        my_investment = relative_sum
-
-                    if my_investment <= ex_child_id.rebate:
-                        my_allowed_rebate = my_investment
-                    else:
-                        my_allowed_rebate = ex_child_id.rebate
-                    exemption_ids = []
-                    exemption_ids.append((0, 0, {
-                        'exemption_id': rec.id,
-                        'it_rule': ex_child_id.it_rule.id,
-                        'saving_master': ex_child_id.id,
-                        'investment': my_investment,
-                        'allowed_rebate': my_allowed_rebate,
-                    }))
+                # ex_child_id = self.env['saving.master'].sudo().search(
+                #     [('saving_type', '=', 'Child Education Allowance & Hostel Expenditure Allowance')], limit=1)
+                # child_id = self.env['employee.relative'].sudo().search(
+                #     [('employee_id', '=', rec.employee_id.id)])
+                # prl_id = self.env['hr.payslip.line'].sudo().search([('slip_id.employee_id', '=', rec.employee_id.id),('slip_id.state', '=', 'done'),('code', '=', 'CCA'),('slip_id.date_from', '>', rec.date_range.date_start),('slip_id.date_to', '<', rec.date_range.date_end)],order ="date_to desc")
+                # count = 0
+                # my_investment = 0.00
+                # my_allowed_rebate = 0.00
+                # pl_amount = 0.00
+                # count_paylines = 0.00
+                # if ex_child_id:
+                #     for cc in child_id:
+                #         if cc.relate_type_name == 'Son' or cc.relate_type_name == 'Daughter':
+                #             count += 1
+                #     for pl in prl_id:
+                #         count_paylines += 1
+                #         pl_amount += pl.amount
+                #     if rec.employee_id.date_of_join and rec.date_range.date_start < rec.employee_id.date_of_join <= rec.date_range.date_end:
+                #         nm = ((rec.date_range.date_end - rec.employee_id.date_of_join).days)/30
+                #         relative_sum = count * 100 * round(nm)
+                #     else:
+                #         relative_sum = count * 100 * round(count_paylines)
+                #     if pl_amount < relative_sum:
+                #         my_investment = pl_amount
+                #     else:
+                #         my_investment = relative_sum
+                #
+                #     if my_investment <= ex_child_id.rebate:
+                #         my_allowed_rebate = my_investment
+                #     else:
+                #         my_allowed_rebate = ex_child_id.rebate
+                #     exemption_ids = []
+                #     exemption_ids.append((0, 0, {
+                #         'exemption_id': rec.id,
+                #         'it_rule': ex_child_id.it_rule.id,
+                #         'saving_master': ex_child_id.id,
+                #         'investment': my_investment,
+                #         'allowed_rebate': my_allowed_rebate,
+                #     }))
                     # rec.exemption_ids = exemption_ids
-                contrct = self.env['hr.contract'].sudo().search([('employee_id', '=', rec.employee_id.id),
-                                                                 ('state', '=', 'open')
-                                                                 ], limit=1)
-
-                ex_hra_id = self.env['saving.master'].sudo().search([('saving_type', '=', 'HRA Exemption')], limit=1)
-                prl_id = self.env['hr.payslip.line'].sudo().search([('slip_id.employee_id', '=', rec.employee_id.id),('slip_id.state', '=', 'done'),('code', '=', 'HRA'),('slip_id.date_from', '>', rec.date_range.date_start),('slip_id.date_to', '<', rec.date_range.date_end)],order ="date_to desc")
-                prl_current_id = self.env['hr.payslip.line'].sudo().search([('slip_id.employee_id', '=', rec.employee_id.id),('slip_id.state', '=', 'done'),('code', '=', 'HRA'),('slip_id.date_from', '=', datetime.now().replace(day=1)),('slip_id.date_to', '=', datetime.now().replace(day=1) + relativedelta(months=1) - relativedelta(days=1))])
-                HRA = 0
-                DA = 0
-                TA = 0
-                contrct = self.env['hr.contract'].sudo().search([('employee_id', '=', rec.employee_id.id),
-                                                                 ('state', '=', 'open')
-                                                                 ], limit=1)
-                for contract in contrct:
-                    if contract.employee_hra_cat == 'x':
-                        HRA = 0.24 * contract.wage
-                    elif contract.employee_hra_cat == 'y':
-                        HRA = 0.16 * contract.wage
-                    elif contract.employee_hra_cat == 'z':
-                        HRA = 0.08 * contract.wage
-                    else:
-                        HRA = 0
-                sum_bs = 0.00
-                sum_rent = 0.00
-                sum_prl = 0.00
-                sum_prl_current = 0.00
-                sum=0.00
-                my_investment = 0.00
-                my_allowed_rebate = 0.00
-                sum_list = []
-                for cc in prl_id:
-                    sum_prl+=cc.amount
-                sum_prl_current = int(HRA) *int(month)
-                sum_prl = sum_prl + sum_prl_current
-                if rec.employee_id.branch_id.city_id.metro == True:
-                    sum_bs = ((rec.basic_salary + rec.da_salary + int(updated_basic)*int(month))*50)/100
-                else:
-                    sum_bs = ((rec.basic_salary + rec.da_salary + int(updated_basic)*int(month))*40)/100
-                sum_rent = rec.rent_paid - (((rec.basic_salary + rec.da_salary + int(updated_basic)*int(month) )*10)/100)
-
-                sum_list.append(sum_prl)
-                sum_list.append(sum_bs)
-                sum_list.append(sum_rent)
-                compare = 0.00
-                compare_value = 10000000000000.00
-                for i in sum_list:
-                    if compare_value > i and i > compare:
-                        compare_value = i
-                sum = compare_value
-                if ex_hra_id:
-                    my_investment = sum
-                    if my_investment <= ex_hra_id.rebate:
-                        my_allowed_rebate = my_investment
-                    else:
-                        my_allowed_rebate = ex_hra_id.rebate
-                    print('====================rec.rent_paid========================',int(rec.rent_paid))
-                    print('====================contrct.xnohrad========================',contrct.xnohra)
-                    if int(rec.rent_paid) == 0 or contrct.xnohra == True:
-                        my_allowed_rebate = 0
-                        print('====================True========================')
-
-                    exemption_ids = []
-                    exemption_ids.append((0, 0, {
-                        'exemption_id': rec.id,
-                        'it_rule': ex_hra_id.it_rule.id,
-                        'saving_master': ex_hra_id.id,
-                        'investment': my_investment,
-                        'allowed_rebate': my_allowed_rebate,
-                    }))
+                # contrct = self.env['hr.contract'].sudo().search([('employee_id', '=', rec.employee_id.id),
+                #                                                  ('state', '=', 'open')
+                #                                                  ], limit=1)
+                #
+                # ex_hra_id = self.env['saving.master'].sudo().search([('saving_type', '=', 'HRA Exemption')], limit=1)
+                # prl_id = self.env['hr.payslip.line'].sudo().search([('slip_id.employee_id', '=', rec.employee_id.id),('slip_id.state', '=', 'done'),('code', '=', 'HRA'),('slip_id.date_from', '>', rec.date_range.date_start),('slip_id.date_to', '<', rec.date_range.date_end)],order ="date_to desc")
+                # prl_current_id = self.env['hr.payslip.line'].sudo().search([('slip_id.employee_id', '=', rec.employee_id.id),('slip_id.state', '=', 'done'),('code', '=', 'HRA'),('slip_id.date_from', '=', datetime.now().replace(day=1)),('slip_id.date_to', '=', datetime.now().replace(day=1) + relativedelta(months=1) - relativedelta(days=1))])
+                # HRA = 0
+                # DA = 0
+                # TA = 0
+                # contrct = self.env['hr.contract'].sudo().search([('employee_id', '=', rec.employee_id.id),
+                #                                                  ('state', '=', 'open')
+                #                                                  ], limit=1)
+                # for contract in contrct:
+                #     if contract.employee_hra_cat == 'x':
+                #         HRA = 0.24 * contract.wage
+                #     elif contract.employee_hra_cat == 'y':
+                #         HRA = 0.16 * contract.wage
+                #     elif contract.employee_hra_cat == 'z':
+                #         HRA = 0.08 * contract.wage
+                #     else:
+                #         HRA = 0
+                # sum_bs = 0.00
+                # sum_rent = 0.00
+                # sum_prl = 0.00
+                # sum_prl_current = 0.00
+                # sum=0.00
+                # my_investment = 0.00
+                # my_allowed_rebate = 0.00
+                # sum_list = []
+                # for cc in prl_id:
+                #     sum_prl+=cc.amount
+                # sum_prl_current = int(HRA) *int(month)
+                # sum_prl = sum_prl + sum_prl_current
+                # if rec.employee_id.branch_id.city_id.metro == True:
+                #     sum_bs = ((rec.basic_salary + rec.da_salary + int(updated_basic)*int(month))*50)/100
+                # else:
+                #     sum_bs = ((rec.basic_salary + rec.da_salary + int(updated_basic)*int(month))*40)/100
+                # sum_rent = rec.rent_paid - (((rec.basic_salary + rec.da_salary + int(updated_basic)*int(month) )*10)/100)
+                #
+                # sum_list.append(sum_prl)
+                # sum_list.append(sum_bs)
+                # sum_list.append(sum_rent)
+                # compare = 0.00
+                # compare_value = 10000000000000.00
+                # for i in sum_list:
+                #     if compare_value > i and i > compare:
+                #         compare_value = i
+                # sum = compare_value
+                # if ex_hra_id:
+                #     my_investment = sum
+                #     if my_investment <= ex_hra_id.rebate:
+                #         my_allowed_rebate = my_investment
+                #     else:
+                #         my_allowed_rebate = ex_hra_id.rebate
+                #     print('====================rec.rent_paid========================',int(rec.rent_paid))
+                #     print('====================contrct.xnohrad========================',contrct.xnohra)
+                #     if int(rec.rent_paid) == 0 or contrct.xnohra == True:
+                #         my_allowed_rebate = 0
+                #         print('====================True========================')
+                #
+                #     exemption_ids = []
+                #     exemption_ids.append((0, 0, {
+                #         'exemption_id': rec.id,
+                #         'it_rule': ex_hra_id.it_rule.id,
+                #         'saving_master': ex_hra_id.id,
+                #         'investment': my_investment,
+                #         'allowed_rebate': my_allowed_rebate,
+                #     }))
                     # rec.exemption_ids = exemption_ids
                 ex_lunch_id = self.env['saving.master'].sudo().search([('saving_type', '=', 'Lunch Subsidy Allowance')], limit=1)
                 reimbursement_id =  self.env['reimbursement'].sudo().search([('employee_id', '=', rec.employee_id.id),('name', '=', 'lunch'),('date_range.date_start', '>', rec.date_range.date_start),('date_range.date_end', '<', rec.date_range.date_end),('state', '=', 'approved')])

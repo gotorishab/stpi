@@ -139,8 +139,7 @@
                                         <field name="place_of_trvel"/>
                                         <field name="block_year_id"/>
                                         <field name="state"/>
-                                        <button name="leave_approved" type="object" string='Approved' icon="fa-check-circle"/>
-                                        <button name="leave_rejected" type="object" string='Rejected' icon="fa-times-circle"/>
+                                        <button name="leave_cancel" type="object" string='Cancelled' icon="fa-window-close"/>
                                     </tree>
                                 </field>
                                 <br/>
@@ -153,6 +152,8 @@
                                         <field name="place_of_trvel"/>
                                         <field name="block_year_id"/>
                                         <field name="state"/>
+                                        <button name="leave_approved" type="object" string='Approved' icon="fa-check-circle"/>
+                                        <button name="leave_rejected" type="object" string='Rejected' icon="fa-times-circle"/>
                                         <button name="leave_cancel" type="object" string='Cancelled' icon="fa-window-close"/>
                                     </tree>
                                 </field>

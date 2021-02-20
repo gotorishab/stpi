@@ -70,7 +70,7 @@ class EmployeeLtcAdvance(models.Model):
     amount = fields.Float(string='Amount', compute='_compute_amount',track_visibility='always')
     child_block_year=fields.Many2one('child.block.year', 'Availing LTC for year')
     total_basic_salary = fields.Float(string='Total Basic',track_visibility='always')
-    state = fields.Selection([('draft', 'Draft'), ('to_approve', 'To Approve'), ('approved', 'Approved'), ('rejected', 'Rejected')
+    state = fields.Selection([('draft', 'Draft'), ('to_approve', 'To Approve'), ('approved', 'Approved'), ('rejected', 'Rejected'), ('cancelled', 'Cancelled')
                                ], required=True, default='draft',track_visibility='always', string='Status')
 
 
@@ -420,6 +420,16 @@ class EmployeeLtcAdvance(models.Model):
                 line.sudo().write({'state': 'draft'})
             rec.write({'state': 'draft'})
 
+    @api.multi
+    def button_cancel(self):
+        for rec in self:
+            rep_ids = self.env['ledger.ltc'].sudo().search([
+                ('ltc_id', '=', rec.id),
+            ])
+            for line in rep_ids:
+                line.sudo().write({'state': 'cancelled'})
+            rec.write({'state': 'cancelled'})
+
 
     # @api.constrains('no_of_days')
     # def el_encashment_ltc(self):
@@ -752,6 +762,6 @@ class LtcLedger(models.Model):
     ltc_date = fields.Date(string='LTC Date')
     place_of_trvel=fields.Selection([('hometown', 'Hometown'), ('india', 'Anywhere in India'), ('conversion', 'Conversion of Hometown')], default='hometown', string='LTC Type')
     state = fields.Selection(
-        [('draft', 'Draft'), ('to_approve', 'To Approve'), ('approved', 'Approved'), ('rejected', 'Rejected')
+        [('draft', 'Draft'), ('to_approve', 'To Approve'), ('approved', 'Approved'), ('rejected', 'Rejected'), ('cancelled', 'Cancelled')
          ], string='Status')
 

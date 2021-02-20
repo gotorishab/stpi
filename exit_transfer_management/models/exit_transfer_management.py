@@ -331,15 +331,14 @@ class EmployeeLtcRequest(models.Model):
         ('draft', 'Draft'),
         ('to_approve', 'To Approve'),
         ('approved', 'Approved'),
-        ('cancel', 'Cancelled'),
+        ('cancelled', 'Cancelled'),
         ('rejected', 'Rejected')
     ], string='Status')
 
     def ltc_cancel(self):
-        if self.exit_transfer_id:
-            self.exit_transfer_id.update({"state":"cancel"})
-            self.update({"state":"cancel"})
-
+        if self.ltc_sequence_id:
+            self.ltc_sequence_id.sudo().button_cancel()
+            self.update({"state": "cancelled"})
 
 class PendingEmployeeLtcRequest(models.Model):
     _name = 'pending.employee.ltc.request'
@@ -361,14 +360,14 @@ class PendingEmployeeLtcRequest(models.Model):
         ('rejected', 'Rejected')
     ], string='Status')
 
-    def leave_approved(self):
+    def ltc_approved(self):
         if self.ltc_sequence_id:
-            self.ltc_sequence_id.update({"state":"approved"})
+            self.ltc_sequence_id.sudo().button_approved()
             self.update({"state":"approved"})
 
-    def leave_rejected(self):
+    def ltc_rejected(self):
         if self.ltc_sequence_id:
-            self.ltc_sequence_id.update({"state":"rejected"})
+            self.ltc_sequence_id.sudo().button_reject()
             self.update({"state":"rejected"})
 
 
@@ -388,11 +387,11 @@ class UpcomingEmployeeLtcRequest(models.Model):
         ('draft', 'Draft'),
         ('to_approve', 'To Approve'),
         ('approved', 'Approved'),
-        ('cancel', 'Cancelled'),
+        ('cancelled', 'Cancelled'),
         ('rejected', 'Rejected')
     ], string='Status')
 
     def leave_cancel(self):
         if self.ltc_sequence_id:
-            self.ltc_sequence_id.update({"state":"cancel"})
-            self.update({"state":"cancel"})
+            self.ltc_sequence_id.sudo().button_cancel()
+            self.update({"state":"cancelled"})
