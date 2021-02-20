@@ -145,7 +145,7 @@
                                 <br/>
                                     <div><h2>Submitted LTC Request</h2></div>
                                 <br/>
-                                <field name="ltc_sequence_ids" readonly="1" options='{"no_open": True}'>
+                                <field name="submitted_ltc_sequence_ids" readonly="1" options='{"no_open": True}'>
                                     <tree edittable="bottom">
                                         <field name="ltc_sequence_id"/>
                                         <field name="employee_id"/>

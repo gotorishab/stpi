@@ -40,9 +40,10 @@ class ExitTransferManagement(models.Model):
     upcoming_tour_req_ids = fields.One2many("upcoming.tour.request","exit_transfer_id", string="Upcoming Lines")
 
     # LTC and Claim
-    ltc_sequence_ids = fields.One2many("employee.ltc.request", "exit_transfer_id", string="Submitted Lines")
-    pending_ltc_sequence_ids = fields.One2many("pending.employee.ltc.request", "exit_transfer_id", string="Upcoming Lines")
-    upcoming_ltc_sequence_ids = fields.One2many("upcoming.employee.ltc.request", "exit_transfer_id", string="Upcoming Lines")
+    pending_ltc_sequence_ids = fields.One2many("pending.employee.ltc.request", "exit_transfer_id",
+                                               string="Pending for Approval LTC Advance")
+    submitted_ltc_sequence_ids = fields.One2many("employee.ltc.request", "exit_transfer_id", string="Submitted LTC Advance")
+    upcoming_ltc_sequence_ids = fields.One2many("upcoming.employee.ltc.request", "exit_transfer_id", string="Upcoming LTC Advance")
 
     claim_lines1_ids = fields.One2many("claim.lines1","exit_transfer_id", string="Upcoming Lines")
 
@@ -179,7 +180,7 @@ class ExitTransferManagement(models.Model):
                 line.unlink()
 
         pending_ltc_sequence_ids = self.env['employee.ltc.advance'].search([("employee_id", "=", self.employee_id.id),
-                                                                            ("state", "in", ['draft', 'to_approve'])])
+                                                                            ("state", "in", ['to_approve'])])
 
         if pending_ltc_sequence_ids:
             for res in pending_ltc_sequence_ids:
@@ -192,12 +193,12 @@ class ExitTransferManagement(models.Model):
                     "state": res.state
                 })
 
-        sumbitted_sequence_ids = self.env['employee.ltc.advance'].search([("employee_id", "=", self.employee_id.id),
+        submitted_ltc_sequence_ids = self.env['employee.ltc.advance'].search([("employee_id", "=", self.employee_id.id),
                                                                           ("state", "in", ['draft', 'to_approve'])])
 
-        if sumbitted_sequence_ids:
-            for res in sumbitted_sequence_ids:
-                self.sumbitted_sequence_ids.create({
+        if submitted_ltc_sequence_ids:
+            for res in submitted_ltc_sequence_ids:
+                self.submitted_ltc_sequence_ids.create({
                     "exit_transfer_id": self.id,
                     "ltc_sequence_id": res.id,
                     "employee_id": res.employee_id.id,
@@ -313,85 +314,3 @@ class UpcomingEmployeeLeave(models.Model):
         if self.leave_id:
             self.leave_id.update({"state":"cancel"})
             self.update({"state":"cancel"})
-
-#LTC and Claim
-class EmployeeLtcRequest(models.Model):
-    _name = 'employee.ltc.request'
-    _description = 'Ltc Request and Claim'
-
-    exit_transfer_id = fields.Many2one("exit.transfer.management", string="Exit/Transfer Id", readonly=True)
-    ltc_sequence_id = fields.Many2one("employee.ltc.advance", string='LTC number',readonly=True)
-    employee_id = fields.Many2one('hr.employee', string='Requested By')
-    place_of_trvel = fields.Selection(
-        [('hometown', 'Hometown'), ('india', 'Anywhere in India'), ('conversion', 'Conversion of Hometown')],
-        default='hometown', string='Place of Travel', track_visibility='always')
-
-    block_year_id = fields.Many2one('block.year', string='Block year')
-    state = fields.Selection([
-        ('draft', 'Draft'),
-        ('to_approve', 'To Approve'),
-        ('approved', 'Approved'),
-        ('cancelled', 'Cancelled'),
-        ('rejected', 'Rejected')
-    ], string='Status')
-
-    def ltc_cancel(self):
-        if self.ltc_sequence_id:
-            self.ltc_sequence_id.sudo().button_cancel()
-            self.update({"state": "cancelled"})
-
-class PendingEmployeeLtcRequest(models.Model):
-    _name = 'pending.employee.ltc.request'
-    _description = 'Ltc Request and Claim'
-
-    exit_transfer_id = fields.Many2one("exit.transfer.management", string="Exit/Transfer Id", readonly=True)
-    ltc_sequence_id = fields.Many2one("employee.ltc.advance", string='LTC number',readonly=True)
-    employee_id = fields.Many2one('hr.employee', string='Requested By')
-    place_of_trvel = fields.Selection(
-        [('hometown', 'Hometown'), ('india', 'Anywhere in India'), ('conversion', 'Conversion of Hometown')],
-        default='hometown', string='Place of Travel', track_visibility='always')
-
-    block_year_id = fields.Many2one('block.year', string='Block year')
-    state = fields.Selection([
-        ('draft', 'Draft'),
-        ('to_approve', 'To Approve'),
-        ('approved', 'Approved'),
-        ('cancel', 'Cancelled'),
-        ('rejected', 'Rejected')
-    ], string='Status')
-
-    def ltc_approved(self):
-        if self.ltc_sequence_id:
-            self.ltc_sequence_id.sudo().button_approved()
-            self.update({"state":"approved"})
-
-    def ltc_rejected(self):
-        if self.ltc_sequence_id:
-            self.ltc_sequence_id.sudo().button_reject()
-            self.update({"state":"rejected"})
-
-
-class UpcomingEmployeeLtcRequest(models.Model):
-    _name = 'upcoming.employee.ltc.request'
-    _description = 'Ltc Request and Claim'
-
-    exit_transfer_id = fields.Many2one("exit.transfer.management", string="Exit/Transfer Id", readonly=True)
-    ltc_sequence_id = fields.Many2one("employee.ltc.advance", string='LTC number',readonly=True)
-    employee_id = fields.Many2one('hr.employee', string='Requested By')
-    place_of_trvel = fields.Selection(
-        [('hometown', 'Hometown'), ('india', 'Anywhere in India'), ('conversion', 'Conversion of Hometown')],
-        default='hometown', string='Place of Travel', track_visibility='always')
-
-    block_year_id = fields.Many2one('block.year', string='Block year')
-    state = fields.Selection([
-        ('draft', 'Draft'),
-        ('to_approve', 'To Approve'),
-        ('approved', 'Approved'),
-        ('cancelled', 'Cancelled'),
-        ('rejected', 'Rejected')
-    ], string='Status')
-
-    def leave_cancel(self):
-        if self.ltc_sequence_id:
-            self.ltc_sequence_id.sudo().button_cancel()
-            self.update({"state":"cancelled"})
