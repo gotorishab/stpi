@@ -171,8 +171,8 @@ class ExitTransferManagement(models.Model):
             for line in self.pending_ltc_sequence_ids:
                 line.unlink()
 
-        if self.sumbitted_sequence_ids:
-            for line in self.sumbitted_sequence_ids:
+        if self.submitted_ltc_sequence_ids:
+            for line in self.submitted_ltc_sequence_ids:
                 line.unlink()
 
         if self.upcoming_ltc_sequence_ids:
