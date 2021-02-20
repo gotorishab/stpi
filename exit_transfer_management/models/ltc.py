@@ -1,11 +1,6 @@
 from odoo import models, fields, api
 
 
-class PendingTourAndTravelLine(models.Model):
-    _name = 'pending.tour.request'
-    _description = 'Pending Tours request'
-
-
 #LTC and Claim
 
 class PendingEmployeeLtcRequest(models.Model):
