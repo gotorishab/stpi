@@ -395,7 +395,7 @@ class ExitTransferManagement(models.Model):
                 })
 
         upcoming_vehicle_req_ids = self.env['employee.fleet'].search([("employee", "=", self.employee_id.id),
-                                                                     ("create_date.date()", ">=", self.date),#requested_date
+                                                                     ("req_date", ">=", self.date),
                                                                      ("state", "in", ['confirm'])])
         if upcoming_vehicle_req_ids:
             for res in upcoming_vehicle_req_ids:
@@ -447,7 +447,7 @@ class ExitTransferManagement(models.Model):
                 })
 
         upcoming_pf_req_ids = self.env['pf.widthdrawl'].search([("employee_id", "=", self.employee_id.id),
-                                                                ("date", ">=", self.date),#create_date.date()
+                                                                ("date", ">=", self.date),
                                                                 ("state", "in", ['approved'])])
         if upcoming_pf_req_ids:
             for res in upcoming_pf_req_ids:
@@ -498,7 +498,7 @@ class ExitTransferManagement(models.Model):
                 })
 
         upcoming_appraisal_request_ids = self.env['appraisal.main'].search([("employee_id", "=", self.employee_id.id),
-                                                                            ("create_date.date()", ">=", self.date),
+                                                                            ("create_date", ">=", datetime.now()),
                                                                             ("state", "in", ['reporting_authority_review'])])
         if upcoming_appraisal_request_ids:
             for res in upcoming_appraisal_request_ids:
