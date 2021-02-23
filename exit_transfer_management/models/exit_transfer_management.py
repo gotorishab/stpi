@@ -370,7 +370,7 @@ class ExitTransferManagement(models.Model):
             for line in self.upcoming_vehicle_req_ids:
                 line.unlink()
 
-        pending_vehicle_req_ids = self.env['employee.fleet'].search([("employee_id", "=", self.employee_id.id),
+        pending_vehicle_req_ids = self.env['employee.fleet'].search([("employee", "=", self.employee_id.id),
                                                                     ("state", "in", ['waiting'])])
         if pending_vehicle_req_ids:
             for res in pending_vehicle_req_ids:
@@ -382,7 +382,7 @@ class ExitTransferManagement(models.Model):
                     "state": res.state
                 })
 
-        submitted_vehicle_req_ids = self.env['employee.fleet'].search([("employee_id", "=", self.employee_id.id),
+        submitted_vehicle_req_ids = self.env['employee.fleet'].search([("employee", "=", self.employee_id.id),
                                                                       ("state", "in", ['draft', 'waiting'])])
         if submitted_vehicle_req_ids:
             for res in submitted_vehicle_req_ids:
@@ -394,7 +394,7 @@ class ExitTransferManagement(models.Model):
                     "state": res.state
                 })
 
-        upcoming_vehicle_req_ids = self.env['employee.fleet'].search([("employee_id", "=", self.employee_id.id),
+        upcoming_vehicle_req_ids = self.env['employee.fleet'].search([("employee", "=", self.employee_id.id),
                                                                      ("create_date.date()", ">=", self.date),#requested_date
                                                                      ("state", "in", ['confirm'])])
         if upcoming_vehicle_req_ids:
