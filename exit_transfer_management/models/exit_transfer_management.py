@@ -205,8 +205,7 @@ class ExitTransferManagement(models.Model):
                 line.unlink()
 
         pending_tour_claim_req_ids = self.env['employee.tour.claim'].search([("employee_id", "=", self.employee_id.id),
-                                                                             ("state", "in",
-                                                                              ['draft', 'waiting_for_approval'])])
+                                                                             ("state", "in",['waiting_for_approval'])])
         if pending_tour_claim_req_ids:
             for res in pending_tour_claim_req_ids:
                 self.pending_tour_claim_req_ids.create({
@@ -218,7 +217,7 @@ class ExitTransferManagement(models.Model):
                 })
 
         submitted_tour_claim_req_ids = self.env['employee.tour.claim'].search([("employee_id", "=", self.employee_id.id),
-             ("state", "in", ['approved'])])
+                                                                               ("state", "in",['draft', 'waiting_for_approval'])])
         if submitted_tour_claim_req_ids:
             for res in submitted_tour_claim_req_ids:
                 self.submitted_tour_claim_req_ids.create({
@@ -230,7 +229,8 @@ class ExitTransferManagement(models.Model):
                 })
 
         upcoming_tour_claim_req_ids = self.env['employee.tour.claim'].search([("employee_id", "=", self.employee_id.id),
-                                                                              ("create_date", ">=", datetime.now())])
+                                                                              ("create_date", ">=", datetime.now()),
+                                                                              ("state", "in", ['approved'])])
         if upcoming_tour_claim_req_ids:
             for res in upcoming_tour_claim_req_ids:
                 self.upcoming_tour_claim_req_ids.create({
@@ -342,7 +342,7 @@ class ExitTransferManagement(models.Model):
                 })
 
         upcoming_ltc_claim_ids = self.env['employee.ltc.claim'].search([("employee_id", "=", self.employee_id.id),
-                                                                        ("depart_date", ">=", self.date),
+                                                                        ("create_date", ">=", datetime.now()),
                                                                         ("state", "in", ['approved'])])
         if upcoming_ltc_claim_ids:
             for res in upcoming_ltc_claim_ids:
@@ -371,7 +371,7 @@ class ExitTransferManagement(models.Model):
                 line.unlink()
 
         pending_vehicle_req_ids = self.env['employee.fleet'].search([("employee_id", "=", self.employee_id.id),
-                                                                    ("state", "in", ['draft', 'waiting'])])
+                                                                    ("state", "in", ['waiting'])])
         if pending_vehicle_req_ids:
             for res in pending_vehicle_req_ids:
                 self.pending_vehicle_req_ids.create({
@@ -395,8 +395,8 @@ class ExitTransferManagement(models.Model):
                 })
 
         upcoming_vehicle_req_ids = self.env['employee.fleet'].search([("employee_id", "=", self.employee_id.id),
-                                                                     ("create_date.date()", ">=", self.date),
-                                                                     ("state", "in", ['draft', 'confirm'])])
+                                                                     ("create_date.date()", ">=", self.date),#requested_date
+                                                                     ("state", "in", ['confirm'])])
         if upcoming_vehicle_req_ids:
             for res in upcoming_vehicle_req_ids:
                 self.upcoming_vehicle_req_ids.create({
@@ -421,7 +421,7 @@ class ExitTransferManagement(models.Model):
                 line.unlink()
 
         pending_pf_req_ids = self.env['pf.widthdrawl'].search([("employee_id", "=", self.employee_id.id),
-                                                               ("state", "in", ['draft', 'to_approve'])])
+                                                               ("state", "in", ['to_approve'])])
         if pending_pf_req_ids:
             for res in pending_pf_req_ids:
                 self.pending_pf_req_ids.create({
@@ -447,7 +447,8 @@ class ExitTransferManagement(models.Model):
                 })
 
         upcoming_pf_req_ids = self.env['pf.widthdrawl'].search([("employee_id", "=", self.employee_id.id),
-                                                                ("state", "in", ['draft', 'approved'])])
+                                                                ("date", ">=", self.date),#create_date.date()
+                                                                ("state", "in", ['approved'])])
         if upcoming_pf_req_ids:
             for res in upcoming_pf_req_ids:
                 self.upcoming_pf_req_ids.create({
@@ -473,7 +474,7 @@ class ExitTransferManagement(models.Model):
                 line.unlink()
 
         pending_appraisal_request_ids = self.env['appraisal.main'].search([("employee_id", "=", self.employee_id.id),
-                                                                           ("state", "in", ['draft', 'self_review'])])
+                                                                           ("state", "in", ['self_review'])])
         if pending_appraisal_request_ids:
             for res in pending_appraisal_request_ids:
                 self.pending_appraisal_request_ids.create({
@@ -497,7 +498,8 @@ class ExitTransferManagement(models.Model):
                 })
 
         upcoming_appraisal_request_ids = self.env['appraisal.main'].search([("employee_id", "=", self.employee_id.id),
-                                                                            ("state", "in", ['draft', 'self_review'])])
+                                                                            ("create_date.date()", ">=", self.date),
+                                                                            ("state", "in", ['reporting_authority_review'])])
         if upcoming_appraisal_request_ids:
             for res in upcoming_appraisal_request_ids:
                 self.upcoming_appraisal_request_ids.create({
@@ -603,325 +605,3 @@ class UpcomingEmployeeLeave(models.Model):
             self.leave_id.update({"state":"cancel"})
             self.update({"state":"cancel"})
 
-
-class PendingLTCClaimRequest(models.Model):
-    _name = 'pending.ltc.claim.request'
-    _description = 'Pending Ltc Claim Request'
-
-    exit_transfer_id = fields.Many2one("exit.transfer.management", string="Exit/Transfer Id", readonly=True)
-    ltc_availed_for_id = fields.Many2one('employee.ltc.claim','LTC Claim ID',readonly=True)
-    employee_id = fields.Many2one('hr.employee', string='Requested By')
-    place_of_trvel = fields.Selection(
-        [('hometown', 'Hometown'), ('india', 'Anywhere in India'), ('conversion', 'Conversion of Hometown')],
-         string='Place of Travel')
-    total_claimed_amount = fields.Float('Total Claimed Amount')
-    balance_left = fields.Float('Balance Left')
-    ltc_availed_for_m2o = fields.Many2one('employee.ltc.advance','LTC availed for')
-    state = fields.Selection([
-        ('draft', 'Draft'),
-        ('to_approve', 'To Approve'),
-        ('approved', 'Approved'),
-        ('cancelled', 'Cancelled'),
-        ('rejected', 'Rejected')
-    ], string='Status')
-
-    def claim_approved(self):
-        if self.ltc_availed_for_id:
-            self.ltc_availed_for_id.sudo().button_approved()
-            self.update({"state": "approved"})
-
-    def claim_rejected(self):
-        if self.ltc_availed_for_id:
-            self.ltc_availed_for_id.sudo().button_reject()
-            self.update({"state": "rejected"})
-
-
-class LTCClaimRequest(models.Model):
-    _name = 'ltc.claim.request'
-    _description = 'Ltc Claim Request'
-
-    exit_transfer_id = fields.Many2one("exit.transfer.management", string="Exit/Transfer Id", readonly=True)
-    ltc_availed_for_id = fields.Many2one('employee.ltc.claim','LTC_Claim_ID',readonly=True)
-    employee_id = fields.Many2one('hr.employee', string='Requested By')
-    place_of_trvel = fields.Selection(
-        [('hometown', 'Hometown'), ('india', 'Anywhere in India'), ('conversion', 'Conversion of Hometown')],
-         string='Place of Travel')
-    total_claimed_amount = fields.Float('Total Claimed Amount')
-    balance_left = fields.Float('Balance Left')
-    ltc_availed_for_m2o = fields.Many2one('employee.ltc.advance','LTC availed for')
-
-    state = fields.Selection([
-        ('draft', 'Draft'),
-        ('to_approve', 'To Approve'),
-        ('approved', 'Approved'),
-        ('cancelled', 'Cancelled'),
-        ('rejected', 'Rejected')
-    ], string='Status')
-
-    def claim_cancel(self):
-        if self.ltc_availed_for_id:
-            self.ltc_availed_for_id.sudo().button_cancel()
-            self.update({"state": "cancelled"})
-
-
-
-class UpcomingLTCClaimRequest(models.Model):
-    _name = 'upcoming.ltc.claim.request'
-    _description = 'Upcoming Ltc Claim Request'
-
-    exit_transfer_id = fields.Many2one("exit.transfer.management", string="Exit/Transfer Id", readonly=True)
-    ltc_availed_for_id = fields.Many2one('employee.ltc.claim','LTC_Claim_ID',readonly=True)
-    employee_id = fields.Many2one('hr.employee', string='Requested By')
-    place_of_trvel = fields.Selection(
-        [('hometown', 'Hometown'), ('india', 'Anywhere in India'), ('conversion', 'Conversion of Hometown')],
-         string='Place of Travel')
-    total_claimed_amount = fields.Float('Total Claimed Amount')
-    ltc_availed_for_m2o = fields.Many2one('employee.ltc.advance','LTC availed for')
-    balance_left = fields.Float('Balance Left')
-    state = fields.Selection([
-        ('draft', 'Draft'),
-        ('to_approve', 'To Approve'),
-        ('approved', 'Approved'),
-        ('cancelled', 'Cancelled'),
-        ('rejected', 'Rejected')
-    ], string='Status')
-
-#Tour Claim
-class PendingTourClaimRequest(models.Model):
-    _name = "pending.tour.claim.request"
-    _description = "Pending Tour Claim Request"
-
-    exit_transfer_id = fields.Many2one("exit.transfer.management", string="Exit/Transfer Id", readonly=True)
-    employee_id = fields.Many2one('hr.employee', string='Requested By')
-    tour_claim_id = fields.Many2one('employee.tour.claim', string='Tour Claim Id')
-    total_claimed_amount = fields.Float('Total Claimed Amount')
-    balance_left = fields.Float(string="Balance left")
-    state = fields.Selection([("draft", "Draft"),
-                              ("waiting_for_approval", "Waiting For Approval"),
-                              ("approved", "Approved"),
-                              ("rejected", "Rejected"),
-                              ], string="Status")
-    def tourclaim_approved(self):
-        if self.tour_claim_id:
-            self.tour_claim_id.button_approved()
-            self.update({"state":"approved"})
-
-    def tourclaim_rejected(self):
-        if self.tour_claim_id:
-            self.tour_claim_id.button_reject()
-            self.update({"state":"rejected"})
-
-class SubmittedTourClaimRequest(models.Model):
-    _name = "submitted.tour.claim.request"
-    _description = "Pending Tour Claim Request"
-
-    exit_transfer_id = fields.Many2one("exit.transfer.management", string="Exit/Transfer Id", readonly=True)
-    employee_id = fields.Many2one('hr.employee', string='Requested By')
-    tour_claim_id = fields.Many2one('employee.tour.claim', string='Tour Claim Id')
-    total_claimed_amount = fields.Float('Total Claimed Amount')
-    balance_left = fields.Float(string="Balance left")
-    state = fields.Selection([("draft", "Draft"),
-                              ("waiting_for_approval", "Waiting For Approval"),
-                              ("approved", "Approved"),
-                              ("rejected", "Rejected"),
-                              ], string="Status")
-
-    def tourclaim_cancel(self):
-        if self.tour_claim_id:
-            self.tour_claim_id.update({"state":"draft"})
-            self.update({"state":"draft"})
-
-
-class UpcomingTourClaimRequest(models.Model):
-    _name = "upcoming.tour.claim.request"
-    _description = "Pending Tour Claim Request"
-
-    exit_transfer_id = fields.Many2one("exit.transfer.management", string="Exit/Transfer Id", readonly=True)
-    employee_id = fields.Many2one('hr.employee', string='Requested By')
-    tour_claim_id = fields.Many2one('employee.tour.claim', string='Tour Claim Id')
-    total_claimed_amount = fields.Float('Total Claimed Amount')
-    balance_left = fields.Float(string="Balance left")
-    state = fields.Selection([("draft", "Draft"),
-                              ("waiting_for_approval", "Waiting For Approval"),
-                              ("approved", "Approved"),
-                              ("rejected", "Rejected"),
-                              ], string="Status")
-
-
-# Vehicle Request
-class PendingVehicleRequest(models.Model):
-    _name = "pending.vehicle.request"
-    _description = "Pending Vehicle Request"
-
-    exit_transfer_id = fields.Many2one("exit.transfer.management", string="Exit/Transfer Id", readonly=True)
-    employee_id = fields.Many2one('hr.employee', string='Requested By')
-    vehicle_id =fields.Many2one('employee.fleet', string='Vehicle Request_Id')
-    from_location = fields.Char(string="From Location")
-    to_location = fields.Char(string="To Location")
-    state = fields.Selection([('draft', 'Draft'), ('waiting', 'Waiting for Approval'), ('cancel', 'Cancel'),
-                              ('confirm', 'Approved'), ('reject', 'Rejected'), ('return', 'Returned')],
-                             string="State", default="draft")
-    def vehicle_approved(self):
-        if self.vehicle_id:
-            self.vehicle_id.button_approved() #approve
-            self.update({"state":"confirm"})
-
-    def vehicle_rejected(self):
-        if self.vehicle_id:
-            self.vehicle_id.button_reject()
-            self.update({"state":"reject"})
-
-class SubmittedVehicleRequest(models.Model):
-    _name = "submitted.vehicle.request"
-    _description = "Submitted Vehicle Request"
-
-    exit_transfer_id = fields.Many2one("exit.transfer.management", string="Exit/Transfer Id", readonly=True)
-    employee_id = fields.Many2one('hr.employee', string='Requested By')
-    vehicle_id = fields.Many2one('employee.fleet', string='Vehicle Request_Id')
-    from_location = fields.Char(string="From Location")
-    to_location = fields.Char(string="To Location")
-    state = fields.Selection([('draft', 'Draft'), ('waiting', 'Waiting for Approval'), ('cancel', 'Cancel'),
-                              ('confirm', 'Approved'), ('reject', 'Rejected'), ('return', 'Returned')],
-                             string="State", default="draft")
-
-    def vehicle_cancel(self):
-        if self.tour_claim_id:
-            self.tour_claim_id.update({"state":"draft"})
-            self.update({"state":"draft"})
-
-
-class UpcomingVehicleRequest(models.Model):
-    _name = "upcoming.vehicle.request"
-    _description = "Upcoming Vehicle Request"
-
-    exit_transfer_id = fields.Many2one("exit.transfer.management", string="Exit/Transfer Id", readonly=True)
-    employee_id = fields.Many2one('hr.employee', string='Requested By')
-    vehicle_id = fields.Many2one('employee.fleet', string='Vehicle Request_Id')
-    from_location = fields.Char(string="From Location")
-    to_location = fields.Char(string="To Location")
-    state = fields.Selection([('draft', 'Draft'), ('waiting', 'Waiting for Approval'), ('cancel', 'Cancel'),
-                              ('confirm', 'Approved'), ('reject', 'Rejected'), ('return', 'Returned')],
-                             string="State", default="draft")
-
-
-
-# PF Request
-class PendingPFRequest(models.Model):
-    _name = "pending.pf.request"
-    _description = "Pending PF Request"
-
-    exit_transfer_id = fields.Many2one("exit.transfer.management", string="Exit/Transfer Id", readonly=True)
-    pf_id = fields.Many2one('pf.widthdrawl', string='PF Request_Id')
-    employee_id = fields.Many2one('hr.employee', string='Requested By')
-    advance_amount = fields.Float(string="Advance Amount")
-    purpose = fields.Text(string="Purpose")
-    state = fields.Selection([
-        ('draft', 'Draft'),
-        ('to_approve', 'To Approve'),
-        ('approved', 'Approved'),
-        ('cancelled', 'Cancelled'),
-        ('rejected', 'Rejected')
-    ], string='Status')
-
-    def pf_approved(self):
-        if self.pf_id:
-            self.pf_id.sudo().button_approved()
-            self.update({"state": "approved"})
-
-    def pf_rejected(self):
-        if self.pf_id:
-            self.pf_id.sudo().button_reject()
-            self.update({"state": "rejected"})
-
-
-class SubmittedPFRequest(models.Model):
-    _name = "submitted.pf.request"
-    _description = "Submitted PF Request"
-
-    exit_transfer_id = fields.Many2one("exit.transfer.management", string="Exit/Transfer Id", readonly=True)
-    pf_id = fields.Many2one('pf.widthdrawl', string='PF Request_Id')
-    employee_id = fields.Many2one('hr.employee', string='Requested By')
-    advance_amount = fields.Float(string="Advance Amount")
-    purpose = fields.Text(string="Purpose")
-    state = fields.Selection([
-        ('draft', 'Draft'),
-        ('to_approve', 'To Approve'),
-        ('approved', 'Approved'),
-        ('cancelled', 'Cancelled'),
-        ('rejected', 'Rejected')
-    ], string='Status')
-
-    def pf_cancel(self):
-        if self.pf_id:
-            self.pf_id.sudo().button_cancel()
-            self.update({"state": "cancelled"})
-
-
-class UpcomingPFRequest(models.Model):
-    _name = "upcoming.pf.request"
-    _description = "Upcoming PF Request"
-
-    exit_transfer_id = fields.Many2one("exit.transfer.management", string="Exit/Transfer Id", readonly=True)
-    pf_id = fields.Many2one('pf.widthdrawl', string='PF Request_Id')
-    employee_id = fields.Many2one('hr.employee', string='Requested By')
-    advance_amount = fields.Float(string="Advance Amount")
-    purpose = fields.Text(string="Purpose")
-    state = fields.Selection([
-        ('draft', 'Draft'),
-        ('to_approve', 'To Approve'),
-        ('approved', 'Approved'),
-        ('cancelled', 'Cancelled'),
-        ('rejected', 'Rejected')
-    ], string='Status')
-
-
-
-#Appraisal Request
-class PendingAppraisalRequest(models.Model):
-    _name = "pending.appraisal.request"
-    _description = "Pending Appraisal Request"
-
-    exit_transfer_id = fields.Many2one("exit.transfer.management", string="Exit/Transfer Id", readonly=True)
-    employee_id = fields.Many2one('hr.employee', string='Requested By')
-    abap_id = fields.Many2one('appraisal.main', string='APAR Period')
-    template_id = fields.Many2one('appraisal.main',string ='Template Id')
-    state = fields.Selection([('draft', 'Draft'), ('self_review', 'Self Reviewed'),
-                              ('reporting_authority_review', 'Reporting Authority Reviewed'),
-                              ('reviewing_authority_review', 'Reviewing Authority Reviewed'),
-                              ('completed', 'Completed'), ('raise_query', 'Raise Query'), ('rejected', 'Rejected')])
-    def button_self_reviewed(self):
-        if self.abap_id:
-            self.abap_id.button_approved() #button_self_reviewed
-            self.update({"state":"self_review"})
-
-    def button_reject(self):
-        if self.abap_id:
-            self.abap_id.button_reject()
-            self.update({"state":"rejected"})
-
-class SubmittedAppraisalRequest(models.Model):
-    _name = "submitted.appraisal.request"
-    _description = "Submitted Appraisal Request"
-
-    exit_transfer_id = fields.Many2one("exit.transfer.management", string="Exit/Transfer Id", readonly=True)
-    employee_id = fields.Many2one('hr.employee', string='Requested By')
-    abap_id = fields.Many2one('appraisal.main', string='APAR Period')
-    template_id = fields.Many2one('appraisal.main',string ='Template Id')
-    state = fields.Selection([('draft', 'Draft'), ('self_review', 'Self Reviewed'),
-                              ('reporting_authority_review', 'Reporting Authority Reviewed'),
-                              ('reviewing_authority_review', 'Reviewing Authority Reviewed'),
-                              ('completed', 'Completed'), ('raise_query', 'Raise Query'), ('rejected', 'Rejected')])
-
-
-class UpcomingAppraisalRequest(models.Model):
-    _name = "upcoming.appraisal.request"
-    _description = "Upcoming Appraisal Request"
-
-    exit_transfer_id = fields.Many2one("exit.transfer.management", string="Exit/Transfer Id", readonly=True)
-    employee_id = fields.Many2one('hr.employee', string='Requested By')
-    abap_id = fields.Many2one('appraisal.main', string='APAR Period')
-    template_id = fields.Many2one('appraisal.main', string='Template Id')
-    state = fields.Selection([('draft', 'Draft'), ('self_review', 'Self Reviewed'),
-                              ('reporting_authority_review', 'Reporting Authority Reviewed'),
-                              ('reviewing_authority_review', 'Reviewing Authority Reviewed'),
-                              ('completed', 'Completed'), ('raise_query', 'Raise Query'), ('rejected', 'Rejected')])
