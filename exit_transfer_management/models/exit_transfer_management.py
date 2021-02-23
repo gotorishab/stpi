@@ -230,7 +230,7 @@ class ExitTransferManagement(models.Model):
                 })
 
         upcoming_tour_claim_req_ids = self.env['employee.tour.claim'].search([("employee_id", "=", self.employee_id.id),
-                                                                              ("create_date.date()", ">=", self.date)])
+                                                                              ("create_date", ">=", datetime.now())])
         if upcoming_tour_claim_req_ids:
             for res in upcoming_tour_claim_req_ids:
                 self.upcoming_tour_claim_req_ids.create({
