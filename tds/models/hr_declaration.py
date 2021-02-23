@@ -1212,7 +1212,7 @@ class HrDeclaration(models.Model):
                 for line in rec.dednew_rule_ids:
                     sum+=line.investment
 
-                if (rec.income_after_exemption - sum) <0:
+                if (rec.income_after_exemption - sum) > 0:
                     rec.income_after_dednew = rec.income_after_exemption - sum
                 else:
                     rec.income_after_dednew = 0
