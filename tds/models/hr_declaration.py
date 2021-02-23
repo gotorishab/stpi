@@ -213,6 +213,7 @@ class HrDeclaration(models.Model):
     income_after_exemption = fields.Float(string='Income after Exemption')
     income_after_std_ded = fields.Float(string='Income after Std. Deduction')
     income_after_pro_tax = fields.Float(string='Income after Professional Tax')
+    income_after_dednew = fields.Float(string='Income after Deduction')
     taxable_income = fields.Float(string='Taxable Income')
 
     exemption_ids = fields.One2many('declaration.exemption', 'exemption_id', string='Exemption Ids')
@@ -1207,12 +1208,19 @@ class HrDeclaration(models.Model):
                     rec.income_after_exemption = round(rec.tax_salary_final + rec.previous_employer_income - exempt_am)
                 else:
                     rec.income_after_exemption = 0.00
+                sum = 0
+                for line in rec.dednew_rule_ids:
+                    sum+=line.investment
 
+                if (rec.income_after_exemption - sum) <0:
+                    rec.income_after_dednew = rec.income_after_exemption - sum
+                else:
+                    rec.income_after_dednew = 0
                 if rec.income_after_exemption - std_am > 0.00:
                     rec.income_after_std_ded = round(rec.income_after_exemption - std_am)
                 else:
                     rec.income_after_std_ded = 0.00
-                if rec.income_after_std_ded - sum_pt > 0.00:
+                if rec.income_after_std_ded - sum_pt >   0.00:
                     rec.income_after_pro_tax = round(rec.income_after_std_ded - sum_pt)
                 else:
                     rec.income_after_pro_tax = 0.00
@@ -1221,6 +1229,7 @@ class HrDeclaration(models.Model):
                     rec.taxable_income = round(rec.income_after_pro_tax - rec.total_tds_paid)
                 else:
                     rec.taxable_income = 0.00
+                rec.taxable_income = rec.income_after_dednew
                 employee = self.env['hr.employee'].sudo().search([('id', '=', rec.employee_id.id),
                                                                   ], limit=1)
                 years = 30

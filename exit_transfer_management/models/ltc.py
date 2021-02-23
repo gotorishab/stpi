@@ -1,6 +1,5 @@
 from odoo import models, fields, api
 
-
 #LTC and Claim
 
 class PendingEmployeeLtcRequest(models.Model):
