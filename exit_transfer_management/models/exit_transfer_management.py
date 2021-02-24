@@ -222,8 +222,6 @@ class ExitTransferManagement(models.Model):
                                     "balance_left": res.balance_left,
                                     "state": res.state
                                 })
-                    else:
-                        continue
 
         submitted_tour_claim_req_ids = self.env['employee.tour.claim'].search([("employee_id", "=", self.employee_id.id),
                                                                                ("state", "in",['draft', 'waiting_for_approval'])])
