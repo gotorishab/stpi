@@ -408,7 +408,53 @@
 
                             </page>
                             <page string="Income Tax">
-                                <field name="claim_lines1_ids" readonly="1" options='{"no_open": True}'/>
+                                <br/>
+                                    <div><h2>Pending Income Tax Request</h2></div>
+                                <br/>
+                                <field name="pending_income_tax_ids" readonly="1" options='{"no_open": True}'>
+                                    <tree edittable="bottom">
+                                        <field name="running_fy_id"/>
+                                        <field name="total_gross"/>
+                                        <field name="taxable_income"/>
+                                        <field name="tax_payable"/>
+                                        <field name="tax_paid"/>
+                                        <field name="total_rem"/>
+                                        <field name="state"/>
+                                        <button name="tax_approved" type="object" string='Approved' icon="fa-check-circle"/>
+                                        <button name="tax_rejected" type="object" string='Rejected' icon="fa-times-circle"/>
+                                    </tree>
+                                </field>
+
+                                <br/>
+                                    <div><h2>Submitted Income Tax Request</h2></div>
+                                <br/>
+                                <field name="submitted_income_tax_ids" readonly="1" options='{"no_open": True}'>
+                                    <tree edittable="bottom">
+                                        <field name="running_fy_id"/>
+                                        <field name="total_gross"/>
+                                        <field name="taxable_income"/>
+                                        <field name="tax_payable"/>
+                                        <field name="tax_paid"/>
+                                        <field name="total_rem"/>
+                                        <field name="state"/>
+                                        <button name="tax_rejected" type="object" string='Rejected' icon="fa-times-circle"/>
+                                    </tree>
+                                </field>
+
+                                <br/>
+                                    <div><h2>Upcoming Income Tax Request</h2></div>
+                                <br/>
+                                <field name="upcoming_income_tax_ids" readonly="1" options='{"no_open": True}'>
+                                    <tree edittable="bottom">
+                                        <field name="running_fy_id"/>
+                                        <field name="total_gross"/>
+                                        <field name="taxable_income"/>
+                                        <field name="tax_payable"/>
+                                        <field name="tax_paid"/>
+                                        <field name="total_rem"/>
+                                        <field name="state"/>
+                                    </tree>
+                                </field>
                             </page>
                             <page string="eFile">
                                 <field name="claim_lines1_ids" readonly="1" options='{"no_open": True}'/>

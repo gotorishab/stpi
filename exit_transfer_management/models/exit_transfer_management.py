@@ -70,6 +70,11 @@ class ExitTransferManagement(models.Model):
     submitted_appraisal_request_ids = fields.One2many("submitted.appraisal.request", "exit_transfer_id", string="Upcoming Vehicle Request")
     upcoming_appraisal_request_ids = fields.One2many("upcoming.appraisal.request", "exit_transfer_id", string="Upcoming Vehicle Request")
 
+    # income Tax
+    pending_income_tax_ids = fields.One2many("pending.income.tax.request", "exit_transfer_id", string="Pending Income Tax request")
+    submitted_income_tax_ids = fields.One2many("submitted.income.tax.request", "exit_transfer_id", string="Submitted Income Tax request")
+    upcoming_income_tax_ids = fields.One2many("upcoming.income.tax.request", "exit_transfer_id", string="Upcoming Income Tax request")
+
     claim_lines1_ids = fields.One2many("claim.lines1","exit_transfer_id", string="1`Upcoming Lines")
 
     leave_no_dues = fields.Boolean()
@@ -228,6 +233,7 @@ class ExitTransferManagement(models.Model):
                                 self.pending_tour_claim_req_ids.create({
                                     "exit_transfer_id": self.id,
                                     "tour_claim_id": res.id,
+                                    "employee_id": res.employee_id.id,
                                     "total_claimed_amount": res.total_claimed_amount,
                                     "balance_left": res.balance_left,
                                     "state": res.state
@@ -271,19 +277,26 @@ class ExitTransferManagement(models.Model):
             for line in self.upcoming_ltc_sequence_ids:
                 line.unlink()
 
-        pending_ltc_sequence_ids = self.env['employee.ltc.advance'].search([("employee_id", "=", self.employee_id.id),
-                                                                            ("state", "in", ['to_approve'])])
 
-        if pending_ltc_sequence_ids:
-            for res in pending_ltc_sequence_ids:
-                self.pending_ltc_sequence_ids.create({
-                    "exit_transfer_id": self.id,
-                    "ltc_sequence_id": res.id,
-                    "employee_id": res.employee_id.id,
-                    "place_of_trvel": res.place_of_trvel,
-                    "block_year_id": res.block_year.id,
-                    "state": res.state
-                })
+        group_id = self.env.ref('employee_ltc.group_ltc_manager')
+        if group_id:
+            for ln in group_id:
+                for user in ln.users:
+                    if user.id == self.env.user.id:
+                        me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+                        HrEmployees = self.env['hr.employee'].sudo().search([("branch_id", "=", me.branch_id.id)])
+                        pending_ltc_sequence_ids = self.env['employee.ltc.advance'].search([("employee_id", "in", HrEmployees.ids),
+                                                                            ("state", "in", ['to_approve'])])
+                        if pending_ltc_sequence_ids:
+                            for res in pending_ltc_sequence_ids:
+                                self.pending_ltc_sequence_ids.create({
+                                    "exit_transfer_id": self.id,
+                                    "ltc_sequence_id": res.id,
+                                    "employee_id": res.employee_id.id,
+                                    "place_of_trvel": res.place_of_trvel,
+                                    "block_year_id": res.block_year.id,
+                                    "state": res.state
+                                })
 
         submitted_ltc_sequence_ids = self.env['employee.ltc.advance'].search([("employee_id", "=", self.employee_id.id),
                                                                           ("state", "in", ['draft', 'to_approve'])])
@@ -327,20 +340,27 @@ class ExitTransferManagement(models.Model):
             for line in self.upcoming_ltc_claim_ids:
                 line.unlink()
 
-        pending_ltc_claim_ids = self.env["employee.ltc.claim"].search([("employee_id", "=", self.employee_id.id),
-                                                                       ("state", "in", ['to_approve'])])
-        if pending_ltc_claim_ids:
-            for res in pending_ltc_claim_ids:
-                self.pending_ltc_claim_ids.create({
-                    "exit_transfer_id": self.id,
-                    "ltc_availed_for_id": res.id,
-                    "employee_id": res.employee_id.id,
-                    "ltc_availed_for_m2o": res.ltc_availed_for_m2o.id,
-                    "place_of_trvel": res.place_of_trvel,
-                    "total_claimed_amount": res.total_claimed_amount,
-                    "balance_left": res.balance_left,
-                    "state": res.state
-                })
+        group_id = self.env.ref('employee.ltc.claim.group_ltc_manager')
+        if group_id:
+            for ln in group_id:
+                for user in ln.users:
+                    if user.id == self.env.user.id:
+                        me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+                        HrEmployees = self.env['hr.employee'].sudo().search([("branch_id", "=", me.branch_id.id)])
+                        pending_ltc_claim_ids = self.env["employee.ltc.claim"].search([("employee_id", "in", HrEmployees.ids),
+                                                                                       ("state", "in", ['to_approve'])])
+                        if pending_ltc_claim_ids:
+                            for res in pending_ltc_claim_ids:
+                                self.pending_ltc_claim_ids.create({
+                                    "exit_transfer_id": self.id,
+                                    "ltc_availed_for_id": res.id,
+                                    "employee_id": res.employee_id.id,
+                                    "ltc_availed_for_m2o": res.ltc_availed_for_m2o.id,
+                                    "place_of_trvel": res.place_of_trvel,
+                                    "total_claimed_amount": res.total_claimed_amount,
+                                    "balance_left": res.balance_left,
+                                    "state": res.state
+                                })
 
         submitted_ltc_claim_ids = self.env['employee.ltc.claim'].search([("employee_id", "=", self.employee_id.id),
                                                                          ("state", "in", ['draft', 'to_approve'])])
@@ -387,17 +407,24 @@ class ExitTransferManagement(models.Model):
             for line in self.upcoming_vehicle_req_ids:
                 line.unlink()
 
-        pending_vehicle_req_ids = self.env['employee.fleet'].search([("employee", "=", self.employee_id.id),
-                                                                    ("state", "in", ['waiting'])])
-        if pending_vehicle_req_ids:
-            for res in pending_vehicle_req_ids:
-                self.pending_vehicle_req_ids.create({
-                    "exit_transfer_id": self.id,
-                    "vehicle_id": res.id,
-                    "from_location": res.from_location,
-                    "to_location": res.to_location,
-                    "state": res.state
-                })
+        group_id = self.env.ref('employee.fleet.group_employee_manager_v')
+        if group_id:
+            for ln in group_id:
+                for user in ln.users:
+                    if user.id == self.env.user.id:
+                        me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+                        HrEmployees = self.env['hr.employee'].sudo().search([("branch_id", "=", me.branch_id.id)])
+                        pending_vehicle_req_ids = self.env['employee.fleet'].search([("employee_id", "in", HrEmployees.ids),
+                                                                                    ("state", "in", ['waiting'])])
+                        if pending_vehicle_req_ids:
+                            for res in pending_vehicle_req_ids:
+                                self.pending_vehicle_req_ids.create({
+                                    "exit_transfer_id": self.id,
+                                    "vehicle_id": res.id,
+                                    "from_location": res.from_location,
+                                    "to_location": res.to_location,
+                                    "state": res.state
+                                })
 
         submitted_vehicle_req_ids = self.env['employee.fleet'].search([("employee", "=", self.employee_id.id),
                                                                       ("state", "in", ['draft', 'waiting'])])
@@ -437,18 +464,25 @@ class ExitTransferManagement(models.Model):
             for line in self.upcoming_pf_req_ids:
                 line.unlink()
 
-        pending_pf_req_ids = self.env['pf.widthdrawl'].search([("employee_id", "=", self.employee_id.id),
-                                                               ("state", "in", ['to_approve'])])
-        if pending_pf_req_ids:
-            for res in pending_pf_req_ids:
-                self.pending_pf_req_ids.create({
-                    "exit_transfer_id": self.id,
-                    "pf.widthdrawl": res.id,
-                    "employee_id": res.employee_id.id,
-                    "advance_amount": res.advance_amount,
-                    "purpose": res.purpose,
-                    "state": res.state
-                })
+        group_id = self.env.ref('pf.widthdrawl.group_pf_withdraw_approver')
+        if group_id:
+            for ln in group_id:
+                for user in ln.users:
+                    if user.id == self.env.user.id:
+                        me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+                        HrEmployees = self.env['hr.employee'].sudo().search([("branch_id", "=", me.branch_id.id)])
+                        pending_pf_req_ids = self.env['pf.widthdrawl'].search([("employee_id", "in", HrEmployees.ids),
+                                                                               ("state", "in", ['to_approve'])])
+                        if pending_pf_req_ids:
+                            for res in pending_pf_req_ids:
+                                self.pending_pf_req_ids.create({
+                                    "exit_transfer_id": self.id,
+                                    "pf.widthdrawl": res.id,
+                                    "employee_id": res.employee_id.id,
+                                    "advance_amount": res.advance_amount,
+                                    "purpose": res.purpose,
+                                    "state": res.state
+                                })
 
         submitted_pf_req_ids = self.env['pf.widthdrawl'].search([("employee_id", "=", self.employee_id.id),
                                                                  ("state", "in", ['draft', 'to_approve'])])
@@ -490,17 +524,24 @@ class ExitTransferManagement(models.Model):
             for line in self.upcoming_appraisal_request_ids:
                 line.unlink()
 
-        pending_appraisal_request_ids = self.env['appraisal.main'].search([("employee_id", "=", self.employee_id.id),
-                                                                           ("state", "in", ['self_review'])])
-        if pending_appraisal_request_ids:
-            for res in pending_appraisal_request_ids:
-                self.pending_appraisal_request_ids.create({
-                    "exit_transfer_id": self.id,
-                    "employee_id": res.employee_id.id,
-                    "abap_id": res.abap_id,
-                    "template_id": res.template_id,
-                    "state": res.state
-                })
+        group_id = self.env.ref('employee.fleet.group_employee_manager_v')
+        if group_id:
+            for ln in group_id:
+                for user in ln.users:
+                    if user.id == self.env.user.id:
+                        me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+                        HrEmployees = self.env['hr.employee'].sudo().search([("branch_id", "=", me.branch_id.id)])
+                        pending_appraisal_request_ids = self.env['appraisal.main'].search([("employee_id", "in", HrEmployees.ids),
+                                                                                           ("state", "in", ['self_review'])])
+                        if pending_appraisal_request_ids:
+                            for res in pending_appraisal_request_ids:
+                                self.pending_appraisal_request_ids.create({
+                                    "exit_transfer_id": self.id,
+                                    "employee_id": res.employee_id.id,
+                                    "abap_id": res.abap_id,
+                                    "template_id": res.template_id,
+                                    "state": res.state
+                                })
 
         submitted_appraisal_request_ids = self.env['appraisal.main'].search([("employee_id", "=", self.employee_id.id),
                                                                              ("state", "in", ['draft', 'self_review'])])
@@ -524,6 +565,76 @@ class ExitTransferManagement(models.Model):
                     "employee_id": res.employee_id.id,
                     "abap_id": res.abap_id,
                     "template_id": res.template_id,
+                    "state": res.state
+                })
+
+        # income tax
+        if self.pending_income_tax_ids:
+            for line in self.pending_income_tax_ids:
+                line.unlink()
+
+        if self.submitted_income_tax_ids:
+            for line in self.submitted_income_tax_ids:
+                line.unlink()
+
+        if self.upcoming_income_tax_ids:
+            for line in self.upcoming_income_tax_ids:
+                line.unlink()
+
+        group_id = self.env.ref('hr.declaration.group_manager_hr_declaration')
+        if group_id:
+            for ln in group_id:
+                for user in ln.users:
+                    if user.id == self.env.user.id:
+                        me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+                        HrEmployees = self.env['hr.employee'].sudo().search([("branch_id", "=", me.branch_id.id)])
+                        pending_income_tax_ids = self.env['hr.declaration'].search([("employee_id", "in", HrEmployees.ids),
+                                                                                    ("state", "in", ['to_approve'])])
+                        if pending_income_tax_ids:
+                            for res in pending_income_tax_ids:
+                                self.pending_income_tax_ids.create({
+                                    "exit_transfer_id": self.id,
+                                    "running_fy_id": res.id,
+                                    "employee_id": res.employee_id.id,
+                                    "total_gross": res.total_gross,
+                                    "taxable_income": res.taxable_income,
+                                    "tax_payable": res.tax_payable,
+                                    "tax_paid": res.tax_paid,
+                                    "total_rem": res.total_rem,
+                                    "state": res.state
+                                })
+
+        submitted_income_tax_ids = self.env['hr.declaration'].search([("employee_id", "=", self.employee_id.id),
+                                                                      ("state", "in", ['draft', 'to_approve'])])
+
+        if submitted_income_tax_ids:
+            for res in submitted_income_tax_ids:
+                self.submitted_income_tax_ids.create({
+                    "exit_transfer_id": self.id,
+                    "running_fy_id": res.id,
+                    "employee_id": res.employee_id.id,
+                    "total_gross": res.total_gross,
+                    "taxable_income": res.taxable_income,
+                    "tax_payable": res.tax_payable,
+                    "tax_paid": res.tax_paid,
+                    "total_rem": res.total_rem,
+                    "state": res.state
+                })
+
+        upcoming_income_tax_ids = self.env['hr.declaration'].search([("employee_id", "=", self.employee_id.id),
+                                                                     ("state", "in", ['approved'])])
+
+        if upcoming_income_tax_ids:
+            for res in upcoming_income_tax_ids:
+                self.upcoming_income_tax_ids.create({
+                    "exit_transfer_id": self.id,
+                    "running_fy_id": res.id,
+                    "employee_id": res.employee_id.id,
+                    "total_gross": res.total_gross,
+                    "taxable_income": res.taxable_income,
+                    "tax_payable": res.tax_payable,
+                    "tax_paid": res.tax_paid,
+                    "total_rem": res.total_rem,
                     "state": res.state
                 })
 
@@ -621,4 +732,5 @@ class UpcomingEmployeeLeave(models.Model):
         if self.leave_id:
             self.leave_id.update({"state":"cancel"})
             self.update({"state":"cancel"})
+
 

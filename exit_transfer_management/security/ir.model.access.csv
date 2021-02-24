@@ -24,6 +24,9 @@ access_upcoming_pf_request,upcoming.pf.request,model_upcoming_pf_request,base.gr
 access_pending_appraisal_request,pending.appraisal.request,model_pending_appraisal_request,base.group_user,1,1,1,1
 access_upcoming_appraisal_request,upcoming.appraisal.request,model_upcoming_appraisal_request,base.group_user,1,1,1,1
 access_submitted_appraisal_request,submitted.appraisal.request,model_submitted_appraisal_request,base.group_user,1,1,1,1
+access_pending_income_tax_request,pending.income.tax.request,model_pending_income_tax_request,base.group_user,1,1,1,1
+access_submitted_income_tax_request,submitted.income.tax.request,model_submitted_income_tax_request,base.group_user,1,1,1,1
+access_upcoming_income_tax_request,upcoming.income.tax.request,model_upcoming_income_tax_request,base.group_user,1,1,1,1
 access_claim_lines1,claim_lines1,model_claim_lines1,base.group_user,1,1,1,1
 
 

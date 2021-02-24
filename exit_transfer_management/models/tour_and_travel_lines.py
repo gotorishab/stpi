@@ -6,7 +6,7 @@ class PendingTourAndTravelLine(models.Model):
     _description = 'Pending Tours request'
 
     exit_transfer_id = fields.Many2one("exit.transfer.management", string ="Exit/Transfer Id", readonly=True)
-    employee_id = fields.Many2one('hr.employee', string="Requested By", track_visibility='always')
+    employee_id = fields.Many2one('hr.employee', string="Requested By")
     tour_request_id = fields.Many2one("tour.request",string="Tour Request Id")
     purpose = fields.Char("Purpose")
     request_date = fields.Date("Requester Date")
