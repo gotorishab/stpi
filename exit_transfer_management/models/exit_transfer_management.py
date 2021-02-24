@@ -156,22 +156,14 @@ class ExitTransferManagement(models.Model):
                 line.unlink()
 
         group_id = self.env.ref('tour_request.group_tour_request_approvere')
-        print('================group_id========================',group_id)
         if group_id:
-            print('================group_id2========================', group_id)
             for ln in group_id:
-                print('================group_id3========================', group_id)
                 for user in ln.users:
-                    print('================users========================', user)
                     if user.id == self.env.user.id:
-                        print('================True========================', user.id)
-                        print('================True========================', self.env.user.id)
                         me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
                         HrEmployees = self.env['hr.employee'].sudo().search([("branch_id", "=", me.branch_id.id)])
-                        print('================HrEmployees========================', HrEmployees)
                         pending_tour_req_ids = self.env['tour.request'].search([("employee_id", "in", HrEmployees.ids),
                                                                           ("state", "in", ['waiting_for_approval'])])
-                        print('================pending_tour_req_ids========================', pending_tour_req_ids)
                         if pending_tour_req_ids:
                             for res in pending_tour_req_ids:
                                 self.pending_tour_req_ids.create({
@@ -224,11 +216,13 @@ class ExitTransferManagement(models.Model):
         if group_id:
             for ln in group_id:
                 for user in ln.users:
-                    if user == self.env.user.id:
+                    if user.id == self.env.user.id:
                         me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
-                        HrEmployees = self.env['hr.employee'].sudo().search([("branch_id", "=", me.branch_id.id)])
-                        pending_tour_claim_req_ids = self.env['employee.tour.claim'].search([("employee_id", "in", HrEmployees.ids),
-                                                                             ("state", "in",['waiting_for_approval'])])
+                        HrEmployees = self.env['hr.employee'].sudo().search(
+                            [("branch_id", "=", me.branch_id.id)])
+                        pending_tour_claim_req_ids = self.env['employee.tour.claim'].search(
+                            [("employee_id", "in", HrEmployees.ids),
+                             ("state", "in", ['waiting_for_approval'])])
                         if pending_tour_claim_req_ids:
                             for res in pending_tour_claim_req_ids:
                                 self.pending_tour_claim_req_ids.create({
