@@ -340,7 +340,7 @@ class ExitTransferManagement(models.Model):
             for line in self.upcoming_ltc_claim_ids:
                 line.unlink()
 
-        group_id = self.env.ref('employee.ltc.claim.group_ltc_manager')
+        group_id = self.env.ref('employee_ltc.group_ltc_manager')
         if group_id:
             for ln in group_id:
                 for user in ln.users:
@@ -407,7 +407,7 @@ class ExitTransferManagement(models.Model):
             for line in self.upcoming_vehicle_req_ids:
                 line.unlink()
 
-        group_id = self.env.ref('employee.fleet.group_employee_manager_v')
+        group_id = self.env.ref('employee_vehicle_request.group_employee_manager_v')
         if group_id:
             for ln in group_id:
                 for user in ln.users:
@@ -464,7 +464,7 @@ class ExitTransferManagement(models.Model):
             for line in self.upcoming_pf_req_ids:
                 line.unlink()
 
-        group_id = self.env.ref('pf.widthdrawl.group_pf_withdraw_approver')
+        group_id = self.env.ref('pf_withdrawl.group_pf_withdraw_approver')
         if group_id:
             for ln in group_id:
                 for user in ln.users:

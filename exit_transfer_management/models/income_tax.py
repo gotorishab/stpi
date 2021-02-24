@@ -16,17 +16,17 @@ class PendingIncomeTaxRequest(models.Model):
     state = fields.Selection(
         [('draft', 'Draft'), ('to_approve', 'To Approve'), ('approved', 'Approved'), ('rejected', 'Rejected'),
          ('verified', 'Verified')
-         ], required=True, default='draft', string='Status', track_visibility='always')
+         ],string='Status')
 
     def tax_approved(self):
         if self.running_fy_id:
             self.running_fy_id.sudo().button_approved()
-            self.update({"state":"approved"})
+            self.state = self.running_fy_id.state
 
     def tax_rejected(self):
         if self.running_fy_id:
             self.running_fy_id.sudo().button_reject()
-            self.update({"state":"rejected"})
+            self.state = self.running_fy_id.state
 
 class SubmittedIncomeTaxRequest(models.Model):
     _name = 'submitted.income.tax.request'
@@ -48,7 +48,7 @@ class SubmittedIncomeTaxRequest(models.Model):
     def tax_rejected(self):
         if self.running_fy_id:
             self.running_fy_id.sudo().button_reject()
-            self.update({"state": "cancelled"})
+            self.state = self.running_fy_id.state
 
 class UpcomingIncomeTaxRequest(models.Model):
     _name = 'upcoming.income.tax.request'
