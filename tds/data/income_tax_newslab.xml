@@ -16,7 +16,7 @@
 
         <record model="income.tax.newslab" id="income_tax_newslab_25_30_demo">
             <field name="salary_from">250001.00</field>
-            <field name="salary_to">300000.00</field>
+            <field name="salary_to">500000.00</field>
             <field name="tax_rate">5.00</field>
             <field name="gender">both</field>
             <field name="age_from">0</field>
@@ -24,19 +24,6 @@
             <field name="surcharge">0.00</field>
             <field name="cess">4.00</field>
         </record>
-
-        <record model="income.tax.newslab" id="income_tax_newslab_30_50_demo">
-            <field name="salary_from">300001.00</field>
-            <field name="salary_to">500000.00</field>
-            <field name="tax_rate">5.00</field>
-            <field name="gender">both</field>
-            <field name="age_from">61</field>
-            <field name="age_to">80</field>
-            <field name="surcharge">0.00</field>
-            <field name="cess">4.00</field>
-        </record>
-
-
 
 
         <record model="income.tax.newslab" id="income_tax_newslab_500_750_demo">
@@ -88,69 +75,14 @@
 
         <record model="income.tax.newslab" id="income_tax_newslab_15_20_demo">
             <field name="salary_from">1500001.00</field>
-            <field name="salary_to">5000001.00</field>
-            <field name="tax_rate">25.00</field>
+            <field name="salary_to">50000000000.00</field>
+            <field name="tax_rate">30.00</field>
             <field name="gender">both</field>
             <field name="age_from">0</field>
             <field name="age_to">80</field>
             <field name="surcharge">0.00</field>
             <field name="cess">4.00</field>
         </record>
-
-
-        <record model="income.tax.newslab" id="income_tax_newslab_5_10_demo">
-            <field name="salary_from">5000001.00</field>
-            <field name="salary_to">10000000.00</field>
-            <field name="tax_rate">30.00</field>
-            <field name="gender">both</field>
-            <field name="age_from">0</field>
-            <field name="age_to">80</field>
-            <field name="surcharge">10.00</field>
-            <field name="cess">4.00</field>
-        </record>
-
-
-
-        <record model="income.tax.newslab" id="income_tax_newslab_1_2_demo">
-            <field name="salary_from">10000001.00</field>
-            <field name="salary_to">20000000.00</field>
-            <field name="tax_rate">30.00</field>
-            <field name="gender">both</field>
-            <field name="age_from">0</field>
-            <field name="age_to">80</field>
-            <field name="surcharge">15.00</field>
-            <field name="cess">4.00</field>
-        </record>
-
-
-        <record model="income.tax.newslab" id="income_tax_newslab_2_5_demo">
-            <field name="salary_from">20000001.00</field>
-            <field name="salary_to">50000000.00</field>
-            <field name="tax_rate">30.00</field>
-            <field name="gender">both</field>
-            <field name="age_from">0</field>
-            <field name="age_to">80</field>
-            <field name="surcharge">25.00</field>
-            <field name="cess">4.00</field>
-        </record>
-
-
-
-
-
-        <record model="income.tax.newslab" id="income_tax_newslab_5_u_demo">
-            <field name="salary_from">50000001.00</field>
-            <field name="salary_to">5000000000000.00</field>
-            <field name="tax_rate">30.00</field>
-            <field name="gender">both</field>
-            <field name="age_from">0</field>
-            <field name="age_to">80</field>
-            <field name="surcharge">37.00</field>
-            <field name="cess">4.00</field>
-        </record>
-
-
-
 
 
 

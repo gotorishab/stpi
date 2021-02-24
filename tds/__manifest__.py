@@ -14,6 +14,8 @@
 		'security/security.xml',
 		'data/Income_tax_rule.xml',
 		'data/income_tax_slab.xml',
+		'data/income_tax_charge.xml',
+		'data/income_tax_newcharge.xml',
 		'data/income_tax_newslab.xml',
 		'data/email_template.xml',
 		'data/hr_declaration_cron.xml',
