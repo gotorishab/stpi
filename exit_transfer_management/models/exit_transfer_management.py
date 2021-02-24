@@ -163,8 +163,9 @@ class ExitTransferManagement(models.Model):
                 print('================group_id3========================', group_id)
                 for user in ln.users:
                     print('================users========================', user)
-                    if user == self.env.user.id:
-                        print('================True========================', user)
+                    if user.id == self.env.user.id:
+                        print('================True========================', user.id)
+                        print('================True========================', self.env.user.id)
                         me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
                         HrEmployees = self.env['hr.employee'].sudo().search([("branch_id", "=", me.branch_id.id)])
                         print('================HrEmployees========================', HrEmployees)
