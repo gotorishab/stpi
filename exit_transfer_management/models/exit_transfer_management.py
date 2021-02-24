@@ -204,17 +204,26 @@ class ExitTransferManagement(models.Model):
             for line in self.upcoming_tour_claim_req_ids:
                 line.unlink()
 
-        pending_tour_claim_req_ids = self.env['employee.tour.claim'].search([("employee_id", "=", self.employee_id.id),
+        group_id = self.env.ref('tour_request.group_tour_claim_approvere')
+        if group_id:
+            for ln in group_id:
+                for user in ln.users:
+                    if user == self.env.user.id:
+                        me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+                        HrEmployees = self.env['hr.employee'].sudo().search([("branch_id", "=", me.branch_id.id)])
+                        pending_tour_claim_req_ids = self.env['employee.tour.claim'].search([("employee_id", "in", HrEmployees.ids),
                                                                              ("state", "in",['waiting_for_approval'])])
-        if pending_tour_claim_req_ids:
-            for res in pending_tour_claim_req_ids:
-                self.pending_tour_claim_req_ids.create({
-                    "exit_transfer_id": self.id,
-                    "tour_claim_id": res.id,
-                    "total_claimed_amount": res.total_claimed_amount,
-                    "balance_left": res.balance_left,
-                    "state": res.state
-                })
+                        if pending_tour_claim_req_ids:
+                            for res in pending_tour_claim_req_ids:
+                                self.pending_tour_claim_req_ids.create({
+                                    "exit_transfer_id": self.id,
+                                    "tour_claim_id": res.id,
+                                    "total_claimed_amount": res.total_claimed_amount,
+                                    "balance_left": res.balance_left,
+                                    "state": res.state
+                                })
+                    else:
+                        continue
 
         submitted_tour_claim_req_ids = self.env['employee.tour.claim'].search([("employee_id", "=", self.employee_id.id),
                                                                                ("state", "in",['draft', 'waiting_for_approval'])])
@@ -549,7 +558,7 @@ class EmployeeLeave(models.Model):
     ], string ="Status")
 
 
-    def tour_cancel(self):
+    def leave_cancel(self):
         if self.exit_transfer_id:
             self.exit_transfer_id.update({"state":"cancel"})
             self.update({"state":"cancel"})
