@@ -1,57 +1,36 @@
 from odoo import models, fields, api
 
-# Vehicle Request
+
+# File management
 class CorrespondenceExitManagement(models.Model):
     _name = "correspondence.exit.management"
     _description = "Correspondence Exit Management"
 
     exit_transfer_id = fields.Many2one("exit.transfer.management", string="Exit/Transfer Id", readonly=True)
-    employee_id = fields.Many2one('hr.employee', string='Requested By')
-    vehicle_id = fields.Many2one('employee.fleet', string='Vehicle Request_Id')
-    from_location = fields.Char(string="From Location")
-    to_location = fields.Char(string="To Location")
-    state = fields.Selection([('draft', 'Draft'), ('waiting', 'Waiting for Approval'), ('cancel', 'Cancel'),
-                              ('confirm', 'Approved'), ('reject', 'Rejected'), ('return', 'Returned')],
-                             string="State", default="draft")
+    correspondence_id = fields.Many2one('muk_dms.file', string='Correspondence')
+    letter_no = fields.Char(string="Letter Number")
+    sender_type_id = fields.Many2one('doc.sender.type', string="Sender Type")
+    file_assign_id = fields.Many2one('folder.master', string="File Assigned")
 
-    def vehicle_approved(self):
-        if self.vehicle_id:
-            self.vehicle_id.button_approved()
-            self.update({"state":"confirm"})
+    def correspondence_forward(self):
+        pass
 
-    def vehicle_rejected(self):
-        if self.vehicle_id:
-            self.vehicle_id.button_reject()
-            self.update({"state":"reject"})
 
-class SubmittedVehicleRequest(models.Model):
+class FileExitManagement(models.Model):
     _name = "file.exit.management"
-    _description = "Submitted Vehicle Request"
+    _description = "File Exit Management"
 
     exit_transfer_id = fields.Many2one("exit.transfer.management", string="Exit/Transfer Id", readonly=True)
-    employee_id = fields.Many2one('hr.employee', string='Requested By')
-    vehicle_id = fields.Many2one('employee.fleet', string='Vehicle Request_Id')
-    from_location = fields.Char(string="From Location")
-    to_location = fields.Char(string="To Location")
-    state = fields.Selection([('draft', 'Draft'), ('waiting', 'Waiting for Approval'), ('cancel', 'Cancel'),
-                              ('confirm', 'Approved'), ('reject', 'Rejected'), ('return', 'Returned')],
-                             string="State", default="draft")
+    file_name = fields.Char(string='File Name')
+    number = fields.Char(string='Number')
+    status = fields.Selection([('normal', 'Normal'),
+                               ('important', 'Important'),
+                               ('urgent', 'Urgent')
+                               ], string='Status', track_visibility='always')
 
-    def vehicle_cancel(self):
-        if self.tour_claim_id:
-            self.tour_claim_id.update({"state":"draft"})
-            self.update({"state":"draft"})
+    # def file_approved(self):
+    #     if self.ltc_sequence_id:
+    #         self.ltc_sequence_id.sudo().button_approved()
+    #         self.update({"state": "approved"})
 
 
-class UpcomingVehicleRequest(models.Model):
-    _name = "upcoming.vehicle.request"
-    _description = "Upcoming Vehicle Request"
-
-    exit_transfer_id = fields.Many2one("exit.transfer.management", string="Exit/Transfer Id", readonly=True)
-    employee_id = fields.Many2one('hr.employee', string='Requested By')
-    vehicle_id = fields.Many2one('employee.fleet', string='Vehicle Request_Id')
-    from_location = fields.Char(string="From Location")
-    to_location = fields.Char(string="To Location")
-    state = fields.Selection([('draft', 'Draft'), ('waiting', 'Waiting for Approval'), ('cancel', 'Cancel'),
-                              ('confirm', 'Approved'), ('reject', 'Rejected'), ('return', 'Returned')],
-                             string="State", default="draft")

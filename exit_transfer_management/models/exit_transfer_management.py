@@ -645,6 +645,16 @@ class ExitTransferManagement(models.Model):
                     "state": res.state
                 })
 
+                # File management
+                if self.my_correspondence_ids:
+                    for line in self.my_correspondence_ids:
+                        line.unlink()
+
+                my_correspondence_ids = self.env['muk_dms.file'].search([("employee_id", "=", self.employee_id.id), ])
+
+                if self.my_file_ids:
+                    for line in self.my_file_ids:
+                        line.unlink()
 
         self.update({"state":"verify"})
         if self.employee_id.user_id:

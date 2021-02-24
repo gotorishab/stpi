@@ -459,7 +459,17 @@
                                 </field>
                             </page>
                             <page string="eFile">
-                                <field name="claim_lines1_ids" readonly="1" options='{"no_open": True}'/>
+                                <br/>
+                                    <div><h2>Efile Correspondence</h2></div>
+                                <br/>
+                                <field name="my_correspondence_ids" readonly="1" options='{"no_open": True}'>
+                                    <tree edittable="bottom">
+                                        <field name="correspondence_id"/>
+                                        <field name="letter_no"/>
+                                        <field name="sender_type_id"/>
+                                        <field name="file_assign_id"/>
+                                    </tree>
+                                </field>
                             </page>
                             <page string="Indent">
                                 <field name="claim_lines1_ids" readonly="1" options='{"no_open": True}'/>
