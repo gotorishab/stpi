@@ -414,6 +414,7 @@
                                 <field name="pending_income_tax_ids" readonly="1" options='{"no_open": True}'>
                                     <tree edittable="bottom">
                                         <field name="running_fy_id"/>
+                                        <field name="date_range_id"/>
                                         <field name="total_gross"/>
                                         <field name="taxable_income"/>
                                         <field name="tax_payable"/>
@@ -431,6 +432,7 @@
                                 <field name="submitted_income_tax_ids" readonly="1" options='{"no_open": True}'>
                                     <tree edittable="bottom">
                                         <field name="running_fy_id"/>
+                                        <field name="date_range_id"/>
                                         <field name="total_gross"/>
                                         <field name="taxable_income"/>
                                         <field name="tax_payable"/>
@@ -447,6 +449,7 @@
                                 <field name="upcoming_income_tax_ids" readonly="1" options='{"no_open": True}'>
                                     <tree edittable="bottom">
                                         <field name="running_fy_id"/>
+                                        <field name="date_range_id"/>
                                         <field name="total_gross"/>
                                         <field name="taxable_income"/>
                                         <field name="tax_payable"/>
