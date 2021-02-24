@@ -7,7 +7,8 @@ class PendingIncomeTaxRequest(models.Model):
 
     exit_transfer_id = fields.Many2one("exit.transfer.management", string="Exit/Transfer Id", readonly=True)
     employee_id = fields.Many2one('hr.employee', string='Requested By')
-    running_fy_id = fields.Many2one("hr.declaration", string="IT Completed for Running FY")
+    running_fy_id = fields.Many2one("hr.declaration", string="IT Declaration")
+    date_range_id = fields.Many2one("date.range", string="Financial Year")
     total_gross =fields.Float(string='Yearly Gross')
     taxable_income =fields.Float(string='Taxable Income')
     tax_payable = fields.Float('Tax Payable')
@@ -34,7 +35,8 @@ class SubmittedIncomeTaxRequest(models.Model):
 
     exit_transfer_id = fields.Many2one("exit.transfer.management", string="Exit/Transfer Id", readonly=True)
     employee_id = fields.Many2one('hr.employee', string='Requested By')
-    running_fy_id = fields.Many2one("hr.declaration", string="IT Completed for Running FY")
+    running_fy_id = fields.Many2one("hr.declaration", string="IT Declaration")
+    date_range_id = fields.Many2one("date.range", string="Financial Year")
     total_gross =fields.Float(string='Yearly Gross')
     taxable_income =fields.Float(string='Taxable Income')
     tax_payable = fields.Float('Tax Payable')
@@ -56,7 +58,8 @@ class UpcomingIncomeTaxRequest(models.Model):
 
     exit_transfer_id = fields.Many2one("exit.transfer.management", string="Exit/Transfer Id", readonly=True)
     employee_id = fields.Many2one('hr.employee', string='Requested By')
-    running_fy_id = fields.Many2one("hr.declaration", string="IT Completed for Running FY")
+    running_fy_id = fields.Many2one("hr.declaration", string="IT Declaration")
+    date_range_id = fields.Many2one("date.range", string="Financial Year")
     total_gross =fields.Float(string='Yearly Gross')
     taxable_income =fields.Float(string='Taxable Income')
     tax_payable = fields.Float('Tax Payable')

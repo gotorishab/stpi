@@ -595,6 +595,7 @@ class ExitTransferManagement(models.Model):
                                 self.pending_income_tax_ids.create({
                                     "exit_transfer_id": self.id,
                                     "running_fy_id": res.id,
+                                    "date_range_id": res.date_range.id,
                                     "employee_id": res.employee_id.id,
                                     "total_gross": res.tax_salary_final,
                                     "taxable_income": res.taxable_income,
@@ -612,6 +613,7 @@ class ExitTransferManagement(models.Model):
                 self.submitted_income_tax_ids.create({
                     "exit_transfer_id": self.id,
                     "running_fy_id": res.id,
+                    "date_range_id": res.date_range.id,
                     "employee_id": res.employee_id.id,
                     "total_gross": res.tax_salary_final,
                     "taxable_income": res.taxable_income,
@@ -629,6 +631,7 @@ class ExitTransferManagement(models.Model):
                 self.upcoming_income_tax_ids.create({
                     "exit_transfer_id": self.id,
                     "running_fy_id": res.id,
+                    "date_range_id": res.date_range.id,
                     "employee_id": res.employee_id.id,
                     "total_gross": res.tax_salary_final,
                     "taxable_income": res.taxable_income,
