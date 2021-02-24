@@ -17,12 +17,12 @@ class PendingTourAndTravelLine(models.Model):
 
     def tour_approved(self):
         if self.tour_request_id:
-            self.tour_request_id.button_approved()
+            self.tour_request_id.sudo().button_approved()
             self.update({"state":"approved"})
 
     def tour_rejected(self):
         if self.tour_request_id:
-            self.tour_request_id.button_reject()
+            self.tour_request_id.sudo().button_reject()
             self.update({"state":"rejected"})
 
 class SubmittedTourAndTravelLine(models.Model):

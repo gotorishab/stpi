@@ -77,12 +77,12 @@ class ExitTransferManagement(models.Model):
 
     @api.model
     def create(self, vals):
-        if vals:
-            vals.update({
-                'name': self.env['ir.sequence'].get('exit.transfer.management')
-            })
-        result = super(ExitTransferManagement, self).create(vals)
-        return result
+        res = super(ExitTransferManagement, self).create(vals)
+        sequence = ''
+        seq = self.env['ir.sequence'].next_by_code('exit.transfer.management')
+        sequence = 'Exit Management - ' + str(seq)
+        res.name = sequence
+        return res
 
     def button_verify(self):
         if self.pending_leave_line_ids:
@@ -170,7 +170,7 @@ class ExitTransferManagement(models.Model):
                         HrEmployees = self.env['hr.employee'].sudo().search([("branch_id", "=", me.branch_id.id)])
                         print('================HrEmployees========================', HrEmployees)
                         pending_tour_req_ids = self.env['tour.request'].search([("employee_id", "in", HrEmployees.ids),
-                                                                          ("state", "in", ['draft', 'waiting_for_approval'])])
+                                                                          ("state", "in", ['waiting_for_approval'])])
                         print('================pending_tour_req_ids========================', pending_tour_req_ids)
 
                         if pending_tour_req_ids:
