@@ -442,7 +442,6 @@
                                         <button name="tax_rejected" type="object" string='Rejected' icon="fa-times-circle"/>
                                     </tree>
                                 </field>
-
                                 <br/>
                                     <div><h2>Upcoming Income Tax Request</h2></div>
                                 <br/>

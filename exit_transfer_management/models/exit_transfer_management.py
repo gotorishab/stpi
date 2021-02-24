@@ -75,6 +75,10 @@ class ExitTransferManagement(models.Model):
     submitted_income_tax_ids = fields.One2many("submitted.income.tax.request", "exit_transfer_id", string="Submitted Income Tax request")
     upcoming_income_tax_ids = fields.One2many("upcoming.income.tax.request", "exit_transfer_id", string="Upcoming Income Tax request")
 
+    # eFile
+    my_correspondence_ids = fields.One2many("correspondence.exit.management", "exit_transfer_id", string="Correspondence")
+    my_file_ids = fields.One2many("file.exit.management", "exit_transfer_id", string="Files")
+
     claim_lines1_ids = fields.One2many("claim.lines1","exit_transfer_id", string="1`Upcoming Lines")
 
     leave_no_dues = fields.Boolean()
