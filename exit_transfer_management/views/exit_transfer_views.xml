@@ -7,6 +7,7 @@
                 <tree string ="Exit/Transfer Management">
                   <field name="name"/>
                   <field name="employee_id" required="1"/>
+                  <field name="state" required="1"/>
                 </tree>
             </field>
         </record>
@@ -426,6 +427,6 @@
       <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem name="Exit/transfer Management" id="exit_transfer_management.menu_1_list" action="exit_transfer_management.action_window"/>
+    <menuitem name="Exit/transfer Management" id="exit_transfer_management_menu_1_list" action="exit_transfer_management.action_window"/>
   </data>
 </odoo>
