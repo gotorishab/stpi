@@ -6,24 +6,24 @@ class PendingTourAndTravelLine(models.Model):
     _description = 'Pending Tours request'
 
     exit_transfer_id = fields.Many2one("exit.transfer.management", string ="Exit/Transfer Id", readonly=True)
+    employee_id = fields.Many2one('hr.employee', string="Requested By", track_visibility='always')
     tour_request_id = fields.Many2one("tour.request",string="Tour Request Id")
     purpose = fields.Char("Purpose")
     request_date = fields.Date("Requester Date")
-    state = fields.Selection([("draft","Draft"),
-                              ("waiting_for_approval","Waiting For Approval"),
-                              ("approved","Approved"),
-                              ("rejected","Rejected"),
-                              ],string="Status")
+    state = fields.Selection(
+        [('draft', 'Draft'), ('waiting_for_approval', 'Waiting for Approval'), ('approved', 'Approved'),
+         ('rejected', 'Rejected')
+         ], required=True)
 
     def tour_approved(self):
         if self.tour_request_id:
             self.tour_request_id.sudo().button_approved()
-            self.update({"state":"approved"})
+            self.state = self.tour_request_id.state
 
     def tour_rejected(self):
         if self.tour_request_id:
             self.tour_request_id.sudo().button_reject()
-            self.update({"state":"rejected"})
+            self.state = self.tour_request_id.state
 
 class SubmittedTourAndTravelLine(models.Model):
     _name = 'submitted.tour.request'
@@ -42,8 +42,8 @@ class SubmittedTourAndTravelLine(models.Model):
 
     def tour_cancel(self):
         if self.tour_request_id:
-            self.tour_request_id.update({"state":"draft"})
-            self.update({"state":"draft"})
+            self.tour_request_id.sudobutton_cancel()
+            self.state = self.tour_request_id.state
 
 class upcomingTourAndTravelLine(models.Model):
     _name = 'upcoming.tour.request'

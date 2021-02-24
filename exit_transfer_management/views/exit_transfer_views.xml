@@ -104,6 +104,7 @@
                                 <field name="pending_tour_req_ids" readonly="1" options='{"no_open": True}'>
                                     <tree edittable="bottom">
                                         <field name="tour_request_id"/>
+                                        <field name="employee_id"/>
                                         <field name="request_date"/>
                                         <field name="purpose"/>
                                         <field name="state"/>

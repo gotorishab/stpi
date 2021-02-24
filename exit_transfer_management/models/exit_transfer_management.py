@@ -172,12 +172,12 @@ class ExitTransferManagement(models.Model):
                         pending_tour_req_ids = self.env['tour.request'].search([("employee_id", "in", HrEmployees.ids),
                                                                           ("state", "in", ['waiting_for_approval'])])
                         print('================pending_tour_req_ids========================', pending_tour_req_ids)
-
                         if pending_tour_req_ids:
                             for res in pending_tour_req_ids:
                                 self.pending_tour_req_ids.create({
                                     "exit_transfer_id": self.id,
                                     "tour_request_id": res.id,
+                                    "employee_id": res.employee_id.id,
                                     "purpose": res.purpose,
                                     "request_date": res.date,
                                     "state": res.state

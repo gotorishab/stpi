@@ -34,7 +34,7 @@ class TourRequest(models.Model):
     vehicle_remarks = fields.Text('Remarks')
 
 
-    state = fields.Selection([('draft', 'Draft'), ('waiting_for_approval', 'Waiting for Approval'), ('approved', 'Approved'), ('rejected', 'Rejected')
+    state = fields.Selection([('draft', 'Draft'), ('waiting_for_approval', 'Waiting for Approval'), ('approved', 'Approved'), ('rejected', 'Rejected'), ('cancelled', 'Cancelled')
                                ], required=True, string='Status', default='draft',track_visibility='always')
 
 
@@ -66,6 +66,12 @@ class TourRequest(models.Model):
         for rec in self:
             rec.onchange_tour_request_state()
             rec.write({'state': 'waiting_for_approval'})
+
+    @api.multi
+    def button_cancel(self):
+        for rec in self:
+            rec.onchange_tour_request_state()
+            rec.write({'state': 'cancelled'})
     #
     # @api.multi
     # def button_forwarded(self):
