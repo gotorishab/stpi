@@ -524,7 +524,7 @@ class ExitTransferManagement(models.Model):
             for line in self.upcoming_appraisal_request_ids:
                 line.unlink()
 
-        group_id = self.env.ref('employee.fleet.group_employee_manager_v')
+        group_id = self.env.ref('appraisal_stpi.group_manager_appraisal')
         if group_id:
             for ln in group_id:
                 for user in ln.users:
@@ -581,7 +581,7 @@ class ExitTransferManagement(models.Model):
             for line in self.upcoming_income_tax_ids:
                 line.unlink()
 
-        group_id = self.env.ref('hr.declaration.group_manager_hr_declaration')
+        group_id = self.env.ref('tds.group_manager_hr_declaration')
         if group_id:
             for ln in group_id:
                 for user in ln.users:
