@@ -596,11 +596,11 @@ class ExitTransferManagement(models.Model):
                                     "exit_transfer_id": self.id,
                                     "running_fy_id": res.id,
                                     "employee_id": res.employee_id.id,
-                                    "total_gross": res.total_gross,
+                                    "total_gross": res.tax_salary_final,
                                     "taxable_income": res.taxable_income,
                                     "tax_payable": res.tax_payable,
                                     "tax_paid": res.tax_paid,
-                                    "total_rem": res.total_rem,
+                                    "total_rem": res.pending_tax,
                                     "state": res.state
                                 })
 
@@ -613,11 +613,11 @@ class ExitTransferManagement(models.Model):
                     "exit_transfer_id": self.id,
                     "running_fy_id": res.id,
                     "employee_id": res.employee_id.id,
-                    "total_gross": res.total_gross,
+                    "total_gross": res.tax_salary_final,
                     "taxable_income": res.taxable_income,
                     "tax_payable": res.tax_payable,
                     "tax_paid": res.tax_paid,
-                    "total_rem": res.total_rem,
+                    "total_rem": res.pending_tax,
                     "state": res.state
                 })
 
@@ -630,11 +630,11 @@ class ExitTransferManagement(models.Model):
                     "exit_transfer_id": self.id,
                     "running_fy_id": res.id,
                     "employee_id": res.employee_id.id,
-                    "total_gross": res.total_gross,
+                    "total_gross": res.tax_salary_final,
                     "taxable_income": res.taxable_income,
                     "tax_payable": res.tax_payable,
                     "tax_paid": res.tax_paid,
-                    "total_rem": res.total_rem,
+                    "total_rem": res.pending_tax,
                     "state": res.state
                 })
 
