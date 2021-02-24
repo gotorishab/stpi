@@ -414,7 +414,7 @@ class ExitTransferManagement(models.Model):
                     if user.id == self.env.user.id:
                         me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
                         HrEmployees = self.env['hr.employee'].sudo().search([("branch_id", "=", me.branch_id.id)])
-                        pending_vehicle_req_ids = self.env['employee.fleet'].search([("employee_id", "in", HrEmployees.ids),
+                        pending_vehicle_req_ids = self.env['employee.fleet'].search([("employee", "in", HrEmployees.ids),
                                                                                     ("state", "in", ['waiting'])])
                         if pending_vehicle_req_ids:
                             for res in pending_vehicle_req_ids:
