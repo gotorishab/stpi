@@ -89,6 +89,19 @@ class ExitTransferManagement(models.Model):
     submitted_grn_ids = fields.One2many("submitted.grn", "exit_transfer_id",string="Submitted Indent Request")
     upcoming_grn_ids = fields.One2many("upcoming.grn", "exit_transfer_id",string="Upcoming Indent Request")
 
+    #Issue Request
+    pending_issue_req_ids = fields.One2many("pending.issue.request", "exit_transfer_id",string="Pending Issue Request")
+    submitted_issue_req_ids = fields.One2many("submitted.issue.request","exit_transfer_id",string="Submitted Issue Request" )
+    upcoming_issue_req_ids = fields.One2many("upcoming.issue.request","exit_transfer_id",string="Upcoming Issue Request" )
+
+    #GRN Request
+    pending_grn_req_ids = fields.One2many("pending.grn.request", "exit_transfer_id",string="Pending GRN Request")
+    submitted_grn_req_ids = fields.One2many("submitted.grn.request", "exit_transfer_id",string="Pending GRN Request")
+    upcoming_grn_req_ids = fields.One2many("upcoming.grn.request", "exit_transfer_id",string="Pending GRN Request")
+
+    #check birthday
+    pending_check_birth_ids = fields.One2many("pending.check.birthday", "exit_transfer_id",string="Pending Check Birthday Request")
+
     claim_lines1_ids = fields.One2many("claim.lines1","exit_transfer_id", string="1`Upcoming Lines")
 
     leave_no_dues = fields.Boolean()
@@ -766,48 +779,215 @@ class ExitTransferManagement(models.Model):
             for line in self.upcoming_grn_ids:
                 line.unlink()
 
-        # pending_grn_ids = self.env['indent.request'].search([("employee_id", "=", self.employee_id.id),
-        #                                                             ("state", "in", ['to_approve'])])
-        #
-        # if pending_grn_ids:
-        #     for res in pending_grn_ids:
-        #         self.pending_grn_ids.create({
-        #             "exit_transfer_id": self.id,
-        #             "number": res.id,
-        #             "indent_id": res.indent_id.id,
-        #             "employee_id": res.employee_id.id,
-        #             "indent_type": res.indent_type,
-        #             "state": res.state,
-        #         })
-        #
-        # submitted_grn_ids = self.env['indent.request'].search([("employee_id", "=", self.employee_id.id),
-        #                                                               ("state", "in", ['draft', 'to_approve'])])
-        #
-        # if submitted_grn_ids:
-        #     for res in submitted_grn_ids:
-        #         self.submitted_grn_ids.create({
-        #             "exit_transfer_id": self.id,
-        #             "number": res.id,
-        #             "indent_id": res.indent_id.id,
-        #             "employee_id": res.employee_id.id,
-        #             "indent_type": res.indent_type,
-        #             "state": res.state,
-        #         })
-        #
-        # upcoming_grn_ids = self.env['indent.request'].search([("employee_id", "=", self.employee_id.id),
-        #                                                              ("state", "in", ['approved'])])
-        #
-        # if upcoming_grn_ids:
-        #     for res in upcoming_grn_ids:
-        #         self.upcoming_grn_ids.create({
-        #             "exit_transfer_id": self.id,
-        #             "number": res.id,
-        #             "indent_id": res.indent_id.id,
-        #             "employee_id": res.employee_id.id,
-        #             "indent_type": res.indent_type,
-        #             "state": res.state,
-        #         })
+        group_id = self.env.ref('indent_stpi.group_Indent_request_manager')
+        if group_id:
+            for ln in group_id:
+                for user in ln.users:
+                    if user.id == self.env.user.id:
+                        me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+                        HrEmployees = self.env['hr.employee'].sudo().search([("branch_id", "=", me.branch_id.id)])
+                        pending_grn_ids = self.env['indent.request'].search([("employee_id", "in", HrEmployees.ids),
+                                                                                    ("state", "in", ['to_approve'])])
 
+                        if pending_grn_ids:
+                            for res in pending_grn_ids:
+                                self.pending_grn_ids.create({
+                                    "exit_transfer_id": self.id,
+                                    "number": res.indent_sequence.id,
+                                    "indent_id": res.indent_id.id,
+                                    "employee_id": res.employee_id.id,
+                                    "indent_type": res.indent_type,
+                                    "state": res.state,
+                                })
+
+        submitted_grn_ids = self.env['indent.request'].search([("employee_id", "=", self.employee_id.id),
+                                                                      ("state", "in", ['draft', 'to_approve'])])
+
+        if submitted_grn_ids:
+            for res in submitted_grn_ids:
+                self.submitted_grn_ids.create({
+                    "exit_transfer_id": self.id,
+                    "number": res.indent_sequence.id,
+                    "indent_id": res.indent_id.id,
+                    "employee_id": res.employee_id.id,
+                    "indent_type": res.indent_type,
+                    "state": res.state,
+                })
+
+        upcoming_grn_ids = self.env['indent.request'].search([("employee_id", "=", self.employee_id.id),
+                                                                     ("state", "in", ['approved'])])
+
+        if upcoming_grn_ids:
+            for res in upcoming_grn_ids:
+                self.upcoming_grn_ids.create({
+                    "exit_transfer_id": self.id,
+                    "number": res.indent_sequence.id,
+                    "indent_id": res.indent_id.id,
+                    "employee_id": res.employee_id.id,
+                    "indent_type": res.indent_type,
+                    "state": res.state,
+                })
+
+        # Issue Request
+        if self.pending_issue_req_ids:
+            for line in self.pending_issue_req_ids:
+                line.unlink()
+
+        if self.submitted_issue_req_ids:
+            for line in self.submitted_issue_req_ids:
+                line.unlink()
+
+        if self.upcoming_issue_req_ids:
+            for line in self.upcoming_issue_req_ids:
+                line.unlink()
+
+        group_id = self.env.ref('indent_stpi.group_issue_request_manager')
+        if group_id:
+            for ln in group_id:
+                for user in ln.users:
+                    if user.id == self.env.user.id:
+                        me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+                        HrEmployees = self.env['hr.employee'].sudo().search([("branch_id", "=", me.branch_id.id)])
+                        pending_issue_req_ids = self.env['issue.request'].search([("employee_id", "in", HrEmployees.ids),
+                                                                                      ("state", "in", ['to_approve'])])
+
+                        if pending_issue_req_ids:
+                            for res in pending_issue_req_ids:
+                                self.pending_issue_req_ids.create({
+                                    "exit_transfer_id": self.id,
+                                    "employee_id": res.employee_id.id,
+                                    "issue_id": res.id,
+                                    "indent_grn": res.Indent_id.id,
+                                    "item_category_id": res.item_category_id.id,
+                                    "item_id": res.item_id.id,
+                                    "requested_quantity": res.requested_quantity,
+                                    "approved_quantity": res.approved_quantity,
+                                    "state": res.state,
+                                })
+
+        submitted_issue_req_ids = self.env['indent.request'].search([("employee_id", "=", self.employee_id.id),
+                                                               ("state", "in", ['draft', 'to_approve'])])
+        if submitted_issue_req_ids:
+            for res in submitted_issue_req_ids:
+                self.submitted_issue_req_ids.create({
+                    "exit_transfer_id": self.id,
+                    "employee_id": res.employee_id.id,
+                    "issue_id": res.id,
+                    "indent_grn": res.Indent_id.id,
+                    "item_category_id": res.item_category_id.id,
+                    "item_id": res.item_id.id,
+                    "requested_quantity": res.requested_quantity,
+                    "approved_quantity": res.approved_quantity,
+                    "state": res.state,
+                })
+
+        upcoming_issue_req_ids = self.env['indent.request'].search([("employee_id", "=", self.employee_id.id),
+                                                              ("state", "in", ['approved'])])
+        if upcoming_issue_req_ids:
+            for res in upcoming_issue_req_ids:
+                self.upcoming_issue_req_ids.create({
+                    "exit_transfer_id": self.id,
+                    "employee_id": res.employee_id.id,
+                    "issue_id": res.id,
+                    "indent_grn": res.Indent_id.id,
+                    "item_category_id": res.item_category_id.id,
+                    "item_id": res.item_id.id,
+                    "requested_quantity": res.requested_quantity,
+                    "approved_quantity": res.approved_quantity,
+                    "state": res.state,
+                })
+
+        #GRN Request
+        if self.pending_grn_req_ids:
+            for line in self.pending_grn_req_ids:
+                line.unlink()
+
+        if self.submitted_grn_req_ids:
+            for line in self.submitted_grn_req_ids:
+                line.unlink()
+
+        if self.upcoming_grn_req_ids:
+            for line in self.upcoming_grn_req_ids:
+                line.unlink()
+
+        group_id = self.env.ref('indent_stpi.group_issue_request_manager')
+        if group_id:
+            for ln in group_id:
+                for user in ln.users:
+                    if user.id == self.env.user.id:
+                        me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+                        HrEmployees = self.env['hr.employee'].sudo().search([("branch_id", "=", me.branch_id.id)])
+                        pending_grn_req_ids = self.env['issue.request'].search([("employee_id", "in", HrEmployees.ids),
+                                                                                ("state", "in", ['to_approve'])])
+                        if pending_grn_req_ids:
+                            for res in pending_grn_req_ids:
+                                self.pending_grn_req_ids.create({
+                                    "exit_transfer_id": self.id,
+                                    "employee_id": res.employee_id.id,
+                                    "issue_id": res.id,
+                                    "indent_grn": res.Indent_id.id,
+                                    "item_category_id": res.item_category_id.id,
+                                    "item_id": res.item_id.id,
+                                    "requested_quantity": res.requested_quantity,
+                                    "approved_quantity": res.approved_quantity,
+                                    "state": res.state,
+                                })
+        submitted_grn_req_ids = self.env['issue.request'].search([("employee_id", "=", self.employee_id.id),
+                                                                     ("state", "in", ['draft', 'to_approve'])])
+        if submitted_grn_req_ids:
+            for res in submitted_grn_req_ids:
+                self.submitted_grn_req_ids.create({
+                    "exit_transfer_id": self.id,
+                    "employee_id": res.employee_id.id,
+                    "issue_id": res.id,
+                    "indent_grn": res.Indent_id.id,
+                    "item_category_id": res.item_category_id.id,
+                    "item_id": res.item_id.id,
+                    "requested_quantity": res.requested_quantity,
+                    "approved_quantity": res.approved_quantity,
+                    "state": res.state,
+                })
+
+        upcoming_grn_req_ids = self.env['indent.request'].search([("employee_id", "=", self.employee_id.id),
+                                                                    ("state", "in", ['approved'])])
+        if upcoming_grn_req_ids:
+            for res in upcoming_grn_req_ids:
+                self.upcoming_grn_req_ids.create({
+                    "exit_transfer_id": self.id,
+                    "employee_id": res.employee_id.id,
+                    "issue_id": res.id,
+                    "indent_grn": res.Indent_id.id,
+                    "item_category_id": res.item_category_id.id,
+                    "item_id": res.item_id.id,
+                    "requested_quantity": res.requested_quantity,
+                    "approved_quantity": res.approved_quantity,
+                    "state": res.state,
+                })
+
+        #Check Birthday
+        if self.pending_check_birth_ids:
+            for line in self.pending_check_birth_ids:
+                line.unlink()
+
+        group_id = self.env.ref('birthday_check.group_user_birthday')#group_approvar_birthday
+        if group_id:
+            for ln in group_id:
+                for user in ln.users:
+                    if user.id == self.env.user.id:
+                        me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+                        HrEmployees = self.env['hr.employee'].sudo().search([("branch_id", "=", me.branch_id.id)])
+                        pending_check_birth_ids = self.env['cheque.requests'].search([("employee_id", "in", HrEmployees.ids),
+                                                                                ("state", "in", ['to_approve'])])
+
+                        if pending_check_birth_ids:
+                            for res in pending_check_birth_ids:
+                                self.pending_check_birth_ids.create({
+                                    "exit_transfer_id": self.id,
+                                    "check_id": res.id,    #chek_id
+                                    "name": res.Indent_id.id,
+                                    "birthday": res.item_category_id.id,
+                                    "state": res.state,
+                                })
 
         self.update({"state":"verify"})
         if self.employee_id.user_id:

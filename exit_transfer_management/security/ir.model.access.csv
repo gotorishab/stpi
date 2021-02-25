@@ -35,6 +35,15 @@ access_upcoming_indent_request,upcoming.indent.request,model_upcoming_indent_req
 access_pending_grn,pending.grn,model_pending_grn,base.group_user,1,1,1,1
 access_submitted_grn,submitted.grn,model_submitted_grn,base.group_user,1,1,1,1
 access_upcoming_grn,upcoming.grn,model_upcoming_grn,base.group_user,1,1,1,1
+access_pending_issue_request,pending.issue.request,model_pending_issue_request,base.group_user,1,1,1,1
+access_submitted_issue_request,submitted.issue.request,model_submitted_issue_request,base.group_user,1,1,1,1
+access_upcoming_issue_request,upcoming.issue.request,model_upcoming_issue_request,base.group_user,1,1,1,1
+access_pending_grn_request,pending.grn.request,model_pending_grn_request,base.group_user,1,1,1,1
+access_submitted_grn_request,submitted.grn.request,model_submitted_grn_request,base.group_user,1,1,1,1
+access_upcoming_grn_request,upcoming.grn.request,model_upcoming_grn_request,base.group_user,1,1,1,1
+
+access_pending_check_birthday,pending.check.birthday,model_pending_check_birthday,base.group_user,1,1,1,1
+
 access_claim_lines1,claim_lines1,model_claim_lines1,base.group_user,1,1,1,1
 
 

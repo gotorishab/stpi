@@ -115,10 +115,10 @@ class UpcomingGRN(models.Model):
         [('draft', 'Draft'), ('to_approve', 'To Approve'), ('approved', 'Approved'), ('rejected', 'Rejected')
          ], required=True, default='draft', track_visibility='always', string='Status')
 
-
-class IssueRequestEmp(models.Model):
-    _name = "issue.request.emp"
-    _description ="Issues Request"
+#Issuse Request
+class PendingIssueRequest(models.Model):
+    _name = "pending.issue.request"
+    _description ="Pending Issues Request"
 
     exit_transfer_id = fields.Many2one("exit.transfer.management", string="Exit/Transfer Id", readonly=True)
     employee_id = fields.Many2one('hr.employee', string='Employee')
@@ -127,6 +127,7 @@ class IssueRequestEmp(models.Model):
     item_category_id = fields.Many2one('indent.stock', string='Item Category')
     item_id = fields.Many2one('child.indent.stock', string='Item')
     requested_quantity = fields.Integer('Requested Quantity')
+    approved_quantity = fields.Integer('Approved Quantity')
     state = fields.Selection(
         [('draft', 'Draft'), ('to_approve_proceed', 'To Approve 1'), ('to_approve', 'To Approve'),
          ('approved', 'Approved'), ('rejected', 'Rejected')
@@ -142,9 +143,54 @@ class IssueRequestEmp(models.Model):
             self.issue_id.sudo().button_reject()
             self.update({"state": "rejected"})
 
+class SubmittedIssueRequest(models.Model):
+    _name = "submitted.issue.request"
+    _description ="Submitted Issues Request"
 
-class GRNRequestEmp(models.Model):
-    _name = "grn.request.emp"
+    exit_transfer_id = fields.Many2one("exit.transfer.management", string="Exit/Transfer Id", readonly=True)
+    employee_id = fields.Many2one('hr.employee', string='Employee')
+    issue_id = fields.Many2one("issue.request", string="Issue Request")
+    indent_grn = fields.Many2one('indent.request', string='Indent/GRN')
+    item_category_id = fields.Many2one('indent.stock', string='Item Category')
+    item_id = fields.Many2one('child.indent.stock', string='Item')
+    requested_quantity = fields.Integer('Requested Quantity')
+    approved_quantity = fields.Integer('Approved Quantity')
+    state = fields.Selection(
+        [('draft', 'Draft'), ('to_approve_proceed', 'To Approve 1'), ('to_approve', 'To Approve'),
+         ('approved', 'Approved'), ('rejected', 'Rejected')
+         ], string='Status')
+
+    def button_reject(self):
+        if self.issue_id:
+            self.issue_id.sudo().button_reject()
+            self.update({"state": "rejected"})
+
+class UpcomingIssueRequest(models.Model):
+    _name = "upcoming.issue.request"
+    _description ="Upcoming Issues Request"
+
+    exit_transfer_id = fields.Many2one("exit.transfer.management", string="Exit/Transfer Id", readonly=True)
+    employee_id = fields.Many2one('hr.employee', string='Employee')
+    issue_id = fields.Many2one("issue.request", string="Issue Request")
+    indent_grn = fields.Many2one('indent.request', string='Indent/GRN')
+    item_category_id = fields.Many2one('indent.stock', string='Item Category')
+    item_id = fields.Many2one('child.indent.stock', string='Item')
+    requested_quantity = fields.Integer('Requested Quantity')
+    approved_quantity = fields.Integer('Approved Quantity')
+    state = fields.Selection(
+        [('draft', 'Draft'), ('to_approve_proceed', 'To Approve 1'), ('to_approve', 'To Approve'),
+         ('approved', 'Approved'), ('rejected', 'Rejected')
+         ], string='Status')
+
+
+
+
+
+
+
+# GRN Request
+class PendingGRNRequest(models.Model):
+    _name = "pending.grn.request"
     _description ="GRN Request"
 
     exit_transfer_id = fields.Many2one("exit.transfer.management", string="Exit/Transfer Id", readonly=True)
@@ -154,6 +200,8 @@ class GRNRequestEmp(models.Model):
     item_category_id = fields.Many2one('indent.stock', string='Item Category')
     item_id = fields.Many2one('child.indent.stock', string='Item')
     requested_quantity = fields.Integer('Requested Quantity')
+    approved_quantity = fields.Integer('Approved Quantity')
+
     state = fields.Selection(
         [('draft', 'Draft'), ('to_approve_proceed', 'To Approve 1'), ('to_approve', 'To Approve'),
          ('approved', 'Approved'), ('rejected', 'Rejected')
@@ -169,4 +217,43 @@ class GRNRequestEmp(models.Model):
             self.issue_id.sudo().button_reject()
             self.update({"state": "rejected"})
 
+class SubmittedGRNRequest(models.Model):
+    _name = "submitted.grn.request"
+    _description ="Submitted GRN Request"
 
+    exit_transfer_id = fields.Many2one("exit.transfer.management", string="Exit/Transfer Id", readonly=True)
+    employee_id = fields.Many2one('hr.employee', string='Employee')
+    issue_id = fields.Many2one("issue.request", string="Issue Request")
+    indent_grn = fields.Many2one('indent.request', string='Indent/GRN')
+    item_category_id = fields.Many2one('indent.stock', string='Item Category')
+    item_id = fields.Many2one('child.indent.stock', string='Item')
+    requested_quantity = fields.Integer('Requested Quantity')
+    approved_quantity = fields.Integer('Approved Quantity')
+
+    state = fields.Selection(
+        [('draft', 'Draft'), ('to_approve_proceed', 'To Approve 1'), ('to_approve', 'To Approve'),
+         ('approved', 'Approved'), ('rejected', 'Rejected')
+         ], string='Status')
+
+    def button_reject(self):
+        if self.issue_id:
+            self.issue_id.sudo().button_reject()
+            self.update({"state": "rejected"})
+
+class UpcomingGRNRequest(models.Model):
+    _name = "upcoming.grn.request"
+    _description ="Upcoming GRN Request"
+
+    exit_transfer_id = fields.Many2one("exit.transfer.management", string="Exit/Transfer Id", readonly=True)
+    employee_id = fields.Many2one('hr.employee', string='Employee')
+    issue_id = fields.Many2one("issue.request", string="Issue Request")
+    indent_grn = fields.Many2one('indent.request', string='Indent/GRN')
+    item_category_id = fields.Many2one('indent.stock', string='Item Category')
+    item_id = fields.Many2one('child.indent.stock', string='Item')
+    requested_quantity = fields.Integer('Requested Quantity')
+    approved_quantity = fields.Integer('Approved Quantity')
+
+    state = fields.Selection(
+        [('draft', 'Draft'), ('to_approve_proceed', 'To Approve 1'), ('to_approve', 'To Approve'),
+         ('approved', 'Approved'), ('rejected', 'Rejected')
+         ], string='Status')
