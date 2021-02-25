@@ -77,7 +77,7 @@ class ExitTransferManagement(models.Model):
 
     # eFile
     my_correspondence_ids = fields.One2many("correspondence.exit.management", "exit_transfer_id", string="Correspondence")
-    my_file_ids = fields.One2many("it", "exit_transfer_id", string="Files")
+    my_file_ids = fields.One2many("file.exit.management", "exit_transfer_id", string="Files")
 
     claim_lines1_ids = fields.One2many("claim.lines1","exit_transfer_id", string="1`Upcoming Lines")
 

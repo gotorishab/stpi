@@ -575,10 +575,7 @@ class HrDeclaration(models.Model):
 
                     ).format(wage,rec.allowance_current,sum,rec.income_after_house_property,rec.income_after_other_sources,rec.el_encashment)))
                 rec.message_post(body=_body)
-                if sum == 0:
-                    rec.tax_salary_final = int(wage + rec.allowance_current) * int(month) + rec.income_after_house_property + rec.income_after_other_sources + rec.el_encashment
-                else:
-                    rec.tax_salary_final = int(wage + rec.allowance_current)*(int(month) - 1) + round(sum) + rec.income_after_house_property + rec.income_after_other_sources + rec.el_encashment
+                rec.tax_salary_final = int(wage + rec.allowance_current)*int(month) + round(sum) + rec.income_after_house_property + rec.income_after_other_sources + rec.el_encashment
                 age = 0
                 rec.std_ded_ids.unlink()
                 rec.exemption_ids.unlink()
