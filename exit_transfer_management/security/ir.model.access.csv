@@ -29,6 +29,12 @@ access_submitted_income_tax_request,submitted.income.tax.request,model_submitted
 access_upcoming_income_tax_request,upcoming.income.tax.request,model_upcoming_income_tax_request,base.group_user,1,1,1,1
 access_correspondence_exit_management,correspondence.exit.management,model_correspondence_exit_management,base.group_user,1,1,1,1
 access_file_exit_management,file.exit.management,model_file_exit_management,base.group_user,1,1,1,1
+access_pending_indent_request,pending.indent.request,model_pending_indent_request,base.group_user,1,1,1,1
+access_submitted_indent_request,submitted.indent.request,model_submitted_indent_request,base.group_user,1,1,1,1
+access_upcoming_indent_request,upcoming.indent.request,model_upcoming_indent_request,base.group_user,1,1,1,1
+access_pending_grn,pending.grn,model_pending_grn,base.group_user,1,1,1,1
+access_submitted_grn,submitted.grn,model_submitted_grn,base.group_user,1,1,1,1
+access_upcoming_grn,upcoming.grn,model_upcoming_grn,base.group_user,1,1,1,1
 access_claim_lines1,claim_lines1,model_claim_lines1,base.group_user,1,1,1,1
 
 
