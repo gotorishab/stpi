@@ -9,10 +9,10 @@ class PendingIndentRequest(models.Model):
     indent_id = fields.Many2one("indent.request", string="Indent Request")
     employee_id = fields.Many2one('hr.employee', string='Employee')
     indent_type = fields.Selection([('issue', 'Issue'), ('grn', 'GRN')
-                                    ], track_visibility='always', string='Type')
+                                    ],string='Type')
     state = fields.Selection(
         [('draft', 'Draft'), ('to_approve', 'To Approve'), ('approved', 'Approved'), ('rejected', 'Rejected')
-         ], required=True, default='draft', track_visibility='always', string='Status')
+         ], string='Status')
 
     def button_approved(self):
         if self.indent_id:
