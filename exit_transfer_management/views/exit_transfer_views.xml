@@ -466,7 +466,6 @@
                                     <tree edittable="bottom">
                                         <field name="correspondence_id"/>
                                         <field name="letter_no"/>
-                                        <field name="sender_type_id"/>
                                         <field name="file_assign_id"/>
                                     </tree>
                                 </field>
