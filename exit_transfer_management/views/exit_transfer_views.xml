@@ -460,7 +460,7 @@
                             </page>
                             <page string="eFile">
                                 <br/>
-                                    <div><h2>Efile Correspondence</h2></div>
+                                    <div><h2>Correspondence</h2></div>
                                 <br/>
                                 <field name="my_correspondence_ids" readonly="1" options='{"no_open": True}'>
                                     <tree edittable="bottom">
@@ -470,9 +470,90 @@
                                         <field name="file_assign_id"/>
                                     </tree>
                                 </field>
+
+                                 <br/>
+                                    <div><h2>File</h2></div>
+                                <br/>
+                                <field name="my_file_ids" readonly="1" options='{"no_open": True}'>
+                                    <tree edittable="bottom">
+                                        <field name="file_name"/>
+                                        <field name="number"/>
+                                        <field name="state"/>
+                                    </tree>
+                                </field>
                             </page>
                             <page string="Indent">
-                                <field name="claim_lines1_ids" readonly="1" options='{"no_open": True}'/>
+                                <br/>
+                                    <div><h2>Pending Indent Request</h2></div>
+                                <br/>
+                                <field name="pending_indent_req_ids" readonly="1" options='{"no_open": True}'>
+                                    <tree edittable="bottom">
+                                        <field name="number"/>
+                                        <field name="employee_id"/>
+                                        <field name="indent_type"/>
+                                        <field name="state"/>
+                                    </tree>
+                                </field>
+
+                                <br/>
+                                    <div><h2>Submitted Indent Request</h2></div>
+                                <br/>
+                                <field name="submitted_indent_req_ids" readonly="1" options='{"no_open": True}'>
+                                    <tree edittable="bottom">
+                                        <field name="number"/>
+                                        <field name="employee_id"/>
+                                        <field name="indent_type"/>
+                                        <field name="state"/>
+                                    </tree>
+                                </field>
+
+                                <br/>
+                                    <div><h2>Upcoming Indent Request</h2></div>
+                                <br/>
+                                <field name="upcoming_indent_req_ids" readonly="1" options='{"no_open": True}'>
+                                    <tree edittable="bottom">
+                                        <field name="number"/>
+                                        <field name="employee_id"/>
+                                        <field name="indent_type"/>
+                                        <field name="state"/>
+                                    </tree>
+                                </field>
+
+                                <br/>
+                                    <div><h2>Pending GRN </h2></div>
+                                <br/>
+                                <field name="pending_grn_ids" readonly="1" options='{"no_open": True}'>
+                                    <tree edittable="bottom">
+                                        <field name="number"/>
+                                        <field name="employee_id"/>
+                                        <field name="indent_type"/>
+                                        <field name="state"/>
+                                    </tree>
+                                </field>
+
+                                <br/>
+                                    <div><h2>Submitted GRN</h2></div>
+                                <br/>
+                                <field name="submitted_grn_ids" readonly="1" options='{"no_open": True}'>
+                                    <tree edittable="bottom">
+                                        <field name="number"/>
+                                        <field name="employee_id"/>
+                                        <field name="indent_type"/>
+                                        <field name="state"/>
+                                    </tree>
+                                </field>
+
+                                <br/>
+                                    <div><h2>Upcoming GRN</h2></div>
+                                <br/>
+                                <field name="upcoming_grn_ids" readonly="1" options='{"no_open": True}'>
+                                    <tree edittable="bottom">
+                                        <field name="number"/>
+                                        <field name="employee_id"/>
+                                        <field name="indent_type"/>
+                                        <field name="state"/>
+                                    </tree>
+                                </field>
                             </page>
                         </notebook>
                   </sheet>
