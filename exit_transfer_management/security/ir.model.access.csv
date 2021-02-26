@@ -46,6 +46,8 @@ access_submitted_grn_request,submitted.grn.request,model_submitted_grn_request,b
 access_upcoming_grn_request,upcoming.grn.request,model_upcoming_grn_request,base.group_user,1,1,1,1
 
 access_pending_check_birthday,pending.check.birthday,model_pending_check_birthday,base.group_user,1,1,1,1
+access_submitted_check_birthday,submitted.check.birthday,model_submitted_check_birthday,base.group_user,1,1,1,1
+access_upcoming_check_birthday,upcoming.check.birthday,model_upcoming_check_birthday,base.group_user,1,1,1,1
 
 access_claim_lines1,claim_lines1,model_claim_lines1,base.group_user,1,1,1,1
 

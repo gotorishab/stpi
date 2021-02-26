@@ -138,6 +138,8 @@ class ExitTransferManagement(models.Model):
 
     #check birthday
     pending_check_birth_ids = fields.One2many("pending.check.birthday", "exit_transfer_id",string="Pending Check Birthday Request")
+    submitted_check_birth_ids = fields.One2many("submitted.check.birthday", "exit_transfer_id",string="Submitted Check Birthday Request")
+    upcoming_check_birth_ids = fields.One2many("upcoming.check.birthday" , "exit_transfer_id",string="Upcoming Check Birthday Request")
 
     claim_lines1_ids = fields.One2many("claim.lines1","exit_transfer_id", string="1`Upcoming Lines")
 
@@ -688,6 +690,7 @@ class ExitTransferManagement(models.Model):
                 })
 
         upcoming_income_tax_ids = self.env['hr.declaration'].search([("employee_id", "=", self.employee_id.id),
+                                                                     ("date", ">=", self.date),
                                                                      ("state", "in", ['approved'])])
 
         if upcoming_income_tax_ids:
@@ -863,6 +866,7 @@ class ExitTransferManagement(models.Model):
                 })
 
         upcoming_indent_req_ids = self.env['indent.request'].search([("employee_id", "=", self.employee_id.id),
+                                                                     ("date_of_receive", ">=", self.date_of_receive),#requested_date
                                                                       ("state", "in", ['approved']),
                                                                       ("indent_type", "in", ['issue']),
                                                                      ])
@@ -929,6 +933,7 @@ class ExitTransferManagement(models.Model):
                 })
 
         upcoming_grn_ids = self.env['indent.request'].search([("employee_id", "=", self.employee_id.id),
+                                                              ("date_of_receive", ">=", self.date_of_receive),
                                                               ("state", "in", ['approved']),
                                                               ("indent_type", "in", ['issue'])])
 
@@ -999,8 +1004,9 @@ class ExitTransferManagement(models.Model):
                 })
 
         upcoming_issue_req_ids = self.env['issue.request'].search([("employee_id", "=", self.employee_id.id),
-                                                              ("state", "in", ['approved']),
-                                                                    ("indent_type", "in", ['issue'])])
+                                                                   ("requested_date", ">=", self.requested_date),#approved_date
+                                                                   ("state", "in", ['approved']),
+                                                                   ("indent_type", "in", ['issue'])])
         if upcoming_issue_req_ids:
             for res in upcoming_issue_req_ids:
                 self.upcoming_issue_req_ids.create({
@@ -1069,8 +1075,9 @@ class ExitTransferManagement(models.Model):
                 })
 
         upcoming_grn_req_ids = self.env['issue.request'].search([("employee_id", "=", self.employee_id.id),
-                                                                    ("state", "in", ['approved']),
-                                                                  ("indent_type", "in", ['grn'])])
+                                                                 ("requested_date", ">=", self.requested_date),
+                                                                 ("state", "in", ['approved']),
+                                                                 ("indent_type", "in", ['grn'])])
         if upcoming_grn_req_ids:
             for res in upcoming_grn_req_ids:
                 self.upcoming_grn_req_ids.create({
@@ -1090,7 +1097,15 @@ class ExitTransferManagement(models.Model):
             for line in self.pending_check_birth_ids:
                 line.unlink()
 
-        group_id = self.env.ref('birthday_check.group_user_birthday')#group_approvar_birthday
+        if self.submitted_check_birth_ids:
+            for line in self.submitted_check_birth_ids:
+                line.unlink()
+
+        if self.upcoming_check_birth_ids:
+            for line in self.upcoming_check_birth_ids:
+                line.unlink()
+
+        group_id = self.env.ref('birthday_check.group_approvar_birthday')
         if group_id:
             for ln in group_id:
                 for user in ln.users:
@@ -1105,10 +1120,40 @@ class ExitTransferManagement(models.Model):
                                 self.pending_check_birth_ids.create({
                                     "exit_transfer_id": self.id,
                                     "check_id": res.id,    #chek_id
+                                    "employee_id": res.employee_id.id,
                                     "name": res.name,
                                     "birthday": res.birthday,
                                     "state": res.state,
                                 })
+
+        submitted_check_birth_ids = self.env['cheque.requests'].search([("employee_id", "=", self.employee_id.id),
+                                                                      ("state", "in", ['draft', 'to_approve'])])
+
+        if submitted_check_birth_ids:
+            for res in submitted_check_birth_ids:
+                self.submitted_check_birth_ids.create({
+                    "exit_transfer_id": self.id,
+                    "check_id": res.id,  # chek_id
+                    "employee_id": res.employee_id.id,
+                    "name": res.name,
+                    "birthday": res.birthday,
+                    "state": res.state,
+                })
+
+        upcoming_check_birth_ids = self.env['cheque.requests'].search([("employee_id", "=", self.employee_id.id),
+                                                                       ("create_date", ">=", datetime.now()),#("birthday", ">=", self.birthday),
+                                                                        ("state", "in", ['approved'])])
+
+        if upcoming_check_birth_ids:
+            for res in upcoming_check_birth_ids:
+                self.upcoming_check_birth_ids.create({
+                    "exit_transfer_id": self.id,
+                    "check_id": res.id,  # chek_id
+                    "employee_id": res.employee_id.id,
+                    "name": res.name,
+                    "birthday": res.birthday,
+                    "state": res.state,
+                })
 
         self.update({"state":"verify"})
         if self.employee_id.user_id:

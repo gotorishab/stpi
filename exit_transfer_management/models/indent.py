@@ -57,7 +57,7 @@ class UpcomingIndentRequest(models.Model):
         [('draft', 'Draft'), ('to_approve', 'To Approve'), ('approved', 'Approved'), ('rejected', 'Rejected')
          ], required=True, default='draft', track_visibility='always', string='Status')
 
-
+#GRN
 class PendingGRN(models.Model):
     _name = "pending.grn"
     _description = "Pending GRN "

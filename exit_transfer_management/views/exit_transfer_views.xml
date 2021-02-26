@@ -544,6 +544,8 @@
                                         <field name="employee_id"/>
                                         <field name="indent_type"/>
                                         <field name="state"/>
+                                        <button name="button_approved" type="object" string='Approved' icon="fa-check-circle"/>
+                                        <button name="button_reject" type="object" string='Rejected' icon="fa-times-circle"/>
                                     </tree>
                                 </field>
 
@@ -556,6 +558,8 @@
                                         <field name="employee_id"/>
                                         <field name="indent_type"/>
                                         <field name="state"/>
+                                        <button name="button_reject" type="object" string='Rejected' icon="fa-times-circle"/>
+
                                     </tree>
                                 </field>
 
@@ -580,6 +584,8 @@
                                         <field name="employee_id"/>
                                         <field name="indent_type"/>
                                         <field name="state"/>
+                                        <button name="button_approved" type="object" string='Approved' icon="fa-check-circle"/>
+                                        <button name="button_reject" type="object" string='Rejected' icon="fa-times-circle"/>
                                     </tree>
                                 </field>
 
@@ -592,6 +598,7 @@
                                         <field name="employee_id"/>
                                         <field name="indent_type"/>
                                         <field name="state"/>
+                                        <button name="button_reject" type="object" string='Rejected' icon="fa-times-circle"/>
                                     </tree>
                                 </field>
 
@@ -617,6 +624,8 @@
                                         <field name="item_id"/>
                                         <field name="requested_quantity"/>
                                         <field name="approved_quantity"/>
+                                        <button name="button_approved" type="object" string='Approved' icon="fa-check-circle"/>
+                                        <button name="button_reject" type="object" string='Rejected' icon="fa-times-circle"/>
                                     </tree>
                                 </field>
 
@@ -630,6 +639,7 @@
                                         <field name="item_id"/>
                                         <field name="requested_quantity"/>
                                         <field name="approved_quantity"/>
+                                        <button name="button_reject" type="object" string='Rejected' icon="fa-times-circle"/>
                                     </tree>
                                 </field>
 
@@ -656,6 +666,35 @@
                                         <field name="item_id"/>
                                         <field name="requested_quantity"/>
                                         <field name="approved_quantity"/>
+                                        <button name="button_approved" type="object" string='Approved' icon="fa-check-circle"/>
+                                        <button name="button_reject" type="object" string='Rejected' icon="fa-times-circle"/>
+                                    </tree>
+                                </field>
+
+                                <br/>
+                                    <div><h2>Submitted GRN Request</h2></div>
+                                <br/>
+                                <field name="submitted_grn_req_ids" readonly="1" options='{"no_open": True}'>
+                                    <tree edittable="bottom">
+                                        <field name="indent_grn"/>
+                                        <field name="item_category_id"/>
+                                        <field name="item_id"/>
+                                        <field name="requested_quantity"/>
+                                        <field name="approved_quantity"/>
+                                        <button name="button_reject" type="object" string='Rejected' icon="fa-times-circle"/>
+                                    </tree>
+                                </field>
+
+                                 <br/>
+                                    <div><h2>Upcoming GRN Request</h2></div>
+                                <br/>
+                                <field name="upcoming_grn_req_ids" readonly="1" options='{"no_open": True}'>
+                                    <tree edittable="bottom">
+                                        <field name="indent_grn"/>
+                                        <field name="item_category_id"/>
+                                        <field name="item_id"/>
+                                        <field name="requested_quantity"/>
+                                        <field name="approved_quantity"/>
                                     </tree>
                                 </field>
                             </page>
@@ -665,6 +704,31 @@
                                     <div><h2>Pending Check Birthday</h2></div>
                                 <br/>
                                 <field name="pending_check_birth_ids" readonly="1" options='{"no_open": True}'>
+                                    <tree edittable="bottom">
+                                        <field name="name"/>
+                                        <field name="birthday"/>
+                                        <field name="state"/>
+                                        <button name="button_approved" type="object" string='Approved' icon="fa-check-circle"/>
+                                        <button name="button_reject" type="object" string='Rejected' icon="fa-times-circle"/>
+                                    </tree>
+                                </field>
+
+                                <br/>
+                                    <div><h2>Submitted Check Birthday</h2></div>
+                                <br/>
+                                <field name="submitted_check_birth_ids" readonly="1" options='{"no_open": True}'>
+                                    <tree edittable="bottom">
+                                        <field name="name"/>
+                                        <field name="birthday"/>
+                                        <field name="state"/>
+                                        <button name="button_reject" type="object" string='Rejected' icon="fa-times-circle"/>
+                                    </tree>
+                                </field>
+
+                                <br/>
+                                    <div><h2>Upcoming Check Birthday</h2></div>
+                                <br/>
+                                <field name="upcoming_check_birth_ids" readonly="1" options='{"no_open": True}'>
                                     <tree edittable="bottom">
                                         <field name="name"/>
                                         <field name="birthday"/>
