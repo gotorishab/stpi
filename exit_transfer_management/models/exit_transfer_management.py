@@ -168,8 +168,26 @@ class ExitTransferManagement(models.Model):
             for line in self.upcoming_leave_line_ids:
                 line.unlink()
 
-        pending_leaves_ids = self.env['hr.leave'].search([("employee_id","=",self.employee_id.id),
-                                                  ("state","in",['draft','confirm'])])
+        group_id = self.env.ref('hr_holidays.group_hr_holidays_manager')
+        if group_id:
+            for ln in group_id:
+                for user in ln.users:
+                    if user.id == self.env.user.id:
+                        me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+                        HrEmployees = self.env['hr.employee'].sudo().search([("branch_id", "=", me.branch_id.id)])
+                        pending_leaves_ids = self.env['hr.leave'].search([("employee_id","in",HrEmployees.ids),
+                                                  ("state","in",['confirm','validate1'])])
+                        if pending_leaves_ids:
+                            for res in pending_leaves_ids:
+                                self.pending_leave_line_ids.create({
+                                    "exit_transfer_id": self.id,
+                                    "employee_id": res.employee_id.id,
+                                    "leave_id": res.id,
+                                    "leave_type_id": res.holiday_status_id.id,
+                                    "from_date": res.request_date_from,
+                                    "to_date": res.request_date_to,
+                                    "state": res.state
+                                })
 
 
         submitted_leaves_ids = self.env['hr.leave'].search([("employee_id","=",self.employee_id.id),
@@ -178,18 +196,6 @@ class ExitTransferManagement(models.Model):
         upcoming_leave_line_ids = self.env['hr.leave'].search([("employee_id","=",self.employee_id.id),
                                                   ("request_date_from",">=",self.date),
                                                   ("state","in",['validate'])])
-
-        if pending_leaves_ids:
-            for res in pending_leaves_ids:
-                self.pending_leave_line_ids.create({
-                    "exit_transfer_id": self.id,
-                    "leave_id": res.id,
-                    "leave_type_id": res.holiday_status_id.id,
-                    "from_date": res.request_date_from,
-                    "to_date": res.request_date_to,
-                    "state": res.state
-                })
-
 
         if submitted_leaves_ids:
             for res in submitted_leaves_ids:
@@ -1205,6 +1211,7 @@ class PendingEmployeeLeave(models.Model):
     exit_transfer_id = fields.Many2one("exit.transfer.management", string ="Exit/Transfer Id", readonly=True)
     leave_id = fields.Many2one("hr.leave", string="Leave Id")
     leave_type_id = fields.Many2one("hr.leave.type", string="Leave Type")
+    employee_id = fields.Many2one("hr.employee", string="Requested By")
     from_date = fields.Date("From Date")
     to_date = fields.Date("To Date")
     state = fields.Selection([
