@@ -15,12 +15,12 @@ class PendingVehicleRequest(models.Model):
                              string="State", default="draft")
     def vehicle_approved(self):
         if self.vehicle_id:
-            self.vehicle_id.button_approved()
+            self.vehicle_id.sudo().approve()#button_approved
             self.update({"state":"confirm"})
 
     def vehicle_rejected(self):
         if self.vehicle_id:
-            self.vehicle_id.button_reject()
+            self.vehicle_id.sudo().reject()#button_reject
             self.update({"state":"reject"})
 
 class SubmittedVehicleRequest(models.Model):
@@ -38,7 +38,7 @@ class SubmittedVehicleRequest(models.Model):
 
     def vehicle_cancel(self):
         if self.tour_claim_id:
-            self.tour_claim_id.update({"state":"draft"})
+            self.tour_claim_id.sudo().cancel() #
             self.update({"state":"draft"})
 
 

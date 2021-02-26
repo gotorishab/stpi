@@ -141,6 +141,12 @@ class ExitTransferManagement(models.Model):
     submitted_check_birth_ids = fields.One2many("submitted.check.birthday", "exit_transfer_id",string="Submitted Check Birthday Request")
     upcoming_check_birth_ids = fields.One2many("upcoming.check.birthday" , "exit_transfer_id",string="Upcoming Check Birthday Request")
 
+    #reimbursement
+    pending_reimbursement_ids = fields.One2many("pending.reimbursement.request", "exit_transfer_id",string="Pending Reimbursement Request")
+    submitted_reimbursement_ids = fields.One2many("submitted.reimbursement.request", "exit_transfer_id",string="Submitted Reimbursement Request")
+    upcoming_reimbursement_ids = fields.One2many("upcoming.reimbursement.request", "exit_transfer_id",string="Upcoming Reimbursement Request")
+
+
     claim_lines1_ids = fields.One2many("claim.lines1","exit_transfer_id", string="1`Upcoming Lines")
 
     leave_no_dues = fields.Boolean()
@@ -1158,6 +1164,73 @@ class ExitTransferManagement(models.Model):
                     "employee_id": res.employee_id.id,
                     "name": res.name,
                     "birthday": res.birthday,
+                    "state": res.state,
+                })
+
+        #reimbursement
+
+        if self.pending_reimbursement_ids:
+            for line in self.pending_reimbursement_ids:
+                line.unlink()
+
+        if self.submitted_reimbursement_ids:
+            for line in self.submitted_reimbursement_ids:
+                line.unlink()
+
+        if self.upcoming_reimbursement_ids:
+            for line in self.upcoming_reimbursement_ids:
+                line.unlink()
+
+        group_id = self.env.ref('reimbursement_stpi.group_approving_authority')
+        if group_id:
+            for ln in group_id:
+                for user in ln.users:
+                    if user.id == self.env.user.id:
+                        me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+                        HrEmployees = self.env['hr.employee'].sudo().search([("branch_id", "=", me.branch_id.id)])
+                        pending_reimbursement_ids = self.env['reimbursement'].search([("employee_id", "in", HrEmployees.ids),
+                                                                                      ("state", "in", ['to_approve'])])
+                        if pending_reimbursement_ids:
+                            for res in pending_reimbursement_ids:
+                                self.pending_reimbursement_ids.create({
+                                    "exit_transfer_id": self.id,
+                                    "reiburs_id": res.id,
+                                    "employee_id": res.employee_id.id,
+                                    "name": res.name,
+                                    "claim_sub": res.claim_sub.id,
+                                    "claimed_amount":res.claimed_amount,
+                                    "net_amount": res.net_amount,
+                                    "state": res.state,
+                                })
+
+        submitted_reimbursement_ids = self.env['reimbursement'].search([("employee_id", "=", self.employee_id.id),
+                                                                      ("state", "in", ['draft','to_approve'])])
+        if submitted_reimbursement_ids:
+            for res in submitted_reimbursement_ids:
+                self.submitted_reimbursement_ids.create({
+                    "exit_transfer_id": self.id,
+                    "reiburs_id": res.id,
+                    "employee_id": res.employee_id.id,
+                    "name": res.name,
+                    "claim_sub": res.claim_sub.id,
+                    "claimed_amount": res.claimed_amount,
+                    "net_amount": res.net_amount,
+                    "state": res.state,
+                })
+
+        upcoming_reimbursement_ids = self.env['reimbursement'].search([("employee_id", "=", self.employee_id.id),
+                                                                       ("create_date", ">=", datetime.now()),
+                                                                        ("state", "in", ['approved'])])
+        if upcoming_reimbursement_ids:
+            for res in upcoming_reimbursement_ids:
+                self.upcoming_reimbursement_ids.create({
+                    "exit_transfer_id": self.id,
+                    "reiburs_id": res.id,
+                    "employee_id": res.employee_id.id,
+                    "name": res.name,
+                    "claim_sub": res.claim_sub.id,
+                    "claimed_amount": res.claimed_amount,
+                    "net_amount": res.net_amount,
                     "state": res.state,
                 })
 

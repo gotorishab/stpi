@@ -16,12 +16,12 @@ class PendingAppraisalRequest(models.Model):
 
     def button_self_reviewed(self):
         if self.abap_id:
-            self.abap_id.button_approved()
+            self.abap_id.sudo().button_approved()
             self.update({"state":"self_review"})
 
     def button_reject(self):
         if self.abap_id:
-            self.abap_id.button_reject()
+            self.abap_id.sudo().button_reject()
             self.update({"state":"rejected"})
 
 

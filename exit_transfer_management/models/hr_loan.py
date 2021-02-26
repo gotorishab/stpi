@@ -24,15 +24,15 @@ class PendingHrLoanRequest(models.Model):
     ], string="Status")
 
 
-    def tax_approved(self):
-        if self.running_fy_id:
-            self.running_fy_id.sudo().button_approved()
-            self.state = self.running_fy_id.state
+    def action_approve(self):
+        if self.loan_id:
+            self.loan_id.sudo().action_approve()
+            self.state = self.loan_id.state
 
-    def tax_rejected(self):
-        if self.running_fy_id:
-            self.running_fy_id.sudo().button_reject()
-            self.state = self.running_fy_id.state
+    def action_refuse(self):
+        if self.loan_id:
+            self.loan_id.sudo().action_refuse() #action_cancel
+            self.state = self.loan_id.state
 
 class SubmittedHrLoanRequest(models.Model):
     _name = 'submitted.hr.loan.request'
@@ -57,10 +57,11 @@ class SubmittedHrLoanRequest(models.Model):
         ('cancel', 'Canceled'),
     ], string="Status")
 
-    def tax_rejected(self):
-        if self.running_fy_id:
-            self.running_fy_id.sudo().button_reject()
-            self.state = self.running_fy_id.state
+    def action_cancel(self):
+        if self.loan_id:
+            self.loan_id.sudo().action_cancel()
+            self.state = self.loan_id.state
+
 
 class UpcomingHrLoanRequest(models.Model):
     _name = 'upcoming.hr.loan.request'

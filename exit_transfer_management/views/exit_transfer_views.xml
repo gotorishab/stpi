@@ -366,13 +366,97 @@
                                 </field>
                             </page>
                             <page string="Reimbursement">
-                                <field name="claim_lines1_ids" readonly="1" options='{"no_open": True}'/>
-                            </page>
-                            <page string="LTC Request and Claim Request">
-                                <field name="claim_lines1_ids" readonly="1" options='{"no_open": True}'/>
+                               <br/>
+                                    <div><h2>Pending Reimbursement Request</h2></div>
+                                <br/>
+                                <field name="pending_reimbursement_ids" readonly="1" options='{"no_open": True}'>
+                                    <tree edittable="bottom">
+                                        <field name="name"/>
+                                        <field name="claim_sub"/>
+                                        <field name="claimed_amount"/>
+                                        <field name="net_amount"/>
+                                        <field name="state"/>
+                                        <button name="button_approved" type="object" string='Approved' icon="fa-check-circle"/>
+                                        <button name="button_reject" type="object" string='Rejected' icon="fa-times-circle"/>
+                                    </tree>
+                                </field>
+
+                                <br/>
+                                    <div><h2>Submitted Reimbursement Request</h2></div>
+                                <br/>
+                                <field name="submitted_reimbursement_ids" readonly="1" options='{"no_open": True}'>
+                                    <tree edittable="bottom">
+                                        <field name="name"/>
+                                        <field name="claim_sub"/>
+                                        <field name="claimed_amount"/>
+                                        <field name="net_amount"/>
+                                        <field name="state"/>
+                                        <button name="button_reject" type="object" string='Rejected' icon="fa-times-circle"/>
+                                    </tree>
+                                </field>
+
+                                <br/>
+                                    <div><h2>Upcoming Reimbursement Request</h2></div>
+                                <br/>
+                                <field name="upcoming_reimbursement_ids" readonly="1" options='{"no_open": True}'>
+                                    <tree edittable="bottom">
+                                        <field name="name"/>
+                                        <field name="claim_sub"/>
+                                        <field name="claimed_amount"/>
+                                        <field name="net_amount"/>
+                                        <field name="state"/>
+                                    </tree>
+                                </field>
                             </page>
                             <page string="Loan">
-                                <field name="claim_lines1_ids" readonly="1" options='{"no_open": True}'/>
+
+                                <br/>
+                                    <div><h2>Pending Loan Request</h2></div>
+                                <br/>
+                                <field name="pending_loan_request_ids" readonly="1" options='{"no_open": True}'>
+                                    <tree edittable="bottom">
+                                        <field name="type_id"/>
+                                        <field name="installment"/>
+                                        <field name="total_amount"/>
+                                        <field name="total_interest"/>
+                                        <field name="total_paid_amount"/>
+                                        <field name="balance_amount"/>
+                                        <field name="state"/>
+                                        <button name="action_approve" type="object" string='Approved' icon="fa-check-circle"/>
+                                        <button name="action_refuse" type="object" string='Rejected' icon="fa-times-circle"/>
+                                    </tree>
+                                </field>
+
+                                <br/>
+                                    <div><h2>Submitted Loan Request</h2></div>
+                                <br/>
+                                <field name="submitted_loan_request_ids" readonly="1" options='{"no_open": True}'>
+                                    <tree edittable="bottom">
+                                        <field name="type_id"/>
+                                        <field name="installment"/>
+                                        <field name="total_amount"/>
+                                        <field name="total_interest"/>
+                                        <field name="total_paid_amount"/>
+                                        <field name="balance_amount"/>
+                                        <field name="state"/>
+                                        <button name="action_cancel" type="object" string='Rejected' icon="fa-times-circle"/>
+                                    </tree>
+                                </field>
+
+                                <br/>
+                                    <div><h2>Upcoming Loan Request</h2></div>
+                                <br/>
+                                <field name="upcoming_loan_request_ids" readonly="1" options='{"no_open": True}'>
+                                    <tree edittable="bottom">
+                                        <field name="type_id"/>
+                                        <field name="installment"/>
+                                        <field name="total_amount"/>
+                                        <field name="total_interest"/>
+                                        <field name="total_paid_amount"/>
+                                        <field name="balance_amount"/>
+                                        <field name="state"/>
+                                    </tree>
+                                </field>
                             </page>
                             <page string="PF Withdrawal">
                                 <br/>
@@ -400,8 +484,7 @@
                                         <field name="advance_amount"/>
                                         <field name="purpose"/>
                                         <field name="state"/>
-                                        <button name="pf_approved" type="object" string='Approved' icon="fa-check-circle"/>
-                                        <button name="pf_rejected" type="object" string='Rejected' icon="fa-times-circle"/>
+                                        <button name="pf_cancel" type="object" string='Rejected' icon="fa-times-circle"/>
                                     </tree>
                                 </field>
 
@@ -415,8 +498,6 @@
                                         <field name="advance_amount"/>
                                         <field name="purpose"/>
                                         <field name="state"/>
-                                        <button name="pf_approved" type="object" string='Approved' icon="fa-check-circle"/>
-                                        <button name="pf_rejected" type="object" string='Rejected' icon="fa-times-circle"/>
                                     </tree>
                                 </field>
                             </page>
@@ -699,9 +780,9 @@
                                 </field>
                             </page>
 
-                            <page string="Check birthday">
+                            <page string="Cheque birthday">
                                 <br/>
-                                    <div><h2>Pending Check Birthday</h2></div>
+                                    <div><h2>Pending Cheque Birthday Request</h2></div>
                                 <br/>
                                 <field name="pending_check_birth_ids" readonly="1" options='{"no_open": True}'>
                                     <tree edittable="bottom">
@@ -714,7 +795,7 @@
                                 </field>
 
                                 <br/>
-                                    <div><h2>Submitted Check Birthday</h2></div>
+                                    <div><h2>Submitted Cheque Birthday Request</h2></div>
                                 <br/>
                                 <field name="submitted_check_birth_ids" readonly="1" options='{"no_open": True}'>
                                     <tree edittable="bottom">
@@ -726,7 +807,7 @@
                                 </field>
 
                                 <br/>
-                                    <div><h2>Upcoming Check Birthday</h2></div>
+                                    <div><h2>Upcoming Cheque Birthday Request</h2></div>
                                 <br/>
                                 <field name="upcoming_check_birth_ids" readonly="1" options='{"no_open": True}'>
                                     <tree edittable="bottom">

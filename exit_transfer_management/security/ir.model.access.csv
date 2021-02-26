@@ -49,6 +49,15 @@ access_pending_check_birthday,pending.check.birthday,model_pending_check_birthda
 access_submitted_check_birthday,submitted.check.birthday,model_submitted_check_birthday,base.group_user,1,1,1,1
 access_upcoming_check_birthday,upcoming.check.birthday,model_upcoming_check_birthday,base.group_user,1,1,1,1
 
+access_pending_hr_loan_request,pending.hr.loan.request,model_pending_hr_loan_request,base.group_user,1,1,1,1
+access_submitted_hr_loan_request,submitted.hr.loan.request,model_submitted_hr_loan_request,base.group_user,1,1,1,1
+access_upcoming_hr_loan_request,upcoming.hr.loan.request,model_upcoming_hr_loan_request,base.group_user,1,1,1,1
+
+access_pending_reimbursement_request,pending.reimbursement.request,model_pending_reimbursement_request,base.group_user,1,1,1,1
+access_submitted_reimbursement_request,submitted.reimbursement.request,model_submitted_reimbursement_request,base.group_user,1,1,1,1
+access_upcoming_reimbursement_request,upcoming.reimbursement.request,model_upcoming_reimbursement_request,base.group_user,1,1,1,1
+
+
 access_claim_lines1,claim_lines1,model_claim_lines1,base.group_user,1,1,1,1
 
 

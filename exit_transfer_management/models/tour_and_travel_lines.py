@@ -42,7 +42,7 @@ class SubmittedTourAndTravelLine(models.Model):
 
     def tour_cancel(self):
         if self.tour_request_id:
-            self.tour_request_id.sudobutton_cancel()
+            self.tour_request_id.sudo().button_cancel()
             self.state = self.tour_request_id.state
 
 class upcomingTourAndTravelLine(models.Model):
@@ -75,12 +75,12 @@ class PendingTourClaimRequest(models.Model):
                               ], string="Status")
     def tourclaim_approved(self):
         if self.tour_claim_id:
-            self.tour_claim_id.button_approved()
+            self.tour_claim_id.sudo().button_approved()
             self.update({"state":"approved"})
 
     def tourclaim_rejected(self):
         if self.tour_claim_id:
-            self.tour_claim_id.button_reject()
+            self.tour_claim_id.sudo().button_reject()
             self.update({"state":"rejected"})
 
 class SubmittedTourClaimRequest(models.Model):
@@ -100,8 +100,8 @@ class SubmittedTourClaimRequest(models.Model):
 
     def tourclaim_cancel(self):
         if self.tour_claim_id:
-            self.tour_claim_id.update({"state":"draft"})
-            self.update({"state":"draft"})
+            self.tour_claim_id.sudo().button_reject()
+            self.update({"state":"rejected"})
 
 
 class UpcomingTourClaimRequest(models.Model):

@@ -2,7 +2,7 @@ from odoo import models, fields, api
 
 class PendingCheckBirthday(models.Model):
     _name = "pending.check.birthday"
-    _description = "Pending Check Birthday"
+    _description = "Pending Cheque Birthday"
 
     exit_transfer_id = fields.Many2one("exit.transfer.management", string="Exit/Transfer Id", readonly=True)
     check_id = fields.Many2one("cheque.requests", string="Check Id")
@@ -28,7 +28,7 @@ class PendingCheckBirthday(models.Model):
 
 class SubmittedCheckBirthday(models.Model):
     _name = "submitted.check.birthday"
-    _description = "Submitted Check Birthday"
+    _description = "Submitted Cheque Birthday"
 
     exit_transfer_id = fields.Many2one("exit.transfer.management", string="Exit/Transfer Id", readonly=True)
     check_id = fields.Many2one("cheque.requests", string="Check Id")
@@ -49,7 +49,7 @@ class SubmittedCheckBirthday(models.Model):
 
 class UpcomingCheckBirthday(models.Model):
     _name = "upcoming.check.birthday"
-    _description = "Upcoming Check Birthday"
+    _description = "Upcoming Cheque Birthday"
 
     exit_transfer_id = fields.Many2one("exit.transfer.management", string="Exit/Transfer Id", readonly=True)
     check_id = fields.Many2one("cheque.requests", string="Check Id")
