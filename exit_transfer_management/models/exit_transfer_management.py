@@ -25,10 +25,42 @@ class ExitTransferManagement(models.Model):
     employee_no = fields.Char(string="employee Id", compute="get_des_and_id", store=True,copy=False)
     exit_reason = fields.Text("Exit Reason")
     date = fields.Date('Date',default=fields.Date.context_today)
+    exit_type = fields.Selection([("Suspended", "Suspended"),
+                                  ("Resigned", "Resigned"),
+                                  ("Contract Expired ", "Contract Expired "),
+                                  ("Superannuation", "Superannuation"),
+                                  ("Terminated","Terminated"),
+                                  ("Deceased","Deceased"),
+                                  ("Terminated","Terminated"),
+                                  ("Absconding","Absconding"),
+                                  ("Transferred","Transferred")
+                               ],string='Type of Exit')
+    dues_finance = fields.Selection([("Yes", "Yes"),
+                                  ("No", "No"),
+                               ],string='Dues?')
+    remarks_finance = fields.Char("Remarks")
+    dues_general = fields.Selection([("Yes", "Yes"),
+                                  ("No", "No"),
+                               ],string='Dues?')
+    remarks_general = fields.Char("Remarks")
+    dues_personal = fields.Selection([("Yes", "Yes"),
+                                  ("No", "No"),
+                               ],string='Dues?')
+    remarks_personal = fields.Char("Remarks")
+    dues_technical = fields.Selection([("Yes", "Yes"),
+                                  ("No", "No"),
+                               ],string='Dues?')
+    remarks_technical = fields.Char("Remarks")
+
+    dues_ro = fields.Selection([("Yes", "Yes"),
+                                  ("No", "No"),
+                               ],string='Dues?')
+    remarks_ro = fields.Char("Remarks")
+
     state = fields.Selection([("draft", "Draft"),
                                ("verify", "Verify"),
-                               ("send_for_approval", "Send for Approval"),
-                               ("complete", "Approved"),
+                               ("send_for_approval", "Approval Waiting"),
+                               ("complete", "Completed"),
                                ("cancel","Cancel")
                                ],string='Status', copy=False, default='draft', required=True, readonly=True)
     leave_line_ids = fields.One2many("leave.lines","exit_transfer_id", string="Submitted Lines")

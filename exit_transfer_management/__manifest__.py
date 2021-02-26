@@ -10,6 +10,7 @@
     'depends': ['base',"mail",],
     'data': [
         'security/ir.model.access.csv',
+        'security/security.xml',
         'views/exit_transfer_views.xml',
         'views/print_template.xml',
     ],

@@ -49,9 +49,62 @@
                         <group>
                             <field name="date" required="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                             <field name="exit_reason" required="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="exit_type" required="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                         </group>
                     </group>
                         <notebook>
+                            <page name = "officer_remark" string="Remarks" states="send_for_approval">
+                                <br/>
+                                    <group>
+                                        <group string="Remarks - Finance" groups="exit_transfer_management.group_exit_finance_department">
+                                            <field name="dues_finance"/>
+                                            <field name="remarks_finance"/>
+                                        </group>
+                                        <group string="Remarks - General" groups="exit_transfer_management.group_exit_general_department">
+                                            <field name="dues_general"/>
+                                            <field name="remarks_general"/>
+                                        </group>
+                                        <group string="Remarks - Personal">
+                                            <field name="dues_personal"/>
+                                            <field name="remarks_personal"/>
+                                        </group>
+                                        <group string="Remarks - Technical" groups="exit_transfer_management.group_exit_technical_department">
+                                            <field name="dues_technical"/>
+                                            <field name="remarks_technical"/>
+                                        </group>
+                                        <group string="Remarks - Reporting Officer">
+                                            <field name="dues_ro"/>
+                                            <field name="remarks_ro"/>
+                                        </group>
+                                    </group>
+                                <br/>
+                            </page>
+                            <page name = "remark" string="Remarks" states="complete">
+                                <br/>
+                                    <group>
+                                        <group string="Remarks - Finance">
+                                            <field name="dues_finance" readonly="1"/>
+                                            <field name="remarks_finance" readonly="1"/>
+                                        </group>
+                                        <group string="Remarks - General">
+                                            <field name="dues_general" readonly="1"/>
+                                            <field name="remarks_general" readonly="1"/>
+                                        </group>
+                                        <group string="Remarks - Personal">
+                                            <field name="dues_personal" readonly="1"/>
+                                            <field name="remarks_personal" readonly="1"/>
+                                        </group>
+                                        <group string="Remarks - Technical">
+                                            <field name="dues_technical" readonly="1"/>
+                                            <field name="remarks_technical" readonly="1"/>
+                                        </group>
+                                        <group string="Remarks - Reporting Officer">
+                                            <field name="dues_ro" readonly="1"/>
+                                            <field name="remarks_ro" readonly="1"/>
+                                        </group>
+                                    </group>
+                                <br/>
+                            </page>
                             <page string="Leaves">
                                 <br/>
                                     <div><h2>Pending for Approval Leaves</h2></div>
