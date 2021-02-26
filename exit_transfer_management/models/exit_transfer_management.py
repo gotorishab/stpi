@@ -787,7 +787,8 @@ class ExitTransferManagement(models.Model):
                         me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
                         HrEmployees = self.env['hr.employee'].sudo().search([("branch_id", "=", me.branch_id.id)])
                         pending_grn_ids = self.env['indent.request'].search([("employee_id", "in", HrEmployees.ids),
-                                                                                    ("state", "in", ['to_approve'])])
+                                                                                    ("state", "in", ['to_approve']),
+                                                                                    ("indent_type", "in", ['grn'])])
 
                         if pending_grn_ids:
                             for res in pending_grn_ids:
@@ -801,7 +802,8 @@ class ExitTransferManagement(models.Model):
                                 })
 
         submitted_grn_ids = self.env['indent.request'].search([("employee_id", "=", self.employee_id.id),
-                                                                      ("state", "in", ['draft', 'to_approve'])])
+                                                                      ("state", "in", ['draft', 'to_approve']),
+                                                                                    ("indent_type", "in", ['issue'])])
 
         if submitted_grn_ids:
             for res in submitted_grn_ids:
@@ -815,7 +817,8 @@ class ExitTransferManagement(models.Model):
                 })
 
         upcoming_grn_ids = self.env['indent.request'].search([("employee_id", "=", self.employee_id.id),
-                                                                     ("state", "in", ['approved'])])
+                                                              ("state", "in", ['approved']),
+                                                              ("indent_type", "in", ['issue'])])
 
         if upcoming_grn_ids:
             for res in upcoming_grn_ids:
@@ -849,7 +852,8 @@ class ExitTransferManagement(models.Model):
                         me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
                         HrEmployees = self.env['hr.employee'].sudo().search([("branch_id", "=", me.branch_id.id)])
                         pending_issue_req_ids = self.env['issue.request'].search([("employee_id", "in", HrEmployees.ids),
-                                                                                      ("state", "in", ['to_approve'])])
+                                                                                      ("state", "in", ['to_approve']),
+                                                                                    ("indent_type", "in", ['issue'])])
 
                         if pending_issue_req_ids:
                             for res in pending_issue_req_ids:
@@ -866,7 +870,8 @@ class ExitTransferManagement(models.Model):
                                 })
 
         submitted_issue_req_ids = self.env['indent.request'].search([("employee_id", "=", self.employee_id.id),
-                                                               ("state", "in", ['draft', 'to_approve'])])
+                                                               ("state", "in", ['draft', 'to_approve']),
+                                                                     ("indent_type", "in", ['issue'])])
         if submitted_issue_req_ids:
             for res in submitted_issue_req_ids:
                 self.submitted_issue_req_ids.create({
@@ -882,7 +887,8 @@ class ExitTransferManagement(models.Model):
                 })
 
         upcoming_issue_req_ids = self.env['indent.request'].search([("employee_id", "=", self.employee_id.id),
-                                                              ("state", "in", ['approved'])])
+                                                              ("state", "in", ['approved']),
+                                                                    ("indent_type", "in", ['issue'])])
         if upcoming_issue_req_ids:
             for res in upcoming_issue_req_ids:
                 self.upcoming_issue_req_ids.create({
@@ -918,7 +924,8 @@ class ExitTransferManagement(models.Model):
                         me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
                         HrEmployees = self.env['hr.employee'].sudo().search([("branch_id", "=", me.branch_id.id)])
                         pending_grn_req_ids = self.env['issue.request'].search([("employee_id", "in", HrEmployees.ids),
-                                                                                ("state", "in", ['to_approve'])])
+                                                                                ("state", "in", ['to_approve']),
+                                                                                    ("indent_type", "in", ['grn'])])
                         if pending_grn_req_ids:
                             for res in pending_grn_req_ids:
                                 self.pending_grn_req_ids.create({
@@ -933,7 +940,8 @@ class ExitTransferManagement(models.Model):
                                     "state": res.state,
                                 })
         submitted_grn_req_ids = self.env['issue.request'].search([("employee_id", "=", self.employee_id.id),
-                                                                     ("state", "in", ['draft', 'to_approve'])])
+                                                                     ("state", "in", ['draft', 'to_approve']),
+                                                                                    ("indent_type", "in", ['grn'])])
         if submitted_grn_req_ids:
             for res in submitted_grn_req_ids:
                 self.submitted_grn_req_ids.create({
@@ -949,7 +957,8 @@ class ExitTransferManagement(models.Model):
                 })
 
         upcoming_grn_req_ids = self.env['indent.request'].search([("employee_id", "=", self.employee_id.id),
-                                                                    ("state", "in", ['approved'])])
+                                                                    ("state", "in", ['approved']),
+                                                                  ("indent_type", "in", ['grn'])])
         if upcoming_grn_req_ids:
             for res in upcoming_grn_req_ids:
                 self.upcoming_grn_req_ids.create({
