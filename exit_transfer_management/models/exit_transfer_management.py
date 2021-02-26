@@ -794,8 +794,8 @@ class ExitTransferManagement(models.Model):
                             for res in pending_grn_ids:
                                 self.pending_grn_ids.create({
                                     "exit_transfer_id": self.id,
-                                    "number": res.indent_sequence.id,
-                                    "indent_id": res.indent_id.id,
+                                    "number": res.indent_sequence,
+                                    "indent_id": res.id,
                                     "employee_id": res.employee_id.id,
                                     "indent_type": res.indent_type,
                                     "state": res.state,
@@ -809,8 +809,8 @@ class ExitTransferManagement(models.Model):
             for res in submitted_grn_ids:
                 self.submitted_grn_ids.create({
                     "exit_transfer_id": self.id,
-                    "number": res.indent_sequence.id,
-                    "indent_id": res.indent_id.id,
+                    "number": res.indent_sequence,
+                    "indent_id": res.id,
                     "employee_id": res.employee_id.id,
                     "indent_type": res.indent_type,
                     "state": res.state,
@@ -824,8 +824,8 @@ class ExitTransferManagement(models.Model):
             for res in upcoming_grn_ids:
                 self.upcoming_grn_ids.create({
                     "exit_transfer_id": self.id,
-                    "number": res.indent_sequence.id,
-                    "indent_id": res.indent_id.id,
+                    "number": res.indent_sequence,
+                    "indent_id": res.id,
                     "employee_id": res.employee_id.id,
                     "indent_type": res.indent_type,
                     "state": res.state,
@@ -993,8 +993,8 @@ class ExitTransferManagement(models.Model):
                                 self.pending_check_birth_ids.create({
                                     "exit_transfer_id": self.id,
                                     "check_id": res.id,    #chek_id
-                                    "name": res.Indent_id.id,
-                                    "birthday": res.item_category_id.id,
+                                    "name": res.name,
+                                    "birthday": res.birthday,
                                     "state": res.state,
                                 })
 

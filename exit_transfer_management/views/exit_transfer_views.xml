@@ -639,7 +639,7 @@
     </record>
 
         <menuitem id = "exit_transfer_management_menu_1_list"
-                  name = "Exit/transfer Management"
+                  name = "Exit Management"
                   action="exit_transfer_management_action_window"
                   />
 <!--    <menuitem name="Exit/transfer Management" id="exit_transfer_management_menu_1_list" action="exit_transfer_management.action_window"/>-->
