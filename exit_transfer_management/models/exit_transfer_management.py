@@ -866,7 +866,7 @@ class ExitTransferManagement(models.Model):
                 })
 
         upcoming_indent_req_ids = self.env['indent.request'].search([("employee_id", "=", self.employee_id.id),
-                                                                     ("date_of_receive", ">=", self.date_of_receive),#requested_date
+                                                                     ("date_of_receive", ">=", self.date),#requested_date
                                                                       ("state", "in", ['approved']),
                                                                       ("indent_type", "in", ['issue']),
                                                                      ])
@@ -933,7 +933,7 @@ class ExitTransferManagement(models.Model):
                 })
 
         upcoming_grn_ids = self.env['indent.request'].search([("employee_id", "=", self.employee_id.id),
-                                                              ("date_of_receive", ">=", self.date_of_receive),
+                                                              ("date_of_receive", ">=", self.date),
                                                               ("state", "in", ['approved']),
                                                               ("indent_type", "in", ['issue'])])
 
@@ -1004,7 +1004,7 @@ class ExitTransferManagement(models.Model):
                 })
 
         upcoming_issue_req_ids = self.env['issue.request'].search([("employee_id", "=", self.employee_id.id),
-                                                                   ("requested_date", ">=", self.requested_date),#approved_date
+                                                                   ("requested_date", ">=", self.date),#approved_date
                                                                    ("state", "in", ['approved']),
                                                                    ("indent_type", "in", ['issue'])])
         if upcoming_issue_req_ids:
@@ -1075,7 +1075,7 @@ class ExitTransferManagement(models.Model):
                 })
 
         upcoming_grn_req_ids = self.env['issue.request'].search([("employee_id", "=", self.employee_id.id),
-                                                                 ("requested_date", ">=", self.requested_date),
+                                                                 ("requested_date", ">=", self.date),
                                                                  ("state", "in", ['approved']),
                                                                  ("indent_type", "in", ['grn'])])
         if upcoming_grn_req_ids:

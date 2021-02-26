@@ -1,10 +1,10 @@
 HRA:
 
 Total HRA Received =
-payslip line HRA + (salary structure HRA * Remaining month)
-Total rent paid - 10% of ((Payslip line basic + payslip line da) + ((contract wage + contract da) * Remaining month))
+payslip line HRA + (salary structure HRA * Remaining month) -> 7200 + (7200*1) = 14400
+Total rent paid - 10% of ((Payslip line basic + payslip line da) + ((contract wage + contract da) * Remaining month)) -> 20000-(7200) = 12800
 If Metro:
-50% of ((Payslip line basic + payslip line da) + ((contract wage + contract da) * Remaining month))
+50% of ((Payslip line basic + payslip line da) + ((contract wage + contract da) * Remaining month)) = 35100
 
 
 
@@ -30,3 +30,10 @@ Per child: 2250, If divyang: double
 
 If first child is twins: consider 2 as a default
 If second child is twins: Consider 3 as a default
+
+
+
+
+Hostel: similar as tution claim, add boolean in relatives.
+Reimbursement amt: 6750
+IT: 300
