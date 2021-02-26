@@ -10,3 +10,4 @@ from . import income_tax
 from . import file_management
 from . import indent
 from . import check_bday
+from . import hr_loan

@@ -75,6 +75,11 @@ class ExitTransferManagement(models.Model):
     submitted_income_tax_ids = fields.One2many("submitted.income.tax.request", "exit_transfer_id", string="Submitted Income Tax request")
     upcoming_income_tax_ids = fields.One2many("upcoming.income.tax.request", "exit_transfer_id", string="Upcoming Income Tax request")
 
+    # income Tax
+    pending_loan_request_ids = fields.One2many("pending.hr.loan.request", "exit_transfer_id", string="Pending Loan request")
+    submitted_loan_request_ids = fields.One2many("submitted.hr.loan.request", "exit_transfer_id", string="Submitted Loan request")
+    upcoming_loan_request_ids = fields.One2many("upcoming.hr.loan.request", "exit_transfer_id", string="Upcoming Loan request")
+
     # eFile
     my_correspondence_ids = fields.One2many("correspondence.exit.management", "exit_transfer_id", string="Correspondence")
     my_file_ids = fields.One2many("file.exit.management", "exit_transfer_id", string="Files")
@@ -668,6 +673,81 @@ class ExitTransferManagement(models.Model):
                     "state": res.state
                 })
 
+
+
+        # Loan
+        if self.pending_loan_request_ids:
+            for line in self.pending_loan_request_ids:
+                line.unlink()
+
+        if self.submitted_loan_request_ids:
+            for line in self.submitted_loan_request_ids:
+                line.unlink()
+
+        if self.upcoming_loan_request_ids:
+            for line in self.upcoming_loan_request_ids:
+                line.unlink()
+
+        group_id = self.env.ref('ohrms_loan.group_loan_approver')
+        if group_id:
+            for ln in group_id:
+                for user in ln.users:
+                    if user.id == self.env.user.id:
+                        me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+                        HrEmployees = self.env['hr.employee'].sudo().search([("branch_id", "=", me.branch_id.id)])
+                        pending_loan_request_ids = self.env['hr.loan'].search([("employee_id", "in", HrEmployees.ids),
+                                                                                    ("state", "in", ['to_approve'])])
+                        if pending_loan_request_ids:
+                            for res in pending_loan_request_ids:
+                                self.pending_loan_request_ids.create({
+                                    "exit_transfer_id": self.id,
+                                    "loan_id": res.id,
+                                    "type_id": res.type_id.id,
+                                    "employee_id": res.employee_id.id,
+                                    "installment": res.installment,
+                                    "total_amount": res.total_amount,
+                                    "total_interest": res.total_interest,
+                                    "total_paid_amount": res.total_paid_amount,
+                                    "balance_amount": res.balance_amount,
+                                    "state": res.state
+                                })
+
+        submitted_loan_request_ids = self.env['hr.loan'].search([("employee_id", "=", self.employee_id.id),
+                                                                      ("state", "in", ['draft', 'to_approve'])])
+
+        if submitted_loan_request_ids:
+            for res in submitted_loan_request_ids:
+                self.submitted_loan_request_ids.create({
+                    "exit_transfer_id": self.id,
+                    "loan_id": res.id,
+                    "type_id": res.type_id.id,
+                    "employee_id": res.employee_id.id,
+                    "installment": res.installment,
+                    "total_amount": res.total_amount,
+                    "total_interest": res.total_interest,
+                    "total_paid_amount": res.total_paid_amount,
+                    "balance_amount": res.balance_amount,
+                    "state": res.state
+                })
+
+        upcoming_loan_request_ids = self.env['hr.loan'].search([("employee_id", "=", self.employee_id.id),
+                                                                     ("state", "in", ['approved'])])
+
+        if upcoming_loan_request_ids:
+            for res in upcoming_loan_request_ids:
+                self.upcoming_loan_request_ids.create({
+                    "exit_transfer_id": self.id,
+                    "loan_id": res.id,
+                    "type_id": res.type_id.id,
+                    "employee_id": res.employee_id.id,
+                    "installment": res.installment,
+                    "total_amount": res.total_amount,
+                    "total_interest": res.total_interest,
+                    "total_paid_amount": res.total_paid_amount,
+                    "balance_amount": res.balance_amount,
+                    "state": res.state
+                })
+
         # File management
         if self.my_correspondence_ids:
             for line in self.my_correspondence_ids:
@@ -941,7 +1021,7 @@ class ExitTransferManagement(models.Model):
                                 })
         submitted_grn_req_ids = self.env['issue.request'].search([("employee_id", "=", self.employee_id.id),
                                                                      ("state", "in", ['draft', 'to_approve']),
-                                                                                    ("indent_type", "in", ['grn'])])
+                                                                  ("indent_type", "in", ['grn'])])
         if submitted_grn_req_ids:
             for res in submitted_grn_req_ids:
                 self.submitted_grn_req_ids.create({

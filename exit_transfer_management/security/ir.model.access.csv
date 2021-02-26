@@ -27,6 +27,9 @@ access_submitted_appraisal_request,submitted.appraisal.request,model_submitted_a
 access_pending_income_tax_request,pending.income.tax.request,model_pending_income_tax_request,base.group_user,1,1,1,1
 access_submitted_income_tax_request,submitted.income.tax.request,model_submitted_income_tax_request,base.group_user,1,1,1,1
 access_upcoming_income_tax_request,upcoming.income.tax.request,model_upcoming_income_tax_request,base.group_user,1,1,1,1
+access_pending_hr_loan_request,pending.hr.loan.request,model_pending_hr_loan_request,base.group_user,1,1,1,1
+access_submitted_hr_loan_request,submitted.hr.loan.request,model_submitted_hr_loan_request,base.group_user,1,1,1,1
+access_upcoming_hr_loan_request,upcoming.hr.loan.request,model_upcoming_hr_loan_request,base.group_user,1,1,1,1
 access_correspondence_exit_management,correspondence.exit.management,model_correspondence_exit_management,base.group_user,1,1,1,1
 access_file_exit_management,file.exit.management,model_file_exit_management,base.group_user,1,1,1,1
 access_pending_indent_request,pending.indent.request,model_pending_indent_request,base.group_user,1,1,1,1
