@@ -112,6 +112,7 @@
                                 <field name="pending_leave_line_ids" readonly="1" options='{"no_open": True}'>
                                     <tree edittable="bottom">
                                         <field name="leave_type_id"/>
+                                        <field name="employee_id"/>
                                         <field name="from_date"/>
                                         <field name="to_date"/>
                                         <field name="state"/>
