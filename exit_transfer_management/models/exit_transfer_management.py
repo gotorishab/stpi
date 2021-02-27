@@ -178,9 +178,9 @@ class ExitTransferManagement(models.Model):
         if group_id:
             for ln in group_id:
                 for user in ln.users:
-                    if user.id == self.env.user.id:
-                        me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
-                        HrEmployees = self.env['hr.employee'].sudo().search([("branch_id", "=", me.branch_id.id)])
+                    if user.id == self.employee_id.user_id.id:
+                        # me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+                        HrEmployees = self.env['hr.employee'].sudo().search([("branch_id", "=", self.employee_id.branch_id.id)])
                         pending_leaves_ids = self.env['hr.leave'].search([("employee_id","in",HrEmployees.ids),
                                                   ("state","in",['confirm','validate1'])])
                         if pending_leaves_ids:
@@ -242,9 +242,10 @@ class ExitTransferManagement(models.Model):
         if group_id:
             for ln in group_id:
                 for user in ln.users:
-                    if user.id == self.env.user.id:
-                        me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
-                        HrEmployees = self.env['hr.employee'].sudo().search([("branch_id", "=", me.branch_id.id)])
+                    if user.id == self.employee_id.user_id.id:
+                        # me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+                        HrEmployees = self.env['hr.employee'].sudo().search(
+                            [("branch_id", "=", self.employee_id.branch_id.id)])
                         pending_tour_req_ids = self.env['tour.request'].search([("employee_id", "in", HrEmployees.ids),
                                                                           ("state", "in", ['waiting_for_approval'])])
                         if pending_tour_req_ids:
@@ -299,10 +300,10 @@ class ExitTransferManagement(models.Model):
         if group_id:
             for ln in group_id:
                 for user in ln.users:
-                    if user.id == self.env.user.id:
-                        me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+                    if user.id == self.employee_id.user_id.id:
+                        # me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
                         HrEmployees = self.env['hr.employee'].sudo().search(
-                            [("branch_id", "=", me.branch_id.id)])
+                            [("branch_id", "=", self.employee_id.branch_id.id)])
                         pending_tour_claim_req_ids = self.env['employee.tour.claim'].search(
                             [("employee_id", "in", HrEmployees.ids),
                              ("state", "in", ['waiting_for_approval'])])
@@ -360,9 +361,10 @@ class ExitTransferManagement(models.Model):
         if group_id:
             for ln in group_id:
                 for user in ln.users:
-                    if user.id == self.env.user.id:
-                        me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
-                        HrEmployees = self.env['hr.employee'].sudo().search([("branch_id", "=", me.branch_id.id)])
+                    if user.id == self.employee_id.user_id.id:
+                        # me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+                        HrEmployees = self.env['hr.employee'].sudo().search(
+                            [("branch_id", "=", self.employee_id.branch_id.id)])
                         pending_ltc_sequence_ids = self.env['employee.ltc.advance'].search([("employee_id", "in", HrEmployees.ids),
                                                                             ("state", "in", ['to_approve'])])
                         if pending_ltc_sequence_ids:
@@ -422,9 +424,10 @@ class ExitTransferManagement(models.Model):
         if group_id:
             for ln in group_id:
                 for user in ln.users:
-                    if user.id == self.env.user.id:
-                        me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
-                        HrEmployees = self.env['hr.employee'].sudo().search([("branch_id", "=", me.branch_id.id)])
+                    if user.id == self.employee_id.user_id.id:
+                        # me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+                        HrEmployees = self.env['hr.employee'].sudo().search(
+                            [("branch_id", "=", self.employee_id.branch_id.id)])
                         pending_ltc_claim_ids = self.env["employee.ltc.claim"].search([("employee_id", "in", HrEmployees.ids),
                                                                                        ("state", "in", ['to_approve'])])
                         if pending_ltc_claim_ids:
@@ -489,9 +492,10 @@ class ExitTransferManagement(models.Model):
         if group_id:
             for ln in group_id:
                 for user in ln.users:
-                    if user.id == self.env.user.id:
-                        me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
-                        HrEmployees = self.env['hr.employee'].sudo().search([("branch_id", "=", me.branch_id.id)])
+                    if user.id == self.employee_id.user_id.id:
+                        # me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+                        HrEmployees = self.env['hr.employee'].sudo().search(
+                            [("branch_id", "=", self.employee_id.branch_id.id)])
                         pending_vehicle_req_ids = self.env['employee.fleet'].search([("employee", "in", HrEmployees.ids),
                                                                                     ("state", "in", ['waiting'])])
                         if pending_vehicle_req_ids:
@@ -546,9 +550,10 @@ class ExitTransferManagement(models.Model):
         if group_id:
             for ln in group_id:
                 for user in ln.users:
-                    if user.id == self.env.user.id:
-                        me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
-                        HrEmployees = self.env['hr.employee'].sudo().search([("branch_id", "=", me.branch_id.id)])
+                    if user.id == self.employee_id.user_id.id:
+                        # me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+                        HrEmployees = self.env['hr.employee'].sudo().search(
+                            [("branch_id", "=", self.employee_id.branch_id.id)])
                         pending_pf_req_ids = self.env['pf.widthdrawl'].search([("employee_id", "in", HrEmployees.ids),
                                                                                ("state", "in", ['to_approve'])])
                         if pending_pf_req_ids:
@@ -606,9 +611,10 @@ class ExitTransferManagement(models.Model):
         if group_id:
             for ln in group_id:
                 for user in ln.users:
-                    if user.id == self.env.user.id:
-                        me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
-                        HrEmployees = self.env['hr.employee'].sudo().search([("branch_id", "=", me.branch_id.id)])
+                    if user.id == self.employee_id.user_id.id:
+                        # me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+                        HrEmployees = self.env['hr.employee'].sudo().search(
+                            [("branch_id", "=", self.employee_id.branch_id.id)])
                         pending_appraisal_request_ids = self.env['appraisal.main'].search([("employee_id", "in", HrEmployees.ids),
                                                                                            ("state", "in", ['self_review'])])
                         if pending_appraisal_request_ids:
@@ -663,9 +669,10 @@ class ExitTransferManagement(models.Model):
         if group_id:
             for ln in group_id:
                 for user in ln.users:
-                    if user.id == self.env.user.id:
-                        me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
-                        HrEmployees = self.env['hr.employee'].sudo().search([("branch_id", "=", me.branch_id.id)])
+                    if user.id == self.employee_id.user_id.id:
+                        # me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+                        HrEmployees = self.env['hr.employee'].sudo().search(
+                            [("branch_id", "=", self.employee_id.branch_id.id)])
                         pending_income_tax_ids = self.env['hr.declaration'].search([("employee_id", "in", HrEmployees.ids),
                                                                                     ("state", "in", ['to_approve'])])
                         if pending_income_tax_ids:
@@ -739,9 +746,10 @@ class ExitTransferManagement(models.Model):
         if group_id:
             for ln in group_id:
                 for user in ln.users:
-                    if user.id == self.env.user.id:
-                        me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
-                        HrEmployees = self.env['hr.employee'].sudo().search([("branch_id", "=", me.branch_id.id)])
+                    if user.id == self.employee_id.user_id.id:
+                        # me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+                        HrEmployees = self.env['hr.employee'].sudo().search(
+                            [("branch_id", "=", self.employee_id.branch_id.id)])
                         pending_loan_request_ids = self.env['hr.loan'].search([("employee_id", "in", HrEmployees.ids),
                                                                                     ("state", "in", ['to_approve'])])
                         if pending_loan_request_ids:
@@ -844,9 +852,10 @@ class ExitTransferManagement(models.Model):
         if group_id:
             for ln in group_id:
                 for user in ln.users:
-                    if user.id == self.env.user.id:
-                        me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
-                        HrEmployees = self.env['hr.employee'].sudo().search([("branch_id", "=", me.branch_id.id)])
+                    if user.id == self.employee_id.user_id.id:
+                        # me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+                        HrEmployees = self.env['hr.employee'].sudo().search(
+                            [("branch_id", "=", self.employee_id.branch_id.id)])
                         pending_indent_req_ids = self.env['indent.request'].search([("employee_id", "in", HrEmployees.ids),
                                                                                     ("state", "in", ['to_approve']),
                                                                                     ("indent_type", "in", ['issue'])])
@@ -911,9 +920,10 @@ class ExitTransferManagement(models.Model):
         if group_id:
             for ln in group_id:
                 for user in ln.users:
-                    if user.id == self.env.user.id:
-                        me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
-                        HrEmployees = self.env['hr.employee'].sudo().search([("branch_id", "=", me.branch_id.id)])
+                    if user.id == self.employee_id.user_id.id:
+                        # me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+                        HrEmployees = self.env['hr.employee'].sudo().search(
+                            [("branch_id", "=", self.employee_id.branch_id.id)])
                         pending_grn_ids = self.env['indent.request'].search([("employee_id", "in", HrEmployees.ids),
                                                                                     ("state", "in", ['to_approve']),
                                                                                     ("indent_type", "in", ['grn'])])
@@ -977,9 +987,10 @@ class ExitTransferManagement(models.Model):
         if group_id:
             for ln in group_id:
                 for user in ln.users:
-                    if user.id == self.env.user.id:
-                        me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
-                        HrEmployees = self.env['hr.employee'].sudo().search([("branch_id", "=", me.branch_id.id)])
+                    if user.id == self.employee_id.user_id.id:
+                        # me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+                        HrEmployees = self.env['hr.employee'].sudo().search(
+                            [("branch_id", "=", self.employee_id.branch_id.id)])
                         pending_issue_req_ids = self.env['issue.request'].search([("employee_id", "in", HrEmployees.ids),
                                                                                       ("state", "in", ['to_approve']),
                                                                                     ("indent_type", "in", ['issue'])])
@@ -1050,9 +1061,10 @@ class ExitTransferManagement(models.Model):
         if group_id:
             for ln in group_id:
                 for user in ln.users:
-                    if user.id == self.env.user.id:
-                        me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
-                        HrEmployees = self.env['hr.employee'].sudo().search([("branch_id", "=", me.branch_id.id)])
+                    if user.id == self.employee_id.user_id.id:
+                        # me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+                        HrEmployees = self.env['hr.employee'].sudo().search(
+                            [("branch_id", "=", self.employee_id.branch_id.id)])
                         pending_grn_req_ids = self.env['issue.request'].search([("employee_id", "in", HrEmployees.ids),
                                                                                 ("state", "in", ['to_approve']),
                                                                                     ("indent_type", "in", ['grn'])])
@@ -1121,9 +1133,10 @@ class ExitTransferManagement(models.Model):
         if group_id:
             for ln in group_id:
                 for user in ln.users:
-                    if user.id == self.env.user.id:
-                        me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
-                        HrEmployees = self.env['hr.employee'].sudo().search([("branch_id", "=", me.branch_id.id)])
+                    if user.id == self.employee_id.user_id.id:
+                        # me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+                        HrEmployees = self.env['hr.employee'].sudo().search(
+                            [("branch_id", "=", self.employee_id.branch_id.id)])
                         pending_check_birth_ids = self.env['cheque.requests'].search([("employee_id", "in", HrEmployees.ids),
                                                                                 ("state", "in", ['to_approve'])])
 
@@ -1185,9 +1198,10 @@ class ExitTransferManagement(models.Model):
         if group_id:
             for ln in group_id:
                 for user in ln.users:
-                    if user.id == self.env.user.id:
-                        me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
-                        HrEmployees = self.env['hr.employee'].sudo().search([("branch_id", "=", me.branch_id.id)])
+                    if user.id == self.employee_id.user_id.id:
+                        # me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+                        HrEmployees = self.env['hr.employee'].sudo().search(
+                            [("branch_id", "=", self.employee_id.branch_id.id)])
                         pending_reimbursement_ids = self.env['reimbursement'].search([("employee_id", "in", HrEmployees.ids),
                                                                                       ("state", "in", ['to_approve'])])
                         if pending_reimbursement_ids:
