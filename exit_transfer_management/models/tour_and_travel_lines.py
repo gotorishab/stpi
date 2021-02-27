@@ -12,8 +12,8 @@ class PendingTourAndTravelLine(models.Model):
     request_date = fields.Date("Requester Date")
     state = fields.Selection(
         [('draft', 'Draft'), ('waiting_for_approval', 'Waiting for Approval'), ('approved', 'Approved'),
-         ('rejected', 'Rejected')
-         ], required=True)
+         ('rejected', 'Rejected'), ('cancelled', 'Cancelled')
+         ], string='Status')
 
     def tour_approved(self):
         if self.tour_request_id:
@@ -33,11 +33,11 @@ class SubmittedTourAndTravelLine(models.Model):
     tour_request_id = fields.Many2one("tour.request",string="Tour Request Id")
     purpose = fields.Char("Purpose")
     request_date = fields.Date("Requester Date")
-    state = fields.Selection([("draft","Draft"),
-                              ("waiting_for_approval","Waiting For Approval"),
-                              ("approved","Approved"),
-                              ("rejected","Rejected"),
-                              ],string="Status")
+
+    state = fields.Selection([('draft', 'Draft'), ('waiting_for_approval', 'Waiting for Approval'), ('approved', 'Approved'), ('rejected', 'Rejected'), ('cancelled', 'Cancelled')
+                               ],string='Status')
+
+
 
 
     def tour_cancel(self):
@@ -53,11 +53,10 @@ class upcomingTourAndTravelLine(models.Model):
     tour_request_id = fields.Many2one("tour.request",string="Tour Request Id")
     purpose = fields.Char("Purpose")
     request_date = fields.Date("Requester Date")
-    state = fields.Selection([("draft","Draft"),
-                              ("waiting_for_approval","Waiting For Approval"),
-                              ("approved","Approved"),
-                              ("rejected","Rejected"),
-                              ],string="Status")
+    state = fields.Selection(
+        [('draft', 'Draft'), ('waiting_for_approval', 'Waiting for Approval'), ('approved', 'Approved'),
+         ('rejected', 'Rejected'), ('cancelled', 'Cancelled')
+         ], string='Status')
 #Tour Claim
 class PendingTourClaimRequest(models.Model):
     _name = "pending.tour.claim.request"
@@ -76,12 +75,14 @@ class PendingTourClaimRequest(models.Model):
     def tourclaim_approved(self):
         if self.tour_claim_id:
             self.tour_claim_id.sudo().button_approved()
-            self.update({"state":"approved"})
+            self.state = self.tour_claim_id.state
+
 
     def tourclaim_rejected(self):
         if self.tour_claim_id:
             self.tour_claim_id.sudo().button_reject()
-            self.update({"state":"rejected"})
+            self.state = self.tour_claim_id.state
+
 
 class SubmittedTourClaimRequest(models.Model):
     _name = "submitted.tour.claim.request"
@@ -101,7 +102,7 @@ class SubmittedTourClaimRequest(models.Model):
     def tourclaim_cancel(self):
         if self.tour_claim_id:
             self.tour_claim_id.sudo().button_reject()
-            self.update({"state":"rejected"})
+            self.state = self.tour_claim_id.state
 
 
 class UpcomingTourClaimRequest(models.Model):
