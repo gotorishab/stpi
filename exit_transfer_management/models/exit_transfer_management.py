@@ -503,6 +503,7 @@ class ExitTransferManagement(models.Model):
                                 self.pending_vehicle_req_ids.create({
                                     "exit_transfer_id": self.id,
                                     "vehicle_id": res.id,
+                                    "employee": res.employee_id.id,
                                     "from_location": res.from_location,
                                     "to_location": res.to_location,
                                     "state": res.state
@@ -515,6 +516,7 @@ class ExitTransferManagement(models.Model):
                 self.submitted_vehicle_req_ids.create({
                     "exit_transfer_id": self.id,
                     "vehicle_id": res.id,
+                    "employee": res.employee_id.id,
                     "from_location": res.from_location,
                     "to_location": res.to_location,
                     "state": res.state
@@ -528,6 +530,7 @@ class ExitTransferManagement(models.Model):
                 self.upcoming_vehicle_req_ids.create({
                     "exit_transfer_id": self.id,
                     "vehicle_id": res.id,
+                    "employee": res.employee_id.id,
                     "from_location": res.from_location,
                     "to_location": res.to_location,
                     "state": res.state
