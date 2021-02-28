@@ -40,8 +40,7 @@
                     </div>
                     <group>
                         <group>
-                            <field name ="employee_id" attrs="{'readonly': [('state', '!=', 'draft')]}" required="1" options="{'no_create': True}" groups="exit_transfer_management.group_exit_admin_department"/>
-                            <field name ="employee_name"/>
+                            <field name ="employee_id" attrs="{'readonly': [('state', '!=', 'draft')]}" required="1" options="{'no_create': True}"/>
                             <field name ="employee_no"/>
                             <field name ="job_id" options="{'no_create': True}"/>
                             <field name ="department_id" options="{'no_create': True}"/>

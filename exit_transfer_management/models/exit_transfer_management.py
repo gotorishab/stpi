@@ -19,7 +19,6 @@ class ExitTransferManagement(models.Model):
 
     name = fields.Char()
     employee_id = fields.Many2one("hr.employee", string="Employee Name")
-    employee_name = fields.Char(string="Employee", related="employee_id.name", store=True,copy=False)
     job_id = fields.Many2one("hr.job", string="Designation", compute="get_des_and_id", store=True,copy=False)
     branch_id = fields.Many2one("res.branch", string="Branch", compute="get_des_and_id", store=True,copy=False)
     department_id = fields.Many2one("hr.department", string="Department", compute="get_des_and_id", store=True,copy=False)
