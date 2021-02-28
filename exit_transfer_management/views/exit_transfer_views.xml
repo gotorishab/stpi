@@ -453,8 +453,8 @@
                                         <field name="no_of_emi_paid" readonly="1"/>
                                         <field name="no_of_emi_pending" readonly="1"/>
                                         <field name="continue_emi" required="1"/>
-                                        <field name="remarks" attrs="{'readonly':[('invisible','!=','no')],'required':[('continue_emi','=','no')]}"/>
-                                        <field name="document" attrs="{'readonly':[('invisible','!=','no')],'required':[('continue_emi','=','no')]}"/>
+                                        <field name="remarks" attrs="{'invisible':[('continue_emi','!=','no')],'required':[('continue_emi','=','no')]}"/>
+                                        <field name="document" attrs="{'invisible':[('continue_emi','!=','no')],'required':[('continue_emi','=','no')]}"/>
                                         <button name="button_continue_emi" type="object" string='Loan Close' attrs="{'invisible':[('continue_emi','!=','no')],'required':[('continue_emi','=','no')]}"/>
                                     </tree>
                                 </field>
