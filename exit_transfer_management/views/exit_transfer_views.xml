@@ -448,7 +448,7 @@
                                     <div><h2>Completed Loan Request</h2></div>
                                 <br/>
                                 <field name="upcoming_loan_request_ids" options='{"no_open": True}'>
-                                    <tree edittable="bottom" readonly="1">
+                                    <tree editable="bottom">
                                         <field name="loan_id" readonly="1"/>
                                         <field name="no_of_emi_paid" readonly="1"/>
                                         <field name="no_of_emi_pending" readonly="1"/>
