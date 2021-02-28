@@ -40,7 +40,8 @@
                     </div>
                     <group>
                         <group>
-                            <field name ="employee_id" attrs="{'readonly': [('state', '!=', 'draft')]}" required="1" options="{'no_create': True}"/>
+                            <field name ="employee_id" attrs="{'readonly': [('state', '!=', 'draft')]}" required="1" options="{'no_create': True}" groups="exit_transfer_management.group_exit_admin_department"/>
+                            <field name ="employee_name"/>
                             <field name ="employee_no"/>
                             <field name ="job_id" options="{'no_create': True}"/>
                             <field name ="department_id" options="{'no_create': True}"/>
@@ -500,7 +501,6 @@
                                         <field name="loan_id" readonly="1"/>
                                         <field name="no_of_emi_paid" readonly="1"/>
                                         <field name="no_of_emi_pending" readonly="1"/>
-                                        <field name="continue_emi" readonly="1"/>
                                         <field name="remarks" readonly="1"/>
                                         <field name="document" readonly="1"/>
                                         <button name="button_continue_emi" type="object" string='Loan Close'/>
