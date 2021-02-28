@@ -449,13 +449,9 @@
                                 <br/>
                                 <field name="upcoming_loan_request_ids" readonly="1" options='{"no_open": True}'>
                                     <tree edittable="bottom">
-                                        <field name="type_id"/>
-                                        <field name="installment"/>
-                                        <field name="total_amount"/>
-                                        <field name="total_interest"/>
-                                        <field name="total_paid_amount"/>
-                                        <field name="balance_amount"/>
-                                        <field name="state"/>
+                                        <field name="loan_id"/>
+                                        <field name="no_of_emi_paid"/>
+                                        <field name="no_of_emi_pending"/>
                                     </tree>
                                 </field>
                             </page>

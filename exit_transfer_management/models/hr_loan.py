@@ -70,6 +70,25 @@ class UpcomingHrLoanRequest(models.Model):
    
     exit_transfer_id = fields.Many2one("exit.transfer.management", string="Exit/Transfer Id", readonly=True)
     loan_id = fields.Many2one("hr.loan", string="Loan")
+    no_of_emi_paid=fields.Integer('Number of EMI Paid')
+    no_of_emi_pending=fields.Integer('Number of EMI Pending')
+    continue_emi = fields.Selection([
+        ('yes', 'Yes'),
+        ('no', 'No'),
+    ], string="Are you wish to continue")
+
+    def button_continue_emi(self):
+        for res in self:
+            if res.continue_emi == 'yes':
+                pass
+            else:
+                self.env['hr.loan.close'].create({
+                    "exit_transfer_id": self.id,
+                    "loan_id": res.id,
+                    "no_of_emi_paid": paid,
+                    "no_of_emi_pending": unpaid,
+                })
+
     type_id = fields.Many2one('loan.type', string="Type")
     employee_id = fields.Many2one('hr.employee', string='Requested By')
     installment = fields.Integer(string="No Of Installments", default=0)

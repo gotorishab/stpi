@@ -754,7 +754,7 @@ class ExitTransferManagement(models.Model):
                         HrEmployees = self.env['hr.employee'].sudo().search(
                             [("branch_id", "=", self.employee_id.branch_id.id)])
                         pending_loan_request_ids = self.env['hr.loan'].search([("employee_id", "in", HrEmployees.ids),
-                                                                                    ("state", "in", ['to_approve'])])
+                                                                                    ("state", "in", ['waiting_approval_1','waiting_approval_2'])])
                         if pending_loan_request_ids:
                             for res in pending_loan_request_ids:
                                 self.pending_loan_request_ids.create({
@@ -771,7 +771,7 @@ class ExitTransferManagement(models.Model):
                                 })
 
         submitted_loan_request_ids = self.env['hr.loan'].search([("employee_id", "=", self.employee_id.id),
-                                                                      ("state", "in", ['draft', 'to_approve'])])
+                                                                      ("state", "in", ['waiting_approval_1', 'waiting_approval_2', 'draft'])])
 
         if submitted_loan_request_ids:
             for res in submitted_loan_request_ids:
@@ -789,21 +789,22 @@ class ExitTransferManagement(models.Model):
                 })
 
         upcoming_loan_request_ids = self.env['hr.loan'].search([("employee_id", "=", self.employee_id.id),
-                                                                     ("state", "in", ['approved'])])
+                                                                     ("state", "in", ['approve']),('balance_amount', '!=', 0)],limit=1)
 
         if upcoming_loan_request_ids:
+            paid = 0
+            unpaid = 0
             for res in upcoming_loan_request_ids:
+                for line in res.loan_lines:
+                    if line.paid:
+                        paid+=1
+                    else:
+                        unpaid+=1
                 self.upcoming_loan_request_ids.create({
                     "exit_transfer_id": self.id,
                     "loan_id": res.id,
-                    "type_id": res.type_id.id,
-                    "employee_id": res.employee_id.id,
-                    "installment": res.installment,
-                    "total_amount": res.total_amount,
-                    "total_interest": res.total_interest,
-                    "total_paid_amount": res.total_paid_amount,
-                    "balance_amount": res.balance_amount,
-                    "state": res.state
+                    "no_of_emi_paid": paid,
+                    "no_of_emi_pending": unpaid,
                 })
 
         # File management

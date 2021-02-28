@@ -30,7 +30,7 @@ class PendingEmployeeLtcRequest(models.Model):
     def ltc_rejected(self):
         if self.ltc_sequence_id:
             self.ltc_sequence_id.sudo().button_reject()
-            self.update({"state":"rejected"})
+            self.state=self.ltc_sequence_id.state
 
 class EmployeeLtcRequest(models.Model):
     _name = 'employee.ltc.request'
@@ -142,7 +142,7 @@ class LTCClaimRequest(models.Model):
 
     def claim_cancel(self):
         if self.ltc_availed_for_id:
-            self.ltc_availed_for_id.sudo().button_cancel()
+            self.ltc_availed_for_id.sudo().button_reject()
             self.update({"state": "cancelled"})
 
 
