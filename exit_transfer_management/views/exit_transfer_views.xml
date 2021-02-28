@@ -57,23 +57,23 @@
                                 <br/>
                                     <group>
                                         <group string="Remarks - Finance" groups="exit_transfer_management.group_exit_finance_department">
-                                            <field name="dues_finance"/>
+                                            <field name="dues_finance" widget="radio"/>
                                             <field name="remarks_finance"/>
                                         </group>
                                         <group string="Remarks - General" groups="exit_transfer_management.group_exit_general_department">
-                                            <field name="dues_general"/>
+                                            <field name="dues_general" widget="radio"/>
                                             <field name="remarks_general"/>
                                         </group>
                                         <group string="Remarks - Personal">
-                                            <field name="dues_personal"/>
+                                            <field name="dues_personal" widget="radio"/>
                                             <field name="remarks_personal"/>
                                         </group>
                                         <group string="Remarks - Technical" groups="exit_transfer_management.group_exit_technical_department">
-                                            <field name="dues_technical"/>
+                                            <field name="dues_technical" widget="radio"/>
                                             <field name="remarks_technical"/>
                                         </group>
                                         <group string="Remarks - Reporting Officer">
-                                            <field name="dues_ro"/>
+                                            <field name="dues_ro" widget="radio"/>
                                             <field name="remarks_ro"/>
                                         </group>
                                     </group>

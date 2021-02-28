@@ -37,25 +37,25 @@ class ExitTransferManagement(models.Model):
                                ],string='Type of Exit')
     dues_finance = fields.Selection([("Yes", "Yes"),
                                   ("No", "No"),
-                               ],string='Dues?')
-    remarks_finance = fields.Char("Remarks")
+                               ],string='No Dues', store=True)
+    remarks_finance = fields.Char("Remarks", store=True)
     dues_general = fields.Selection([("Yes", "Yes"),
                                   ("No", "No"),
-                               ],string='Dues?')
-    remarks_general = fields.Char("Remarks")
+                               ],string='No Dues', store=True)
+    remarks_general = fields.Char("Remarks", store=True)
     dues_personal = fields.Selection([("Yes", "Yes"),
                                   ("No", "No"),
-                               ],string='Dues?')
-    remarks_personal = fields.Char("Remarks")
+                               ],string='No Dues', store=True)
+    remarks_personal = fields.Char("Remarks", store=True)
     dues_technical = fields.Selection([("Yes", "Yes"),
                                   ("No", "No"),
-                               ],string='Dues?')
-    remarks_technical = fields.Char("Remarks")
+                               ],string='No Dues', store=True)
+    remarks_technical = fields.Char("Remarks", store=True)
 
     dues_ro = fields.Selection([("Yes", "Yes"),
                                   ("No", "No"),
-                               ],string='Dues?')
-    remarks_ro = fields.Char("Remarks")
+                               ],string='No Dues', store=True)
+    remarks_ro = fields.Char("Remarks", store=True)
 
     state = fields.Selection([("draft", "Draft"),
                                ("verify", "Verify"),
