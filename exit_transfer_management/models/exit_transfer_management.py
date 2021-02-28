@@ -38,6 +38,7 @@ class ExitTransferManagement(models.Model):
     dues_finance = fields.Selection([("Yes", "Yes"),
                                   ("No", "No"),
                                ],string='No Dues', store=True)
+    employee_finance = fields.Many2one("hr.employee", string='Employee Finance', store=True)
     remarks_finance = fields.Char("Remarks", store=True)
     dues_general = fields.Selection([("Yes", "Yes"),
                                   ("No", "No"),
@@ -151,6 +152,15 @@ class ExitTransferManagement(models.Model):
 
     leave_no_dues = fields.Boolean()
     leave_remark = fields.Text()
+
+    @api.onchange('dues_finance')
+    def get_finance_employee(self):
+        for res in self:
+            me_emp = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+            if me_emp:
+                for employee in me_emp:
+                    res.employee_finance = employee.id
+
 
     @api.model
     def create(self, vals):
