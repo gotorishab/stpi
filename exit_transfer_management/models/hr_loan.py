@@ -80,7 +80,7 @@ class UpcomingHrLoanRequest(models.Model):
     def button_continue_emi(self):
         for res in self:
             self.env['hr.loan.close'].create({
-                "exit_transfer_id": self.id,
+                "employee_id": self.loan_id.employee_id.id,
                 "loan_id": res.loan_id.id,
             })
 
