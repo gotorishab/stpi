@@ -84,10 +84,13 @@ class UpcomingHrLoanRequest(models.Model):
             if res.continue_emi == 'yes':
                 pass
             else:
-                self.env['hr.loan.close'].create({
+                loan_close_id = self.env['hr.loan.close'].create({
                     "employee_id": self.loan_id.employee_id.id,
                     "loan_id": res.loan_id.id,
+                    "remarks": res.remarks,
+                    "document_proof": res.document,
                 })
+                loan_close_id.sudo().button_submit()
 
     type_id = fields.Many2one('loan.type', string="Type")
     employee_id = fields.Many2one('hr.employee', string='Requested By')
