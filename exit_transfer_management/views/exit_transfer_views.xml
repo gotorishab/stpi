@@ -455,7 +455,7 @@
                                         <field name="continue_emi" required="1"/>
                                         <field name="remarks" attrs="{'readonly':[('continue_emi','!=','no')],'required':[('continue_emi','=','no')]}"/>
                                         <field name="document" attrs="{'readonly':[('continue_emi','!=','no')],'required':[('continue_emi','=','no')]}"/>
-                                        <button name="button_continue_emi" type="object" string='Close' icon="fa-times-circle" attrs="{'readonly':[('continue_emi','!=','no')],'required':[('continue_emi','=','no')]}"/>
+                                        <button name="button_continue_emi" type="object" string='Loan Close' attrs="{'invisible':[('continue_emi','!=','no')],'required':[('continue_emi','=','no')]}"/>
                                     </tree>
                                 </field>
                             </page>
