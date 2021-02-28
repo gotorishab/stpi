@@ -12,3 +12,4 @@ from . import indent
 from . import check_bday
 from . import hr_loan
 from . import reimbursement_req
+from . import report

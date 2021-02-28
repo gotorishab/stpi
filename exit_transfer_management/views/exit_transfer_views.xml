@@ -888,6 +888,33 @@
                   name = "Exit Management"
                   action="exit_transfer_management_action_window"
                   />
+
+                <record model="ir.ui.view" id="exit_transfer_management_report_list">
+            <field name="name">Exit Transfer Management list</field>
+            <field name="model">exit.management.report</field>
+            <field name="arch" type="xml">
+                <tree string ="Exit/Transfer Management Report" create="false">
+                  <field name="exit_transfer_id" readonly="1"/>
+                  <field name="employee_id" readonly="1"/>
+                  <field name="exit_type" readonly="1"/>
+                  <field name="module" readonly="1"/>
+                  <field name="module_id" readonly="1"/>
+                  <field name="action_taken_by" readonly="1"/>
+                  <field name="action_taken_on" readonly="1"/>
+                </tree>
+            </field>
+        </record>
+
+    <record model="ir.actions.act_window" id="exit_transfer_management_report_action_window">
+      <field name="name">Exit/transfer Management Report</field>
+      <field name="res_model">exit.management.report</field>
+      <field name="view_mode">tree</field>
+    </record>
+
+        <menuitem id = "exit_transfer_management_report_list"
+                  name = "Report"
+                  action="exit_transfer_management_report_action_window"
+                  />
 <!--    <menuitem name="Exit/transfer Management" id="exit_transfer_management_menu_1_list" action="exit_transfer_management.action_window"/>-->
   </data>
 </odoo>

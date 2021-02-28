@@ -57,6 +57,7 @@ access_upcoming_hr_loan_request,upcoming.hr.loan.request,model_upcoming_hr_loan_
 access_pending_reimbursement_request,pending.reimbursement.request,model_pending_reimbursement_request,base.group_user,1,1,1,1
 access_submitted_reimbursement_request,submitted.reimbursement.request,model_submitted_reimbursement_request,base.group_user,1,1,1,1
 access_upcoming_reimbursement_request,upcoming.reimbursement.request,model_upcoming_reimbursement_request,base.group_user,1,1,1,1
+access_exit_management_report,exit.management.report,model_exit_management_report,base.group_user,1,1,1,1
 
 
 access_claim_lines1,claim_lines1,model_claim_lines1,base.group_user,1,1,1,1
