@@ -143,6 +143,7 @@ class ExitTransferManagement(models.Model):
     pending_loan_request_ids = fields.One2many("pending.hr.loan.request", "exit_transfer_id", string="Pending Loan request")
     submitted_loan_request_ids = fields.One2many("submitted.hr.loan.request", "exit_transfer_id", string="Submitted Loan request")
     upcoming_loan_request_ids = fields.One2many("upcoming.hr.loan.request", "exit_transfer_id", string="Upcoming Loan request")
+    not_transferrred_loan_request_ids = fields.One2many("nottransferred.hr.loan.request", "exit_transfer_id", string="Completed Loan request")
 
     # eFile
     my_correspondence_ids = fields.One2many("correspondence.exit.management", "exit_transfer_id", string="Correspondence")
@@ -823,9 +824,7 @@ class ExitTransferManagement(models.Model):
             for line in self.submitted_loan_request_ids:
                 line.unlink()
 
-        if self.upcoming_loan_request_ids:
-            for line in self.upcoming_loan_request_ids:
-                line.unlink()
+
 
         group_id = self.env.ref('ohrms_loan.group_loan_approver')
         if group_id:
@@ -870,24 +869,50 @@ class ExitTransferManagement(models.Model):
                     "state": res.state
                 })
 
-        upcoming_loan_request_ids = self.env['hr.loan'].search([("employee_id", "=", self.employee_id.id),
-                                                                     ("state", "in", ['approve']),('balance_amount', '!=', 0)],limit=1)
+        if self.exit_type == 'Transferred':
+            if self.upcoming_loan_request_ids:
+                for line in self.upcoming_loan_request_ids:
+                    line.unlink()
+            upcoming_loan_request_ids = self.env['hr.loan'].search([("employee_id", "=", self.employee_id.id),
+                                                                         ("state", "in", ['approve']),('balance_amount', '!=', 0)],limit=1)
 
-        if upcoming_loan_request_ids:
-            paid = 0
-            unpaid = 0
-            for res in upcoming_loan_request_ids:
-                for line in res.loan_lines:
-                    if line.paid:
-                        paid+=1
-                    else:
-                        unpaid+=1
-                self.upcoming_loan_request_ids.create({
-                    "exit_transfer_id": self.id,
-                    "loan_id": res.id,
-                    "no_of_emi_paid": paid,
-                    "no_of_emi_pending": unpaid,
-                })
+            if upcoming_loan_request_ids:
+                paid = 0
+                unpaid = 0
+                for res in upcoming_loan_request_ids:
+                    for line in res.loan_lines:
+                        if line.paid:
+                            paid+=1
+                        else:
+                            unpaid+=1
+                    self.upcoming_loan_request_ids.create({
+                        "exit_transfer_id": self.id,
+                        "loan_id": res.id,
+                        "no_of_emi_paid": paid,
+                        "no_of_emi_pending": unpaid,
+                    })
+        else:
+            if self.not_transferrred_loan_request_ids:
+                for line in self.not_transferrred_loan_request_ids:
+                    line.unlink()
+            not_transferrred_loan_request_ids = self.env['hr.loan'].search([("employee_id", "=", self.employee_id.id),
+                                                                         ("state", "in", ['approve']),('balance_amount', '!=', 0)],limit=1)
+
+            if not_transferrred_loan_request_ids:
+                paid = 0
+                unpaid = 0
+                for res in not_transferrred_loan_request_ids:
+                    for line in res.loan_lines:
+                        if line.paid:
+                            paid+=1
+                        else:
+                            unpaid+=1
+                    self.not_transferrred_loan_request_ids.create({
+                        "exit_transfer_id": self.id,
+                        "loan_id": res.id,
+                        "no_of_emi_paid": paid,
+                        "no_of_emi_pending": unpaid,
+                    })
 
         # File management
         if self.my_correspondence_ids:

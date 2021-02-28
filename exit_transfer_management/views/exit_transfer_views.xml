@@ -484,7 +484,7 @@
                                 <br/>
                                     <div><h2>Completed Loan Request</h2></div>
                                 <br/>
-                                <field name="upcoming_loan_request_ids" options='{"no_open": True}'>
+                                <field name="upcoming_loan_request_ids" options='{"no_open": True}' attrs="{'invisible':[('exit_type','!=','Transferred')]}">
                                     <tree editable="bottom">
                                         <field name="loan_id" readonly="1"/>
                                         <field name="no_of_emi_paid" readonly="1"/>
@@ -493,6 +493,17 @@
                                         <field name="remarks" attrs="{'invisible':[('continue_emi','!=','no')],'required':[('continue_emi','=','no')]}"/>
                                         <field name="document" attrs="{'invisible':[('continue_emi','!=','no')],'required':[('continue_emi','=','no')]}"/>
                                         <button name="button_continue_emi" type="object" string='Loan Close' attrs="{'invisible':[('continue_emi','!=','no')],'required':[('continue_emi','=','no')]}"/>
+                                    </tree>
+                                </field>
+                                <field name="not_transferrred_loan_request_ids" options='{"no_open": True}' attrs="{'invisible':[('exit_type','=','Transferred')]}">
+                                    <tree editable="bottom">
+                                        <field name="loan_id" readonly="1"/>
+                                        <field name="no_of_emi_paid" readonly="1"/>
+                                        <field name="no_of_emi_pending" readonly="1"/>
+                                        <field name="continue_emi" readonly="1"/>
+                                        <field name="remarks" readonly="1"/>
+                                        <field name="document" readonly="1"/>
+                                        <button name="button_continue_emi" type="object" string='Loan Close'/>
                                     </tree>
                                 </field>
                             </page>

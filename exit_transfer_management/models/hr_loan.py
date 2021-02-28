@@ -107,3 +107,37 @@ class UpcomingHrLoanRequest(models.Model):
         ('refuse', 'Refused'),
         ('cancel', 'Canceled'),
     ], string="Status")
+
+
+
+class CompletedHrLoanRequest(models.Model):
+    _name = 'nottransferred.hr.loan.request'
+    _description = 'Hr Loan Request Not Transferred'
+
+
+    exit_transfer_id = fields.Many2one("exit.transfer.management", string="Exit/Transfer Id", readonly=True)
+    loan_id = fields.Many2one("hr.loan", string="Loan")
+    no_of_emi_paid=fields.Integer('Number of EMI Paid')
+    no_of_emi_pending=fields.Integer('Number of EMI Pending')
+    remarks=fields.Char('Remarks')
+    document=fields.Binary('Document')
+    state = fields.Selection([
+        ('draft', 'Draft'),
+        ('waiting_approval_1', 'Submitted'),
+        ('waiting_approval_2', 'Waiting Approval'),
+        ('approve', 'Approved'),
+        ('refuse', 'Refused'),
+        ('cancel', 'Canceled'),
+    ], string="Status")
+
+    def button_continue_emi(self):
+        for res in self:
+            loan_close_id = self.env['hr.loan.close'].create({
+                "employee_id": self.loan_id.employee_id.id,
+                "loan_id": res.loan_id.id,
+                "remarks": res.remarks,
+                "document_proof": res.document,
+            })
+            loan_close_id.sudo().button_submit()
+
+
