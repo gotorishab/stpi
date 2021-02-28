@@ -445,13 +445,14 @@
                                 </field>
 
                                 <br/>
-                                    <div><h2>Upcoming Loan Request</h2></div>
+                                    <div><h2>Completed Loan Request</h2></div>
                                 <br/>
                                 <field name="upcoming_loan_request_ids" readonly="1" options='{"no_open": True}'>
                                     <tree edittable="bottom">
                                         <field name="loan_id"/>
                                         <field name="no_of_emi_paid"/>
                                         <field name="no_of_emi_pending"/>
+                                        <button name="button_continue_emi" type="object" string='Close' icon="fa-times-circle"/>
                                     </tree>
                                 </field>
                             </page>
