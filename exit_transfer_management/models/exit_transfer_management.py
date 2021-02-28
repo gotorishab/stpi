@@ -154,6 +154,7 @@ class ExitTransferManagement(models.Model):
     leave_remark = fields.Text()
 
     @api.onchange('dues_finance')
+    @api.constrains('dues_finance')
     def get_finance_employee(self):
         for res in self:
             me_emp = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)

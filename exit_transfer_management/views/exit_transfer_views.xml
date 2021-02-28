@@ -56,7 +56,8 @@
                             <page name = "officer_remark" string="Remarks" states="send_for_approval">
                                 <br/>
                                     <group>
-                                        <group string="Remarks - Finance" groups="exit_transfer_management.group_exit_finance_department">
+                                        <group string="Finance Department" groups="exit_transfer_management.group_exit_finance_department">
+                                            <field name="employee_finance"/>
                                             <field name="dues_finance" widget="radio"/>
                                             <field name="remarks_finance"/>
                                         </group>
