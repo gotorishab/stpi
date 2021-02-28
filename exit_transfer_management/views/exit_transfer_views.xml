@@ -453,9 +453,9 @@
                                         <field name="no_of_emi_paid" readonly="1"/>
                                         <field name="no_of_emi_pending" readonly="1"/>
                                         <field name="continue_emi" required="1"/>
-                                        <field name="remarks" required="1"/>
-                                        <field name="document" required="1"/>
-                                        <button name="button_continue_emi" type="object" string='Close' icon="fa-times-circle"/>
+                                        <field name="remarks" attrs="{'readonly':[('continue_emi','!=','no')],'required':[('continue_emi','=','no')]}"/>
+                                        <field name="document" attrs="{'readonly':[('continue_emi','!=','no')],'required':[('continue_emi','=','no')]}"/>
+                                        <button name="button_continue_emi" type="object" string='Close' icon="fa-times-circle" attrs="{'readonly':[('continue_emi','!=','no')],'required':[('continue_emi','=','no')]}"/>
                                     </tree>
                                 </field>
                             </page>
