@@ -72,17 +72,22 @@ class UpcomingHrLoanRequest(models.Model):
     loan_id = fields.Many2one("hr.loan", string="Loan")
     no_of_emi_paid=fields.Integer('Number of EMI Paid')
     no_of_emi_pending=fields.Integer('Number of EMI Pending')
+    remarks=fields.Char('Remarks')
+    document=fields.Binary('Document')
     continue_emi = fields.Selection([
         ('yes', 'Yes'),
         ('no', 'No'),
-    ], string="Are you wish to continue")
+    ], default='no', string="Are you wish to continue")
 
     def button_continue_emi(self):
         for res in self:
-            self.env['hr.loan.close'].create({
-                "employee_id": self.loan_id.employee_id.id,
-                "loan_id": res.loan_id.id,
-            })
+            if res.continue_emi == 'yes':
+                pass
+            else:
+                self.env['hr.loan.close'].create({
+                    "employee_id": self.loan_id.employee_id.id,
+                    "loan_id": res.loan_id.id,
+                })
 
     type_id = fields.Many2one('loan.type', string="Type")
     employee_id = fields.Many2one('hr.employee', string='Requested By')
