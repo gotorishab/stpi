@@ -22,7 +22,7 @@ class PendingCheckBirthday(models.Model):
             self.check_id.sudo().button_approved()
             self.state = self.check_id.state
             me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
-            self.self.env['exit.management.report'].sudo().create({
+            self.env['exit.management.report'].sudo().create({
                 "exit_transfer_id": self.exit_transfer_id.id,
                 "employee_id": self.exit_transfer_id.employee_id.id,
                 "exit_type": self.exit_transfer_id.exit_type,
@@ -37,7 +37,7 @@ class PendingCheckBirthday(models.Model):
             self.check_id.sudo().button_reject()
             self.state = self.check_id.state
             me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
-            self.self.env['exit.management.report'].sudo().create({
+            self.env['exit.management.report'].sudo().create({
                 "exit_transfer_id": self.exit_transfer_id.id,
                 "employee_id": self.exit_transfer_id.employee_id.id,
                 "exit_type": self.exit_transfer_id.exit_type,
@@ -46,6 +46,7 @@ class PendingCheckBirthday(models.Model):
                 "action_taken_by": (me.id),
                 "action_taken_on": (self.employee_id.id)
             })
+            self.sudo().unlink()
 
 class SubmittedCheckBirthday(models.Model):
     _name = "submitted.check.birthday"
