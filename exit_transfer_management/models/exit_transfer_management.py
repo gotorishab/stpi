@@ -38,25 +38,56 @@ class ExitTransferManagement(models.Model):
     dues_finance = fields.Selection([("Yes", "Yes"),
                                   ("No", "No"),
                                ],string='No Dues', store=True)
-    employee_finance = fields.Many2one("hr.employee", string='Employee Finance', store=True)
+    employee_finance = fields.Many2one("hr.employee", string='Employee Name', store=True)
     remarks_finance = fields.Char("Remarks", store=True)
     dues_general = fields.Selection([("Yes", "Yes"),
                                   ("No", "No"),
                                ],string='No Dues', store=True)
+    employee_general = fields.Many2one("hr.employee", string='Employee Name', store=True)
     remarks_general = fields.Char("Remarks", store=True)
     dues_personal = fields.Selection([("Yes", "Yes"),
                                   ("No", "No"),
                                ],string='No Dues', store=True)
     remarks_personal = fields.Char("Remarks", store=True)
+    employee_personal = fields.Many2one("hr.employee", string='Employee Name', store=True)
     dues_technical = fields.Selection([("Yes", "Yes"),
                                   ("No", "No"),
                                ],string='No Dues', store=True)
     remarks_technical = fields.Char("Remarks", store=True)
+    employee_technical = fields.Many2one("hr.employee", string='Employee Name', store=True)
 
     dues_ro = fields.Selection([("Yes", "Yes"),
                                   ("No", "No"),
                                ],string='No Dues', store=True)
     remarks_ro = fields.Char("Remarks", store=True)
+    employee_ro = fields.Many2one("hr.employee", string='Employee Name', store=True)
+
+    dues_remark_finance = fields.Selection([("Yes", "Yes"),
+                                  ("No", "No"),
+                               ],string='No Dues', store=True)
+    employee_remark_finance = fields.Many2one("hr.employee", string='Employee Name', store=True)
+    remarks_remark_finance = fields.Char("Remarks", store=True)
+    dues_remark_general = fields.Selection([("Yes", "Yes"),
+                                  ("No", "No"),
+                               ],string='No Dues', store=True)
+    employee_remark_general = fields.Many2one("hr.employee", string='Employee Name', store=True)
+    remarks_remark_general = fields.Char("Remarks", store=True)
+    dues_remark_personal = fields.Selection([("Yes", "Yes"),
+                                  ("No", "No"),
+                               ],string='No Dues', store=True)
+    remarks_remark_personal = fields.Char("Remarks", store=True)
+    employee_remark_personal = fields.Many2one("hr.employee", string='Employee Name', store=True)
+    dues_remark_technical = fields.Selection([("Yes", "Yes"),
+                                  ("No", "No"),
+                               ],string='No Dues', store=True)
+    remarks_remark_technical = fields.Char("Remarks", store=True)
+    employee_remark_technical = fields.Many2one("hr.employee", string='Employee Name', store=True)
+
+    dues_remark_ro = fields.Selection([("Yes", "Yes"),
+                                  ("No", "No"),
+                               ],string='No Dues', store=True)
+    remarks_remark_ro = fields.Char("Remarks", store=True)
+    employee_remark_ro = fields.Many2one("hr.employee", string='Employee Name', store=True)
 
     state = fields.Selection([("draft", "Draft"),
                                ("verify", "Verify"),
@@ -161,6 +192,46 @@ class ExitTransferManagement(models.Model):
             if me_emp:
                 for employee in me_emp:
                     res.employee_finance = employee.id
+
+
+    @api.onchange('dues_general')
+    @api.constrains('dues_general')
+    def get_general_employee(self):
+        for res in self:
+            me_emp = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+            if me_emp:
+                for employee in me_emp:
+                    res.employee_general = employee.id
+
+
+    @api.onchange('dues_personal')
+    @api.constrains('dues_personal')
+    def get_personal_employee(self):
+        for res in self:
+            me_emp = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+            if me_emp:
+                for employee in me_emp:
+                    res.employee_personal = employee.id
+
+
+    @api.onchange('dues_technical')
+    @api.constrains('dues_finance')
+    def get_technical_employee(self):
+        for res in self:
+            me_emp = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+            if me_emp:
+                for employee in me_emp:
+                    res.employee_technical = employee.id
+
+
+    @api.onchange('dues_ro')
+    @api.constrains('dues_ro')
+    def get_ro_employee(self):
+        for res in self:
+            me_emp = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+            if me_emp:
+                for employee in me_emp:
+                    res.employee_ro = employee.id
 
 
     @api.model
@@ -1269,6 +1340,22 @@ class ExitTransferManagement(models.Model):
             self.activity_schedule(summary='Exit Transfer Management',activity_type_id=1,date_deadline=datetime.now().date(),user_id=self.employee_id.user_id.id)
 
     def button_confirm(self):
+        for res in self:
+            res.employee_remark_finance = res.employee_finance.id
+            res.dues_remark_finance = res.dues_finance
+            res.remarks_remark_finance = res.remarks_finance
+            res.employee_remark_general = res.employee_general.id
+            res.dues_remark_general = res.dues_general
+            res.remarks_remark_general = res.remarks_general
+            res.employee_remark_personal = res.employee_personal.id
+            res.dues_remark_personal = res.dues_personal
+            res.remarks_remark_personal = res.remarks_personal
+            res.employee_remark_technical = res.employee_technical.id
+            res.dues_remark_technical = res.dues_technical
+            res.remarks_remark_technical = res.remarks_technical
+            res.employee_remark_ro = res.employee_ro.id
+            res.dues_remark_ro = res.dues_ro
+            res.remarks_remark_ro = res.remarks_ro
         self.update({"state":"complete"})
 
     def button_send_for_approval(self):

@@ -53,29 +53,65 @@
                         </group>
                     </group>
                         <notebook>
-                            <page name = "officer_remark" string="Remarks" states="send_for_approval">
+                            <page name = "officer_remark" string="Departmental Approval" states="send_for_approval">
                                 <br/>
                                     <group>
                                         <group string="Finance Department" groups="exit_transfer_management.group_exit_finance_department">
-                                            <field name="employee_finance"/>
+                                            <field name="employee_finance" readonly="1"/>
                                             <field name="dues_finance" widget="radio"/>
                                             <field name="remarks_finance"/>
                                         </group>
-                                        <group string="Remarks - General" groups="exit_transfer_management.group_exit_general_department">
+                                        <group string="General Department" groups="exit_transfer_management.group_exit_general_department">
+                                            <field name="employee_general" readonly="1"/>
                                             <field name="dues_general" widget="radio"/>
                                             <field name="remarks_general"/>
                                         </group>
-                                        <group string="Remarks - Personal">
+                                        <group string="Personal">
+                                            <field name="employee_personal" readonly="1"/>
                                             <field name="dues_personal" widget="radio"/>
                                             <field name="remarks_personal"/>
                                         </group>
-                                        <group string="Remarks - Technical" groups="exit_transfer_management.group_exit_technical_department">
+                                        <group string="Technical Department" groups="exit_transfer_management.group_exit_technical_department">
+                                            <field name="employee_technical" readonly="1"/>
                                             <field name="dues_technical" widget="radio"/>
                                             <field name="remarks_technical"/>
                                         </group>
-                                        <group string="Remarks - Reporting Officer">
+                                        <group string="Reporting Officer">
+                                            <field name="employee_ro" readonly="1"/>
                                             <field name="dues_ro" widget="radio"/>
                                             <field name="remarks_ro"/>
+                                        </group>
+                                    </group>
+                                <br/>
+                            </page>
+
+                            <page name = "remarks" string="Remarks" states="complete" readonly="1">
+                                <br/>
+                                    <group>
+                                        <group string="Finance Department">
+                                            <field name="employee_remark_finance" readonly="1"/>
+                                            <field name="dues_remark_finance" widget="radio"/>
+                                            <field name="remarks_remark_finance"/>
+                                        </group>
+                                        <group string="General Department">
+                                            <field name="employee_remark_general" readonly="1"/>
+                                            <field name="dues_remark_general" widget="radio"/>
+                                            <field name="remarks_remark_general"/>
+                                        </group>
+                                        <group string="Personal">
+                                            <field name="employee_remark_personal" readonly="1"/>
+                                            <field name="dues_remark_personal" widget="radio"/>
+                                            <field name="remarks_remark_personal"/>
+                                        </group>
+                                        <group string="Technical Department">
+                                            <field name="employee_remark_technical" readonly="1"/>
+                                            <field name="dues_remark_technical" widget="radio"/>
+                                            <field name="remarks_remark_technical"/>
+                                        </group>
+                                        <group string="Reporting Officer">
+                                            <field name="employee_remark_ro" readonly="1"/>
+                                            <field name="dues_remark_ro" widget="radio"/>
+                                            <field name="remarks_remark_ro"/>
                                         </group>
                                     </group>
                                 <br/>
