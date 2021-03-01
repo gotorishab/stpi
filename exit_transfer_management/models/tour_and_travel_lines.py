@@ -25,7 +25,7 @@ class PendingTourAndTravelLine(models.Model):
                 "employee_id": self.exit_transfer_id.employee_id.id,
                 "exit_type": self.exit_transfer_id.exit_type,
                 "module": 'Tour Request',
-                "module_id": str(self.check_id.id),
+                "module_id": str(self.tour_request_id.id),
                 "action_taken_by": (me.id),
                 "action_taken_on": (self.employee_id.id)
             })
@@ -41,7 +41,7 @@ class PendingTourAndTravelLine(models.Model):
                 "employee_id": self.exit_transfer_id.employee_id.id,
                 "exit_type": self.exit_transfer_id.exit_type,
                 "module": 'Tour Request',
-                "module_id": str(self.check_id.id),
+                "module_id": str(self.tour_request_id.id),
                 "action_taken_by": (me.id),
                 "action_taken_on": (self.employee_id.id)
             })
@@ -72,7 +72,7 @@ class SubmittedTourAndTravelLine(models.Model):
                 "employee_id": self.exit_transfer_id.employee_id.id,
                 "exit_type": self.exit_transfer_id.exit_type,
                 "module": 'Tour Request',
-                "module_id": str(self.check_id.id),
+                "module_id": str(self.tour_request_id.id),
                 "action_taken_by": (me.id),
                 "action_taken_on": (self.employee_id.id)
             })
