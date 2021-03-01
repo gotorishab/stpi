@@ -19,11 +19,33 @@ class PendingTourAndTravelLine(models.Model):
         if self.tour_request_id:
             self.tour_request_id.sudo().button_approved()
             self.state = self.tour_request_id.state
+            me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+            self.env['exit.management.report'].sudo().create({
+                "exit_transfer_id": self.exit_transfer_id.id,
+                "employee_id": self.exit_transfer_id.employee_id.id,
+                "exit_type": self.exit_transfer_id.exit_type,
+                "module": 'Tour Request',
+                "module_id": str(self.check_id.id),
+                "action_taken_by": (me.id),
+                "action_taken_on": (self.employee_id.id)
+            })
+            self.sudo().unlink()
 
     def tour_rejected(self):
         if self.tour_request_id:
             self.tour_request_id.sudo().button_reject()
             self.state = self.tour_request_id.state
+            me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+            self.env['exit.management.report'].sudo().create({
+                "exit_transfer_id": self.exit_transfer_id.id,
+                "employee_id": self.exit_transfer_id.employee_id.id,
+                "exit_type": self.exit_transfer_id.exit_type,
+                "module": 'Tour Request',
+                "module_id": str(self.check_id.id),
+                "action_taken_by": (me.id),
+                "action_taken_on": (self.employee_id.id)
+            })
+            self.sudo().unlink()
 
 class SubmittedTourAndTravelLine(models.Model):
     _name = 'submitted.tour.request'
@@ -44,6 +66,17 @@ class SubmittedTourAndTravelLine(models.Model):
         if self.tour_request_id:
             self.tour_request_id.sudo().button_cancel()
             self.state = self.tour_request_id.state
+            me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+            self.env['exit.management.report'].sudo().create({
+                "exit_transfer_id": self.exit_transfer_id.id,
+                "employee_id": self.exit_transfer_id.employee_id.id,
+                "exit_type": self.exit_transfer_id.exit_type,
+                "module": 'Tour Request',
+                "module_id": str(self.check_id.id),
+                "action_taken_by": (me.id),
+                "action_taken_on": (self.employee_id.id)
+            })
+            self.sudo().unlink()
 
 class upcomingTourAndTravelLine(models.Model):
     _name = 'upcoming.tour.request'
