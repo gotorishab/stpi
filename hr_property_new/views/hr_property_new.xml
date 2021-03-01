@@ -3,6 +3,7 @@
 <odoo>
 <data>
 
+<!--    Tree View-->
 <!--    <record id="hr_property_tree_view" model="ir.ui.view">-->
 <!--        <field name="name">hr.property.tree</field>-->
 <!--        <field name="model">hr.property.new</field>-->
@@ -23,10 +24,10 @@
             <form string="FORM-I">
 
                 <header>
-<!--                    <button name="button_to_approve" string="Send for Approval" class="oe_highlight" type="object" states="draft"/>-->
-<!--                    <button name="button_reset_to_draft" string="Cancel" type="object"/>-->
-<!--                    <button name="button_approved" string="Approve" class="oe_highlight" type="object" states="submitted" />-->
-<!--                    <button name="button_reject" string="Reject" type="object"  states="submitted" />-->
+                    <button name="button_to_approve" string="Send for Approval" class="oe_highlight" type="object" states="draft"/>
+                    <button name="button_reset_to_draft" string="Cancel" type="object"/>
+                    <button name="button_approved" string="Approve" class="oe_highlight" type="object" states="submitted" />
+                    <button name="button_reject" string="Reject" type="object"  states="submitted" />
                     <field name="state" widget="statusbar" statusbar_visible="draft,submitted,approved" />
                 </header>
 
@@ -39,37 +40,51 @@
                         <field name="employee_no"/>
                         <field name="scale_pay"/>
                         <field name="purpose"/>
+                            <br/>
                         <field name="propert_ad"/>
 
                         </group>
 
                         <group>
                             <field name="probable_date"/>
+                            <br/>
                             <field name="mode_of_acquisition"/>
+                            <br/>
                             <field name="acquisition_source"/>
+                            <br/>
                             <field name="copy_attached"/>
+                            <br/>
                             <field name="acquistion_gift"/>
+                            <br/>
                             <field name="rel_fact"/>
                         </group>
 <!--                    </group>-->
                     <notebook>
-                        <separator string = "Description of Property">
+                        <page string = "Description of Property">
                                 <group>
                                     <field name="address_details"/>
+                                    <br/>
                                     <field name="des_property"/>
+                                    <br/>
                                     <field name="free_leas_hold"/>
+                                    <br/>
                                     <field name="full_part"/>
+                                    <br/>
                                     <field name="owner_property"/>
+                                    <br/>
                                     <field name="property_price"/>
                                 </group>
-                        </separator>
+                        </page>
 
                         <page string="Details of the Parties with whom transaction is proposed to be made">
                                 <group>
                                     <field name="party_details"/>
+                                    <br/>
                                     <field name="party_relation"/>
                                     <field name="state_relationship"/>
+                                    <br/>
                                     <field name="dealings"/>
+                                    <br/>
                                     <field name="transaction"/>
                                 </group>
                         </page>
