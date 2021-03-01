@@ -74,7 +74,7 @@ class SubmittedTourAndTravelLine(models.Model):
                 "module": 'Tour Request',
                 "module_id": str(self.tour_request_id.id),
                 "action_taken_by": (me.id),
-                "action_taken_on": (self.employee_id.id)
+                "action_taken_on": (self.exit_transfer_id.employee_id.id)
             })
             self.sudo().unlink()
 
