@@ -1395,6 +1395,46 @@ class ExitTransferManagement(models.Model):
         self.update({"state":"complete"})
 
     def button_send_for_approval(self):
+        # for line in self.leave_line_ids:
+        #     if line:
+        #         pass
+        # for line in self.pending_leave_line_ids:
+        #     if line:
+        #         pass
+        # for line in self.upcoming_leave_line_ids:
+        #     if line:
+        #         pass
+        for line in self.pending_tour_req_ids:
+            if line:
+                pass
+        for line in self.submitted_tour_req_ids:
+            if line:
+                pass
+        for line in self.upcoming_tour_req_ids:
+            if line:
+                pass
+        # for line in self.pending_ltc_sequence_ids:
+        #     if line:
+        #         pass
+        # for line in self.submitted_ltc_sequence_ids:
+        #     if line:
+        #         pass
+        # for line in self.upcoming_ltc_sequence_ids:
+        #     if line:
+        #         pass
+        # for line in self.pending_ltc_claim_ids:
+        #     if line:
+        #         pass
+        # for line in self.submitted_ltc_claim_ids:
+        #     if line:
+        #         pass
+        # for line in self.upcoming_ltc_claim_ids:
+        #     if line:
+        #         pass
+        # for line in self.pending_tour_claim_req_ids:
+        #     if line:
+        #         pass
+
         if self.ignore_all == True:
             self.update({"state":"send_for_approval"})
 
