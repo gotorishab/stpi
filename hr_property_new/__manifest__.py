@@ -11,7 +11,8 @@
 	'depends': ['base','hr'],
 	'data': [
 		'security/ir.model.access.csv',
-        'views/hr_property_new.xml',
+        'views/hr_property_form_1.xml',
+		'views/hr_property_form_2.xml',
 	],
 	'images': [],
 	'license': 'AGPL-3',

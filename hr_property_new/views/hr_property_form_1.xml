@@ -4,18 +4,15 @@
 <data>
 
 <!--    Tree View-->
-<!--    <record id="hr_property_tree_view" model="ir.ui.view">-->
-<!--        <field name="name">hr.property.tree</field>-->
-<!--        <field name="model">hr.property.new</field>-->
-<!--        <field name="arch" type="xml">-->
-<!--            <tree string="HR Property">-->
-<!--                  <field name="employee_id"/>-->
-<!--                  <field name="designation"/>-->
-<!--                  <field name="service_belo"/>-->
-<!--                  <field name="employee_no"/>-->
-<!--            </tree>-->
-<!--        </field>-->
-<!--    </record>-->
+    <record id="hr_property_tree_view" model="ir.ui.view">
+        <field name="name">hr.property.tree</field>
+        <field name="model">hr.property.new</field>
+        <field name="arch" type="xml">
+            <tree string="HR Property">
+                  <field name="employee_id"/>
+            </tree>
+        </field>
+    </record>
 
     <record id="hr_property_form_view" model="ir.ui.view">
         <field name="name">hr.property.form</field>
@@ -35,12 +32,12 @@
 <!--                    <group>-->
                         <group>
                         <field name="employee_id" required="1" readonly="1"/>
-                        <field name="designation"/>
+                        <field name="designation" required="1" readonly="1"/>
                         <field name="service_belo"/>
                         <field name="employee_no"/>
-                        <field name="scale_pay"/>
+<!--                        <field name="scale_pay"/>-->
                         <field name="purpose"/>
-                            <br/>
+                        <br/>
                         <field name="propert_ad"/>
 
                         </group>
@@ -96,13 +93,13 @@
 
     <record id="form_menu_action" model="ir.actions.act_window">
 
-        <field name="name">Students</field>
+        <field name="name">Forms -I</field>
         <field name="res_model">hr.property.new</field>
         <field name="view_type">form</field>
-        <field name="view_mode">form</field>
+        <field name="view_mode">tree,form</field>
         <field name="domain">[]</field>
         <field name="help" type="html">
-            <p class="oe_view_nocontent_create">Please fill the Form</p>
+            <p class="oe_view_nocontent_create">Please fill the Form-I</p>
         </field>
     </record>
 
