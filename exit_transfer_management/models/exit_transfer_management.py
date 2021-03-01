@@ -1395,6 +1395,8 @@ class ExitTransferManagement(models.Model):
         self.update({"state":"complete"})
 
     def button_send_for_approval(self):
+        if self.ignore_all == True:
+            self.update({"state":"send_for_approval"})
         # for line in self.leave_line_ids:
         #     if line:
         #         pass
@@ -1434,9 +1436,9 @@ class ExitTransferManagement(models.Model):
         # for line in self.pending_tour_claim_req_ids:
         #     if line:
         #         pass
+        self.update({"state": "send_for_approval"})
 
-        if self.ignore_all == True:
-            self.update({"state":"send_for_approval"})
+
 
     def button_cancel(self):
         self.update({"state":"cancel"})
