@@ -21,8 +21,10 @@ class ExitTransferManagement(models.Model):
     employee_id = fields.Many2one("hr.employee", string="Employee Name")
     job_id = fields.Many2one("hr.job", string="Designation", compute="get_des_and_id", store=True,copy=False)
     branch_id = fields.Many2one("res.branch", string="Branch", compute="get_des_and_id", store=True,copy=False)
+    to_branch_id = fields.Many2one("res.branch", string="To Branch", store=True,copy=False)
     department_id = fields.Many2one("hr.department", string="Department", compute="get_des_and_id", store=True,copy=False)
-    employee_no = fields.Char(string="employee Id", compute="get_des_and_id", store=True,copy=False)
+    employee_no = fields.Char(string="Employee Id", compute="get_des_and_id", store=True,copy=False)
+    ignore_all = fields.Boolean('Ignore All', default=False)
     exit_reason = fields.Text("Exit Reason")
     date = fields.Date('Date',default=fields.Date.context_today)
     exit_type = fields.Selection([("Suspended", "Suspended"),
@@ -243,6 +245,11 @@ class ExitTransferManagement(models.Model):
         sequence = 'Exit Management - ' + str(seq)
         res.name = sequence
         return res
+
+    def button_ignore_all(self):
+        for rec in self:
+            rec.ignore_all=True
+
 
     def button_verify(self):
         if self.pending_leave_line_ids:
@@ -1388,7 +1395,8 @@ class ExitTransferManagement(models.Model):
         self.update({"state":"complete"})
 
     def button_send_for_approval(self):
-        self.update({"state":"send_for_approval"})
+        if self.ignore_all == True:
+            self.update({"state":"send_for_approval"})
 
     def button_cancel(self):
         self.update({"state":"cancel"})

@@ -26,6 +26,7 @@
                 <form string="Exit/Transfer Management">
                   <header>
                       <button name="button_verify" string="Send for Verify" class="oe_highlight" type="object" states="draft"/>
+                      <button name="button_ignore_all" string="Ignore All" class="oe_highlight" type="object" states="verify"/>
                       <button name="button_send_for_approval" string="Send for Approval" class="oe_highlight" type="object" states="verify"/>
                        <button name="button_confirm" string="Completed" class="oe_highlight" type="object" states="send_for_approval"/>
                       <button name="button_cancel" string="Cancel" type="object" states="complete"/>
@@ -50,6 +51,7 @@
                             <field name="date" required="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                             <field name="exit_reason" required="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                             <field name="exit_type" required="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="to_branch_id" attrs="{'invisible': [('exit_type', '!=', 'Transferred'),('state', 'not in', ('send_for_approval','complete'))],'readonly': [('exit_type', '=', 'Transferred'),('state', 'in', ('complete'))],'required': [('exit_type', '=', 'Transferred'),('state', 'in', ('send_for_approval'))]}"/>
                         </group>
                     </group>
                         <notebook>
