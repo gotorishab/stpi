@@ -1358,7 +1358,11 @@ class ExitTransferManagement(models.Model):
                     "net_amount": res.net_amount,
                     "state": res.state,
                 })
-
+        line = self.employee_id.user_id
+        template = self.env.ref('exit_transfer_management.email_template_notify_user', raise_if_not_found=False)
+        if template:
+            ctx = {'rec':self, 'name': self.name, 'partner_name': line.name}
+            template.with_context(ctx).send_mail(line.id, force_send=False, raise_exception=False)
         self.update({"state":"verify"})
         if self.employee_id.user_id:
             approval_date = datetime.now() + timedelta(days=2)
