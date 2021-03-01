@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+<data>
+
+<!--    <record id="hr_property_tree_view" model="ir.ui.view">-->
+<!--        <field name="name">hr.property.tree</field>-->
+<!--        <field name="model">hr.property.new</field>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <tree string="HR Property">-->
+<!--                  <field name="employee_id"/>-->
+<!--                  <field name="designation"/>-->
+<!--                  <field name="service_belo"/>-->
+<!--                  <field name="employee_no"/>-->
+<!--            </tree>-->
+<!--        </field>-->
+<!--    </record>-->
+
+    <record id="hr_property_form_view" model="ir.ui.view">
+        <field name="name">hr.property.form</field>
+        <field name="model">hr.property.new</field>
+        <field name="arch" type="xml">
+            <form string="FORM-I">
+
+                <header>
+<!--                    <button name="button_to_approve" string="Send for Approval" class="oe_highlight" type="object" states="draft"/>-->
+<!--                    <button name="button_reset_to_draft" string="Cancel" type="object"/>-->
+<!--                    <button name="button_approved" string="Approve" class="oe_highlight" type="object" states="submitted" />-->
+<!--                    <button name="button_reject" string="Reject" type="object"  states="submitted" />-->
+                    <field name="state" widget="statusbar" statusbar_visible="draft,submitted,approved" />
+                </header>
+
+                <sheet>
+<!--                    <group>-->
+                        <group>
+                        <field name="employee_id" required="1" readonly="1"/>
+                        <field name="designation"/>
+                        <field name="service_belo"/>
+                        <field name="employee_no"/>
+                        <field name="scale_pay"/>
+                        <field name="purpose"/>
+                        <field name="propert_ad"/>
+
+                        </group>
+
+                        <group>
+                            <field name="probable_date"/>
+                            <field name="mode_of_acquisition"/>
+                            <field name="acquisition_source"/>
+                            <field name="copy_attached"/>
+                            <field name="acquistion_gift"/>
+                            <field name="rel_fact"/>
+                        </group>
+<!--                    </group>-->
+                    <notebook>
+                        <separator string = "Description of Property">
+                                <group>
+                                    <field name="address_details"/>
+                                    <field name="des_property"/>
+                                    <field name="free_leas_hold"/>
+                                    <field name="full_part"/>
+                                    <field name="owner_property"/>
+                                    <field name="property_price"/>
+                                </group>
+                        </separator>
+
+                        <page string="Details of the Parties with whom transaction is proposed to be made">
+                                <group>
+                                    <field name="party_details"/>
+                                    <field name="party_relation"/>
+                                    <field name="state_relationship"/>
+                                    <field name="dealings"/>
+                                    <field name="transaction"/>
+                                </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="form_menu_action" model="ir.actions.act_window">
+
+        <field name="name">Students</field>
+        <field name="res_model">hr.property.new</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="domain">[]</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Please fill the Form</p>
+        </field>
+    </record>
+
+    <menuitem id="hr_property_menu"
+          name="HR Property"/>
+    <menuitem id="hr_property_form_menu" parent="hr_property_menu" name="FORM-I"
+    action="form_menu_action"/>
+
+</data>
+</odoo>

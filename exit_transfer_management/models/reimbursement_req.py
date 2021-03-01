@@ -18,7 +18,7 @@ class PendingReimbursementRequest(models.Model):
         ('quarterly', 'Newspaper Reimbursements'),
     ], string='Reimbursement Type')
 
-    claim_sub = fields.Many2one("date.range", string="Claim Submission")
+    claim_sub = fields.Many2one("date.range", string="Claim Submission Period")
     claimed_amount = fields.Float('Claimed Amount')
     net_amount = fields.Float('Eligible Amount')
 
