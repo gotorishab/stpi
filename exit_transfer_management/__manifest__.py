@@ -11,7 +11,7 @@
     'data': [
         'security/ir.model.access.csv',
         'security/security.xml',
-        'data/mail_template.xml'
+        'data/mail_template.xml',
         'views/exit_transfer_views.xml',
         'views/print_template.xml',
     ],
