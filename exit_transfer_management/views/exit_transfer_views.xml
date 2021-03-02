@@ -1,6 +1,6 @@
 <odoo>
     <data>
-        <record model="ir.ui.view" id="exit_transfer_management.list">
+        <record model="ir.ui.view" id="exit_transfer_management_list">
             <field name="name">Exit Transfer Management list</field>
             <field name="model">exit.transfer.management</field>
             <field name="arch" type="xml">
@@ -19,7 +19,7 @@
         <field name="company_id" eval="False"/>
      </record>
 
-        <record model="ir.ui.view" id="exit_transfer_management.from">
+        <record model="ir.ui.view" id="exit_transfer_management_from">
             <field name="name">Exit Transfer Management from</field>
             <field name="model">exit.transfer.management</field>
             <field name="arch" type="xml">

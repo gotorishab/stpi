@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 from odoo import models, fields, api
 from datetime import datetime,timedelta
-from goto import goto, label
 
 
 
