@@ -20,12 +20,34 @@ class PendingPFRequest(models.Model):
     def pf_approved(self):
         if self.pf_id:
             self.pf_id.sudo().button_approved()
-            self.update({"state": "approved"})
+            self.state = self.pf_id.state
+            me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+            self.env['exit.management.report'].sudo().create({
+                "exit_transfer_id": self.exit_transfer_id.id,
+                "employee_id": self.exit_transfer_id.employee_id.id,
+                "exit_type": self.exit_transfer_id.exit_type,
+                "module": 'PF Withdrawl',
+                "module_id": str(self.pf_id.id),
+                "action_taken_by": (me.id),
+                "action_taken_on": (self.employee_id.id)
+            })
+            self.sudo().unlink()
 
     def pf_rejected(self):
         if self.pf_id:
             self.pf_id.sudo().button_reject()
-            self.update({"state": "rejected"})
+            self.state = self.pf_id.state
+            me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+            self.env['exit.management.report'].sudo().create({
+                "exit_transfer_id": self.exit_transfer_id.id,
+                "employee_id": self.exit_transfer_id.employee_id.id,
+                "exit_type": self.exit_transfer_id.exit_type,
+                "module": 'PF Withdrawl',
+                "module_id": str(self.pf_id.id),
+                "action_taken_by": (me.id),
+                "action_taken_on": (self.employee_id.id)
+            })
+            self.sudo().unlink()
 
 class SubmittedPFRequest(models.Model):
     _name = "submitted.pf.request"
@@ -47,7 +69,18 @@ class SubmittedPFRequest(models.Model):
     def pf_cancel(self):
         if self.pf_id:
             self.pf_id.sudo().button_cancel()
-            self.update({"state": "cancelled"})
+            self.state = self.pf_id.state
+            me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+            self.env['exit.management.report'].sudo().create({
+                "exit_transfer_id": self.exit_transfer_id.id,
+                "employee_id": self.exit_transfer_id.employee_id.id,
+                "exit_type": self.exit_transfer_id.exit_type,
+                "module": 'PF Withdrawl',
+                "module_id": str(self.pf_id.id),
+                "action_taken_by": (me.id),
+                "action_taken_on": (self.employee_id.id)
+            })
+            self.sudo().unlink()
 
 
 class UpcomingPFRequest(models.Model):

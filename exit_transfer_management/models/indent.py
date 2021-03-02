@@ -17,12 +17,34 @@ class PendingIndentRequest(models.Model):
     def button_approved(self):
         if self.indent_id:
             self.indent_id.sudo().button_approved()
-            self.update({"state":"approved"})
+            self.state = self.indent_id.state
+            me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+            self.env['exit.management.report'].sudo().create({
+                "exit_transfer_id": self.exit_transfer_id.id,
+                "employee_id": self.exit_transfer_id.employee_id.id,
+                "exit_type": self.exit_transfer_id.exit_type,
+                "module": 'Indent Request',
+                "module_id": str(self.indent_id.id),
+                "action_taken_by": (me.id),
+                "action_taken_on": (self.employee_id.id)
+            })
+            self.sudo().unlink()
 
     def button_reject(self):
         if self.indent_id:
             self.indent_id.sudo().button_reject()
-            self.update({"state":"rejected"})
+            self.state = self.indent_id.state
+            me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+            self.env['exit.management.report'].sudo().create({
+                "exit_transfer_id": self.exit_transfer_id.id,
+                "employee_id": self.exit_transfer_id.employee_id.id,
+                "exit_type": self.exit_transfer_id.exit_type,
+                "module": 'Indent Request',
+                "module_id": str(self.indent_id.id),
+                "action_taken_by": (me.id),
+                "action_taken_on": (self.employee_id.id)
+            })
+            self.sudo().unlink()
 
 class SubmittedIndentRequest(models.Model):
     _name = "submitted.indent.request"
@@ -41,7 +63,18 @@ class SubmittedIndentRequest(models.Model):
     def button_reject(self):
         if self.indent_id:
             self.indent_id.sudo().button_reject()
-            self.update({"state": "rejected"})
+            self.state = self.indent_id.state
+            me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+            self.env['exit.management.report'].sudo().create({
+                "exit_transfer_id": self.exit_transfer_id.id,
+                "employee_id": self.exit_transfer_id.employee_id.id,
+                "exit_type": self.exit_transfer_id.exit_type,
+                "module": 'Indent Request',
+                "module_id": str(self.indent_id.id),
+                "action_taken_by": (me.id),
+                "action_taken_on": (self.employee_id.id)
+            })
+            self.sudo().unlink()
 
 class UpcomingIndentRequest(models.Model):
     _name = "upcoming.indent.request"
@@ -75,12 +108,34 @@ class PendingGRN(models.Model):
     def button_approved(self):
         if self.indent_id:
             self.indent_id.sudo().button_approved()
-            self.update({"state": "approved"})
+            self.state = self.indent_id.state
+            me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+            self.env['exit.management.report'].sudo().create({
+                "exit_transfer_id": self.exit_transfer_id.id,
+                "employee_id": self.exit_transfer_id.employee_id.id,
+                "exit_type": self.exit_transfer_id.exit_type,
+                "module": 'Indent Request',
+                "module_id": str(self.indent_id.id),
+                "action_taken_by": (me.id),
+                "action_taken_on": (self.employee_id.id)
+            })
+            self.sudo().unlink()
 
     def button_reject(self):
         if self.indent_id:
             self.indent_id.sudo().button_reject()
-            self.update({"state": "rejected"})
+            self.state = self.indent_id.state
+            me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+            self.env['exit.management.report'].sudo().create({
+                "exit_transfer_id": self.exit_transfer_id.id,
+                "employee_id": self.exit_transfer_id.employee_id.id,
+                "exit_type": self.exit_transfer_id.exit_type,
+                "module": 'Indent Request',
+                "module_id": str(self.indent_id.id),
+                "action_taken_by": (me.id),
+                "action_taken_on": (self.employee_id.id)
+            })
+            self.sudo().unlink()
 
 class SubmittedGRN(models.Model):
     _name = "submitted.grn"
@@ -99,7 +154,18 @@ class SubmittedGRN(models.Model):
     def button_reject(self):
         if self.indent_id:
             self.indent_id.sudo().button_reject()
-            self.update({"state": "rejected"})
+            self.state = self.indent_id.state
+            me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+            self.env['exit.management.report'].sudo().create({
+                "exit_transfer_id": self.exit_transfer_id.id,
+                "employee_id": self.exit_transfer_id.employee_id.id,
+                "exit_type": self.exit_transfer_id.exit_type,
+                "module": 'Indent Request',
+                "module_id": str(self.indent_id.id),
+                "action_taken_by": (me.id),
+                "action_taken_on": (self.employee_id.id)
+            })
+            self.sudo().unlink()
 
 class UpcomingGRN(models.Model):
     _name = "upcoming.grn"
@@ -136,12 +202,34 @@ class PendingIssueRequest(models.Model):
     def button_approved(self):
         if self.issue_id:
             self.issue_id.sudo().button_approved()
-            self.update({"state": "approved"})
+            self.state = self.issue_id.state
+            me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+            self.env['exit.management.report'].sudo().create({
+                "exit_transfer_id": self.exit_transfer_id.id,
+                "employee_id": self.exit_transfer_id.employee_id.id,
+                "exit_type": self.exit_transfer_id.exit_type,
+                "module": 'Issue Request',
+                "module_id": str(self.issue_id.id),
+                "action_taken_by": (me.id),
+                "action_taken_on": (self.employee_id.id)
+            })
+            self.sudo().unlink()
 
     def button_reject(self):
         if self.issue_id:
             self.issue_id.sudo().button_reject()
-            self.update({"state": "rejected"})
+            self.state = self.issue_id.state
+            me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+            self.env['exit.management.report'].sudo().create({
+                "exit_transfer_id": self.exit_transfer_id.id,
+                "employee_id": self.exit_transfer_id.employee_id.id,
+                "exit_type": self.exit_transfer_id.exit_type,
+                "module": 'Issue Request',
+                "module_id": str(self.issue_id.id),
+                "action_taken_by": (me.id),
+                "action_taken_on": (self.employee_id.id)
+            })
+            self.sudo().unlink()
 
 class SubmittedIssueRequest(models.Model):
     _name = "submitted.issue.request"
@@ -163,7 +251,18 @@ class SubmittedIssueRequest(models.Model):
     def button_reject(self):
         if self.issue_id:
             self.issue_id.sudo().button_reject()
-            self.update({"state": "rejected"})
+            self.state = self.issue_id.state
+            me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+            self.env['exit.management.report'].sudo().create({
+                "exit_transfer_id": self.exit_transfer_id.id,
+                "employee_id": self.exit_transfer_id.employee_id.id,
+                "exit_type": self.exit_transfer_id.exit_type,
+                "module": 'Issue Request',
+                "module_id": str(self.issue_id.id),
+                "action_taken_by": (me.id),
+                "action_taken_on": (self.employee_id.id)
+            })
+            self.sudo().unlink()
 
 class UpcomingIssueRequest(models.Model):
     _name = "upcoming.issue.request"
@@ -210,12 +309,34 @@ class PendingGRNRequest(models.Model):
     def button_approved(self):
         if self.issue_id:
             self.issue_id.sudo().button_approved()
-            self.update({"state": "approved"})
+            self.state = self.issue_id.state
+            me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+            self.env['exit.management.report'].sudo().create({
+                "exit_transfer_id": self.exit_transfer_id.id,
+                "employee_id": self.exit_transfer_id.employee_id.id,
+                "exit_type": self.exit_transfer_id.exit_type,
+                "module": 'Issue Request',
+                "module_id": str(self.issue_id.id),
+                "action_taken_by": (me.id),
+                "action_taken_on": (self.employee_id.id)
+            })
+            self.sudo().unlink()
 
     def button_reject(self):
         if self.issue_id:
             self.issue_id.sudo().button_reject()
-            self.update({"state": "rejected"})
+            self.state = self.issue_id.state
+            me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+            self.env['exit.management.report'].sudo().create({
+                "exit_transfer_id": self.exit_transfer_id.id,
+                "employee_id": self.exit_transfer_id.employee_id.id,
+                "exit_type": self.exit_transfer_id.exit_type,
+                "module": 'Issue Request',
+                "module_id": str(self.issue_id.id),
+                "action_taken_by": (me.id),
+                "action_taken_on": (self.employee_id.id)
+            })
+            self.sudo().unlink()
 
 class SubmittedGRNRequest(models.Model):
     _name = "submitted.grn.request"
@@ -238,7 +359,18 @@ class SubmittedGRNRequest(models.Model):
     def button_reject(self):
         if self.issue_id:
             self.issue_id.sudo().button_reject()
-            self.update({"state": "rejected"})
+            self.state = self.issue_id.state
+            me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+            self.env['exit.management.report'].sudo().create({
+                "exit_transfer_id": self.exit_transfer_id.id,
+                "employee_id": self.exit_transfer_id.employee_id.id,
+                "exit_type": self.exit_transfer_id.exit_type,
+                "module": 'Issue Request',
+                "module_id": str(self.issue_id.id),
+                "action_taken_by": (me.id),
+                "action_taken_on": (self.employee_id.id)
+            })
+            self.sudo().unlink()
 
 class UpcomingGRNRequest(models.Model):
     _name = "upcoming.grn.request"

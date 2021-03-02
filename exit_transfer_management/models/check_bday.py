@@ -18,7 +18,6 @@ class PendingCheckBirthday(models.Model):
 
     def button_approved(self):
         if self.check_id:
-
             self.check_id.sudo().button_approved()
             self.state = self.check_id.state
             me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
@@ -67,7 +66,19 @@ class SubmittedCheckBirthday(models.Model):
     def button_reject(self):
         if self.check_id:
             self.check_id.sudo().button_reject()
-            self.update({"state": "rejected"})
+            self.state = self.check_id.state
+            me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+            self.env['exit.management.report'].sudo().create({
+                "exit_transfer_id": self.exit_transfer_id.id,
+                "employee_id": self.exit_transfer_id.employee_id.id,
+                "exit_type": self.exit_transfer_id.exit_type,
+                "module": 'Cheque Request',
+                "module_id": str(self.check_id.id),
+                "action_taken_by": (me.id),
+                "action_taken_on": (self.employee_id.id)
+            })
+            self.sudo().unlink()
+
 
 class UpcomingCheckBirthday(models.Model):
     _name = "upcoming.check.birthday"
