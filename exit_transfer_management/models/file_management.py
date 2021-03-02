@@ -31,5 +31,26 @@ class FileExitManagement(models.Model):
          ], string='Status')
 
     def file_forward(self):
-        pass
+        value = {
+            'domain': str([('id', '=', self.folder_id.id)]),
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'folder.wizard',
+            'type': 'ir.actions.act_window',
+            'target': 'new',
+            'context': {
+                'default_defid': self.file_id.id
+            },
+        }
+        me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+        self.env['exit.management.report'].sudo().create({
+            "exit_transfer_id": self.exit_transfer_id.id,
+            "employee_id": self.exit_transfer_id.employee_id.id,
+            "exit_type": self.exit_transfer_id.exit_type,
+            "module": 'File Forwarded',
+            "module_id": str(self.file_name),
+            "action_taken_by": (me.id),
+        })
+        self.sudo().unlink()
+        return value
 
