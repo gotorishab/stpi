@@ -662,6 +662,7 @@
                                         <field name="file_name"/>
                                         <field name="number"/>
                                         <field name="state"/>
+                                        <button name = "%(smart_office.folder_forward_button_wizard_action_view)d" string="Forward" type="action" context = "{'default_defid': file_id.id}"/>
                                     </tree>
                                 </field>
                             </page>

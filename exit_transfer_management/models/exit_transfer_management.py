@@ -930,7 +930,7 @@ class ExitTransferManagement(models.Model):
             for line in self.my_file_ids:
                 line.unlink()
 
-        my_correspondence_ids = self.env['muk_dms.file'].search([("current_owner_id", "=", self.env.user.id)])
+        my_correspondence_ids = self.env['muk_dms.file'].search([("current_owner_id", "=", self.env.user.id), ("folder_id", "=", False)])
 
         if my_correspondence_ids:
             for res in my_correspondence_ids:

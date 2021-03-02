@@ -10,6 +10,7 @@ class CorrespondenceExitManagement(models.Model):
     correspondence_id = fields.Many2one('muk_dms.file', string='Correspondence')
     letter_no = fields.Char(string="Letter Number")
     file_assign_id = fields.Many2one('folder.master', string="File Assigned")
+    transfer = fields.Boolean('Transfer')
 
     def correspondence_forward(self):
         pass
@@ -23,6 +24,7 @@ class FileExitManagement(models.Model):
     file_id = fields.Many2one('folder.master', string="File")
     file_name = fields.Char(string='File Name')
     number = fields.Char(string='Number')
+    transfer = fields.Boolean('Transfer')
     state = fields.Selection(
         [('draft', 'Draft'), ('in_progress', 'In Progress'), ('closed', 'Action Completed'),
          ('closed_part', 'Action Part Completed')
