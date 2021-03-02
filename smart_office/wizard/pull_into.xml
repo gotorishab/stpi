@@ -34,5 +34,6 @@
             key2="client_action_multi" name="Bulk Transfer"
                 res_model="pull.into.custom" src_model="muk_dms.file"
             view_mode="form" target="new" view_type="form"/>
+
     </data>
 </odoo>

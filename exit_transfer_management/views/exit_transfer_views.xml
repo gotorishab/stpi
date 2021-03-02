@@ -643,6 +643,14 @@
                                 </field>
                             </page>
                             <page string="eFile">
+                                <group>
+                                    <group>
+                                        <field name="forward_to_user"/>
+                                    </group>
+                                    <group>
+                                        <button type="object" name="button_forward_all" string="Forward All" colspan="2"/>
+                                    </group>
+                                </group>
                                 <br/>
                                     <div><h2>Correspondence</h2></div>
                                 <br/>

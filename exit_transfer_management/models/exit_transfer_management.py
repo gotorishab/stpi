@@ -150,6 +150,7 @@ class ExitTransferManagement(models.Model):
     # eFile
     my_correspondence_ids = fields.One2many("correspondence.exit.management", "exit_transfer_id", string="Correspondence")
     my_file_ids = fields.One2many("file.exit.management", "exit_transfer_id", string="Files")
+    forward_to_user = fields.Many2one('res.users', string='User')
 
     #Indent
     pending_indent_req_ids = fields.One2many("pending.indent.request", "exit_transfer_id", string="Pending Indent Request")
@@ -249,6 +250,36 @@ class ExitTransferManagement(models.Model):
     def button_ignore_all(self):
         for rec in self:
             rec.ignore_all=True
+
+
+    def button_forward_all(self):
+        for rec in self:
+            if rec.forward_to_user:
+                for line in rec.my_file_ids:
+                    line.file_id.current_owner_id = rec.forward_to_user.id
+                    me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+                    self.env['exit.management.report'].sudo().create({
+                        "exit_transfer_id": self.id,
+                        "employee_id": self.employee_id.id,
+                        "exit_type": self.exit_type,
+                        "module": 'File Forwarded',
+                        "module_id": str(line.file_name),
+                        "action_taken_by": (me.id),
+                    })
+                    line.sudo().unlink()
+                for line in rec.my_correspondence_ids:
+                    line.correspondence_id.current_owner_id = rec.forward_to_user.id
+                    line.sudo().unlink()
+                    me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+                    self.env['exit.management.report'].sudo().create({
+                        "exit_transfer_id": self.id,
+                        "employee_id": self.employee_id.id,
+                        "exit_type": self.exit_type,
+                        "module": 'Correspondence Forwarded',
+                        "module_id": str(line.letter_no),
+                        "action_taken_by": (me.id),
+                    })
+
 
 
     def button_verify(self):

@@ -13,7 +13,27 @@ class CorrespondenceExitManagement(models.Model):
     transfer = fields.Boolean('Transfer')
 
     def correspondence_forward(self):
-        pass
+        value = {
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'file.wizard',
+            'type': 'ir.actions.act_window',
+            'target': 'new',
+            'context': {
+                'default_defid': self.correspondence_id.id
+            },
+        }
+        me = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+        self.env['exit.management.report'].sudo().create({
+            "exit_transfer_id": self.exit_transfer_id.id,
+            "employee_id": self.exit_transfer_id.employee_id.id,
+            "exit_type": self.exit_transfer_id.exit_type,
+            "module": 'Correspondence Forwarded',
+            "module_id": str(self.letter_no),
+            "action_taken_by": (me.id),
+        })
+        self.sudo().unlink()
+        return value
 
 
 class FileExitManagement(models.Model):
