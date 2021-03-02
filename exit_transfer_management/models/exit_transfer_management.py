@@ -2,6 +2,9 @@
 # -*- coding: utf-8 -*-
 from odoo import models, fields, api
 from datetime import datetime,timedelta
+from goto import goto, label
+
+
 
 class ExitTransferManagement(models.Model):
     _name = 'exit.transfer.management'
@@ -1426,166 +1429,177 @@ class ExitTransferManagement(models.Model):
             res.employee_remark_ro = res.employee_ro.id
             res.dues_remark_ro = res.dues_ro
             res.remarks_remark_ro = res.remarks_ro
+            roster = self.env['recruitment.roster'].search([('employee_id', '=', res.employee_id.id)])
+            if roster:
+                for line in roster:
+                    line.employee_id == False
+                    line.Name_of_person == False
+                    line.Hired_category == False
+                    line.date_of_apointment == False
         self.update({"state":"complete"})
+
 
     def button_send_for_approval(self):
         if self.ignore_all == True:
             self.update({"state":"send_for_approval"})
         else:
+            flag = 1
             for line in self.leave_line_ids:
                 if line:
-                    pass
+                    flag = 0
             for line in self.pending_leave_line_ids:
                 if line:
-                    pass
+                    flag = 0
             # for line in self.upcoming_leave_line_ids:
             #     if line:
-            #         pass
+            #         flag = 0
             for line in self.pending_tour_req_ids:
                 if line:
-                    pass
+                    flag = 0
             for line in self.submitted_tour_req_ids:
                 if line:
-                    pass
+                    flag = 0
             # for line in self.upcoming_tour_req_ids:
             #     if line:
-            #         pass
+            #         flag = 0
             for line in self.pending_ltc_sequence_ids:
                 if line:
-                    pass
+                    flag = 0
             for line in self.submitted_ltc_sequence_ids:
                 if line:
-                    pass
+                    flag = 0
             # for line in self.upcoming_ltc_sequence_ids:
             #     if line:
-            #         pass
+            #         flag = 0
             for line in self.pending_ltc_claim_ids:
                 if line:
-                    pass
+                    flag = 0
             for line in self.submitted_ltc_claim_ids:
                 if line:
-                    pass
+                    flag = 0
             # for line in self.upcoming_ltc_claim_ids:
             #     if line:
-            #         pass
+            #         flag = 0
             for line in self.pending_tour_claim_req_ids:
                 if line:
-                    pass
+                    flag = 0
             for line in self.submitted_tour_claim_req_ids:
                 if line:
-                    pass
+                    flag = 0
             # for line in self.upcoming_tour_claim_req_ids:
             #     if line:
-            #         pass
+            #         flag = 0
             for line in self.pending_vehicle_req_ids:
                 if line:
-                    pass
+                    flag = 0
             for line in self.submitted_vehicle_req_ids:
                 if line:
-                    pass
+                    flag = 0
             # for line in self.upcoming_vehicle_req_ids:
             #     if line:
-            #         pass
+            #         flag = 0
             for line in self.pending_pf_req_ids:
                 if line:
-                    pass
+                    flag = 0
             for line in self.submitted_pf_req_ids:
                 if line:
-                    pass
+                    flag = 0
             # for line in self.upcoming_pf_req_ids:
             #     if line:
-            #         pass
+            #         flag = 0
             for line in self.pending_appraisal_request_ids:
                 if line:
-                    pass
+                    flag = 0
             for line in self.submitted_appraisal_request_ids:
                 if line:
-                    pass
+                    flag = 0
             # for line in self.upcoming_appraisal_request_ids:
             #     if line:
-            #         pass
+            #         flag = 0
             for line in self.pending_income_tax_ids:
                 if line:
-                    pass
+                    flag = 0
             for line in self.submitted_income_tax_ids:
                 if line:
-                    pass
+                    flag = 0
             # for line in self.upcoming_income_tax_ids:
             #     if line:
-            #         pass
+            #         flag = 0
             for line in self.pending_loan_request_ids:
                 if line:
-                    pass
+                    flag = 0
             for line in self.submitted_loan_request_ids:
                 if line:
-                    pass
+                    flag = 0
             # for line in self.upcoming_loan_request_ids:
             #     if line:
-            #         pass
+            #         flag = 0
             for line in self.not_transferrred_loan_request_ids:
                 if line:
-                    pass
+                    flag = 0
             for line in self.my_correspondence_ids:
                 if line:
-                    pass
+                    flag = 0
             for line in self.my_file_ids:
                 if line:
-                    pass
+                    flag = 0
             for line in self.pending_indent_req_ids:
                 if line:
-                    pass
+                    flag = 0
             for line in self.submitted_indent_req_ids:
                 if line:
-                    pass
+                    flag = 0
             # for line in self.upcoming_indent_req_ids:
             #     if line:
-            #         pass
+            #         flag = 0
             for line in self.pending_grn_ids:
                 if line:
-                    pass
+                    flag = 0
             for line in self.submitted_grn_ids:
                 if line:
-                    pass
+                    flag = 0
             # for line in self.upcoming_grn_ids:
             #     if line:
-            #         pass
+            #         flag = 0
             for line in self.pending_issue_req_ids:
                 if line:
-                    pass
+                    flag = 0
             for line in self.submitted_issue_req_ids:
                 if line:
-                    pass
+                    flag = 0
             # for line in self.upcoming_issue_req_ids:
             #     if line:
-            #         pass
+            #         flag = 0
             for line in self.pending_grn_req_ids:
                 if line:
-                    pass
+                    flag = 0
             for line in self.submitted_grn_req_ids:
                 if line:
-                    pass
+                    flag = 0
             # for line in self.upcoming_grn_req_ids:
             #     if line:
-            #         pass
+            #         flag = 0
             for line in self.pending_check_birth_ids:
                 if line:
-                    pass
+                    flag = 0
             for line in self.submitted_check_birth_ids:
                 if line:
-                    pass
+                    flag = 0
             # for line in self.upcoming_check_birth_ids:
             #     if line:
-            #         pass
+            #         flag = 0
             for line in self.pending_reimbursement_ids:
                 if line:
-                    pass
+                    flag = 0
             for line in self.submitted_reimbursement_ids:
                 if line:
-                    pass
+                    flag = 0
             # for line in self.upcoming_reimbursement_ids:
             #     if line:
-            #         pass
-            self.update({"state": "send_for_approval"})
+            #         flag = 0
+            if flag == 1:
+                self.update({"state": "send_for_approval"})
+
 
 
 
