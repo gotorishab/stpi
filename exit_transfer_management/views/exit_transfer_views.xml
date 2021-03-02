@@ -659,6 +659,7 @@
                                 <br/>
                                 <field name="my_file_ids" readonly="1" options='{"no_open": True}'>
                                     <tree edittable="bottom">
+                                        <field name="file_id"/>
                                         <field name="file_name"/>
                                         <field name="number"/>
                                         <field name="state"/>
