@@ -929,7 +929,7 @@
       <field name="view_mode">tree</field>
     </record>
 
-        <menuitem id = "exit_transfer_management_report_list"
+        <menuitem id = "exit_transfer_management_report_menu_id"
                   name = "Report"
                   parent="exit_transfer_management_menu_1_list"
                   action="exit_transfer_management_report_action_window"
