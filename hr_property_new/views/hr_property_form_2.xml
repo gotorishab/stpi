@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!--    Tree View-->
+    <record id="hr_property_employee_tree_view" model="ir.ui.view">
+        <field name="name">hr.property.tree</field>
+        <field name="model">hr.employee.property</field>
+        <field name="arch" type="xml">
+            <tree string="HR Property">
+                  <field name="employee_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="hr_property_employee_form_view" model="ir.ui.view">
+        <field name="name">hr.property.form</field>
+        <field name="model">hr.employee.property</field>
+        <field name="arch" type="xml">
+            <form string="FORM-II">
+
+                <header>
+                    <button name="button_to_approve" string="Send for Approval" class="oe_highlight" type="object" states="draft"/>
+                    <button name="button_reset_to_draft" string="Cancel" type="object"/>
+                    <button name="button_approved" string="Approve" class="oe_highlight" type="object" states="submitted" />
+                    <button name="button_reject" string="Reject" type="object"  states="submitted" />
+                    <field name="state" widget="statusbar" statusbar_visible="draft,submitted,approved" />
+                </header>
+
+                <sheet>
+                    <group>
+                        <field name="employee_id" required="1" readonly="1"/>
+                        <field name="designation" required="1" readonly="1"/>
+                        <field name="service_belo"/>
+                        <field name="employee_no"/>
+<!--                        <field name="scale_pay"/>-->
+                        <field name="purpose"/>
+                    </group>
+
+                    <group>
+                        <field name="acquisition_source"/>
+                        <br/>
+                        <field name="copy_attached"/>
+                        <br/>
+                        <field name="acquistion_gift"/>
+                        <br/>
+                        <field name="rel_fact"/>
+                    </group>
+
+                    <notebook>
+                        <page string = "Description of Movable Property">
+                                <group>
+                                    <field name="propert_ad"/>
+                                    <br/>
+                                    <field name="acq_date"/>
+                                    <br/>
+                                    <field name="details_property"/>
+                                    <br/>
+                                    <field name="mode_of_acquisition"/>
+                                    <br/>
+                                    <field name="full_part"/>
+                                    <br/>
+                                    <field name="owner_property"/>
+                                    <field name="property_price"/>
+                                </group>
+                        </page>
+
+
+                        <page string = "Details of the Parties with whom transaction is proposed to be made! has been made">
+                                <group>
+                                    <field name="address_details"/>
+                                    <br/>
+                                    <field name="party_relation"/>
+                                    <field name="state_relationship"/>
+                                    <br/>
+                                    <field name="dealings"/>
+                                    <br/>
+                                    <field name="official_party"/>
+                                    <br/>
+                                    <field name="transaction"/>
+                                </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="hr_property_employee_menu_action" model="ir.actions.act_window">
+        <field name="name">Forms -II</field>
+        <field name="res_model">hr.employee.property</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Please fill the Form-II</p>
+        </field>
+    </record>
+
+    <menuitem id="hr_property_employee_form_view" parent="hr_property_menu" name="FORM-II"
+              action="hr_property_employee_menu_action"/>
+
+    </data>
+</odoo>

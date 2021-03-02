@@ -1,2 +1,3 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_hr_property_new,hr.property.new,model_hr_property_new,base.group_user,1,1,1,1
+access_hr_employee_property,hr.employee.property,model_hr_employee_property,base.group_user,1,1,1,1
