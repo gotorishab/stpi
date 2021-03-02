@@ -32,7 +32,6 @@ class FileExitManagement(models.Model):
 
     def file_forward(self):
         value = {
-            'domain': str([('id', '=', self.folder_id.id)]),
             'view_type': 'form',
             'view_mode': 'form',
             'res_model': 'folder.wizard',
