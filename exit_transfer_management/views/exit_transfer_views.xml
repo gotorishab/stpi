@@ -659,6 +659,7 @@
                                         <field name="correspondence_id"/>
                                         <field name="letter_no"/>
                                         <field name="file_assign_id"/>
+                                        <button name = "correspondence_forward" string="Forward" type="object"/>
                                     </tree>
                                 </field>
 
