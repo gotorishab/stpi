@@ -899,7 +899,12 @@
 
         <menuitem id = "exit_transfer_management_menu_1_list"
                   name = "Exit Management"
+                  web_icon="exit_transfer_management,static/description/icon.png"
+                  />
+        <menuitem id = "exit_transfer_management_create_list"
+                  name = "Exit Management"
                   action="exit_transfer_management_action_window"
+                  parent="exit_transfer_management_menu_1_list"
                   />
 
                 <record model="ir.ui.view" id="exit_transfer_management_report_list">
