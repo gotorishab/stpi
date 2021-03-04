@@ -19,6 +19,7 @@ class CreateFolder(models.TransientModel):
                 for letter in file.file_ids:
                     letter.folder_id = self.deffolderid.id
                     self.deffolderid.file_ids = [(4, letter.id)]
+                    self.deffolderid.document_ids = str(self.deffolderid.document_ids) + ',' + str(letter.php_letter_id)
                 for letter in file.document_dispatch:
                     letter.folder_id = self.deffolderid.id
                     self.deffolderid.document_dispatch = [(4, letter.id)]
