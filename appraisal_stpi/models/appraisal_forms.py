@@ -39,7 +39,7 @@ class AppraisalForms(models.Model):
                               ], 'Ag No', track_visibility='always')
     agree_dis = fields.Selection([('Agreed', 'Agreed'),
                                        ('Disagree', 'Disagree'),
-                              ], 'Agreed?', track_visibility='always')
+                              ], 'Agreed?', default='Agreed', track_visibility='always')
     dis_mod = fields.Text('Dis Mod', track_visibility='always')
     If_not_happy = fields.Text('If not happy, Query')
     pen_pic_rev = fields.Text('Pen Picture of review officer', track_visibility='always')
@@ -98,6 +98,14 @@ class AppraisalForms(models.Model):
     #         rec.kpia_ids = kpi_kpa
 
 
+
+
+    @api.multi
+    def print_appraisal_form(self):
+        if self.agree_dis=='Disagree':
+            return self.env.ref('appraisal_stpi.annex_form2_disagreed_id').report_action(self)
+        else:
+            return self.env.ref('appraisal_stpi.appraisal_form1_agreed_id').report_action(self)
 
 
     @api.model

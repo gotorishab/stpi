@@ -5,6 +5,15 @@ from odoo import api, fields, models, _
 from odoo.http import request
 
 
+class HrJob(models.Model):
+    _inherit = "hr.job"
+
+    applicant_ref_id = fields.Char("Reference No.", copy=False)
+    fee_required = fields.Selection(
+        [('Yes', 'Yes'), ('No', 'No')
+         ], string='Application Fee Required?')
+
+
 class HRApplicant(models.Model):
     _inherit = "hr.applicant"
 

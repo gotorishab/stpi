@@ -25,10 +25,11 @@
                      <button name="button_reporting_authority_reviewed" string="Reviewed" class="oe_highlight" type="object" states="self_review" groups="appraisal_stpi.group_reporting_authority_appraisal"/>
                     <button name="button_reviewing_authority_reviewed" string="Reviewed" class="oe_highlight" type="object" states="reporting_authority_review" groups="appraisal_stpi.group_reviewing_authority_appraisal"/>
                     <button name="button_completed" string="Publish" class="oe_highlight" type="object" states="reviewing_authority_review" groups="appraisal_stpi.group_manager_appraisal"/>
-                    <button name="agreed" string="Agree" class="oe_highlight" type="object" states="completed"/>
-                    <button name="Disagree" string="disagree" class="oe_highlight" type="object" states="completed"/>
-                    <button name="button_raised_query" string="Not Satisfied? Raise Query" class="oe_highlight" type="object" states="completed"/>
+<!--                    <button name="agreed" string="Agree" class="oe_highlight" type="object" states="completed"/>-->
+<!--                    <button name="Disagree" string="disagree" class="oe_highlight" type="object" states="completed"/>-->
+<!--                    <button name="button_raised_query" string="Not Satisfied? Raise Query" class="oe_highlight" type="object" states="completed"/>-->
                     <button name="button_reject" string="Reject" type="object" attrs="{'invisible':[('state','in',('draft','completed'))]}"/>
+                    <button name="print_appraisal_form" string="Print" type="object" states="completed"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,self_review,reporting_authority_review,reviewing_authority_review,completed" />
                 </header>
                 <sheet>
@@ -49,6 +50,7 @@
                             <field name="pay_level" readonly="1"/>
                             <field name="template_id" readonly="1" required="1"/>
                             <field name="overall_grade" attrs="{'invisible':[('state','not in',('completed'))],'readonly':[('state','in',('completed'))]}"/>
+                            <field name="agree_dis" attrs="{'invisible':[('state','not in',('completed'))],'required':[('state','in',('completed'))]}"/>
                         </group>
                     </group>
                     <notebook>

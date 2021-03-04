@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id ="annex_report">
+    <template id ="annex_form2_disagreed_report">
         <t t-call = "web.html_container">
             <t t-foreach="docs" t-as="o">
                 <t t-call="web.external_layout">
@@ -44,7 +44,7 @@
                                        3.) Date of Disclosure of the APAR to the officer reported upon
                                    </th>
                                    <th colspan="2">
-
+                                       <span t-field="o.create_date"/>
                                    </th>
                                </tr>
                             </table>
@@ -152,10 +152,10 @@
     </template>
 
     <report
-    id ="annex_id"
+    id ="annex_form2_disagreed_id"
     string="Appraisal Report 2"
     model="appraisal.main"
     report_type="qweb-pdf"
-    file="appraisal_stpi.annex_report"
-    name="appraisal_stpi.annex_report"/>
+    file="appraisal_stpi.annex_form2_disagreed_report"
+    name="appraisal_stpi.annex_form2_disagreed_report"/>
 </odoo>
