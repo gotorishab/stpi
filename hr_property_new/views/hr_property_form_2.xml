@@ -99,7 +99,7 @@
         </field>
     </record>
 
-    <menuitem id="hr_property_employee_form_view" parent="hr_property_menu" name="FORM-II"
+    <menuitem id="hr_property_employee_menu2_view" parent="hr_property_menu" name="FORM-II"
               action="hr_property_employee_menu_action"/>
 
     </data>
