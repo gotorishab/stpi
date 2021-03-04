@@ -20,9 +20,9 @@
 
                 <header>
                     <button name="button_to_approve" string="Send for Approval" class="oe_highlight" type="object" states="draft"/>
-                    <button name="button_reset_to_draft" string="Cancel" type="object"/>
-                    <button name="button_approved" string="Approve" class="oe_highlight" type="object" states="submitted" />
-                    <button name="button_reject" string="Reject" type="object"  states="submitted" />
+                    <button name="button_reset_to_draft" string="Cancel" type="object" states="submitted"/>
+                    <button name="button_approved" string="Approve" class="oe_highlight" type="object" states="submitted" groups="hr_property_new.group_hr_property_new_approvere"/>
+                    <button name="button_reject" string="Reject" type="object"  states="submitted" groups="hr_property_new.group_hr_property_new_approvere"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,submitted,approved" />
                 </header>
 
@@ -30,9 +30,9 @@
                     <group>
                         <field name="employee_id" required="1" readonly="1"/>
                         <field name="designation" required="1" readonly="1"/>
-                        <field name="service_belo"/>
-                        <field name="employee_no"/>
-                        <field name="scale_pay"/>
+<!--                        <field name="service_belo"/>-->
+                        <field name="employee_no" readonly="1"/>
+                        <field name="scale_pay" readonly="1"/>
                         <br/>
                         <field name="purpose"/>
                     </group>

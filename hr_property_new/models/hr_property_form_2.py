@@ -10,26 +10,29 @@ class HREmployeeProperty(models.Model):
         return self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
 
 
-    employee_id = fields.Many2one('hr.employee', string="Name of the Government servant", default=_default_employee,
-                                  track_visibility='always')
-    designation = fields.Many2one('hr.job', string="Designation: ")
-
+    employee_id = fields.Many2one('hr.employee', string="Name of the Government servant", default=_default_employee,track_visibility='always')
+    designation = fields.Many2one('hr.job',string="Designation: ")
 
     @api.onchange('employee_id')
     @api.constrains('employee_id')
     def get_designation(self):
         for rec in self:
             rec.designation = rec.employee_id.job_id.id
-            # print('=================identify_id=================',rec.employee_id.identify_id)
             rec.employee_no = rec.employee_id.identify_id
-            # rec.scale_pay = rec.employee_id.pay_level_id.id
+            emp_contract = self.env['hr.contract'].search(
+                [('employee_id', '=', rec.employee.id), ('state', '=', 'open')], limit=1)
+            if emp_contract:
+                for contract in emp_contract:
+                    rec.scale_pay = contract.wage
+                    rec.pay_level_id = contract.pay_level_id.id
 
 
-    service_belo = fields.Char("Service to which belongs: ", track_visibility='always')
-    employee_no = fields.Many2one(string="Employee No./Code No.: ")
+    service_belo = fields.Char("Service to which belongs: ",track_visibility='always')
+    employee_no = fields.Char(string="Employee No./Code No.: ")
 
-    # scale_pay = fields.Many2one("hr.payslip.paylevel", string="Scale of Pay and present pay:", track_visibility='always')
-    scale_pay = fields.Char("Scale of Pay and present pay:",track_visibility='always')
+    pay_level_id = fields.Many2one('hr.payslip.paylevel', string='Pay Level	',track_visibility='always')
+    scale_pay = fields.Float("Present pay:",track_visibility='always')
+
     purpose = fields.Char("Purpose of application:", track_visibility='always')
 
     #Description of Movable Property
@@ -65,3 +68,26 @@ class HREmployeeProperty(models.Model):
     state = fields.Selection(
         [('draft', 'Draft'), ('submitted', 'Waiting for Approval'), ('approved', 'Approved'), ('rejected', 'Rejected')
          ], required=True, default='draft', string='Status', track_visibility='onchange')
+
+
+
+    @api.multi
+    def button_reset_to_draft(self):
+        for rec in self:
+            rec.write({'state': 'draft'})
+
+
+    @api.multi
+    def button_to_approve(self):
+        for rec in self:
+            rec.write({'state': 'submitted'})
+
+    @api.multi
+    def button_approved(self):
+        for rec in self:
+            rec.write({'state': 'approved'})
+
+    @api.multi
+    def button_reject(self):
+        for rec in self:
+            rec.write({'state': 'rejected'})
