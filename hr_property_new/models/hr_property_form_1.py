@@ -20,7 +20,7 @@ class HRPropertyNew(models.Model):
             rec.designation = rec.employee_id.job_id.id
             rec.employee_no = rec.employee_id.identify_id
             emp_contract = self.env['hr.contract'].search(
-                [('employee_id', '=', rec.employee.id), ('state', '=', 'open')], limit=1)
+                [('employee_id', '=', rec.employee_id.id), ('state', '=', 'open')], limit=1)
             if emp_contract:
                 for contract in emp_contract:
                     rec.scale_pay = contract.wage
