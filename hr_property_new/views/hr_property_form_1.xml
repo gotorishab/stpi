@@ -35,7 +35,7 @@
                         <field name="designation" required="1" readonly="1"/>
                         <field name="service_belo"/>
                         <field name="employee_no"/>
-<!--                        <field name="scale_pay"/>-->
+                        <field name="scale_pay"/>
                         <field name="purpose"/>
                         <br/>
                         <field name="propert_ad"/>

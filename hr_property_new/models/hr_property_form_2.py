@@ -29,6 +29,7 @@ class HREmployeeProperty(models.Model):
     employee_no = fields.Many2one(string="Employee No./Code No.: ")
 
     # scale_pay = fields.Many2one("hr.payslip.paylevel", string="Scale of Pay and present pay:", track_visibility='always')
+    scale_pay = fields.Char("Scale of Pay and present pay:",track_visibility='always')
     purpose = fields.Char("Purpose of application:", track_visibility='always')
 
     #Description of Movable Property

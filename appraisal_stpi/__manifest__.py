@@ -17,6 +17,8 @@
         'views/appraisal_template.xml',
         'views/overall_rate.xml',
         'views/template_mto_payroll.xml',
+		'views/print_template.xml',
+		'views/annex_template.xml',
 		'wizard/create_appraisal.xml'
 	],
 	'images': [],

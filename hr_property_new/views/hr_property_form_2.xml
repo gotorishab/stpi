@@ -3,7 +3,7 @@
     <data>
         <!--    Tree View-->
     <record id="hr_property_employee_tree_view" model="ir.ui.view">
-        <field name="name">hr.property.tree</field>
+        <field name="name">hr.employee.property.tree</field>
         <field name="model">hr.employee.property</field>
         <field name="arch" type="xml">
             <tree string="HR Property">
@@ -13,7 +13,7 @@
     </record>
 
     <record id="hr_property_employee_form_view" model="ir.ui.view">
-        <field name="name">hr.property.form</field>
+        <field name="name">hr.employee.property.form</field>
         <field name="model">hr.employee.property</field>
         <field name="arch" type="xml">
             <form string="FORM-II">
@@ -29,14 +29,11 @@
                 <sheet>
                     <group>
                         <field name="employee_id" required="1" readonly="1"/>
-                        <br/>
                         <field name="designation" required="1" readonly="1"/>
-                        <br/>
                         <field name="service_belo"/>
-                        <br/>
                         <field name="employee_no"/>
+                        <field name="scale_pay"/>
                         <br/>
-<!--                        <field name="scale_pay"/>-->
                         <field name="purpose"/>
                     </group>
 
@@ -49,6 +46,7 @@
                         <br/>
                         <field name="rel_fact"/>
                     </group>
+
 
                     <notebook>
                         <page string = "Description of Movable Property">

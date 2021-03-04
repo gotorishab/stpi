@@ -20,6 +20,7 @@
         'views/hr_applicant_inherited.xml',
         'views/training_views.xml',
         'views/applicant_profile_report_view.xml',
+        'views/new_applicant_template.xml',
         'report/report_view.xml'
     ],
     'demo': [],

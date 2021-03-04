@@ -27,7 +27,7 @@ class HRPropertyNew(models.Model):
     employee_no = fields.Many2one(string="Employee No./Code No.: ")
 
     # scale_pay = fields.Many2one("hr.payslip.paylevel", string="Scale of Pay and present pay:",track_visibility='always')
-
+    scale_pay = fields.Float("Scale of Pay and present pay:",track_visibility='always')
     purpose = fields.Char("Purpose of application:",track_visibility='always')
     propert_ad = fields.Selection([('acquired', 'Acquired'), ('disposed', 'Disposed')], string='Whether property is being acquired or disposed of',track_visibility='onchange')
     probable_date = fields.Date(string='Probable date of acquistion or disposal of property',track_visibility='onchange')
