@@ -13,6 +13,16 @@ $(document).ready(function(){
         return true;
     });
 
+    $('.is_applicable_fee').on('change', function(){
+        var is_applicable_fee = $(this).val();
+        if (is_applicable_fee == 'No'){
+            $('#applicable_fee')[0].style.display = "none";
+        }
+        else{
+            $('#applicable_fee')[0].style.display = "block";
+        }
+    });
+
     $('.category_id').on('change', function(){
         $.ajax({
             url: '/getAdvertisementName',

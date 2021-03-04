@@ -12,7 +12,8 @@
         # 'security/ir.model.access.csv',
         'views/myportal_hr_applicant_templates.xml',
         'data/ir_sequence.xml',
-        'views/hr_applicant.xml'
+        'views/hr_applicant.xml',
+        'views/new_applicant_template.xml',
     ],
     'demo': [],
     'images': [],

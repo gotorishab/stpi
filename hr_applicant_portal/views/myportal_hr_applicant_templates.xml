@@ -469,6 +469,60 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row pt-3">
+                                <div class="col-md-12">
+                                    <div class="col-md-12 pl0">
+                                        <h4 class="title">
+                                            <b>Other</b>
+                                        </h4>
+                                    </div>
+                                    <div class="oe_box mt-3">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="col-md-4 pl0 col-sm-6 o_label" for="other_documents">Other Documents
+                                                    </label>
+                                                    <div class="col-md-8 col-sm-12">
+                                                        <input type="file" id="other_documents" name="other_documents" multiple=""/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="col-md-4 pl0 col-sm-6 o_label" for="signature">Signature
+                                                    </label>
+                                                    <div class="col-md-8 col-sm-12">
+                                                        <input type="file" id="signature" name="signature"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="col-md-4 pl0 col-sm-6 o_label" for="business_address">Applicable Fee(if Yes)
+                                                    </label>
+                                                    <div class="col-md-8 col-sm-12">
+                                                        <select class="form-control is_applicable_fee" name="is_applicable_fee">
+                                                            <option value="No" selected="selected">No</option>
+                                                            <option value="Yes" >Yes</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6" id="applicable_fee" style="display:none">
+                                                <div class="form-group">
+                                                    <label class="col-md-4 pl0 col-sm-6 o_label" for="applicable_fee">Enter Applicable Fee
+                                                    </label>
+                                                    <div class="col-md-8 col-sm-12">
+                                                        <input type="text" class="form-control" name="applicable_fee" placeholder="Applicable Fee"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="col-md-12 pt-3">
                             <button type="submit" id="submit_btn" class="btn submit btn-primary btn-md pull-right">Submit</button>
@@ -491,6 +545,9 @@
                             <h5>
                                 Your Application submitted successfully.<t t-if="ref_no" > Your Application Reference No. is '<t t-esc="ref_no"/>'. Note it for future Reference.</t>
                             </h5>
+                        </div>
+                        <div class="col-md-12">
+                            <a class="btn btn-primary btn-lg" t-attf-href="/print/hr/application/{{id}}" target="_blank">Print Application</a>
                         </div>
                     </div>
                     <div class="row">

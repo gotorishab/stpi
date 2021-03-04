@@ -18,6 +18,12 @@ class HRApplicant(models.Model):
     _inherit = "hr.applicant"
 
     applicant_ref_id = fields.Char("Reference No.", copy=False)
+    is_applicable_fee = fields.Selection([("Yes", "Yes"),
+                                        ("No", "No")], string="Is Fee Applicable", copy=False, default="No")
+    applicable_fee = fields.Float("Applicable Fee (If Yes)", copy=False)
+    profile_image = fields.Binary("Profile Image", copy=False)
+    other_documents = fields.Binary("Other Document", copy=False)
+    signature = fields.Binary("Signature", copy=False)
 
     @api.model
     def create(self, vals):

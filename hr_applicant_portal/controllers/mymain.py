@@ -7,7 +7,7 @@ from collections import OrderedDict
 from operator import itemgetter
 from odoo import http
 from odoo.exceptions import AccessError, MissingError, ValidationError, UserError
-from odoo.http import request
+from odoo.http import request, content_disposition
 # from odoo.tools import image_process, groupby as groupbyelem
 from odoo.tools.translate import _
 import json, sys, base64, pytz
@@ -46,7 +46,11 @@ class HrPortalRecruitment(http.Controller):
     def ApplyJobs(self, **post):
         # try:
         # post = {'line_type_id_1': '1', 'category_id': '15', 'blood_group': 'b+', 'zip_1': '250001', 'date_end_1': '2019-02-02', 'name': 'Rajneta', 'addreess_rec': '1', 'ref_name_1': 'TEst', 'description_1': 'CSE', 'ref_phone_1': '9865321470', 'position_1': 'O2b', 'organization_1': 'Software Developer', 'aadhar_no': '145236521452', 'ufile': <FileStorage: '' ('application/octet-stream')>, 'employeement_rec': '1', 'personal_email': 'goelarpit1997@gmail.com', 'job_id': '9', 'country_id': '104', 'title': '8', 'street2_1': 'Site-4 Industrial Area, Sahibabad', 'pan_no': 'ABCDE1234F', 'is_out_talent': 'on', 'dob': '2001-01-01', 'education_line_rec': '0', 'country_id_1': '104', 'to_date_1': '2021-02-01', 'city_1': 'Ghaziabad', 'from_date_1': '2020-02-02', 'street_1': 'A-16/29, Site-4 Industrial Area, Sahibabad', 'date_start_1': '2015-02-02', 'is_fail': 'on', 'advertisement_line_id': '21', 'specialization_1': 'CSE', 'address_type_id_1': 'permanent_add', 'name_1': 'B.tech', 'gende': 'male', 'is_difficulty_subject': 'on', 'ref_position_1': 'Test', 'state_id_1': '610', 'religion_id': '8'}
-        # post.update({'advertisement_line_id': literal_eval(post.get('advertisement_line_id'))})
+        post.update({'profile_image': base64.b64encode(post.get('ufile').read()) if post.get('ufile') else False})
+        post.pop('ufile')
+        post.update({'signature': base64.b64encode(post.get('signature').read()) if post.get('signature') else False})
+        post.update({'other_documents': base64.b64encode(post.get('other_documents').read()) if post.get('other_documents') else False})
+        post.update({'advertisement_line_id': int(post.get('advertisement_line_id'))})
         post.update({'job_id': literal_eval(post.get('job_id'))})
         address_id = self.slicedict(post, 'street_')
         from_date_id = self.slicedict(post, 'from_date_')
@@ -115,6 +119,7 @@ class HrPortalRecruitment(http.Controller):
         print("\nperation_rec>>>>>>>>>>>>>>>>", operation_rec)
         print("\neducation_rec>>>>>>>>>>>>>>>>", education_rec)
         print('\n====================post===================', post)
+        # eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
         applicant_id = request.env['hr.applicant'].sudo().create(post)
         print('====================app===================', applicant_id.id)
         if address_rec or operation_rec or education_rec:
@@ -128,7 +133,7 @@ class HrPortalRecruitment(http.Controller):
                 print(">>>>>>>>>>>>>>>>>>", applicant_id.prev_occu_ids)
             except (AccessError, MissingError, ValidationError) as e:
                 raise UserError(_(e))
-        return request.redirect('/thank/you?ref_no=%s' %(applicant_id.applicant_ref_id))
+        return request.redirect('/thank/you?id=%s&ref_no=%s' %(applicant_id.id, applicant_id.applicant_ref_id))
 
     @http.route(['/thank/you'],type='http', auth='public', website=True)
     def thankyou(self, **post):
@@ -161,9 +166,11 @@ class HrPortalRecruitment(http.Controller):
     @http.route(['/getAdvertisementName'],type='http', auth='public', website=True)
     def getAdvertisementName(self, **kw):
         if kw.get('category_ids'):
+            category_id = request.env['employee.category'].sudo().search([('name', 'ilike', 'GEN')], limit=1)
+            # print("***********************", category_id.name, category_id)
             # institute_id = request.env['res.branch'].sudo().search([('id', '=', int(kw.get('institute_id')))])
             advertisement_ids = request.env['advertisement.line'].sudo().search(
-                [('category_id', '=', int(kw.get('category_ids'))),
+                [('category_id', 'in', (int(kw.get('category_ids')), category_id.id))
                  ])
             result = []
             print('=================================id===============================', advertisement_ids)
@@ -189,3 +196,13 @@ class HrPortalRecruitment(http.Controller):
                 return json.dumps(dict(result=result))
         else:
             return False
+
+    @http.route(['/print/hr/application/<int:applicant_id>'],type='http', auth='public', website=True)
+    def print_application(self, applicant_id, **kw):
+        if applicant_id:
+            pdf = request.env.ref('hr_applicant_portal.applicant_id').sudo().render_qweb_pdf([applicant_id])[0]
+            pdfhttpheaders = [('Content-Type', 'application/pdf'), ('Content-Length', len(pdf)), ('Content-Disposition', content_disposition('Applicant Form.pdf'))]
+            return request.make_response(pdf, headers=pdfhttpheaders)
+        else:
+            return request.redirect('/')
+
