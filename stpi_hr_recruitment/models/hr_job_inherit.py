@@ -141,15 +141,15 @@ class HRApplicant(models.Model):
             rec.branch_id = rec.advertisement_line_id.branch_id
 
 
-    @api.constrains('advertisement_line_id','category_id','type_id','job_id')
-    def get_state_degree_validation(self):
-        for rec in self:
-            if rec.advertisement_line_id:
-                if rec.category_id != rec.advertisement_line_id.category_id:
-                    raise ValidationError(
-                        _('Your category dows not matched with the advertisement published'))
-                if rec.type_id not in rec.job_id.allowed_degrees:
-                    raise ValidationError(
-                        _('Your degree does not matched with the Job allowed degree'))
+    # @api.constrains('advertisement_line_id','category_id','type_id','job_id')
+    # def get_state_degree_validation(self):
+    #     for rec in self:
+    #         if rec.advertisement_line_id:
+    #             if rec.category_id != rec.advertisement_line_id.category_id:
+    #                 raise ValidationError(
+    #                     _('Your category dows not matched with the advertisement published'))
+    #             if rec.type_id not in rec.job_id.allowed_degrees:
+    #                 raise ValidationError(
+    #                     _('Your degree does not matched with the Job allowed degree'))
 
 
