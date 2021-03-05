@@ -11,9 +11,9 @@
                             <style>
                                 h1 {text-align: center;}
                             </style>
-                            <h1>
+                            <h3>
                             APPLICATION FOR THE POST OF <span t-field="o.job_id.name"/>
-                            </h1>
+                            </h3>
                         </p>
                         </div>
                         <br/>
@@ -28,7 +28,7 @@
                             <table class="table table-bordered">
                                 <tr>
                                     <th colspan="1">
-                                        DD/ IPO/ Transaction No:
+                                    <span t-field="o.applicable_fee"/>
                                     </th>
                                 </tr>
                             </table>
@@ -71,7 +71,8 @@
                                     </th>
 
                                     <th colspan="1">
-                                        <span t-field="o.recruitment_type"/>
+                                        Direct Recruitment
+<!--                                        <span t-field="o.recruitment_type"/>-->
                                     </th>
                                 </tr>
 
@@ -833,7 +834,7 @@
                                 <tr>
                                     <th colspan="1">
                                         Place: <br/><br/>
-                                        Date:<span t-field="o.create_date"/>
+                                        Date:<span t-field="o.create_date"/><br/><br/>
                                         Signature: <span t-field="o.signature" t-field-options='{"widget": "image"}'/>
                                     </th>
 
