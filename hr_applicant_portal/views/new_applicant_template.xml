@@ -833,12 +833,10 @@
                                 <tr>
                                     <th colspan="1">
                                         Place: <br/><br/>
-                                        Date:
+                                        Date:<span t-field="o.create_date"/>
+                                        Signature: <span t-field="o.signature" t-field-options='{"widget": "image"}'/>
                                     </th>
 
-                                    <th colspan="1">
-                                        Signature: <span t-field="o.signature"/>
-                                    </th>
                                 </tr>
                             </table>
 
