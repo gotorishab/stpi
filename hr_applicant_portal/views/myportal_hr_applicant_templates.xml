@@ -91,7 +91,7 @@
                                         <div class="form-group">
                                             <label class="col-md-4 pl0 col-sm-6 o_label" for="birth_date">Applicant Name *</label>
                                             <div class="col-md-8 col-sm-12 input-group">
-                                                 <input type="text" class="form-control" name="name" placeholder="Applicant Name........." value="" pattern="[A-Za-z ]{1,32}" required="required" oninvalid="this.setCustomValidity('Please Enter Correct Applicant Name')" onvalid="this.setCustomValidity('')"/>
+                                                 <input type="text" class="form-control" name="name" placeholder="Applicant Name........." value="" />
                                             </div>
                                         </div>
                                     </div>
