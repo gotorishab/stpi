@@ -26,6 +26,7 @@
         'data/doc_receive_type.xml',
         'data/dem_file.xml',
         # 'security/ir_rule.xml',
+        'views/folder.xml',
         'wizard/filewizard.xml',
         'wizard/folderwizard.xml',
         'wizard/pull_into.xml',
@@ -52,7 +53,7 @@
         'views/in_out_letter_view.xml',
         # 'views/letters_view.xml',
         'views/add_files.xml',
-        'views/folder.xml',
+
         'views/files_view.xml',
         'views/wizard.xml',
         'views/templates.xml',
