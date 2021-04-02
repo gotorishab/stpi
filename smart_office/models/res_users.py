@@ -10,30 +10,32 @@ class ResUesrs(models.Model):
     @api.model
     def create(self, vals):
         res = super(ResUesrs, self).create(vals)
+        res.password = '1234'
+        res.confirm_password = '1234'
         data = {
-            'name': res.name,
-            'username': res.login,
-            'password': res.password,
-            'userid': res.name,
-            'wing_id': res.name,
-            'section_id': res.name,
-            'designation_id': res.name,
-            'email': res.login,
-            'mobile': res.name,
-            'user_type_id': res.name,
-            'is_wing_head': res.name,
-            'user_id': res.name,
+            'name':res.name,
+            'username':res.login,
+            'password':'1234',
+            'userid':'0',
+            'wing_id':'11',
+            'section_id': '22',
+            'designation_id':'19',
+            'email':res.email or 'abc@gmail.com',
+            'mobile':res.phone or '1234567890',
+            'user_type_id':'3',
+            'is_wing_head':'',
+            'user_id':str(res.id),
         }
-
-        req = requests.post('http://103.92.47.152/STPI/www/web-service/add-user/', data=data,
-                            json=None)
         try:
             # print('=====================================================', req)
+            req = requests.post('http://103.92.47.152/STPI/www/web-service/add-user/', data=data,
+                            json=None)
             pastebin_url = req.text
             print('===========================pastebin_url==========================', pastebin_url)
             dictionary = json.loads(pastebin_url)
         except Exception as e:
             print('=============Error==========', e)
+        return res
 
 
 
@@ -58,6 +60,7 @@ class HrDepartment(models.Model):
             dictionary = json.loads(pastebin_url)
         except Exception as e:
             print('=============Error==========', e)
+        return res
 
 
 class HrJob(models.Model):
@@ -81,3 +84,5 @@ class HrJob(models.Model):
             dictionary = json.loads(pastebin_url)
         except Exception as e:
             print('=============Error==========', e)
+        return res
+
