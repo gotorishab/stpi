@@ -86,3 +86,23 @@ class HrJob(models.Model):
             print('=============Error==========', e)
         return res
 
+class HrEmployee(models.Model):
+    _inherit = "hr.employee"
+
+
+    def create_employee_scheduler(self):
+        all_employees = self.env['hr.employee'].sudo().search([('user_id', '=', False)])
+        if all_employees:
+            for rec in all_employees:
+                Users = self.env['res.users'].with_context(
+                    {'no_reset_password': True, 'mail_create_nosubscribe': True})
+                user = Users.create({
+                    'name': rec.name,
+                    'login': rec.identify_id,
+                    'password': '1234',
+                    'confirm_password': '1234',
+                    'email': rec.work_email or 'abc@gmail.com',
+                    'notification_type': 'inbox',
+                    'default_branch_id': rec.branch_id.id,
+                    'sel_groups_1_9_10': 1,
+                })

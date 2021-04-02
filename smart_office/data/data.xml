@@ -18,7 +18,7 @@
             <field name="save_type">database</field>
         </record>
         <record id="category_01_demo" model="muk_dms.category">
-            <field name="name">Internal</field>
+            <field name="name">Internal ABC</field>
         </record>
         <record id="tag_07_demo" model="muk_dms.tag">
             <field name="name">Accounting</field>

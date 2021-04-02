@@ -89,9 +89,25 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="col-md-4 pl0 col-sm-6 o_label" for="birth_date">Applicant Name *</label>
+                                            <label class="col-md-4 pl0 col-sm-6 o_label" for="birth_date">Applicant First Name *</label>
                                             <div class="col-md-8 col-sm-12 input-group">
-                                                 <input type="text" class="form-control" name="name" placeholder="Applicant Name........." value="" />
+                                                 <input type="text" class="form-control" name="fname" placeholder="Applicant First Name........." value="" required="required"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-md-4 pl0 col-sm-6 o_label" for="birth_date">Applicant Middle Name</label>
+                                            <div class="col-md-8 col-sm-12 input-group">
+                                                 <input type="text" class="form-control" name="mname" placeholder="Applicant Middle Name........." value="" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-md-4 pl0 col-sm-6 o_label" for="birth_date">Applicant Last Name *</label>
+                                            <div class="col-md-8 col-sm-12 input-group">
+                                                 <input type="text" class="form-control" name="lname" placeholder="Applicant Last Name........." value="" />
                                             </div>
                                         </div>
                                     </div>
@@ -135,7 +151,7 @@
                                         <div class="form-group">
                                             <label class="col-md-4 pl0 col-sm-6 o_label" for="birth_date">Aadhar Card No *</label>
                                             <div class="col-md-8 col-sm-12 input-group">
-                                                 <input type="text" class="form-control" name="aadhar_no" placeholder="Aadhar Card No........." value="" pattern="[0-9]{12,16}" required="required" oninvalid="this.setCustomValidity('Please Enter Correct Aadhar Card No.')" onvalid="this.setCustomValidity('')"/>
+                                                 <input type="text" class="form-control" name="aadhar_no" placeholder="Aadhar Card No........." value="" pattern="[0-9]{12,16}" required="required" title="Please Enter Correct Aadhar Card No."/>
                                             </div>
                                         </div>
                                     </div>
@@ -275,7 +291,7 @@
                                                     <label class="col-md-4 pl0 col-sm-6 o_label" for="business_address">Employment Notice Number
                                                     </label>
                                                     <div class="col-md-8 col-sm-12">
-                                                        <select class="form-control advertisement_line_id" name="advertisement_line_id">
+                                                        <select class="form-control advertisement_line_id" name="advertisement_line_id" required="required">
                                                             <!-- <option value="" t-attf-selected="selected">Select...</option>
                                                             <t t-foreach="advertisement_ids" t-as="advertisement_line_id">
                                                                 <option t-att-value="advertisement_line_id.id"><t t-esc="advertisement_line_id.name"/>
@@ -290,7 +306,7 @@
                                                     <label class="col-md-4 pl0 col-sm-6 o_label" for="business_address">Application for the post of
                                                     </label>
                                                     <div class="col-md-8 col-sm-12">
-                                                        <select class="form-control job_id" name="job_id">
+                                                        <select class="form-control job_id" name="job_id" required="required">
                                                             <!-- <option value="" t-attf-selected="selected">Select...</option>
                                                             <t t-foreach="job_ids" t-as="job_id">
                                                                 <option t-att-value="job_id.id">

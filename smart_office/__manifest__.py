@@ -19,6 +19,7 @@
 
     'data': [
         'data/data.xml',
+        'data/ir_cron_data.xml',
         # 'views/load_ifrme_widget.xml',
         'data/sequence.xml',
         'security/ir.model.access.csv',

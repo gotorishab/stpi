@@ -104,7 +104,8 @@
     </record>
 
     <menuitem id="hr_property_menu"
-          name="HR Property"/>
+          name="HR Property"
+          web_icon="hr_property_new,static/description/icon.png"/>
     <menuitem id="hr_property_form_menu" parent="hr_property_menu" name="FORM-I"
     action="form_menu_action"/>
 
