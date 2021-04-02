@@ -23,7 +23,7 @@
         # 'views/load_ifrme_widget.xml',
         'data/sequence.xml',
         'security/ir.model.access.csv',
-        # 'security/security.xml',
+        'security/security.xml',
         'data/doc_receive_type.xml',
         'data/dem_file.xml',
         # 'security/ir_rule.xml',

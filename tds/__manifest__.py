@@ -11,7 +11,7 @@
 	'depends': ['base','hr','hr_payroll','date_range','groups_inherit'],
 	'data': [
 		'security/ir.model.access.csv',
-		# 'security/security.xml',
+		'security/security.xml',
 		'data/Income_tax_rule.xml',
 		'data/income_tax_slab.xml',
 		'data/income_tax_charge.xml',
