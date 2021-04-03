@@ -107,3 +107,6 @@ class HrEmployee(models.Model):
                     'default_branch_id': rec.branch_id.id,
                     'sel_groups_1_9_10': 1,
                 })
+                print('===================User===============',user.id)
+                rec.user_id = user.id
+                print('===================Employee User===============',rec.user_id)
