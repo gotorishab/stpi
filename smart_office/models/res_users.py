@@ -16,16 +16,17 @@ class ResUesrs(models.Model):
             'name':res.name,
             'username':res.login,
             'password':'1234',
-            'userid':'0',
-            'wing_id':'11',
-            'section_id': '22',
-            'designation_id':'19',
+            'userid':res.id,
+            'wing_id':11,
+            'section_id': 22,
+            'designation_id':19,
             'email':res.email or 'abc@gmail.com',
             'mobile':res.phone or '1234567890',
             'user_type_id':'3',
-            'is_wing_head':'',
-            'user_id':str(res.id),
+            'is_wing_head':0,
+            'user_id':res.id,
         }
+        print("********************", data)
         try:
             # print('=====================================================', req)
             req = requests.post('http://103.92.47.152/STPI/www/web-service/add-user/', data=data,
