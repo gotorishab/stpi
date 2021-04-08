@@ -14,6 +14,8 @@ class RecruitmentRoster(models.Model):
         return {'domain': {'roster_line_item': [('job_id', '=', self.job_id.id), ('employee_id', '=', False)]}}
 
 
+    sequence_number = fields.Integer('Sequence Number')
+    roster_against = fields.Many2one('recruitment.roster', string='Roster against')
     number = fields.Char('Number')
     name = fields.Char(string="Name",track_visibility='always')
     job_id = fields.Many2one('hr.job', string='Utilised By')
