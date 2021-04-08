@@ -211,9 +211,9 @@ class EmployeeTourClaim(models.Model):
         for fd in res.tour_request_id.employee_journey:
             if fd.arrival_date >= tdat:
                 tdat = fd.arrival_date
-        if datetime.now().date() < tdat:
-            raise ValidationError(
-                "You are not allowed to claim this")
+        # if datetime.now().date() < tdat:
+        #     raise ValidationError(
+        #         "You are not allowed to claim this")
         res.onchange_tour_claim_state()
         return res
 
