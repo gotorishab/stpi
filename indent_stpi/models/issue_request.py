@@ -2,7 +2,7 @@ from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError, UserError
 from dateutil.relativedelta import relativedelta
 from datetime import datetime, date
-import jwt
+# import jwt
 import xmlrpc.client
 from odoo import modules
 import base64
@@ -154,45 +154,46 @@ class IndentLedger(models.Model):
 
     @api.multi
     def fill_asset_details(self):
-        if not self.coe_asset_id:
-            server_connection_id = self.env['server.connection'].search([('active', '=', True)])
-            url = server_connection_id.url
-            db = server_connection_id.db_name
-            common = xmlrpc.client.ServerProxy('{}/xmlrpc/2/common'.format(url))
-            models = xmlrpc.client.ServerProxy('{}/xmlrpc/2/object'.format(url))
-            # print('==========models================', models)
-            uid = 2
-            # password = self.env.user.password
-            password = 'admin'
-            id = models.execute_kw(db, uid, password, 'account.asset.asset', 'create',
-                                   [{"name": self.item_id.name,
-                                     "serial_number": self.serial_number.name,
-                                     "invoice_no": self.Indent_id.bill_no,
-                                     "purchase_date": self.Indent_id.date_of_receive,
-                                     # "first_depreciation_manual_date": self.Indent_id.date_of_receive,
-                                     "code": str(str(self.Indent_id.vendor_info) + ' - ' + str(self.specification)),
-                                     "salvage_value": 1,
-                                     "category_id": 1,
-                                     "value": 1,
-                                     'login': self.env.user.login}])
-            # print('==========asset_data================', id)
-            self.coe_asset_id = id
-            asset_id = id
-        else:
-            asset_id = self.coe_asset_id
-        key = ",jy`\;4Xpe7%KKL$.VNJ'.s6)wErQa"
-        connection_rec = self.env['server.connection'].search([], limit=1)
-        if not connection_rec:
-            raise UserError(_('No Server Configuration Found !'))
-        encoded_jwt = jwt.encode({'token': self.env.user.token}, key)
-        action = {
-            'name': connection_rec.name,
-            'type': 'ir.actions.act_url',
-            'url': str(connection_rec.url).strip() + "/asset/indent?login=" + str(
-                self.env.user.login) + "&password=" + str(encoded_jwt.decode("utf-8")) + "&menu_id=" + str(asset_id),
-            'target': 'new',
-        }
-        return action
+        pass
+        # if not self.coe_asset_id:
+        #     server_connection_id = self.env['server.connection'].search([('active', '=', True)])
+        #     url = server_connection_id.url
+        #     db = server_connection_id.db_name
+        #     common = xmlrpc.client.ServerProxy('{}/xmlrpc/2/common'.format(url))
+        #     models = xmlrpc.client.ServerProxy('{}/xmlrpc/2/object'.format(url))
+        #     # print('==========models================', models)
+        #     uid = 2
+        #     # password = self.env.user.password
+        #     password = 'admin'
+        #     id = models.execute_kw(db, uid, password, 'account.asset.asset', 'create',
+        #                            [{"name": self.item_id.name,
+        #                              "serial_number": self.serial_number.name,
+        #                              "invoice_no": self.Indent_id.bill_no,
+        #                              "purchase_date": self.Indent_id.date_of_receive,
+        #                              # "first_depreciation_manual_date": self.Indent_id.date_of_receive,
+        #                              "code": str(str(self.Indent_id.vendor_info) + ' - ' + str(self.specification)),
+        #                              "salvage_value": 1,
+        #                              "category_id": 1,
+        #                              "value": 1,
+        #                              'login': self.env.user.login}])
+        #     # print('==========asset_data================', id)
+        #     self.coe_asset_id = id
+        #     asset_id = id
+        # else:
+        #     asset_id = self.coe_asset_id
+        # key = ",jy`\;4Xpe7%KKL$.VNJ'.s6)wErQa"
+        # connection_rec = self.env['server.connection'].search([], limit=1)
+        # if not connection_rec:
+        #     raise UserError(_('No Server Configuration Found !'))
+        # encoded_jwt = jwt.encode({'token': self.env.user.token}, key)
+        # action = {
+        #     'name': connection_rec.name,
+        #     'type': 'ir.actions.act_url',
+        #     'url': str(connection_rec.url).strip() + "/asset/indent?login=" + str(
+        #         self.env.user.login) + "&password=" + str(encoded_jwt.decode("utf-8")) + "&menu_id=" + str(asset_id),
+        #     'target': 'new',
+        # }
+        # return action
 
     def button_barcode(self):
         return {
