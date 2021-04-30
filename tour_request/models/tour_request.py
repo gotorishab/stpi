@@ -23,7 +23,7 @@ class TourRequest(models.Model):
     employee_journey = fields.One2many('tour.request.journey','employee_journey', string="Employee Journey")
     tour_sequence = fields.Char('Tour number',track_visibility='always')
     claimed = fields.Boolean('Claimed')
-    advance_requested = fields.Float('Advance Requested')
+    advance_requested = fields.Float(' Advance Amount (Rs.)')
     vehicle_required = fields.Selection([('yes', 'Yes'), ('no', 'No')],string='Vehicle Required?',track_visibility='always')
     vehicle_address = fields.Char('Address')
     vehicle_phone = fields.Char("Phone Number")

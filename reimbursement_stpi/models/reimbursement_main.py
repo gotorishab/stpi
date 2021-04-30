@@ -224,7 +224,6 @@ class Reimbursement(models.Model):
                             count += 2
                         if cc.twins == True:
                             ff = 1
-
                 if count > 2 and ff!=1:
                     mult = 2
                 elif count > 2 and ff==1:
